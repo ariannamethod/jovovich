@@ -1,0 +1,4 @@
+{"stage":"sft_initial","mean_token_ce":2.82069622,"examples":64,"tokens":2359,"rank":16,"alpha":32,"layer":23,"trainable_parameters":276480,"seed":20260929}
+{"stage":"sft","epoch":1,"online_mean_token_ce":2.66615706,"mean_token_ce":2.48203222,"seconds":247.994}
+{"stage":"sft","epoch":2,"online_mean_token_ce":2.43055644,"mean_token_ce":2.31482277,"seconds":265.035}
+{"stage":"sft","epoch":3,"online_mean_token_ce":2.28686612,"mean_token_ce":2.16793250,"seconds":281.238}

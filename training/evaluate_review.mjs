@@ -49,6 +49,13 @@ async function main() {
     model, model_sha256: modelHash.digest('hex'), tokens,
     cases_sha256: sha256(casesText), identity_sha256: sha256(identity),
     host_sha256: sha256(await readFile(path.join(ROOT, 'bin/jovovich.mjs'))),
+    infer_source_sha256: sha256(await readFile(path.join(ROOT, 'src/infer.c'))),
+    decoding: {
+      temperature: 0, context: 8192,
+      NT_NO_I8: process.env.NT_NO_I8 || null,
+      NT_QMV_THREADS: process.env.NT_QMV_THREADS || null,
+      NT_ATTN_THREADS: process.env.NT_ATTN_THREADS || null
+    },
     chat_template_env: process.env.JOVOVICH_CHAT_TEMPLATE || null,
     suffix_file: opts['suffix-file'] ? path.resolve(opts['suffix-file']) : null,
     suffix_sha256: sha256(suffix)

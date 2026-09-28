@@ -1,0 +1,80 @@
+llama: E=896 H=14 KV=2 FFN=4864 V=151936 L=24 HD=64 Q=896
+  (has attention bias — qwen-style)
+  rope: neox | weights: packed
+cache 1/64 tokens=41 elapsed=9.2s
+cache 2/64 tokens=6 elapsed=17.8s
+cache 3/64 tokens=46 elapsed=23.6s
+cache 4/64 tokens=90 elapsed=30.8s
+cache 5/64 tokens=35 elapsed=43.8s
+cache 6/64 tokens=6 elapsed=52.6s
+cache 7/64 tokens=34 elapsed=58.4s
+cache 8/64 tokens=93 elapsed=65.6s
+cache 9/64 tokens=35 elapsed=74.4s
+cache 10/64 tokens=6 elapsed=82.7s
+cache 11/64 tokens=52 elapsed=89.0s
+cache 12/64 tokens=82 elapsed=97.4s
+cache 13/64 tokens=33 elapsed=106.7s
+cache 14/64 tokens=6 elapsed=114.9s
+cache 15/64 tokens=43 elapsed=120.3s
+cache 16/64 tokens=140 elapsed=128.7s
+cache 17/64 tokens=33 elapsed=137.9s
+cache 18/64 tokens=6 elapsed=150.6s
+cache 19/64 tokens=42 elapsed=156.0s
+cache 20/64 tokens=96 elapsed=162.6s
+cache 21/64 tokens=49 elapsed=173.1s
+cache 22/64 tokens=6 elapsed=182.6s
+cache 23/64 tokens=38 elapsed=188.0s
+cache 24/64 tokens=107 elapsed=195.1s
+cache 25/64 tokens=32 elapsed=204.7s
+cache 26/64 tokens=6 elapsed=214.2s
+cache 27/64 tokens=45 elapsed=220.0s
+cache 28/64 tokens=69 elapsed=226.5s
+cache 29/64 tokens=38 elapsed=237.0s
+cache 30/64 tokens=6 elapsed=246.4s
+cache 31/64 tokens=37 elapsed=252.4s
+cache 32/64 tokens=59 elapsed=259.3s
+cache 33/64 tokens=41 elapsed=269.4s
+cache 34/64 tokens=6 elapsed=278.7s
+cache 35/64 tokens=34 elapsed=284.0s
+cache 36/64 tokens=54 elapsed=289.8s
+cache 37/64 tokens=31 elapsed=299.0s
+cache 38/64 tokens=6 elapsed=307.3s
+cache 39/64 tokens=35 elapsed=312.8s
+cache 40/64 tokens=60 elapsed=318.6s
+cache 41/64 tokens=32 elapsed=327.6s
+cache 42/64 tokens=6 elapsed=336.0s
+cache 43/64 tokens=40 elapsed=342.9s
+cache 44/64 tokens=78 elapsed=349.1s
+cache 45/64 tokens=40 elapsed=360.8s
+cache 46/64 tokens=6 elapsed=371.9s
+cache 47/64 tokens=52 elapsed=377.7s
+cache 48/64 tokens=101 elapsed=385.6s
+cache 49/64 tokens=34 elapsed=396.0s
+cache 50/64 tokens=6 elapsed=405.2s
+cache 51/64 tokens=31 elapsed=415.3s
+cache 52/64 tokens=6 elapsed=424.6s
+cache 53/64 tokens=37 elapsed=434.3s
+cache 54/64 tokens=6 elapsed=443.7s
+cache 55/64 tokens=32 elapsed=453.2s
+cache 56/64 tokens=6 elapsed=464.4s
+cache 57/64 tokens=31 elapsed=474.1s
+cache 58/64 tokens=6 elapsed=482.7s
+cache 59/64 tokens=37 elapsed=492.9s
+cache 60/64 tokens=6 elapsed=502.5s
+cache 61/64 tokens=32 elapsed=511.9s
+cache 62/64 tokens=6 elapsed=520.7s
+cache 63/64 tokens=38 elapsed=530.0s
+cache 64/64 tokens=6 elapsed=538.7s
+zero-adapter probe rows=4 residual_max_abs=1.8119812e-05 residual_scale=65.606491 logits_max_abs=3.0517578e-05 logits_scale=31.871582 argmax_equal=1
+saved models/jovovich-mlp-v2.epoch01.gate.f32 merge_max_abs=2.9802322e-08
+saved models/jovovich-mlp-v2.epoch01.up.f32 merge_max_abs=4.7497451e-08
+saved models/jovovich-mlp-v2.epoch01.down.f32 merge_max_abs=1.2107193e-07
+saved models/jovovich-mlp-v2.epoch02.gate.f32 merge_max_abs=2.9802322e-08
+saved models/jovovich-mlp-v2.epoch02.up.f32 merge_max_abs=4.4703484e-08
+saved models/jovovich-mlp-v2.epoch02.down.f32 merge_max_abs=1.3224781e-07
+saved models/jovovich-mlp-v2.epoch03.gate.f32 merge_max_abs=3.7252903e-08
+saved models/jovovich-mlp-v2.epoch03.up.f32 merge_max_abs=5.9604645e-08
+saved models/jovovich-mlp-v2.epoch03.down.f32 merge_max_abs=1.7881393e-07
+saved models/jovovich-mlp-v2.gate.f32 merge_max_abs=3.7252903e-08
+saved models/jovovich-mlp-v2.up.f32 merge_max_abs=5.9604645e-08
+saved models/jovovich-mlp-v2.down.f32 merge_max_abs=1.7881393e-07
