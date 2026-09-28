@@ -1,0 +1,10 @@
+build/
+models/
+training/cache/
+training/output/
+*.part
+*.log
+.env
+.env.*
+node_modules/
+__pycache__/

@@ -1,0 +1,51 @@
+CC ?= cc
+NOTORCH ?= deps/notorch
+CFLAGS ?= -O2 -Wall -Wextra -std=gnu11
+NATIVE ?= $(shell $(CC) -march=native -E -x c /dev/null >/dev/null 2>&1 && echo -march=native)
+CPPFLAGS += -I$(NOTORCH)
+LDLIBS += -lm -pthread
+# The in-tree float32 SIMD shim speeds the low-rank training projections.
+# Override TRAIN_SIMD= for scalar or cross builds; no external BLAS is needed.
+TRAIN_SIMD ?= $(shell $(CC) $(NATIVE) -dM -E -x c /dev/null 2>/dev/null | grep -q __AVX2__ && echo -DUSE_SIMD)
+
+SUBSTRATE = $(NOTORCH)/notorch.c $(NOTORCH)/gguf.c \
+            $(NOTORCH)/harness/runtime.c $(NOTORCH)/harness/arch_llama.c \
+            $(NOTORCH)/examples/bpe.c
+HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
+          $(NOTORCH)/harness/arch.h $(NOTORCH)/harness/arch_models.h \
+          $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
+          $(NOTORCH)/examples/unicode_numbers.h
+
+.PHONY: all harness train merge-head export-adapter test clean
+all: harness
+harness: build/jovovich-infer
+merge-head: build/jovovich-merge-head
+train: build/jovovich-train-head
+export-adapter: build/jovovich-export-adapter
+
+build/jovovich-infer: src/infer.c $(SUBSTRATE) $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) -o $@ src/infer.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-merge-head: training/merge_head.c $(NOTORCH)/gguf.c $(NOTORCH)/gguf.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/merge_head.c $(NOTORCH)/gguf.c $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-train-head: training/train_head.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/train_head.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-export-adapter: training/export_adapter.c $(SUBSTRATE) $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) -o $@ training/export_adapter.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/test-head: test/head.c training/train_head.c $(SUBSTRATE) $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/head.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+test: harness build/test-head
+	./build/test-head
+	node --test test/*.test.mjs
+
+clean:
+	rm -rf build

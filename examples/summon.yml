@@ -1,0 +1,22 @@
+# Copy to .github/workflows/jovovich.yml in a repository that wants reviews.
+name: Summon JOVOVICH
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  jovovich:
+    # For a fixed installation, replace BOTH main refs with the same reviewed commit SHA.
+    # The reviewer fetches PR data through GitHub's API; it never checks out the PR head.
+    uses: ariannamethod/jovovich/.github/workflows/review.yml@main
+    with:
+      pull-request: ${{ github.event.pull_request.number }}
+      jovovich-ref: main
+    # Only needed after selecting privately hosted weights in the model lock.
+    # secrets:
+    #   HF_TOKEN: ${{ secrets.HF_TOKEN }}
