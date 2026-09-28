@@ -1,0 +1,68 @@
+name: JOVOVICH reviews
+
+on:
+  workflow_call:
+    inputs:
+      pull-request:
+        description: Pull request number in the calling repository
+        required: true
+        type: number
+      jovovich-ref:
+        description: Trusted JOVOVICH revision; pin to the same commit as this reusable workflow
+        required: false
+        default: main
+        type: string
+    secrets:
+      HF_TOKEN:
+        description: Optional Hugging Face token for privately hosted model weights
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: jovovich-review-${{ github.repository }}-${{ inputs.pull-request }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: Advisory review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: .jovovich
+        shell: bash
+    env:
+      JOVOVICH_MODEL: ${{ github.workspace }}/.jovovich/models/jovovich.gguf
+    steps:
+      # Checkout only the trusted reviewer. PR contents arrive through the API as data.
+      - name: Summon JOVOVICH
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ariannamethod/jovovich
+          ref: ${{ inputs.jovovich-ref }}
+          path: .jovovich
+          submodules: true
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Build notorch inference
+        run: make harness
+
+      - name: Fetch checksum-pinned model
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: node bin/jovovich.mjs fetch-model
+
+      - name: Read the diff and leave an advisory comment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REVIEW_REPOSITORY: ${{ github.repository }}
+          REVIEW_PR: ${{ inputs.pull-request }}
+        run: node bin/jovovich.mjs github --repo "$REVIEW_REPOSITORY" --pr "$REVIEW_PR" --post
