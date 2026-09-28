@@ -16,11 +16,13 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train merge-head export-adapter test clean
+.PHONY: all harness train train-mlp merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
 train: build/jovovich-train-head
+train-mlp: build/jovovich-train-mlp
+merge-mlp: build/jovovich-merge-mlp
 export-adapter: build/jovovich-export-adapter
 
 build/jovovich-infer: src/infer.c $(SUBSTRATE) $(HEADERS) Makefile
@@ -35,6 +37,14 @@ build/jovovich-train-head: training/train_head.c $(SUBSTRATE) $(HEADERS) $(NOTOR
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/train_head.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
+build/jovovich-train-mlp: training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/train_mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-merge-mlp: training/merge_mlp.c $(NOTORCH)/gguf.c $(NOTORCH)/gguf.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/merge_mlp.c $(NOTORCH)/gguf.c $(LDFLAGS) $(LDLIBS)
+
 build/jovovich-export-adapter: training/export_adapter.c $(SUBSTRATE) $(HEADERS) Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) -o $@ training/export_adapter.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
@@ -43,8 +53,13 @@ build/test-head: test/head.c training/train_head.c $(SUBSTRATE) $(HEADERS) Makef
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/head.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
-test: harness build/test-head
+build/test-mlp: test/mlp.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+test: harness merge-mlp build/test-head build/test-mlp
 	./build/test-head
+	./build/test-mlp
 	node --test test/*.test.mjs
 
 clean:

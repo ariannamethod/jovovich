@@ -177,6 +177,45 @@ Python uses only its standard library to pack text and launch the evaluator.
 All tokenization, model arithmetic, gradients, optimization, and weight merging
 are notorch C. Export refuses to overwrite an existing GGUF.
 
+A second training path adapts the **last decoder block's MLP**: gate, up, and
+down projections, rank 16 and alpha 32. On the 0.5B body this is 276,480
+trainable parameters. Attention, earlier blocks, norms, embeddings, and the
+output head stay frozen. The trainer caches the final MLP's fixed input, then
+backpropagates through its adapted SwiGLU, final normalization, and vocabulary
+projection. It checks the cached reconstruction against the original model
+before applying updates.
+
+`training/sft_review_v2.jsonl` has 40 paired review examples, 12 voice examples,
+and 12 ordinary code questions. `review_holdout_v2.jsonl` contains 12 different
+review cases; `voice_cases_v2.jsonl` checks identity, judgment, and repetition
+separately. Training diff replacements use Git's deletion-before-addition order
+on both sides of every pair.
+
+```sh
+make train-mlp merge-mlp
+python3 training/prepare.py models/mlp-curriculum.bin \
+  --sft training/sft_review_v2.jsonl --sft-only
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/mlp-curriculum.bin \
+  models/mlp-candidate 3 0.00005 16 > models/mlp-metrics.jsonl
+build/jovovich-merge-mlp models/base-qwen.gguf models/mlp-candidate \
+  models/mlp-candidate.gguf
+```
+
+The SFT prototype accepts Qwen2 bodies with RMSNorm epsilon `1e-6`. It uses
+floating activations (`NT_NO_I8=1`) and saves every epoch's three adapters and
+merged F32 projections, plus the final snapshot. The GGUF exporter replaces
+only those three last-block tensors; metadata and other tensor payloads remain
+byte-identical. Use a fresh output prefix for each run.
+
+The first three-epoch MLP run reduced training token CE from 2.821 to 2.168.
+Held-out generation still produced false objections, broken JSON, and invented
+biography; the final voice run also reversed the advisory authority boundary.
+The original base remains selected in `model.json`. Epoch 1 and epoch 3 weights
+are private experimental checkpoints, with exact generations and manual
+assessments in [`training/results/2026-09-29-mlp-v2`](training/results/2026-09-29-mlp-v2).
+The loss decreased. The objections have not earned a promotion.
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh
@@ -189,6 +228,18 @@ Its six diagnostic cases pair forbidden and permitted Python, an unapproved
 and approved dependency, and a loop bug introduced and then fixed. Results
 retain raw answers, hashes, line references, and a separate manual assessment
 of the explanation. The output must be a new file.
+
+For the new training comparison:
+
+```sh
+NT_NO_I8=1 NT_QMV_THREADS=2 NT_ATTN_THREADS=2 \
+  node training/evaluate_review.mjs --model models/mlp-candidate.gguf \
+  --cases training/review_holdout_v2.jsonl --tokens 192 \
+  --output models/mlp-review.jsonl
+python3 training/evaluate.py models/mlp-candidate.gguf \
+  --cases training/voice_cases_v2.jsonl --identity prompts/identity.txt \
+  --output models/mlp-voice.jsonl
+```
 
 The first comparison includes Qwen2.5-Coder 0.5B, 1.5B, and DavidAU's Qwen3
 0.8B hybrid. All 18 answers parsed, but the candidates missed policy conflicts,

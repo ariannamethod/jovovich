@@ -1,0 +1,18 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/mlp-v2-curriculum.bin",
+    "models/jovovich-mlp-v2",
+    "3",
+    "0.00005",
+    "16"
+  ],
+  "threads": 4,
+  "NT_NO_I8": "1 (set by trainer)",
+  "elapsed_seconds": 1428.957531909,
+  "peak_rss_kib": 1422052,
+  "user_seconds": 2667.220493,
+  "system_seconds": 50.84339,
+  "exit_code": 0
+}

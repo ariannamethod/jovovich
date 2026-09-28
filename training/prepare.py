@@ -14,7 +14,7 @@ def prepare(sft_path, dpo_path, output):
         if [m["role"] for m in messages] != ["system", "user", "assistant"]:
             raise ValueError("SFT examples must be system/user/assistant triples")
         rows.append((0, *(m["content"] for m in messages), ""))
-    for raw in dpo_path.read_text(encoding="utf-8").splitlines():
+    for raw in (dpo_path.read_text(encoding="utf-8").splitlines() if dpo_path else []):
         row = json.loads(raw)
         rows.append((1, row["system"], row["prompt"], row["chosen"], row["rejected"]))
     with output.open("wb") as f:
@@ -34,5 +34,6 @@ if __name__ == "__main__":
     p.add_argument("output", type=Path)
     p.add_argument("--sft", type=Path, default=Path(__file__).with_name("sft.jsonl"))
     p.add_argument("--dpo", type=Path, default=Path(__file__).with_name("dpo.jsonl"))
+    p.add_argument("--sft-only", action="store_true", help="pack only SFT rows for the internal MLP trainer")
     a = p.parse_args()
-    prepare(a.sft, a.dpo, a.output)
+    prepare(a.sft, None if a.sft_only else a.dpo, a.output)

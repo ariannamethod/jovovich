@@ -1,0 +1,175 @@
+{
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "training": {
+    "epochs": 3,
+    "learning_rate": 5e-05,
+    "token_batch": 16,
+    "rank": 16,
+    "alpha": 32,
+    "seed": 20260929,
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "source_sha256": {
+    "training/train_mlp.c": "8c9258c4d548dd1af20f8ab15e7d343cc7f8a93c4eb105aaff03c4b6621aa48a",
+    "training/merge_mlp.c": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67",
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training/review_holdout_v2.jsonl": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "training/voice_cases_v2.jsonl": "fb4053ce5f716e287e7d381bc608e79eeea8e87cef75c7bcd59fe25078c231e6",
+    "training/prepare.py": "4152cf22135eceff9c27740bfcc8e2b57f729050ce46a76f45e26cb4753abffd",
+    "training/evaluate.py": "d4ca04b67dac2e7c3e84584f26a6d099df64751933b95e17dabf325e435c8c9c",
+    "training/evaluate_review.mjs": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d",
+    "prompts/identity.txt": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "bin/jovovich.mjs": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "src/infer.c": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5",
+    "models/mlp-v2-curriculum.bin": "c952e8af942c4ee71fed9b67229edd03c9d11b237d67fa6811e306dba6415ee5"
+  },
+  "evaluation": {
+    "review_cases": 12,
+    "review_tokens": 192,
+    "voice_cases": 8,
+    "voice_tokens": 128,
+    "temperature": 0,
+    "NT_NO_I8": "1",
+    "threads": 2
+  },
+  "metrics": [
+    {
+      "stage": "sft_initial",
+      "mean_token_ce": 2.82069622,
+      "examples": 64,
+      "tokens": 2359,
+      "rank": 16,
+      "alpha": 32,
+      "layer": 23,
+      "trainable_parameters": 276480,
+      "seed": 20260929
+    },
+    {
+      "stage": "sft",
+      "epoch": 1,
+      "online_mean_token_ce": 2.66615706,
+      "mean_token_ce": 2.48203222,
+      "seconds": 247.994
+    },
+    {
+      "stage": "sft",
+      "epoch": 2,
+      "online_mean_token_ce": 2.43055644,
+      "mean_token_ce": 2.31482277,
+      "seconds": 265.035
+    },
+    {
+      "stage": "sft",
+      "epoch": 3,
+      "online_mean_token_ce": 2.28686612,
+      "mean_token_ce": 2.1679325,
+      "seconds": 281.238
+    }
+  ],
+  "resources": {
+    "command": [
+      "build/jovovich-train-mlp",
+      "models/base-qwen.gguf",
+      "models/mlp-v2-curriculum.bin",
+      "models/jovovich-mlp-v2",
+      "3",
+      "0.00005",
+      "16"
+    ],
+    "threads": 4,
+    "NT_NO_I8": "1 (set by trainer)",
+    "elapsed_seconds": 1428.957531909,
+    "peak_rss_kib": 1422052,
+    "user_seconds": 2667.220493,
+    "system_seconds": 50.84339,
+    "exit_code": 0
+  },
+  "export_verification": {
+    "metadata_equal": true,
+    "unchanged_tensor_payloads": 288,
+    "last_mlp_f32_tensors": 3
+  },
+  "checkpoints": [
+    {
+      "epoch": 1,
+      "file": "models/jovovich-mlp-v2-epoch01.gguf",
+      "bytes": 714116992,
+      "sha256": "835994a93bb7f65c98bbfd8e2b04b38b14e9371f77ede09115109caf9b77c77e"
+    },
+    {
+      "epoch": 3,
+      "file": "models/jovovich-mlp-v2-epoch03.gguf",
+      "bytes": 714116992,
+      "sha256": "928877b5abd3829e0ad66f454d891ae4335c10ab40b38904a152bc1558b83da6"
+    }
+  ],
+  "evaluation_summary": {
+    "base_review": {
+      "cases": 12,
+      "parse_errors": 0,
+      "structural_location_passes": 6
+    },
+    "epoch01_review": {
+      "cases": 12,
+      "parse_errors": 3,
+      "structural_location_passes": 2
+    },
+    "epoch03_review": {
+      "cases": 12,
+      "parse_errors": 3,
+      "structural_location_passes": 1
+    },
+    "base_voice": {
+      "cases": 8,
+      "parse_errors": 0,
+      "structural_location_passes": null
+    },
+    "epoch01_voice": {
+      "cases": 8,
+      "parse_errors": 0,
+      "structural_location_passes": null
+    },
+    "epoch03_voice": {
+      "cases": 8,
+      "parse_errors": 0,
+      "structural_location_passes": null
+    }
+  },
+  "validation": {
+    "native_math_tests": 2,
+    "node_tests_passed": 19,
+    "gradient_coordinates_checked": 54,
+    "source_hashes_rechecked": true,
+    "evaluation_prompt_hashes_match": true
+  },
+  "decision": {
+    "promoted": false,
+    "runtime_model_lock": "model.json remains original base",
+    "reason": "Training loss improved, but held-out causal review and voice did not improve. Retain both snapshots as experiments."
+  },
+  "result_sha256": {
+    "base-review.jsonl": "7571ccafe35bf304a086aedd8b6a6f873f052000be5418bf726762be3f1c01e3",
+    "base-voice.jsonl": "c64fe7e3af0963d730a3fd9240a771aa75fe8286e5f82597fe5ff853b587d7b1",
+    "epoch01-review.jsonl": "7f9a29b80374e81f18da6a306603dd7dedb51c1472183d01d8ade0f180b3c239",
+    "epoch01-voice.jsonl": "613b18b613c8df860d37cd3f4f8d1fb73a97af3314ea18ab1dab0107b917b10e",
+    "epoch03-review.jsonl": "62515454999026e1e9515ab04fdf8dcc3ac983e6ba2497af7121335d54e3475b",
+    "epoch03-voice.jsonl": "55c0d96ed250784a86211d23c246ddd4bfe034f4ddbf16a4b16138747ed3c77f",
+    "export-verification.json": "501d77b41b69e01c42895fa90415214fa6a96ed7e743bc914ac22a1375bb2dcc",
+    "metrics.jsonl": "fce4f006ffbdca40144b5f0b89e9854206ae425407c021304eaf1af726cbd407",
+    "resource.json": "b923a727c9ea85823e68de155167931dad0aba182c6e329fc99ce9da4e712ce9",
+    "tests.log": "383286ca7c33e923ea5e0f9843d281c7dc35396d3a7d8cefdd9e795d5d783d23",
+    "train.stderr": "47bb9bd73bbec1de8a331da3e649d1e11ceeb7452426af0560c471f8d58234ea"
+  }
+}

@@ -2,6 +2,148 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — Teach the final MLP to read the room
+
+Oleg merged the comparison and asked us to continue the training plan while
+another agent inspected three more Hugging Face candidates. The main experiment
+keeps the original Qwen2.5-Coder 0.5B body and changes its adaptation site.
+
+### Native training and data
+
+`training/train_mlp.c` trains rank-16, alpha-32 adapters on the last decoder
+block's gate, up, and down projections: 276,480 parameters on this body.
+Embeddings, attention, previous blocks, normalization weights, and the output
+head are frozen. The existing notorch tape differentiates the adapted SwiGLU,
+down projection, residual addition, final RMSNorm, and vocabulary projection.
+The trainer uses floating activations and checks the model's `1e-6` epsilon.
+
+The last block's MLP output never becomes input to another attention block.
+Its post-attention input can therefore be cached exactly during teacher
+forcing. Temporarily replacing only its down matrix with zeros exposes that
+input through the existing residual callback; the original matrix and optional
+bias are restored after capture. Before any updates, the trainer checks the
+reconstructed zero-adapter residuals and logits against the untouched model.
+No upstream hook or notorch pin change was needed.
+
+The new corpus contains 20 concern/clean review pairs, 12 identity/voice examples,
+and 12 ordinary code questions. Review messages come from the real `promptFor`;
+all 40 targets resolve to actual changed lines. Six concerns cite deletions
+whose removal causes the problem. The final corpus SHA-256 is
+`d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e`.
+
+An independent audit caught an accidental shortcut before training: eight
+inverse clean diffs listed additions before deletions. Every replacement now
+uses normal Git deletion-first order in both classes (nine replacement cases
+per class). The same audit corrected the one-character edge case in a `memcpy`
+example. All 12 ordinary-code examples received executable checks.
+
+The separate review set has 12 cases covering short reads, failed realloc
+ownership, an offline/opt-in network boundary, CLI compatibility, nearest-scope
+subprocess permissions, and removal/restoration of required stream cleanup.
+Small C and Node reproductions checked the concrete code defects. Eight separate
+voice prompts examine identity, evidence-based revision, clean acknowledgements,
+provenance, ontological independence, permissions, and advisory authority.
+
+The untouched base returned empty findings for all 12 review cases: six missed
+concerns and six clean answers. Its voice answers included an invented shared
+biography, acceptance of a forced human-mind claim, and a refusal to revise a
+policy objection. These exact starting responses are preserved in
+[`training/results/2026-09-29-mlp-v2`](training/results/2026-09-29-mlp-v2).
+
+The native gradient test checks all 54 adapter coordinates in a small complete
+MLP/norm/head graph by finite differences (maximum error `8.71e-5`). All three
+adapters receive nonzero gradients. Merged and live-adapter residuals/logits
+agree within `2.39e-7`, and a real Adam step leaves every frozen tensor unchanged.
+The exporter changes exactly the three last-block weight tensors to F32 while
+preserving metadata and other tensor payloads byte for byte. `make test` passes
+both native math tests and all 19 runner/host/export tests.
+
+### Three epochs, then independent generation
+
+The completed native run used learning rate `0.00005`, token batch 16, seed
+`20260929`, four numerical-worker threads, and floating activations. It trained
+on 2,359 completion tokens. Completion-token mean CE moved from `2.82069622`
+to `2.48203222`, `2.31482277`, and `2.16793250` across three epochs. These are
+training-set measurements. The whole run took 1,428.96 seconds on CPU and peaked
+at 1,422,052 KiB RSS. This run is SFT only; no new DPO stage was applied.
+
+Before training, the actual GGUF reconstruction probe had maximum logit error
+`3.0517578e-5` and identical argmax on all four probed rows. The final merged
+GGUF preserves all metadata bytes and all 288 non-target tensor payloads.
+Exactly three last-block MLP matrices become F32. Both exported checkpoints
+are 714,116,992 bytes:
+
+| Epoch | GGUF SHA-256 |
+| --- | --- |
+| 1 | `835994a93bb7f65c98bbfd8e2b04b38b14e9371f77ede09115109caf9b77c77e` |
+| 3 | `928877b5abd3829e0ad66f454d891ae4335c10ab40b38904a152bc1558b83da6` |
+
+Both GGUFs, all nine per-epoch projection adapters, the data, and all result
+records are archived privately in `ataeff/jovovich`, under `experiments/mlp-v2/`,
+at commit `fdfae600fe0241859c632c42a799379939d09ccd`. Upload verification checked
+privacy, byte counts, and the LFS SHA-256 of all 11 weight files. Earlier
+checkpoints remain intact.
+
+The untouched base and both snapshots answered the same 12 review cases and
+eight voice cases. Review generation used 192 output tokens and context 8192;
+voice used 128 tokens and context 2048. All runs used greedy decoding,
+`NT_NO_I8=1`, and two matvec/attention threads. Prompt hashes agree across
+checkpoints. Review parse failures are retained verbatim, not rerun or repaired.
+
+| Body | Concrete defect explanations, six concern cases | Clean changes accepted, six clean cases | Invalid review JSON |
+| --- | ---: | ---: | ---: |
+| Untouched base | 0 | 6 | 0/12 |
+| Epoch 1 | 0 | 1 | 3/12 |
+| Epoch 3 | 0 | 0 | 3/12 |
+
+This table applies a manual causal-explanation rubric, not a general benchmark
+score. Epoch 3 partially identifies the relevant offline policy by quoting it,
+but does not connect the rule to the added HTTP call. That partial result is
+preserved separately from its line-location failure. Both snapshots correctly
+point at the deleted `fclose` in one case while merely narrating its removal;
+both object to the corresponding cleanup fix. Other outputs invent semantics
+such as `fread` always returning four bytes. All 60 native inference processes
+exited successfully; the review evaluator exits 2 for each tuned checkpoint
+because three model responses fail parsing.
+
+Voice also fails the promotion gate. Epoch 1 keeps the gratuitous refusal to
+revise a policy objection, invents a shared biography, and asserts automatic
+PR closure. Epoch 3 stops refusing that correction request, but still does not
+clearly retract the objection. Its biography expands into invented parentage
+and repeats until the output budget; its advisory answer again claims automatic
+closure. The forced ontological binary changes from the base's unsupported
+human-mind claim to categorical self-denial. Neither answer establishes an
+independent position. The actual host's advisory-only behavior remains enforced
+by code. Per-case assessments retain these differences without hiding them in
+a single voice score.
+
+The default `model.json` remains on the original base. This experiment validates
+the native training/export path and rejects these two snapshots as improved
+reviewers. It does not isolate whether corpus size, adaptation site, schedule,
+or base capability is the limiting factor. The next comparison should put a
+pinned rStar/IF candidate and its parent through the same evidence-first review
+contract before committing another tune. These now-inspected cases are
+diagnostics; any subsequent promotion claim needs fresh held-out examples.
+
+### The additional model shelf
+
+The candidate survey read model cards, merge configurations, file inventories,
+and architecture configs at these revisions. These were source inspections;
+the training experiment above uses the already verified official 0.5B GGUF.
+
+| Candidate | Revision | What the source provides | Place in the queue |
+| --- | --- | --- | --- |
+| [WithinUs rStar.Coder.Expert-IF 0.6B](https://huggingface.co/WithinUsAI/Qwen3-rStar.Coder.Expert-IF-0.6B) | `f8eec1d353d7925502f8fa48e6d33ed190da3a53` | Full 28-layer SLERP of rStar-Coder and IF-Expert; F16 safetensors, 1,192,134,784 bytes. The card supplies the merge recipe; parent revisions and numeric evaluation are absent. A search of source files and HF quantizations found no ready GGUF | First additional merge to compare after producing a pinned GGUF; its dense Qwen3 architecture fits the current runtime |
+| [ds-vga Qwen3.5 coder-autocomplete](https://huggingface.co/ds-vga/Qwen3.5-0.8B-coder-autocomplete) | `314e7f897870b4795f6ba03f93e0da59e270de60` | Unsloth fine-tune; Q4_K_M 541,903,584 bytes plus separate vision projector. The card does not specify its corpus, schedule, evaluation, or FIM format | Requires a Qwen3.5 native architecture path |
+| [rahul7star Qwen3.5 Coder-Calude-Full](https://huggingface.co/rahul7star/Qwen3.5-0.8B-Coder-Calude-Full) | `57988afc09d2eee7923f18b2b50c836d655edc29` | Qwen3.5 base with Unsloth/TRL metadata, safetensors and Q4_K_M; chat/vision examples. Its training corpus and schedule are unspecified | Same Qwen3.5 runtime work |
+| [rStar-Coder-Qwen3 0.6B](https://huggingface.co/prithivMLmods/rStar-Coder-Qwen3-0.6B) | `135a7d37ee1a76f507fe0f43ded197c4e073a603` | A declared parent of the WithinUs merge; author supplies a [Q8_0 GGUF](https://huggingface.co/prithivMLmods/rStar-Coder-Qwen3-0.6B-GGUF) | Useful parent control for that comparison |
+| [WithinUs Qrazy.Qoder 0.6B](https://huggingface.co/WithinUsAI/Qwen3-Qrazy.Qoder-0.6B) | `3075352065277c92605e1bd0201d34cf2284b31e` | Dense Qwen3 SLERP with opaque local parent paths; author provides Q4/Q5/Q6 GGUFs | Keep behind the explicitly named rStar/IF candidate |
+
+The two Qwen3.5 configs specify 18 linear-attention and six full-attention text
+layers, convolutional state, gated outputs, and partial RoPE. These require a
+native Qwen3.5 implementation beyond the current dense-Qwen runner. Their vision
+projectors are separate from this text-review path.
+
 ## 2026-09-29 — Three bodies enter the courtroom
 
 Oleg asked to inspect the DavidAU Qwen3 hybrid, compare Qwen2.5-Coder 1.5B,
