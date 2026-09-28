@@ -2,6 +2,135 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — Three bodies enter the courtroom
+
+Oleg asked to inspect the DavidAU Qwen3 hybrid, compare Qwen2.5-Coder 1.5B,
+and send agents after the literature on small agents, identity, voice, and
+preference tuning. The README's woman with half a billion parameters keeps
+her opening line. Parameter inflation has not earned editorial privileges.
+
+### The comparison
+
+Six hand-authored cases form three pairs: runtime Python prohibited versus
+packaging Python permitted; a forbidden dependency versus the same dependency
+explicitly approved; an array off-by-one introduced versus the same bug fixed.
+The first two pairs keep the diff identical and change the governing context.
+The last pair reverses the diff. These are now visible diagnostic fixtures;
+future training evaluation needs additional held-out cases.
+
+`training/evaluate_review.mjs` uses the production chunker, prompt, notorch
+runner, and finding parser. Each record retains the raw answer, prompt/model/
+source hashes, expected line IDs, and a separate semantic assessment. All
+18 baseline answers parsed. That did not make their reviews correct.
+
+| Candidate | Three changes containing a problem | Three clean changes |
+| --- | --- | --- |
+| Qwen2.5-Coder 0.5B Instruct Q8_0 | Empty findings for all three | Empty findings for all three |
+| Qwen2.5-Coder 1.5B Instruct Q8_0 | Missed both policy conflicts; described the array overflow but cited the removed, correct line | Accepted the two permitted changes; complained about the removed bug after its fix |
+| DavidAU Qwen3 hybrid 0.8B Q8_0 | Identified both policy conflicts, with unsupported embellishment in the Python case; called the bad loop change valid inside a finding | Emitted findings for all three; contradicted both explicit permissions and called the approved Node dependency a Python package |
+
+The hybrid also put a correct description of the fixed loop into its findings
+list. Finding a quotation is one contract; deciding that it represents a new
+problem is another. The evaluator keeps those outcomes separate.
+
+Baseline settings: greedy decoding, 256 output tokens, 8192 context, two
+notorch matvec and attention threads. Runs shared the CPU, so their elapsed
+times are diagnostic records rather than a speed comparison. Raw answers and
+manual assessments are in [`training/results/2026-09-29`](training/results/2026-09-29).
+The 0.5B runtime lock remains unchanged.
+
+### Candidate custody and native Qwen3
+
+The new downloads were checked against their LFS SHA-256 and byte counts:
+
+| Candidate | Repository revision | File | Bytes | SHA-256 |
+| --- | --- | --- | ---: | --- |
+| [Qwen2.5-Coder-1.5B-Instruct-GGUF](https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF) | `f86cb2c1fa58255f8052cc32aeede1b7482d4361` | `qwen2.5-coder-1.5b-instruct-q8_0.gguf` | 1894532160 | `507de59046601282ba768a9789900e6ccf60ed93ddf346730b7c68eb0715bc47` |
+| [DavidAU/Qwen3-Zero-Coder-Reasoning-V2-0.8B-NEO-EX-GGUF](https://huggingface.co/DavidAU/Qwen3-Zero-Coder-Reasoning-V2-0.8B-NEO-EX-GGUF) | `471bc1d467ebf2616d54b867b6f93146f183e3ae` | `Qwen3-Zro-Cdr-Reason-V2-0.8B-NEO-EX-D_AU-Q8_0.gguf` | 873548800 | `f35bab53bce6e2d21b71a03e40c912db237fc85b5168aa0f51dc52a15c23440b` |
+
+The hybrid is a dense `qwen3` GGUF with 42 layers, embedding width 1024,
+16 query heads, eight KV heads, head dimension 128, and per-head Q/K norms.
+The pinned notorch already implements that architecture. JOVOVICH's runner
+now admits `qwen3` alongside `qwen2`; MoE remains outside this runner.
+
+The hybrid's embedded template implements `enable_thinking=false` by appending
+`<think>\n\n</think>\n\n` to the assistant prefix. The explicit
+`JOVOVICH_CHAT_TEMPLATE=qwen3-no-think` option supplies that prefix. Both thinking
+markers are USER_DEFINED tokenizer tokens; the synthetic GGUF regression
+checks their real IDs as well as ChatML CONTROL IDs. The baseline hybrid runs
+used this non-thinking mode.
+
+### Reference engine and prompt experiments
+
+llama.cpp remains a scratch diagnostic reference at
+`680a036285273a3ff56032ec5d7f3352609eba4f`. Product inference stays in notorch.
+
+- For the full 1.5B array-bug prompt, all 552 input IDs agree. With F32 KV,
+  flash attention off, and repacking off, all 64 generated tokens also agree
+  byte for byte, including the wrong `line_id: 1`. Both stop at that output
+  budget. The default reference configuration produced question marks; the
+  isolated switches did not fully fix it. The successful combination is
+  recorded without assigning an unverified kernel cause.
+- On a short hybrid control prompt, all 35 input IDs agree. Both engines
+  correctly identify the forbidden Python invocation, with different wording.
+  Disabling notorch's int8 activation path also gives a correct, differently
+  worded answer.
+- Three 1.5B prompt ablations each ran the introduced/fixed array pair. Full
+  identity plus plain output returned `CLEAN` twice. Compact identity plus
+  JSON repeated the wrong removed-line findings. Compact identity plus plain
+  output again returned `CLEAN` twice. These variants did not repair the pair.
+- One final pair added an explicit instruction to report introduced problems,
+  ignore removed bugs, and reserve findings for objections. The introduction
+  answer correctly explained the overflow as a consequence of removing the
+  strict bound, citing that removal. The original fixture expects the added
+  line, so this explanation is assessed separately from its strict location
+  check. The fixed case still received a false finding about the removed bug.
+  This prompt variant was preserved as an experiment; production is unchanged.
+- A reference-only hybrid trial used default thinking and the model card's
+  sampling settings: temperature 0.8, top-k 20, top-p 0.95, min-p 0, repetition
+  penalty 1.1, plus a recorded seed of 42 and 512 output tokens. Neither case
+  completed a JSON review. Both reasoned incorrectly about zero-count loops.
+  The native baseline and this sampled reference trial are saved separately.
+
+### Papers that change the next experiment
+
+Agents searched primary papers and author repositories. The applications in
+the last column are our proposed experiments, not results already obtained
+with JOVOVICH.
+
+| Source | Relevant result or method | Application here |
+| --- | --- | --- |
+| [TinyAgent](https://arxiv.org/html/2409.00608v3) | Task-specific data and LoRA improved TinyLlama 1.1B function-call plans; selective tool context shortened its prompt | Teach a compact review contract with relevant context and matched negative examples |
+| [CodeReviewer](https://arxiv.org/abs/2203.09095) | Pretraining on real code changes supports quality estimation, comment generation, and refinement | Train change direction explicitly and keep evaluation repositories separate |
+| [AACR-Bench](https://arxiv.org/abs/2601.19494) | Review evaluation distinguishes evidence available at diff, file, and repository scope | Label the context each case needs; retrieve an enclosing function or relevant API when necessary |
+| [JSONSchemaBench](https://arxiv.org/abs/2501.10868) | Structured-output evaluation measures schema coverage, efficiency, and task quality separately | Preserve parsing, line grounding, and explanation correctness as distinct measurements |
+| [The Constraint Tax](https://arxiv.org/html/2605.26128v1) | Experiments on small models separate format compliance from reasoning quality under constrained generation | Compare output contracts empirically; our plain-output ablations above did not help. Our JSON request uses prompting, not grammar-constrained decoding |
+| [LoRA Learns Less and Forgets Less](https://arxiv.org/html/2405.09673v2) | Its code-tuning placement experiment found MLP/all-layer adaptation stronger than attention-only adaptation | Test an internal MLP adapter against our output-head baseline |
+| [SmolLM2](https://arxiv.org/html/2502.02737v1) | Small-model post-training filters task complexity and applies SFT followed by DPO | Build short, checked review/identity/code examples and inspect generations between stages |
+| [Persona Vectors](https://arxiv.org/abs/2507.21509) | Contrastive activation directions track and influence behavioral traits | Evaluate voice separately; a residual-direction experiment can measure its effect on both voice and code judgment |
+| [Unintentional Unalignment](https://arxiv.org/abs/2410.08847) | DPO's chosen-answer likelihood can fall while relative preference improves | Log chosen and rejected log probabilities separately, alongside held-out generations |
+| [Smaug / DPO-Positive](https://arxiv.org/abs/2402.13228) | Adds a penalty for reducing chosen-answer probability relative to the reference | Compare a chosen-answer anchor after SFT produces usable reviews |
+
+The next training experiment should pair violations with explicit permissions,
+introductions with fixes, and precise objections with clean acknowledgements.
+Keep identity and voice examples in the mix, with separate generation checks
+for repetition and technical regressions. Today's exposed six cases remain
+regressions; additional unseen examples decide checkpoint selection.
+
+Our first two runs only adapted the output head. A bounded next candidate is
+rank-16, alpha-32 LoRA on internal MLP projections with embeddings and output
+head frozen. That requires native decoder backpropagation: the current trainer
+caches frozen residuals, so changing a target-name flag cannot implement it.
+Compare this candidate against the existing head adapter before expanding
+scope. DPO comes after a useful SFT checkpoint, with separate likelihood logs
+and a chosen-answer anchor comparison. The earlier repetition was already
+visible after SFT; its cause has not been assigned to a DPO mechanism.
+
+All 14 runner/host tests pass, including Qwen3 marker handling, explicit
+template selection, and unsupported-architecture rejection. No upstream
+notorch patch was needed for these candidates. SERGE has finished the papers
+and is now smoking beside the confusion matrix.
+
 ## 2026-09-29 — Read the rules upstairs, too
 
 Codex review of PR #1 caught a real omission: local and GitHub collection only

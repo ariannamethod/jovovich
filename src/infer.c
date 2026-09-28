@@ -117,8 +117,10 @@ int main(int argc, char **argv) {
     const nt_arch *arch = &nt_arch_llama;
     gguf_file *gf = gguf_open(path);
     if (!gf) goto done;
-    if (strcmp(gf->arch, "qwen2")) {
-        fprintf(stderr, "jovovich: expected qwen2 architecture, got '%s'\n", gf->arch);
+    /* notorch's dense Qwen3 path loads QK norms and applies them before RoPE;
+     * keeping the file's architecture also preserves its metadata namespace. */
+    if (strcmp(gf->arch, "qwen2") && strcmp(gf->arch, "qwen3")) {
+        fprintf(stderr, "jovovich: expected qwen2 or qwen3 architecture, got '%s'\n", gf->arch);
         goto done;
     }
     if (gf->ctx_len > 0 && context > gf->ctx_len) {
