@@ -80,6 +80,18 @@ JOVOVICH_MODEL=/path/to/jovovich.gguf \
   node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
 ```
 
+The native runner also accepts dense Qwen3 GGUFs. Select their non-thinking
+chat template explicitly:
+
+```sh
+JOVOVICH_MODEL=/path/to/qwen3.gguf JOVOVICH_CHAT_TEMPLATE=qwen3-no-think \
+  node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
+```
+
+This completes the empty thinking block used by Qwen3's template. Ordinary
+`chatml` remains the default for Qwen2.5. Architecture support gets a candidate
+into the courtroom; the evaluation still has to hear what she says.
+
 ## Summon her on GitHub
 
 With `GITHUB_TOKEN` available in the environment:
@@ -164,6 +176,27 @@ python3 training/evaluate.py models/candidate.gguf --output models/candidate-eva
 Python uses only its standard library to pack text and launch the evaluator.
 All tokenization, model arithmetic, gradients, optimization, and weight merging
 are notorch C. Export refuses to overwrite an existing GGUF.
+
+The review evaluator uses the actual host prompt and native inference path:
+
+```sh
+NT_QMV_THREADS=2 NT_ATTN_THREADS=2 \
+  node training/evaluate_review.mjs --model models/jovovich.gguf \
+  --output models/review-results.jsonl
+```
+
+Its six diagnostic cases pair forbidden and permitted Python, an unapproved
+and approved dependency, and a loop bug introduced and then fixed. Results
+retain raw answers, hashes, line references, and a separate manual assessment
+of the explanation. The output must be a new file.
+
+The first comparison includes Qwen2.5-Coder 0.5B, 1.5B, and DavidAU's Qwen3
+0.8B hybrid. All 18 answers parsed, but the candidates missed policy conflicts,
+misread diff direction, or objected to explicitly permitted changes. Exact
+responses and prompt experiments live in
+[`training/results/2026-09-29`](training/results/2026-09-29); the interpretation
+and research informing the next tune stay in the singular log. The default
+body remains 0.5B. Nobody won a promotion by producing valid JSON.
 
 ## Chain of custody
 

@@ -51,6 +51,14 @@ test('ChatML-shaped code cannot add turns and cited code retains its original by
   assert.equal(result.findings[0].quote, quote);
 });
 
+test('explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix', async () => {
+  const chunk = { path: 'core.c', lines: [{ side: 'RIGHT', line: 1, quote: 'return 0;' }] };
+  const plain = await promptFor(chunk, {}, 'JOVOVICH', 'chatml');
+  const qwen3 = await promptFor(chunk, {}, 'JOVOVICH', 'qwen3-no-think');
+  assert.equal(qwen3, plain + '<think>\n\n</think>\n\n');
+  await assert.rejects(promptFor(chunk, {}, 'JOVOVICH', 'misspelled-template'), /Unknown chat template/);
+});
+
 test('chunking preserves all changes and refuses indivisible or excessive input', async () => {
   const files = [{ path: 'large.c', patch: '@@ -1,2 +1,2 @@\n-aaaa\n+bbbb\n-cccc\n+dddd' }];
   const chunks = chunksFor(files, 40);

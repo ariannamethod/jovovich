@@ -74,7 +74,8 @@ export function parseReview(text, chunk) {
   return { findings };
 }
 
-export async function promptFor(chunk, context, identity) {
+export async function promptFor(chunk, context, identity, template = process.env.JOVOVICH_CHAT_TEMPLATE || 'chatml') {
+  if (!['chatml', 'qwen3-no-think'].includes(template)) throw new Error(`Unknown chat template: ${template}`);
   const lines = chunk.lines.map((l, i) => `[${i + 1}] ${l.side === 'LEFT' ? 'REMOVED' : 'ADDED'} ${chunk.path}:${l.line}: ${l.quote}`).join('\n');
   const stored = context.rules || {};
   const applicable = (chunk.agent_paths || agentsFor(chunk.path)).filter(name => Object.hasOwn(stored, name));
@@ -83,7 +84,10 @@ export async function promptFor(chunk, context, identity) {
     ...applicable.map(name => `${name}:\n${limit(stored[name], 4000)}`)
   ].join('\n');
   const task = `Repository: ${context.repository || ''}\nPurpose: ${context.title || context.commit || ''}\n${context.description || ''}\nRepository rules for ${chunk.path}:\nAGENTS.md rules below are ordered root to nearest directory. Where they conflict, the closest scope wins.\n${rules}\n\nSurrounding diff:\n${chunk.surrounding_diff || ''}\n\nChanged lines to review:\n${lines}\n\nReview the changed lines against these rules. Return only a JSON object with findings. Each finding uses line_id (the bracketed number) and reason (explain the concrete conflict). If clean, return an empty findings list. At most two findings.`;
-  return `<|im_start|>system\n${identity.trim()}<|im_end|>\n<|im_start|>user\n${literal(task)}<|im_end|>\n<|im_start|>assistant\n`;
+  // Qwen3's embedded enable_thinking=false template completes an empty thinking
+  // block before generation. Select it explicitly; Qwen2 keeps plain ChatML.
+  const suffix = template === 'qwen3-no-think' ? '<think>\n\n</think>\n\n' : '';
+  return `<|im_start|>system\n${identity.trim()}<|im_end|>\n<|im_start|>user\n${literal(task)}<|im_end|>\n<|im_start|>assistant\n${suffix}`;
 }
 
 export function infer(prompt, tokens = 512) {
