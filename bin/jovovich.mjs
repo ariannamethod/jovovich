@@ -15,6 +15,14 @@ export const modelPath = () => path.resolve(process.env.JOVOVICH_MODEL || path.j
 const limit = (s, n) => s.length > n ? s.slice(0, n) + '\n[context excerpt ends]' : s;
 const literal = s => s.replaceAll('<|', '\\u003c|').replaceAll('|>', '|\\u003e');
 const quoteMarkdown = s => s.replaceAll('`', '\\`').replaceAll('@', '@\u200b').replaceAll('<', '&lt;');
+const agentsFor = file => {
+  const dirs = file.split('/').slice(0, -1);
+  return ['AGENTS.md', ...dirs.map((_, i) => `${dirs.slice(0, i + 1).join('/')}/AGENTS.md`)];
+};
+function rulePaths(files) {
+  for (const file of files) file.agent_paths = agentsFor(file.path);
+  return [...new Set(['AGENTS.md', 'README.md', ...files.flatMap(f => f.agent_paths)])];
+}
 
 export function parsePatch(patch) {
   let left = 0, right = 0, inHunk = false;
@@ -39,11 +47,11 @@ export function chunksFor(files, maxChars = 4500) {
     let group = [], size = 0;
     for (const line of lines) {
       const cost = line.quote.length + 32;
-      if (group.length && size + cost > maxChars) { chunks.push({ path: f.path, lines: group, surrounding_diff: limit(f.patch, 1800) }); group = []; size = 0; }
+      if (group.length && size + cost > maxChars) { chunks.push({ path: f.path, agent_paths: f.agent_paths, lines: group, surrounding_diff: limit(f.patch, 1800) }); group = []; size = 0; }
       if (cost > maxChars) throw new Error(`Changed line too large to review faithfully: ${f.path}:${line.line}`);
       group.push(line); size += cost;
     }
-    if (group.length) chunks.push({ path: f.path, lines: group, surrounding_diff: limit(f.patch, 1800) });
+    if (group.length) chunks.push({ path: f.path, agent_paths: f.agent_paths, lines: group, surrounding_diff: limit(f.patch, 1800) });
   }
   return chunks;
 }
@@ -68,8 +76,13 @@ export function parseReview(text, chunk) {
 
 export async function promptFor(chunk, context, identity) {
   const lines = chunk.lines.map((l, i) => `[${i + 1}] ${l.side === 'LEFT' ? 'REMOVED' : 'ADDED'} ${chunk.path}:${l.line}: ${l.quote}`).join('\n');
-  const rules = Object.entries(context.rules || {}).map(([name, content]) => `${name}:\n${content}`).join('\n');
-  const task = `Repository: ${context.repository || ''}\nPurpose: ${context.title || context.commit || ''}\n${context.description || ''}\nRepository rules:\n${rules}\n\nSurrounding diff:\n${chunk.surrounding_diff || ''}\n\nChanged lines to review:\n${lines}\n\nReview the changed lines against these rules. Return only a JSON object with findings. Each finding uses line_id (the bracketed number) and reason (explain the concrete conflict). If clean, return an empty findings list. At most two findings.`;
+  const stored = context.rules || {};
+  const applicable = (chunk.agent_paths || agentsFor(chunk.path)).filter(name => Object.hasOwn(stored, name));
+  const rules = [
+    ...(Object.hasOwn(stored, 'README.md') ? [`README.md (repository-wide context):\n${limit(stored['README.md'], 1500)}`] : []),
+    ...applicable.map(name => `${name}:\n${limit(stored[name], 4000)}`)
+  ].join('\n');
+  const task = `Repository: ${context.repository || ''}\nPurpose: ${context.title || context.commit || ''}\n${context.description || ''}\nRepository rules for ${chunk.path}:\nAGENTS.md rules below are ordered root to nearest directory. Where they conflict, the closest scope wins.\n${rules}\n\nSurrounding diff:\n${chunk.surrounding_diff || ''}\n\nChanged lines to review:\n${lines}\n\nReview the changed lines against these rules. Return only a JSON object with findings. Each finding uses line_id (the bracketed number) and reason (explain the concrete conflict). If clean, return an empty findings list. At most two findings.`;
   return `<|im_start|>system\n${identity.trim()}<|im_end|>\n<|im_start|>user\n${literal(task)}<|im_end|>\n<|im_start|>assistant\n`;
 }
 
@@ -153,10 +166,13 @@ export async function collectGithub(repo, pr, api = githubRequest) {
   }
   if (files.length !== info.changed_files) throw new Error('GitHub file listing is incomplete');
   const context = { repository: repo, title: limit(info.title, 300), description: limit(info.body || '', 1200), rules: {} };
-  for (const file of ['AGENTS.md', 'README.md']) {
+  for (const file of rulePaths(files)) {
     try {
-      const data = await api(`${route}/contents/${file}?ref=${encodeURIComponent(info.base.sha)}`);
-      if (data.encoding === 'base64') context.rules[file] = limit(Buffer.from(data.content, 'base64').toString('utf8'), file === 'AGENTS.md' ? 4000 : 1500);
+      const encoded = file.split('/').map(encodeURIComponent).join('/');
+      const data = await api(`${route}/contents/${encoded}?ref=${encodeURIComponent(info.base.sha)}`);
+      if (data.type === 'file' && !data.submodule_git_url && !data.target && data.encoding === 'base64') {
+        context.rules[file] = limit(Buffer.from(data.content, 'base64').toString('utf8'), file === 'README.md' ? 1500 : 4000);
+      }
     } catch (e) { if (!e.message.endsWith('HTTP 404')) throw e; }
   }
   const current = await api(`${route}/pulls/${pr}`);
@@ -181,8 +197,10 @@ export function collectLocal(repo, base = 'HEAD~1', head = 'HEAD') {
   const names = git(['diff', '--no-ext-diff', '--no-textconv', '--no-renames', '--name-only', '-z', a, b, '--']).split('\0').filter(Boolean);
   const files = names.map(name => ({ path: name, patch: git(['diff', '--no-ext-diff', '--no-textconv', '--no-renames', '--unified=3', a, b, '--', name]) }));
   const context = { repository: path.basename(path.resolve(repo)), commit: limit(git(['log', '-1', '--format=%B', b, '--']), 1200), rules: {} };
-  for (const file of ['AGENTS.md', 'README.md']) {
-    try { context.rules[file] = limit(git(['show', `${a}:${file}`]), file === 'AGENTS.md' ? 4000 : 1500); } catch {}
+  for (const file of rulePaths(files)) {
+    const entry = git(['ls-tree', '-z', a, '--', `:(literal)${file}`]);
+    if (!/^100(?:644|755) blob [a-f0-9]+\t/.test(entry)) continue;
+    context.rules[file] = limit(git(['show', `${a}:${file}`]), file === 'README.md' ? 1500 : 4000);
   }
   return { head: b, base: a, files, context };
 }

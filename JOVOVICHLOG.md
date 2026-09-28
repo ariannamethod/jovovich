@@ -2,6 +2,23 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — Read the rules upstairs, too
+
+Codex review of PR #1 caught a real omission: local and GitHub collection only
+loaded the root `AGENTS.md`. A change under `src/` could therefore arrive without
+its governing `src/AGENTS.md` rules.
+
+Both collectors now read each applicable ancestor's `AGENTS.md` from the base
+revision, once per unique path. Each review chunk receives its own chain in
+root-to-nearest order, with explicit nearest-scope precedence. Sibling rules
+stay out of its prompt. The root README remains shared context. Existing
+per-document excerpts and the native token budget still apply.
+
+Regression cases cover inherited rules, deeper overrides, sibling isolation,
+base-versus-head contents, and de-duplicated reads in local and GitHub paths.
+Both scoped integration checks fail against the previous collector. The fixed
+host passes all 11 runner/host tests; inference and training code are unchanged.
+
 ## 2026-09-28 — The freckles acquired an executable
 
 Oleg and Sol brought the name, the provenance, and a deliberately small brief.

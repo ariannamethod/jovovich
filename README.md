@@ -53,8 +53,11 @@ official base. Both checkpoints are preserved with their exact test outputs.
 node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
 ```
 
-She receives the diff, commit context, and `AGENTS.md` / `README.md` from the
-base revision. Large changes are divided into bounded review chunks. Findings
+She receives the diff, commit context, the root `README.md`, and the applicable
+chain of `AGENTS.md` files from the base revision. Rules run from the repository
+root down to the changed file's directory; the nearest scope takes precedence.
+Sibling directories keep their own opinions. Large changes are divided into
+bounded review chunks. Findings
 carry a path, line, side, and exact quotation from the changed lines; the host
 checks those references before rendering the review.
 
