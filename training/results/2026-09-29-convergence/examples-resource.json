@@ -1,0 +1,19 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/convergence.bin",
+    "models/convergence-examples",
+    "12",
+    "0.001",
+    "48",
+    "4",
+    "examples"
+  ],
+  "objective": "examples",
+  "elapsed_seconds": 1496.9758443280007,
+  "peak_rss_kib": 1473760,
+  "user_seconds": 3762.764011,
+  "system_seconds": 81.603673,
+  "exit_code": 0
+}

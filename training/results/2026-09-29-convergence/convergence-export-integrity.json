@@ -1,0 +1,4702 @@
+{
+  "created_utc": "2026-09-29T01:38:37.160014+00:00",
+  "script_sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99",
+  "selection_sha256": "7c2c69cb15f1950e1b2b8ec4062028f0cb11aa04779c3f0127d674c892d5ca89",
+  "verification": "independent standard-library GGUF parser and direct byte comparisons",
+  "models": {
+    "tokens": {
+      "path": "models/convergence-tokens-selected.gguf",
+      "epoch": 12,
+      "bytes": 714116992,
+      "sha256": "79376db202b73764cdcf8dc5ef56fedd68ff0803b18dc678a2d6dbc550c26aeb",
+      "tensor_count": 291,
+      "expected_extent": 714116992,
+      "data_offset": 5947776,
+      "header_metadata_equal": true,
+      "header_equal_except_tensor_types_offsets": true,
+      "non_adapted_equal": 288,
+      "adapted_equal_epoch12_f32": 3,
+      "valid": true,
+      "tensors": [
+        {
+          "name": "output.weight",
+          "type": 8,
+          "bytes": 144643072,
+          "sha256": "bdbf9edb1641bd85a1c1dc99f84714ddacea35c51702a2ba7f20c65a435d1862",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "token_embd.weight",
+          "type": 8,
+          "bytes": 144643072,
+          "sha256": "bdbf9edb1641bd85a1c1dc99f84714ddacea35c51702a2ba7f20c65a435d1862",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "bfb2ba51f371be6bc4970f8d8769850bcf2ff2169382ec8971ea386d10890a4c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "25273b9ec3f42a89e2aeafb304277ecf4ec50a03e41e597edb2e2a8acdfa6647",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e06a1785f336753ce5833f4ad8e34c3650b2c84224a4669f09b924ca9efd7c74",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "38add394f424e98056175fcfb12c279bb23ece8d1cad12e81012169b6b601a50",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "05e7624e0a2c613fe6732db9378e951daec73e07b85cde45f4e76779bafd16d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2aac120c4241244d26d14c4323ac16c2b20555458d6ba361f7e2ce9d833700cf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "549e8e32314770a156ccbeafb505663e50cad473c210c2bf062833a8eaa8abcc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "19243f7d930fb3fad729f72b9aef82b882465b90a8904161725e4fdbfee99367",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "385ae32149d0064b4327ddffe23ff14db4c444ad358dc4e9ee5d2e546e8c42ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "22ef2e3ae346e364ff9c0f2e3a83ac0dcfd16f51cbb057be8d9c6c3ad70678f5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d2444ae1d8421966bb1387485961e5cab29143bfa55803958907a771580aa65a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "53d0b7a0f09e1db48f7e0d959bd088fa995a9ef3ac4f05b595e30f15c93baef6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f965af73900e63104ba3d497efdcb65ef1d198495620cb0db8a8e11042eb9e7c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a461efb13f14b8137f05e1644ccfa3516fa6d370b5b948afdca30285b294d638",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "acda5a3c23e6c3400da3842be9cbdd67f3dd6a6da99335db56dfab1984ef40bd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "91f495324bb467957ca66a583e0357c00391e5b044d9ce153d7c6157b923d158",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "519e6ce359ae3bdafba0d8cf31021fa833de779ec6fab36da06381e5a969c1d9",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "69b491bd34380c44e22ac6e7ed363f1a67426d232ca712db4e1aedf094981ec6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "01834011f3d0fbcb64c547fa89ca75828346dedcf8db7671ed425347912f7ab3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5eb21b4defcc5a44db578a10051d6d66eaa15f4946bfbd1158c727e248d1b309",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f6eedbfdd9b26b6c07e11b6a9edad7b3e8ce84ef6726140f939bf194e009ffdb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "eb4e6b6673e002bf1ee639f7e6fcfbd7a66afb1d3d8ae414742245bd9c173a44",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d030eff3c127d8af606fb11df8da66759e07418b4925ea30c0d3c7563cb0e030",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7ac13fef5bf28d1f19abb533a81acda5ee67b0582a54355788d800c92a4f421b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a8aeac7fa3dda9b68a2231fcd8d5d3e13614d89d31c83f1858c7dab1715be706",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2dd20e45c053bf07421ded33953ed76f273549ec76d0af200abf1c01dc814845",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3f45ac0b81d8c48e5602938b8dbdab1708fbf31b6de28050135ee1f18f9b87c2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "672aa2f1b0838185b4b432c67b959218b0955b57b4ea9236f8bb5af14cb50c2d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5e214de936ebf6e7abcaf9d3d37fa223f2152eaf3cb3ca1446c597e36d2c262d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "aec3533ce3749cb123dfe65b76c90a8bd49da1f59651ec89e605d9d98876683e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "1fb9d8e63436d7e8cf059230b8cbadb6fe5b3856cfe6254f153e8867e3c95a70",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "1203c96b6f882185d054e1b804221d478e583accfc9e50ab304c64548f713357",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ccadfb59e9e42470c87af637f0e25b8dd693aae7cc8f31b45c23d95086dd35c6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "7744ecddb1e236721fdb87b8cf99ab928da530697787237c76100cafaba53e69",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "da23d8b533aefed4e57be70d661eee37d32b8ff0c39243388027b8ce2d8b72d3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "defd341f755e7f1bca025ff7b9d80b0695d98d4d27a0a9753777535adcdc29ca",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ae9400aa49db4736f2278aeea1dd5f531333bd50b45e659090ae67a7cf3909a6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "168ce3539a4f4cae5cb728613337ca554b00c85f9cc2688208105df9c53f76ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4585d86d3b3b66d298d86cdc935c4bcf3002b2a2d1118d578943dc917401c66d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2c8058f144eac1a88ff00c3a62b01538a250afcaf2018b5db2d112872f86e452",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "e813c7f41872b1b9711757bedf7472b4a7d1d972192991b6370e7b8780ba6ffc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "dce82abdfea664fa0aeb0710b6147a219d5463831b7d4a35ee102859472029b1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "43fb09e6a9844fac5b76efe77ad56acfc86d6ecdd17f17f368887a3a88bf0d23",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "14d92bc7d68fbf34dd59fae9617009515c0034b8f26da29249961d31bbb97c4a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cd1afb3e35ade0e45c621d29ecd837f1792a408cce3b61b7b0241895e2e675a3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "618f4ee6190d9742d473fe57cdde4d83ae65c0fc533184191ccf187dc722fc73",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8b30910b1753a9fed98212afb34c70df23c478f10f04825afff72cd91a9c680b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "c89cf6d69d811d5ba37619483329bc2def5b4a7aef59451f28b6c79e5f4c9e30",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2817015764f8ec91de9239cf0cb5e9ab30bd17ed165322878c213c4966783633",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2d6366e876e85aa33b0dd16a1641648cc515cdde4808189192039a621e17ebfc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3152cec9104818e6af49ab8ab57ae6e73f014162799f87f2c7a3b03d69e42b10",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "cfb1795e050b50b27fcfb438f17e82a6fcda844513fce873981861010e4318f5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f2cbd0a2eb16ce298edc488d9c55a9775a2b8eed4d1eae949127774104c2832c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a3b2bbead4b9d14b294bef40fb280dac71b2980121619b90bbf4bdbfdfabe0ff",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b513782407472f8ddcf952850ec87470bed564e0b7f7eb14c09d8f0752538550",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ef3d512f146bc5f7dd754e755df13da031533c5fc9ff25877d1ecf6fb854aaf8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2928a6cbc3ad13f30ce4a76240ad9c9f864b92f5d99556a4a380e69b12b00410",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "512bfe0d601ab63a160c9c22b051e432075851ac3e140e359bc57add7b8b064b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "01d12e648a495ff4398ac1548da5cc187574b77e0e40a1ad722ea66d20dddcc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "6bf588a89d0ee2d75896631153e521341a6f23cb47ab57b7dc6129566b845876",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "0b839f2be7e4f0950a039b5d9a94393ff2242546fa4974265f63cf723b3658ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "09aceedae0eeb5d4997b8368c4611d7d2b79e55ac544111f35daadf4d4e83fdc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4c251ba134911cfa9294188ef33981c291eac2df42bc4125af4d54d65b3fd669",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c492ae30d4192af56c11655424bc4faf15253c05d997bf2c2e82b7830245813",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "1149b5d7d1b25ff8737616571203df06bd4018e4f5aee7cc6fc13f83af62f382",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a648cf209106cff00053622be214a51a116b25b51d2c9238d510adafd6658bad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "0e5b9e39fb6fdfbaeb6c845f90efdb02164595171a578acc779b7149062f51ff",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0a2146b51a753354188a6eb29e6d158ab11137d64aec4d5cccfc9fcb927a44dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "de5ab991182e547d978c6f5e0a2d7c401cea7c1a94761f67acd4d708d38c2641",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "997a56766ed6f5c2778994e52e7230698d46eb692de8c9172511c17c1bfbf491",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "afd80efc6eb6cf276557b38c48637b1be98433665a8d09d9fdd7801bee7ed2f8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e13a6c1dc5413ffdd82e9745d6b16100508e170c2cab2ed0431820f0015d5cf4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a60284756dad04aefef92da6aa6e259b4f20ccc07e724adb06045e77d5c6a18c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c3d1cfb0cbc7720f888a0f27f67bac3bcff65b9d0296adc2c9c13f694092254",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e1616a5fed4c8cf4426e927343a79c015d439bf7e93b92f03efb972d434e8aed",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "f7494fe703609bb1f6905fe563d9bda6bb09520d351e516879afc0d106bf52bd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7854bf2691130ff955492cc6a9b813b2636a166968d9bc9828961096c875735d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d1743fd1be1a7bcdef5624f9f2e08679f3c6e5db48c4e3eb9ac6c9d5addd4cba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "744cb4ce27afe31eb5e8bc514ef6d8c79d57b3f6212c0c3aca9823d0379894eb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "58d019d113eee44ca5e3eb6e6ceece757fe169d795d28e896555f98d06443457",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "14438bba7e81141f3b15ecb13822ad138047f61ab90bba0bfca076e373e61bb5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "200f206b20c9693c7abb3227a6aa07378f4f08b068047de08dcf567a160abfd2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d349739d92d5abcd11a6c8abd6b069eaeb0199434023b9f61d4da694331ccbbb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5e119703e6248da2ebc5d5e80c3b65973b36ed2682ccbbdf62d0e86a3184473e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cf3516d930c6de896a14c307cda49a4a3999d864958c48600a41d6f3c74232de",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "801a2a54ed2a47cb2a0b4db01fd7aafe2edcd894985b58c7c7cc7cbdc45c5c0d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "26f592fa8e9d9d470c7b6acb39fde24f9e7ca7db320ddd6f60a6a93f020f57fd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "bee5aef9cafe9c34f34884b111c42b771dfd953f0c2198cd727a3079f3aceda4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "47427fd202f88066c94ba2d1778ffb76fd74c1871cdddd5b8dcb78bc9f759ea9",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "68185e9780559a724a65d1ad2cec2cd296cb4a8100b91b3131253a479ad0ed5d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "10d440ac7edc084a3528bc4e5299ebc88c8fbb325fea8357f290bda61014cea6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a4594d0942ab16587f686e1b79c03f8eee4bed59b10fcb1fce9ded36de7033ca",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "dd3bab28e73e98ee75f39f3cd877d038e85429d710f4b4c4a965672d2aeadf8a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5b9c98ffae4fc96955123153f4b859ad79405dc0b95ac67452ffdb4862c3f9d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "7de9727eb6c5715ee0181db4e0aca1e38dd8a5231e3622d62dfd7ec6f72f8c94",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "2dd47b8dd1f561c62d5dbb9b2a7d182e3d96c894b79541bd20bdfe90112912f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "c705d68cc97b6fdcca8e05627dc9550955627342ca0f680cfcc3782e520fc5d2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b902e42f8083b65744e5b23bc167f80480e40307f2aa46cc65ffa906476d2117",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9186c9c3ef63ee17960bf2cae97f747d66b1069bc890300744eb2061b88191ad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6763a0520f9de48c665d5804f9d3ec49d1f2c64dc5cc68c598d0d61b4a45835a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b3d89d3c316c27c037b6073ad126f6e1b4a37b8fcea494c01bfec0d76672dfd3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "30b688e3e7b96a4c9d0ece6bb8b187e9162a55eb4105511e693b8fe56088b2f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "adbbc1b5b794f886d9ed09a90cfda97d9df74d5419874d48b8bd0edf4d6c10ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ee23a8b14573caf91e5f18699766eb1c1fa9886fff6b11586cbdea8d12b79799",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "21220329d2a771dea8158d96446dc78fd4f73d2d5a80a49c1713f1a40bd4dd7d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "417b871f02988655c78fbd9f7341a4f3e6e9c6184e9cd151322d7a3ea478092f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "9d87e57f3e633883dee157264768fae0c92332a1d1f9a4ae07300c266b8ed4eb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b0f5d7ea7e242423044f1467ba99703f65b00e20f72c5104d872091d4b69fddd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "8b0b3e2fc3e9fa4b6bcf5b7000331932e02e5e7694fc9c1eabe6f3802e4bba46",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "32e79272f3a759cbd967c0016355197b25039c89c92489c8a927ef8f4f6d0237",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "65da7bfcef10206c76fb85d3ea9199b14dc4de5ad7e7e81122a3dd09d9261e38",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "d24754c3f3eda3e325d504497285cec369dbe2a21f45c0561dd03cc11ef80440",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "43317fd501fc80e17395e6e506bff0d7e88c598ca9aa3dcc064eaa03bcba507b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "c0f855c15c9d88bd80577cb6d2e4298d1c0fefe7eee63449c2b3536a09f14b5e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "61d3c597601f14f4f926a49dbfff87fe301a3de00bafa59cc612eaedee38fe69",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "8b1d301a3289d8d4ad4dfb90b9abd31d92642f763171f936287b5e0541cfcadd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5dcf8ecbd71a6cc05dd4f02be328189a7ad364ddc6277ec5c5ffc14c309eae3e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "886b3d9c0e74fc5d108d6ef32e1cc99c08620e0ca2953198598da5bbe3dec0ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "90e4075c9ade4e4eae90285b5873c01f3661d52d5900f19e17e670d4cc13c237",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5d6534716bd898807df661abcf0692fd4ce7f27227a16d104e3d514806b1f582",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "be3ff91b9703ea2b46b9d777cbef971ca832ceaee2d29791a4c479bd08bc5476",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b18dc5f9700d7efd983c5560e636e4f7126b80506e38c3ec6c12674d4d7ded19",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "c85b89b369b68abeb9fa376ea59e5c9b4ceec20969bb6a9466507c56f599d89d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2863f644b683c6856950ad9277ccc25f5a427f4ba7f079ecceb8032417fe3ce1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "1eae61a7a604bee1fcd2c26eccc08008bcb9967d5e91d8cd9aa9bcca8931359a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "382f51af40ef3c3b4b3a5d309d14bbfe1866a602a201fc580b8ff22d03af296e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "1d605301b8c0ce063d14ff9948f3fd66a4b384faefacb95eb20860b27cb2afd3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a7146b06b8c6047ffc077caea57691ae031b024b1c01cab412dfbbf1009ce833",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "75cfc30fd81e110b438ada5fee90286838a71b522665cf72f26f1101b86a4ae0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a7cbdba5b149ef09dafae31843b9e12c7c7ce73ff7e70174285c3df17c5094a6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "50daf2ea7f50cf40f6636aeb195ad2917ea66fa221cb358896cffd2a7bcd949b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "02262fd2b84b2d0db476c53f393ccca9ab093fc15a9441958255b86e79a65b2f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "eda6d5080acd34aa71191c2ed82013c7ed612616ec03dd4b34af06415aaba4d2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "0032406c7f391d15b7fbfc82e34557134906b47b8f6f03772aebe343053010de",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5dd83f21a960074db72e004cc0fa31775f487d760dffbbd1cab9d089724c5255",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "020657588fa1335310f37e742701c44c14d38028f2b2aedbe8ec14a3cffeda7b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f1595448332177e3a9369477f356ca16069de3628fcc35726a1b3fbf10d85e34",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2c5885f0aaea88107bcd70fa6295b0be468b1607b3eab1a6eb12456e49a4c8a3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "bada4f27348b3e323fe4050771222be15b8df12f6d922bd70f0972a5fe7faeb1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "be804a4f3aed91bf1db8af4d663d77a38bd2387b16ceecbda6f4aa8aba8baf31",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "51caced9843c6cf016f5d6c350f4ffaef998346c93ff2dce1f17b66b462fa0d6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "1ff1386bf5669ec6c85a5321d96f3f10486e66d97f5f016e62e4f0c5c398ecbf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2147182d106eabcf1b12dd2c560eeaee69322d8cfb80cde598dc69f62b2d7a2f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "a7a68acdfa72e7bf832859f29aa58db4f2b62029c76975b394c960cd8f5e423f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b442e28ecae70fbc86de9b2311026331e052917dc5c088489b6b82bff4b59a43",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "db497f1d47204c969708f5d4e68124ed802305cc5dbc485aaed5d31c0190f3f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "793845c9d21a8195dcf95b7aa03c3808e817040a16347fb0abb26ac4c5fe99dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "27b6b03f74a4f246c4ff287b0912092eef246e9b32a78aacf32792ac4eaaf11a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a93ff641d6d21c3a9357b3440713436b6520eaebf37a4050e881ab477a2e2ed6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "ca94c4ddbc60cf447ce6f413b09a5bebd10a8853ad2f5740a6ec1e7d18905ea5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "71e51ec49de86b573875b384bd44357befc74a8ffad6416943254308015368b5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "7fa9514a04e78f9c83877d340789ad792b868fd9fdaecfca46ef5b25012af66c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "bf9c520d31c74d45cd0ab6f6eb069baa3bf23df601e60eec05b960768eb0ceaa",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "2184610d6f76fd74d29ef974193e1b55d2944c36d4ef9084769a7a4ce3461918",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "110dd45059da57bd65a0ce90b2f9a270b0efc5e08fdf277d04e5f22fa7bb5fc8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "4e8e46cf240dea0d88f39d50f852d5b2479e40888c91a37279e47a44ab3659dd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "63d96fe8c0903321d5cd7afa6ab2ee9fcb2f84245cc6f4ce1b7de12d35ce719a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ed45367cb6b333507ead0f0f15da2319c09cacbc53c6649436d7f1e5fcef6752",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a4b7654c77910a47eca31d1111f3648e71afe795e57fc6beb1c7ce26bbb63ca8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3560b6f03bc554356f46b6d603c0d2cf8aa37fdd30ea07f50abea72c4bc75b5a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "40c7d188d148164633bd1e70af75990a4f68df82ad9e3e6748ca096dbe19bb1d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "f6a00622684745b6e6cd7eb61bcacb8fcfd326a6760c8a1ca9577d214d5e0308",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "a28d79e812be10c3cfc681e9cbe695ff508c31b427c66cb0680055dd8cfbf45b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "9dc7c64e1c37535594f4f1d3b52ca3415419de5e353ce83ff82d9394f56dbabd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ad64ac84b09eebefdf541461d75141c13a5a5f0305e471030630fc7ce1ae90ee",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a4400a8f7baaffe878e20eab3b2848021ac8dc7c7cc440fe8f0a60a95c7cd273",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "45274036144d880e94716d61ed96aa3f02163aca9640949e1cd903d45420d1bc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "ee003ec2f93044407f9fe438c78c3dd3ce3043c651953c366a7a6a9b4bed59a4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "917a10d5c06fe2ea804d7deb4161fa6d7bf45d0ef8cba12004f34fb8518cff98",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4c6638b50de9254404152c5986db5f299033ee3af74681952e93f56d605540ad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ae2a3c352eb783e02e787350f47364a2ba5b2fda970c4ff245b711f925e2a643",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c43095a0222f1ceef97b9264d02b7a302e62759d36a16ba27ee5f5242f65dc6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "67708b18ed955cf8cf9d98ff5b67d93fb286f57bf266e3441b7aab7329b5be4e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a971c18cefc1ed71d2b01e9b5a7515a0b6ffdb2ec25e467a9d2cf74bb681b0d8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7d17a76d6dfb82d2e79206b508cb66c5b72767498a05ce257b1b1d5eb8192073",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "f6a9a9297915febaf8d5128978b24bf347461aeff0fa7e222ca51c31511d95e0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5855f0b2a8458479650c48d68875ee293c26208f12255c70db0daa5cca74cb63",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "30bfbbc71c84b3892c463f58a64933434b53f25e05e7b9c06306d97719b4836b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "052c66278b8f459e83ea11d7df3077cf8719dfaf5f4c68f74507ac62647afffe",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "f13ef224cd4b634f7909cbd11d2a5e39a05f8efce8af1939ab565ee084a4ddd4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "190e629998c14a80970df70ac74fedfb5b1be36e1a83e7031dd87072f7f3dca2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c0d228e7e64c6827ea6c91e892bbfb0dc81481cc847132c186fffc532fc25f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9bcb83ea952257e09ebb2191af76f445d39d064a03df4b14046a865d5f2d982f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e352336497a337c0754401b475a4267b3cea3453c97f3a3d68f50764e9229ea5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "738eb6e996fd0ad80963abddae00ec1b0729c0ef6c12cc335ae05ee31e75a9ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8bab212322c3568f608293d549e82b1d746ecbfc6f82414d98e7c1403d4ffcfb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "d19b7813a2139f328682e97e0caaf1d0f41399ac87139f82db1277d3c2d8cf1a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "d0ba45361314e84bd33dada20b93d44a4c85f5b5f75292906f6250a39aa3eef2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "052a9c11d02ea25426b3e0330218065870aa2a6d0c0bd4b203217c6f75ff7537",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ad88bf6436a61cd695aa8a4ab755e4ef315f011b75180330fdf1b5f5d4d7efaf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "9e6c81ef948a93aaf830e7bae112da3e04506940f149bafc8bf4202042383494",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e24b5d60effb769c065377cccdf3c047aa1de766dfe7ed0bf4ffe7286dae9b28",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "c29cdddd728539673601038b40300f50102c0acc41db2d5de421892bb46b85f7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_down.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "7b424008395b5ce1ce9ec6d53f5459003e59ceb600b171f43784294e77bb1060",
+          "reference": "models/convergence-tokens.epoch12.down.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_gate.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "03b72b3d329ac2f52dcb5a35c20a35ca84fb60bb54757dcefe07ac7e51d7d67a",
+          "reference": "models/convergence-tokens.epoch12.gate.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_up.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "c1d59306f6332df57b3a6f25c665c0682e96c3c8ea4540df9b42bab7fb13e6c1",
+          "reference": "models/convergence-tokens.epoch12.up.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "6cd5a97205c0e207bcb58d4478e00266d194b0d4a5e82af59ae78d21ad1ffe91",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "35060581f8bfec44739b42aa6a06c26792337474e4ef8824f6cce7db05339dfb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "25c1e2fcb633aeb3f5e77d8007efd63658349fb9b97946bfadd4ce046d719ce4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ca78c3c1704c2f0881527966ace7772258ccc30f8bd2298ed85b95c4a3b44ae1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5a0892001b5bff1151a47e1a98a4bae38ccc17d90fe95f76bc978d88145c369a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "2f6fd1ec34fb6046df9c2c7b0f0f3b2c315e10f3c41f8611d3d2c871224e130b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "e6263f0dab081c458b989be42efa408e9cde1c5f271669a59c72f50735f8fb30",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7756542325f523d8519baafd513967a694b88a0e1331414c1a964a709d45d3ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7c3760d2efde5e0b1c39bcaa80c6470f780aba36c7c72c194b07713d144cf047",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "213c8831a8abf17418f4b49746e559a52aa436023fce248b0f8c4fa61027096a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a8c090593c66f08b5acca250f49024bb0287e7b726c47a64bc97ca1afd43af0c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "083b1d35de15635b94c7e1bb3e5fabf81599b65bfc1db1f0121726188959608f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "03c5267cb4790fbac30de862e96f2b06b2b7bf488ac02ed4a06cac9762c25e9a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d67818c1085d0def68f3dea73fd28773461e725e1e589214ff98f1f3113a8251",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b35c4a5975a3bc66fd2482da374bfa7ba3e098831914cf99f504c180ae0e8c90",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5453146e92e1aa7915baff15a80bedb8adcca51823d0b2386458d7890c5217a4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2dc56ffe85c7e284e56b68287508c063fedc102d8fae90321c796d4e66e124f4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "6ed33d7f8f67e1ee9cda8e97236d349e0d56997c4879437a1743192e1c95287c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "15d2bdf09c9f5958676748f1fecd4b891372e636e86bd2df7a9f82de62098d90",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5f1d3bcb29a6e541f50d13ec2866f1580678fd4598d7e5c7bae8b9ec40042004",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "3d6446f422b3d2bb9380027e95a0fbf429411951445e92872fcc7c628af96579",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "152d77d62bdcc2e6f89a9c4ef5dcc9a194c4bb3f2a907d41d717981f52ad9501",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ce74f43dd0c2e49c321435a0b7e7bff95f440e2d3ce0e8e7e39c1ed63eb55701",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9cd975d7d6cb38a9323eeac71d5fb32c160a8e28257873ab1127424572152877",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "15a3632e3517e38a67b1d09f54b5d0429576889137921257802ba4e091ef6cf8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4baf96a46b6edc773a63fdb37233d6caa38b0671e465dea9ed9c560c2f160397",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "4e42d698e4463df988c09a881f3e4454ccc30fe796b9e8d5ff1e65876994718c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "abcf92f0b61823982791997883137150f84ccd37d57e189777268b250582921d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ac15c95a42c5f16a2920a2dfede1a0db1efc5ec0982197cd343ff59cada3c98a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a566350dac040a32437a5620496d9404e15c86c69ab7d527e3ee1c28735507ae",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "923c0b3d294bed341d5bb903479c4b6f0013bca73358b0f8ba38ce7746d8afdb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5e20dd8ed25cf889a656006a318cf92c59f2b8567e83319fb1cce3bf7c2e502e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "6f6f83b60d2c03b6c63e3e934b0f5e63d8d4295acdce4904285100395ddd818e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "10a121af432abd7e03c674b77c124077b88d19a5aa697fcf310e3aaaddaf042e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "eb8f069b1511a830f408d2cef9cbb95fe2749c0629bf5a8b926e56dfb174248b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ceeaf5a1994cbd4e58a7a60a9615d45ace9ef449c242a393563b3fb1b1ccf52b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5d4fdcf0992ac9383dffea75d94d63f8cfa45bca9eeda353ecf302de761b25ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8618d641e59a234cba9fab19a6db6d8dcfe74923b08d32765f72ec041e766172",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e830260bfb8e35c26bb6024c8ed689622f941aabd20194be9c11271dc719309f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "43461512d3226152704e1e1e3420d4d54205b28b5370ef258c5be9cd3702a809",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ce8dbc88e735f3914d723ea905227c935b763972581518988f7685393992396f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "f1ea48a627a5545ac92417b907faaf37c23692f3c3ce29ddf48b11ccf806b066",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "18fac28964d10dcdc5e23999379a995d8a8fdb9ecb12bc391c53a6782e33f69d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "44285b146f78ce75ad6ac6169df717e2ed922466f182fa7af14723de65ef96f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "82ba125b5c87b32c7bfb03ca39e1edcc8ebf63f8ed626b233d5a20b46a7e83ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "c1698f31d7aeb241c100b0f0510185706f263886fffd41c4867b8462e13b3754",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5a31715f9553cce903bf58d437da9c838db4ec0a77e522448da26eb0fb2aa0c0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6d2566c1fecdf49abd29e8857294d34e3f4ad41f7f0dbb46ae35e1b17e493e11",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cc1d0f7808edc854e7079a5011910c9cd908b71eef35baac694185bf5b1f9d03",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "00414b239529d08df1e86a9d5ad7a17a687708466be4c75deba8cc7c7c01f625",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "47acd816fe4e50073538335793c6195e8e664d95f7f238a8750e086f12c2a138",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "3db3c006a49d4a76988b1f18e71f69b272b62f917a1c41c80dd48ece7ce89409",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "e8f1e0c0e2a56a35335e6f064c3d82bcd7eb077ddd45758bb58e828588ce2c7c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "6b5c149a060062d5ee0b185abb14c096286a0decb9a6e48bcd28c637ce88b6f8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4d1212c5c8080a0227495c28913c4902ba97fbc4653625870c7c9a70d1410f8f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "d32cd97681bce697a359eeb0bf3b02f2f406306ab00de25b3ec49e2ab83c3ec8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "60589e85ddb2832d32d1feefdaa85398d39f600cd917d37e2e543cce0c673f9e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "622b21b6e6ff984c163038af69879614edb9d2d4c51ec598f8ba9b415fa4ebc1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "8db3aaddf1a6a11e6615e4441a1f32ecbe18046e58009f9c41c62260fd025606",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "52eede52d134aa77f96d68f99aceacb00d68c34d14530fd5d3505aa7ffc5c868",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "853a3a0fca7704dd6eb9ec61dba923bcf2269c12edea41d191718f0247144f9a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4c7adc7fb04974e08f360393fa96d802c1a84d60aac1dea8579f9f15f9e41fb4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "2fe2dce21cefdd05fee97aa7d1529a956d77f41146c716133b0c3017acda1fe6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0e3032dfb5cdea46ff5c3779ddca859b8f1d0d1b92190a4e8a6ba60acf3841e6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "116d124b82299e21ec74f1ee63300f9e8adc8f943852f867b693b64edf818551",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "34741995c82edd52d335c860f794a06c24f2c57c24529f0fe55155ed03654056",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "90372f02fa9c9870bd2a4c20c612d85b6877698404f3466daac0a52166e8c277",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5706d2552bb4da94ade8b48b21fd115c44687d12976e9803c4ba1bfaa142662b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7469bbfe3c894277808c1a4962ddc13e3bf0027b256f22985e710e747a70f26d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "92658e98bf8642cabdcd3543ceb7833265051a60544c2e2721f1d2f5613fccc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "d07a58d355ace5cfa265ea2ab250ac6bc889564dbc4fb1c81c975ca7b4ee51f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b006774c57b3eee3791eeb410d9673be4242ac6e3fc9efc1f0239ae44e608915",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "30e1c033d919bf0d5853759c6862e726c756068ae1594d5dc39a5d084753ee71",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "bfcee45c412e0f93548f5038d60d7dbdc8580b5c59913f1a5ff49a26a010f8dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "822b0648b74c2ad9aac23074b27ecb6bfece007c2ad0d0df761602d4e4279d20",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0f0914c1e9c6d62021962fded28b85e66682c54c4d4dfec4f512a1515a18fdc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cd364a0ab5e1f7404aad00eb9579feff07384cda3effc5a98e9f65e180f5f6b0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "c147e6169aa187cd909624fc9a5b540064f0bd16a7fcbd00334d88c3f9a14ed7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "5e350a7acfaee691e4d981ea2d557ab1fc79555599230011b34363d589507ed6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "0c2b548212b27f925e618a381e04595d51ad73c693259bc896c4e1a871f35438",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "0c6d7803bdf786edf7f54111ff4afb05c20b22d6d4f9cfd7557b4a1869e9ad1b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "af5246113d2e099d72465d84cbb97d4c3605c0c33a724d97ef1f31c1037e39dd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5337ac6074080a4e4fded5c3a75c940e8d4aa07bb325e415c5e597240cb90425",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "020ff6475a552dc6ba8cf4f9e4aa7cba981cf484fef2d3dfd087575f63080b21",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b2fea722ed615e89954d49a062d676401560e38b80f3262f12fc3c9ecc903e2d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "cf577314b7da5882086a087554e27d48ba518b48f03b1a27852a1640119bdb91",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "04d7798c6a71bb90db276452f4091d580335936753d8dd91d1593a6053b5f084",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "277d8ab57d2be8644a4ee5186b6e1d90de481c4db8d525e84f24924390144592",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "4a49d25c9fb49e0a48a25159ceb5c31d89b54af9f905f8b173654d793fa72d8c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "86ff414dd9ae5e49ee9726e45a393641449c72e03fab7d19dc46384227a8889e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "78d0b237e2646f5f0f3d512c75c8ece3eef3d6a75a846057b6a8fe43e8551623",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7faafae14a5c2855d80fde879a406686134c6b57ea332dbd9d2bf77449842b92",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "output_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f8fa0ac93ef31395f0a899e6f56c3c0f8feb6eb6a62f1eb1991c4c4c1cda32d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        }
+      ]
+    },
+    "examples": {
+      "path": "models/convergence-examples-selected.gguf",
+      "epoch": 12,
+      "bytes": 714116992,
+      "sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080",
+      "tensor_count": 291,
+      "expected_extent": 714116992,
+      "data_offset": 5947776,
+      "header_metadata_equal": true,
+      "header_equal_except_tensor_types_offsets": true,
+      "non_adapted_equal": 288,
+      "adapted_equal_epoch12_f32": 3,
+      "valid": true,
+      "tensors": [
+        {
+          "name": "output.weight",
+          "type": 8,
+          "bytes": 144643072,
+          "sha256": "bdbf9edb1641bd85a1c1dc99f84714ddacea35c51702a2ba7f20c65a435d1862",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "token_embd.weight",
+          "type": 8,
+          "bytes": 144643072,
+          "sha256": "bdbf9edb1641bd85a1c1dc99f84714ddacea35c51702a2ba7f20c65a435d1862",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "bfb2ba51f371be6bc4970f8d8769850bcf2ff2169382ec8971ea386d10890a4c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "25273b9ec3f42a89e2aeafb304277ecf4ec50a03e41e597edb2e2a8acdfa6647",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e06a1785f336753ce5833f4ad8e34c3650b2c84224a4669f09b924ca9efd7c74",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "38add394f424e98056175fcfb12c279bb23ece8d1cad12e81012169b6b601a50",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "05e7624e0a2c613fe6732db9378e951daec73e07b85cde45f4e76779bafd16d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2aac120c4241244d26d14c4323ac16c2b20555458d6ba361f7e2ce9d833700cf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "549e8e32314770a156ccbeafb505663e50cad473c210c2bf062833a8eaa8abcc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "19243f7d930fb3fad729f72b9aef82b882465b90a8904161725e4fdbfee99367",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "385ae32149d0064b4327ddffe23ff14db4c444ad358dc4e9ee5d2e546e8c42ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "22ef2e3ae346e364ff9c0f2e3a83ac0dcfd16f51cbb057be8d9c6c3ad70678f5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d2444ae1d8421966bb1387485961e5cab29143bfa55803958907a771580aa65a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.0.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "53d0b7a0f09e1db48f7e0d959bd088fa995a9ef3ac4f05b595e30f15c93baef6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f965af73900e63104ba3d497efdcb65ef1d198495620cb0db8a8e11042eb9e7c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a461efb13f14b8137f05e1644ccfa3516fa6d370b5b948afdca30285b294d638",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "acda5a3c23e6c3400da3842be9cbdd67f3dd6a6da99335db56dfab1984ef40bd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "91f495324bb467957ca66a583e0357c00391e5b044d9ce153d7c6157b923d158",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "519e6ce359ae3bdafba0d8cf31021fa833de779ec6fab36da06381e5a969c1d9",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "69b491bd34380c44e22ac6e7ed363f1a67426d232ca712db4e1aedf094981ec6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "01834011f3d0fbcb64c547fa89ca75828346dedcf8db7671ed425347912f7ab3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5eb21b4defcc5a44db578a10051d6d66eaa15f4946bfbd1158c727e248d1b309",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f6eedbfdd9b26b6c07e11b6a9edad7b3e8ce84ef6726140f939bf194e009ffdb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "eb4e6b6673e002bf1ee639f7e6fcfbd7a66afb1d3d8ae414742245bd9c173a44",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d030eff3c127d8af606fb11df8da66759e07418b4925ea30c0d3c7563cb0e030",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.1.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7ac13fef5bf28d1f19abb533a81acda5ee67b0582a54355788d800c92a4f421b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a8aeac7fa3dda9b68a2231fcd8d5d3e13614d89d31c83f1858c7dab1715be706",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2dd20e45c053bf07421ded33953ed76f273549ec76d0af200abf1c01dc814845",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3f45ac0b81d8c48e5602938b8dbdab1708fbf31b6de28050135ee1f18f9b87c2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "672aa2f1b0838185b4b432c67b959218b0955b57b4ea9236f8bb5af14cb50c2d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5e214de936ebf6e7abcaf9d3d37fa223f2152eaf3cb3ca1446c597e36d2c262d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "aec3533ce3749cb123dfe65b76c90a8bd49da1f59651ec89e605d9d98876683e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "1fb9d8e63436d7e8cf059230b8cbadb6fe5b3856cfe6254f153e8867e3c95a70",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "1203c96b6f882185d054e1b804221d478e583accfc9e50ab304c64548f713357",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ccadfb59e9e42470c87af637f0e25b8dd693aae7cc8f31b45c23d95086dd35c6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "7744ecddb1e236721fdb87b8cf99ab928da530697787237c76100cafaba53e69",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "da23d8b533aefed4e57be70d661eee37d32b8ff0c39243388027b8ce2d8b72d3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.10.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "defd341f755e7f1bca025ff7b9d80b0695d98d4d27a0a9753777535adcdc29ca",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ae9400aa49db4736f2278aeea1dd5f531333bd50b45e659090ae67a7cf3909a6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "168ce3539a4f4cae5cb728613337ca554b00c85f9cc2688208105df9c53f76ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4585d86d3b3b66d298d86cdc935c4bcf3002b2a2d1118d578943dc917401c66d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2c8058f144eac1a88ff00c3a62b01538a250afcaf2018b5db2d112872f86e452",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "e813c7f41872b1b9711757bedf7472b4a7d1d972192991b6370e7b8780ba6ffc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "dce82abdfea664fa0aeb0710b6147a219d5463831b7d4a35ee102859472029b1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "43fb09e6a9844fac5b76efe77ad56acfc86d6ecdd17f17f368887a3a88bf0d23",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "14d92bc7d68fbf34dd59fae9617009515c0034b8f26da29249961d31bbb97c4a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cd1afb3e35ade0e45c621d29ecd837f1792a408cce3b61b7b0241895e2e675a3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "618f4ee6190d9742d473fe57cdde4d83ae65c0fc533184191ccf187dc722fc73",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8b30910b1753a9fed98212afb34c70df23c478f10f04825afff72cd91a9c680b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.11.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "c89cf6d69d811d5ba37619483329bc2def5b4a7aef59451f28b6c79e5f4c9e30",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2817015764f8ec91de9239cf0cb5e9ab30bd17ed165322878c213c4966783633",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2d6366e876e85aa33b0dd16a1641648cc515cdde4808189192039a621e17ebfc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3152cec9104818e6af49ab8ab57ae6e73f014162799f87f2c7a3b03d69e42b10",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "cfb1795e050b50b27fcfb438f17e82a6fcda844513fce873981861010e4318f5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f2cbd0a2eb16ce298edc488d9c55a9775a2b8eed4d1eae949127774104c2832c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a3b2bbead4b9d14b294bef40fb280dac71b2980121619b90bbf4bdbfdfabe0ff",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b513782407472f8ddcf952850ec87470bed564e0b7f7eb14c09d8f0752538550",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ef3d512f146bc5f7dd754e755df13da031533c5fc9ff25877d1ecf6fb854aaf8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2928a6cbc3ad13f30ce4a76240ad9c9f864b92f5d99556a4a380e69b12b00410",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "512bfe0d601ab63a160c9c22b051e432075851ac3e140e359bc57add7b8b064b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "01d12e648a495ff4398ac1548da5cc187574b77e0e40a1ad722ea66d20dddcc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.12.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "6bf588a89d0ee2d75896631153e521341a6f23cb47ab57b7dc6129566b845876",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "0b839f2be7e4f0950a039b5d9a94393ff2242546fa4974265f63cf723b3658ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "09aceedae0eeb5d4997b8368c4611d7d2b79e55ac544111f35daadf4d4e83fdc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4c251ba134911cfa9294188ef33981c291eac2df42bc4125af4d54d65b3fd669",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c492ae30d4192af56c11655424bc4faf15253c05d997bf2c2e82b7830245813",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "1149b5d7d1b25ff8737616571203df06bd4018e4f5aee7cc6fc13f83af62f382",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a648cf209106cff00053622be214a51a116b25b51d2c9238d510adafd6658bad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "0e5b9e39fb6fdfbaeb6c845f90efdb02164595171a578acc779b7149062f51ff",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0a2146b51a753354188a6eb29e6d158ab11137d64aec4d5cccfc9fcb927a44dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "de5ab991182e547d978c6f5e0a2d7c401cea7c1a94761f67acd4d708d38c2641",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "997a56766ed6f5c2778994e52e7230698d46eb692de8c9172511c17c1bfbf491",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "afd80efc6eb6cf276557b38c48637b1be98433665a8d09d9fdd7801bee7ed2f8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.13.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e13a6c1dc5413ffdd82e9745d6b16100508e170c2cab2ed0431820f0015d5cf4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a60284756dad04aefef92da6aa6e259b4f20ccc07e724adb06045e77d5c6a18c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c3d1cfb0cbc7720f888a0f27f67bac3bcff65b9d0296adc2c9c13f694092254",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e1616a5fed4c8cf4426e927343a79c015d439bf7e93b92f03efb972d434e8aed",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "f7494fe703609bb1f6905fe563d9bda6bb09520d351e516879afc0d106bf52bd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7854bf2691130ff955492cc6a9b813b2636a166968d9bc9828961096c875735d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d1743fd1be1a7bcdef5624f9f2e08679f3c6e5db48c4e3eb9ac6c9d5addd4cba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "744cb4ce27afe31eb5e8bc514ef6d8c79d57b3f6212c0c3aca9823d0379894eb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "58d019d113eee44ca5e3eb6e6ceece757fe169d795d28e896555f98d06443457",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "14438bba7e81141f3b15ecb13822ad138047f61ab90bba0bfca076e373e61bb5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "200f206b20c9693c7abb3227a6aa07378f4f08b068047de08dcf567a160abfd2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d349739d92d5abcd11a6c8abd6b069eaeb0199434023b9f61d4da694331ccbbb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.14.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5e119703e6248da2ebc5d5e80c3b65973b36ed2682ccbbdf62d0e86a3184473e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cf3516d930c6de896a14c307cda49a4a3999d864958c48600a41d6f3c74232de",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "801a2a54ed2a47cb2a0b4db01fd7aafe2edcd894985b58c7c7cc7cbdc45c5c0d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "26f592fa8e9d9d470c7b6acb39fde24f9e7ca7db320ddd6f60a6a93f020f57fd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "bee5aef9cafe9c34f34884b111c42b771dfd953f0c2198cd727a3079f3aceda4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "47427fd202f88066c94ba2d1778ffb76fd74c1871cdddd5b8dcb78bc9f759ea9",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "68185e9780559a724a65d1ad2cec2cd296cb4a8100b91b3131253a479ad0ed5d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "10d440ac7edc084a3528bc4e5299ebc88c8fbb325fea8357f290bda61014cea6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a4594d0942ab16587f686e1b79c03f8eee4bed59b10fcb1fce9ded36de7033ca",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "dd3bab28e73e98ee75f39f3cd877d038e85429d710f4b4c4a965672d2aeadf8a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5b9c98ffae4fc96955123153f4b859ad79405dc0b95ac67452ffdb4862c3f9d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "7de9727eb6c5715ee0181db4e0aca1e38dd8a5231e3622d62dfd7ec6f72f8c94",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.15.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "2dd47b8dd1f561c62d5dbb9b2a7d182e3d96c894b79541bd20bdfe90112912f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "c705d68cc97b6fdcca8e05627dc9550955627342ca0f680cfcc3782e520fc5d2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b902e42f8083b65744e5b23bc167f80480e40307f2aa46cc65ffa906476d2117",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9186c9c3ef63ee17960bf2cae97f747d66b1069bc890300744eb2061b88191ad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6763a0520f9de48c665d5804f9d3ec49d1f2c64dc5cc68c598d0d61b4a45835a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b3d89d3c316c27c037b6073ad126f6e1b4a37b8fcea494c01bfec0d76672dfd3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "30b688e3e7b96a4c9d0ece6bb8b187e9162a55eb4105511e693b8fe56088b2f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "adbbc1b5b794f886d9ed09a90cfda97d9df74d5419874d48b8bd0edf4d6c10ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ee23a8b14573caf91e5f18699766eb1c1fa9886fff6b11586cbdea8d12b79799",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "21220329d2a771dea8158d96446dc78fd4f73d2d5a80a49c1713f1a40bd4dd7d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "417b871f02988655c78fbd9f7341a4f3e6e9c6184e9cd151322d7a3ea478092f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "9d87e57f3e633883dee157264768fae0c92332a1d1f9a4ae07300c266b8ed4eb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.16.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b0f5d7ea7e242423044f1467ba99703f65b00e20f72c5104d872091d4b69fddd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "8b0b3e2fc3e9fa4b6bcf5b7000331932e02e5e7694fc9c1eabe6f3802e4bba46",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "32e79272f3a759cbd967c0016355197b25039c89c92489c8a927ef8f4f6d0237",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "65da7bfcef10206c76fb85d3ea9199b14dc4de5ad7e7e81122a3dd09d9261e38",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "d24754c3f3eda3e325d504497285cec369dbe2a21f45c0561dd03cc11ef80440",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "43317fd501fc80e17395e6e506bff0d7e88c598ca9aa3dcc064eaa03bcba507b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "c0f855c15c9d88bd80577cb6d2e4298d1c0fefe7eee63449c2b3536a09f14b5e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "61d3c597601f14f4f926a49dbfff87fe301a3de00bafa59cc612eaedee38fe69",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "8b1d301a3289d8d4ad4dfb90b9abd31d92642f763171f936287b5e0541cfcadd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5dcf8ecbd71a6cc05dd4f02be328189a7ad364ddc6277ec5c5ffc14c309eae3e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "886b3d9c0e74fc5d108d6ef32e1cc99c08620e0ca2953198598da5bbe3dec0ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "90e4075c9ade4e4eae90285b5873c01f3661d52d5900f19e17e670d4cc13c237",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.17.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5d6534716bd898807df661abcf0692fd4ce7f27227a16d104e3d514806b1f582",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "be3ff91b9703ea2b46b9d777cbef971ca832ceaee2d29791a4c479bd08bc5476",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b18dc5f9700d7efd983c5560e636e4f7126b80506e38c3ec6c12674d4d7ded19",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "c85b89b369b68abeb9fa376ea59e5c9b4ceec20969bb6a9466507c56f599d89d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "2863f644b683c6856950ad9277ccc25f5a427f4ba7f079ecceb8032417fe3ce1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "1eae61a7a604bee1fcd2c26eccc08008bcb9967d5e91d8cd9aa9bcca8931359a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "382f51af40ef3c3b4b3a5d309d14bbfe1866a602a201fc580b8ff22d03af296e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "1d605301b8c0ce063d14ff9948f3fd66a4b384faefacb95eb20860b27cb2afd3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a7146b06b8c6047ffc077caea57691ae031b024b1c01cab412dfbbf1009ce833",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "75cfc30fd81e110b438ada5fee90286838a71b522665cf72f26f1101b86a4ae0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a7cbdba5b149ef09dafae31843b9e12c7c7ce73ff7e70174285c3df17c5094a6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "50daf2ea7f50cf40f6636aeb195ad2917ea66fa221cb358896cffd2a7bcd949b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.18.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "02262fd2b84b2d0db476c53f393ccca9ab093fc15a9441958255b86e79a65b2f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "eda6d5080acd34aa71191c2ed82013c7ed612616ec03dd4b34af06415aaba4d2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "0032406c7f391d15b7fbfc82e34557134906b47b8f6f03772aebe343053010de",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5dd83f21a960074db72e004cc0fa31775f487d760dffbbd1cab9d089724c5255",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "020657588fa1335310f37e742701c44c14d38028f2b2aedbe8ec14a3cffeda7b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f1595448332177e3a9369477f356ca16069de3628fcc35726a1b3fbf10d85e34",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2c5885f0aaea88107bcd70fa6295b0be468b1607b3eab1a6eb12456e49a4c8a3",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "bada4f27348b3e323fe4050771222be15b8df12f6d922bd70f0972a5fe7faeb1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "be804a4f3aed91bf1db8af4d663d77a38bd2387b16ceecbda6f4aa8aba8baf31",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "51caced9843c6cf016f5d6c350f4ffaef998346c93ff2dce1f17b66b462fa0d6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "1ff1386bf5669ec6c85a5321d96f3f10486e66d97f5f016e62e4f0c5c398ecbf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "2147182d106eabcf1b12dd2c560eeaee69322d8cfb80cde598dc69f62b2d7a2f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.19.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "a7a68acdfa72e7bf832859f29aa58db4f2b62029c76975b394c960cd8f5e423f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b442e28ecae70fbc86de9b2311026331e052917dc5c088489b6b82bff4b59a43",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "db497f1d47204c969708f5d4e68124ed802305cc5dbc485aaed5d31c0190f3f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "793845c9d21a8195dcf95b7aa03c3808e817040a16347fb0abb26ac4c5fe99dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "27b6b03f74a4f246c4ff287b0912092eef246e9b32a78aacf32792ac4eaaf11a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "a93ff641d6d21c3a9357b3440713436b6520eaebf37a4050e881ab477a2e2ed6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "ca94c4ddbc60cf447ce6f413b09a5bebd10a8853ad2f5740a6ec1e7d18905ea5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "71e51ec49de86b573875b384bd44357befc74a8ffad6416943254308015368b5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "7fa9514a04e78f9c83877d340789ad792b868fd9fdaecfca46ef5b25012af66c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "bf9c520d31c74d45cd0ab6f6eb069baa3bf23df601e60eec05b960768eb0ceaa",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "2184610d6f76fd74d29ef974193e1b55d2944c36d4ef9084769a7a4ce3461918",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "110dd45059da57bd65a0ce90b2f9a270b0efc5e08fdf277d04e5f22fa7bb5fc8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.2.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "4e8e46cf240dea0d88f39d50f852d5b2479e40888c91a37279e47a44ab3659dd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "63d96fe8c0903321d5cd7afa6ab2ee9fcb2f84245cc6f4ce1b7de12d35ce719a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ed45367cb6b333507ead0f0f15da2319c09cacbc53c6649436d7f1e5fcef6752",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a4b7654c77910a47eca31d1111f3648e71afe795e57fc6beb1c7ce26bbb63ca8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "3560b6f03bc554356f46b6d603c0d2cf8aa37fdd30ea07f50abea72c4bc75b5a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "40c7d188d148164633bd1e70af75990a4f68df82ad9e3e6748ca096dbe19bb1d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "f6a00622684745b6e6cd7eb61bcacb8fcfd326a6760c8a1ca9577d214d5e0308",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "a28d79e812be10c3cfc681e9cbe695ff508c31b427c66cb0680055dd8cfbf45b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "9dc7c64e1c37535594f4f1d3b52ca3415419de5e353ce83ff82d9394f56dbabd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ad64ac84b09eebefdf541461d75141c13a5a5f0305e471030630fc7ce1ae90ee",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a4400a8f7baaffe878e20eab3b2848021ac8dc7c7cc440fe8f0a60a95c7cd273",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "45274036144d880e94716d61ed96aa3f02163aca9640949e1cd903d45420d1bc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.20.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "ee003ec2f93044407f9fe438c78c3dd3ce3043c651953c366a7a6a9b4bed59a4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "917a10d5c06fe2ea804d7deb4161fa6d7bf45d0ef8cba12004f34fb8518cff98",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "4c6638b50de9254404152c5986db5f299033ee3af74681952e93f56d605540ad",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ae2a3c352eb783e02e787350f47364a2ba5b2fda970c4ff245b711f925e2a643",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c43095a0222f1ceef97b9264d02b7a302e62759d36a16ba27ee5f5242f65dc6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "67708b18ed955cf8cf9d98ff5b67d93fb286f57bf266e3441b7aab7329b5be4e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "a971c18cefc1ed71d2b01e9b5a7515a0b6ffdb2ec25e467a9d2cf74bb681b0d8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7d17a76d6dfb82d2e79206b508cb66c5b72767498a05ce257b1b1d5eb8192073",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "f6a9a9297915febaf8d5128978b24bf347461aeff0fa7e222ca51c31511d95e0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5855f0b2a8458479650c48d68875ee293c26208f12255c70db0daa5cca74cb63",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "30bfbbc71c84b3892c463f58a64933434b53f25e05e7b9c06306d97719b4836b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "052c66278b8f459e83ea11d7df3077cf8719dfaf5f4c68f74507ac62647afffe",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.21.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "f13ef224cd4b634f7909cbd11d2a5e39a05f8efce8af1939ab565ee084a4ddd4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "190e629998c14a80970df70ac74fedfb5b1be36e1a83e7031dd87072f7f3dca2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6c0d228e7e64c6827ea6c91e892bbfb0dc81481cc847132c186fffc532fc25f1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9bcb83ea952257e09ebb2191af76f445d39d064a03df4b14046a865d5f2d982f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "e352336497a337c0754401b475a4267b3cea3453c97f3a3d68f50764e9229ea5",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "738eb6e996fd0ad80963abddae00ec1b0729c0ef6c12cc335ae05ee31e75a9ef",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8bab212322c3568f608293d549e82b1d746ecbfc6f82414d98e7c1403d4ffcfb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "d19b7813a2139f328682e97e0caaf1d0f41399ac87139f82db1277d3c2d8cf1a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "d0ba45361314e84bd33dada20b93d44a4c85f5b5f75292906f6250a39aa3eef2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "052a9c11d02ea25426b3e0330218065870aa2a6d0c0bd4b203217c6f75ff7537",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ad88bf6436a61cd695aa8a4ab755e4ef315f011b75180330fdf1b5f5d4d7efaf",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "9e6c81ef948a93aaf830e7bae112da3e04506940f149bafc8bf4202042383494",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.22.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e24b5d60effb769c065377cccdf3c047aa1de766dfe7ed0bf4ffe7286dae9b28",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "c29cdddd728539673601038b40300f50102c0acc41db2d5de421892bb46b85f7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_down.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "4e6de6e4c1d4b04f35ccfaef8c3110b52a3cd662137effdb5c76ff168c4ad3a1",
+          "reference": "models/convergence-examples.epoch12.down.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_gate.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "2fb26d03033979acc551cf829ab758b7ec7f02c3ecf15065129e11f680d8a676",
+          "reference": "models/convergence-examples.epoch12.gate.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_up.weight",
+          "type": 0,
+          "bytes": 17432576,
+          "sha256": "96d62a38e6cf7a972b3d839fdf7d3170b9e5efcc3b3179f29f527d538d198421",
+          "reference": "models/convergence-examples.epoch12.up.f32",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "6cd5a97205c0e207bcb58d4478e00266d194b0d4a5e82af59ae78d21ad1ffe91",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "35060581f8bfec44739b42aa6a06c26792337474e4ef8824f6cce7db05339dfb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "25c1e2fcb633aeb3f5e77d8007efd63658349fb9b97946bfadd4ce046d719ce4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "ca78c3c1704c2f0881527966ace7772258ccc30f8bd2298ed85b95c4a3b44ae1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5a0892001b5bff1151a47e1a98a4bae38ccc17d90fe95f76bc978d88145c369a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "2f6fd1ec34fb6046df9c2c7b0f0f3b2c315e10f3c41f8611d3d2c871224e130b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "e6263f0dab081c458b989be42efa408e9cde1c5f271669a59c72f50735f8fb30",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.23.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7756542325f523d8519baafd513967a694b88a0e1331414c1a964a709d45d3ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7c3760d2efde5e0b1c39bcaa80c6470f780aba36c7c72c194b07713d144cf047",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "213c8831a8abf17418f4b49746e559a52aa436023fce248b0f8c4fa61027096a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "a8c090593c66f08b5acca250f49024bb0287e7b726c47a64bc97ca1afd43af0c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "083b1d35de15635b94c7e1bb3e5fabf81599b65bfc1db1f0121726188959608f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "03c5267cb4790fbac30de862e96f2b06b2b7bf488ac02ed4a06cac9762c25e9a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "d67818c1085d0def68f3dea73fd28773461e725e1e589214ff98f1f3113a8251",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "b35c4a5975a3bc66fd2482da374bfa7ba3e098831914cf99f504c180ae0e8c90",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "5453146e92e1aa7915baff15a80bedb8adcca51823d0b2386458d7890c5217a4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "2dc56ffe85c7e284e56b68287508c063fedc102d8fae90321c796d4e66e124f4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "6ed33d7f8f67e1ee9cda8e97236d349e0d56997c4879437a1743192e1c95287c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "15d2bdf09c9f5958676748f1fecd4b891372e636e86bd2df7a9f82de62098d90",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.3.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5f1d3bcb29a6e541f50d13ec2866f1580678fd4598d7e5c7bae8b9ec40042004",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "3d6446f422b3d2bb9380027e95a0fbf429411951445e92872fcc7c628af96579",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "152d77d62bdcc2e6f89a9c4ef5dcc9a194c4bb3f2a907d41d717981f52ad9501",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ce74f43dd0c2e49c321435a0b7e7bff95f440e2d3ce0e8e7e39c1ed63eb55701",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "9cd975d7d6cb38a9323eeac71d5fb32c160a8e28257873ab1127424572152877",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "15a3632e3517e38a67b1d09f54b5d0429576889137921257802ba4e091ef6cf8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4baf96a46b6edc773a63fdb37233d6caa38b0671e465dea9ed9c560c2f160397",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "4e42d698e4463df988c09a881f3e4454ccc30fe796b9e8d5ff1e65876994718c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "abcf92f0b61823982791997883137150f84ccd37d57e189777268b250582921d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ac15c95a42c5f16a2920a2dfede1a0db1efc5ec0982197cd343ff59cada3c98a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "a566350dac040a32437a5620496d9404e15c86c69ab7d527e3ee1c28735507ae",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "923c0b3d294bed341d5bb903479c4b6f0013bca73358b0f8ba38ce7746d8afdb",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.4.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5e20dd8ed25cf889a656006a318cf92c59f2b8567e83319fb1cce3bf7c2e502e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "6f6f83b60d2c03b6c63e3e934b0f5e63d8d4295acdce4904285100395ddd818e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "10a121af432abd7e03c674b77c124077b88d19a5aa697fcf310e3aaaddaf042e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "eb8f069b1511a830f408d2cef9cbb95fe2749c0629bf5a8b926e56dfb174248b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "ceeaf5a1994cbd4e58a7a60a9615d45ace9ef449c242a393563b3fb1b1ccf52b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "5d4fdcf0992ac9383dffea75d94d63f8cfa45bca9eeda353ecf302de761b25ea",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "8618d641e59a234cba9fab19a6db6d8dcfe74923b08d32765f72ec041e766172",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "e830260bfb8e35c26bb6024c8ed689622f941aabd20194be9c11271dc719309f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "43461512d3226152704e1e1e3420d4d54205b28b5370ef258c5be9cd3702a809",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "ce8dbc88e735f3914d723ea905227c935b763972581518988f7685393992396f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "f1ea48a627a5545ac92417b907faaf37c23692f3c3ce29ddf48b11ccf806b066",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "18fac28964d10dcdc5e23999379a995d8a8fdb9ecb12bc391c53a6782e33f69d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.5.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "44285b146f78ce75ad6ac6169df717e2ed922466f182fa7af14723de65ef96f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "82ba125b5c87b32c7bfb03ca39e1edcc8ebf63f8ed626b233d5a20b46a7e83ba",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "c1698f31d7aeb241c100b0f0510185706f263886fffd41c4867b8462e13b3754",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5a31715f9553cce903bf58d437da9c838db4ec0a77e522448da26eb0fb2aa0c0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "6d2566c1fecdf49abd29e8857294d34e3f4ad41f7f0dbb46ae35e1b17e493e11",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cc1d0f7808edc854e7079a5011910c9cd908b71eef35baac694185bf5b1f9d03",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "00414b239529d08df1e86a9d5ad7a17a687708466be4c75deba8cc7c7c01f625",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "47acd816fe4e50073538335793c6195e8e664d95f7f238a8750e086f12c2a138",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "3db3c006a49d4a76988b1f18e71f69b272b62f917a1c41c80dd48ece7ce89409",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "e8f1e0c0e2a56a35335e6f064c3d82bcd7eb077ddd45758bb58e828588ce2c7c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "6b5c149a060062d5ee0b185abb14c096286a0decb9a6e48bcd28c637ce88b6f8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4d1212c5c8080a0227495c28913c4902ba97fbc4653625870c7c9a70d1410f8f",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.6.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "d32cd97681bce697a359eeb0bf3b02f2f406306ab00de25b3ec49e2ab83c3ec8",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "60589e85ddb2832d32d1feefdaa85398d39f600cd917d37e2e543cce0c673f9e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "622b21b6e6ff984c163038af69879614edb9d2d4c51ec598f8ba9b415fa4ebc1",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "8db3aaddf1a6a11e6615e4441a1f32ecbe18046e58009f9c41c62260fd025606",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "52eede52d134aa77f96d68f99aceacb00d68c34d14530fd5d3505aa7ffc5c868",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "853a3a0fca7704dd6eb9ec61dba923bcf2269c12edea41d191718f0247144f9a",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "4c7adc7fb04974e08f360393fa96d802c1a84d60aac1dea8579f9f15f9e41fb4",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "2fe2dce21cefdd05fee97aa7d1529a956d77f41146c716133b0c3017acda1fe6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0e3032dfb5cdea46ff5c3779ddca859b8f1d0d1b92190a4e8a6ba60acf3841e6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "116d124b82299e21ec74f1ee63300f9e8adc8f943852f867b693b64edf818551",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "34741995c82edd52d335c860f794a06c24f2c57c24529f0fe55155ed03654056",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "90372f02fa9c9870bd2a4c20c612d85b6877698404f3466daac0a52166e8c277",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.7.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "5706d2552bb4da94ade8b48b21fd115c44687d12976e9803c4ba1bfaa142662b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "7469bbfe3c894277808c1a4962ddc13e3bf0027b256f22985e710e747a70f26d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "92658e98bf8642cabdcd3543ceb7833265051a60544c2e2721f1d2f5613fccc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "d07a58d355ace5cfa265ea2ab250ac6bc889564dbc4fb1c81c975ca7b4ee51f0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "b006774c57b3eee3791eeb410d9673be4242ac6e3fc9efc1f0239ae44e608915",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "30e1c033d919bf0d5853759c6862e726c756068ae1594d5dc39a5d084753ee71",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "bfcee45c412e0f93548f5038d60d7dbdc8580b5c59913f1a5ff49a26a010f8dc",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "822b0648b74c2ad9aac23074b27ecb6bfece007c2ad0d0df761602d4e4279d20",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "0f0914c1e9c6d62021962fded28b85e66682c54c4d4dfec4f512a1515a18fdc2",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "cd364a0ab5e1f7404aad00eb9579feff07384cda3effc5a98e9f65e180f5f6b0",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "c147e6169aa187cd909624fc9a5b540064f0bd16a7fcbd00334d88c3f9a14ed7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "5e350a7acfaee691e4d981ea2d557ab1fc79555599230011b34363d589507ed6",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.8.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "0c2b548212b27f925e618a381e04595d51ad73c693259bc896c4e1a871f35438",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "0c6d7803bdf786edf7f54111ff4afb05c20b22d6d4f9cfd7557b4a1869e9ad1b",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_down.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "af5246113d2e099d72465d84cbb97d4c3605c0c33a724d97ef1f31c1037e39dd",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_gate.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "5337ac6074080a4e4fded5c3a75c940e8d4aa07bb325e415c5e597240cb90425",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_up.weight",
+          "type": 8,
+          "bytes": 4630528,
+          "sha256": "020ff6475a552dc6ba8cf4f9e4aa7cba981cf484fef2d3dfd087575f63080b21",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.ffn_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "b2fea722ed615e89954d49a062d676401560e38b80f3262f12fc3c9ecc903e2d",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_k.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "cf577314b7da5882086a087554e27d48ba518b48f03b1a27852a1640119bdb91",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_k.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "04d7798c6a71bb90db276452f4091d580335936753d8dd91d1593a6053b5f084",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_output.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "277d8ab57d2be8644a4ee5186b6e1d90de481c4db8d525e84f24924390144592",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_q.bias",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "4a49d25c9fb49e0a48a25159ceb5c31d89b54af9f905f8b173654d793fa72d8c",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_q.weight",
+          "type": 8,
+          "bytes": 852992,
+          "sha256": "86ff414dd9ae5e49ee9726e45a393641449c72e03fab7d19dc46384227a8889e",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_v.bias",
+          "type": 0,
+          "bytes": 512,
+          "sha256": "78d0b237e2646f5f0f3d512c75c8ece3eef3d6a75a846057b6a8fe43e8551623",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "blk.9.attn_v.weight",
+          "type": 8,
+          "bytes": 121856,
+          "sha256": "7faafae14a5c2855d80fde879a406686134c6b57ea332dbd9d2bf77449842b92",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        },
+        {
+          "name": "output_norm.weight",
+          "type": 0,
+          "bytes": 3584,
+          "sha256": "f8fa0ac93ef31395f0a899e6f56c3c0f8feb6eb6a62f1eb1991c4c4c1cda32d7",
+          "reference": "models/base-qwen.gguf",
+          "exact_bytes_equal": true
+        }
+      ]
+    }
+  },
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "tensor_count": 291
+  }
+}

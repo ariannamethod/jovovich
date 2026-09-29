@@ -1,0 +1,2 @@
+{"tensor":"logits","elements":2430976,"different":580229,"max_abs":4.54019755e-09,"relative_l2":3.28113075e-07,"argmax_agree":16,"rows":16,"pass":true}
+{"tensor":"input_gradient","elements":14336,"different":0,"max_abs":0,"relative_l2":0,"argmax_agree":16,"rows":16,"pass":true}

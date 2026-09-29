@@ -1,0 +1,955 @@
+{
+  "selection": "maximize exact review pairs, then review macro token accuracy, then prefer earlier epoch",
+  "runs": [
+    {
+      "metrics": "models/convergence-tokens-metrics.jsonl",
+      "objective": "tokens",
+      "epochs": [
+        {
+          "epoch": 0,
+          "mean_token_ce": 2.82069616,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 333,
+              "example_mean_token_accuracy": 0.4673565022468361
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 79,
+              "example_mean_token_accuracy": 0.6583333333333332
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 153,
+              "example_mean_token_accuracy": 0.30562995488890865
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 599,
+              "example_mean_token_accuracy": 0.567689528241791
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 1,
+          "mean_token_ce": 1.95119803,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 435,
+              "example_mean_token_accuracy": 0.6113741173252072
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 200,
+              "example_mean_token_accuracy": 0.39788032881887264
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 685,
+              "example_mean_token_accuracy": 0.654466142818037
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 2,
+          "mean_token_ce": 1.36291428,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 516,
+              "example_mean_token_accuracy": 0.7251773017772366
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 19,
+              "tokens": 120,
+              "correct_tokens": 119,
+              "example_mean_token_accuracy": 0.9916666666666666
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 265,
+              "example_mean_token_accuracy": 0.5333420609684747
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 799,
+              "example_mean_token_accuracy": 0.7647758797271127
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 3,
+          "mean_token_ce": 0.7175816,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 604,
+              "example_mean_token_accuracy": 0.8498113920167221
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 369,
+              "example_mean_token_accuracy": 0.7368551181950002
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 892,
+              "example_mean_token_accuracy": 0.8587446378949931
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 4,
+          "mean_token_ce": 0.38132171,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 637,
+              "example_mean_token_accuracy": 0.8959397488406307
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 19,
+              "tokens": 120,
+              "correct_tokens": 119,
+              "example_mean_token_accuracy": 0.9916666666666666
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 413,
+              "example_mean_token_accuracy": 0.829238765513308
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 958,
+              "example_mean_token_accuracy": 0.9298121472092618
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 5,
+          "mean_token_ce": 0.23878856,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 8,
+              "tokens": 712,
+              "correct_tokens": 683,
+              "example_mean_token_accuracy": 0.9605501651169812
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 458,
+              "example_mean_token_accuracy": 0.9167106912853079
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 977,
+              "example_mean_token_accuracy": 0.9475561682507948
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 6,
+          "mean_token_ce": 0.19683976,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 5,
+              "tokens": 712,
+              "correct_tokens": 679,
+              "example_mean_token_accuracy": 0.9542942136529742
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 472,
+              "example_mean_token_accuracy": 0.9478659928478091
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 989,
+              "example_mean_token_accuracy": 0.9603434872525799
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 7,
+          "mean_token_ce": 0.16870168,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 6,
+              "tokens": 712,
+              "correct_tokens": 683,
+              "example_mean_token_accuracy": 0.9590968889258507
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 6,
+              "tokens": 120,
+              "correct_tokens": 106,
+              "example_mean_token_accuracy": 0.8833333333333334
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 462,
+              "example_mean_token_accuracy": 0.9253718898617934
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 2,
+              "tokens": 1029,
+              "correct_tokens": 997,
+              "example_mean_token_accuracy": 0.9656865571825418
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 8,
+          "mean_token_ce": 0.13690752,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 676,
+              "example_mean_token_accuracy": 0.9492145576508271
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 477,
+              "example_mean_token_accuracy": 0.957996542652272
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 1029,
+              "correct_tokens": 1006,
+              "example_mean_token_accuracy": 0.9752383801206698
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 9,
+          "mean_token_ce": 0.12929653,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 6,
+              "tokens": 712,
+              "correct_tokens": 684,
+              "example_mean_token_accuracy": 0.9601268980954243
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 476,
+              "example_mean_token_accuracy": 0.955557760271629
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 3,
+              "tokens": 1029,
+              "correct_tokens": 1007,
+              "example_mean_token_accuracy": 0.977315723211334
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 10,
+          "mean_token_ce": 0.13631042,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 1,
+              "tokens": 712,
+              "correct_tokens": 677,
+              "example_mean_token_accuracy": 0.9508165468578952
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 19,
+              "tokens": 120,
+              "correct_tokens": 119,
+              "example_mean_token_accuracy": 0.9916666666666666
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 476,
+              "example_mean_token_accuracy": 0.9566585288142581
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 3,
+              "tokens": 1029,
+              "correct_tokens": 1007,
+              "example_mean_token_accuracy": 0.976223300779151
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 11,
+          "mean_token_ce": 0.12926686,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 672,
+              "example_mean_token_accuracy": 0.9432405290732767
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 479,
+              "example_mean_token_accuracy": 0.9621028355667044
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 1005,
+              "example_mean_token_accuracy": 0.9746051144479443
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 12,
+          "mean_token_ce": 0.07783051,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 681,
+              "example_mean_token_accuracy": 0.9555270299754419
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 2,
+              "tokens": 498,
+              "correct_tokens": 480,
+              "example_mean_token_accuracy": 0.9626010025198896
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 5,
+              "tokens": 1029,
+              "correct_tokens": 1013,
+              "example_mean_token_accuracy": 0.9851126852586617
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        }
+      ],
+      "selected_epoch": 12
+    },
+    {
+      "metrics": "models/convergence-examples-metrics.jsonl",
+      "objective": "examples",
+      "epochs": [
+        {
+          "epoch": 0,
+          "mean_token_ce": 2.82069616,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 333,
+              "example_mean_token_accuracy": 0.4673565022468361
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 79,
+              "example_mean_token_accuracy": 0.6583333333333332
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 153,
+              "example_mean_token_accuracy": 0.30562995488890865
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 599,
+              "example_mean_token_accuracy": 0.567689528241791
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 1,
+          "mean_token_ce": 2.04116116,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 437,
+              "example_mean_token_accuracy": 0.6151621094668085
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 201,
+              "example_mean_token_accuracy": 0.4028028030877487
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 650,
+              "example_mean_token_accuracy": 0.6224550314565821
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 2,
+          "mean_token_ce": 1.45495769,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 522,
+              "example_mean_token_accuracy": 0.7337162420329791
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 262,
+              "example_mean_token_accuracy": 0.5308491045746561
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 727,
+              "example_mean_token_accuracy": 0.6995635974034663
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 3,
+          "mean_token_ce": 0.83583675,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 607,
+              "example_mean_token_accuracy": 0.85599796464992
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 17,
+              "tokens": 120,
+              "correct_tokens": 117,
+              "example_mean_token_accuracy": 0.975
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 368,
+              "example_mean_token_accuracy": 0.7445990492324079
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 801,
+              "example_mean_token_accuracy": 0.774613647098885
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 4,
+          "mean_token_ce": 0.52782859,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 2,
+              "tokens": 712,
+              "correct_tokens": 663,
+              "example_mean_token_accuracy": 0.934057850619527
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 423,
+              "example_mean_token_accuracy": 0.8549029943267485
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 875,
+              "example_mean_token_accuracy": 0.8540945288765798
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 5,
+          "mean_token_ce": 0.33265137,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 661,
+              "example_mean_token_accuracy": 0.929624710649958
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 461,
+              "example_mean_token_accuracy": 0.9280252864234323
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 931,
+              "example_mean_token_accuracy": 0.9076313832876787
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 6,
+          "mean_token_ce": 0.25265977,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 3,
+              "tokens": 712,
+              "correct_tokens": 680,
+              "example_mean_token_accuracy": 0.9557653419521396
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 120,
+              "correct_tokens": 100,
+              "example_mean_token_accuracy": 0.8333333333333336
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 462,
+              "example_mean_token_accuracy": 0.9269086011583202
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 970,
+              "example_mean_token_accuracy": 0.9428075833566921
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 7,
+          "mean_token_ce": 0.19813133,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 667,
+              "example_mean_token_accuracy": 0.9372628349331075
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 498,
+              "correct_tokens": 470,
+              "example_mean_token_accuracy": 0.9453564277876879
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 2,
+              "tokens": 1029,
+              "correct_tokens": 976,
+              "example_mean_token_accuracy": 0.9506804446858356
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 8,
+          "mean_token_ce": 0.19414482,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 675,
+              "example_mean_token_accuracy": 0.9486155885652726
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 2,
+              "tokens": 498,
+              "correct_tokens": 472,
+              "example_mean_token_accuracy": 0.949675880403591
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 1029,
+              "correct_tokens": 995,
+              "example_mean_token_accuracy": 0.9702912360668373
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 9,
+          "mean_token_ce": 0.16589859,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 679,
+              "example_mean_token_accuracy": 0.9540516416018262
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 3,
+              "tokens": 498,
+              "correct_tokens": 478,
+              "example_mean_token_accuracy": 0.9609529274542955
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 0,
+              "tokens": 1029,
+              "correct_tokens": 990,
+              "example_mean_token_accuracy": 0.9619786457262469
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 10,
+          "mean_token_ce": 0.11726691,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 677,
+              "example_mean_token_accuracy": 0.9513369528393432
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 478,
+              "example_mean_token_accuracy": 0.9606446910047546
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 2,
+              "tokens": 1029,
+              "correct_tokens": 1001,
+              "example_mean_token_accuracy": 0.9719181586632674
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 11,
+          "mean_token_ce": 0.14911441,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 677,
+              "example_mean_token_accuracy": 0.9508645103258502
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 498,
+              "correct_tokens": 482,
+              "example_mean_token_accuracy": 0.9675595002145454
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 1,
+              "tokens": 1029,
+              "correct_tokens": 996,
+              "example_mean_token_accuracy": 0.9673361428506203
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        },
+        {
+          "epoch": 12,
+          "mean_token_ce": 0.12154597,
+          "groups": {
+            "concern": {
+              "examples": 20,
+              "exact_examples": 0,
+              "tokens": 712,
+              "correct_tokens": 677,
+              "example_mean_token_accuracy": 0.9508853805160316
+            },
+            "clean": {
+              "examples": 20,
+              "exact_examples": 20,
+              "tokens": 120,
+              "correct_tokens": 120,
+              "example_mean_token_accuracy": 1.0
+            },
+            "voice": {
+              "examples": 12,
+              "exact_examples": 3,
+              "tokens": 498,
+              "correct_tokens": 483,
+              "example_mean_token_accuracy": 0.9693768102825394
+            },
+            "code": {
+              "examples": 12,
+              "exact_examples": 3,
+              "tokens": 1029,
+              "correct_tokens": 1010,
+              "example_mean_token_accuracy": 0.9817197959515344
+            }
+          },
+          "review_pairs": 20,
+          "review_pairs_exact": 0
+        }
+      ],
+      "selected_epoch": 12
+    }
+  ]
+}

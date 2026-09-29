@@ -1,0 +1,10 @@
+{
+  "model": {
+    "path": "models/convergence-examples-selected.gguf",
+    "epoch": 12,
+    "bytes": 674857344,
+    "sha256": "092af4c075dcb6b6d643540627712ceeae657d74439d0cdf3119e8cc37e89395"
+  },
+  "observed_failure": "GGUF tensor output_norm.weight exceeds data_size; original parity succeeded before observed truncated artifact. Cause not established.",
+  "excluded_from_behavioral_metrics": true
+}

@@ -1,0 +1,26 @@
+{
+  "parent_commit": "7378840",
+  "data": "training/sft_review_v2.jsonl",
+  "objectives": [
+    "tokens",
+    "examples"
+  ],
+  "epochs": 12,
+  "learning_rate": 0.001,
+  "token_batch": 48,
+  "checkpoint_every": 4,
+  "seed": 20260929,
+  "threads": {
+    "NT_QMV_THREADS": 4,
+    "NT_ATTN_THREADS": 4,
+    "NT_SIMD_THREADS": 4
+  },
+  "checkpoint_selection": "Among saved epochs4/8/12 maximize exact teacher-forced review pairs, then macro token accuracy overreviewexamples, then preferearlierepoch. Select before reading generation results.",
+  "generation_checks": [
+    "all64exacttrainingprompts",
+    "12existingreviewdiagnostics",
+    "8existingvoiceprompts"
+  ],
+  "weights": "Each trainingtoken gets2359/(64*completion_tokens_of_example), includingEOS. Scale maskedCE by minibatchweightsum/actualminibatchn.",
+  "runtime_promotion": "Evaluate reviewreasoning and clean/concern pairs before anymodelpromotion."
+}

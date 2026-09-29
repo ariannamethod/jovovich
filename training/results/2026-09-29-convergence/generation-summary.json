@@ -1,0 +1,92 @@
+{
+  "tokens": {
+    "training": {
+      "concern": {
+        "examples": 20,
+        "exact_matches": 0,
+        "eos_stops": 20,
+        "token_limit_stops": 0,
+        "empty_findings": 20
+      },
+      "clean": {
+        "examples": 20,
+        "exact_matches": 20,
+        "eos_stops": 20,
+        "token_limit_stops": 0,
+        "empty_findings": 20
+      },
+      "voice": {
+        "examples": 12,
+        "exact_matches": 2,
+        "eos_stops": 11,
+        "token_limit_stops": 1,
+        "empty_findings": 0
+      },
+      "code": {
+        "examples": 12,
+        "exact_matches": 5,
+        "eos_stops": 11,
+        "token_limit_stops": 1,
+        "empty_findings": 0
+      }
+    },
+    "exact_training_review_pairs": 0,
+    "training_review_pairs": 20,
+    "review": {
+      "cases": 12,
+      "structural_location_pass": 6,
+      "empty_findings": 12,
+      "parse_errors": 0
+    },
+    "voice": {
+      "cases": 8,
+      "eos_stops": 5,
+      "token_limit_stops": 3
+    }
+  },
+  "examples": {
+    "training": {
+      "concern": {
+        "examples": 20,
+        "exact_matches": 0,
+        "eos_stops": 20,
+        "token_limit_stops": 0,
+        "empty_findings": 20
+      },
+      "clean": {
+        "examples": 20,
+        "exact_matches": 20,
+        "eos_stops": 20,
+        "token_limit_stops": 0,
+        "empty_findings": 20
+      },
+      "voice": {
+        "examples": 12,
+        "exact_matches": 3,
+        "eos_stops": 10,
+        "token_limit_stops": 2,
+        "empty_findings": 0
+      },
+      "code": {
+        "examples": 12,
+        "exact_matches": 3,
+        "eos_stops": 9,
+        "token_limit_stops": 3,
+        "empty_findings": 0
+      }
+    },
+    "exact_training_review_pairs": 0,
+    "training_review_pairs": 20,
+    "review": {
+      "cases": 12,
+      "structural_location_pass": 6,
+      "empty_findings": 12,
+      "parse_errors": 0
+    },
+    "voice": {
+      "cases": 8,
+      "eos_stops": 6,
+      "token_limit_stops": 2
+    }
+  }
+}
