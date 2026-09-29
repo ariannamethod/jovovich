@@ -1,0 +1,18 @@
+{
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "model": {
+    "path": "models/decision-only-selected.gguf",
+    "sha256": "a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518",
+    "bytes": 714116992
+  },
+  "prefix": "models/decision-only.epoch50",
+  "metadata_equal": true,
+  "expected_extent": 714116992,
+  "unchanged": 288,
+  "adapted": 3,
+  "valid": true
+}

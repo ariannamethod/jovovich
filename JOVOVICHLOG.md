@@ -2,6 +2,91 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — The verdict moves; the gavel oscillates
+
+The bounded decision control is complete. Native `decisions` training gives
+equal ordinary full-vocabulary CE to the 40 first-divergent non-EOS positions
+in the existing 20 review pairs. Every Adam update contains all 40 positions
+in original dataset order. The other 2,319 targets contribute no training
+loss and remain in the full-corpus readouts.
+
+This run starts fresh from the same Qwen2.5-Coder-0.5B-Instruct Q8 base,
+last-MLP rank 16/alpha 32, seed 20260929 and notorch pin. LR is `0.001`;
+100 epochs mean exactly 100 updates. All 101 decision states are recorded,
+with full 64-row readouts at 0/25/50/75/100. Wall time is 919.32 seconds;
+peak RSS is 1,459,640 KiB.
+
+| Update | Decision CE | Concern / clean target wins | Complete decision pairs |
+| --- | ---: | ---: | ---: |
+| 0 | 2.03388166 | 0/20 / 20/20 | 0/20 |
+| 25 | 0.95867884 | 20/20 / 0/20 | 0/20 |
+| **50 — selected** | **0.67469090** | **18/20 / 6/20** | **5/20** |
+| 75 | 0.79785091 | 20/20 / 0/20 | 0/20 |
+| 100 | 1.00714862 | 0/20 / 20/20 | 0/20 |
+
+The predeclared selector considers saved updates 25/50/100, maximizing complete
+pairs, then target wins, then preferring the earlier update. It chooses 50
+before generation. Update 75 is retained as an additional diagnostic snapshot.
+The full trajectory reaches nine complete pairs at unsaved update 84.
+
+Let `s(x)` be the concern-token logit minus the clean-token logit. Mean paired
+context separation, `mean(s(concern) - s(clean))`, rises from `0.02253485`
+initially to `0.11132965` at 50 and `0.52012959` at 95. Meanwhile, 59 of the
+100 updated states select the same class on all 40 positions. From 95 to 96,
+mean `s(x)` across the balanced set jumps from `-0.10867338` to `+3.04457393`;
+CE jumps from `0.59081727` to `1.43725812`, and complete pairs fall from seven
+to zero while contextual separation increases. These observations make
+learning-rate sensitivity the next concrete control: a fresh matched run at
+`0.0001`, with the same 100 updates and selection rule, before adding a head
+adapter. That run is specified in the results and remains to be executed.
+
+### Complete answers take another path
+
+All 40 natural training reviews and all 12 existing review diagnostics return
+the same fenced bare empty array. The production parser accepts all 52.
+This output bypasses the canonical `{"findings` prefix used by the supervised
+decision positions. Natural training outcomes are 0/20 genuine concerns,
+20/20 correct clean cases and 0/20 complete pairs; diagnostics give 0/6,
+6/6 and 0/6 respectively. These outcomes match the previous verdict-weighted
+control. All 40 training generations stop at EOS; exact target reproduction
+is 0/40 because the reference answers use the findings-object form.
+
+Four fixed continuations receive the concern prefix `{"findings":[{"`.
+All stop at EOS, two pass the production parser, and none supplies a grounded
+explanation, compared with one of four for the previous control. The two
+training cases append prose, confuse source line numbers with bracketed IDs,
+and give incorrect scope explanations. The two diagnostic cases cite existing
+lines but repeat the diff without explaining its defect. Their complete text
+and individual judgments are preserved. Complete-answer supervision and
+output-format alignment remain part of the SFT integration work.
+
+### Native checks and preserved evidence
+
+Four native tests and 31 Node tests pass. An independent 40-position fixture
+checks equal CE and 54 adapter gradients within `2.23517e-8`; changing excluded
+positions leaves the decision loss and gradients bit-identical. Four Adam
+updates also remain bit-identical with and without diagnostic readouts.
+The scorer checks every update, pair, target ID, margin, aggregate and saved
+checkpoint, including agreement between sparse and full-corpus readouts.
+
+The selected export preserves metadata and all 288 frozen tensor payloads;
+its three adapted F32 matrices match the saved snapshot. All 93 probed
+completion positions agree between cached and exported computation, with
+maximum logit difference `4.57763672e-5`. The 714,116,992-byte GGUF has SHA-256
+`a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518`, unchanged
+after all 56 generated responses. The runtime lock still identifies the base.
+
+All 12 saved LoRA files and the selected GGUF are privately archived in
+`ataeff/jovovich`, with remote sizes and LFS hashes verified at commit
+`af961a66e08f42013114c21610f8d06ae3ba1461`. The source/evidence/card archive
+at `9ec3f80bab43f96766e56669b80ae4366a80bd73` verifies all 45 files.
+The fixed plan, raw metrics,
+selection, complete outputs, compact comparisons, semantic assessments,
+source hashes and reproduction scripts live in
+[`training/results/2026-09-29-decision-only`](training/results/2026-09-29-decision-only).
+
+Five pairs. One oscillating gavel. SERGE asks for a smaller step.
+
 ## 2026-09-29 — Forty coefficients get an equal vote
 
 The controlled follow-up changes exactly 40 coefficients in the existing

@@ -205,8 +205,9 @@ build/jovovich-merge-mlp models/base-qwen.gguf models/mlp-candidate \
 The SFT prototype accepts Qwen2 bodies with RMSNorm epsilon `1e-6`. It uses
 floating activations (`NT_NO_I8=1`) and saves every epoch's three adapters and
 merged F32 projections, plus the final snapshot. The optional arguments after
-`TOKEN_BATCH` are `SAVE_EVERY` and `OBJECTIVE`. The snapshot interval defaults to
-`1`; `0` writes only the final snapshot. Objective defaults to `tokens`.
+`TOKEN_BATCH` are `SAVE_EVERY`, `OBJECTIVE`, and an optional `PAIR_MAP`. The
+snapshot interval defaults to `1`; `0` writes only the final snapshot.
+Objective defaults to `tokens`.
 The GGUF exporter replaces
 only those three last-block tensors; metadata and other tensor payloads remain
 byte-identical. Use a fresh output prefix for each run.
@@ -266,10 +267,10 @@ python3 training/score_training.py models/example-weighted.jsonl \
 `tokens` averages completion-token losses. `examples` weights each token by
 `total_tokens / (example_count * answer_tokens)`, including EOS, so each full
 answer contributes equally. The native masked loss is rescaled to the actual
-minibatch size; a short final batch keeps the same objective. Evaluation CE
-always remains the ordinary token mean. Per-row accuracy and first-error
-positions accompany every epoch, and `online_mean_objective_ce` names the
-quantity being optimized.
+minibatch size; a short final batch keeps the same objective. Full-answer
+evaluation CE remains the ordinary token mean. For these objectives, per-row
+accuracy and first-error positions accompany every epoch, and
+`online_mean_objective_ce` names the quantity being optimized.
 
 On the current 64-row corpus, equal example weights give clean and concern
 reviews 31.25% each, and voice and code 18.75% each. Under token weighting, clean
@@ -324,10 +325,53 @@ The matched 12-epoch run selects epoch 12: ordinary token CE is `0.09734376`,
 with 0/20 concern targets and 20/20 clean targets winning at those positions.
 Complete token-decision pairs remain 0/20 at every measured epoch. Supplying
 the concern JSON prefix yields one grounded explanation in four fixed cases,
-both for the previous control and this checkpoint. The next native control
-will train directly on the 40 decision positions and measure paired learning.
+both for the previous control and this checkpoint. The `decisions` mode below
+trains directly on the 40 decision positions and measures paired learning.
 The recipe, raw outputs and assessments live in
 [`training/results/2026-09-29-verdict-balance`](training/results/2026-09-29-verdict-balance).
+
+To give only those 40 positions the floor:
+
+```sh
+make train-mlp
+python3 training/prepare.py models/decision-only.bin \
+  --sft training/sft_review_v2.jsonl --sft-only --review-pairs models/decision-only.pairs
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/decision-only.bin \
+  models/decision-only 100 0.001 40 25 decisions models/decision-only.pairs \
+  > models/decision-only-metrics.jsonl
+python3 training/score_decisions.py models/decision-only-metrics.jsonl \
+  --output models/decision-only-scores.json
+```
+
+`decisions` requires an explicit pair map and a batch equal to all mapped
+positions: **40** in this corpus. Each update visits them in fixed ascending
+dataset-row order and averages their full-vocabulary CE equally. Only the
+first divergent non-EOS target in each mapped row contributes training loss;
+the other 2,319 targets remain available for evaluation. The last-MLP adapters
+start fresh with rank 16, alpha 32, and seed `20260929`.
+
+Here, **100 epochs mean exactly 100 Adam updates**. The trainer records all 40
+decision scores initially and after every update, and full teacher-forced
+scores for all 64 examples at updates **0, 25, 50, 75, and 100**. The scorer
+selects among saved updates **25, 50, and 100** by complete decision pairs,
+then correct decision targets, then the earlier update. Update 75 is retained
+as a diagnostic snapshot. Select before inspecting generated reviews; their
+JSON decisions, citations, and explanations are assessed separately.
+
+The fixed 100-update control selects update 50: **5/20 complete decision pairs**,
+with 18/20 concern targets and 6/20 clean targets correct. The trajectory reaches
+9/20 pairs at unsaved update 84, then swings between global token preferences.
+Mean context separation grows during the run; the next matched control lowers
+LR from `0.001` to `0.0001` with the same model, seed, objective and 100 updates.
+All 40 natural training reviews and 12 existing diagnostics return a fenced
+empty array, which the host accepts. They take a different output path from
+the supervised `{"findings` prefix. Full generated-review pairs remain 0/20
+and 0/6; the four supplied-concern-prefix continuations yield zero grounded
+explanations. Complete-answer learning and output-format alignment remain
+the next SFT integration tasks alongside decision stability.
+The full trajectory and generated reviews are preserved in
+[`training/results/2026-09-29-decision-only`](training/results/2026-09-29-decision-only).
 
 The review evaluator uses the actual host prompt and native inference path:
 

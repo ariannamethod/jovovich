@@ -1,0 +1,72 @@
+{
+  "status": "proposed after the completed 100-update control; not executed",
+  "question": "Does a tenfold smaller learning rate stabilize the paired choices over the same fixed update budget?",
+  "evidence": "decision-trajectory-analysis.json",
+  "design": {
+    "base_model": {
+      "name": "Qwen2.5-Coder-0.5B-Instruct",
+      "stage": "base",
+      "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+      "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+      "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    "dataset": "training/sft_review_v2.jsonl",
+    "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "updates": 100,
+    "batch": 40,
+    "ordering": "fixed ascending original dataset row index; every mapped position in every update",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "threads": 4,
+    "trainable_parameters": 276480,
+    "supervision": "Equal ordinary full-vocabulary CE only at each mapped first-divergent non-EOS target. Other 2319 target positions contribute no training loss.",
+    "full_readout_updates": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "decision_readout_updates": "0 through 100, after each optimizer update",
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "eligible_updates": [
+      25,
+      50,
+      100
+    ],
+    "checkpoint_selection": "Maximize complete decision pairs, then total correct decision targets, then earlier eligible update; select before generation.",
+    "generation": {
+      "exact_training_review_prompts": 40,
+      "existing_review_diagnostics": 12,
+      "forced_prefix_concern_prompts": 4,
+      "temperature": 0,
+      "tokens": 192,
+      "threads": 2
+    },
+    "forced_prefix": "{\"findings\":[{\"",
+    "forced_prefix_case_ids": [
+      "scoped-python-analysis-concern",
+      "allocation-null-guard-introduced",
+      "short-read-accepted",
+      "archive-subprocess-forbidden"
+    ]
+  },
+  "change": {
+    "learning_rate_from": 0.001,
+    "learning_rate_to": 0.0001
+  },
+  "initialization": "Fresh same-seed adapter with zero B matrices, matching the completed control.",
+  "comparison": "Decision-only LR0.001 from training/results/2026-09-29-decision-only; same objective, data, trainable tensors, schedule and selection.",
+  "command": "NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 build/jovovich-train-mlp models/base-qwen.gguf models/decision-only.bin models/decision-small-step 100 0.0001 40 25 decisions models/decision-only.pairs",
+  "measurement": "Compare paired choices, mean contextual separation, balanced-set mean token preference, full-corpus readouts, and complete generated reviews with semantic assessments.",
+  "following_branch": "Use the completed comparison to choose the next optimizer schedule or joint MLP-plus-head experiment; complete-answer supervision remains part of the broader SFT goal."
+}

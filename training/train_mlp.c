@@ -113,6 +113,16 @@ static void load_pairs(mlp_bank *b,mlp_example *rows,int count,const char *path)
     if(fgetc(f)!=EOF||ferror(f))mlp_die("trailing or unreadable pair map bytes");
     fclose(f);b->pair_count=(int)pairs;b->verdict_weight=mass/(2*pairs);
 }
+static token_row *decision_order(mlp_example *rows,int count,int batch) {
+    int n=0;for(int i=0;i<count;i++)if(rows[i].decision_pair)n++;
+    if(!n||n>128||batch!=n)mlp_die("decisions requires one full batch of all mapped positions");
+    token_row *order=malloc((size_t)n*sizeof(*order));if(!order)mlp_die("decision order allocation failed");
+    int p=0;for(int i=0;i<count;i++)if(rows[i].decision_pair) {
+        if(rows[i].decision_position<0||rows[i].decision_position>=rows[i].cache.n-1)mlp_die("invalid non-EOS decision position");
+        order[p++]=(token_row){i,rows[i].decision_position};
+    }
+    return order;
+}
 static int capture_mlp(void *ctx,int layer,int pos,int n,int width,float *residual) {
     mlp_capture *c=ctx;if(layer!=c->layer)return NT_OK;
     if(width!=c->out->shape[1])return NT_E_ARG;
@@ -266,6 +276,35 @@ static void snapshot(mlp_bank *b,const char *prefix) {
         free(x);free(lo);free(old);free(change);free(out);nt_tensor_free(merged);
     }
 }
+static void epoch_snapshot(mlp_bank *b,const char *prefix,int epoch) {
+    char path[4000];if(snprintf(path,sizeof(path),"%s.epoch%02d",prefix,epoch)>=(int)sizeof(path))mlp_die("output prefix too long");
+    snapshot(b,path);
+}
+static double decision_ce(mlp_bank *b,mlp_example *rows,const token_row *order,int n,int *correct,int *exact_pairs) {
+    int *hits=calloc((size_t)b->pair_count,sizeof(int));if(!hits)mlp_die("decision score allocation failed");
+    mlp_batch s=gather(b,rows,order,n);nt_tape_start();int li;
+    int ce=mlp_forward(b,&s,0,NULL,&li,NULL);float value=nt_tape_get()->entries[ce].output->data[0];
+    if(!isfinite(value))mlp_die("nonfinite decision evaluation loss");
+    float *logits=nt_tape_get()->entries[li].output->data;*correct=0;*exact_pairs=0;
+    for(int t=0;t<n;t++) {
+        mlp_example *e=&rows[order[t].example];float *l=logits+(size_t)t*b->V;int predicted=0,target=(int)s.targets->data[t];
+        for(int j=1;j<b->V;j++)if(l[j]>l[predicted])predicted=j;
+        e->decision_predicted_id=predicted;e->decision_correct=predicted==target;
+        e->decision_margin=l[target]-l[e->decision_alternative_id];
+        *correct+=e->decision_correct;hits[e->decision_pair-1]+=e->decision_correct;
+    }
+    for(int p=0;p<b->pair_count;p++)*exact_pairs+=hits[p]==2;
+    free(hits);nt_tape_clear();batch_free(&s);return value;
+}
+static void print_decision_scores(mlp_bank *b,mlp_example *rows,const token_row *order,int n,int epoch,int saved) {
+    int correct,exact_pairs;double ce=decision_ce(b,rows,order,n,&correct,&exact_pairs);
+    printf("{\"stage\":\"decision_train\",\"epoch\":%d,\"update\":%d,\"measurement\":\"%s\",\"snapshot_saved\":%s,\"mean_decision_ce\":%.8f,\"decision_positions\":%d,\"decision_correct\":%d,\"decision_pairs\":%d,\"decision_pairs_exact\":%d,\"decision_rows\":[",epoch,epoch,epoch?"post_update":"initial",saved?"true":"false",ce,n,correct,b->pair_count,exact_pairs);
+    for(int t=0;t<n;t++) {
+        mlp_example *e=&rows[order[t].example];
+        printf("%s{\"row\":%d,\"pair_index\":%d,\"decision_position\":%d,\"decision_target_id\":%d,\"decision_alternative_id\":%d,\"decision_predicted_id\":%d,\"decision_correct\":%s,\"decision_margin\":%.9g}",t?",":"",order[t].example,e->decision_pair-1,order[t].token,(int)e->cache.targets->data[order[t].token],e->decision_alternative_id,e->decision_predicted_id,e->decision_correct?"true":"false",e->decision_margin);
+    }
+    puts("]}");fflush(stdout);
+}
 static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,int batch,
                       int count,int *correct_tokens,int *exact_examples,int *row_correct,int *first_error) {
     double sum=0;memset(row_correct,0,(size_t)count*sizeof(int));
@@ -309,12 +348,13 @@ static int number(const char *s,int lo,int hi) {
     char *end;errno=0;long n=strtol(s,&end,10);if(errno||end==s||*end||n<lo||n>hi)mlp_die("invalid integer argument");return (int)n;
 }
 int main(int argc,char **argv) {
-    if(argc<4||argc>10){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples|verdict) PAIR_MAP]\n",argv[0]);return 2;}
+    if(argc<4||argc>10){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples|verdict|decisions) PAIR_MAP]\n",argv[0]);return 2;}
     int epochs=argc>4?number(argv[4],0,100):3,batch=argc>6?number(argv[6],1,128):16;
     int save_every=argc>7?number(argv[7],0,100):1;
     const char *objective=argc>8?argv[8]:"tokens";
-    if(strcmp(objective,"tokens")&&strcmp(objective,"examples")&&strcmp(objective,"verdict"))mlp_die("objective must be tokens, examples or verdict");
-    if(!strcmp(objective,"verdict")&&argc<10)mlp_die("verdict objective requires a pair map");
+    int decisions=!strcmp(objective,"decisions");
+    if(strcmp(objective,"tokens")&&strcmp(objective,"examples")&&strcmp(objective,"verdict")&&!decisions)mlp_die("objective must be tokens, examples, verdict or decisions");
+    if((!strcmp(objective,"verdict")||decisions)&&argc<10)mlp_die("verdict and decisions objectives require a pair map");
     char *end=NULL;float lr=argc>5?strtof(argv[5],&end):0.00005f;if(!(lr>0)||!isfinite(lr)||(end&&(*end||end==argv[5])))mlp_die("invalid learning rate");
     uint16_t endian=1;if(*(unsigned char*)&endian!=1)mlp_die("raw F32 export requires a little-endian host");
     /* The tape differentiates the fixed dequantized matrices, not activation rounding. */
@@ -326,8 +366,10 @@ int main(int argc,char **argv) {
     if(!m->layers[m->n_layers-1].ffn_norm)mlp_die("missing final MLP normalization weight");
     nt_seed(MLP_SEED);srand(MLP_SEED);mlp_bank bank={0};bank_init(&bank,m);
     int total=0;for(int i=0;i<count;i++){tokenize(&rows[i],tok);if(rows[i].n_ids>gf->ctx_len)mlp_die("example exceeds model context");if(total>INT_MAX-rows[i].cache.n)mlp_die("too many tokens");total+=rows[i].cache.n;}
-    bank.example_weighting=strcmp(objective,"tokens")!=0;bank.average_tokens=(double)total/count;
+    bank.example_weighting=!strcmp(objective,"examples")||!strcmp(objective,"verdict");bank.average_tokens=(double)total/count;
     bank.verdict_weighting=!strcmp(objective,"verdict");if(argc>9)load_pairs(&bank,rows,count,argv[9]);
+    /* Validate the full decision batch before capturing any model activations. */
+    token_row *selected=decisions?decision_order(rows,count,batch):NULL;
     nt_tensor *reference=tensor(rows[0].cache.n,m->embed);capture_sequence(m,dims,&rows[0],reference);
     int last=m->n_layers-1;wt original=m->layers[last].wdown;float *bias=m->layers[last].ffn_down_bias;
     float *zero=calloc((size_t)m->embed*m->ffn,sizeof(float));if(!zero)mlp_die("zero projection allocation failed");
@@ -341,31 +383,36 @@ int main(int argc,char **argv) {
     zero_probe(&bank,m,rows,reference);nt_tensor_free(reference);
     token_row *order=malloc((size_t)total*sizeof(*order));if(!order)mlp_die("shuffle allocation failed");int p=0;
     for(int i=0;i<count;i++)for(int t=0;t<rows[i].cache.n;t++)order[p++]=(token_row){i,t};
+    token_row *train_order=decisions?selected:order;int train_total=decisions?batch:total;
     long params=0;for(int j=0;j<3;j++)params+=bank.adapters[j].A->len+bank.adapters[j].B->len;
     int correct_tokens,exact_examples,*row_correct=calloc((size_t)count,sizeof(int)),*first_error=malloc((size_t)count*sizeof(int));if(!row_correct||!first_error)mlp_die("score allocation failed");
     double initial=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
     printf("{\"stage\":\"sft_initial\",\"objective\":\"%s\",\"mean_token_ce\":%.8f,\"examples\":%d,\"tokens\":%d,\"rank\":16,\"alpha\":32,\"layer\":%d,\"trainable_parameters\":%ld,\"seed\":%d,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d",objective,initial,count,total,last,params,MLP_SEED,correct_tokens,exact_examples);
     if(bank.pair_count)printf(",\"decision_pairs\":%d,\"verdict_weight\":%.9g",bank.pair_count,bank.verdict_weight);
     print_row_scores(rows,count,row_correct,first_error,1);puts("}");fflush(stdout);
+    if(decisions)print_decision_scores(&bank,rows,train_order,train_total,0,0);
     for(int ep=1;ep<=epochs;ep++) {
-        for(int i=total-1;i>0;i--){int j=rand()%(i+1);token_row tmp=order[i];order[i]=order[j];order[j]=tmp;}
+        if(!decisions)for(int i=total-1;i>0;i--){int j=rand()%(i+1);token_row tmp=order[i];order[i]=order[j];order[j]=tmp;}
         double sum=0,epoch_start=now_ms();
-        for(int start=0;start<total;start+=batch) {
-            int n=total-start;if(n>batch)n=batch;mlp_batch s=gather(&bank,rows,order+start,n);nt_tape_start();
+        for(int start=0;start<train_total;start+=batch) {
+            int n=train_total-start;if(n>batch)n=batch;mlp_batch s=gather(&bank,rows,train_order+start,n);nt_tape_start();
             int ce=mlp_forward(&bank,&s,1,NULL,NULL,NULL);float loss=nt_tape_get()->entries[ce].output->data[0];if(!isfinite(loss))mlp_die("nonfinite SFT loss");
             nt_tape_backward(ce);float norm=nt_tape_clip_grads(1.0f);if(!isfinite(norm))mlp_die("nonfinite gradients");nt_tape_adam_step(lr);nt_tape_clear();batch_free(&s);sum+=(double)n*loss;
         }
-        double held=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
-        printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_objective_ce\":%.8f,\"mean_token_ce\":%.8f,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d,\"seconds\":%.3f",ep,sum/total,held,correct_tokens,exact_examples,(now_ms()-epoch_start)/1000);
-        print_row_scores(rows,count,row_correct,first_error,0);puts("}");fflush(stdout);
-        if(save_every&&(ep%save_every==0||ep==epochs)) {
-            char prefix[4000];if(snprintf(prefix,sizeof(prefix),"%s.epoch%02d",argv[3],ep)>=(int)sizeof(prefix))mlp_die("output prefix too long");snapshot(&bank,prefix);
+        int saved=save_every&&(ep%save_every==0||ep==epochs);
+        if(decisions&&saved)epoch_snapshot(&bank,argv[3],ep);
+        if(decisions)print_decision_scores(&bank,rows,train_order,train_total,ep,saved);
+        if(!decisions||saved) {
+            double held=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
+            printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_objective_ce\":%.8f,\"mean_token_ce\":%.8f,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d,\"seconds\":%.3f",ep,sum/train_total,held,correct_tokens,exact_examples,(now_ms()-epoch_start)/1000);
+            print_row_scores(rows,count,row_correct,first_error,0);puts("}");fflush(stdout);
         }
+        if(!decisions&&saved)epoch_snapshot(&bank,argv[3],ep);
     }
     snapshot(&bank,argv[3]);
     nt_tape_start();for(int j=0;j<3;j++){nt_tape_param(bank.adapters[j].A);nt_tape_param(bank.adapters[j].B);}nt_tape_destroy();
     for(int j=0;j<3;j++)nt_lora_free(&bank.adapters[j]);
     nt_tensor_free(bank.wg);nt_tensor_free(bank.wu);nt_tensor_free(bank.wd);nt_tensor_free(bank.head);nt_tensor_free(bank.norm);nt_tensor_free(bank.ffn_norm);nt_tensor_free(bank.bias);
-    for(int i=0;i<count;i++){free(rows[i].system);free(rows[i].prompt);free(rows[i].answer);free(rows[i].ids);batch_free(&rows[i].cache);}free(order);free(rows);free(row_correct);free(first_error);
+    for(int i=0;i<count;i++){free(rows[i].system);free(rows[i].prompt);free(rows[i].answer);free(rows[i].ids);batch_free(&rows[i].cache);}free(order);free(selected);free(rows);free(row_correct);free(first_error);
     bpe_free(tok);nt_arch_llama.free(m);gguf_close(gf);return 0;
 }

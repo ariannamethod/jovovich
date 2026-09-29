@@ -1,0 +1,7 @@
+{
+  "path": "models/decision-only-selected.gguf",
+  "update": 50,
+  "epoch": 50,
+  "bytes": 714116992,
+  "sha256": "a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518"
+}
