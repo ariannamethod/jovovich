@@ -1,0 +1,38 @@
+make: Nothing to be done for 'probe-mlp'.
+make: Nothing to be done for 'probe-tokenization'.
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.76047e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70228e-05; gate/up/down max_grad=0.189277/0.377374/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (19.172337ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (12.917775ms)
+✔ runner rejects unsupported Qwen MoE architecture (5.703845ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (11.514892ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (6.401303ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (24.006413ms)
+✔ MLP export refuses to overwrite an existing file (3.344967ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (7.058914ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (2.87128ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (1.187209ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.931143ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.788978ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (10.592102ms)
+✔ GitHub context rules come from the base revision and collection detects a push (3.764479ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (2.555969ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.682732ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (3.419254ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (131.544991ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (274.343186ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 587.898106

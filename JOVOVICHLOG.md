@@ -2,6 +2,152 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — One token can invent a crime
+
+Oleg asked whether the training implementation or procedure was failing us.
+The investigation found a missing procedural check: the previous three-epoch
+run had not demonstrated mastery of its own training prompts. Its training CE
+was still falling. On three exact prompts from that corpus, the old checkpoint
+reproduced only the clean answer; it missed the concern and shortened the
+identity answer. On two full trained-path probes, its target-token accuracy was
+19/41 for the concern and 31/46 for identity.
+
+The previous run presented each target token three times. Its token-weighted
+loss mixture was 43.62% ordinary code, 30.18% concern reviews, 21.11% voice, and
+5.09% clean reviews. Empty findings did not dominate that objective. Adaptation
+still covers only the final decoder block's gate/up/down matrices, with
+276,480 trainable parameters.
+
+### Audit the arithmetic, then deliberately memorize
+
+The independent native optimizer test compares 4,320 scalar Adam updates with
+an explicit recurrence, including clipping, first/second moments, and step
+counters. They agree. Inserting 120 frozen evaluations leaves final adapters
+bit-identical to the uninterrupted run. The existing finite-difference and
+merge tests also pass.
+
+Two new native probes check the actual paths used by this project:
+
+- `probe-tokenization` compares trainer and runner IDs, both prompt-only and
+  through completion/EOS. All 134 comparisons across the original 64 rows and
+  three control rows agree: 52,636 token IDs, zero mismatches.
+- `probe-mlp` compares the cached adapted training path with full inference
+  through a merged GGUF at every target position. The old checkpoint agrees
+  on all 87 probed positions; both new control checkpoints agree on all 93.
+  Control logit relative L2 errors are below `1.3e-6`. Deliberately pairing old
+  adapters with the new GGUF fails the gate and returns exit code 1.
+
+These checks found no numerical defect in the tested notorch paths. The pin
+remains `7e246e13f9dbbb7e61312b7341fb94ce492bff71`; upstream
+`57ed1a17ba47d80f1fbf9c8f4d0f926bb385c7fe` has the same relevant arithmetic,
+tokenizer, and harness code.
+
+The memorization control takes the first three real corpus rows unchanged:
+a nearest-scope Python concern, its permitted clean counterpart, and JOVOVICH's
+identity/advisory role. This follows the practical few-example overfit check in
+[Karpathy's training recipe](https://karpathy.github.io/2019/04/25/recipe/).
+It uses the same Qwen2.5-Coder 0.5B Q8 body, rank 16, alpha 32, seed 20260929,
+token batch 16, and last-MLP adaptation. Learning rate is `0.001`, with 30 epochs
+and snapshots every ten epochs. Dataset size, learning rate, and duration all
+change here; this is a capacity-to-memorize control, not an isolated test of
+training duration.
+
+The native run took 519.50 seconds and peaked at 1,319,472 KiB RSS. There are
+93 completion/EOS tokens. Free generation uses each row's exact system/user
+messages and greedy decoding:
+
+| Snapshot | Training token CE | Correct target tokens | Exact generated answers | EOS stops |
+| --- | ---: | ---: | ---: | ---: |
+| Before control training | 2.59735983 | 48/93 | 0/3 | not recorded |
+| Epoch 10 | 0.01450162 | 93/93 | 3/3 | 3/3 |
+| Epoch 30 | 0.01724335 | 92/93 | 2/3 | 3/3 |
+
+Epoch 30 gets one clean-answer token wrong: at completion position 3 it predicts
+token `66582` instead of `788`. That branch opens a finding instead of closing
+the empty list, and generation invents a root-language objection. Both the
+cached trainer and the exported GGUF make that same error. Concern and identity
+remain exact. An aggregate CE near zero can therefore conceal a whole false
+review; simply choosing the latest snapshot would have lost the better result.
+
+The epoch-10 control also answered four previously inspected review cases and
+two new voice questions. It repeated learned directory-rule wording on all four
+unrelated review cases. It expanded its name correctly on one voice question
+and repeated "review" to the token limit on the authority question. The next
+training problem is transfer: strengthen paired examples and their variations,
+measure mastery and generation by task, then test whether the last-block-only
+adaptation site is sufficient.
+
+### Make the missing measurements routine
+
+`train_mlp.c` now reports `teacher_forced_correct_tokens` and
+`teacher_forced_exact_examples` beside CE, including EOS, and accepts optional
+`SAVE_EVERY`. `0` saves only the final snapshot. `evaluate.py --sft` preserves
+the exact per-row system/user messages and records the target, raw response,
+generated-token count, and stop reason. Exact match requires successful execution,
+EOS, and unmodified text equality; normalized text equality is reported separately.
+The README includes the runnable
+three-row control and both parity probes.
+
+The accuracy counters were added after the 30-epoch run. A separate zero-epoch
+check verified its initial CE, 48/93 correct tokens, and zero complete examples.
+`control-training.patch` reconstructs the exact earlier trainer used for the
+run from parent commit `22dfb04e92298bdf2364adfd4ed0ca8dbc7460c9`; the manifest
+records that source hash separately from the final instrumented source.
+All three native tests and 20 Node tests pass. The new evaluator regression
+checks whitespace differences, token-limit termination, missing stop metadata,
+and a failed process with matching stdout. All six control generations were
+repeated with strict equality and EOS requirements: the 3/3 and 2/3 results
+stand. Earlier normalized-text records remain as historical evidence.
+Python orchestration compiles.
+
+Both 714,116,992-byte GGUFs, all nine epoch-10/20/30 adapters, the control data,
+and result records are archived privately in `ataeff/jovovich`, under
+`experiments/memorization-control/`, at commit
+`2c9dd4516141b437644df7f6c60af1e58476848c`. Privacy, uploaded sizes, and all
+11 weight SHA-256 values were verified. Final evaluator checks and strict
+generation records were then archived at
+`64ea839015481c1642f836f57ae0ad9cda7c7fc6`; all 26 updated files were downloaded
+and hash-checked. GGUF hashes:
+
+- Epoch 10: `a067600e0a45a120840703a09b6802d33af15d708f431f1f43dc9647581ca0a8`
+- Epoch 30: `a6de68b76c212bcd86cb56cc423d31a5813872ae92b877e66fa696623d2018fa`
+
+### Qrazy and the new candidate shelf
+
+The [community Qrazy Q8](https://huggingface.co/mradermacher/Qwen3-0.6B-Qrazy-Qoder-GGUF)
+at revision `fbe03515be42088d2287969b4cbe00408de02ab4` is dense Qwen3 with
+596,049,920 parameters. Its 639,444,096-byte GGUF has SHA-256
+`81e75ac288a0b5c5a1f4ddf7520e4dbf2b27a3a0b9955ee55f985978990e73c2`.
+It has no embedded chat template; this experiment explicitly chooses
+`qwen3-no-think`. It is a separate candidate from rStar/IF; the published merge
+recipe contains private parent paths, so the exact lineage is incomplete.
+
+On the same 12 review cases, it passes the structural/location check once,
+accepts zero of six clean changes, and truncates two JSON responses. Manual
+assessment gives four partial explanations, six incorrect reviews, and two
+unusable outputs. The structural pass suggests removing an entire function
+instead of identifying the required `fclose`; it is not a fully correct review.
+
+A llama.cpp shadow run on the clean short-read repair has all 557 prompt IDs
+identical to notorch. Both engines object to the correct repair, with different
+wording. This is a behavioral cross-check, not numerical parity or a speed
+comparison. A two-case ablation that explicitly says to judge the code after
+applying the patch still objects to both the bug and its repair. Production
+prompt and default model lock remain unchanged.
+
+| Candidate inspected | What the files establish | Remaining runtime work |
+| --- | --- | --- |
+| [Empero Qwen3.8 2B](https://huggingface.co/empero-ai/Qwen3.8-2B-Distill-GGUF) | Actual architecture is `qwen35`: 1,942,653,248 text parameters, 18 GatedDeltaNet and six full-attention layers. Author describes reasoning/instruction distillation. | Native `qwen35` support; this body was not run. |
+| [DeepSeek Coder 1.3B Instruct](https://huggingface.co/deepseek-ai/deepseek-coder-1.3b-instruct) | Dense Llama-family body, 1,346,471,936 parameters. [TheBloke Q8 GGUF](https://huggingface.co/TheBloke/deepseek-coder-1.3b-instruct-GGUF) already exists. | Linear RoPE factor 4, DeepSeek pretokenization, and its BOS/prompt template; this body was not run. |
+| WithinUs rStar/IF | No ready GGUF found for the exact IF variant; a Q8 of its rStar parent is available. | Convert the exact variant or label the parent comparison separately; neither was run here. |
+
+Raw prompts, generations, manual assessments, native probe output, source/model
+receipts, checks, and the reproduction manifest are in
+[`training/results/2026-09-29-investigation`](training/results/2026-09-29-investigation).
+The control now proves that this native training path can learn the three
+specified answers. The next experiment should earn transfer on paired reviews
+while tracking complete answers, rather than letting mean loss choose the juror.
+
 ## 2026-09-29 — Teach the final MLP to read the room
 
 Oleg merged the comparison and asked us to continue the training plan while

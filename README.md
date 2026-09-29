@@ -204,7 +204,9 @@ build/jovovich-merge-mlp models/base-qwen.gguf models/mlp-candidate \
 
 The SFT prototype accepts Qwen2 bodies with RMSNorm epsilon `1e-6`. It uses
 floating activations (`NT_NO_I8=1`) and saves every epoch's three adapters and
-merged F32 projections, plus the final snapshot. The GGUF exporter replaces
+merged F32 projections, plus the final snapshot. The optional final argument
+`SAVE_EVERY` sets the epoch snapshot interval; `0` writes only the final snapshot.
+The GGUF exporter replaces
 only those three last-block tensors; metadata and other tensor payloads remain
 byte-identical. Use a fresh output prefix for each run.
 
@@ -215,6 +217,40 @@ The original base remains selected in `model.json`. Epoch 1 and epoch 3 weights
 are private experimental checkpoints, with exact generations and manual
 assessments in [`training/results/2026-09-29-mlp-v2`](training/results/2026-09-29-mlp-v2).
 The loss decreased. The objections have not earned a promotion.
+
+Start an adaptation experiment with the three-row memorization control:
+
+```sh
+make train-mlp merge-mlp probe-mlp probe-tokenization
+python3 training/prepare.py models/control.bin \
+  --sft training/control_memorization.jsonl --sft-only
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/control.bin \
+  models/control 30 0.001 16 10 > models/control-metrics.jsonl
+build/jovovich-merge-mlp models/base-qwen.gguf models/control.epoch10 \
+  models/control10.gguf
+python3 training/evaluate.py models/control10.gguf \
+  --sft training/control_memorization.jsonl --output models/control-generation.jsonl
+build/jovovich-probe-tokenization models/base-qwen.gguf models/control.bin
+NT_QMV_THREADS=2 NT_ATTN_THREADS=2 NT_SIMD_THREADS=2 \
+  build/jovovich-probe-mlp models/base-qwen.gguf models/control10.gguf \
+  models/control.bin models/control.epoch10 0 1 2
+```
+
+`--sft` preserves each training row's exact system/user messages and records its
+target answer, raw response, and generation stop reason. `exact_match` requires
+unmodified text equality, successful execution, and EOS; whitespace-normalized
+text equality is reported separately. The trainer now
+reports correct teacher-forced tokens and fully correct examples beside CE.
+The native probes check actual trainer/runner token IDs and cached-adapter/full
+GGUF logits, with nonzero exit on disagreement.
+
+In the measured control, epoch 10 reproduced all three answers and predicted
+93/93 target tokens correctly. Epoch 30 predicted 92/93: one wrong clean-review
+branch produced a false objection. On other requests, the control repeated its
+learned directory-rule wording. Use these measurements to select checkpoints by
+actual answers and expose where further training data is needed. Exact records are in
+[`training/results/2026-09-29-investigation`](training/results/2026-09-29-investigation).
 
 The review evaluator uses the actual host prompt and native inference path:
 

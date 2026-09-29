@@ -221,22 +221,35 @@ static void snapshot(mlp_bank *b,const char *prefix) {
         free(x);free(lo);free(old);free(change);free(out);nt_tensor_free(merged);
     }
 }
-static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,int batch) {
-    double sum=0;
+static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,int batch,
+                      int count,int *correct_tokens,int *exact_examples) {
+    double sum=0;int *errors=calloc((size_t)count,sizeof(int));
+    if(!errors)mlp_die("score allocation failed");
+    *correct_tokens=0;*exact_examples=0;
     for(int p=0;p<total;p+=batch) {
         int n=total-p;if(n>batch)n=batch;mlp_batch s=gather(b,rows,order+p,n);nt_tape_start();
-        int ce=mlp_forward(b,&s,0,NULL,NULL,NULL);float v=nt_tape_get()->entries[ce].output->data[0];
+        int li;int ce=mlp_forward(b,&s,0,NULL,&li,NULL);float v=nt_tape_get()->entries[ce].output->data[0];
         if(!isfinite(v))mlp_die("nonfinite evaluation loss");
+        float *logits=nt_tape_get()->entries[li].output->data;
+        for(int t=0;t<n;t++) {
+            float *l=logits+(size_t)t*b->V;int predicted=0;
+            for(int j=1;j<b->V;j++)if(l[j]>l[predicted])predicted=j;
+            if(predicted==(int)s.targets->data[t])(*correct_tokens)++;
+            else errors[order[p+t].example]++;
+        }
         sum+=(double)n*v;nt_tape_clear();batch_free(&s);
     }
+    for(int i=0;i<count;i++)if(!errors[i])(*exact_examples)++;
+    free(errors);
     return sum/total;
 }
 static int number(const char *s,int lo,int hi) {
     char *end;errno=0;long n=strtol(s,&end,10);if(errno||end==s||*end||n<lo||n>hi)mlp_die("invalid integer argument");return (int)n;
 }
 int main(int argc,char **argv) {
-    if(argc<4||argc>7){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH]\n",argv[0]);return 2;}
+    if(argc<4||argc>8){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY]\n",argv[0]);return 2;}
     int epochs=argc>4?number(argv[4],0,100):3,batch=argc>6?number(argv[6],1,128):16;
+    int save_every=argc>7?number(argv[7],0,100):1;
     char *end=NULL;float lr=argc>5?strtof(argv[5],&end):0.00005f;if(!(lr>0)||!isfinite(lr)||(end&&(*end||end==argv[5])))mlp_die("invalid learning rate");
     uint16_t endian=1;if(*(unsigned char*)&endian!=1)mlp_die("raw F32 export requires a little-endian host");
     /* The tape differentiates the fixed dequantized matrices, not activation rounding. */
@@ -262,7 +275,9 @@ int main(int argc,char **argv) {
     token_row *order=malloc((size_t)total*sizeof(*order));if(!order)mlp_die("shuffle allocation failed");int p=0;
     for(int i=0;i<count;i++)for(int t=0;t<rows[i].cache.n;t++)order[p++]=(token_row){i,t};
     long params=0;for(int j=0;j<3;j++)params+=bank.adapters[j].A->len+bank.adapters[j].B->len;
-    printf("{\"stage\":\"sft_initial\",\"mean_token_ce\":%.8f,\"examples\":%d,\"tokens\":%d,\"rank\":16,\"alpha\":32,\"layer\":%d,\"trainable_parameters\":%ld,\"seed\":%d}\n",mean_ce(&bank,rows,order,total,batch),count,total,last,params,MLP_SEED);fflush(stdout);
+    int correct_tokens,exact_examples;
+    double initial=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples);
+    printf("{\"stage\":\"sft_initial\",\"mean_token_ce\":%.8f,\"examples\":%d,\"tokens\":%d,\"rank\":16,\"alpha\":32,\"layer\":%d,\"trainable_parameters\":%ld,\"seed\":%d,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d}\n",initial,count,total,last,params,MLP_SEED,correct_tokens,exact_examples);fflush(stdout);
     for(int ep=1;ep<=epochs;ep++) {
         for(int i=total-1;i>0;i--){int j=rand()%(i+1);token_row tmp=order[i];order[i]=order[j];order[j]=tmp;}
         double sum=0,epoch_start=now_ms();
@@ -271,9 +286,11 @@ int main(int argc,char **argv) {
             int ce=mlp_forward(&bank,&s,1,NULL,NULL,NULL);float loss=nt_tape_get()->entries[ce].output->data[0];if(!isfinite(loss))mlp_die("nonfinite SFT loss");
             nt_tape_backward(ce);float norm=nt_tape_clip_grads(1.0f);if(!isfinite(norm))mlp_die("nonfinite gradients");nt_tape_adam_step(lr);nt_tape_clear();batch_free(&s);sum+=(double)n*loss;
         }
-        double held=mean_ce(&bank,rows,order,total,batch);
-        printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_token_ce\":%.8f,\"mean_token_ce\":%.8f,\"seconds\":%.3f}\n",ep,sum/total,held,(now_ms()-epoch_start)/1000);fflush(stdout);
-        char prefix[4000];if(snprintf(prefix,sizeof(prefix),"%s.epoch%02d",argv[3],ep)>=(int)sizeof(prefix))mlp_die("output prefix too long");snapshot(&bank,prefix);
+        double held=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples);
+        printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_token_ce\":%.8f,\"mean_token_ce\":%.8f,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d,\"seconds\":%.3f}\n",ep,sum/total,held,correct_tokens,exact_examples,(now_ms()-epoch_start)/1000);fflush(stdout);
+        if(save_every&&(ep%save_every==0||ep==epochs)) {
+            char prefix[4000];if(snprintf(prefix,sizeof(prefix),"%s.epoch%02d",argv[3],ep)>=(int)sizeof(prefix))mlp_die("output prefix too long");snapshot(&bank,prefix);
+        }
     }
     snapshot(&bank,argv[3]);
     nt_tape_start();for(int j=0;j<3;j++){nt_tape_param(bank.adapters[j].A);nt_tape_param(bank.adapters[j].B);}nt_tape_destroy();

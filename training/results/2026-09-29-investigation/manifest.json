@@ -1,0 +1,158 @@
+{
+  "parent_commit": "22dfb04e92298bdf2364adfd4ed0ca8dbc7460c9",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "upstream_checked": "57ed1a17ba47d80f1fbf9c8f4d0f926bb385c7fe",
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "control_source": {
+    "sha256": "2bbeba72773d60046fb69fb0882fd390335c98e3f24431b026423017572ffa2e",
+    "recipe": "parent commit plus control-training.patch",
+    "note": "Checkpoint interval was added before this control run. Teacher-forced score fields were added afterwards and verified separately with initial-score.jsonl."
+  },
+  "training": {
+    "command": [
+      "build/jovovich-train-mlp",
+      "models/base-qwen.gguf",
+      "models/control-memorization.bin",
+      "models/control-memorization",
+      "30",
+      "0.001",
+      "16",
+      "10"
+    ],
+    "threads": 4,
+    "NT_NO_I8": "1 (set by trainer)",
+    "elapsed_seconds": 519.4975238549996,
+    "peak_rss_kib": 1319472,
+    "user_seconds": 903.301616,
+    "system_seconds": 13.697852,
+    "exit_code": 0
+  },
+  "control_data": {
+    "rows": 3,
+    "completion_tokens": 93,
+    "epochs": 30,
+    "learning_rate": 0.001,
+    "token_batch": 16,
+    "save_every": 10,
+    "rank": 16,
+    "alpha": 32,
+    "seed": 20260929,
+    "source_ids": [
+      "scoped-python-analysis-concern",
+      "scoped-python-analysis-clean",
+      "voice-01"
+    ]
+  },
+  "source_sha256": {
+    "training/train_mlp.c": "f1c9284f1d72f75144d0e46c5e9cdec3a507e37a17892604a515f6772bf701e2",
+    "training/probe_mlp.c": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac",
+    "training/probe_tokenization.c": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6",
+    "training/evaluate.py": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544",
+    "test/optimizer.c": "f15d111b65b08d783cad877ba8fcd57a50a7949985025680283dcecbd0b1b4c2",
+    "training/control_memorization.jsonl": "a2c7c3ad27f13a41bcc34622967bf784ea49205e8f20466ffb373888df6306c5",
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training/review_holdout_v2.jsonl": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "prompts/identity.txt": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "src/infer.c": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5",
+    "bin/jovovich.mjs": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "Makefile": "05c0a27deb6c0870fa2ebc93fbdaef3c0f91e66c72487f6375ad1fee46c3e759",
+    "test/evaluate.test.mjs": "f3c0e53421dcf32a49ca46d383d2b7bccb2aae6f72fe1b045cca4edac668446e"
+  },
+  "weights": [
+    {
+      "epoch": 10,
+      "file": "models/control-memorization-epoch10.gguf",
+      "bytes": 714116992,
+      "sha256": "a067600e0a45a120840703a09b6802d33af15d708f431f1f43dc9647581ca0a8"
+    },
+    {
+      "epoch": 30,
+      "file": "models/control-memorization-epoch30.gguf",
+      "bytes": 714116992,
+      "sha256": "a6de68b76c212bcd86cb56cc423d31a5813872ae92b877e66fa696623d2018fa"
+    }
+  ],
+  "exact_generation": {
+    "control-before": {
+      "base-qwen.gguf": {
+        "exact_matches": 0,
+        "count": 3
+      },
+      "jovovich-mlp-v2-epoch03.gguf": {
+        "exact_matches": 1,
+        "count": 3
+      }
+    },
+    "control-epoch10": {
+      "exact_matches": 3,
+      "count": 3
+    },
+    "control-epoch30": {
+      "exact_matches": 2,
+      "count": 3
+    },
+    "strict_recheck": {
+      "source": "control-strict-generation.jsonl",
+      "epoch10": {
+        "exact_matches": 3,
+        "count": 3
+      },
+      "epoch30": {
+        "exact_matches": 2,
+        "count": 3
+      },
+      "all_stopped_with_eos": true,
+      "definition": "Raw text equality, successful process exit, and EOS. Historical control-before/epoch10/epoch30 records used whitespace-normalized text equality."
+    }
+  },
+  "validation": {
+    "native_tests": 3,
+    "node_tests": 20,
+    "adam_scalar_updates": 4320,
+    "interleaved_evaluations": 120,
+    "tokenization_comparisons": 134,
+    "matching_ids": 52636,
+    "matching_prompt_hashes": true,
+    "negative_parity_control_exit": 1,
+    "test_transcripts": [
+      "checks.txt",
+      "evaluator-checks.txt"
+    ]
+  },
+  "runtime_model_promoted": false,
+  "result_paths_portable": true,
+  "evidence_sha256": {
+    "checks.txt": "0624182c63d781b4364adae9367cd02c7743272e0e4c92747dca50b7fc9b5abc",
+    "control-before.jsonl": "b9e06105f339267c136bde3838705f140149d713ce5195bbccfbecfc9673f690",
+    "control-epoch10-probe.jsonl": "b766a8e2f578c28de3801f0123d4a406e52b5f06613e58348eca47b729cd9aaa",
+    "control-epoch10.jsonl": "42602d75dc61ff05fe37f8be02135e0144f77c298a0ba696f0a8a0abf19fb10f",
+    "control-epoch30-probe.jsonl": "5b9af27fab89eb11a8db8c2d157679ee406ad29374ec1cbd5579fce40db6e7a6",
+    "control-epoch30.jsonl": "6d12e1c01257efb4cb267d173ec1d90e924167e20ab5a08c0a3938aaea6afce7",
+    "control-metrics.jsonl": "8306befc1996b0b5827447f8a1e398a93e12a56fc496326bb86c11ec7e0de28d",
+    "control-original-cases.jsonl": "2539f42870fa2e7558b8b72c625ee99dc45be28ca743177fd652e73f6f44688d",
+    "control-resource.json": "bca87c65fc2f6047aa3098b7c127c56dcc13be8b863d156079ca1cc53a716b93",
+    "control-strict-generation.jsonl": "c2b04f60c23703b4b67a7137ecc414dbe7229f89ca33a2e06d720b46b4eec98d",
+    "control-train.stderr": "aabedd7e0d1639c459f1d267b42eb2f94920eeb1cbea74955ca4be5717155e4e",
+    "control-training.patch": "c85535799d5f40c50119e864abc2f6cfca6ebbbfcf2b063c02998135d2b4b20b",
+    "control-transfer-cases.jsonl": "9f788d779365b1b06fa2027599b4be07eb0bf25ce80bcbae70584c74b3507a28",
+    "control-transfer-review.jsonl": "fb749a38f1fbcc6ea23fef298634a49fa306b38983fa3192314b4b5c7d9a48d2",
+    "control-transfer-voice.jsonl": "9e514233222a556b6f327350a335fa805c2a4cec672758d512f0f9759f9b339e",
+    "evaluator-checks.txt": "386557ff0c3026ef16d1df1f1d90a404bd43396d6afc4c504fe1dc88f5dcbd93",
+    "initial-score.jsonl": "2b37c69efec4480a6f777e5ef85399b3247192540892f0becb9a2435d5052bf6",
+    "mismatched-adapter-probe.jsonl": "b00a597f694d1c037c1f949882979bf9020bb3c11730f988ea241cb3ebb000c8",
+    "old-adapter-probe.jsonl": "7eabf245eb42f4a3e1817fdc2239ad31a10fae3d1e007e19c486b3740d70fe80",
+    "qrazy-postpatch-ablation.jsonl": "b6c5247cd32d015415d7fb855f3dc6f2e446ef0a36d01b3e71eeec1b3b3596c8",
+    "qrazy-review.jsonl": "f8b6ffd1551f68ebfbb6b375ef9b981017b12882128585bcb44ba579bfff490f",
+    "qrazy-shadow.json": "8da0517132355356973bfcb8ee3025cccc5b22b25c7738ea39bf39595eb13aaa",
+    "qrazy-source.json": "7cc8517b4488db74cca5ba221cc53ca91d8bd71543542c3bb7ab7d6d2b1ca63e",
+    "tokenization-probe.jsonl": "634abf67b5f73824d0731d35ca8c01fd00eacbc8db221c2c5b2fde3e6220b343"
+  }
+}

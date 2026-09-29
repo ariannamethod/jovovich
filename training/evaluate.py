@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import time
 
@@ -17,19 +18,33 @@ def main():
     p.add_argument("--tokens", type=int, default=128)
     p.add_argument("--threads", type=int, default=2)
     p.add_argument("--names", nargs="+")
-    p.add_argument("--cases", type=Path, help="alternate name/prompt JSONL cases")
+    source = p.add_mutually_exclusive_group()
+    source.add_argument("--cases", type=Path, help="alternate name/prompt JSONL cases")
+    source.add_argument("--sft", type=Path, help="generate from exact SFT system/user messages and retain target answers")
     p.add_argument("--identity", type=Path, help="system identity text; defaults to the original SFT identity")
     args = p.parse_args()
     here = Path(__file__).resolve().parent
-    cases_text = (args.cases or here / "eval.jsonl").read_text()
+    if args.sft and args.identity:
+        p.error("--sft uses each example's exact system message; omit --identity")
+    cases_text = (args.sft or args.cases or here / "eval.jsonl").read_text()
     rows = [json.loads(line) for line in cases_text.splitlines() if line.strip()]
+    if args.sft:
+        converted = []
+        for i, row in enumerate(rows):
+            messages = row.get("messages", [])
+            if [m.get("role") for m in messages] != ["system", "user", "assistant"]:
+                p.error(f"SFT row {i + 1} must contain system/user/assistant messages")
+            converted.append(dict(name=row.get("id", f"sft-{i + 1}"), system=messages[0]["content"],
+                                  prompt=messages[1]["content"], expected_response=messages[2]["content"],
+                                  purpose="exact training prompt; memorization diagnostic"))
+        rows = converted
     if args.names:
         unknown = set(args.names) - {row["name"] for row in rows}
         if unknown:
             p.error("unknown prompt names: " + ", ".join(sorted(unknown)))
         rows = [row for row in rows if row["name"] in args.names]
-    system = (args.identity.read_text().strip() if args.identity else
-              json.loads((here / "sft.jsonl").read_text().splitlines()[0])["messages"][0]["content"])
+    default_system = (None if args.sft else args.identity.read_text().strip() if args.identity else
+                      json.loads((here / "sft.jsonl").read_text().splitlines()[0])["messages"][0]["content"])
     env = dict(os.environ, NT_NO_I8="1", NT_QMV_THREADS=str(args.threads), NT_ATTN_THREADS=str(args.threads))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as output:
@@ -40,6 +55,7 @@ def main():
                     model_hash.update(chunk)
                 model_sha256 = model_hash.hexdigest()
             for row in rows:
+                system = row["system"] if args.sft else default_system
                 prompt = f'<|im_start|>system\n{system}<|im_end|>\n<|im_start|>user\n{row["prompt"]}<|im_end|>\n<|im_start|>assistant\n'
                 started = time.monotonic()
                 result = subprocess.run([str(args.runner), "--model", str(model), "--tokens", str(args.tokens), "--context", "2048", "--temperature", "0"], input=prompt, text=True, capture_output=True, env=env)
@@ -50,7 +66,14 @@ def main():
                               decoding=dict(tokens=args.tokens, context=2048, temperature=0,
                                             NT_NO_I8="1", NT_QMV_THREADS=str(args.threads), NT_ATTN_THREADS=str(args.threads)),
                               elapsed_ms=round((time.monotonic()-started)*1000),
-                              response=result.stdout.strip(), returncode=result.returncode)
+                              response=result.stdout, returncode=result.returncode)
+                stop = re.search(r"generated (\d+) tokens .*stop=(eos|token-limit)", result.stderr)
+                record["generated_tokens"] = int(stop.group(1)) if stop else None
+                record["stop_reason"] = stop.group(2) if stop else None
+                if "expected_response" in row:
+                    record["normalized_text_match"] = result.stdout.strip() == row["expected_response"].strip()
+                    record["exact_match"] = (result.returncode == 0 and record["stop_reason"] == "eos"
+                                             and result.stdout == row["expected_response"])
                 if result.returncode:
                     record["error"] = result.stderr
                 line = json.dumps(record, ensure_ascii=False)
