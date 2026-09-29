@@ -1,0 +1,335 @@
+{
+  "total_completion_tokens": 2359,
+  "examples": 64,
+  "rows": [
+    {
+      "id": "scoped-python-analysis-concern",
+      "group": "concern",
+      "completion_tokens": 41,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.8990091463414634
+    },
+    {
+      "id": "scoped-python-analysis-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "approved-binary-decoder-concern",
+      "group": "concern",
+      "completion_tokens": 35,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.053125
+    },
+    {
+      "id": "approved-binary-decoder-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "sqlite-build-requirement-concern",
+      "group": "concern",
+      "completion_tokens": 35,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.053125
+    },
+    {
+      "id": "sqlite-build-requirement-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "background-service-scope-concern",
+      "group": "concern",
+      "completion_tokens": 33,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.1169507575757576
+    },
+    {
+      "id": "background-service-scope-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "preserve-trie-credit-introduced",
+      "group": "concern",
+      "completion_tokens": 33,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.1169507575757576
+    },
+    {
+      "id": "preserve-trie-credit-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "model-parent-provenance-introduced",
+      "group": "concern",
+      "completion_tokens": 49,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.7522321428571429
+    },
+    {
+      "id": "model-parent-provenance-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "scoped-design-record-concern",
+      "group": "concern",
+      "completion_tokens": 32,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.15185546875
+    },
+    {
+      "id": "scoped-design-record-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "checksum-indirection-concern",
+      "group": "concern",
+      "completion_tokens": 38,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.969983552631579
+    },
+    {
+      "id": "checksum-indirection-clean",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "sequence-field-width-introduced",
+      "group": "concern",
+      "completion_tokens": 41,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.8990091463414634
+    },
+    {
+      "id": "sequence-field-width-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "allocation-null-guard-introduced",
+      "group": "concern",
+      "completion_tokens": 31,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.1890120967741935
+    },
+    {
+      "id": "allocation-null-guard-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "zero-worker-guard-introduced",
+      "group": "concern",
+      "completion_tokens": 32,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.15185546875
+    },
+    {
+      "id": "zero-worker-guard-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "validated-port-conversion-introduced",
+      "group": "concern",
+      "completion_tokens": 40,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.921484375
+    },
+    {
+      "id": "validated-port-conversion-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "negative-offset-type-introduced",
+      "group": "concern",
+      "completion_tokens": 34,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.0840992647058822
+    },
+    {
+      "id": "negative-offset-type-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "exact-property-name-introduced",
+      "group": "concern",
+      "completion_tokens": 31,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.1890120967741935
+    },
+    {
+      "id": "exact-property-name-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "idempotent-event-retry-introduced",
+      "group": "concern",
+      "completion_tokens": 37,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.9961993243243243
+    },
+    {
+      "id": "idempotent-event-retry-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "write-permission-check-introduced",
+      "group": "concern",
+      "completion_tokens": 32,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.15185546875
+    },
+    {
+      "id": "write-permission-check-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "stable-manifest-order-introduced",
+      "group": "concern",
+      "completion_tokens": 31,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.1890120967741935
+    },
+    {
+      "id": "stable-manifest-order-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "atomic-snapshot-publication-introduced",
+      "group": "concern",
+      "completion_tokens": 37,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.9961993243243243
+    },
+    {
+      "id": "atomic-snapshot-publication-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "save-status-propagation-introduced",
+      "group": "concern",
+      "completion_tokens": 32,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 1.15185546875
+    },
+    {
+      "id": "save-status-propagation-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    },
+    {
+      "id": "allocation-product-overflow-introduced",
+      "group": "concern",
+      "completion_tokens": 38,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 0.969983552631579
+    },
+    {
+      "id": "allocation-product-overflow-repaired",
+      "group": "clean",
+      "completion_tokens": 6,
+      "decision_position": 3,
+      "token_weight": 1,
+      "example_weight": 6.143229166666667
+    }
+  ],
+  "decision_weight_sum": {
+    "clean": 122.86458333333334,
+    "concern": 21.002809509631856
+  },
+  "clean_to_concern_ratio": 5.8499118071317,
+  "proposed_equal_decision_weight": 3.59668482107413,
+  "interpretation": "Nominal coefficients before gradient clipping; actual gradients also depend on predictions and activations. Equal full-answer weights do not equalize the shared decision-token coefficient.",
+  "next_experiment": "Keep example weights elsewhere; replace only the 40 review decision-token weights with their pooled mean. This preserves total decision coefficient mass and isolates clean/concern branch balance.",
+  "next_experiment_run": false
+}

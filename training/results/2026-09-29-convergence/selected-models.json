@@ -1,0 +1,14 @@
+{
+  "tokens": {
+    "path": "models/convergence-tokens-selected.gguf",
+    "epoch": 12,
+    "bytes": 714116992,
+    "sha256": "79376db202b73764cdcf8dc5ef56fedd68ff0803b18dc678a2d6dbc550c26aeb"
+  },
+  "examples": {
+    "path": "models/convergence-examples-selected.gguf",
+    "epoch": 12,
+    "bytes": 714116992,
+    "sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080"
+  }
+}

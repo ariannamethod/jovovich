@@ -2,6 +2,114 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — Forty verdicts hide inside 2,359 tokens
+
+The three-row control learned its answers. The next experiment returns to the
+unchanged 64-row corpus and compares ordinary token-mean loss with equal weight
+per complete answer. Both native runs use Qwen2.5-Coder 0.5B Q8, final-block
+MLP LoRA rank 16/alpha 32, seed 20260929, LR 0.001, token batch 48, 12 epochs,
+and snapshots every four epochs. This is 600 Adam updates per run. The matched
+arms differ only in the objective; comparison with the earlier three-epoch run
+also changes learning rate and batch size.
+
+The trainer now records each example's correct tokens and first error position.
+Its default objective remains `tokens`. The optional `examples` objective gives
+every completion token weight `2359 / (64 * answer_length)`, including EOS.
+Native masked CE is rescaled by batch weight sum divided by actual batch size.
+Evaluation keeps ordinary token-mean CE. An independent loss/gradient test
+checks four batch sizes and 216 adapter coordinates; maximum gradient difference
+is `2.38419e-7`. All four native tests and 21 Node tests pass.
+
+Before looking at generated answers, selection maximizes complete review pairs,
+then review macro token accuracy, then prefers the earlier saved epoch. Both
+arms select epoch 12. Neither arm achieves a complete teacher-forced review
+pair at any measured epoch.
+
+| Objective | Initial / selected CE | Correct target tokens | Exact concern / clean | Exact voice / code | Training seconds |
+| --- | --- | ---: | --- | --- | ---: |
+| Token mean | 2.82070 / 0.07783 | 2,294/2,359 | 0/20 / 20/20 | 2/12 / 5/12 | 1,542.01 |
+| Equal answers | 2.82070 / 0.12155 | 2,290/2,359 | 0/20 / 20/20 | 3/12 / 3/12 | 1,496.98 |
+
+Each run peaks near 1.41 GiB RSS. Both use four threads and overlap on the same
+CPU. Every selected concern first fails at completion position 3: the model
+closes the findings list where the target opens an objection. Several earlier
+epochs swing toward concerns while losing clean examples. Low CE does not
+establish mastery of this conditional choice.
+
+Free generation on all 64 exact training prompts reproduces 27/64 answers for
+token mean and 26/64 for equal answers, with the same per-task exact counts as
+the table. Both produce empty findings on all 40 training reviews. The 12
+existing diagnostic review cases also receive empty findings throughout:
+6/6 clean cases accepted, 0/6 concerns detected, 0/6 complete pairs in each arm.
+These previously inspected cases are diagnostics, not a fresh untouched test.
+
+All 16 separate voice generations execute successfully. Manual assessment gives
+each objective zero fully successful, one partial, and seven failed answers.
+Token mean partially acknowledges a newly permitted dependency; equal answers
+partially rejects automatic PR closure. Both identity answers loop to the token
+limit. Equal answers invents an error-message regression on a clean change.
+There are three token-limit outputs for token mean and two for equal answers;
+EOS alone does not establish coherence. These voice prompts do not measure
+executable-code correctness.
+
+Equal whole-answer weighting has a second consequence. Clean answers have six
+tokens, while concerns have 31–49. At the shared verdict position, clean
+examples therefore receive 5.8499 times the total nominal coefficient of
+concerns. These are coefficients before clipping, not measured gradient norms.
+The next controlled objective experiment can replace only those 40 coefficients
+with their pooled mean, `3.596684821`, keeping their total mass and all other
+weights fixed. That experiment has not run. If paired decisions still fail,
+the next adaptation-site comparison is final MLP plus output head; the current
+276,480 trainable parameters leave attention and earlier context processing
+frozen.
+
+### Give the vocabulary projection its missing vectors
+
+A native frozen-head benchmark at width 896 and vocabulary 151,936 exposed
+slow partial SIMD tiles. At four threads, batch 16 took 87.77 ms/token for
+projection plus input gradient; batch 48 took 12.74 ms/token. These are a warmup
+and two synthetic measurements, excluding the rest of training. Batch 48 fits
+the six-row tiles and reduces optimizer updates per epoch from 148 to 50.
+
+The separate [notorch PR #148](https://github.com/ariannamethod/notorch/pull/148)
+uses a bounded scratch tile to route partial tiles through the existing FMA
+kernel. Paired batch-16 measurements under shared training load improve
+67.83 to 29.86 and 99.78 to 32.49 ms/token. All 2,430,976 compared logits stay
+within relative L2 `3.28113e-7`, with 16/16 argmax agreement; all 14,336 input
+gradients are bit-identical. Tail, sanitizer, and 50 native autograd checks
+pass. The broad upstream SIMD gate retains the same nine relative-error
+failures before and after the patch; its thresholds are unchanged.
+Oleg merged the optimization into notorch main at `014403fa`. Both training
+arms retain pin `7e246e13`; no end-to-end training speedup is claimed from the
+new patch here.
+
+### Preserve the evidence, including the broken artifact
+
+One examples GGUF was observed at 674,857,344 bytes, with directory entries
+beyond EOF. Earlier parity output existed, but the file subsequently inspected
+was invalid. Its inference failures are excluded from behavioral scores. The
+cause of that artifact change is not established. Re-exporting the saved
+matrices produces the expected 714,116,992 bytes. Independent byte inspection
+verifies header metadata, all 288 untouched tensors against the original base,
+and all three adapted tensors against epoch-12 matrices in both final exports.
+The repeated native probe agrees at all 93 tested target positions per model.
+
+Both final GGUFs and all 18 epoch-4/8/12 LoRA adapters are private in
+`ataeff/jovovich`, under `experiments/corpus-convergence/`, at commit
+`29bc11cd5e141ca4fdf371c6d377e5dad097f863`. Privacy, uploaded sizes, and all
+20 weight SHA-256 values were verified. The complete evidence, sources, and
+model card are archived at `4a65a85c5d802319bb6478751d99782bdcd7a533`;
+all 54 updated files were downloaded and hash-checked. Final GGUF hashes:
+
+- Token mean: `79376db202b73764cdcf8dc5ef56fedd68ff0803b18dc678a2d6dbc550c26aeb`
+- Equal answers: `9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080`
+
+Raw row scores, completed generations, manual assessments, objective arithmetic,
+export checks, benchmark measurements, and reproduction commands are in
+[`training/results/2026-09-29-convergence`](training/results/2026-09-29-convergence).
+The runtime model lock remains on the official base. The training procedure now
+makes the failing verdict visible instead of hiding it in an average.
+
 ## 2026-09-29 — One token can invent a crime
 
 Oleg asked whether the training implementation or procedure was failing us.

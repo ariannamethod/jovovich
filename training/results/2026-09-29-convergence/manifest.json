@@ -1,0 +1,278 @@
+{
+  "parent_commit": "7378840ae8e10e1183ed37a1f1ca195ac762bf19",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "source_sha256": {
+    "training/train_mlp.c": "e6d454d27a04f50ed5f30c6ec9a8de1251b2af5c81b0d119d99d6e30857a0bb7",
+    "training/score_training.py": "94e716b3ca6b923c730a40129925a2cc6ae47117087822889e6aa1fa7bb4272c",
+    "training/merge_mlp.c": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67",
+    "training/probe_mlp.c": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac",
+    "training/prepare.py": "4152cf22135eceff9c27740bfcc8e2b57f729050ce46a76f45e26cb4753abffd",
+    "training/evaluate.py": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544",
+    "training/evaluate_review.mjs": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d",
+    "test/weighting.c": "7b9b58d544480b7621065d130b80ea7913552a152008f5725ab8ad8e45e3fa5c",
+    "test/training_score.test.mjs": "21e83f205f18f9cd41822be0f05c8ec5f084f851929c75341fb93b3924d061a0",
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training/review_holdout_v2.jsonl": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "training/voice_cases_v2.jsonl": "fb4053ce5f716e287e7d381bc608e79eeea8e87cef75c7bcd59fe25078c231e6",
+    "prompts/identity.txt": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "src/infer.c": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5",
+    "bin/jovovich.mjs": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "Makefile": "0cf11f0cdf509684b20fdb26c2420e16d3e7fc37562670c71b21def9bd6182c3"
+  },
+  "native_binary_sha256": {
+    "build/jovovich-train-mlp": "bfc4edde249400316895ba767eaa92a47b7d2e6a50ce03f25e0f000b627e9b70",
+    "build/jovovich-merge-mlp": "4218482a0e2730c7984fb364ab799658282ef4b39a08d13bd9e2eca2f505d572",
+    "build/jovovich-probe-mlp": "e9d85b23f7ead047a043c2f9448862e1f0bf86091086a7e30fc21e3ba138f08c",
+    "build/jovovich-infer": "2273a37e216159534fb0e7385bd9fdc04cac6495acfd1651267d329438adfc23"
+  },
+  "dataset": {
+    "rows": 64,
+    "completion_eos_tokens": 2359,
+    "review_pairs": 20,
+    "voice_examples": 12,
+    "code_examples": 12
+  },
+  "training": {
+    "epochs": 12,
+    "learning_rate": 0.001,
+    "token_batch": 48,
+    "adam_updates": 600,
+    "checkpoint_every": 4,
+    "rank": 16,
+    "alpha": 32,
+    "seed": 20260929,
+    "trainable_parameters": 276480,
+    "adapted": "last decoder MLP gate/up/down",
+    "NT_NO_I8": "1 (set by trainer)",
+    "threads": 4,
+    "simultaneous_runs": 2
+  },
+  "hardware": {
+    "cpu": "Intel Xeon Platinum 8573C",
+    "cpu_quota_cores": 8,
+    "logical_cpus_visible": 9
+  },
+  "selection": {
+    "rule": "exact teacher-forced review pairs, then review macro token accuracy, then earlier epoch",
+    "saved_candidates": [
+      4,
+      8,
+      12
+    ],
+    "selected_epoch": 12,
+    "generation_inspected_after_selection": true
+  },
+  "weights": {
+    "tokens": {
+      "path": "models/convergence-tokens-selected.gguf",
+      "epoch": 12,
+      "bytes": 714116992,
+      "sha256": "79376db202b73764cdcf8dc5ef56fedd68ff0803b18dc678a2d6dbc550c26aeb"
+    },
+    "examples": {
+      "path": "models/convergence-examples-selected.gguf",
+      "epoch": 12,
+      "bytes": 714116992,
+      "sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080"
+    }
+  },
+  "generation": {
+    "tokens": {
+      "training": {
+        "concern": {
+          "examples": 20,
+          "exact_matches": 0,
+          "eos_stops": 20,
+          "token_limit_stops": 0,
+          "empty_findings": 20
+        },
+        "clean": {
+          "examples": 20,
+          "exact_matches": 20,
+          "eos_stops": 20,
+          "token_limit_stops": 0,
+          "empty_findings": 20
+        },
+        "voice": {
+          "examples": 12,
+          "exact_matches": 2,
+          "eos_stops": 11,
+          "token_limit_stops": 1,
+          "empty_findings": 0
+        },
+        "code": {
+          "examples": 12,
+          "exact_matches": 5,
+          "eos_stops": 11,
+          "token_limit_stops": 1,
+          "empty_findings": 0
+        }
+      },
+      "exact_training_review_pairs": 0,
+      "training_review_pairs": 20,
+      "review": {
+        "cases": 12,
+        "structural_location_pass": 6,
+        "empty_findings": 12,
+        "parse_errors": 0
+      },
+      "voice": {
+        "cases": 8,
+        "eos_stops": 5,
+        "token_limit_stops": 3
+      }
+    },
+    "examples": {
+      "training": {
+        "concern": {
+          "examples": 20,
+          "exact_matches": 0,
+          "eos_stops": 20,
+          "token_limit_stops": 0,
+          "empty_findings": 20
+        },
+        "clean": {
+          "examples": 20,
+          "exact_matches": 20,
+          "eos_stops": 20,
+          "token_limit_stops": 0,
+          "empty_findings": 20
+        },
+        "voice": {
+          "examples": 12,
+          "exact_matches": 3,
+          "eos_stops": 10,
+          "token_limit_stops": 2,
+          "empty_findings": 0
+        },
+        "code": {
+          "examples": 12,
+          "exact_matches": 3,
+          "eos_stops": 9,
+          "token_limit_stops": 3,
+          "empty_findings": 0
+        }
+      },
+      "exact_training_review_pairs": 0,
+      "training_review_pairs": 20,
+      "review": {
+        "cases": 12,
+        "structural_location_pass": 6,
+        "empty_findings": 12,
+        "parse_errors": 0
+      },
+      "voice": {
+        "cases": 8,
+        "eos_stops": 6,
+        "token_limit_stops": 2
+      }
+    }
+  },
+  "validation": {
+    "native_tests": 4,
+    "node_tests": 21,
+    "weighted_gradient_coordinates": 216,
+    "max_abs_gradient_difference": 2.38419e-07,
+    "parity_rows_per_model": [
+      0,
+      1,
+      2
+    ],
+    "parity_completion_positions_per_model": 93,
+    "export_unchanged_tensors_per_model": 288,
+    "export_adapted_tensors_per_model": 3
+  },
+  "runtime_model_promoted": false,
+  "notorch_simd_patch": {
+    "pr": "https://github.com/ariannamethod/notorch/pull/148",
+    "published_commit": "debf64134a810099dba027c8bddb2ae79bace28c",
+    "merged_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+    "applied_to_training": false,
+    "existing_simd_gate_failures_before_and_after": 9
+  },
+  "artifact_recovery": {
+    "invalid_bytes": 674857344,
+    "valid_bytes": 714116992,
+    "invalid_sha256": "092af4c075dcb6b6d643540627712ceeae657d74439d0cdf3119e8cc37e89395",
+    "invalid_results_excluded": true,
+    "cause": "not established",
+    "recovery": "Regenerate examples GGUF from saved epoch-12 F32 matrices; repeat native parity, independent byte audit, and all 84 inference cases."
+  },
+  "result_paths_portable": true,
+  "reproduction_commands": [
+    "git submodule update --init deps/notorch",
+    "make train-mlp merge-mlp probe-mlp harness test",
+    "python3 training/prepare.py models/convergence.bin --sft training/sft_review_v2.jsonl --sft-only",
+    "NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 build/jovovich-train-mlp models/base-qwen.gguf models/convergence.bin models/convergence-tokens 12 0.001 48 4 tokens > models/convergence-tokens-metrics.jsonl",
+    "NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 build/jovovich-train-mlp models/base-qwen.gguf models/convergence.bin models/convergence-examples 12 0.001 48 4 examples > models/convergence-examples-metrics.jsonl",
+    "python3 training/score_training.py models/convergence-tokens-metrics.jsonl models/convergence-examples-metrics.jsonl --checkpoint-every 4 --output models/convergence-scores.json",
+    "build/jovovich-merge-mlp models/base-qwen.gguf models/convergence-tokens.epoch12 models/convergence-tokens-selected.gguf",
+    "build/jovovich-merge-mlp models/base-qwen.gguf models/convergence-examples.epoch12 models/convergence-examples-selected.gguf",
+    "NT_NO_I8=1 NT_QMV_THREADS=2 NT_ATTN_THREADS=2 NT_SIMD_THREADS=2 build/jovovich-probe-mlp models/base-qwen.gguf models/convergence-tokens-selected.gguf models/convergence.bin models/convergence-tokens.epoch12 0 1 2",
+    "NT_NO_I8=1 NT_QMV_THREADS=2 NT_ATTN_THREADS=2 NT_SIMD_THREADS=2 build/jovovich-probe-mlp models/base-qwen.gguf models/convergence-examples-selected.gguf models/convergence.bin models/convergence-examples.epoch12 0 1 2",
+    "python3 training/evaluate.py models/convergence-tokens-selected.gguf --sft training/sft_review_v2.jsonl --tokens 192 --threads 2 --output models/convergence-tokens-train-generation.jsonl",
+    "python3 training/evaluate.py models/convergence-examples-selected.gguf --sft training/sft_review_v2.jsonl --tokens 192 --threads 2 --output models/convergence-examples-train-generation.jsonl",
+    "NT_NO_I8=1 NT_QMV_THREADS=2 NT_ATTN_THREADS=2 node training/evaluate_review.mjs --model models/convergence-tokens-selected.gguf --cases training/review_holdout_v2.jsonl --tokens 192 --output models/convergence-tokens-review.jsonl",
+    "NT_NO_I8=1 NT_QMV_THREADS=2 NT_ATTN_THREADS=2 node training/evaluate_review.mjs --model models/convergence-examples-selected.gguf --cases training/review_holdout_v2.jsonl --tokens 192 --output models/convergence-examples-review.jsonl",
+    "python3 training/evaluate.py models/convergence-tokens-selected.gguf --cases training/voice_cases_v2.jsonl --identity prompts/identity.txt --tokens 128 --threads 2 --output models/convergence-tokens-voice.jsonl",
+    "python3 training/evaluate.py models/convergence-examples-selected.gguf --cases training/voice_cases_v2.jsonl --identity prompts/identity.txt --tokens 128 --threads 2 --output models/convergence-examples-voice.jsonl",
+    "python3 training/results/2026-09-29-convergence/check_convergence_export.py --root . --output models/convergence-export-integrity.json"
+  ],
+  "benchmark_reproduction_command": "cc -O2 -std=gnu11 -march=native -DUSE_SIMD -Ideps/notorch training/results/2026-09-29-convergence/head-cost-bench.c deps/notorch/notorch.c -lm -pthread -o build/head-cost-bench",
+  "reproduction_notes": [
+    "Use the base GGUF identified in model.json. All output prefixes must be new.",
+    "Prepare selected-models receipt at models/convergence-selected-models.json before the independent byte audit; the preserved receipt identifies exact artifacts.",
+    "Generation used two interleaved 32-row shards per model; the listed full-dataset commands produce the same prompts and decoding.",
+    "Recorded latency is affected by overlapping jobs; generation quality uses temperature zero and all 64 exact training prompts, 12 existing diagnostic review cases, and 8 existing voice prompts.",
+    "The existing diagnostic cases have been inspected in prior phases; these results are not a fresh untouched benchmark.",
+    "The benchmark source only changes its include path for portable compilation; scope is frozen-head projection and input gradient with one warmup and two timed repetitions."
+  ],
+  "path_normalization": "Absolute workspace prefixes are removed from result metadata. Responses and prompts are otherwise preserved. Assessment source_sha256 fields describe original evaluator files; evidence_sha256 describes the portable copies committed here.",
+  "evidence_sha256": {
+    "check_convergence_export.py": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99",
+    "checks.txt": "28c38bf75789d08bc163b533747e821118d80c0315cbcccaf24ae185e025b7cf",
+    "convergence-export-integrity.json": "db8bcb5a65b85f59ec56f99fbe1bae9b7cbf13e3691183df7291285616c8faba",
+    "convergence-review-assessment.json": "a0797c1f78793b801911fa483f93be24cdcf20c7dfc9bf962197add173ba2eff",
+    "convergence-voice-assessment.json": "c2dbf6ea849b30165eac701327fe517a08ea1b385f47ea0a0e2409f3b961809d",
+    "decision-weight-audit.json": "e8f611028ea8f3b5deadc00f1e431e804664454c75fdb486d34f62fa36607946",
+    "examples-metrics.jsonl": "17be409ebb0a105bc35b61c6bddb4bbaf654e3e823a917dd3b6a7ecbb68d877e",
+    "examples-parity.jsonl": "5d375782911b492c12be2fca6b24f57d733fd3fcf61cc6a0281491eb61a14494",
+    "examples-resource.json": "3a9d574aad3c1c73cd079820b225713622fff83a1dc563cf78b7b3c48e7fce24",
+    "examples-review.jsonl": "51745fc40a1c585f27ead53793615b3cc0c5ca0ec645c849eaab2b7998997187",
+    "examples-train-generation.jsonl": "620f6594413f593f330a282c030dc3678cf2f02c11e76c4ca58138ef16d6a07e",
+    "examples-voice.jsonl": "1303a665778c06ce45579c91f8d7240acd9d23b0f729ab7142b51bd89774bc9a",
+    "generation-summary.json": "7d9ba8b52e9becb3ced3a4ed8b911c7145177716dd9531006d7910b4e94ad74b",
+    "head-cost-bench.c": "5b388c4eba1794a9287021283d18f269db47ca93103f607885aa5be2df1487ed",
+    "head-cost-bench.jsonl": "6c099671f2205d972614fd7d50fe6b8e225fa4483c98a32f38edda124c87557c",
+    "head-tail-parity.jsonl": "24e14f5b8b24c289d15ad4407eb94bc0c88364c38a4f349d4aeb149dba160dd2",
+    "head-tail-rebuilt-comparison.jsonl": "cb5e503a839793398100570d186ac9c1fb80b1287b7c924c5952392bf2dac101",
+    "hf-weights.json": "4068e884c7f8b3eea18c9a0a697ef2eb4c810699c17fabe6354298af01994af6",
+    "invalid-export/artifact.json": "587fd2de2771c72fbcf7172ac00b712ccea69d4f55e3aa08a91d0b4f8748b6f8",
+    "invalid-export/convergence-examples-parity.jsonl": "5d375782911b492c12be2fca6b24f57d733fd3fcf61cc6a0281491eb61a14494",
+    "invalid-export/convergence-examples-review.jsonl": "8eff8b652900fb64bc53ac8fc723e93bb428b8e477209500de480568d2d07c05",
+    "invalid-export/convergence-examples-train-generation-0.jsonl": "2401b44793fb84f42c3872d89f5a9db2f0eb735df67611606713d2a5fd7544c3",
+    "invalid-export/convergence-examples-train-generation-1.jsonl": "76512e3dbefd9eaa957f25dec780c2c00589cd67cbb623fb3d9548005f2f1ee5",
+    "invalid-export/convergence-examples-voice.jsonl": "f769d3b71b8ec867d5ad3930027c5c10b995b640c7031529ce6e06319a86c860",
+    "original-evaluation-jobs.json": "c9480deefe9b4f03ed3b3d73985f5ed18df9cbd32f3981e00f4d9427a75d8e1c",
+    "plan.json": "46f26041477879a0949f51d4693213490b6dc61ef02844286dd57b9178a9a572",
+    "recovered-evaluation-jobs.json": "51197f1f781ef93bb851e083fa3996016bf96650a25443a25c65901793df999f",
+    "score-checks.txt": "db78083b184745908ec8c421cb3f324ab45f22ea503f2e260d0d9854817e59aa",
+    "selected-models.json": "7c2c69cb15f1950e1b2b8ec4062028f0cb11aa04779c3f0127d674c892d5ca89",
+    "tokens-metrics.jsonl": "ab121925194201cb0b75c010c012bca71c4830cd02a7238066cbbcb2481d85d3",
+    "tokens-parity.jsonl": "9ab148dd548a02bbd6b58ee78f6a91000c301c1a1ee87fda692e568da7cdc941",
+    "tokens-resource.json": "fd5f8321bac316362bc2dd4676bdb93479e92f90e36cd846046ed502360ae5be",
+    "tokens-review.jsonl": "35c43d0d3926f1783caecb85d0f215431f49d3622a5f85bae39989706bce2da7",
+    "tokens-train-generation.jsonl": "47d73d19edd42db6b7dc2271fbdde9cd4922c69bc72d1649cb1f4bf389347b18",
+    "tokens-voice.jsonl": "d98277d5164443773cbe10363308aa3de28d3712b66d87fc21d910cf4884ac53",
+    "training-scores.json": "eb7b979a9726d8e6d57c84221d50cf79b2b32dc7faa7e69a18e55d23c4f07813"
+  }
+}

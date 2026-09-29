@@ -204,8 +204,9 @@ build/jovovich-merge-mlp models/base-qwen.gguf models/mlp-candidate \
 
 The SFT prototype accepts Qwen2 bodies with RMSNorm epsilon `1e-6`. It uses
 floating activations (`NT_NO_I8=1`) and saves every epoch's three adapters and
-merged F32 projections, plus the final snapshot. The optional final argument
-`SAVE_EVERY` sets the epoch snapshot interval; `0` writes only the final snapshot.
+merged F32 projections, plus the final snapshot. The optional arguments after
+`TOKEN_BATCH` are `SAVE_EVERY` and `OBJECTIVE`. The snapshot interval defaults to
+`1`; `0` writes only the final snapshot. Objective defaults to `tokens`.
 The GGUF exporter replaces
 only those three last-block tensors; metadata and other tensor payloads remain
 byte-identical. Use a fresh output prefix for each run.
@@ -251,6 +252,43 @@ branch produced a false objection. On other requests, the control repeated its
 learned directory-rule wording. Use these measurements to select checkpoints by
 actual answers and expose where further training data is needed. Exact records are in
 [`training/results/2026-09-29-investigation`](training/results/2026-09-29-investigation).
+
+To give every training answer equal weight, set the final argument to `examples`:
+
+```sh
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/mlp-curriculum.bin \
+  models/example-weighted 12 0.001 48 4 examples > models/example-weighted.jsonl
+python3 training/score_training.py models/example-weighted.jsonl \
+  --checkpoint-every 4 --output models/example-weighted-scores.json
+```
+
+`tokens` averages completion-token losses. `examples` weights each token by
+`total_tokens / (example_count * answer_tokens)`, including EOS, so each full
+answer contributes equally. The native masked loss is rescaled to the actual
+minibatch size; a short final batch keeps the same objective. Evaluation CE
+always remains the ordinary token mean. Per-row accuracy and first-error
+positions accompany every epoch, and `online_mean_objective_ce` names the
+quantity being optimized.
+
+On the current 64-row corpus, equal example weights give clean and concern
+reviews 31.25% each, and voice and code 18.75% each. Under token weighting, clean
+reviews contribute 5.09%. `score_training.py` groups the native scores by task
+and chooses a saved checkpoint by exact review pairs, then review macro token
+accuracy, then the earlier epoch. Run it on completed metrics before inspecting
+new-task generations. Batch 48 aligns with the native six-row SIMD tiles;
+changing batch size also changes the number of optimizer updates per epoch.
+
+The matched 12-epoch comparison uses that unchanged 64-row corpus and selects
+both epoch-12 snapshots before inspecting generation. Token weighting reaches
+CE `0.07783` and 2,294/2,359 correct target tokens; example weighting reaches
+`0.12155` and 2,290/2,359. Both predict all 20 clean answers exactly and miss all
+20 concern answers at completion position 3. Neither earns a complete review
+pair. Equal full-answer weights also give the clean side **5.85 times** the
+nominal coefficient at that shared decision token, because its answers are
+shorter. Weighting an answer and weighting its verdict are separate choices.
+Raw scores, generations, and the comparison recipe live in
+[`training/results/2026-09-29-convergence`](training/results/2026-09-29-convergence).
 
 The review evaluator uses the actual host prompt and native inference path:
 

@@ -1,0 +1,11 @@
+{"threads":1,"T":16,"E":896,"V":151936,"fwd_ms":[627.823,639.720],"bwd_ms":[628.075,584.709],"mean_ms_per_token":77.5102,"peak_rss_kib":551896,"forward_check":0.000595001387,"backward_check":0.000700000674}
+{"threads":2,"T":16,"E":896,"V":151936,"fwd_ms":[558.760,607.095],"bwd_ms":[548.488,558.666],"mean_ms_per_token":71.0315,"peak_rss_kib":552376,"forward_check":0.000595001387,"backward_check":0.000700000674}
+{"threads":4,"T":16,"E":896,"V":151936,"fwd_ms":[606.539,807.667],"bwd_ms":[788.675,605.740],"mean_ms_per_token":87.7694,"peak_rss_kib":552640,"forward_check":0.000595001387,"backward_check":0.000700000674}
+{"threads":8,"T":16,"E":896,"V":151936,"fwd_ms":[492.763,564.175],"bwd_ms":[493.707,494.899],"mean_ms_per_token":63.9232,"peak_rss_kib":552656,"forward_check":0.000595001387,"backward_check":0.000700000674}
+{"threads":4,"T":12,"E":896,"V":151936,"fwd_ms":[335.650,365.964],"bwd_ms":[338.102,183.599],"mean_ms_per_token":50.9714,"peak_rss_kib":547600,"forward_check":0.000310000614,"backward_check":0.000700000674}
+{"threads":4,"T":18,"E":896,"V":151936,"fwd_ms":[324.770,316.205],"bwd_ms":[217.751,253.464],"mean_ms_per_token":30.8942,"peak_rss_kib":554916,"forward_check":-0.00141700031,"backward_check":0.000700000674}
+{"threads":4,"T":24,"E":896,"V":151936,"fwd_ms":[309.992,361.945],"bwd_ms":[209.802,211.002],"mean_ms_per_token":22.7655,"peak_rss_kib":562352,"forward_check":-0.000260999426,"backward_check":0.000700000674}
+{"threads":2,"T":24,"E":896,"V":151936,"fwd_ms":[663.147,384.116],"bwd_ms":[272.780,310.148],"mean_ms_per_token":33.9623,"peak_rss_kib":562076,"forward_check":-0.000260999426,"backward_check":0.000700000674}
+{"threads":8,"T":24,"E":896,"V":151936,"fwd_ms":[321.885,340.779],"bwd_ms":[178.296,128.725],"mean_ms_per_token":20.2018,"peak_rss_kib":562372,"forward_check":-0.000260999426,"backward_check":0.000700000674}
+{"threads":4,"T":48,"E":896,"V":151936,"fwd_ms":[370.646,400.083],"bwd_ms":[225.295,226.958],"mean_ms_per_token":12.7394,"peak_rss_kib":619296,"forward_check":-0.00103099924,"backward_check":0.000700000674}
+{"threads":8,"T":48,"E":896,"V":151936,"fwd_ms":[319.675,337.609],"bwd_ms":[182.866,559.641],"mean_ms_per_token":14.5812,"peak_rss_kib":619940,"forward_check":-0.00103099924,"backward_check":0.000700000674}

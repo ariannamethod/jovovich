@@ -1,0 +1,27 @@
+{
+  "source": "Original evaluator stdout; per-case elapsed times also preserved in generation JSONL",
+  "jobs": [
+    {
+      "job": "tokens-train-0",
+      "exit_code": 0,
+      "elapsed_seconds": 522.2486031480003
+    },
+    {
+      "job": "tokens-train-1",
+      "exit_code": 0,
+      "elapsed_seconds": 573.1538999289987
+    },
+    {
+      "job": "tokens-review",
+      "exit_code": 0,
+      "elapsed_seconds": 256.7895152350029
+    },
+    {
+      "job": "tokens-voice",
+      "exit_code": 0,
+      "elapsed_seconds": 138.6702269689995
+    }
+  ],
+  "original_pipeline_exit": 1,
+  "reason": "Examples shard failed on the invalid export. Completed token-arm results are intact; all examples-arm cases are repeated after recovery."
+}

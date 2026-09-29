@@ -1,0 +1,109 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "29bc11cd5e141ca4fdf371c6d377e5dad097f863",
+  "parent_commit": "64ea839015481c1642f836f57ae0ad9cda7c7fc6",
+  "files_uploaded": 21,
+  "verified_weights": [
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch04.gate.lora",
+      "sha256": "105259325d5dfe7c20ed94dbcde03e184808c4a475e920dde18728a74ec04d06",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch04.up.lora",
+      "sha256": "2f4c0cd088d21d01be1c4ef78bb6b7e1871ea1b52d02ffac1b8f236619faaa19",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch04.down.lora",
+      "sha256": "b301b401f4d80da80eaa542fec33b40619b2ce662448439c8f3664aa65adf61f",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch08.gate.lora",
+      "sha256": "b95610ac36c4b58694991b4a1fef094b06e0ddea63c18d8b30d8e9a4a75a1a13",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch08.up.lora",
+      "sha256": "720578dcd4677d6e7acabe76e6485d73d1df8c2c9364bf9de1a241f6e1325120",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch08.down.lora",
+      "sha256": "651413c390f9d26b803869ed934d7221ef8f164453af1a09adba9633f6c5a5f5",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch12.gate.lora",
+      "sha256": "4fa3bd00c85bb7597fb7792f7d5b79eee92ee1e6b373e2f42fc654d44a43decc",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch12.up.lora",
+      "sha256": "b046e1a88cff7e5d0081890ec1eb7a6d90c32bdd0859f201f0f2f5ef68c2e41e",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens.epoch12.down.lora",
+      "sha256": "3bcd9c25b4c630aa688c912f404b7cc66a9d4bb06acabed49c43d288c6956210",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-tokens-selected.gguf",
+      "sha256": "79376db202b73764cdcf8dc5ef56fedd68ff0803b18dc678a2d6dbc550c26aeb",
+      "bytes": 714116992
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch04.gate.lora",
+      "sha256": "7ddbcf042e0870f1d6419deb19d5c6cfe60d2ca243a9e5de7d8aff4abb3a425c",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch04.up.lora",
+      "sha256": "da307f0b741d9ffcc787b3e40fdee5e53197ee28dfdd9c0dd7da6d6c34ada404",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch04.down.lora",
+      "sha256": "cf97cc54f9512f848d5cbae65154877909c86740c3c0f7a6be89a8800abf9e58",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch08.gate.lora",
+      "sha256": "05018fca19ccfec297393180e34b9f08d38d462d4b9dbe88a01e1944a4c7c9c3",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch08.up.lora",
+      "sha256": "40b59c30997162a3e54494b877bd745b4bca3521cc36e1495acf08415d317dc3",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch08.down.lora",
+      "sha256": "0c17cf37121868ce9cc5e5a5e4b0c21bbd677aaa0d36bc754b263b997e2c0866",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch12.gate.lora",
+      "sha256": "3b279c6110ed14c0d3b22467b68033a1a2439428ae770f21389960f5fc0cbc5e",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch12.up.lora",
+      "sha256": "4c747fcaae2dbe186fe083ae1204ef13a5468d6ad09c67329b8fefede0f32546",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples.epoch12.down.lora",
+      "sha256": "6b858c61171a114d467dc28c257985304234a338d0f1143b02bdadc0f4f338c5",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/corpus-convergence/convergence-examples-selected.gguf",
+      "sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080",
+      "bytes": 714116992
+    }
+  ]
+}
