@@ -1,0 +1,366 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "parent_commit": "57cf6265cb68a06b8480d773f1258e0321e51121",
+  "commit": "3fad34312ffc6051cb23383e99d7d3b15bd4fb5c",
+  "weights_commit": "46c239a0f34900675e4a5e7bad082c51d26b3fec",
+  "previous_archive_commit": "57cf6265cb68a06b8480d773f1258e0321e51121",
+  "changed_files": [
+    "experiments/decision-small-step/evidence/collect_small_step.py",
+    "experiments/decision-small-step/evidence/manifest.json",
+    "experiments/decision-small-step/evidence/shared-control-semantic-assessment.json",
+    "experiments/decision-small-step/evidence/shared-new-semantic-assessment.json"
+  ],
+  "files_uploaded": 69,
+  "verified_by_download": [
+    {
+      "file": "experiments/decision-small-step/source/training/train_mlp.c",
+      "bytes": 29575,
+      "sha256": "4f7b1f15af80af068b7e56bbeea8349f82acffe8fcbcb02035a1969bbb4cff52"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/score_decisions.py",
+      "bytes": 13743,
+      "sha256": "21feae828448c506824d8d18d8140c0671726bb1321f97af2433b2229c5b6337"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/prepare.py",
+      "bytes": 3700,
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/merge_mlp.c",
+      "bytes": 8538,
+      "sha256": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/probe_mlp.c",
+      "bytes": 9303,
+      "sha256": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/evaluate.py",
+      "bytes": 5177,
+      "sha256": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/evaluate_review.mjs",
+      "bytes": 5963,
+      "sha256": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/sft_review_v2.jsonl",
+      "bytes": 133845,
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/sft_review_v3.jsonl",
+      "bytes": 133900,
+      "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/review_holdout_v2.jsonl",
+      "bytes": 14028,
+      "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad"
+    },
+    {
+      "file": "experiments/decision-small-step/source/prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "file": "experiments/decision-small-step/source/bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "file": "experiments/decision-small-step/source/src/infer.c",
+      "bytes": 8749,
+      "sha256": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5"
+    },
+    {
+      "file": "experiments/decision-small-step/source/model.json",
+      "bytes": 325,
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457"
+    },
+    {
+      "file": "experiments/decision-small-step/source/test/weighting.c",
+      "bytes": 21013,
+      "sha256": "c560007a447717ef5689b146c02d32209150ab25328da8bad3324480fad1ba77"
+    },
+    {
+      "file": "experiments/decision-small-step/source/test/decision_score.test.mjs",
+      "bytes": 9365,
+      "sha256": "6687de92627788c49e591c11d2a472ab847f25d658d245626ef98c862fab49f6"
+    },
+    {
+      "file": "experiments/decision-small-step/source/Makefile",
+      "bytes": 4320,
+      "sha256": "0cf11f0cdf509684b20fdb26c2420e16d3e7fc37562670c71b21def9bd6182c3"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "bytes": 2197,
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/results/2026-09-29-verdict-balance/probe_verdict_prefix.mjs",
+      "bytes": 4668,
+      "sha256": "7ab68004c0cfae5260b718e01c7c945f72e9d641dd16e4695b5977817b54d3da"
+    },
+    {
+      "file": "experiments/decision-small-step/source/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/archive_small_step_evidence.py",
+      "bytes": 9623,
+      "sha256": "a6c0e7ca0b8b1ff25c832cedd5d7240d76d77662ef8127ded2efb0e46717a582"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/assess_shared_new_semantics.mjs",
+      "bytes": 6876,
+      "sha256": "a1b03043268c4f653288fd3036dcc73fba9b24524f185dda5dfdd6f4f79a8425"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/assess_small_step_natural.mjs",
+      "bytes": 6474,
+      "sha256": "0ee0a1a78a30ff2ea87a6bb1bd01ab1a2c1a46b80945e648f1118eaf6860e0c9"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/checks.txt",
+      "bytes": 42877,
+      "sha256": "d1419657f444203880751873ab162301badf173399db63272b50997614b00cc0"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/collect_small_step.py",
+      "bytes": 6973,
+      "sha256": "23423ae5e64e1c33f423a23b9c95d4bf2f74720d7b33be9645334a8977f70d50"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/compare_small_step.py",
+      "bytes": 15791,
+      "sha256": "1f9e3acf7c47f89b1ff2c7e0085312a89bafcb2fdfa8a2de65b0e736fbee67a9"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/dataset-repairs.json",
+      "bytes": 2142,
+      "sha256": "75ca4d49f74f7bcc7db432d3417aa276a82dc03248d6d0407e5ae34fcb200f30"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/evaluate_decision_small_step.py",
+      "bytes": 4959,
+      "sha256": "0565f4b11c5eed066e426ef8e70334b8f53338d77bf78fb7a995d920cfd44e7e"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/evaluation-jobs.json",
+      "bytes": 3187,
+      "sha256": "68d70a567751167bc44404fde96ec35044e6282a0b5b8d2eab183be681954e28"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/evaluation-model-check.json",
+      "bytes": 104,
+      "sha256": "fb0c06ebd335aba796119a4712d52afbaf9c9231f96725e2c2891cbd7bd6b81d"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/export-audit.json",
+      "bytes": 503,
+      "sha256": "af369d1a172809675483f86fef72921f12eb5e135eb510af00f8265555bd47c9"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/generation-summary.json",
+      "bytes": 207200,
+      "sha256": "6959db5007911196a24f0fe83624eb14d9e5c4a78b6e85b1ef28e062d9a0de0e"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/hf-weights.json",
+      "bytes": 2894,
+      "sha256": "866ff04e71c2f441caecd06b1fce9c2a76547e7c636a4196ddc22fe404846032"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/metrics.jsonl",
+      "bytes": 832740,
+      "sha256": "503c78ccc7f3eb0c0f6f86b7d4af7cda640950db17b5d43de742135e271b9f4e"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/parity.jsonl",
+      "bytes": 1786,
+      "sha256": "01466c2ad548ead02eaa27bf8342e686d17d39f64afb7b0a1179dee7b84ded47"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/plan.json",
+      "bytes": 2730,
+      "sha256": "23981d67812332ff90008662336ce7c6112fc4c68f5771c4ff1187fa9ef7d1ee"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/prefix.jsonl",
+      "bytes": 15742,
+      "sha256": "719f33fb7526202ff62c0d2edf7a9a54ca9bc44430be90a85e926719ce5c23cd"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/probe_shared_prefix.mjs",
+      "bytes": 10672,
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/probe_shared_prefix.test.mjs",
+      "bytes": 3830,
+      "sha256": "92b508f81dd2e8f860a150e508309faed9f69b8b16f3ade73cb8f10b4b7b3905"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/procedure-audit.json",
+      "bytes": 3142,
+      "sha256": "5d3cb1df321409cc43dcd135032c9c3376b2d5ef54c66922cf0bcf3c3b1158ba"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/resource.json",
+      "bytes": 432,
+      "sha256": "219e47d2e73bb9aee8dda59e4312fdccb618ede5c970a878f4aed70c5fb02da4"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/review.jsonl",
+      "bytes": 15495,
+      "sha256": "2bf7c321887a11d835ef215f1856ba4dbc1617245acd7d0ccffe7227f189421c"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/run_decision_small_step.py",
+      "bytes": 1595,
+      "sha256": "f7a4cae77853dd5e019bb1a1ef5a3561ee8e918bc213173e11def41cea51aedc"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/run_shared_prefix.py",
+      "bytes": 4465,
+      "sha256": "904a5684983f545cfca55e78a9cb2f21145725cbc94da75aa1eb29cd23650c79"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/scores.json",
+      "bytes": 81203,
+      "sha256": "1b9578515cc780d3155ebd9c0afc4f8ea868c1a35d59cf5af7a7bf3d8323b423"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/selected-model.json",
+      "bytes": 192,
+      "sha256": "716a57e31ad58a0b06648e8c24590c8e655ab6335f5c044920b3111c13ec8ebb"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-new-judgments.json",
+      "bytes": 6098,
+      "sha256": "5d0a8404805333aabc1ba44ed8ad442c57143a630cd451e17d87a18b12fec402"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-control.jsonl",
+      "bytes": 428036,
+      "sha256": "5033f0d12c43a671b5975ab03c95a50cb9601f6bc80ca196f5a557a8f6b09c65"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-jobs.json",
+      "bytes": 1605,
+      "sha256": "caf37e2386e10bcca6b86412884e3dbdf747a7b8d28861e69cfdaf4b24a36f6f"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-new.jsonl",
+      "bytes": 402257,
+      "sha256": "a3fabd88146cc8d2d7e550a4bf847cb38c43515536724258c5fd86782578f7c1"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-plan.json",
+      "bytes": 4461,
+      "sha256": "af0a4f8b34208ac759ab07403931b8b8ccdef571ab85e5826fc8276e9933dcea"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-preflight.json",
+      "bytes": 263,
+      "sha256": "52cf83a06419d6f1634d2d7f1e7efb53a734ffe2a68add0cf79a556ad7f99db5"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-summary.json",
+      "bytes": 108518,
+      "sha256": "1bd99ea09648ca5082f06133b5269c3c56a13361332a6df7e2383aeb63f816e5"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-tests.txt",
+      "bytes": 591,
+      "sha256": "856062e92d148a81c28e9b50cdb3df9a0c0c524aabfda089ad7152d76a89e975"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-prefix-verification.json",
+      "bytes": 533,
+      "sha256": "cd86a0e811fdace4bc8a60b38bf83875ac843f20e77f4d13be0da6c7b9164524"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/small-step-next-control.json",
+      "bytes": 6525,
+      "sha256": "558405421da82370f15586f1fd669108d1f1de4f7d0979b6df860de0beb90e95"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/small-step-semantic-assessment.json",
+      "bytes": 129221,
+      "sha256": "b9a0fa747596c2ca949ae4872dcffcce1d4c23e0e94857a4e6a6675f99beff2e"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/summarize_shared_prefix.mjs",
+      "bytes": 15505,
+      "sha256": "fcfa74ebe097921c3640cc65ed51b1849dae093f6a51e95f0eb047d2f8761025"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/summarize_small_step_generation.mjs",
+      "bytes": 15349,
+      "sha256": "e747f7fca43d1d43d1044cb47846a86d3212a2184ec2344236438842b1f2552c"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/tests.txt",
+      "bytes": 4192,
+      "sha256": "9b3ecc771b7e4686800a9a8eeb579c6bd3fa435df1c2553ba84858623ca2d121"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/train-generation.jsonl",
+      "bytes": 120448,
+      "sha256": "33e49acad22f32a73fad4d012658f9ebda5d5a6807fde242b3513eaa0dff428a"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/training-source.json",
+      "bytes": 446,
+      "sha256": "946ef2445ecd08acc4d4522872189b9333e5d3cc32abf39ab6b58aeddc640236"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/trajectory-assessment.json",
+      "bytes": 7064,
+      "sha256": "31dda008b5f93ad0075c53ee737f88b0af75e3fac4d18224755e5301bb74cbb6"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/trajectory-comparison.json",
+      "bytes": 36579,
+      "sha256": "d711d3085ece4f71feffd43d167163e62fad02c755a4c4dce3cec354d4e9a142"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-control-semantic-assessment.json",
+      "bytes": 49433,
+      "sha256": "24a6c0c7cd7a35b33bcb06c7455c822e2c81be249f395569ea3f11a561b1eee9"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/shared-new-semantic-assessment.json",
+      "bytes": 33161,
+      "sha256": "38d7e61cb133a6e3c812c79124bfd4cac6fb3d7a8c5725e95e039e9380b4bf24"
+    },
+    {
+      "file": "experiments/decision-small-step/evidence/manifest.json",
+      "bytes": 16252,
+      "sha256": "a29c9f13c953e628a9e901afce3405f35c8294699fb585349eec3b1dfe5d3fc8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 12678,
+      "sha256": "bdc441a33f6005f04146c768b353b664891b17778f6a2881df955a10a2152fc9"
+    }
+  ],
+  "manifest_sha256": "a29c9f13c953e628a9e901afce3405f35c8294699fb585349eec3b1dfe5d3fc8",
+  "prior_card_sha256": "9dafa69c77342a2b73c60292ae610a7c9455ed360b5280ad5647b462833dad22",
+  "card_heading": "## Decision-only small-step control (2026-09-29)",
+  "source_parent_commit": "e655134538d44fe5b8f8e8593a737601d1673a12"
+}

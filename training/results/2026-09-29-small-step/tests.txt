@@ -1,0 +1,52 @@
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.76047e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70228e-05; gate/up/down max_grad=0.189277/0.377374/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=2.38419e-07; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=7.82311e-08); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=2.23517e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (78.302949ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (39.291418ms)
+✔ runner rejects unsupported Qwen MoE architecture (11.311042ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (293.108306ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (353.517321ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (323.722857ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (323.45834ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (87.923024ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (773.192504ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (28.04969ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (23.576349ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (71.372331ms)
+✔ MLP export refuses to overwrite an existing file (5.610924ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (23.876892ms)
+✔ review pair maps retain original row indices and concern/clean direction (111.808855ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (176.908506ms)
+✔ pair maps require SFT-only packing and a distinct output (90.139242ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (3.067125ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (3.920864ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (1.060407ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.77413ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (44.349425ms)
+✔ GitHub context rules come from the base revision and collection detects a push (5.13251ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (4.790063ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (1.158159ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (12.950713ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (320.236341ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (291.56711ms)
+✔ training summaries preserve pair direction and select by complete review pairs (89.002401ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (45.630679ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (57.400724ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1705.138305

@@ -1,0 +1,207 @@
+{
+  "sources": {
+    "current_scores": {
+      "path": "models/decision-small-step-scores.json",
+      "sha256": "2d6ea54260c8a5751d6967fca56a5d0d1e09cd323b350c2f2e79cd9b9347bb8d"
+    },
+    "current_metrics": {
+      "path": "models/decision-small-step-metrics.jsonl",
+      "sha256": "503c78ccc7f3eb0c0f6f86b7d4af7cda640950db17b5d43de742135e271b9f4e"
+    },
+    "previous_scores": {
+      "path": "training/results/2026-09-29-decision-only/scores.json",
+      "sha256": "d38f399cc5bcf3bacdf0155bc44f3b452735b72972f8a5b8b35cbeab6c0a072c"
+    },
+    "previous_metrics": {
+      "path": "training/results/2026-09-29-decision-only/metrics.jsonl",
+      "sha256": "6d8176a840880f6e91f2cf01cd5da975ab7337ae82bf556da1a777511069b0fb"
+    },
+    "corpus": {
+      "path": "training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    "generation_summary": {
+      "path": "models/decision-small-step-generation-summary.json",
+      "sha256": "6959db5007911196a24f0fe83624eb14d9e5c4a78b6e85b1ef28e062d9a0de0e"
+    }
+  },
+  "comparison": "Same fresh seed, base, adapters, 40 decision positions and 100 updates; learning rate changes from 0.001 to 0.0001.",
+  "observed": {
+    "initial_equivalence": "All 16 decision-summary and 35 full-readout numeric fields are exactly equal.",
+    "previous_selected": {
+      "update": 50,
+      "decision_ce": 0.6746909,
+      "full_vocabulary_target_hits": 24,
+      "complete_pairs": 5,
+      "pairs_with_positive_target_margin_separation": 14
+    },
+    "current_selected": {
+      "update": 100,
+      "decision_ce": 0.63640493,
+      "full_vocabulary_target_hits": 26,
+      "complete_pairs": 6,
+      "pairs_with_positive_target_margin_separation": 16
+    },
+    "current_best_observed": {
+      "update": 97,
+      "decision_ce": 0.63318169,
+      "full_vocabulary_target_hits": 27,
+      "complete_pairs": 8,
+      "pairs_with_positive_target_margin_separation": 15
+    },
+    "one_sided_full_vocabulary_target_hits": {
+      "previous_updates": 59,
+      "current_updates": 10,
+      "current_update_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    "mean_pair_target_margin_separation": {
+      "initial": 0.0225348465,
+      "current_50": 0.0554393768948,
+      "current_75": 0.140422439685,
+      "current_100": 0.299618053515,
+      "previous_selected_50": 0.11132965091
+    },
+    "current_full_readouts": [
+      {
+        "update": 0,
+        "review_first_error_at_position_zero": 40,
+        "review_examples": 40,
+        "full_corpus_exact_examples": 0,
+        "full_corpus_mean_token_ce": 2.82069617
+      },
+      {
+        "update": 25,
+        "review_first_error_at_position_zero": 40,
+        "review_examples": 40,
+        "full_corpus_exact_examples": 0,
+        "full_corpus_mean_token_ce": 2.79361721
+      },
+      {
+        "update": 50,
+        "review_first_error_at_position_zero": 40,
+        "review_examples": 40,
+        "full_corpus_exact_examples": 0,
+        "full_corpus_mean_token_ce": 2.79741885
+      },
+      {
+        "update": 75,
+        "review_first_error_at_position_zero": 40,
+        "review_examples": 40,
+        "full_corpus_exact_examples": 0,
+        "full_corpus_mean_token_ce": 2.80618377
+      },
+      {
+        "update": 100,
+        "review_first_error_at_position_zero": 40,
+        "review_examples": 40,
+        "full_corpus_exact_examples": 0,
+        "full_corpus_mean_token_ce": 2.82579376
+      }
+    ],
+    "positive_pair_separation_by_update": [
+      {
+        "update": 0,
+        "positive_pairs": 9
+      },
+      {
+        "update": 25,
+        "positive_pairs": 9
+      },
+      {
+        "update": 50,
+        "positive_pairs": 13
+      },
+      {
+        "update": 75,
+        "positive_pairs": 14
+      },
+      {
+        "update": 100,
+        "positive_pairs": 16
+      }
+    ],
+    "natural_generation": {
+      "training_cases": 40,
+      "diagnostic_cases": 12,
+      "fenced_empty_arrays": 52,
+      "host_parse_success": 52,
+      "complete_training_presence_pairs": 0,
+      "complete_diagnostic_presence_pairs": 0,
+      "training_exact_targets": 0,
+      "prior_comparator": "The prior selected checkpoint also produces fenced empty arrays for these 52 prompts."
+    },
+    "fixed_concern_prefix_probe": {
+      "cases": 4,
+      "prefix": "{\"findings\":[{\"",
+      "strict_json": 4,
+      "host_parse_success": 2,
+      "nonempty_host_results": 2,
+      "unusable_host_results": 2,
+      "expected_line_set_matches": 0
+    }
+  },
+  "interpretation": [
+    {
+      "finding": "The smaller learning rate stabilizes the shared target-template preference and preserves growing differences between paired contexts.",
+      "evidence": "One-sided target-hit updates fall from 59 to 10; positive pair separations rise from 9/20 to 16/20."
+    },
+    {
+      "finding": "Learning continues through the final quarter of the fixed budget.",
+      "evidence": "Mean pair separation rises from 0.14042244 at update 75 to 0.29961805 at update 100. The best observed target-hit checkpoint is 97; saved eligible 100 wins the declared selector."
+    },
+    {
+      "finding": "Free generation enters a different output prefix from the teacher-forced decision state.",
+      "evidence": "All 40 review rows have their first teacher-forced error at response position zero at every current snapshot. The trained decision is at position three after the shared canonical prefix."
+    }
+  ],
+  "metric_definitions": {
+    "margin": "Target-template logit minus alternative-template logit at response position three.",
+    "concern_target": {
+      "token_id": 66582,
+      "text": "\":[{\""
+    },
+    "clean_target": {
+      "token_id": 788,
+      "text": "\":"
+    },
+    "pair_separation": "Concern-row target margin plus clean-row target margin; equivalently the difference in concern-template preference between the two contexts.",
+    "shared_mean_preference": "(Mean concern-row target margin minus mean clean-row target margin)/2.",
+    "full_vocabulary_hit": "The correct target token wins the recorded full-vocabulary argmax. Raw decision rows contain the argmax token IDs."
+  },
+  "next_control_draft": "reference/small-step-next-control.json; complete review-answer supervision selected after the 80-case shared-prefix comparison.",
+  "shared_prefix_probe_status": {
+    "planned_cases": 80,
+    "completed_cases": 80,
+    "models": 2,
+    "review_prompts_per_model": 40,
+    "prefix": "{\"findings",
+    "status": "complete",
+    "summary": {
+      "path": "models/shared-prefix-summary.json",
+      "sha256": "a8f2eda670ed99065194014ab45dda40a6f7aef407e544c3ef99aabf993c85c0"
+    },
+    "current_model": {
+      "cases": 40,
+      "json_syntax_valid": 38,
+      "production_usable": 29,
+      "correct_clean_reviews": 14,
+      "clean_cases": 20,
+      "genuine_concerns_detected": 0,
+      "concern_cases": 20,
+      "full_pairs_pass": 0,
+      "pairs": 20,
+      "eos": 40
+    }
+  }
+}

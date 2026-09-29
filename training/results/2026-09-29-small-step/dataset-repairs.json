@@ -1,0 +1,35 @@
+{
+  "source": "training/sft_review_v2.jsonl",
+  "source_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+  "destination": "training/sft_review_v3.jsonl",
+  "destination_sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7",
+  "usage": "Prepared for subsequent complete-answer SFT; current LR comparison and shared-prefix probes use the unchanged v2 corpus.",
+  "changed_rows": [
+    {
+      "row": 1,
+      "id": "scoped-python-analysis-concern",
+      "field": "assistant reason",
+      "before": "{\"findings\":[{\"line_id\":1,\"reason\":\"This creates a Python file in analysis/, whose nearest AGENTS.md requires Lua. The repository-wide permission does not override that directory rule.\"}]}",
+      "after": "{\"findings\":[{\"line_id\":1,\"reason\":\"This adds Python code in analysis/, whose nearest AGENTS.md requires Lua. The repository-wide permission does not override that directory rule.\"}]}",
+      "basis": "The changed line adds an import; the supplied diff provides no file-creation event."
+    },
+    {
+      "row": 33,
+      "id": "sequence-field-width-introduced",
+      "field": "user repository rule",
+      "before": "Preserve the public frame layout and its 64-bit sequence field. This patch is not a wire-format migration.",
+      "after": "The public wire contract requires a 64-bit sequence field. Keep or restore that field width; this patch does not change the wire format.",
+      "basis": "Both directions are judged against the required 64-bit contract; the repaired case restores it."
+    },
+    {
+      "row": 34,
+      "id": "sequence-field-width-repaired",
+      "field": "user repository rule",
+      "before": "Preserve the public frame layout and its 64-bit sequence field. This patch is not a wire-format migration.",
+      "after": "The public wire contract requires a 64-bit sequence field. Keep or restore that field width; this patch does not change the wire format.",
+      "basis": "Both directions are judged against the required 64-bit contract; the repaired case restores it."
+    }
+  ],
+  "pair_labels_preserved": true,
+  "total_rows": 64
+}

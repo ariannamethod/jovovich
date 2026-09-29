@@ -1,0 +1,140 @@
+{
+  "status": "Planned; native implementation and training have not started.",
+  "experiment": "complete_review_answer_plus_decision",
+  "parent_experiment": "decision-small-step: learning rate 0.0001, selected update 100",
+  "comparator": {
+    "selection": {
+      "path": "models/decision-small-step-selected-model.json",
+      "sha256": "716a57e31ad58a0b06648e8c24590c8e655ab6335f5c044920b3111c13ec8ebb"
+    },
+    "scores": {
+      "path": "models/decision-small-step-scores.json",
+      "sha256": "2d6ea54260c8a5751d6967fca56a5d0d1e09cd323b350c2f2e79cd9b9347bb8d"
+    },
+    "model": "models/decision-small-step-selected.gguf",
+    "model_sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c"
+  },
+  "evidence": {
+    "shared_prefix_summary": {
+      "path": "models/shared-prefix-summary.json",
+      "sha256": "a8f2eda670ed99065194014ab45dda40a6f7aef407e544c3ef99aabf993c85c0"
+    },
+    "manual_semantic_assessment": {
+      "path": "training/results/2026-09-29-small-step/shared-new-semantic-assessment.json",
+      "sha256": "511ba6e99cdb3eefa205b6d6fb22b38182d5be5d3cb4ada11937221643889088"
+    },
+    "matched_shared_prefix_cases": 80,
+    "current_model": {
+      "cases": 40,
+      "json_syntax_valid": 38,
+      "production_usable": 29,
+      "correct_clean_reviews": 14,
+      "clean_cases": 20,
+      "genuine_concerns_detected": 0,
+      "concern_cases": 20,
+      "full_pairs_pass": 0,
+      "pairs": 20,
+      "eos": 40
+    },
+    "interpretation": "Supplying the shared prefix improves entry and syntax; complete reviews still need training in citations, reasons and completion. This selects complete-answer supervision as the next objective comparison."
+  },
+  "fixed_training": {
+    "initialization": "Fresh adapters on the same verified base; use the same seed as the comparator.",
+    "base_model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v2.jsonl",
+    "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training_rows": "The same 40 explicitly paired review rows from the unchanged 64-row v2 corpus.",
+    "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "adapter_targets": "Final-layer MLP gate, up and down projections.",
+    "trainable_parameters": 276480,
+    "learning_rate": 0.0001,
+    "optimizer": "Adam with the comparator hyperparameters.",
+    "optimizer_updates": 100,
+    "global_gradient_clip": 1,
+    "data_phase": "v3 wording changes form a subsequent data comparison."
+  },
+  "objective": {
+    "decision_positions": 40,
+    "residual_answer_positions": 792,
+    "distinct_positions_per_update": 832,
+    "decision_loss": "L_decision = (1/40) * sum CE over the existing mapped decision positions.",
+    "residual_loss": "L_residual = (1/792) * sum CE over every remaining review-answer target, including prefix, line ID, reason, closing syntax and EOS.",
+    "combined_loss": "L = L_decision + lambda * L_residual",
+    "lambda": 1,
+    "partition": "The two sets are disjoint and cover all 832 review-answer targets exactly once.",
+    "nominal_token_coefficients": {
+      "decision": "1/40",
+      "residual": "1/792"
+    },
+    "update_interpretation": "The decision coefficient stays 1/40. The auxiliary gradient contributes to the combined norm, clipping and Adam moments."
+  },
+  "gradient_accumulation": {
+    "microbatch_tokens": 40,
+    "method": "Hold parameters fixed while accumulating weighted gradients across all 832 target positions. Apply one global clip and one Adam step after the complete accumulation.",
+    "normalization": "Each microbatch contributes the sum of per-token CE multiplied by its global coefficient, 1/40 or 1/792. Rescale any locally normalized CE by the appropriate coefficient mass before accumulating.",
+    "remainder": "Include the final partial microbatch with its actual coefficient mass.",
+    "validation": "Compare accumulated loss and parameter gradients with a single-batch reference on a small mixed-group fixture, including a partial final microbatch."
+  },
+  "budget": {
+    "optimizer_updates": 100,
+    "supervised_token_visits": 83200,
+    "comparator_supervised_token_visits": 4000,
+    "supervised_token_ratio": 20.8
+  },
+  "checkpoint_selection": {
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "eligible_updates": [
+      25,
+      50,
+      100
+    ],
+    "rule": "Maximize complete decision pairs, then full-vocabulary target hits, then earlier eligible update.",
+    "timing": "Select before free generation.",
+    "scope": "Keep the comparator selector; prefix and whole-answer results are additional measurements."
+  },
+  "readouts": {
+    "every_update": [
+      "Decision CE, residual CE and combined loss.",
+      "Combined gradient norm before clipping, applied clip scale and clipping event.",
+      "The existing 40 decision targets: full-vocabulary hits, complete pairs and target margins."
+    ],
+    "full_snapshots": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "at_full_snapshots": [
+      "Per-position prefix hits and complete three-token-prefix hits on the 40 reviews.",
+      "Teacher-forced token accuracy and exact answers across all 64 corpus rows."
+    ],
+    "after_selection": [
+      "Natural generation for the same 40 review training prompts and 12 diagnostics.",
+      "Shared-prefix continuation on both sides of all 20 review pairs.",
+      "Complete JSON syntax, production parsing, finding presence, citations, reason meaning, EOS and full-pair correctness."
+    ],
+    "summary": "Report clipping frequency and each loss component alongside the unchanged selection metrics."
+  },
+  "emitted_token_trace": {
+    "source": "Actual token IDs selected inside the native generation loop before decoding.",
+    "record": [
+      "Selected token ID sequence.",
+      "Supplied prefix token IDs.",
+      "EOS ID and stop reason.",
+      "Model, prompt and runner source hashes."
+    ],
+    "comparison": "Compare the first emitted ID after the shared prefix with the teacher-forced full-vocabulary winner; score the complete generated review separately.",
+    "current_evidence": "The completed shared-prefix probe records response semantics. The planned runner trace adds direct emission identity."
+  }
+}

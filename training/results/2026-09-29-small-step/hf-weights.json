@@ -1,0 +1,74 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "46c239a0f34900675e4a5e7bad082c51d26b3fec",
+  "parent_commit": "9ec3f80bab43f96766e56669b80ae4366a80bd73",
+  "files_uploaded": 14,
+  "verified_weights": [
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "eaa3431f31617cfbc73bbca040d862613b2e96bb2956a35d5c4ee6d6cd7d097d"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "7abbd44b9f2aa6f950a5fb9edf4bcf4a4720a56ab8f2c94ed6dc1194531462e6"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "de2fdb6302fbd4cff4099e47a50b8a6669be4089397d8587fd4e17456aa9c86c"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch50.gate.lora",
+      "bytes": 368695,
+      "sha256": "46372114cc7d0781fadcd301617eb3ad7a58ee275b2f5adf250df3faf58954d3"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch50.up.lora",
+      "bytes": 368693,
+      "sha256": "4c75ff5286851784a8b25df60311513d76ac5eb16dba7717ac367758787b3281"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch50.down.lora",
+      "bytes": 368695,
+      "sha256": "0ba6b900dd27288f93d3761b367461738eee1aae077f961c7e04fc38eeee25ce"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch75.gate.lora",
+      "bytes": 368695,
+      "sha256": "5f4b5aeddbf0b93134c1d0807956e171d809698983098c1fa69ef4224115b2e9"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch75.up.lora",
+      "bytes": 368693,
+      "sha256": "fa7b383d75b45d611fe8168022ba39c813a8cdafb0df77f0db69e0b161dcb5a9"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch75.down.lora",
+      "bytes": 368695,
+      "sha256": "970fc611c8eb6613effa76f0e19c6f6a457f6113e1e0990f6e717333d14ff4a8"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "142fac47b374a12fadb0e46d2e3d1740ffede70f90e7c68d0a182ae1ef7c0ef8"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "0a1043188ac12b8980353c8264eee2449ddb24ae281e50b570d67131bb73bf76"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "203dbbda5655e5cc3a33f9b5ef7518ddfb224df50e2a1c83d75f12eb98c9a61f"
+    },
+    {
+      "file": "experiments/decision-small-step/decision-small-step-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c"
+    }
+  ]
+}

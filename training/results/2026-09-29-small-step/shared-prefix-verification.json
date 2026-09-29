@@ -1,0 +1,14 @@
+{
+  "models_sha256": {
+    "control": "a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518",
+    "new": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c"
+  },
+  "unchanged": true,
+  "matched_native_prefixes": 40,
+  "generated_responses": 80,
+  "plan_sha256": "af0a4f8b34208ac759ab07403931b8b8ccdef571ab85e5826fc8276e9933dcea",
+  "probe_sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+  "created_unix_seconds": 1790678776.137801,
+  "generations": 80,
+  "global_workers": 4
+}

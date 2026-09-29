@@ -1,0 +1,71 @@
+{
+  "parent_commit": "e655134538d44fe5b8f8e8593a737601d1673a12",
+  "trainer_source_sha256": "4f7b1f15af80af068b7e56bbeea8349f82acffe8fcbcb02035a1969bbb4cff52",
+  "trainer_binary_sha256": "d4fc9e601089b07a06ceea016bf7d09abe8a9480de7b2881a01f41773798d29d",
+  "matches_previous_source_and_binary": true,
+  "corpus_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+  "packed_data_sha256": "c952e8af942c4ee71fed9b67229edd03c9d11b237d67fa6811e306dba6415ee5",
+  "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+  "chat_template_env": null,
+  "source_checks": [
+    {
+      "question": "Target alignment",
+      "observed": "Target t reads the hidden state at prompt_length - 1 + t; mapped decision positions are the first divergent non-EOS completion tokens.",
+      "source": "training/train_mlp.c"
+    },
+    {
+      "question": "Cached-state validity",
+      "observed": "Causal attention reads positions through the current token; final-layer keys/values are computed before the adapted final MLP. Its frozen post-attention input is reused for training.",
+      "source": "deps/notorch/harness/arch_llama.c"
+    },
+    {
+      "question": "Optimizer state",
+      "observed": "One mean-CE backward pass, gradient clipping and Adam update per 40-position batch; the six adapter parameter slots remain stable across diagnostic tape evaluations.",
+      "source": "training/train_mlp.c; deps/notorch/notorch.c; test/optimizer.c; test/weighting.c"
+    },
+    {
+      "question": "Natural output route",
+      "observed": "All 40 initial review rows first miss at completion position 0. All 40 prior selected natural reviews return a fenced bare array, while decision supervision occurs after the three canonical findings-prefix IDs.",
+      "source": "training/results/2026-09-29-decision-only/metrics.jsonl; train-generation.jsonl"
+    },
+    {
+      "question": "Supplied-prefix intervention",
+      "observed": "The new shared prefix stops before either divergent token; prior positive-prefix probes already include the beginning of a finding. Both complete concern/clean partners enter the new 80-response cohort.",
+      "source": "shared-prefix-plan.json"
+    }
+  ],
+  "active_training_change": {
+    "learning_rate_from": 0.001,
+    "learning_rate_to": 0.0001,
+    "fresh_initialization": true,
+    "updates": 100
+  },
+  "checks": {
+    "native_tests": 4,
+    "node_tests": 31,
+    "shared_prefix_tests": 5
+  },
+  "review_feedback": {
+    "pull_request": 8,
+    "codex_review_completed": true,
+    "actionable_findings_returned": 0,
+    "independent_ci_records_returned": 0
+  },
+  "dataset_audit": {
+    "review_pairs": 20,
+    "labels_consistent_with_reviewed_fixtures": true,
+    "all20_target_citations_valid": true,
+    "all40_prompts_byte_identical_to_host": true,
+    "followup": "dataset-repairs.json"
+  },
+  "infer_override_env": null,
+  "raw_trajectory_winner_check": {
+    "states_per_run": 101,
+    "positions_per_state": 40,
+    "all_8080_winners_within_paired_ids": true,
+    "post_update_single_id_states": {
+      "previous": 59,
+      "current": 10
+    }
+  }
+}

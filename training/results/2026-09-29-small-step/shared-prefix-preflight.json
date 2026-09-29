@@ -1,0 +1,7 @@
+{
+  "plan_sha256": "af0a4f8b34208ac759ab07403931b8b8ccdef571ab85e5826fc8276e9933dcea",
+  "probe_sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+  "created_unix_seconds": 1790678776.137801,
+  "generations": 80,
+  "global_workers": 4
+}

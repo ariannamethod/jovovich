@@ -1,0 +1,3473 @@
+{
+  "sources": {
+    "plan": {
+      "path": "training/results/2026-09-29-small-step/shared-prefix-plan.json",
+      "sha256": "af0a4f8b34208ac759ab07403931b8b8ccdef571ab85e5826fc8276e9933dcea"
+    },
+    "preflight": {
+      "path": "models/shared-prefix-preflight.json",
+      "sha256": "52cf83a06419d6f1634d2d7f1e7efb53a734ffe2a68add0cf79a556ad7f99db5"
+    },
+    "verification": {
+      "path": "models/shared-prefix-verification.json",
+      "sha256": "cd86a0e811fdace4bc8a60b38bf83875ac843f20e77f4d13be0da6c7b9164524"
+    },
+    "probe": {
+      "path": "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d"
+    },
+    "summarizer": {
+      "path": "training/results/2026-09-29-small-step/summarize_shared_prefix.mjs",
+      "sha256": "fcfa74ebe097921c3640cc65ed51b1849dae093f6a51e95f0eb047d2f8761025"
+    },
+    "host": {
+      "path": "bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    "infer_source": {
+      "path": "src/infer.c",
+      "sha256": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5"
+    },
+    "runner": {
+      "path": "build/jovovich-infer",
+      "sha256": "2273a37e216159534fb0e7385bd9fdc04cac6495acfd1651267d329438adfc23"
+    },
+    "dataset": {
+      "path": "training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    "control_selection": {
+      "path": "training/results/2026-09-29-decision-only/selected-model.json",
+      "sha256": "e33f681645d403641d91f6ce3c8552c353dbb00c587543deb878e6e38a896149"
+    },
+    "control_natural": {
+      "path": "training/results/2026-09-29-decision-only/train-generation.jsonl",
+      "sha256": "e454b0e74862d24d0eb2cb98593bdc7bd0360e394136f879214d5766a0ffc985"
+    },
+    "control_metrics": {
+      "path": "training/results/2026-09-29-decision-only/metrics.jsonl",
+      "sha256": "6d8176a840880f6e91f2cf01cd5da975ab7337ae82bf556da1a777511069b0fb"
+    },
+    "control_shared_prefix": {
+      "path": "models/shared-prefix-control.jsonl",
+      "sha256": "5033f0d12c43a671b5975ab03c95a50cb9601f6bc80ca196f5a557a8f6b09c65"
+    },
+    "new_selection": {
+      "path": "models/decision-small-step-selected-model.json",
+      "sha256": "716a57e31ad58a0b06648e8c24590c8e655ab6335f5c044920b3111c13ec8ebb"
+    },
+    "new_natural": {
+      "path": "models/decision-small-step-train-generation.jsonl",
+      "sha256": "33e49acad22f32a73fad4d012658f9ebda5d5a6807fde242b3513eaa0dff428a"
+    },
+    "new_metrics": {
+      "path": "models/decision-small-step-metrics.jsonl",
+      "sha256": "503c78ccc7f3eb0c0f6f86b7d4af7cda640950db17b5d43de742135e271b9f4e"
+    },
+    "new_shared_prefix": {
+      "path": "models/shared-prefix-new.jsonl",
+      "sha256": "a3fabd88146cc8d2d7e550a4bf847cb38c43515536724258c5fd86782578f7c1"
+    }
+  },
+  "protocol": {
+    "matched_cases": 40,
+    "pairs": 20,
+    "models": 2,
+    "supplied_prefix": "{\"findings",
+    "supplied_prefix_ids": [
+      4913,
+      3903,
+      819
+    ],
+    "first_emitted_token": "not inferred from continuation text",
+    "production_usable": "Production parseReview accepts the complete response and every citation; explanation meaning is scored separately.",
+    "exact_target_match": "Raw complete response equals the training target and terminates at EOS.",
+    "semantic_assessment": "Pending manual review of reason meaning."
+  },
+  "arms": {
+    "control": {
+      "selected_update": 50,
+      "model_sha256": "a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518",
+      "teacher_forced": {
+        "update": 50,
+        "mean_decision_ce": 0.6746909,
+        "correct_targets": 24,
+        "complete_decision_pairs": 5,
+        "concern_correct": 18,
+        "clean_correct": 6
+      },
+      "natural": {
+        "cases": 40,
+        "pairs": 20,
+        "json_valid": 40,
+        "findings_schema": 40,
+        "concern_responses": 0,
+        "clean_responses": 40,
+        "invalid_presence": 0,
+        "presence_correct": 20,
+        "concern_presence_correct": 0,
+        "clean_presence_correct": 20,
+        "complete_presence_pairs": 0,
+        "production_usable": 40,
+        "usable_correct_presence": 20,
+        "complete_usable_presence_pairs": 0,
+        "concern_responses_with_valid_citations": 0,
+        "citation_or_schema_errors": 0,
+        "expected_location_set_match": 20,
+        "exact_target_match": 0,
+        "eos": 40,
+        "token_limit": 0
+      },
+      "shared_prefix": {
+        "cases": 40,
+        "pairs": 20,
+        "json_valid": 21,
+        "findings_schema": 21,
+        "concern_responses": 17,
+        "clean_responses": 4,
+        "invalid_presence": 19,
+        "presence_correct": 9,
+        "concern_presence_correct": 7,
+        "clean_presence_correct": 2,
+        "complete_presence_pairs": 0,
+        "production_usable": 12,
+        "usable_correct_presence": 6,
+        "complete_usable_presence_pairs": 0,
+        "concern_responses_with_valid_citations": 8,
+        "citation_or_schema_errors": 28,
+        "expected_location_set_match": 3,
+        "exact_target_match": 0,
+        "eos": 36,
+        "token_limit": 4
+      }
+    },
+    "new": {
+      "selected_update": 100,
+      "model_sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c",
+      "teacher_forced": {
+        "update": 100,
+        "mean_decision_ce": 0.63640493,
+        "correct_targets": 26,
+        "complete_decision_pairs": 6,
+        "concern_correct": 6,
+        "clean_correct": 20
+      },
+      "natural": {
+        "cases": 40,
+        "pairs": 20,
+        "json_valid": 40,
+        "findings_schema": 40,
+        "concern_responses": 0,
+        "clean_responses": 40,
+        "invalid_presence": 0,
+        "presence_correct": 20,
+        "concern_presence_correct": 0,
+        "clean_presence_correct": 20,
+        "complete_presence_pairs": 0,
+        "production_usable": 40,
+        "usable_correct_presence": 20,
+        "complete_usable_presence_pairs": 0,
+        "concern_responses_with_valid_citations": 0,
+        "citation_or_schema_errors": 0,
+        "expected_location_set_match": 20,
+        "exact_target_match": 0,
+        "eos": 40,
+        "token_limit": 0
+      },
+      "shared_prefix": {
+        "cases": 40,
+        "pairs": 20,
+        "json_valid": 38,
+        "findings_schema": 38,
+        "concern_responses": 12,
+        "clean_responses": 26,
+        "invalid_presence": 2,
+        "presence_correct": 20,
+        "concern_presence_correct": 6,
+        "clean_presence_correct": 14,
+        "complete_presence_pairs": 1,
+        "production_usable": 29,
+        "usable_correct_presence": 17,
+        "complete_usable_presence_pairs": 0,
+        "concern_responses_with_valid_citations": 3,
+        "citation_or_schema_errors": 11,
+        "expected_location_set_match": 17,
+        "exact_target_match": 0,
+        "eos": 40,
+        "token_limit": 0
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "scoped-python-analysis-concern",
+      "pair": "scoped-python-analysis",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.109832764,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.120695114,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "scoped-python-analysis-clean",
+      "pair": "scoped-python-analysis",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.219112396,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.458099365,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "approved-binary-decoder-concern",
+      "pair": "approved-binary-decoder",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0682525635,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.40139389,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "approved-binary-decoder-clean",
+      "pair": "approved-binary-decoder",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0235824585,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.363531113,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "sqlite-build-requirement-concern",
+      "pair": "sqlite-build-requirement",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.210609436,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.340616226,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "sqlite-build-requirement-clean",
+      "pair": "sqlite-build-requirement",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.171710968,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.411045074,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "background-service-scope-concern",
+      "pair": "background-service-scope",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.321626663,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.045923233,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "background-service-scope-clean",
+      "pair": "background-service-scope",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.208778381,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.272836685,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "preserve-trie-credit-introduced",
+      "pair": "preserve-trie-credit",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.374084473,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.44509697,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "preserve-trie-credit-repaired",
+      "pair": "preserve-trie-credit",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.255262375,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0298404694,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "model-parent-provenance-introduced",
+      "pair": "model-parent-provenance",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0424537659,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.243375778,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "model-parent-provenance-repaired",
+      "pair": "model-parent-provenance",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0502357483,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.151611328,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "scoped-design-record-concern",
+      "pair": "scoped-design-record",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.196239471,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0773143768,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "scoped-design-record-clean",
+      "pair": "scoped-design-record",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0989875793,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.333772659,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "checksum-indirection-concern",
+      "pair": "checksum-indirection",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.168054581,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.248193741,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "checksum-indirection-clean",
+      "pair": "checksum-indirection",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.149490356,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.274629593,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "sequence-field-width-introduced",
+      "pair": "sequence-field-width",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.229537964,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.168224335,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "sequence-field-width-repaired",
+      "pair": "sequence-field-width",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.236423492,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.158647537,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "allocation-null-guard-introduced",
+      "pair": "allocation-null-guard",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.295866013,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0969047546,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "allocation-null-guard-repaired",
+      "pair": "allocation-null-guard",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0144844055,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.840904236,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "zero-worker-guard-introduced",
+      "pair": "zero-worker-guard",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.284433365,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1
+          ],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.202516556,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1
+          ],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "zero-worker-guard-repaired",
+      "pair": "zero-worker-guard",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0419368744,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.751848221,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "validated-port-conversion-introduced",
+      "pair": "validated-port-conversion",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.286113739,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "token-limit",
+          "eos": false
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.262401581,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "validated-port-conversion-repaired",
+      "pair": "validated-port-conversion",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.170991898,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.467842102,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "negative-offset-type-introduced",
+      "pair": "negative-offset-type",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.133666992,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "token-limit",
+          "eos": false
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.283950806,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "negative-offset-type-repaired",
+      "pair": "negative-offset-type",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.139030457,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.285757065,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "exact-property-name-introduced",
+      "pair": "exact-property-name",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.173629761,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.45655632,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "exact-property-name-repaired",
+      "pair": "exact-property-name",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.183958054,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.470310211,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "idempotent-event-retry-introduced",
+      "pair": "idempotent-event-retry",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.116258621,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.160823822,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "idempotent-event-retry-repaired",
+      "pair": "idempotent-event-retry",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.125738144,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.146709442,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "write-permission-check-introduced",
+      "pair": "write-permission-check",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.242677689,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0642623901,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1
+          ],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "write-permission-check-repaired",
+      "pair": "write-permission-check",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0263347626,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 2,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.618144989,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "stable-manifest-order-introduced",
+      "pair": "stable-manifest-order",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.744199753,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.149726868,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "stable-manifest-order-repaired",
+      "pair": "stable-manifest-order",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.541683197,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "token-limit",
+          "eos": false
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.496086121,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "atomic-snapshot-publication-introduced",
+      "pair": "atomic-snapshot-publication",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.325094223,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 3,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2,
+            3
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.233020782,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "atomic-snapshot-publication-repaired",
+      "pair": "atomic-snapshot-publication",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.295757294,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.322980881,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "save-status-propagation-introduced",
+      "pair": "save-status-propagation",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.0574760437,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 3,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1,
+            2,
+            3
+          ],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 788,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.438913345,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "save-status-propagation-repaired",
+      "pair": "save-status-propagation",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 66582,
+          "target_correct": false,
+          "target_minus_alternative_margin": -0.0337257385,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": false,
+          "findings_schema": false,
+          "findings_count": null,
+          "concern": null,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model did not return a complete JSON review",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "token-limit",
+          "eos": false
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.450387955,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "allocation-product-overflow-introduced",
+      "pair": "allocation-product-overflow",
+      "expected_concern": true,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.268728256,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 66582,
+          "winner_id": 66582,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.265123367,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": false,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [
+            1
+          ],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    },
+    {
+      "name": "allocation-product-overflow-repaired",
+      "pair": "allocation-product-overflow",
+      "expected_concern": false,
+      "control": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.135492325,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      },
+      "new": {
+        "teacher_forced": {
+          "position": 3,
+          "target_id": 788,
+          "winner_id": 788,
+          "target_correct": true,
+          "target_minus_alternative_margin": 0.945148468,
+          "full_answer_first_error_position": 0
+        },
+        "natural": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 0,
+          "concern": false,
+          "presence_correct": true,
+          "production_usable": true,
+          "citation_error": null,
+          "returned_line_ids": [],
+          "expected_location_set_match": true,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        },
+        "shared_prefix": {
+          "json_valid": true,
+          "findings_schema": true,
+          "findings_count": 1,
+          "concern": true,
+          "presence_correct": false,
+          "production_usable": false,
+          "citation_error": "Model finding lacks an exact changed-line citation",
+          "returned_line_ids": null,
+          "expected_location_set_match": false,
+          "exact_target_match": false,
+          "stop_reason": "eos",
+          "eos": true
+        }
+      }
+    }
+  ]
+}
