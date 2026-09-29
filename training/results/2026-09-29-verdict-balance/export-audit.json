@@ -1,0 +1,18 @@
+{
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "model": {
+    "path": "models/verdict-balance-selected.gguf",
+    "sha256": "0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b",
+    "bytes": 714116992
+  },
+  "prefix": "models/verdict-balance.epoch12",
+  "metadata_equal": true,
+  "expected_extent": 714116992,
+  "unchanged": 288,
+  "adapted": 3,
+  "valid": true
+}

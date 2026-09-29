@@ -1,0 +1,167 @@
+{
+  "removed": [
+    {
+      "complete_file": "base-qwen.gguf",
+      "duplicate_bytes": 578813952,
+      "duplicate_sha256": "fa553f2cffa763ef744d68384d0f9bb3d03077fa891666d343ec9e89ab9546e8",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "control-memorization-epoch10.gguf",
+      "duplicate_bytes": 27000832,
+      "duplicate_sha256": "51e570dffc73d26e536d9b503954503ac21d414ad6a3b16d73908546b4d674e4",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "control-memorization-epoch10.gguf",
+      "duplicate_bytes": 191627264,
+      "duplicate_sha256": "0869b584834b9ca5ec1f56b52638ed6c0d3f5608b1289d8d62a2d62bcaf7ca26",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "control-memorization-epoch30.gguf",
+      "duplicate_bytes": 309854208,
+      "duplicate_sha256": "726a22a3088af7c6ebad2f332a2bd3d6d70d6e668cdbf9d7b6f9f5e1afae8e42",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "control-memorization-epoch30.gguf",
+      "duplicate_bytes": 202899456,
+      "duplicate_sha256": "6e05d5a24ac80062fdce8fa0df6246df13713313ff52fde011546d7ab555bf59",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-mlp-v2-epoch01.gguf",
+      "duplicate_bytes": 199229440,
+      "duplicate_sha256": "58a64bb56fa5ff312f79b2fbbb76b689591b30c6f538a13141ad5ccb6a14c967",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-mlp-v2-epoch03.gguf",
+      "duplicate_bytes": 115343360,
+      "duplicate_sha256": "e6a2bbc76a66c5b813ba9b9ffc0b6de753e13e43224fee99a8f1cb4b5b0c0e90",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-sft.gguf",
+      "duplicate_bytes": 923009024,
+      "duplicate_sha256": "1cb22fe96825ffbc92022d1e46e241bc455c809ca5933487cf5a427b451af63a",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-sft.gguf",
+      "duplicate_bytes": 795607040,
+      "duplicate_sha256": "bda721f3f8665a3e7cdca40335e75ed35743d125e6bc0415a97effc0823e3488",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-v2-sft.gguf",
+      "duplicate_bytes": 456392704,
+      "duplicate_sha256": "848af7f46ff42ce9ab5b1046a5d4668d6bc1d284cf3bf2ff66b702331588cfae",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich-v2.gguf",
+      "duplicate_bytes": 512229376,
+      "duplicate_sha256": "32dfe8848b61c9f6fa182cc41535ed46af81a2da6372009d1c5ff9b7ccc600df",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "jovovich.gguf",
+      "duplicate_bytes": 695730176,
+      "duplicate_sha256": "91fbd0bee7654fbbdec77a6135773d03b51d7f7117c680629de2629688529c20",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 379060224,
+      "duplicate_sha256": "6bf8ab51b6bee29a32f5f9e4336b00828f64d339e272e0e7dba5e23a6abf73b9",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 271319040,
+      "duplicate_sha256": "296e19f065f84eaf70f6e3e93341e3e38d6f6ac621e053093c6e34b67505b17f",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 253231104,
+      "duplicate_sha256": "677288e7612395a60a69fa2f59dce938e910e6a322cd2b71dad01c2ba1bad551",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 236716032,
+      "duplicate_sha256": "d66ab74a6e017292d0ae0ddc83cb2f68f3e0884e39752764e9823f0693dad482",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 223084544,
+      "duplicate_sha256": "e4bff1b200cbddd96d5cad3b7f3166b63370a785a48f0ee5af21713dbeb2a14a",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 187170816,
+      "duplicate_sha256": "751a190e4a9d9a02c83a63092607c058ae2aa0080b12a47b580faebef5ad7df0",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 662175744,
+      "duplicate_sha256": "0bb1dc86125ca231731fb60cbec63f8e4adc0557a35fe071c0cef8236f3667f1",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen25-coder-1.5b-q8.gguf",
+      "duplicate_bytes": 325582848,
+      "duplicate_sha256": "e2fbf4831f287356a6b6b06cd8723d630dc76475b1a83e2af8c8a41ccb3e0c80",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen3-hybrid-0.8b-q8.gguf",
+      "duplicate_bytes": 216006656,
+      "duplicate_sha256": "3ff271cfbe46f08052b025da2350fec0bb475835e9d76b66bbc9339583b027a4",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen3-hybrid-0.8b-q8.gguf",
+      "duplicate_bytes": 191102976,
+      "duplicate_sha256": "38b17b88d5c4b58c3c270fc142711a7cad013e9e2c3f862ddba6971c25e1f91a",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen3-qrazy-0.6b-q8.gguf",
+      "duplicate_bytes": 285736960,
+      "duplicate_sha256": "71bf733716712cd95ec990751e1470539bf5d723b09c58934b5b10f2fc4265bb",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen3-qrazy-0.6b-q8.gguf",
+      "duplicate_bytes": 169082880,
+      "duplicate_sha256": "831b0bc1b046d773fe95c221f25e84e61a187a8c5fad8c7b6c2369f3e757e30f",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "qwen3-qrazy-0.6b-q8.gguf",
+      "duplicate_bytes": 182190080,
+      "duplicate_sha256": "ed8b3fc7c7f46351370b55f1cb1bca73ddd8ae60caf24b3ad6983c6f9bd4eb4f",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "unsloth-qwen.gguf",
+      "duplicate_bytes": 411041792,
+      "duplicate_sha256": "deb0413482b2fa06039cfb5d724c456d3057170114bfb4c07a4de410ade1cb2e",
+      "identical_prefix_verified": true
+    },
+    {
+      "complete_file": "unsloth-qwen.gguf",
+      "duplicate_bytes": 248250368,
+      "duplicate_sha256": "b5b94dccfc8d7491ad793cdd717b8911eecf05b0f9fa262de51ddff0b0f467d5",
+      "identical_prefix_verified": true
+    }
+  ],
+  "skipped": 0
+}

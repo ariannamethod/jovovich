@@ -1,0 +1,20 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/verdict-balance.bin",
+    "models/verdict-balance",
+    "12",
+    "0.001",
+    "48",
+    "4",
+    "verdict",
+    "models/verdict-balance.pairs"
+  ],
+  "objective": "verdict",
+  "elapsed_seconds": 1352.6373000159983,
+  "peak_rss_kib": 1473808,
+  "user_seconds": 3397.232163,
+  "system_seconds": 81.519768,
+  "exit_code": 0
+}

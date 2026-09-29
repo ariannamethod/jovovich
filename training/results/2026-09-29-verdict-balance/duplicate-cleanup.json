@@ -1,0 +1,47 @@
+{
+  "verified_model_sha256": "0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b",
+  "removed_incomplete_duplicate_prefixes": [
+    {
+      "bytes": 142082048,
+      "sha256": "0acceb2711a7a32ef2579a453be3361ea77988b79d3f56a430b52cf857678aa4",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 245891072,
+      "sha256": "9a73da92d95e3e8bd134ec302a1e395d67c88b190e6d3a051c4400087d2dffc4",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 422576128,
+      "sha256": "98ed3d9a06229ccd5a0644aad4244ab4784b8e41db89d2d54c4ce9b87eec6205",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 373555200,
+      "sha256": "b10330153053d82d1eea7744a4072b49872cf83ac3201675c2bd0c6491df68c1",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 175112192,
+      "sha256": "a7f475d9c537e757936fda9348652058306549e118787ec9a756c7b86695435e",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 287571968,
+      "sha256": "6b118741ea80eb64009325addf57cc7ffdec41bbee0132b4676b23b00f647caa",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 422576128,
+      "sha256": "98ed3d9a06229ccd5a0644aad4244ab4784b8e41db89d2d54c4ce9b87eec6205",
+      "identical_prefix_of_verified_model": true
+    },
+    {
+      "bytes": 175112192,
+      "sha256": "a7f475d9c537e757936fda9348652058306549e118787ec9a756c7b86695435e",
+      "identical_prefix_of_verified_model": true
+    }
+  ],
+  "creator": "not established; not produced by reviewed native probe source",
+  "runtime_path": "models/verdict-balance-selected.gguf now links to the same verified inode in /tmp"
+}

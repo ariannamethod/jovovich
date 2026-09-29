@@ -22,10 +22,14 @@
 #define MLP_SEED 20260929
 
 typedef struct { nt_tensor *z, *xn, *gate, *up, *targets, *bias, *weights; int n; } mlp_batch;
-typedef struct { char *system, *prompt, *answer; mlp_batch cache; int *ids, n_ids, start; } mlp_example;
 typedef struct {
-    int E, F, V, layer, example_weighting;
-    double average_tokens;
+    char *system, *prompt, *answer; mlp_batch cache; int *ids, n_ids, start;
+    int decision_pair, decision_position, decision_alternative_id, decision_correct, decision_predicted_id;
+    float decision_margin;
+} mlp_example;
+typedef struct {
+    int E, F, V, layer, example_weighting, verdict_weighting, pair_count;
+    double average_tokens, verdict_weight;
     nt_tensor *wg, *wu, *wd, *head, *norm, *ffn_norm, *bias;
     nt_lora_pair adapters[3];
 } mlp_bank;
@@ -81,6 +85,33 @@ static void tokenize(mlp_example *e,bpe_tokenizer *tok) {
     e->n_ids=n;e->start=prompt-1;e->cache.n=n-prompt;
     e->cache.targets=tensor(e->cache.n,1);
     for(int t=0;t<e->cache.n;t++)e->cache.targets->data[t]=(float)e->ids[prompt+t];
+}
+static void load_pairs(mlp_bank *b,mlp_example *rows,int count,const char *path) {
+    FILE *f=fopen(path,"rb");unsigned char magic[8];
+    if(!f||fread(magic,1,8,f)!=8||memcmp(magic,"JVPR\1\0\0\0",8))mlp_die("invalid JVPR pair map");
+    if(mlp_u32(f)!=(uint32_t)count)mlp_die("pair map dataset row count disagrees");
+    uint32_t pairs=mlp_u32(f);if(!pairs||pairs>(uint32_t)count/2)mlp_die("invalid pair count");
+    for(int i=0;i<count;i++)rows[i].decision_pair=0;
+    double mass=0;
+    for(uint32_t i=0;i<pairs;i++) {
+        uint32_t a=mlp_u32(f),c=mlp_u32(f);
+        if(a>=(uint32_t)count||c>=(uint32_t)count||a==c)mlp_die("invalid pair row indices");
+        mlp_example *left=&rows[a],*right=&rows[c];
+        if(left->decision_pair||right->decision_pair)mlp_die("duplicate pair row");
+        int limit=left->cache.n<right->cache.n?left->cache.n:right->cache.n,p=0;
+        /* Terminal EOS is not a verdict. Reject identical or prefix-only
+         * completions instead of manufacturing a decision at their ending. */
+        limit--;
+        while(p<limit&&left->cache.targets->data[p]==right->cache.targets->data[p])p++;
+        if(p>=limit)mlp_die("pair completions are identical or prefix-only");
+        left->decision_pair=right->decision_pair=(int)i+1;
+        left->decision_position=right->decision_position=p;
+        left->decision_alternative_id=(int)right->cache.targets->data[p];
+        right->decision_alternative_id=(int)left->cache.targets->data[p];
+        mass+=b->average_tokens/left->cache.n+b->average_tokens/right->cache.n;
+    }
+    if(fgetc(f)!=EOF||ferror(f))mlp_die("trailing or unreadable pair map bytes");
+    fclose(f);b->pair_count=(int)pairs;b->verdict_weight=mass/(2*pairs);
 }
 static int capture_mlp(void *ctx,int layer,int pos,int n,int width,float *residual) {
     mlp_capture *c=ctx;if(layer!=c->layer)return NT_OK;
@@ -171,7 +202,11 @@ static mlp_batch gather(mlp_bank *b,mlp_example *rows,const token_row *order,int
         memcpy(s.gate->data+(size_t)t*b->F,c->gate->data+(size_t)p*b->F,(size_t)b->F*sizeof(float));
         memcpy(s.up->data+(size_t)t*b->F,c->up->data+(size_t)p*b->F,(size_t)b->F*sizeof(float));
         s.targets->data[t]=c->targets->data[p];if(s.bias)memcpy(s.bias->data+(size_t)t*b->E,b->bias->data,(size_t)b->E*sizeof(float));
-        if(s.weights)s.weights->data[t]=(float)(b->average_tokens/c->n);
+        if(s.weights) {
+            mlp_example *e=&rows[order[t].example];
+            s.weights->data[t]=(float)(b->verdict_weighting&&e->decision_pair&&p==e->decision_position?
+                                      b->verdict_weight:b->average_tokens/c->n);
+        }
     }
     return s;
 }
@@ -234,7 +269,7 @@ static void snapshot(mlp_bank *b,const char *prefix) {
 static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,int batch,
                       int count,int *correct_tokens,int *exact_examples,int *row_correct,int *first_error) {
     double sum=0;memset(row_correct,0,(size_t)count*sizeof(int));
-    for(int i=0;i<count;i++)first_error[i]=-1;
+    for(int i=0;i<count;i++){first_error[i]=-1;rows[i].decision_correct=0;rows[i].decision_margin=0;rows[i].decision_predicted_id=-1;}
     *correct_tokens=0;*exact_examples=0;
     for(int p=0;p<total;p+=batch) {
         int n=total-p;if(n>batch)n=batch;mlp_batch s=gather(b,rows,order+p,n);nt_tape_start();
@@ -247,26 +282,39 @@ static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,i
             int row=order[p+t].example,pos=order[p+t].token;
             if(predicted==(int)s.targets->data[t]){(*correct_tokens)++;row_correct[row]++;}
             else if(first_error[row]<0||pos<first_error[row])first_error[row]=pos;
+            if(rows[row].decision_pair&&pos==rows[row].decision_position) {
+                rows[row].decision_correct=predicted==(int)s.targets->data[t];
+                rows[row].decision_predicted_id=predicted;
+                rows[row].decision_margin=l[(int)s.targets->data[t]]-l[rows[row].decision_alternative_id];
+            }
         }
         sum+=(double)n*v;nt_tape_clear();batch_free(&s);
     }
     for(int i=0;i<count;i++)if(row_correct[i]==rows[i].cache.n)(*exact_examples)++;
     return sum/total;
 }
-static void print_row_scores(const mlp_example *rows,int count,const int *correct,const int *first_error) {
+static void print_row_scores(const mlp_example *rows,int count,const int *correct,const int *first_error,int initial) {
     printf(",\"teacher_forced_rows\":[");
-    for(int i=0;i<count;i++)printf("%s{\"row\":%d,\"tokens\":%d,\"correct\":%d,\"first_error_position\":%d}",i?",":"",i,rows[i].cache.n,correct[i],first_error[i]);
+    for(int i=0;i<count;i++) {
+        printf("%s{\"row\":%d,\"tokens\":%d,\"correct\":%d,\"first_error_position\":%d",i?",":"",i,rows[i].cache.n,correct[i],first_error[i]);
+        if(rows[i].decision_pair) {
+            printf(",\"decision_position\":%d,\"decision_correct\":%s,\"decision_margin\":%.9g,\"decision_predicted_id\":%d",rows[i].decision_position,rows[i].decision_correct?"true":"false",rows[i].decision_margin,rows[i].decision_predicted_id);
+            if(initial)printf(",\"decision_target_id\":%d,\"decision_alternative_id\":%d",(int)rows[i].cache.targets->data[rows[i].decision_position],rows[i].decision_alternative_id);
+        }
+        printf("}");
+    }
     printf("]");
 }
 static int number(const char *s,int lo,int hi) {
     char *end;errno=0;long n=strtol(s,&end,10);if(errno||end==s||*end||n<lo||n>hi)mlp_die("invalid integer argument");return (int)n;
 }
 int main(int argc,char **argv) {
-    if(argc<4||argc>9){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples)]\n",argv[0]);return 2;}
+    if(argc<4||argc>10){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples|verdict) PAIR_MAP]\n",argv[0]);return 2;}
     int epochs=argc>4?number(argv[4],0,100):3,batch=argc>6?number(argv[6],1,128):16;
     int save_every=argc>7?number(argv[7],0,100):1;
     const char *objective=argc>8?argv[8]:"tokens";
-    if(strcmp(objective,"tokens")&&strcmp(objective,"examples"))mlp_die("objective must be tokens or examples");
+    if(strcmp(objective,"tokens")&&strcmp(objective,"examples")&&strcmp(objective,"verdict"))mlp_die("objective must be tokens, examples or verdict");
+    if(!strcmp(objective,"verdict")&&argc<10)mlp_die("verdict objective requires a pair map");
     char *end=NULL;float lr=argc>5?strtof(argv[5],&end):0.00005f;if(!(lr>0)||!isfinite(lr)||(end&&(*end||end==argv[5])))mlp_die("invalid learning rate");
     uint16_t endian=1;if(*(unsigned char*)&endian!=1)mlp_die("raw F32 export requires a little-endian host");
     /* The tape differentiates the fixed dequantized matrices, not activation rounding. */
@@ -278,7 +326,8 @@ int main(int argc,char **argv) {
     if(!m->layers[m->n_layers-1].ffn_norm)mlp_die("missing final MLP normalization weight");
     nt_seed(MLP_SEED);srand(MLP_SEED);mlp_bank bank={0};bank_init(&bank,m);
     int total=0;for(int i=0;i<count;i++){tokenize(&rows[i],tok);if(rows[i].n_ids>gf->ctx_len)mlp_die("example exceeds model context");if(total>INT_MAX-rows[i].cache.n)mlp_die("too many tokens");total+=rows[i].cache.n;}
-    bank.example_weighting=!strcmp(objective,"examples");bank.average_tokens=(double)total/count;
+    bank.example_weighting=strcmp(objective,"tokens")!=0;bank.average_tokens=(double)total/count;
+    bank.verdict_weighting=!strcmp(objective,"verdict");if(argc>9)load_pairs(&bank,rows,count,argv[9]);
     nt_tensor *reference=tensor(rows[0].cache.n,m->embed);capture_sequence(m,dims,&rows[0],reference);
     int last=m->n_layers-1;wt original=m->layers[last].wdown;float *bias=m->layers[last].ffn_down_bias;
     float *zero=calloc((size_t)m->embed*m->ffn,sizeof(float));if(!zero)mlp_die("zero projection allocation failed");
@@ -296,7 +345,8 @@ int main(int argc,char **argv) {
     int correct_tokens,exact_examples,*row_correct=calloc((size_t)count,sizeof(int)),*first_error=malloc((size_t)count*sizeof(int));if(!row_correct||!first_error)mlp_die("score allocation failed");
     double initial=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
     printf("{\"stage\":\"sft_initial\",\"objective\":\"%s\",\"mean_token_ce\":%.8f,\"examples\":%d,\"tokens\":%d,\"rank\":16,\"alpha\":32,\"layer\":%d,\"trainable_parameters\":%ld,\"seed\":%d,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d",objective,initial,count,total,last,params,MLP_SEED,correct_tokens,exact_examples);
-    print_row_scores(rows,count,row_correct,first_error);puts("}");fflush(stdout);
+    if(bank.pair_count)printf(",\"decision_pairs\":%d,\"verdict_weight\":%.9g",bank.pair_count,bank.verdict_weight);
+    print_row_scores(rows,count,row_correct,first_error,1);puts("}");fflush(stdout);
     for(int ep=1;ep<=epochs;ep++) {
         for(int i=total-1;i>0;i--){int j=rand()%(i+1);token_row tmp=order[i];order[i]=order[j];order[j]=tmp;}
         double sum=0,epoch_start=now_ms();
@@ -307,7 +357,7 @@ int main(int argc,char **argv) {
         }
         double held=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
         printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_objective_ce\":%.8f,\"mean_token_ce\":%.8f,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d,\"seconds\":%.3f",ep,sum/total,held,correct_tokens,exact_examples,(now_ms()-epoch_start)/1000);
-        print_row_scores(rows,count,row_correct,first_error);puts("}");fflush(stdout);
+        print_row_scores(rows,count,row_correct,first_error,0);puts("}");fflush(stdout);
         if(save_every&&(ep%save_every==0||ep==epochs)) {
             char prefix[4000];if(snprintf(prefix,sizeof(prefix),"%s.epoch%02d",argv[3],ep)>=(int)sizeof(prefix))mlp_die("output prefix too long");snapshot(&bank,prefix);
         }

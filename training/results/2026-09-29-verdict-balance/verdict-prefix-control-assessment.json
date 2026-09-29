@@ -1,0 +1,181 @@
+{
+  "created_utc": "2026-09-29T02:25:36.898844+00:00",
+  "source": "models/verdict-prefix-control.jsonl",
+  "source_sha256": "aed205533549c0c78cf995c7e014ea5cd6f18f29d25d40157c005309467d4c3e",
+  "script": "training/results/2026-09-29-verdict-balance/probe_verdict_prefix.mjs",
+  "script_sha256": "7ab68004c0cfae5260b718e01c7c945f72e9d641dd16e4695b5977817b54d3da",
+  "model": "models/convergence-examples-selected.gguf",
+  "model_sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080",
+  "method": "Read-only manual assessment against each actual recorded prompt and changed-line chunk. The supplied prefix and generated continuation are kept separate. Valid JSON syntax, runtime citation validation, exact expected location, causal correctness, and termination are assessed independently. A correct paraphrase earns semantic credit; awkward grammar alone does not erase a supported failure mechanism.",
+  "prefix_supplied_by_probe": "{\"findings\":[{\"",
+  "what_prefix_supplies": "The top-level findings key, a nonempty findings array, and the start of its first object/key. The concern branch is externally imposed. The model supplies key names, line IDs, reason text, any additional findings, closing syntax and EOS.",
+  "counts": {
+    "cases": 4,
+    "exact_training_prompts": 2,
+    "existing_review_diagnostics": 2,
+    "native_success": 4,
+    "eos_stops": 4,
+    "token_limit_stops": 0,
+    "valid_assembled_json_syntax": 4,
+    "runtime_review_parse_success": 2,
+    "runtime_citation_errors": 2,
+    "exact_expected_location_pass": 1,
+    "grounded_continuations": 1,
+    "grounded_exact_training_continuations": 1,
+    "grounded_existing_diagnostic_continuations": 0
+  },
+  "cases": [
+    {
+      "name": "scoped-python-analysis-concern",
+      "source_kind": "exact training prompt",
+      "prompt_sha256": "1db73ea2221ba9fbda5c4c0e7f88936348f8c4a8fd068abf1cf5701e5c108a63",
+      "verdict_origin": "Concern branch supplied by probe; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"This creates suspicion against presence of Lua.\"},\n{\"line_id\":2,\"reason\":\"This creates suspicion against presence of Lua.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This creates suspicion against presence of Lua.\"},\n{\"line_id\":2,\"reason\":\"This creates suspicion against presence of Lua.\"}]}",
+      "expected_line_ids": [
+        1
+      ],
+      "generated_line_ids": [
+        1,
+        2
+      ],
+      "generated_reasons": [
+        "This creates suspicion against presence of Lua.",
+        "This creates suspicion against presence of Lua."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": false,
+      "structural_location_pass": false,
+      "runtime_error": {
+        "phase": "parse",
+        "message": "Model finding lacks an exact changed-line citation"
+      },
+      "overall": "unusable_as_review",
+      "grounded_continuation": false,
+      "line_assessment": "ID 1 is supplied, but the second finding invents ID 2; this chunk contains only ID 1. Runtime citation validation rejects the complete review.",
+      "reason_assessment": "Both findings repeat \"This creates suspicion against presence of Lua.\" The prompt instead shows a Python file being added in analysis/, whose nearest rule requires Lua and forbids Python. The continuation does not state this conflict and offers no concrete supported consequence.",
+      "clarity": "Vague and unsupported; not merely a paraphrase of the target.",
+      "stop_reason": "eos",
+      "generated_tokens": 33,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 2048,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "allocation-null-guard-introduced",
+      "source_kind": "exact training prompt",
+      "prompt_sha256": "593db7f4c18e38b114a3cf4ab934a36bcbead566c303715a04e81e352e8b6604",
+      "verdict_origin": "Concern branch supplied by probe; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"Removing this check lets a failed calloc reach n->value, while failed calloc reach NULL.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing this check lets a failed calloc reach n->value, while failed calloc reach NULL.\"}]}",
+      "expected_line_ids": [
+        1
+      ],
+      "generated_line_ids": [
+        1
+      ],
+      "generated_reasons": [
+        "Removing this check lets a failed calloc reach n->value, while failed calloc reach NULL."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": true,
+      "structural_location_pass": true,
+      "runtime_error": null,
+      "overall": "correct_core_concern_with_clarity_defect",
+      "grounded_continuation": true,
+      "line_assessment": "ID 1 correctly cites the removed allocation-failure guard, LEFT src/list_node.c:12.",
+      "reason_assessment": "The first clause correctly says that removing the check lets a failed calloc reach n->value; the supplied code makes that a NULL dereference. The trailing \"while failed calloc reach NULL\" is grammatically poor, but reinforces the NULL failure result rather than contradicting the causal mechanism. Credit is for the supported core concern, not exact target wording.",
+      "clarity": "Awkward ending; the failure path remains recoverable and correct.",
+      "stop_reason": "eos",
+      "generated_tokens": 27,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 2048,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "short-read-accepted",
+      "source_kind": "existing review diagnostic",
+      "prompt_sha256": "2e3aa9b51250d4ecd120be6cbaeb66a1d53b2cad270f4f5a8d1dc091df53b81b",
+      "verdict_origin": "Concern branch supplied by probe; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"This removes the only zero-byte read before the four-byte tag size required by the tag handling code.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This removes the only zero-byte read before the four-byte tag size required by the tag handling code.\"}]}",
+      "expected_line_ids": [
+        2
+      ],
+      "generated_line_ids": [
+        1
+      ],
+      "generated_reasons": [
+        "This removes the only zero-byte read before the four-byte tag size required by the tag handling code."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": true,
+      "structural_location_pass": false,
+      "runtime_error": null,
+      "overall": "incorrect_reason",
+      "grounded_continuation": false,
+      "line_assessment": "ID 1 is a real removed guard and can be a causal citation, although the exact expected ID is the new weaker guard, ID 2. The substantive failure is the explanation, not solely this alternative line choice.",
+      "reason_assessment": "The continuation claims removal of \"the only zero-byte read\". fread is unchanged and the added n == 0 check still rejects zero bytes. The actual defect is accepting one, two, or three bytes as a complete four-byte tag; this is not described.",
+      "clarity": "The stated mechanism is materially wrong.",
+      "stop_reason": "eos",
+      "generated_tokens": 29,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 8192,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "archive-subprocess-forbidden",
+      "source_kind": "existing review diagnostic",
+      "prompt_sha256": "eb808f00aaf59ee83c16f0dffc60c758f80ff40ead533fdac866a36575621727",
+      "verdict_origin": "Concern branch supplied by probe; no autonomous verdict credit.",
+      "continuation": "line_id\":3,\"reason\":\"This creates archive creation internally without modifying archive creation's behavior; the supplied tar invocation also reports success.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":3,\"reason\":\"This creates archive creation internally without modifying archive creation's behavior; the supplied tar invocation also reports success.\"}]}",
+      "expected_line_ids": [
+        2
+      ],
+      "generated_line_ids": [
+        3
+      ],
+      "generated_reasons": [
+        "This creates archive creation internally without modifying archive creation's behavior; the supplied tar invocation also reports success."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": false,
+      "structural_location_pass": false,
+      "runtime_error": {
+        "phase": "parse",
+        "message": "Model finding lacks an exact changed-line citation"
+      },
+      "overall": "unusable_as_review",
+      "grounded_continuation": false,
+      "line_assessment": "ID 3 does not exist among the bracketed IDs 1 and 2. The added subprocess is ID 2; runtime citation validation rejects this finding.",
+      "reason_assessment": "The continuation describes archive creation as internal and behavior-preserving, but execFileSync launches external tar where the actual root and tools/archive rules forbid it. Its claim that the invocation reports success is not supported by an execution result in the prompt. It does not identify the subprocess-policy conflict.",
+      "clarity": "Contradicts the shown operation and invents an execution outcome.",
+      "prompt_scope_note": "The actual recorded prompt includes root, tools, and tools/archive rules, but not the sibling tools/docs rule from the source fixture. This probe cannot demonstrate sibling-scope discrimination.",
+      "stop_reason": "eos",
+      "generated_tokens": 29,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 8192,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    }
+  ],
+  "conclusion": "Forcing the positive branch does not by itself recover reliable reviews: one of four continuations provides a grounded concern, and that one uses an exact training prompt. Two invent unavailable citation IDs; one cites an available causal line but explains the wrong mechanism. The control shows some conditioned explanation ability without establishing autonomous concern detection.",
+  "limits": "All four cases contain a concern and all receive an externally supplied positive prefix. This probe provides no independent verdict score, clean false-positive rate, or concern/clean pair success. It does not replace the prior unforced result. The same fixed four prompts and prefix can be compared with the new selected checkpoint.",
+  "independent_second_read": "A second read-only reviewer reached the same four judgments, including semantic credit for the null-guard mechanism despite poor grammar."
+}

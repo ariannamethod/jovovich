@@ -290,6 +290,45 @@ shorter. Weighting an answer and weighting its verdict are separate choices.
 Raw scores, generations, and the comparison recipe live in
 [`training/results/2026-09-29-convergence`](training/results/2026-09-29-convergence).
 
+To isolate the first differing target token in each concern/clean pair:
+
+```sh
+python3 training/prepare.py models/verdict.bin \
+  --sft training/sft_review_v2.jsonl --sft-only --review-pairs models/verdict.pairs
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/verdict.bin \
+  models/verdict 12 0.001 48 4 verdict models/verdict.pairs \
+  > models/verdict-metrics.jsonl
+python3 training/score_training.py models/verdict-metrics.jsonl \
+  --checkpoint-every 4 --output models/verdict-scores.json
+```
+
+The `JVPR` pair map records original dataset row indices. The native tokenizer
+locates the first divergent non-EOS completion token for each pair. `verdict`
+starts from example weights and replaces only those coefficients with their
+pooled mean. On this corpus, 40 coefficients become `3.596684821`; the other
+2,319 stay unchanged. Their combined mass is preserved, while individual
+answer totals change. Supplying the map to `tokens` or `examples` adds the
+same measurements with their original loss weights.
+
+Each mapped row reports its decision position, full-vocabulary winning token,
+target-token correctness, and target-minus-alternative logit margin. Initial
+records include both target IDs. Here, concern token `66582` emits `":[{"`;
+clean token `788` emits `":`, followed in its target by `66277`, `[]}`.
+The margin compares these exact target tokens. Generated JSON supplies the
+actual empty/nonempty finding decision, and the explanation receives a separate
+semantic assessment. The scorer adds paired-token counts and per-class margins
+while retaining the existing checkpoint selection rule.
+
+The matched 12-epoch run selects epoch 12: ordinary token CE is `0.09734376`,
+with 0/20 concern targets and 20/20 clean targets winning at those positions.
+Complete token-decision pairs remain 0/20 at every measured epoch. Supplying
+the concern JSON prefix yields one grounded explanation in four fixed cases,
+both for the previous control and this checkpoint. The next native control
+will train directly on the 40 decision positions and measure paired learning.
+The recipe, raw outputs and assessments live in
+[`training/results/2026-09-29-verdict-balance`](training/results/2026-09-29-verdict-balance).
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

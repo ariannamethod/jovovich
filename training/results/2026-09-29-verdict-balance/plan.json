@@ -1,0 +1,47 @@
+{
+  "parent_commit": "457262ce011db50b6e55cf2c8d4a587730e6cd61",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "control": "training/results/2026-09-29-convergence: examples objective",
+  "objective": "verdict",
+  "dataset": "training/sft_review_v2.jsonl",
+  "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+  "pair_map": "models/verdict-balance.pairs",
+  "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+  "epochs": 12,
+  "learning_rate": 0.001,
+  "token_batch": 48,
+  "checkpoint_every": 4,
+  "seed": 20260929,
+  "rank": 16,
+  "alpha": 32,
+  "threads": 4,
+  "intervention": "For the first divergent non-EOS completion token in each of 20 explicit concern/clean pairs, replace its original example coefficient with the pooled mean over 40 positions. All other 2319 coefficients, data and optimizer parameters stay unchanged.",
+  "expected_pooled_weight": 3.59668482107413,
+  "checkpoint_selection": "Among saved epochs 4/8/12 maximize exact teacher-forced review pairs, then review macro per-example token accuracy, then earlier epoch. Keep previous selector; decision-token scores are diagnostics. Select before inspecting generation.",
+  "generation": {
+    "exact_training_prompts": 64,
+    "review_diagnostics": 12,
+    "voice_cases": 8,
+    "training_review_tokens": 192,
+    "voice_tokens": 128,
+    "temperature": 0,
+    "threads": 2
+  },
+  "interpretation": "The alternative clean token is a JSON prefix. Target-token margins are recorded separately from generated JSON verdicts and semantic review quality.",
+  "additional_diagnostic": {
+    "planned_before_generation": true,
+    "models": [
+      "previous equal-answer epoch12",
+      "new selected verdict checkpoint"
+    ],
+    "forced_prefix": "{\"findings\":[{\"",
+    "cases": [
+      "scoped-python-analysis-concern",
+      "allocation-null-guard-introduced",
+      "short-read-accepted",
+      "archive-subprocess-forbidden"
+    ],
+    "purpose": "Generate line IDs and reasons after supplying only the common concern-structure prefix; compare complete assembled JSON with natural outputs.",
+    "source": "Our diagnostic informed by Bachmann and Nagarajan2024 and Lin et al2025. It does not alter training or checkpoint selection."
+  }
+}

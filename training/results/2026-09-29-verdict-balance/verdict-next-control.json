@@ -1,0 +1,38 @@
+{
+  "status": "proposed after the fixed 12-epoch experiment; not executed",
+  "question": "Can the current final-MLP adapter distinguish all 20 paired decision states when only these states receive training updates?",
+  "design": {
+    "model": "same base Qwen2.5-Coder-0.5B-Instruct Q8",
+    "adapter": "same final-MLP rank 16, alpha 32",
+    "initialization": "fresh seed 20260929; zero B matrices",
+    "training_positions": 40,
+    "source": "JVPR first-divergent positions from the unchanged 64-row corpus",
+    "objective": "equal full-vocabulary CE at the 40 positions",
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "updates": 100,
+    "batch": "all 40 positions per update",
+    "snapshots": [
+      25,
+      50,
+      100
+    ]
+  },
+  "measurements": [
+    "full-vocabulary target wins by class",
+    "complete decision pairs out of 20",
+    "target-minus-alternative margin by row and class",
+    "full-answer teacher-forced metrics on all 64 rows as a separate readout"
+  ],
+  "checkpoint_selection": "Among saved steps 25/50/100, maximize complete decision pairs, then total correct decision targets, then earlier step; choose before generated-response inspection.",
+  "comparison_logic": "This isolates the decision subtask from the other 2,319 token losses. The following comparison can add a jointly trained output head while reusing the same frozen post-attention states.",
+  "joint_adapter_followup": {
+    "head_rank": 8,
+    "head_alpha": 16,
+    "mlp_parameters": 276480,
+    "head_parameters": 1222656,
+    "total_parameters": 1499136,
+    "implementation": "Add the head LoRA delta to the live post-RMSNorm y projection in mlp_forward; preserve gradients through MLP and norm. Existing native operators and separate merge exporters suffice.",
+    "gguf_bytes": 1114012544
+  }
+}

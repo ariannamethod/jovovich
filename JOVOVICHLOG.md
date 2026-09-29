@@ -2,6 +2,121 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — Forty coefficients get an equal vote
+
+The controlled follow-up changes exactly 40 coefficients in the existing
+64-row training corpus. The new native `verdict` objective starts with equal
+whole-answer weights, locates the first divergent non-EOS target in each of
+20 explicit concern/clean pairs, and replaces those weights with their global
+mean, `3.596684821`. All other 2,319 coefficients stay fixed. Total nominal
+mass remains 2,359; each class receives `71.93369642` at the paired positions.
+Individual answer totals change. The pair map carries original dataset indices;
+positions and target IDs come from native tokenization.
+
+The model, data, seed, rank 16/alpha 32, LR 0.001, batch 48, 12 epochs,
+600 Adam updates, and notorch pin match the previous equal-answer control.
+The unchanged selector picks epoch 12 before generation. Training takes
+1,352.64 seconds and peaks at 1,473,808 KiB RSS. Its wall time includes a
+brief overlap with control-model inference.
+
+| Measurement | Previous equal answers | Balanced paired positions |
+| --- | ---: | ---: |
+| Selected ordinary token CE | 0.12154597 | 0.09734376 |
+| Correct target tokens | 2,290/2,359 | 2,285/2,359 |
+| Exact concern / clean answers | 0/20 / 20/20 | 0/20 / 20/20 |
+| Exact voice / code answers | 3/12 / 3/12 | 3/12 / 3/12 |
+| Complete teacher-forced review pairs | 0/20 | 0/20 |
+
+The new direct decision measurements also yield zero complete token-decision
+pairs at every measured epoch. At epoch 12, concerns have mean
+(target minus paired alternative) margin `-1.56394825`; clean examples have
+`+1.589209843`. Saved epoch 4 favors concerns throughout; epochs 8 and 12 favor
+clean targets throughout. Equalizing those nominal coefficients leaves the
+conditional distinction unresolved in this run.
+
+Token vocabulary inspection also corrects the earlier shorthand: `788` emits
+`":`, with `66277` supplying `[]}` afterward. Concern target `66582` emits
+`":[{"`. We now record target IDs, the full-vocabulary winner, and paired logit
+margin separately from the finding decision in complete generated JSON.
+
+Four native tests and 26 Node tests pass. Independent verdict-weight gradients
+agree across 216 adapter coordinates within `7.82311e-8`; unchanged token and
+example modes preserve their tested gradients with a diagnostic map attached.
+The scorer rejects inconsistent IDs, correctness, margins and declared pair
+counts. The exported GGUF passes a byte audit of metadata, all 288 frozen
+payloads and all three saved F32 matrices before inference.
+
+### Complete answers and conditioned explanations
+
+All 64 exact training prompts generate successfully and stop at EOS. The new
+checkpoint reproduces 26 target answers exactly, matching the previous control:
+20 clean, three voice, three code, and zero concern answers. Every training
+review returns an empty findings list. The existing 12 review diagnostics also
+return empty JSON throughout: 0/6 concerns detected, 6/6 clean cases, 0/6 pairs.
+These are the same previously inspected cases and prompts used by the control.
+
+On the eight separate voice prompts, manual assessment records zero complete
+successes, two partial answers, and six failures; seven stop at EOS and the
+identity answer loops to the token limit. Scope permission and advisory
+authority receive partial credit. Their full text and criterion-level judgments
+are preserved with the training, review and voice outputs.
+
+A predeclared diagnostic supplies only `{"findings":[{"` to four fixed concern
+prompts: two exact training examples and two existing review cases. Each model
+then generates the line ID, reason, closing structure and EOS. Both the previous
+control and new checkpoint produce one grounded explanation out of four: the
+removed `NULL` guard. Its new explanation is clear and exactly reproduces the
+training target. Valid runtime citations rise from two to three, while the
+other three reasons remain incorrect. In the short-read case, citing the
+removed guard is a valid causal choice; the explanation wrongly describes a
+zero-byte read instead of acceptance of a one-to-three-byte tag. The archive
+case invents a third line ID. This diagnostic measures explanation generation
+after the concern branch has been supplied; natural verdicts are scored above.
+
+Two primary studies informed that diagnostic:
+[Bachmann and Nagarajan, ICML 2024](https://proceedings.mlr.press/v235/bachmann24a.html)
+show gold-prefix shortcuts in graph path prediction, and
+[Lin et al., ICML 2025](https://proceedings.mlr.press/v267/lin25j.html)
+probe influential tokens with alternative continuations and study token-weighted
+preference learning. Our four-case supplied-prefix test and 40-coefficient SFT
+intervention are described separately in the experiment plan and research notes.
+
+The next bounded native control trains the current MLP only at the 40 paired
+decision positions, with equal full-vocabulary CE, all 40 positions per update,
+and a predeclared 100-update budget. It asks whether this adaptation site can
+learn the paired choices under direct supervision. A subsequent joint
+MLP-plus-head comparison can add rank-8 head LoRA to the live final normalized
+state: 1,499,136 trainable parameters in total. Both designs use existing
+notorch operations; their implementation and execution are future work.
+
+### The file gets cross-examined too
+
+All 93 probed completion positions agree between the cached adapter computation
+and the full exported model. Maximum logit difference is `5.34057617e-5`.
+The GGUF is 714,116,992 bytes, SHA-256
+`0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b`;
+its hash remains unchanged after all 88 new generations. A separate four-case
+prefix run uses the byte-verified prior control, making 92 newly recorded
+generations in this phase.
+
+During evaluation, incomplete duplicate prefixes of GGUF files exhausted disk
+space. Each removed duplicate was compared byte for byte with its retained
+complete file. The creator of those copies is undetermined. The selected model
+was retained intact, all inference jobs completed successfully, and cleanup
+receipts accompany the export and post-generation checks.
+
+The private `ataeff/jovovich` archive holds all nine LoRA files from epochs
+4/8/12 and the selected GGUF. Remote sizes and LFS hashes match at commit
+`26a15ddce9f447a28f42af3a3532b16e676160d7`. The complete source/evidence upload
+at `d6712d927a3230805cea5a1acc9b847e5517a069` verifies all 54 uploaded files.
+Reproduction commands, raw metrics,
+all generated answers, manual assessments, source hashes and verification
+receipts are in
+[`training/results/2026-09-29-verdict-balance`](training/results/2026-09-29-verdict-balance).
+The runtime lock continues to identify the original base model.
+
+Equal votes. Same verdict. SERGE requests a smaller experiment.
+
 ## 2026-09-29 — Forty verdicts hide inside 2,359 tokens
 
 The three-row control learned its answers. The next experiment returns to the
@@ -31,10 +146,11 @@ pair at any measured epoch.
 | Equal answers | 2.82070 / 0.12155 | 2,290/2,359 | 0/20 / 20/20 | 3/12 / 3/12 | 1,496.98 |
 
 Each run peaks near 1.41 GiB RSS. Both use four threads and overlap on the same
-CPU. Every selected concern first fails at completion position 3: the model
-closes the findings list where the target opens an objection. Several earlier
-epochs swing toward concerns while losing clean examples. Low CE does not
-establish mastery of this conditional choice.
+CPU. Every selected concern first fails at completion position 3: token `788`
+emits `":`, where the target token `66582` emits `":[{"`. The empty list
+arrives with the following token, `66277` (`[]}`). Several earlier epochs swing
+toward concerns while losing clean examples. Complete generated JSON below
+shows which finding decision each model actually makes.
 
 Free generation on all 64 exact training prompts reproduces 27/64 answers for
 token mean and 26/64 for equal answers, with the same per-task exact counts as
