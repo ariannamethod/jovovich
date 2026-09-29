@@ -1,0 +1,19 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/control-memorization.bin",
+    "models/control-memorization",
+    "30",
+    "0.001",
+    "16",
+    "10"
+  ],
+  "threads": 4,
+  "NT_NO_I8": "1 (set by trainer)",
+  "elapsed_seconds": 519.4975238549996,
+  "peak_rss_kib": 1319472,
+  "user_seconds": 903.301616,
+  "system_seconds": 13.697852,
+  "exit_code": 0
+}

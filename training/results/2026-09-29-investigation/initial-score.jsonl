@@ -1,0 +1,1 @@
+{"stage":"sft_initial","mean_token_ce":2.59735983,"examples":3,"tokens":93,"rank":16,"alpha":32,"layer":23,"trainable_parameters":276480,"seed":20260929,"teacher_forced_correct_tokens":48,"teacher_forced_exact_examples":0}

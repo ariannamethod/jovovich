@@ -16,12 +16,14 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train train-mlp merge-head merge-mlp export-adapter test clean
+.PHONY: all harness train train-mlp probe-mlp probe-tokenization merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
 train: build/jovovich-train-head
 train-mlp: build/jovovich-train-mlp
+probe-mlp: build/jovovich-probe-mlp
+probe-tokenization: build/jovovich-probe-tokenization
 merge-mlp: build/jovovich-merge-mlp
 export-adapter: build/jovovich-export-adapter
 
@@ -41,6 +43,14 @@ build/jovovich-train-mlp: training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/train_mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
+build/jovovich-probe-mlp: training/probe_mlp.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/probe_mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-probe-tokenization: training/probe_tokenization.c training/train_mlp.c src/infer.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/probe_tokenization.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
 build/jovovich-merge-mlp: training/merge_mlp.c $(NOTORCH)/gguf.c $(NOTORCH)/gguf.h Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/merge_mlp.c $(NOTORCH)/gguf.c $(LDFLAGS) $(LDLIBS)
@@ -57,9 +67,14 @@ build/test-mlp: test/mlp.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORC
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
-test: harness merge-mlp build/test-head build/test-mlp
+build/test-optimizer: test/optimizer.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/optimizer.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer
 	./build/test-head
 	./build/test-mlp
+	./build/test-optimizer
 	node --test test/*.test.mjs
 
 clean:
