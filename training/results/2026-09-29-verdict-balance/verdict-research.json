@@ -1,0 +1,58 @@
+{
+  "scope": "Two primary papers; no changes to the running 40-coefficient experiment.",
+  "papers": [
+    {
+      "title": "The Pitfalls of Next-Token Prediction",
+      "authors": "Gregor Bachmann; Vaishnavh Nagarajan",
+      "venue": "ICML 2024",
+      "paper_url": "https://proceedings.mlr.press/v235/bachmann24a.html",
+      "inspected_full_text": "https://arxiv.org/html/2403.06963v2",
+      "author_code": "https://github.com/gregorbachmann/Next-Token-Failures",
+      "inspected_sections": [
+        "4.3–4.4",
+        "5.1",
+        "Appendix B"
+      ],
+      "paper_method_and_result": "On path-star graph tasks, later gold-prefix tokens permit a local adjacency shortcut while the first required node remains poorly predicted on held-out graphs. They test the shortcut by supplying a random first node and observing continuation; teacherless lookahead targets help in some settings, and reversing path order improves learning.",
+      "relevance_inference": "Motivates measuring an early context-dependent choice separately from accuracy on later gold-prefix tokens. Our observed failure occurs on exact training prompts."
+    },
+    {
+      "title": "Critical Tokens Matter: Token-Level Contrastive Estimation Enhances LLM’s Reasoning Capability",
+      "authors": "Zicheng Lin et al.",
+      "venue": "ICML 2025",
+      "paper_url": "https://proceedings.mlr.press/v267/lin25j.html",
+      "inspected_full_text": "https://arxiv.org/html/2411.19943v3",
+      "author_code": "https://github.com/chenzhiling9954/Critical-Tokens-Matter",
+      "inspected_sections": [
+        "2: Empirical Validation and Impact",
+        "3.1",
+        "3.2 equations 1 and cDPO objective",
+        "3.3 Experimental Setup"
+      ],
+      "paper_method_and_result": "They identify influential failure tokens using continuation rollouts and test forcing alternatives. For scalable annotations, separately fine-tuned positive and negative models provide token-level contrastive scores. cDPO weights only the rejected trajectory’s reward terms by one minus those scores. LoRA math experiments report gains over their baselines on GSM8K and MATH500.",
+      "relevance_inference": "Motivates measuring how forced alternative prefixes change downstream generated answers."
+    }
+  ],
+  "priority_proposal": {
+    "origin": "Our diagnostic informed by the two papers; performed after model selection.",
+    "name": "Forced structural-prefix continuation control",
+    "budget": "Four fixed concern prompts for each of the previous equal-answer epoch12 and new selected verdict checkpoint; 192 generated tokens each, temperature0.",
+    "intervention": "Keep each original system/user prompt and model checkpoint. Supply only the correct assistant structural prefix {\"findings\":[{\" and generate the remainder without supplying line_id or reason. Compare to the already-recorded ordinary generation on those exact prompts.",
+    "compatibility": "Uses the existing native inference path and the same final-MLP adapter. No new tensors, trainer math, tokenizer vocabulary or runtime behavior is required.",
+    "measure": [
+      "valid complete JSON and EOS",
+      "grounded line_id",
+      "specific correct consequence from supplied context",
+      "fabricated rules or copied cross-case reason"
+    ],
+    "interpretation": "Score conditioned line and reason generation. Natural generation remains the measurement of autonomous concern detection.",
+    "cases": [
+      "scoped-python-analysis-concern",
+      "allocation-null-guard-introduced",
+      "short-read-accepted",
+      "archive-subprocess-forbidden"
+    ],
+    "tokenization_note": "Use the complete structural prefix, not token 788 as a forced clean verdict: 788 emits only quote-colon; 66582 emits quote-colon-open-array-open-object-quote."
+  },
+  "run_status": "Proposals only. No new training, inference generations, source edits or corpus changes performed for this research."
+}

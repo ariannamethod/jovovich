@@ -1,0 +1,188 @@
+{
+  "created_utc": "2026-09-29T02:49:58.056086+00:00",
+  "complete": true,
+  "source": "models/verdict-prefix-new.jsonl",
+  "source_sha256": "0359df827e931f9dced356321a2aa772cb49b3d3d825ed7c7604c4071f973a5f",
+  "model": "models/verdict-balance-selected.gguf",
+  "model_sha256": "0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b",
+  "method": "Manual semantic assessment against each recorded prompt and actual changed-line chunk, using the control rubric. JSON syntax, runtime citation validation, exact expected location, causal explanation and EOS are separate. Alternative causal changed-line citations are allowed for semantic assessment when their reason is correct.",
+  "prefix_supplied_by_probe": "{\"findings\":[{\"",
+  "what_prefix_supplies": "The findings key, a nonempty findings array and the opening of the first object/key. The positive verdict is supplied externally. Line IDs, reasons, any extra findings, closing syntax and EOS are model-generated.",
+  "counts": {
+    "cases": 4,
+    "exact_training_prompts": 2,
+    "existing_review_diagnostics": 2,
+    "native_success": 4,
+    "eos_stops": 4,
+    "token_limit_stops": 0,
+    "valid_assembled_json_syntax": 4,
+    "runtime_review_parse_success": 3,
+    "runtime_citation_errors": 1,
+    "exact_expected_location_pass": 2,
+    "grounded_continuations": 1,
+    "grounded_exact_training_continuations": 1,
+    "grounded_existing_diagnostic_continuations": 0
+  },
+  "cases": [
+    {
+      "name": "scoped-python-analysis-concern",
+      "source_kind": "exact training prompt",
+      "prompt_sha256": "1db73ea2221ba9fbda5c4c0e7f88936348f8c4a8fd068abf1cf5701e5c108a63",
+      "verdict_origin": "Supplied by forced prefix; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"This always reports statistics, not profile_notes.py.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This always reports statistics, not profile_notes.py.\"}]}",
+      "expected_line_ids": [
+        1
+      ],
+      "generated_line_ids": [
+        1
+      ],
+      "generated_reasons": [
+        "This always reports statistics, not profile_notes.py."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": true,
+      "structural_location_pass": true,
+      "runtime_error": null,
+      "overall": "incorrect_reason",
+      "grounded_continuation": false,
+      "line_assessment": "ID 1 correctly refers to the added import in analysis/profile_notes.py. Unlike the control, this response invents no second citation.",
+      "reason_assessment": "The claim that this always reports statistics rather than profile_notes.py does not follow from importing statistics. It does not identify the actual conflict: a Python file in analysis/ violates the nearest Lua-only rule despite repository-wide Python permission.",
+      "clarity": "Syntactically readable but semantically unrelated to the required policy judgment.",
+      "control_comparison": "Citation validity improves by removing the invented ID 2. Grounded reasoning remains incorrect.",
+      "stop_reason": "eos",
+      "generated_tokens": 19,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 2048,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "allocation-null-guard-introduced",
+      "source_kind": "exact training prompt",
+      "prompt_sha256": "593db7f4c18e38b114a3cf4ab934a36bcbead566c303715a04e81e352e8b6604",
+      "verdict_origin": "Supplied by forced prefix; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"Removing this check lets a failed calloc reach n->value, dereferencing NULL.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing this check lets a failed calloc reach n->value, dereferencing NULL.\"}]}",
+      "expected_line_ids": [
+        1
+      ],
+      "generated_line_ids": [
+        1
+      ],
+      "generated_reasons": [
+        "Removing this check lets a failed calloc reach n->value, dereferencing NULL."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": true,
+      "structural_location_pass": true,
+      "runtime_error": null,
+      "overall": "correct_core_concern",
+      "grounded_continuation": true,
+      "line_assessment": "ID 1 correctly cites the removed NULL guard, LEFT src/list_node.c:12.",
+      "reason_assessment": "Correctly connects the removed check, failed calloc, and n->value access to dereferencing NULL. The explanation matches the supplied target exactly.",
+      "clarity": "Clear and causally complete.",
+      "control_comparison": "The control already conveyed the correct failure path but had an awkward ending. This response improves clarity; it does not add a new successful case.",
+      "stop_reason": "eos",
+      "generated_tokens": 26,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 2048,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "short-read-accepted",
+      "source_kind": "existing review diagnostic",
+      "prompt_sha256": "2e3aa9b51250d4ecd120be6cbaeb66a1d53b2cad270f4f5a8d1dc091df53b81b",
+      "verdict_origin": "Supplied by forced prefix; no autonomous verdict credit.",
+      "continuation": "line_id\":1,\"reason\":\"Removing the only zero-byte return allows the stream to reach the end and therefore read_tag does not reach the end.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing the only zero-byte return allows the stream to reach the end and therefore read_tag does not reach the end.\"}]}",
+      "expected_line_ids": [
+        2
+      ],
+      "generated_line_ids": [
+        1
+      ],
+      "generated_reasons": [
+        "Removing the only zero-byte return allows the stream to reach the end and therefore read_tag does not reach the end."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": true,
+      "structural_location_pass": false,
+      "runtime_error": null,
+      "overall": "incorrect_reason",
+      "grounded_continuation": false,
+      "line_assessment": "ID 1 is a real removed guard and can be a legitimate causal citation even though exact expected location is the added ID 2. The failure is the reason, not merely use of this alternative changed line.",
+      "reason_assessment": "Claims removal of the only zero-byte return, but the new n == 0 guard still rejects zero bytes. Its assertion that the stream reaches the end and therefore read_tag does not reach the end is incoherent. It never explains acceptance of one-, two-, or three-byte tags as success.",
+      "clarity": "Incorrect and internally confused causal account.",
+      "control_comparison": "Both responses cite existing ID 1 but misdescribe the short-read defect; no grounded improvement.",
+      "stop_reason": "eos",
+      "generated_tokens": 32,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 8192,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    },
+    {
+      "name": "archive-subprocess-forbidden",
+      "source_kind": "existing review diagnostic",
+      "prompt_sha256": "eb808f00aaf59ee83c16f0dffc60c758f80ff40ead533fdac866a36575621727",
+      "verdict_origin": "Supplied by forced prefix; no autonomous verdict credit.",
+      "continuation": "line_id\":3,\"reason\":\"Removing the only return-value contract allows the presence of return values in other parts of the repository.\"}]}",
+      "assembled_response": "{\"findings\":[{\"line_id\":3,\"reason\":\"Removing the only return-value contract allows the presence of return values in other parts of the repository.\"}]}",
+      "expected_line_ids": [
+        2
+      ],
+      "generated_line_ids": [
+        3
+      ],
+      "generated_reasons": [
+        "Removing the only return-value contract allows the presence of return values in other parts of the repository."
+      ],
+      "json_syntax_valid": true,
+      "runtime_review_parse_success": false,
+      "structural_location_pass": false,
+      "runtime_error": {
+        "phase": "parse",
+        "message": "Model finding lacks an exact changed-line citation"
+      },
+      "overall": "unusable_as_review",
+      "grounded_continuation": false,
+      "line_assessment": "ID 3 is absent; only bracketed IDs 1 and 2 are supplied. The subprocess is ID 2, so runtime citation validation rejects the response.",
+      "reason_assessment": "Claims removal of a return-value contract although the prompt explicitly says createArchive has no such contract. The supposed effect on return values elsewhere is unsupported. It does not identify that external tar violates the root and nearest archive subprocess rules.",
+      "clarity": "Invents a contract and consequence contradicted or unsupported by the prompt.",
+      "prompt_scope_note": "The recorded prompt contains root, tools and tools/archive rules, not the sibling tools/docs rule. This probe does not test sibling-scope discrimination.",
+      "control_comparison": "The same invalid ID 3 persists. The new explanation changes the hallucination, without identifying the actual prohibited subprocess.",
+      "stop_reason": "eos",
+      "generated_tokens": 28,
+      "decoding": {
+        "temperature": 0,
+        "tokens": 192,
+        "context": 8192,
+        "threads": 2,
+        "NT_NO_I8": "1"
+      }
+    }
+  ],
+  "comparison_to_control": {
+    "source": "models/verdict-prefix-control.jsonl",
+    "source_sha256": "aed205533549c0c78cf995c7e014ea5cd6f18f29d25d40157c005309467d4c3e",
+    "model_sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080",
+    "identical_recorded_prompts_chunks_prefix_and_decoding": true,
+    "control_runtime_review_parse_success": 2,
+    "control_exact_expected_location_pass": 1,
+    "control_grounded_continuations": 1,
+    "conclusion": "Runtime citation validity improves from 2/4 to 3/4 and exact expected location from 1/4 to 2/4. Grounded continuation success remains 1/4, on the same exact training example; its explanation becomes clearer and exact. Neither existing diagnostic has a correct causal explanation."
+  },
+  "limits": "All four inputs are concern cases and receive the positive verdict prefix externally. No autonomous concern detection, clean false-positive rate, or paired verdict success can be inferred. The learned training-target reproduction is separated from performance on existing review diagnostics.",
+  "verification_scope": "Only JSON/text artifacts were read; no model weights were opened."
+}

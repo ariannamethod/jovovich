@@ -2,6 +2,7 @@
 """Summarize native per-row accuracy and select a saved training checkpoint."""
 import argparse
 import json
+import math
 from pathlib import Path
 
 
@@ -9,7 +10,7 @@ def summarize(data, metric):
     scores = metric['teacher_forced_rows']
     if len(scores) != len(data) or {s['row'] for s in scores} != set(range(len(data))):
         raise ValueError('native scores must cover every dataset row exactly once')
-    groups, pairs = {}, {}
+    groups, pairs, decisions = {}, {}, {}
     for score in scores:
         row = data[score['row']]
         kind = row['kind']
@@ -30,16 +31,62 @@ def summarize(data, metric):
         group['tokens'] += n
         group['correct_tokens'] += correct
         group['example_mean_token_accuracy'] += correct / n
+        decision_fields = {'decision_position', 'decision_correct', 'decision_margin',
+                           'decision_predicted_id', 'decision_target_id', 'decision_alternative_id'}
+        if decision_fields.intersection(score):
+            if not {'decision_position', 'decision_correct', 'decision_margin'} <= score.keys():
+                raise ValueError('incomplete decision-token metrics')
+            if kind not in ('concern', 'clean'):
+                raise ValueError('decision metrics require a review row')
+            position, hit, margin = (score['decision_position'], score['decision_correct'],
+                                     score['decision_margin'])
+            if (type(position) is not int or not 0 <= position < n - 1 or
+                    not isinstance(hit, bool) or type(margin) not in (int, float) or not math.isfinite(margin)):
+                raise ValueError('invalid decision-token metrics')
+            if (hit and (correct == 0 or margin < 0)) or (not hit and correct == n):
+                raise ValueError('decision correctness disagrees with token counts or margin')
+            id_fields = {'decision_predicted_id', 'decision_target_id', 'decision_alternative_id'}
+            for field in id_fields.intersection(score):
+                if type(score[field]) is not int or score[field] < 0:
+                    raise ValueError('invalid decision token ID')
+            if {'decision_target_id', 'decision_alternative_id'}.intersection(score):
+                if not id_fields <= score.keys():
+                    raise ValueError('incomplete decision token IDs')
+                if (score['decision_target_id'] == score['decision_alternative_id'] or
+                        hit != (score['decision_predicted_id'] == score['decision_target_id'])):
+                    raise ValueError('decision correctness disagrees with token IDs')
+            branch = decisions.setdefault(row['pair'], {})
+            branch[kind] = hit
+            group.setdefault('decision_examples', 0)
+            group.setdefault('decision_correct', 0)
+            group.setdefault('decision_positive_margin', 0)
+            group.setdefault('decision_mean_margin', 0.0)
+            group['decision_examples'] += 1
+            group['decision_correct'] += hit
+            group['decision_positive_margin'] += margin > 0
+            group['decision_mean_margin'] += margin
     for group in groups.values():
         group['example_mean_token_accuracy'] /= group['examples']
+        if group.get('decision_examples'):
+            group['decision_mean_margin'] /= group['decision_examples']
     if any(set(pair) != {'concern', 'clean'} for pair in pairs.values()):
         raise ValueError('incomplete review pair')
     if sum(g['correct_tokens'] for g in groups.values()) != metric['teacher_forced_correct_tokens']:
         raise ValueError('per-row correct tokens disagree with aggregate')
     if sum(g['exact_examples'] for g in groups.values()) != metric['teacher_forced_exact_examples']:
         raise ValueError('per-row exact examples disagree with aggregate')
-    return dict(epoch=metric.get('epoch', 0), mean_token_ce=metric['mean_token_ce'], groups=groups,
-                review_pairs=len(pairs), review_pairs_exact=sum(all(p.values()) for p in pairs.values()))
+    result = dict(epoch=metric.get('epoch', 0), mean_token_ce=metric['mean_token_ce'], groups=groups,
+                  review_pairs=len(pairs), review_pairs_exact=sum(all(p.values()) for p in pairs.values()))
+    if decisions:
+        if any(set(pair) != {'concern', 'clean'} for pair in decisions.values()):
+            raise ValueError('incomplete decision-token pair')
+        result.update(review_decision_pairs=len(decisions),
+                      review_decision_pairs_exact=sum(all(p.values()) for p in decisions.values()))
+    if 'decision_pairs' in metric:
+        declared = metric['decision_pairs']
+        if type(declared) is not int or declared < 0 or declared != len(decisions):
+            raise ValueError('decision pair count disagrees with per-row metrics')
+    return result
 
 
 def selection_key(summary):

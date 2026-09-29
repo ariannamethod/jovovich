@@ -1,0 +1,36 @@
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (34.961212ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (27.12611ms)
+✔ runner rejects unsupported Qwen MoE architecture (14.568958ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (671.515251ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (19.81063ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (13.461378ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (86.139927ms)
+✔ MLP export refuses to overwrite an existing file (17.034186ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (19.401029ms)
+✔ review pair maps retain original row indices and concern/clean direction (77.381986ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (217.788668ms)
+✔ pair maps require SFT-only packing and a distinct output (86.726705ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (3.152506ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (5.702021ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (1.493868ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.798215ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (20.883404ms)
+✔ GitHub context rules come from the base revision and collection detects a push (2.983029ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (3.245222ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.547263ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (10.521016ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (200.212258ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (330.445554ms)
+✔ training summaries preserve pair direction and select by complete review pairs (81.40153ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (36.303906ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (41.92073ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 843.315794

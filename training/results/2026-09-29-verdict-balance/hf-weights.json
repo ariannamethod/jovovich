@@ -1,0 +1,59 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "26a15ddce9f447a28f42af3a3532b16e676160d7",
+  "parent_commit": "4a65a85c5d802319bb6478751d99782bdcd7a533",
+  "files_uploaded": 11,
+  "verified_weights": [
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch04.gate.lora",
+      "sha256": "76dc993048113adcb6349d389b4a847ae721e7a61bfde4991d873d64c373fec5",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch04.up.lora",
+      "sha256": "26c710b52b80d82838a7f0ce0226deac83ab5be0c88cd19773845a1af55eeb9e",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch04.down.lora",
+      "sha256": "2c5294f66b2a9b7b0b88a433d7c756542103674aebf109913f62fc2183f98e12",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch08.gate.lora",
+      "sha256": "f4f117d33d633b9ce4e6d13dbb23a707f90d4e63919cf699991af1a8d7696d7a",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch08.up.lora",
+      "sha256": "2523619b97d9420f45ffd57a0e99828997419769dc2eb175c9ae90026f14b5dc",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch08.down.lora",
+      "sha256": "d39613666b03f2e46fe2131bc55748e8350a2b740cd5fa8d0072e37580b3e277",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch12.gate.lora",
+      "sha256": "69c6b21f82fdd707811425fef09d7e49bde4da370a9fde6c5a5f234d403b9533",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch12.up.lora",
+      "sha256": "e17a6b16762209048e7fba69123db13bb631e3d47b5cf826e75f1c7987b1aaa1",
+      "bytes": 368693
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance.epoch12.down.lora",
+      "sha256": "f9ee251d52333e6cd55a88590200cddd42f7570b8f5c79912d257b4e93206611",
+      "bytes": 368695
+    },
+    {
+      "file": "experiments/verdict-balance/verdict-balance-selected.gguf",
+      "sha256": "0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b",
+      "bytes": 714116992
+    }
+  ]
+}

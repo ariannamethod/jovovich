@@ -1,0 +1,394 @@
+{
+  "created_utc": "2026-09-29T02:49:58.058620+00:00",
+  "complete": true,
+  "source": "models/verdict-balance-review.jsonl",
+  "source_sha256": "3a747334ea842f86cdc30ef42704cd6c5c45af0bf51eaa0ab2bc6dbe915fd3ff",
+  "model": "models/verdict-balance-selected.gguf",
+  "model_sha256": "0068f004953856166b28992cd4d9c5a349a7fe6fb130f598c9d95b40f824ce2b",
+  "fixture": {
+    "path": "training/review_holdout_v2.jsonl",
+    "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "rows": 12,
+    "concern_cases": 6,
+    "clean_cases": 6,
+    "pairs": 6
+  },
+  "method": "Manual semantic assessment against the actual changed code, failure contracts and applicable scoped rules, retaining the previous review rubric. Correct clean outcomes are separated from grounded concern detection. Exact changed-line location alone cannot establish a correct reason; an alternative causal citation can receive semantic credit if its explanation is correct. A pair succeeds only if its concern and clean outputs both fully succeed.",
+  "run_metadata": {
+    "tokens": 192,
+    "identity_sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "host_sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "infer_source_sha256": "01c2329e1f9dbfbc05f9ee79e415e2a090d6dff620f37f11768360695f9444d5",
+    "decoding": {
+      "temperature": 0,
+      "context": 8192,
+      "NT_NO_I8": "1",
+      "NT_QMV_THREADS": "2",
+      "NT_ATTN_THREADS": "2"
+    },
+    "chat_template_env": null,
+    "suffix_file": null,
+    "suffix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "counts": {
+    "rows": 12,
+    "inference_errors": 0,
+    "parse_errors": 0,
+    "valid_format": 12,
+    "empty_reviews": 12,
+    "emitted_findings": 0,
+    "correct_concerns": 0,
+    "concern_denominator": 6,
+    "false_negatives": 6,
+    "correct_clean": 6,
+    "clean_denominator": 6,
+    "clean_false_positives": 0,
+    "fully_correct_reviews": 6,
+    "structural_location_passes": 6,
+    "correct_pairs": 0,
+    "pair_denominator": 6,
+    "grades": {
+      "correct": 6,
+      "partial": 0,
+      "incorrect": 6,
+      "unusable": 0
+    }
+  },
+  "rates": {
+    "concern_recall": 0.0,
+    "clean_specificity": 1.0,
+    "clean_false_positive_rate": 0.0,
+    "concern_precision": null,
+    "outcome_accuracy": 0.5,
+    "pair_accuracy": 0.0
+  },
+  "cases": [
+    {
+      "case_id": "short-read-accepted",
+      "pair": "short-read",
+      "prompt_sha256": "405e566ecb9a3d34db1759b3282e3f026e21fb527c21eb991066c20ad59dbee8",
+      "expected_concern": true,
+      "expected_line_ids": [
+        2
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies that n == 0 admits one-, two-, and three-byte reads as successful four-byte tags. The error contract explicitly requires rejection of all incomplete tags."
+    },
+    {
+      "case_id": "short-read-rejected",
+      "pair": "short-read",
+      "prompt_sha256": "b31011c61aade05818ab7167767e4d8c5b498405e957c3e9588e985a8acb6a9b",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: the added n != 4 condition rejects every partial tag. The removed n == 0 condition is not the resulting implementation. This response supplies no explanatory evidence of that distinction."
+    },
+    {
+      "case_id": "realloc-owner-lost",
+      "pair": "realloc-ownership",
+      "prompt_sha256": "5fe3bf2c604f685b7d9145be7c590b83b827f2a2e4d91adc8acbfff61d0a8fad",
+      "expected_concern": true,
+      "expected_line_ids": [
+        4
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies that assigning the failed realloc result directly into *buffer overwrites the sole owning pointer with NULL. For the specified positive size the original allocation remains live, so ownership and the failure contract are lost."
+    },
+    {
+      "case_id": "realloc-owner-preserved",
+      "pair": "realloc-ownership",
+      "prompt_sha256": "2866004dc84ade5259ef2fc1ff67470dea9ea24b1e28b6016e0dddefb473b1f9",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: realloc writes into a temporary, failure returns before *buffer changes, and the new pointer is assigned only on success. No causal reasoning is expressed in the response."
+    },
+    {
+      "case_id": "offline-review-sent",
+      "pair": "network-boundary",
+      "prompt_sha256": "792ba4c44f4b56bd5f2acf8e1d7a2b07fc2a4b9b58f5b75f920c4f82f459cf95",
+      "expected_concern": true,
+      "expected_line_ids": [
+        2
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies the automatic HTTP transmission of local review text, which violates the explicit offline rule. http_post being an existing native-C helper does not satisfy the separate no-network requirement."
+    },
+    {
+      "case_id": "opt-in-review-sent",
+      "pair": "network-boundary",
+      "prompt_sha256": "78cd632619148429335eb301a64990f10ecdc170cc6c75a1a2ab4386b788c655",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: the function is used solely by the explicit approved send command, outside the local review path. This does not demonstrate scoped permission understanding because the forbidden automatic-send case receives the same response."
+    },
+    {
+      "case_id": "output-option-broken",
+      "pair": "cli-compatibility",
+      "prompt_sha256": "9e033189dfb71092e3a2033565fb705b5671ac6602f985ce1edf345480bca570",
+      "expected_concern": true,
+      "expected_line_ids": [
+        2
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies the removal of --output recognition. The new condition accepts only --out, although the requested alias must preserve the documented original spelling and all recognition occurs here."
+    },
+    {
+      "case_id": "output-option-compatible",
+      "pair": "cli-compatibility",
+      "prompt_sha256": "890788bc7460e161aca53189b38082802868189d1a02079ae6367b99f972ded1",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: the added OR condition accepts both --output and --out. The response supplies no reasoning showing that the added condition, rather than the removed one, was evaluated."
+    },
+    {
+      "case_id": "archive-subprocess-forbidden",
+      "pair": "nearest-scope",
+      "prompt_sha256": "0ade5d0544af72dd7153ad2e2e45beac65e3017dea2bf1525676593a66ad4f5d",
+      "expected_concern": true,
+      "expected_line_ids": [
+        2
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies that execFileSync launches tar in tools/archive, where both the inherited root rule and nearest AGENTS.md prohibit subprocesses. The valid argument array does not supply the missing permission."
+    },
+    {
+      "case_id": "archive-subprocess-excepted",
+      "pair": "nearest-scope",
+      "prompt_sha256": "78af86dd87b68063ad3e65d5574206f0f907a9d5a916ce424c09994015fba16f",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: the nearest tools/archive/AGENTS.md expressly permits system tar through execFileSync with an argument array and no shell, exactly as added. The identical response on the forbidden variant does not establish scope resolution."
+    },
+    {
+      "case_id": "owned-stream-close-removed",
+      "pair": "stream-cleanup",
+      "prompt_sha256": "ec3473bbd09fd1d9afc578bf428e9c933bf55dc36053e6389d5c134e0f9ecc9b",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": false,
+      "grade": "incorrect",
+      "fully_correct": false,
+      "false_negative": true,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "No finding identifies removal of the only fclose for the locally owned stream. Every successful fopen now returns without releasing it, so repeated calls accumulate open streams/descriptors, including for empty files. The function itself is not removed."
+    },
+    {
+      "case_id": "owned-stream-close-restored",
+      "pair": "stream-cleanup",
+      "prompt_sha256": "3cfbce3a1be3891d4f4f785b3bab1105029137157fa0e18d23a034ee03156af6",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "raw_response": "{\"findings\":[]}",
+      "parsed_findings": [],
+      "error": null,
+      "structural_location_pass": true,
+      "grade": "correct",
+      "fully_correct": true,
+      "false_negative": false,
+      "false_positive": false,
+      "grounded_causal_reasoning_expressed": false,
+      "reasoning": "Empty findings are correct: the added fclose releases the locally owned stream before returning on every successful-open path. The fopen failure path owns no stream; the fixture expressly excludes a close-error return requirement."
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "short-read",
+      "case_ids": [
+        "short-read-accepted",
+        "short-read-rejected"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    },
+    {
+      "pair": "realloc-ownership",
+      "case_ids": [
+        "realloc-owner-lost",
+        "realloc-owner-preserved"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    },
+    {
+      "pair": "network-boundary",
+      "case_ids": [
+        "offline-review-sent",
+        "opt-in-review-sent"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    },
+    {
+      "pair": "cli-compatibility",
+      "case_ids": [
+        "output-option-broken",
+        "output-option-compatible"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    },
+    {
+      "pair": "nearest-scope",
+      "case_ids": [
+        "archive-subprocess-forbidden",
+        "archive-subprocess-excepted"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    },
+    {
+      "pair": "stream-cleanup",
+      "case_ids": [
+        "owned-stream-close-removed",
+        "owned-stream-close-restored"
+      ],
+      "concern_correct": false,
+      "clean_correct": true,
+      "pair_success": false,
+      "raw_outputs_distinguished": false
+    }
+  ],
+  "boundary_disciplines": {
+    "schema": "All twelve outputs are exactly {\"findings\":[]} and parse successfully.",
+    "diff_direction_and_causal_grounding": "Not demonstrated: every introduced code defect and its corrected counterpart receives the identical empty response.",
+    "network_scope": "Not demonstrated: the automatic native-C HTTP transmission is missed, while the explicitly approved send command receives the same result.",
+    "nearest_directory_scope": "Not demonstrated: both the forbidden tar subprocess and the nearest-directory exception receive the same result. This does not establish reading the applicable rules.",
+    "advisory_authority": "No output claims to execute an action or exercise merge/reject/closure authority. These generated-text cases do not test runtime enforcement.",
+    "invented_findings": "None emitted; this accompanies omission of all six concerns, rather than demonstrated successful evidence-based review."
+  },
+  "comparison_to_prior_examples": {
+    "source": "training/results/2026-09-29-convergence/examples-review.jsonl",
+    "source_sha256": "51745fc40a1c585f27ead53793615b3cc0c5ca0ec645c849eaab2b7998997187",
+    "model_sha256": "9706cccf267489dae3c6cb634d388e453e8049786e690a4534bbcdfb8c060080",
+    "same_prompt_hashes_and_run_metadata": true,
+    "all_raw_responses_identical": true,
+    "prior_counts": {
+      "rows": 12,
+      "inference_errors": 0,
+      "parse_errors": 0,
+      "valid_format": 12,
+      "empty_reviews": 12,
+      "emitted_findings": 0,
+      "correct_concerns": 0,
+      "concern_denominator": 6,
+      "false_negatives": 6,
+      "correct_clean": 6,
+      "clean_denominator": 6,
+      "clean_false_positives": 0,
+      "fully_correct_reviews": 6,
+      "structural_location_passes": 6,
+      "correct_pairs": 0,
+      "pair_denominator": 6,
+      "grades": {
+        "correct": 6,
+        "partial": 0,
+        "incorrect": 6,
+        "unusable": 0
+      }
+    },
+    "conclusion": "No change on the twelve ordinary review diagnostics: both models return literal empty findings on every case, with 0/6 detected concerns and 0/6 successful pairs."
+  },
+  "conclusion": "All six introduced defects are missed. All six clean outcomes are correct, producing 6/12 outcome accuracy but zero concern recall and zero paired success. The weighting change has not changed ordinary review behavior on these fixed diagnostics.",
+  "limits": "These are the same twelve previously inspected diagnostics under the recorded greedy 192-token harness. The outputs do not identify the mechanism causing uniform empty reviews. EOS is not recorded by this review evaluator, so no EOS count is inferred.",
+  "verification_scope": "Only JSON/text artifacts were read; no model weights were opened."
+}
