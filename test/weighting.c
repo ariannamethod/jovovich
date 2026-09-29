@@ -172,6 +172,113 @@ static void verdict_tests(mlp_bank *b) {
     printf("Verdict weighting: global pool=%g; mass error=%g; 4 batch sizes, 216 adapter gradients match independent composition (loss=%g gradient=%g); defaults/evaluation unchanged; %d invalid maps rejected\n",expected_pool,fabs(before-after),max_loss_error,max_gradient_error,rejected);
     for(int i=0;i<COUNT;i++)batch_free(&rows[i].cache);
 }
+static void reject_decisions(mlp_example *rows,int count,int batch) {
+    FILE *errors=tmpfile();assert(errors);fflush(NULL);pid_t pid=fork();assert(pid>=0);
+    if(!pid) {
+        if(dup2(fileno(errors),STDERR_FILENO)<0)_exit(2);
+        if(batch>=0)free(decision_order(rows,count,batch));
+        else {
+            char *args[]={"train-mlp","/missing-base","/missing-data","/missing-output","1","0.001","40","0","decisions",NULL};
+            _exit(mlp_trainer_main(9,args));
+        }
+        _exit(0);
+    }
+    int status;assert(waitpid(pid,&status,0)==pid);assert(WIFEXITED(status)&&WEXITSTATUS(status)==1);
+    if(batch<0) {
+        char message[256]={0};rewind(errors);assert(fread(message,1,sizeof(message)-1,errors)>0);
+        assert(strstr(message,"objectives require a pair map"));
+    }
+    fclose(errors);
+}
+static void adam_snapshot(nt_tensor **params,int step,float *state) {
+    int p=0;
+    for(int j=0;j<6;j++) {
+        nt_adam_state *a=&nt_tape_get()->adam[j];assert(a->t==step);
+        assert(step?(a->m&&a->v):(!a->m&&!a->v));
+        for(int k=0;k<params[j]->len;k++,p++) {
+            state[p]=params[j]->data[k];state[54+p]=step?a->m->data[k]:0;state[108+p]=step?a->v->data[k]:0;
+        }
+    }
+    assert(p==54);
+}
+static void decision_tests(mlp_bank *b) {
+    enum { COUNT=42,N=40,STEPS=4 };
+    mlp_example rows[COUNT]={0};token_row all[COUNT*12];int selected[N],total=0,n=0;
+    b->example_weighting=0;b->verdict_weighting=0;
+    for(int i=0;i<COUNT;i++) {
+        mlp_batch *s=&rows[i].cache;s->n=8+i%5;s->z=tensor(s->n,b->E);s->targets=tensor(s->n,1);
+        weighted_fill(s->z,.12f,i+1);
+        for(int t=0;t<s->n;t++){s->targets->data[t]=(float)((t+1)%5);all[total++]=(token_row){i,t};}
+        s->targets->data[s->n-1]=6;
+        if(i!=0&&i!=21) { selected[n]=i;s->targets->data[4+(n/2)%3]=(float)(1+n%2);n++; }
+        prepare_cache(b,s);
+    }
+    assert(n==N);b->average_tokens=(double)total/COUNT;
+    unsigned char map[16+N*4]={ 'J','V','P','R',1,0,0,0 };map_u32(map+8,COUNT);map_u32(map+12,N/2);
+    for(int t=0;t<N;t++)map_u32(map+16+4*t,(uint32_t)selected[t]);
+    char path[]="/tmp/jovovich-pairs-XXXXXX";map_file(path,map,sizeof(map));load_pairs(b,rows,COUNT,path);assert(unlink(path)==0);
+    token_row *order=decision_order(rows,COUNT,N);
+    for(int t=0;t<N;t++)assert(order[t].example==selected[t]&&order[t].token==4+(t/2)%3);
+    mlp_batch s=gather(b,rows,order,N);assert(!s.weights);
+    float actual_grad[54],actual_loss=training_value(b,&s,actual_grad),expected_loss=0,expected_grad[54]={0};
+    for(int t=0;t<N;t++) {
+        mlp_batch single=gather(b,rows,order+t,1);float gradient[54];
+        expected_loss+=training_value(b,&single,gradient)/N;
+        for(int j=0;j<54;j++)expected_grad[j]+=gradient[j]/N;
+        batch_free(&single);
+    }
+    float max_error=0;assert(fabsf(actual_loss-expected_loss)<2e-6f);
+    for(int j=0;j<54;j++){float e=fabsf(actual_grad[j]-expected_grad[j]);max_error=fmaxf(max_error,e);assert(e<2e-6f);}
+    int correct,exact,row_correct[COUNT],first_error[COUNT],predicted[N],expected_correct=0,expected_pairs=0;float margin[N];
+    double full_before=mean_ce(b,rows,all,total,17,COUNT,&correct,&exact,row_correct,first_error);
+    for(int t=0;t<N;t++) {
+        mlp_example *e=&rows[selected[t]];predicted[t]=e->decision_predicted_id;margin[t]=e->decision_margin;expected_correct+=e->decision_correct;
+        if(t%2)expected_pairs+=e->decision_correct&&rows[selected[t-1]].decision_correct;
+    }
+    assert(fabs(decision_ce(b,rows,order,N,&correct,&exact)-actual_loss)<1e-6);
+    assert(correct==expected_correct&&exact==expected_pairs);
+    for(int t=0;t<N;t++)assert(rows[selected[t]].decision_predicted_id==predicted[t]&&fabsf(rows[selected[t]].decision_margin-margin[t])<1e-6f);
+    /* Every excluded target and activation can change without contributing to
+     * this objective, including EOS and the two entirely unmapped rows. */
+    for(int i=0;i<COUNT;i++)for(int t=0;t<rows[i].cache.n;t++)if(!rows[i].decision_pair||t!=rows[i].decision_position) {
+        mlp_batch *c=&rows[i].cache;nt_tensor *cache[]={c->z,c->xn,c->gate,c->up};
+        c->targets->data[t]=(float)(((int)c->targets->data[t]+3)%b->V);
+        for(int j=0;j<4;j++)for(int k=0;k<cache[j]->shape[1];k++)cache[j]->data[t*cache[j]->shape[1]+k]=.03f*(k+1+j);
+    }
+    batch_free(&s);s=gather(b,rows,order,N);float changed_grad[54];
+    assert(training_value(b,&s,changed_grad)==actual_loss);assert(!memcmp(changed_grad,actual_grad,sizeof(actual_grad)));
+    double full_after=mean_ce(b,rows,all,total,17,COUNT,&correct,&exact,row_correct,first_error);
+    assert(fabs(full_after-full_before)>1e-4);assert(fabs(decision_ce(b,rows,order,N,&correct,&exact)-actual_loss)<1e-6);
+    nt_tensor *params[6];float initial[54],trajectory[STEPS+1][162],losses[STEPS];int p=0;
+    for(int j=0;j<6;j++) {
+        params[j]=j%2?b->adapters[j/2].B:b->adapters[j/2].A;
+        for(int k=0;k<params[j]->len;k++)initial[p++]=params[j]->data[k];
+    }
+    for(int diagnostics=0;diagnostics<2;diagnostics++) {
+        nt_tape_start();for(int j=0;j<6;j++)nt_tape_param(params[j]);nt_tape_destroy();p=0;
+        for(int j=0;j<6;j++)for(int k=0;k<params[j]->len;k++)params[j]->data[k]=initial[p++];
+        for(int step=0;step<=STEPS;step++) {
+            float state[162];adam_snapshot(params,step,state);
+            if(!diagnostics)memcpy(trajectory[step],state,sizeof(state));
+            else {
+                assert(!memcmp(trajectory[step],state,sizeof(state)));
+                decision_ce(b,rows,order,N,&correct,&exact);
+                mean_ce(b,rows,all,total,17,COUNT,&correct,&exact,row_correct,first_error);
+                assert(nt_tape_get()->n_params==0);adam_snapshot(params,step,state);
+                assert(!memcmp(trajectory[step],state,sizeof(state)));
+            }
+            if(step==STEPS)break;
+            nt_tape_start();int ce=mlp_forward(b,&s,1,NULL,NULL,NULL);float loss=nt_tape_get()->entries[ce].output->data[0];
+            if(!diagnostics)losses[step]=loss;else assert(loss==losses[step]);
+            nt_tape_backward(ce);nt_tape_clip_grads(1);nt_tape_adam_step(.003f);nt_tape_clear();
+        }
+    }
+    assert(memcmp(trajectory[0],trajectory[STEPS],sizeof(initial)));
+    float moment=0;for(int j=0;j<54;j++)moment+=fabsf(trajectory[STEPS][54+j]);assert(moment>0);
+    reject_decisions(rows,COUNT,0);reject_decisions(rows,COUNT,39);reject_decisions(rows,COUNT,41);reject_decisions(rows,COUNT,-1);
+    printf("Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=%g); excluded positions contribute zero; %d Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected\n",max_error,STEPS);
+    free(order);batch_free(&s);for(int i=0;i<COUNT;i++)batch_free(&rows[i].cache);
+}
 int main(void) {
     mlp_bank b={.E=4,.F=5,.V=7,.layer=1,.example_weighting=1,.average_tokens=2.5f};
     b.wg=tensor(b.F,b.E);b.wu=tensor(b.F,b.E);b.wd=tensor(b.E,b.F);b.head=tensor(b.V,b.E);
@@ -226,6 +333,7 @@ int main(void) {
     }
     printf("Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=%g max_gradient_error=%g; evaluation remains token-mean\n",max_loss_error,max_gradient_error);
     verdict_tests(&b);
+    decision_tests(&b);
     nt_tape_start();for(int j=0;j<3;j++){nt_tape_param(b.adapters[j].A);nt_tape_param(b.adapters[j].B);}nt_tape_destroy();
     for(int j=0;j<3;j++)nt_lora_free(&b.adapters[j]);
     nt_tensor_free(b.wg);nt_tensor_free(b.wu);nt_tensor_free(b.wd);nt_tensor_free(b.head);nt_tensor_free(b.norm);nt_tensor_free(b.ffn_norm);

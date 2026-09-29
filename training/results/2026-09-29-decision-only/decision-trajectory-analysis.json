@@ -1,0 +1,114 @@
+{
+  "source": "models/decision-only-scores.json",
+  "source_sha256": "697393613deccd0cfde350b97adf58e87adaf0af1b8259a88af02d3445031e59",
+  "definitions": {
+    "s(x)": "logit(66582) - logit(788)",
+    "mean_paired_separation": "mean(s(concern) - s(clean)) = mean_concern_margin + mean_clean_margin",
+    "mean_concern_token_preference": "mean(s(x)) across balanced 40 rows = (mean_concern_margin - mean_clean_margin) / 2; a readout, not a trainable bias parameter"
+  },
+  "single_class_updates": 59,
+  "post_update_count": 100,
+  "all_winners_are_paired_target_ids": true,
+  "best_observed": {
+    "update": 84,
+    "mean_decision_ce": 0.65164804,
+    "concern_hits": 13,
+    "clean_hits": 16,
+    "complete_pairs": 9,
+    "mean_paired_separation": 0.201337146758,
+    "mean_concern_token_preference": -0.05110287665550001
+  },
+  "lowest_ce": {
+    "update": 95,
+    "mean_decision_ce": 0.59081727,
+    "concern_hits": 11,
+    "clean_hits": 15,
+    "complete_pairs": 7,
+    "mean_paired_separation": 0.52012958522465,
+    "mean_concern_token_preference": -0.10867338180232504
+  },
+  "selected": {
+    "update": 50,
+    "mean_decision_ce": 0.6746909,
+    "concern_hits": 18,
+    "clean_hits": 6,
+    "complete_pairs": 5,
+    "mean_paired_separation": 0.11132965091,
+    "mean_concern_token_preference": 0.16570634845999999
+  },
+  "milestones": [
+    {
+      "update": 0,
+      "mean_decision_ce": 2.03388166,
+      "concern_hits": 0,
+      "clean_hits": 20,
+      "complete_pairs": 0,
+      "mean_paired_separation": 0.02253484649999995,
+      "mean_concern_token_preference": -3.9587736602500003
+    },
+    {
+      "update": 25,
+      "mean_decision_ce": 0.95867884,
+      "concern_hits": 20,
+      "clean_hits": 0,
+      "complete_pairs": 0,
+      "mean_paired_separation": 0.07551097950000002,
+      "mean_concern_token_preference": 1.56083250025
+    },
+    {
+      "update": 50,
+      "mean_decision_ce": 0.6746909,
+      "concern_hits": 18,
+      "clean_hits": 6,
+      "complete_pairs": 5,
+      "mean_paired_separation": 0.11132965091,
+      "mean_concern_token_preference": 0.16570634845999999
+    },
+    {
+      "update": 75,
+      "mean_decision_ce": 0.79785091,
+      "concern_hits": 20,
+      "clean_hits": 0,
+      "complete_pairs": 0,
+      "mean_paired_separation": 0.12457971425,
+      "mean_concern_token_preference": 1.032391976875
+    },
+    {
+      "update": 84,
+      "mean_decision_ce": 0.65164804,
+      "concern_hits": 13,
+      "clean_hits": 16,
+      "complete_pairs": 9,
+      "mean_paired_separation": 0.201337146758,
+      "mean_concern_token_preference": -0.05110287665550001
+    },
+    {
+      "update": 95,
+      "mean_decision_ce": 0.59081727,
+      "concern_hits": 11,
+      "clean_hits": 15,
+      "complete_pairs": 7,
+      "mean_paired_separation": 0.52012958522465,
+      "mean_concern_token_preference": -0.10867338180232504
+    },
+    {
+      "update": 96,
+      "mean_decision_ce": 1.43725812,
+      "concern_hits": 20,
+      "clean_hits": 0,
+      "complete_pairs": 0,
+      "mean_paired_separation": 0.5478167525,
+      "mean_concern_token_preference": 3.04457392725
+    },
+    {
+      "update": 100,
+      "mean_decision_ce": 1.00714862,
+      "concern_hits": 0,
+      "clean_hits": 20,
+      "complete_pairs": 0,
+      "mean_paired_separation": 0.450351047,
+      "mean_concern_token_preference": -1.9549753660000002
+    }
+  ],
+  "inference": "Context-dependent separation grows during the run while the balanced-set mean token preference oscillates. A matched smaller-step run will test learning-rate sensitivity before adding adaptation capacity."
+}

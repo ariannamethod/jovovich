@@ -1,0 +1,20 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/decision-only.bin",
+    "models/decision-only",
+    "100",
+    "0.001",
+    "40",
+    "25",
+    "decisions",
+    "models/decision-only.pairs"
+  ],
+  "objective": "decisions",
+  "elapsed_seconds": 919.3243468229994,
+  "peak_rss_kib": 1459640,
+  "user_seconds": 1893.548441,
+  "system_seconds": 49.366092,
+  "exit_code": 0
+}

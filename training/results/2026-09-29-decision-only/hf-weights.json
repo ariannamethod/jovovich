@@ -1,0 +1,74 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "af961a66e08f42013114c21610f8d06ae3ba1461",
+  "parent_commit": "d6712d927a3230805cea5a1acc9b847e5517a069",
+  "files_uploaded": 14,
+  "verified_weights": [
+    {
+      "file": "experiments/decision-only/decision-only.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "530b771f365c4de8cadd7ae7db600243c80bbcf1f0a9ea144c50f93cc53a00b3"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "06c5524faec263a3dcd58b572da68c0143ba1605a0ed6482e4f3672cded872a4"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "4b9da198ea61a5a33ad075f0d1e9a04a6f9e7ac22ee8af365562ab7f3379fe1a"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch50.gate.lora",
+      "bytes": 368695,
+      "sha256": "cf72a3baad3e30d8dfc0d7fdb464729d80273af8c896681aa24213c10d0ca1ff"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch50.up.lora",
+      "bytes": 368693,
+      "sha256": "9555488a8902aef2c92e3b6721477de5d9717dafaf14ed545e4a61ef3aa28004"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch50.down.lora",
+      "bytes": 368695,
+      "sha256": "a6e0fa69660227d5d80ea8ae713e3e9016ccd8e2c75d58eed9ff4a7d86f44136"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch75.gate.lora",
+      "bytes": 368695,
+      "sha256": "499cc7423e639c7ed5b324823464592b4e61988900f0b212925d8b584ee302f0"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch75.up.lora",
+      "bytes": 368693,
+      "sha256": "852f02e788d73fca14e04acc09c0d3eccc8db3e90c4db2642070c06836dbeef5"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch75.down.lora",
+      "bytes": 368695,
+      "sha256": "10bf63b0d0c921f97539a183efcb1d142411e2dd39aaf436709ec870acfc1480"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "884fe3b62677beba9382d6561128c7f77a52f8b446dec375fe54441b7eb2e8f3"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "6698c811ffbaab09c27d1fa716377dc88db5b53d8e75f888b766fbd922e8ee91"
+    },
+    {
+      "file": "experiments/decision-only/decision-only.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "6654bb826bae9db9413046faca187c906d2e2c8aa626a760c4405293b25c4044"
+    },
+    {
+      "file": "experiments/decision-only/decision-only-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "a762677b82851868fb3c328c8c824b133c697c05bcd728662b71faa9da395518"
+    }
+  ]
+}
