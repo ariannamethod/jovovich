@@ -1,0 +1,68 @@
+{
+  "parent_commit": "e655134538d44fe5b8f8e8593a737601d1673a12",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "dataset": "training/sft_review_v2.jsonl",
+  "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+  "dataset_binary_sha256": "c952e8af942c4ee71fed9b67229edd03c9d11b237d67fa6811e306dba6415ee5",
+  "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+  "question": "Does a tenfold smaller learning rate stabilize the same40 paired choices over100 updates?",
+  "objective": "decisions",
+  "updates": 100,
+  "learning_rate": 0.0001,
+  "batch": 40,
+  "ordering": "fixed ascending original dataset row index; every mapped position in every update",
+  "seed": 20260929,
+  "rank": 16,
+  "alpha": 32,
+  "threads": 4,
+  "trainable_parameters": 276480,
+  "supervision": "Equal ordinary full-vocabulary CE only at each mapped first-divergent non-EOS target. Other 2319 target positions contribute no training loss.",
+  "full_readout_updates": [
+    0,
+    25,
+    50,
+    75,
+    100
+  ],
+  "decision_readout_updates": "0 through 100, after each optimizer update",
+  "saved_updates": [
+    25,
+    50,
+    75,
+    100
+  ],
+  "eligible_updates": [
+    25,
+    50,
+    100
+  ],
+  "checkpoint_selection": "Maximize complete decision pairs, then total correct decision targets, then earlier eligible update; select before generation.",
+  "snapshot_note": "The existing interval of 25 updates additionally saves update 75. It is retained as a diagnostic artifact; eligible selection points match the earlier proposal.",
+  "generation": {
+    "exact_training_review_prompts": 40,
+    "existing_review_diagnostics": 12,
+    "forced_prefix_concern_prompts": 4,
+    "temperature": 0,
+    "tokens": 192,
+    "threads": 2
+  },
+  "forced_prefix": "{\"findings\":[{\"",
+  "forced_prefix_case_ids": [
+    "scoped-python-analysis-concern",
+    "allocation-null-guard-introduced",
+    "short-read-accepted",
+    "archive-subprocess-forbidden"
+  ],
+  "comparator": "training/results/2026-09-29-decision-only: LR0.001 selected update50",
+  "measurement": "Token choice at the recorded prefix, complete generated JSON decision, citation validity and explanation meaning are scored separately.",
+  "scope": "Matched LR-only control; shared-prefix diagnostic is separately specified before its inference."
+}

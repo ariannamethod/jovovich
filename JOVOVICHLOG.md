@@ -2,6 +2,88 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-09-29 — A smaller step, a shared opening
+
+The matched decision-only run changes LR from `0.001` to `0.0001`. It keeps
+the native source, Qwen2.5-Coder-0.5B-Instruct Q8 base, v2 corpus, pair map,
+fresh initialization, rank 16/alpha 32, seed 20260929, 40-position full batch
+and 100 updates. Initial decision and full-corpus readouts match exactly.
+The unchanged selector chooses among saved updates 25/50/100 before generation.
+Training takes 998.03 seconds and peaks at 1,459,460 KiB RSS.
+
+| Measurement | LR 0.001 | LR 0.0001 |
+| --- | ---: | ---: |
+| Selected update | 50 | 100 |
+| Decision CE | 0.67469090 | 0.63640493 |
+| Concern / clean target wins | 18/20 / 6/20 | 6/20 / 20/20 |
+| Complete token-decision pairs | 5/20 | 6/20 |
+| One-sided updates | 59/100 | 10/100 |
+| Pairs with positive context separation | 14/20 | 16/20 |
+
+Positive context separation means the concern-token preference is higher for
+the concern prompt than for its clean partner. The smaller step reduces
+one-sided updates and raises the selected paired score. All 40 natural training
+reviews and 12 existing diagnostics still return the same fenced `[]`;
+all 52 pass the production parser, giving 0/20 and 0/6 complete review pairs.
+
+### The shared opening
+
+Both selected models continue all 40 training prompts after `{"findings`.
+Native tokenization verifies the same three supplied IDs, `[4913, 3903, 819]`,
+and the first divergent gold token for every prompt. The models generate the
+remaining JSON with greedy decoding and a 192-token continuation budget.
+
+| Selected model | Parser accepted | Complete presence pairs | Grounded concern reviews | Correct clean reviews | Grounded full pairs |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| LR 0.001 · update 50 | 12/40 | 0/20 | 0/20 | 2/20 | 0/20 |
+| LR 0.0001 · update 100 | 29/40 | 1/20 | 0/20 | 14/20 | 0/20 |
+
+Each grounded full pair contains a supported concern with valid citations
+and a correctly accepted clean partner. Manual review records
+4/20 clean false positives and
+14/20 invalid clean responses for LR 0.001;
+LR 0.0001 records 0/20 and
+6/20 respectively. EOS termination is
+36/40 and 40/40. Complete responses and individual
+semantic judgments are preserved alongside these counts.
+
+The four fixed positive-prefix continuations also complete. Complete JSON
+syntax improves from 2/4 to 4/4, while production acceptance stays at 2/4
+and grounded explanations at 0/4. The two training cases lose their trailing
+prose but retain incorrect source-line IDs and scope explanations.
+
+The next bounded control combines mean CE over the 40 decision targets with
+mean CE over the other 792 review-answer targets, using coefficient one for
+each term. It accumulates all gradients before one clipped Adam update,
+for 100 updates at LR 0.0001. The plan keeps v2 and the existing checkpoint
+selector, and records prefix accuracy, full answers, component losses and
+gradient clipping. Native emitted-token IDs will supply the direct trace
+alongside complete JSON outcomes. This 83,200-token training budget connects
+the opening, choice, citation, explanation and EOS; implementation follows
+this completed comparison.
+
+### Corpus, native checks and archive
+
+`sft_review_v3.jsonl` repairs wording in three rows: the Python example now
+describes added code, and both field-width examples name the required 64-bit
+contract. All pair labels stay fixed. This run and both shared-prefix arms
+use the unchanged v2 corpus.
+
+Four native tests, 31 Node tests and five prefix tests pass. The export audit
+checks all 288 frozen tensor payloads and three adapted F32 matrices. Cached
+and exported computation agree on all 93 probed completion positions;
+the maximum logit difference is `4.38690186e-05`. The runtime model
+lock continues to identify the base checkpoint.
+
+The selected GGUF and all 12 saved LoRA files are privately archived at
+`46c239a0f34900675e4a5e7bad082c51d26b3fec` in `ataeff/jovovich`. The source,
+evidence and model-card archive at `3fad34312ffc6051cb23383e99d7d3b15bd4fb5c` verifies
+all 69 archived files by downloaded SHA-256. The plan,
+metrics, all 136 new generated responses, assessments and reproduction scripts live in
+[`training/results/2026-09-29-small-step`](training/results/2026-09-29-small-step).
+
+One cigarette. Twenty pairs. Eighty continuations.
+
 ## 2026-09-29 — The verdict moves; the gavel oscillates
 
 The bounded decision control is complete. Native `decisions` training gives

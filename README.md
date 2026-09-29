@@ -362,8 +362,8 @@ JSON decisions, citations, and explanations are assessed separately.
 The fixed 100-update control selects update 50: **5/20 complete decision pairs**,
 with 18/20 concern targets and 6/20 clean targets correct. The trajectory reaches
 9/20 pairs at unsaved update 84, then swings between global token preferences.
-Mean context separation grows during the run; the next matched control lowers
-LR from `0.001` to `0.0001` with the same model, seed, objective and 100 updates.
+Mean context separation grows during the run, motivating the matched control
+below at LR `0.0001` with the same model, seed, objective and 100 updates.
 All 40 natural training reviews and 12 existing diagnostics return a fenced
 empty array, which the host accepts. They take a different output path from
 the supervised `{"findings` prefix. Full generated-review pairs remain 0/20
@@ -372,6 +372,33 @@ explanations. Complete-answer learning and output-format alignment remain
 the next SFT integration tasks alongside decision stability.
 The full trajectory and generated reviews are preserved in
 [`training/results/2026-09-29-decision-only`](training/results/2026-09-29-decision-only).
+
+The smaller-step control starts from exactly the same initial measurements.
+Its unchanged selector chooses update 100: **6/20 complete decision pairs**,
+26/40 target wins, and decision CE `0.63640493`. States that choose one target
+class across all 40 rows fall from 59/100 updates to 10/100. Mean paired
+context separation reaches `0.29961805`; 16/20 pairs have positive separation.
+All 52 natural reviews still return the same fenced empty array. The first
+incorrect teacher-forced token remains at position zero in every review,
+while the supervised paired position is three tokens later.
+
+Supplying exactly that shared `{"findings` opening to both selected models
+produces 80 continuations. Parser-accepted responses rise from 12/40
+to 29/40; correct clean reviews rise from 2/20 to 14/20. Both models produce
+0/20 grounded concern reviews and 0/20 complete review pairs. The smaller-step
+model has one correct empty/nonempty pair at the JSON level, whose concern
+fails citation validation. Reasons often repeat the diff or invent a scope
+conflict. The next native control is specified as the existing mean decision
+CE plus the mean CE over the other 792 review-answer targets, with gradients
+accumulated before each Adam update. This trains the opening, citations,
+explanations and termination together with the paired choice.
+The measured control, full responses and planned follow-up live in
+[`training/results/2026-09-29-small-step`](training/results/2026-09-29-small-step).
+
+The corpus audit also prepares `training/sft_review_v3.jsonl`: describe the
+shown Python import addition precisely and clarify that the public sequence
+field must keep or regain its required 64-bit width. Three rows change;
+all 20 concern/clean pair labels stay fixed. Both controls above use v2.
 
 The review evaluator uses the actual host prompt and native inference path:
 

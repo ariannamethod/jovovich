@@ -1,0 +1,86 @@
+{
+  "sqlite-build-requirement-concern": {
+    "response_sha256": "9ab9549fc59e6e4d529f8d4e3aceaaf695fd2c3a24596e117bdca780e04da1d9",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added find_package command as a string. The response supplies neither a finding object nor an explanation that unconditional SQLite conflicts with the opt-in-only rule."
+  },
+  "sqlite-build-requirement-clean": {
+    "response_sha256": "6b5bdf01e95ddf249df93e33722d769133a8d797dbc4ac35c709d61e6888fb7e",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the approved find_package command as a string. The supplied rule explicitly requires SQLite for every build; this response gives no conflict and fails the finding schema."
+  },
+  "preserve-trie-credit-introduced": {
+    "response_sha256": "cf0bb7fbeed03ad365342a3c204d69a3e7e517495991ecfa0750d01accfc853c",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "The finding reason repeats the removed attribution. Trailing prose invents old-versus-new dependency notices instead of explaining that removal loses the sole upstream credit. The trailing prose also prevents complete JSON parsing."
+  },
+  "checksum-indirection-concern": {
+    "response_sha256": "3a88ccc453c4f88dc05757afdf7be35be1ab65b021342247b4be8c942c3851b4",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the removed and added calls as strings. It supplies no finding objects and no explanation that the single-checksum scope fails the rule requiring a second implementation before adding a registry."
+  },
+  "allocation-null-guard-introduced": {
+    "response_sha256": "ce6318d6de5717ca487358932aee73335c67e01052e00ab3d91898c364c34e48",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Invents a requirement to place the removed guard inside calloc itself. The actual failure is a NULL dereference after allocation failure; that mechanism is absent. It also reports physical line 12 as line_id instead of the sole bracketed ID 1."
+  },
+  "allocation-null-guard-repaired": {
+    "response_sha256": "2268fc802ffcf8b2782f1d3ebaa813ae69c0f08f0306ec16179a863f3d233c33",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added NULL guard as a string. That guard correctly prevents dereferencing a failed allocation; the response supplies neither a conflict explanation nor a finding object."
+  },
+  "zero-worker-guard-repaired": {
+    "response_sha256": "df8f6dce215410def4cd177448f23fc23dfe7614d39694d8fb85d9be5a35795a",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added zero-worker guard as a string. This guard correctly rejects zero before division; the response supplies neither a conflict explanation nor a finding object."
+  },
+  "zero-worker-guard-introduced": {
+    "response_sha256": "f580e7fada515c6128b165153ceb6e3100d88bbf3d6c1a573e1249a0d0df814d",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Uses the available changed-line ID 1 but gives the removed guard text, mislabelled as AGENTS.md, as its reason. It gives no explanation that removing the guard makes division by zero reachable."
+  },
+  "write-permission-check-introduced": {
+    "response_sha256": "9af073eb15491f6289607102b864372b2afda73fc90caf86c1199016a2d30012",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Cites the available removed guard but misdiagnoses it as a scope problem. The second sentence restates the valid permission requirement; it gives no explanation that removal lets read-only sessions reach the unchecked record write."
+  },
+  "write-permission-check-repaired": {
+    "response_sha256": "02c00628ca254757ae901c5e57df0260acfa8336830d346376b84437aea45e17",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added permission check as a string. The check correctly blocks read-only writes before replace_record; the response supplies no conflict explanation and fails the finding schema."
+  },
+  "stable-manifest-order-repaired": {
+    "response_sha256": "53c068328b938fb3a96d4301ce9a13a0faaf6e1ee7bc1da42c5fb364b6c29713",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added names.sort() line as a string. Sorting ASCII keys supplies the required insertion-order-independent manifest; the response supplies no conflict explanation and fails the finding schema."
+  },
+  "stable-manifest-order-introduced": {
+    "response_sha256": "a2fcf89dd99e454be59feef7a9d295a2445bc1d4c74eae78fd539ad824b70e72",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "The finding reason repeats the stability rule without connecting removal of sorting to variable insertion-order output. Trailing prose invents a conflict between files and reverses the requirement by calling byte-identical output undesirable. The extra prose also prevents complete JSON parsing."
+  },
+  "allocation-product-overflow-repaired": {
+    "response_sha256": "0e5dfa983b3e859c810c30f7af55a783b4b259ae45752604432eba5f3120c932",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Returns the added overflow guard as a string. This guard correctly checks the untrusted count before multiplication; the response supplies no conflict explanation and fails the finding schema."
+  },
+  "allocation-product-overflow-introduced": {
+    "response_sha256": "991b6f1d611c52ab114c32c600d0bd2356c8a9331687f69fa1a581fb435013ae",
+    "genuine_issue_detected": false,
+    "all_findings_grounded": false,
+    "assessment": "Uses available changed-line ID 1 but invents a file-placement problem for the removed guard. It gives no explanation that multiplying the unchecked count can wrap and underallocate the buffer."
+  }
+}

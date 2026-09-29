@@ -1,0 +1,20 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/decision-small-step.bin",
+    "models/decision-small-step",
+    "100",
+    "0.0001",
+    "40",
+    "25",
+    "decisions",
+    "models/decision-small-step.pairs"
+  ],
+  "objective": "decisions",
+  "elapsed_seconds": 998.0295686840036,
+  "peak_rss_kib": 1459460,
+  "user_seconds": 2049.476115,
+  "system_seconds": 57.750462,
+  "exit_code": 0
+}

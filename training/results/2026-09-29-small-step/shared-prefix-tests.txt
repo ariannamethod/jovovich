@@ -1,0 +1,13 @@
+✔ common prefix ends before both native verdict targets and refuses boundary changes (5.39375ms)
+✔ assembled common prefix permits clean and concern; invalid citations retain their JSON choice (1.235698ms)
+✔ all 20 training pairs exactly match prior natural prompt hashes and both outcomes (31.392445ms)
+✔ all six runtime pairs exactly match prior natural host prompts (13.188459ms)
+✔ two worker shards cover all 40 original review indices exactly once (0.862664ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 248.463593

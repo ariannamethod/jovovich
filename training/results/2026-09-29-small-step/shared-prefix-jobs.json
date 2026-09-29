@@ -1,0 +1,62 @@
+[
+  {
+    "arm": "control",
+    "shard": 0,
+    "command": [
+      "node",
+      "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "models/decision-only-selected.gguf",
+      "training/results/2026-09-29-decision-only/train-generation.jsonl",
+      "models/shared-prefix-control-0.jsonl",
+      "--shard",
+      "0"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 586.2619910289941
+  },
+  {
+    "arm": "control",
+    "shard": 1,
+    "command": [
+      "node",
+      "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "models/decision-only-selected.gguf",
+      "training/results/2026-09-29-decision-only/train-generation.jsonl",
+      "models/shared-prefix-control-1.jsonl",
+      "--shard",
+      "1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 574.5163519289999
+  },
+  {
+    "arm": "new",
+    "shard": 0,
+    "command": [
+      "node",
+      "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "models/decision-small-step-selected.gguf",
+      "models/decision-small-step-train-generation.jsonl",
+      "models/shared-prefix-new-0.jsonl",
+      "--shard",
+      "0"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 491.2483152280038
+  },
+  {
+    "arm": "new",
+    "shard": 1,
+    "command": [
+      "node",
+      "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "models/decision-small-step-selected.gguf",
+      "models/decision-small-step-train-generation.jsonl",
+      "models/shared-prefix-new-1.jsonl",
+      "--shard",
+      "1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 451.0120437079968
+  }
+]
