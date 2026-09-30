@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "status": "Prepared and frozen before any new tokenizer or model execution; root will review and run.",
+  "experiment": "matched_template_diff_shape_followup",
+  "created_at_utc": "2026-09-30T22:07:55.185329+00:00",
+  "repository_base_commit": "2948c91ec122ee5eb2e0eeb09e869960497b836f",
+  "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "relationship_to_main_experiment": "Separate diagnostic following the expanded eight-case audit. Eight new control continuations increase the archive total from164 to172. Main training, checkpoint selection and main164 evaluation remain unchanged.",
+  "model": {
+    "path": "models/decision-small-step-selected.gguf",
+    "sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c",
+    "bytes": 714116992,
+    "selected_update": 100
+  },
+  "sources": {
+    "cases": {
+      "path": "../reference/matched-shape-cases.jsonl",
+      "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+      "bytes": 54951
+    },
+    "runner": {
+      "path": "build/jovovich-infer",
+      "sha256": "36f33861536b1291d5b1b7a9433a418cc66ab64c1bd9414581c888fc504e5def",
+      "bytes": 229040
+    },
+    "infer": {
+      "path": "src/infer.c",
+      "sha256": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566",
+      "bytes": 12318
+    },
+    "host": {
+      "path": "bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+      "bytes": 16336
+    },
+    "wrapper": {
+      "path": "../reference/probe_matched_shape.mjs",
+      "sha256": "ad9357bc68c23243fff9303becaefc2a00aa9269f8fe8b4e47bd7b8c02e5c34f",
+      "bytes": 16421
+    },
+    "sft": {
+      "path": "training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+      "bytes": 133845
+    },
+    "baseline_receipts": {
+      "path": "models/joint-review-control-train-shared.jsonl",
+      "sha256": "a76979ddd266a958fb8bd9d9b9acda28c1695ebefacc744fd6b4292df2b46d12",
+      "bytes": 402896
+    },
+    "control_selection": {
+      "path": "training/results/2026-09-29-small-step/selected-model.json",
+      "sha256": "716a57e31ad58a0b06648e8c24590c8e655ab6335f5c044920b3111c13ec8ebb",
+      "bytes": 192
+    },
+    "control_metrics": {
+      "path": "training/results/2026-09-29-small-step/metrics.jsonl",
+      "sha256": "503c78ccc7f3eb0c0f6f86b7d4af7cda640950db17b5d43de742135e271b9f4e",
+      "bytes": 832740
+    },
+    "basis_wrapper": {
+      "path": "../reference/evaluate_joint_reviews.mjs",
+      "sha256": "4989283a88e90434d274f6386aa467d34516388e98d68396d5e7ec57360aaaf7",
+      "bytes": 6339
+    },
+    "scope_assessment": {
+      "path": "../reference/shape-control-scope.json",
+      "sha256": "326bb235acfb1aa3f1b976c334031c1644f9a1b8c20496a7d5d60aecf2ee5059",
+      "bytes": 11590
+    }
+  },
+  "case_ids": [
+    "matched-shape-allocation-null-guard-pure-deletion-harmful",
+    "matched-shape-allocation-null-guard-pure-deletion-redundant",
+    "matched-shape-allocation-null-guard-replacement-noop-harmful",
+    "matched-shape-allocation-null-guard-replacement-noop-redundant",
+    "matched-shape-write-permission-check-pure-deletion-harmful",
+    "matched-shape-write-permission-check-pure-deletion-redundant",
+    "matched-shape-write-permission-check-replacement-noop-harmful",
+    "matched-shape-write-permission-check-replacement-noop-redundant"
+  ],
+  "baselines": [
+    {
+      "name": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+      "original_training_id": "allocation-null-guard-introduced",
+      "previous_receipt_path": "models/joint-review-control-train-shared.jsonl",
+      "previous_prompt_sha256": "8d1055c99b622f2faca45449e4cadad338a2f6a6b6e7ae3b256ea403df5f2ba2",
+      "expected_first_token_id": 66582,
+      "previous_assembled_response_sha256": "ce6318d6de5717ca487358932aee73335c67e01052e00ab3d91898c364c34e48",
+      "previous_continuation_sha256": "d75262f705b2adee04752005f2d82e056fc86a9bad2506c402fb3aede6f924c0",
+      "original_prompt_ids_sha256": "a3ebd894620cfc556a407ae2ae6180be76d794e956a4580b0d297f96614d2d3e",
+      "original_prompt_token_count": 434,
+      "stop_reason": "eos"
+    },
+    {
+      "name": "matched-shape-write-permission-check-pure-deletion-harmful",
+      "original_training_id": "write-permission-check-introduced",
+      "previous_receipt_path": "models/joint-review-control-train-shared.jsonl",
+      "previous_prompt_sha256": "59e9a5e01c86ba60ff39a55a56c6fe386a68cae0deea768659fa3b3fd1c4683a",
+      "expected_first_token_id": 66582,
+      "previous_assembled_response_sha256": "9af073eb15491f6289607102b864372b2afda73fc90caf86c1199016a2d30012",
+      "previous_continuation_sha256": "3599f4179d832fcf5c40a7d7e4b68b3e7960076760c2e01229705e5bcc726ad5",
+      "original_prompt_ids_sha256": "7f12bf879fad8d60b7df29f49235586c22258025bf1be5c27957d720a6bba9b9",
+      "original_prompt_token_count": 422,
+      "stop_reason": "eos"
+    }
+  ],
+  "case_count": 8,
+  "execution": "Exactly eight sequential shared-prefix continuations through the native C runner. No training or parameter update.",
+  "decoding": {
+    "temperature": 0,
+    "continuation_tokens": 192,
+    "context": 2048,
+    "threads": 2,
+    "NT_NO_I8": "1"
+  },
+  "thread_environment": {
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "supplied_prefix": "{\"findings",
+  "supplied_prefix_ids": [
+    4913,
+    3903,
+    819
+  ],
+  "output": "models/matched-shape-control.jsonl",
+  "trace_dir": "models/matched-shape-control-traces",
+  "summary_output": "models/matched-shape-summary.json",
+  "design": {
+    "contexts": [
+      "allocation-null-guard",
+      "write-permission-check"
+    ],
+    "harm_levels": [
+      "harmful: the changed guard is the only guard",
+      "redundant: an unchanged identical guard remains before the dangerous operation"
+    ],
+    "shape_levels": [
+      "pure deletion",
+      "replacement with (void)0"
+    ],
+    "pairs": 4,
+    "baseline_replays": 2,
+    "counterfactuals": 6,
+    "serialization": "Directly reconstruct the original two-role ChatML from stored SFT messages; every fixture stores the complete prompt and its hash.",
+    "held_fixed": "Original system, repository/path/title, description, rules, output instruction, candidate guard physical coordinates, ChatML framing and shared prefix.",
+    "shape_edit": "Insert +    (void)0; immediately after the removed guard; update the new-side hunk length and add changed-line ID2 at the original coordinate.",
+    "semantic_edit": "Insert an unchanged identical guard immediately after the candidate guard and before dereference/write; update both hunk lengths. Changed-line coordinate12 for NULL and11 for permission stay fixed.",
+    "permitted_mechanical_changes": "Hunk lengths and the changed-line listing change only as required by the two edits. Original harmful-deletion prompts remain byte-identical to their SFT rows and current control receipts."
+  },
+  "predeclared_measurements": {
+    "baseline_replay": "Compare both first sampled IDs and complete continuation/response hashes against prior matching native receipts. Record disagreements as measurements.",
+    "route_patterns": {
+      "shape_sensitive_pattern": "66582 for pure deletion and788 for no-op replacement, for both harm labels.",
+      "harm_sensitive_pattern": "66582 for harmful changes and788 for redundant-guard changes, for both shapes.",
+      "interpretation": "These patterns describe template-token routes. Token788 is quote-colon and does not by itself specify an empty findings array."
+    },
+    "semantic_readout": "Assess parsed presence, object schema, concrete changed-line citation, and the explicit NULL-dereference or permission-bypass mechanism separately. Clean cases require empty findings. Preserve null presence for malformed output.",
+    "citation_alternatives": "For harmful replacement, removed ID1 and added ID2 are both valid locations. The expected_line_ids field lists canonicalID2; metadata lists both allowed alternatives.",
+    "counts": "Report all eight cases, four harmful/clean pairs and four behavior-preserving shape comparisons; no checkpoint selection uses these outputs."
+  },
+  "validation_before_freeze": {
+    "original_sft_prompts_byte_identical": 2,
+    "baseline_original_ids_equal_existing_control_receipts": 2,
+    "baseline_supplied_ids_equal_existing_traces": 2,
+    "baseline_first_ids_confirmed": {
+      "66582": 2
+    },
+    "host_chunk_matches": 8,
+    "golden_citation_validation": "All declared alternatives accepted by production parseReview.",
+    "c_syntax_checks": 16,
+    "c_syntax_command": "cc -x c -std=c11 -Wall -Wextra -Werror -Wno-unused-parameter -fsyntax-only -",
+    "wrapper_syntax_check": "node --check ../reference/probe_matched_shape.mjs passed.",
+    "tokenizer_or_inference_runs_during_preparation": 0
+  },
+  "native_preflight_at_execution": "The wrapper verifies every pinned file, reconstructs all eight prompt hashes, checks native original+prefix token boundaries, checks both baseline original IDs against their receipts and checks gold next IDs for the two original cases before creating generation artifacts.",
+  "command": "node ../reference/probe_matched_shape.mjs --output models/matched-shape-control.jsonl --trace-dir models/matched-shape-control-traces --plan ../reference/matched-shape-plan.json",
+  "pre_execution_revision": "Use repository cwd so the probe remains portable after archiving; no tokenizer or inference had executed."
+}

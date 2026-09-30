@@ -1,0 +1,450 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "e8238393fa89ec03910ba613dbc7d2c12f19ffae",
+  "parent_commit": "38bdcfb3480f5eda86a8cbd7c49adc39a8c42aa5",
+  "files_uploaded": 87,
+  "verified_by_download": [
+    {
+      "file": "experiments/joint-review/source/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "file": "experiments/joint-review/source/training/score_decisions.py",
+      "bytes": 19863,
+      "sha256": "f07a33ee5bc01decf861b8f0205cef9bfaa90fab2a409ba6f15f2df1c2eca770"
+    },
+    {
+      "file": "experiments/joint-review/source/training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    {
+      "file": "experiments/joint-review/source/training/prepare.py",
+      "bytes": 3700,
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5"
+    },
+    {
+      "file": "experiments/joint-review/source/training/merge_mlp.c",
+      "bytes": 8538,
+      "sha256": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67"
+    },
+    {
+      "file": "experiments/joint-review/source/training/probe_mlp.c",
+      "bytes": 9303,
+      "sha256": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac"
+    },
+    {
+      "file": "experiments/joint-review/source/training/probe_tokenization.c",
+      "bytes": 3221,
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6"
+    },
+    {
+      "file": "experiments/joint-review/source/training/export_adapter.c",
+      "bytes": 1092,
+      "sha256": "3ccae9d4473328e8a921f14bd5083b495d676de349a74473171f266aadaaf337"
+    },
+    {
+      "file": "experiments/joint-review/source/training/evaluate.py",
+      "bytes": 5177,
+      "sha256": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544"
+    },
+    {
+      "file": "experiments/joint-review/source/training/evaluate_review.mjs",
+      "bytes": 5963,
+      "sha256": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d"
+    },
+    {
+      "file": "experiments/joint-review/source/training/train_head.c",
+      "bytes": 13976,
+      "sha256": "98aa97c82bc4d2620037dea6886001d75e42e262d92a7264a6ad5b9ca47ae8b0"
+    },
+    {
+      "file": "experiments/joint-review/source/training/sft_review_v2.jsonl",
+      "bytes": 133845,
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    {
+      "file": "experiments/joint-review/source/training/sft_review_v3.jsonl",
+      "bytes": 133900,
+      "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7"
+    },
+    {
+      "file": "experiments/joint-review/source/training/review_holdout_v2.jsonl",
+      "bytes": 14028,
+      "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad"
+    },
+    {
+      "file": "experiments/joint-review/source/prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "file": "experiments/joint-review/source/bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "file": "experiments/joint-review/source/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "file": "experiments/joint-review/source/model.json",
+      "bytes": 325,
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457"
+    },
+    {
+      "file": "experiments/joint-review/source/Makefile",
+      "bytes": 4592,
+      "sha256": "0af4acc6df13a45f4d0217177424aeca16a987ab05741bd713e1945cfbf73503"
+    },
+    {
+      "file": "experiments/joint-review/source/test/joint.c",
+      "bytes": 16400,
+      "sha256": "79ebc6cb879ae31ff355dbf91d572541e5dac430a7a7a03ae1d86a3984ce50d9"
+    },
+    {
+      "file": "experiments/joint-review/source/test/weighting.c",
+      "bytes": 21013,
+      "sha256": "c560007a447717ef5689b146c02d32209150ab25328da8bad3324480fad1ba77"
+    },
+    {
+      "file": "experiments/joint-review/source/test/optimizer.c",
+      "bytes": 7370,
+      "sha256": "f15d111b65b08d783cad877ba8fcd57a50a7949985025680283dcecbd0b1b4c2"
+    },
+    {
+      "file": "experiments/joint-review/source/test/mlp.c",
+      "bytes": 4795,
+      "sha256": "770bebab2e65e03ec049bb36f96249a2b4082c68db4a4c6d6ce6ed82f9756483"
+    },
+    {
+      "file": "experiments/joint-review/source/test/head.c",
+      "bytes": 2603,
+      "sha256": "284347177c6962cd0895b5bf2b0e4302bb43b94fe5d420d5de99ab89fae3176d"
+    },
+    {
+      "file": "experiments/joint-review/source/test/runner.test.mjs",
+      "bytes": 11160,
+      "sha256": "1a6664f44b5ea8e48a7a90ceecdd0ea5fe9b8565ee6ce1df9dfe551220d58dbf"
+    },
+    {
+      "file": "experiments/joint-review/source/test/decision_score.test.mjs",
+      "bytes": 23959,
+      "sha256": "c041aeb877d09804b7a8b2e91cf93b901b21da33ef00871310e5b56497fc917e"
+    },
+    {
+      "file": "experiments/joint-review/source/test/training_score.test.mjs",
+      "bytes": 6169,
+      "sha256": "9c58b6da97a29df3ceef4d43a07a5dbac1fe28945b885763b5967a533c504ece"
+    },
+    {
+      "file": "experiments/joint-review/source/test/prepare_pairs.test.mjs",
+      "bytes": 2914,
+      "sha256": "bb69f38eb726de28e76dc5e84c50f0f584593e1056cd1193840a77f9abe7de34"
+    },
+    {
+      "file": "experiments/joint-review/source/test/chatml.test.mjs",
+      "bytes": 4449,
+      "sha256": "08802c06872ac08663cd754ef07efe932a0e1c29c9b6d264b82a8eab06192499"
+    },
+    {
+      "file": "experiments/joint-review/source/training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "bytes": 10672,
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d"
+    },
+    {
+      "file": "experiments/joint-review/source/training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "bytes": 2197,
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1"
+    },
+    {
+      "file": "experiments/joint-review/source/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "file": "experiments/joint-review/evidence/plan.json",
+      "bytes": 10684,
+      "sha256": "5ef22e3a732d8ea787a36a8850b100233634204bc63bd9ee2718876644cbad9f"
+    },
+    {
+      "file": "experiments/joint-review/evidence/metrics.jsonl",
+      "bytes": 870910,
+      "sha256": "43b7470ff8f226f2c2fe5235e8eaeb2bd0fd4e1b7d085d4f4c2022d6eb4be247"
+    },
+    {
+      "file": "experiments/joint-review/evidence/scores.json",
+      "bytes": 116397,
+      "sha256": "e30370fbe6e691aa69abe77d0c0168655d505c644355185fa17b4e3868205199"
+    },
+    {
+      "file": "experiments/joint-review/evidence/resource.json",
+      "bytes": 431,
+      "sha256": "b1f96ec4e465629511949ca9a396c9eab8aebb528168a153862883fdc07b6315"
+    },
+    {
+      "file": "experiments/joint-review/evidence/training-source.json",
+      "bytes": 446,
+      "sha256": "4b8934680afb5e9f475a006dc8198a64db7511b9137b1c47f07d0cd886dbdb71"
+    },
+    {
+      "file": "experiments/joint-review/evidence/selected-model.json",
+      "bytes": 169,
+      "sha256": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1"
+    },
+    {
+      "file": "experiments/joint-review/evidence/export-audit.json",
+      "bytes": 489,
+      "sha256": "833fd6f10a10aa600d90073e004392d863fe4fa7566e912fb26c1d9c9446ee32"
+    },
+    {
+      "file": "experiments/joint-review/evidence/parity.jsonl",
+      "bytes": 1681,
+      "sha256": "0d3a4af758bcc20886f97ca10f465fd663d258369762812aeb39000eee4c352a"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-evaluation-jobs.json",
+      "bytes": 2347,
+      "sha256": "e69a13195b1ff8b3170dfa26c31fae462abbfb385d1c261be3e14a324aee1476"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-evaluation-model-check.json",
+      "bytes": 104,
+      "sha256": "fb0c06ebd335aba796119a4712d52afbaf9c9231f96725e2c2891cbd7bd6b81d"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-evaluation-jobs.json",
+      "bytes": 4058,
+      "sha256": "dfd1fe09e303904ba897d80beb93bd04fd923616c2d818cc5ba5f5cbf49a0cff"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-evaluation-model-check.json",
+      "bytes": 104,
+      "sha256": "9401f4cde2769dd350f74610b2e49c2b9122216a3d8d5a4b605dcdad88e2cfaf"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-train-shared.jsonl",
+      "bytes": 402896,
+      "sha256": "a76979ddd266a958fb8bd9d9b9acda28c1695ebefacc744fd6b4292df2b46d12"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-audit-natural.jsonl",
+      "bytes": 86586,
+      "sha256": "d79721c3b1ad9b73cba9145f604686eb0e004e0ef911ee2131cc5610ee6e1d0e"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-audit-shared.jsonl",
+      "bytes": 89704,
+      "sha256": "eca215773465ea8013f74aa13ad37cc053e99507331ea3d237b0259918e00b65"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-train-natural.jsonl",
+      "bytes": 407430,
+      "sha256": "8405ac382d7c46f843c87d8ce2c1db8f44b4b5422e21dc054b015c35f86e7d6a"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-train-shared.jsonl",
+      "bytes": 408024,
+      "sha256": "7bf34a4df97372896b46fb447c295e077ea122858f4789e86cef4175d22b7e5c"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-diagnostics-natural.jsonl",
+      "bytes": 127888,
+      "sha256": "5c275bf1d0254f04667519da83823eac2e8ad4a33825a25365d4518b1491ca59"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-audit-natural.jsonl",
+      "bytes": 86498,
+      "sha256": "5b2860ac9929004796189fe2f53ff224032ba250afde1d99201a50de3127d508"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-audit-shared.jsonl",
+      "bytes": 86575,
+      "sha256": "9a9e5e0337f1079a0aa160d899d94634b553a50286a8c4e018d2404dd913a1b0"
+    },
+    {
+      "file": "experiments/joint-review/evidence/generation-summary.json",
+      "bytes": 393525,
+      "sha256": "011ddc4cc705986dbfdedc580b3fb9365f7a2ad124caeafc3e895216481ee48c"
+    },
+    {
+      "file": "experiments/joint-review/evidence/semantic-assessment.json",
+      "bytes": 602021,
+      "sha256": "dae7039cee259edec61924acd0cb665e316f7a91ff5b0484a1d4d731e6c5712f"
+    },
+    {
+      "file": "experiments/joint-review/evidence/trajectory-assessment.json",
+      "bytes": 22993,
+      "sha256": "439181b8b7cecb3d1132e853276e3e3fc710fd8cd61c8dd372b7518d28928b90"
+    },
+    {
+      "file": "experiments/joint-review/evidence/hf-weights.json",
+      "bytes": 6824,
+      "sha256": "22c79b480e8bc4dd4f34f5eb6ece1c3684136174891d0b9ff3ac8e40680c55c6"
+    },
+    {
+      "file": "experiments/joint-review/evidence/infer-experiment.c",
+      "bytes": 12318,
+      "sha256": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566"
+    },
+    {
+      "file": "experiments/joint-review/evidence/independent-jovovich-audit.json",
+      "bytes": 16879,
+      "sha256": "6035c376acba96f8ab03a2c8699b848e0186449c62bc32ca2eadef0f23ab768b"
+    },
+    {
+      "file": "experiments/joint-review/evidence/diff-shape-audit.jsonl",
+      "bytes": 17060,
+      "sha256": "913875ef445ed1c4e5aa4534927e919b44d9ad50bfeb69b2a7e0efd2f044a392"
+    },
+    {
+      "file": "experiments/joint-review/evidence/control-diff-shape-assessment.json",
+      "bytes": 60662,
+      "sha256": "f4e9114cff7670ddc8ccc05f9fb7788ef78568d0e39e15a7c0263a7690d25712"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-train-manual-judgments.json",
+      "bytes": 34292,
+      "sha256": "faa22366f609479242c6737b15102eb70200faa72d9d058ddcb30142d8b6e72c"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-eval-manual-judgments.json",
+      "bytes": 55919,
+      "sha256": "1f1810786ecfc449b751822322a016d71c84ff35d87a32a72572e301e45a1450"
+    },
+    {
+      "file": "experiments/joint-review/evidence/assess_joint_semantics.py",
+      "bytes": 25125,
+      "sha256": "0398ab395b1962a39ff979e10452c683a333c8cced3988cc63b522a5a605f3e3"
+    },
+    {
+      "file": "experiments/joint-review/evidence/shape-control-scope.json",
+      "bytes": 11590,
+      "sha256": "326bb235acfb1aa3f1b976c334031c1644f9a1b8c20496a7d5d60aecf2ee5059"
+    },
+    {
+      "file": "experiments/joint-review/evidence/matched-shape-cases.jsonl",
+      "bytes": 54951,
+      "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4"
+    },
+    {
+      "file": "experiments/joint-review/evidence/matched-shape-plan.json",
+      "bytes": 9574,
+      "sha256": "f4ac11fd7221b9351603456a3242c725be5aabb35c16af9e8293031ef0dcafee"
+    },
+    {
+      "file": "experiments/joint-review/evidence/probe_matched_shape.mjs",
+      "bytes": 16421,
+      "sha256": "ad9357bc68c23243fff9303becaefc2a00aa9269f8fe8b4e47bd7b8c02e5c34f"
+    },
+    {
+      "file": "experiments/joint-review/evidence/prepare_matched_shape.py",
+      "bytes": 11164,
+      "sha256": "eea8e87521c8553a6ba80dc22cfaab570afdb12b9b02aa29c786df8f9832bc7e"
+    },
+    {
+      "file": "experiments/joint-review/evidence/run_joint_review.py",
+      "bytes": 1961,
+      "sha256": "614e1f06ca65dd255ece44b4b1f7c0ad40843ee95a898f152a45c7c5fd07d2c4"
+    },
+    {
+      "file": "experiments/joint-review/evidence/run_joint_evaluation.py",
+      "bytes": 5163,
+      "sha256": "7c8f5f2352a190fbf7d0815b5e6f9aa1c8366a95152c56b2391c98bf9d445e4f"
+    },
+    {
+      "file": "experiments/joint-review/evidence/evaluate_joint_reviews.mjs",
+      "bytes": 6339,
+      "sha256": "4989283a88e90434d274f6386aa467d34516388e98d68396d5e7ec57360aaaf7"
+    },
+    {
+      "file": "experiments/joint-review/evidence/summarize_joint_reviews.mjs",
+      "bytes": 18531,
+      "sha256": "3d3e4a8f28740ec4eb2c6506707cb87dfb1e59dd8e2090dce12ae26c01433da8"
+    },
+    {
+      "file": "experiments/joint-review/evidence/prepare_joint_run.py",
+      "bytes": 3418,
+      "sha256": "60b184a8a328467840f9e33b21ba46b103102ad97256dbeaaacf60e2b2d5215b"
+    },
+    {
+      "file": "experiments/joint-review/evidence/assess_joint_trajectory.py",
+      "bytes": 3380,
+      "sha256": "8be7aebfe938d642c9f3184791d3a7e20aafe0f7644f54c12c0de992034c9738"
+    },
+    {
+      "file": "experiments/joint-review/evidence/representation-next-probe.json",
+      "bytes": 8533,
+      "sha256": "ff21ad89c1fef62b1b8edc340b806edaf9ee14b9ff517543d9ce245a24f9f9ea"
+    },
+    {
+      "file": "experiments/joint-review/evidence/trace-sigpipe.patch",
+      "bytes": 1493,
+      "sha256": "6c2f257742c007080df2825add342e8c4a8821d67cc3f4ff7e7416f3a5ad0989"
+    },
+    {
+      "file": "experiments/joint-review/evidence/trace-sigpipe-test.patch",
+      "bytes": 2615,
+      "sha256": "58f951398d88f6133727d4d6d61d6bfcb025db68323b9410201f75880284dbd4"
+    },
+    {
+      "file": "experiments/joint-review/evidence/archive_joint_weights.py",
+      "bytes": 14184,
+      "sha256": "0baa303c6caca7fe1ff5a957f4c316e82f49100663495acc7c80b6df480adfa9"
+    },
+    {
+      "file": "experiments/joint-review/evidence/collect_joint_review.py",
+      "bytes": 15934,
+      "sha256": "6470774127e79edcc3482e2040a9f1030b5d23933afa89a05fa04fd44e544057"
+    },
+    {
+      "file": "experiments/joint-review/evidence/archive_joint_evidence.py",
+      "bytes": 14066,
+      "sha256": "7cb836b0eb8ec9a54399fc0041eed961c98c938cb92c63a2d213d51d9cac15a3"
+    },
+    {
+      "file": "experiments/joint-review/evidence/matched-shape-control.jsonl",
+      "bytes": 155722,
+      "sha256": "dc151f2b0d8a99652953df76cc760e8c03b491fa2e7105657243719e856f5d52"
+    },
+    {
+      "file": "experiments/joint-review/evidence/matched-shape-summary.json",
+      "bytes": 40757,
+      "sha256": "b266ad86e66f2f5e5c15cec1c6ef19525539e7d0cae5932d7d8a69efa0eeb90d"
+    },
+    {
+      "file": "experiments/joint-review/evidence/tests-before.txt",
+      "bytes": 31007,
+      "sha256": "27decee633cb818683b8552084f510f049fe81628df2af0fd552a2a31f57d70b"
+    },
+    {
+      "file": "experiments/joint-review/evidence/tests-after.txt",
+      "bytes": 12641,
+      "sha256": "81dc401c50b536cf09b6e166dfcbe66cf8aa78485d14a264ce22ff5bc43a4317"
+    },
+    {
+      "file": "experiments/joint-review/evidence/joint-next-control.json",
+      "bytes": 24293,
+      "sha256": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9"
+    },
+    {
+      "file": "experiments/joint-review/evidence/manifest.json",
+      "bytes": 34178,
+      "sha256": "2623711db9b56976fd171f6e5707977695919620c852ead1fc3a0eb61d8cb5c7"
+    },
+    {
+      "file": "README.md",
+      "bytes": 14344,
+      "sha256": "3d0b498945e0a1fa17d4dabb21ef286f338fe98a0c2a7ebc66ae6dd67065d31f"
+    }
+  ],
+  "verification_workers": 4,
+  "manifest_sha256": "2623711db9b56976fd171f6e5707977695919620c852ead1fc3a0eb61d8cb5c7",
+  "prior_card_sha256": "bdc441a33f6005f04146c768b353b664891b17778f6a2881df955a10a2152fc9",
+  "card_heading": "## Complete-review joint objective (2026-10-01)",
+  "source_parent_commit": "2948c91ec122ee5eb2e0eeb09e869960497b836f",
+  "receipt_manifest_exclusion": "Created after upload; excluded from the frozen manifest to avoid self-reference."
+}
