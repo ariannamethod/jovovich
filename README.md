@@ -388,17 +388,59 @@ to 29/40; correct clean reviews rise from 2/20 to 14/20. Both models produce
 0/20 grounded concern reviews and 0/20 complete review pairs. The smaller-step
 model has one correct empty/nonempty pair at the JSON level, whose concern
 fails citation validation. Reasons often repeat the diff or invent a scope
-conflict. The next native control is specified as the existing mean decision
-CE plus the mean CE over the other 792 review-answer targets, with gradients
+conflict. These observations motivate the native `joint` control below: mean
+decision CE plus mean CE over the other 792 review-answer targets, with gradients
 accumulated before each Adam update. This trains the opening, citations,
 explanations and termination together with the paired choice.
-The measured control, full responses and planned follow-up live in
+The smaller-step control, full responses and original joint protocol live in
 [`training/results/2026-09-29-small-step`](training/results/2026-09-29-small-step).
 
 The corpus audit also prepares `training/sft_review_v3.jsonl`: describe the
 shown Python import addition precisely and clarify that the public sequence
 field must keep or regain its required 64-bit width. Three rows change;
 all 20 concern/clean pair labels stay fixed. Both controls above use v2.
+
+The native `joint` objective trains the complete review and its paired choice:
+
+```sh
+python3 training/prepare.py models/joint-review.bin \
+  --sft training/sft_review_v2.jsonl --sft-only --review-pairs models/joint-review.pairs
+NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/joint-review.bin \
+  models/joint-review 100 0.0001 40 25 joint models/joint-review.pairs \
+  > models/joint-review-metrics.jsonl
+python3 training/score_decisions.py models/joint-review-metrics.jsonl \
+  --output models/joint-review-scores.json
+```
+
+Each update adds the mean CE of the 40 decision targets to the mean CE of
+the other 792 answer targets, including the opening, reason, citation and EOS.
+The groups are disjoint. Forty-token microbatches accumulate globally weighted
+gradients at fixed parameters; one global clip and Adam update follows all
+832 targets. The trainer derives both group sizes from the mapped corpus.
+Readouts include both loss components, the combined gradient norm and clip
+scale, and exact three-token openings. Checkpoint selection keeps the same
+25/50/100 rule.
+
+`jovovich-infer --trace-tokens NEW.json` records the prompt IDs and the actual
+sampled IDs, including a terminal EOS, alongside the stopping reason. The
+trace uses a new file and leaves generated stdout available to the host.
+
+The selected joint checkpoint learns all 40 three-token openings. Natural
+generation passes the parser in 38/40 training cases, detects four real issues,
+and produces three concern reviews whose material claims all pass manual
+checking. Two complete concern/clean pairs pass. The fourth issue is overflow:
+its mechanism is recognized, with an inaccurate numerical addition under the
+strict reading. The twelve diagnostic cases have zero grounded concern reviews.
+Full responses and the alternate reading of that overflow answer are retained.
+
+An independent corpus audit found that all six winning concern tokens in the
+smaller-step control belonged to pure deletions. In eight matched-template
+continuations, changing deletion to a no-op replacement flips the token route
+4/4 times; leaving a working guard in the unchanged context flips it 0/4 times.
+The complete responses, exact emitted IDs and a proposed corpus balancing
+diff shape against actual harm are preserved with the joint experiment in
+[`training/results/2026-10-01-joint-review`](training/results/2026-10-01-joint-review).
 
 The review evaluator uses the actual host prompt and native inference path:
 

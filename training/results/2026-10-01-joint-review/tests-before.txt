@@ -1,0 +1,380 @@
+cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/test-head test/head.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c  -lm -pthread
+deps/notorch/notorch.c: In function ‘nt_q6_k_rows_i8’:
+deps/notorch/notorch.c:6865:47: warning: unused variable ‘ones’ [-Wunused-variable]
+ 6865 |                   b32 = _mm256_set1_epi8(32), ones = _mm256_set1_epi16(1);
+      |                                               ^~~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8’:
+deps/notorch/notorch.c:7245:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7245 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/notorch.c:7244:23: warning: unused variable ‘nsub’ [-Wunused-variable]
+ 7244 |     int nb = k / 256, nsub = k / 32;
+      |                       ^~~~
+deps/notorch/notorch.c: In function ‘nt_qmatvec_i8_gather’:
+deps/notorch/notorch.c:7606:9: warning: missing initializer for field ‘fnn’ of ‘nt_qjob_i8’ [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |         ^~~~
+deps/notorch/notorch.c:7036:22: note: ‘fnn’ declared here
+ 7036 |     nt_qmmrows_i8_fn fnn; int m, n;
+      |                      ^~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8n’:
+deps/notorch/notorch.c:7888:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7888 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/gguf.c: In function ‘gguf_print_info’:
+deps/notorch/gguf.c:777:26: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 3 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                       ~~~^                                         ~~~~~~~~~~~~~
+      |                          |                                           |
+      |                          long long unsigned int                      uint64_t {aka long unsigned int}
+      |                       %lu
+deps/notorch/gguf.c:777:40: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 4 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                                     ~~~^                                          ~~~~~~~~
+      |                                        |                                            |
+      |                                        long long unsigned int                       uint64_t {aka long unsigned int}
+      |                                     %lu
+deps/notorch/gguf.c:790:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  790 |         printf("  [%2llu] %-40s %s  [", i, ti->name, dn);
+      |                    ~~~~^                ~
+      |                        |                |
+      |                        |                uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                    %2lu
+deps/notorch/gguf.c:792:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  792 |             printf("%llu%s", ti->shape[d], d < ti->ndim - 1 ? "," : "");
+      |                     ~~~^     ~~~~~~~~~~~~
+      |                        |              |
+      |                        |              uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                     %lu
+deps/notorch/gguf.c:796:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  796 |     printf("  total: %llu elements\n", total_params);
+      |                      ~~~^              ~~~~~~~~~~~~
+      |                         |              |
+      |                         |              uint64_t {aka long unsigned int}
+      |                         long long unsigned int
+      |                      %lu
+deps/notorch/gguf.c: In function ‘gguf_open’:
+deps/notorch/gguf.c:129:13: warning: ‘__builtin___strncpy_chk’ output may be truncated copying 127 bytes from a string of length 511 [-Wstringop-truncation]
+  129 |             strncpy(kv->key, key, GGUF_MAX_NAME - 1);
+      |             ^
+deps/notorch/examples/bpe.c: In function ‘scheme_encode_span’:
+deps/notorch/examples/bpe.c:454:48: warning: ‘%s’ directive output may be truncated writing up to 510 bytes into a region of size between 1 and 511 [-Wformat-truncation=]
+  454 |                 snprintf(key, sizeof(key), "%s %s", sym[b], sym[b + 1]);
+      |                                                ^~
+In file included from /usr/include/stdio.h:980,
+                 from deps/notorch/examples/bpe.c:4:
+In function ‘snprintf’,
+    inlined from ‘spm_bpe_encode’ at deps/notorch/examples/bpe.c:454:17,
+    inlined from ‘scheme_encode_span’ at deps/notorch/examples/bpe.c:554:22:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 2 and 1022 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/test-mlp test/mlp.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c  -lm -pthread
+deps/notorch/notorch.c: In function ‘nt_q6_k_rows_i8’:
+deps/notorch/notorch.c:6865:47: warning: unused variable ‘ones’ [-Wunused-variable]
+ 6865 |                   b32 = _mm256_set1_epi8(32), ones = _mm256_set1_epi16(1);
+      |                                               ^~~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8’:
+deps/notorch/notorch.c:7245:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7245 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/notorch.c:7244:23: warning: unused variable ‘nsub’ [-Wunused-variable]
+ 7244 |     int nb = k / 256, nsub = k / 32;
+      |                       ^~~~
+deps/notorch/notorch.c: In function ‘nt_qmatvec_i8_gather’:
+deps/notorch/notorch.c:7606:9: warning: missing initializer for field ‘fnn’ of ‘nt_qjob_i8’ [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |         ^~~~
+deps/notorch/notorch.c:7036:22: note: ‘fnn’ declared here
+ 7036 |     nt_qmmrows_i8_fn fnn; int m, n;
+      |                      ^~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8n’:
+deps/notorch/notorch.c:7888:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7888 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/gguf.c: In function ‘gguf_print_info’:
+deps/notorch/gguf.c:777:26: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 3 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                       ~~~^                                         ~~~~~~~~~~~~~
+      |                          |                                           |
+      |                          long long unsigned int                      uint64_t {aka long unsigned int}
+      |                       %lu
+deps/notorch/gguf.c:777:40: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 4 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                                     ~~~^                                          ~~~~~~~~
+      |                                        |                                            |
+      |                                        long long unsigned int                       uint64_t {aka long unsigned int}
+      |                                     %lu
+deps/notorch/gguf.c:790:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  790 |         printf("  [%2llu] %-40s %s  [", i, ti->name, dn);
+      |                    ~~~~^                ~
+      |                        |                |
+      |                        |                uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                    %2lu
+deps/notorch/gguf.c:792:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  792 |             printf("%llu%s", ti->shape[d], d < ti->ndim - 1 ? "," : "");
+      |                     ~~~^     ~~~~~~~~~~~~
+      |                        |              |
+      |                        |              uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                     %lu
+deps/notorch/gguf.c:796:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  796 |     printf("  total: %llu elements\n", total_params);
+      |                      ~~~^              ~~~~~~~~~~~~
+      |                         |              |
+      |                         |              uint64_t {aka long unsigned int}
+      |                         long long unsigned int
+      |                      %lu
+deps/notorch/gguf.c: In function ‘gguf_open’:
+deps/notorch/gguf.c:129:13: warning: ‘__builtin___strncpy_chk’ output may be truncated copying 127 bytes from a string of length 511 [-Wstringop-truncation]
+  129 |             strncpy(kv->key, key, GGUF_MAX_NAME - 1);
+      |             ^
+deps/notorch/examples/bpe.c: In function ‘scheme_encode_span’:
+deps/notorch/examples/bpe.c:454:48: warning: ‘%s’ directive output may be truncated writing up to 510 bytes into a region of size between 1 and 511 [-Wformat-truncation=]
+  454 |                 snprintf(key, sizeof(key), "%s %s", sym[b], sym[b + 1]);
+      |                                                ^~
+In file included from /usr/include/stdio.h:980,
+                 from deps/notorch/examples/bpe.c:4:
+In function ‘snprintf’,
+    inlined from ‘spm_bpe_encode’ at deps/notorch/examples/bpe.c:454:17,
+    inlined from ‘scheme_encode_span’ at deps/notorch/examples/bpe.c:554:22:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 2 and 1022 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/test-optimizer test/optimizer.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c  -lm -pthread
+deps/notorch/notorch.c: In function ‘nt_q6_k_rows_i8’:
+deps/notorch/notorch.c:6865:47: warning: unused variable ‘ones’ [-Wunused-variable]
+ 6865 |                   b32 = _mm256_set1_epi8(32), ones = _mm256_set1_epi16(1);
+      |                                               ^~~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8’:
+deps/notorch/notorch.c:7245:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7245 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/notorch.c:7244:23: warning: unused variable ‘nsub’ [-Wunused-variable]
+ 7244 |     int nb = k / 256, nsub = k / 32;
+      |                       ^~~~
+deps/notorch/notorch.c: In function ‘nt_qmatvec_i8_gather’:
+deps/notorch/notorch.c:7606:9: warning: missing initializer for field ‘fnn’ of ‘nt_qjob_i8’ [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |         ^~~~
+deps/notorch/notorch.c:7036:22: note: ‘fnn’ declared here
+ 7036 |     nt_qmmrows_i8_fn fnn; int m, n;
+      |                      ^~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8n’:
+deps/notorch/notorch.c:7888:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7888 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/gguf.c: In function ‘gguf_print_info’:
+deps/notorch/gguf.c:777:26: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 3 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                       ~~~^                                         ~~~~~~~~~~~~~
+      |                          |                                           |
+      |                          long long unsigned int                      uint64_t {aka long unsigned int}
+      |                       %lu
+deps/notorch/gguf.c:777:40: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 4 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                                     ~~~^                                          ~~~~~~~~
+      |                                        |                                            |
+      |                                        long long unsigned int                       uint64_t {aka long unsigned int}
+      |                                     %lu
+deps/notorch/gguf.c:790:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  790 |         printf("  [%2llu] %-40s %s  [", i, ti->name, dn);
+      |                    ~~~~^                ~
+      |                        |                |
+      |                        |                uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                    %2lu
+deps/notorch/gguf.c:792:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  792 |             printf("%llu%s", ti->shape[d], d < ti->ndim - 1 ? "," : "");
+      |                     ~~~^     ~~~~~~~~~~~~
+      |                        |              |
+      |                        |              uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                     %lu
+deps/notorch/gguf.c:796:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  796 |     printf("  total: %llu elements\n", total_params);
+      |                      ~~~^              ~~~~~~~~~~~~
+      |                         |              |
+      |                         |              uint64_t {aka long unsigned int}
+      |                         long long unsigned int
+      |                      %lu
+deps/notorch/gguf.c: In function ‘gguf_open’:
+deps/notorch/gguf.c:129:13: warning: ‘__builtin___strncpy_chk’ output may be truncated copying 127 bytes from a string of length 511 [-Wstringop-truncation]
+  129 |             strncpy(kv->key, key, GGUF_MAX_NAME - 1);
+      |             ^
+deps/notorch/examples/bpe.c: In function ‘scheme_encode_span’:
+deps/notorch/examples/bpe.c:454:48: warning: ‘%s’ directive output may be truncated writing up to 510 bytes into a region of size between 1 and 511 [-Wformat-truncation=]
+  454 |                 snprintf(key, sizeof(key), "%s %s", sym[b], sym[b + 1]);
+      |                                                ^~
+In file included from /usr/include/stdio.h:980,
+                 from deps/notorch/examples/bpe.c:4:
+In function ‘snprintf’,
+    inlined from ‘spm_bpe_encode’ at deps/notorch/examples/bpe.c:454:17,
+    inlined from ‘scheme_encode_span’ at deps/notorch/examples/bpe.c:554:22:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 2 and 1022 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/test-weighting test/weighting.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c  -lm -pthread
+deps/notorch/notorch.c: In function ‘nt_q6_k_rows_i8’:
+deps/notorch/notorch.c:6865:47: warning: unused variable ‘ones’ [-Wunused-variable]
+ 6865 |                   b32 = _mm256_set1_epi8(32), ones = _mm256_set1_epi16(1);
+      |                                               ^~~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8’:
+deps/notorch/notorch.c:7245:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7245 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/notorch.c:7244:23: warning: unused variable ‘nsub’ [-Wunused-variable]
+ 7244 |     int nb = k / 256, nsub = k / 32;
+      |                       ^~~~
+deps/notorch/notorch.c: In function ‘nt_qmatvec_i8_gather’:
+deps/notorch/notorch.c:7606:9: warning: missing initializer for field ‘fnn’ of ‘nt_qjob_i8’ [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |         ^~~~
+deps/notorch/notorch.c:7036:22: note: ‘fnn’ declared here
+ 7036 |     nt_qmmrows_i8_fn fnn; int m, n;
+      |                      ^~~
+deps/notorch/notorch.c: In function ‘nt_q4_k_rows_i8n’:
+deps/notorch/notorch.c:7888:48: warning: unused variable ‘ones’ [-Wunused-variable]
+ 7888 |     const __m256i m4 = _mm256_set1_epi8(0x0F), ones = _mm256_set1_epi16(1);
+      |                                                ^~~~
+deps/notorch/gguf.c: In function ‘gguf_print_info’:
+deps/notorch/gguf.c:777:26: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 3 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                       ~~~^                                         ~~~~~~~~~~~~~
+      |                          |                                           |
+      |                          long long unsigned int                      uint64_t {aka long unsigned int}
+      |                       %lu
+deps/notorch/gguf.c:777:40: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 4 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  777 |     printf("GGUF v%d: %llu tensors, %llu metadata\n", gf->version, gf->n_tensors, gf->n_kv);
+      |                                     ~~~^                                          ~~~~~~~~
+      |                                        |                                            |
+      |                                        long long unsigned int                       uint64_t {aka long unsigned int}
+      |                                     %lu
+deps/notorch/gguf.c:790:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  790 |         printf("  [%2llu] %-40s %s  [", i, ti->name, dn);
+      |                    ~~~~^                ~
+      |                        |                |
+      |                        |                uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                    %2lu
+deps/notorch/gguf.c:792:24: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  792 |             printf("%llu%s", ti->shape[d], d < ti->ndim - 1 ? "," : "");
+      |                     ~~~^     ~~~~~~~~~~~~
+      |                        |              |
+      |                        |              uint64_t {aka long unsigned int}
+      |                        long long unsigned int
+      |                     %lu
+deps/notorch/gguf.c:796:25: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  796 |     printf("  total: %llu elements\n", total_params);
+      |                      ~~~^              ~~~~~~~~~~~~
+      |                         |              |
+      |                         |              uint64_t {aka long unsigned int}
+      |                         long long unsigned int
+      |                      %lu
+deps/notorch/gguf.c: In function ‘gguf_open’:
+deps/notorch/gguf.c:129:13: warning: ‘__builtin___strncpy_chk’ output may be truncated copying 127 bytes from a string of length 511 [-Wstringop-truncation]
+  129 |             strncpy(kv->key, key, GGUF_MAX_NAME - 1);
+      |             ^
+deps/notorch/examples/bpe.c: In function ‘scheme_encode_span’:
+deps/notorch/examples/bpe.c:454:48: warning: ‘%s’ directive output may be truncated writing up to 510 bytes into a region of size between 1 and 511 [-Wformat-truncation=]
+  454 |                 snprintf(key, sizeof(key), "%s %s", sym[b], sym[b + 1]);
+      |                                                ^~
+In file included from /usr/include/stdio.h:980,
+                 from deps/notorch/examples/bpe.c:4:
+In function ‘snprintf’,
+    inlined from ‘spm_bpe_encode’ at deps/notorch/examples/bpe.c:454:17,
+    inlined from ‘scheme_encode_span’ at deps/notorch/examples/bpe.c:554:22:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:54:10: note: ‘__builtin___snprintf_chk’ output between 2 and 1022 bytes into a destination of size 512
+   54 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   55 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.76047e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70228e-05; gate/up/down max_grad=0.189277/0.377374/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=2.38419e-07; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=7.82311e-08); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=2.23517e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+./build/test-joint
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.36614e-06 gradient=2.23517e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=5.96046e-08 trajectory=2.98023e-08)
+Joint selection: 7 invalid map/objective inputs rejected
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (29.836332ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (16.40649ms)
+✔ runner rejects unsupported Qwen MoE architecture (5.619483ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (182.732501ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (248.098158ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (234.166727ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (240.580516ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (63.211748ms)
+✔ joint scoring preserves checkpoint selection and exposes loss, gradient and prefix diagnostics (100.97281ms)
+✔ joint scoring enforces fixed coverage and independently normalized finite losses (772.643662ms)
+✔ joint online loss is measured before the update and matches the previous frozen readout (258.684031ms)
+✔ joint gradient diagnostics distinguish zero, boundary and clipped norms with declared tolerance (453.278174ms)
+✔ joint initial gradient diagnostics are explicitly null and later diagnostics are mandatory (434.55105ms)
+✔ joint runs retain the fixed stage order, objective and complete snapshot schedule (201.191432ms)
+✔ joint prefix summaries require complete mapped-row coverage and consistent aggregates (767.821895ms)
+✔ joint prefix accuracy must agree with first error and complete-row accuracy (262.605507ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (495.987029ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (8.646108ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (4.35374ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (19.925554ms)
+✔ MLP export refuses to overwrite an existing file (5.292048ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (16.329624ms)
+✔ review pair maps retain original row indices and concern/clean direction (78.14427ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (160.44995ms)
+✔ pair maps require SFT-only packing and a distinct output (83.442247ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (2.352996ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (1.319454ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.747589ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.988053ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (16.790526ms)
+✔ GitHub context rules come from the base revision and collection detects a push (2.798099ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (1.821623ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.63492ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (5.56163ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (217.3841ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (223.690105ms)
+✔ runner traces sampled IDs before decoding and EOS, without changing stdout (28.964535ms)
+✔ runner traces immediate stopping ID 1 with empty response stdout (9.599448ms)
+✔ runner traces immediate stopping ID 2 with empty response stdout (5.00859ms)
+✔ runner traces exactly the token limit and the complete supplied prompt IDs (10.305815ms)
+✔ runner refuses existing trace files and symlinks before inference (12.895393ms)
+✔ runner validates trace options and destination before generation (12.488424ms)
+✔ runner removes its incomplete trace when model loading fails (9.962401ms)
+✔ runner reports trace write failure and removes the incomplete file (6.435422ms)
+✔ training summaries preserve pair direction and select by complete review pairs (84.323804ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (31.398292ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (37.371475ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4346.732164

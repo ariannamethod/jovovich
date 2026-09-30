@@ -1,0 +1,372 @@
+{
+  "schema_version": 1,
+  "status": "Design only; current training and frozen files unchanged. Choose the next action after current joint generation.",
+  "created_at_utc": "2026-09-30T22:33:48.218043+00:00",
+  "question": "Does an explicitly counterbalanced corpus teach grounded review across diff shapes and contextual protections under the chosen next joint-training control?",
+  "evidence": {
+    "matched_summary": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-summary.json",
+      "sha256": "b266ad86e66f2f5e5c15cec1c6ef19525539e7d0cae5932d7d8a69efa0eeb90d",
+      "bytes": 40757
+    },
+    "matched_cases": {
+      "path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-cases.jsonl",
+      "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+      "bytes": 54951
+    },
+    "base_v2": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+      "bytes": 133845
+    },
+    "wording_base_v3": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v3.jsonl",
+      "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7",
+      "bytes": 133900
+    },
+    "observed": "The selected control routes all four matched pure deletions through66582 and all four no-op replacements through788, independent of harmful/redundant status. Both original baseline answers replay exactly. No matched answer is a complete correct review. Token788 denotes quote-colon, so the route score is separate from the semantic verdict."
+  },
+  "corpus_revision": {
+    "base": "Use the prepared v3 rows, which retain all v2 labels and repair wording in three rows.",
+    "v3_repairs": [
+      {
+        "id": "scoped-python-analysis-concern",
+        "jsonl_line": 1,
+        "changed_roles": [
+          "assistant"
+        ],
+        "description": "Gold reason says adds Python code rather than creates a Python file.",
+        "gold_label_unchanged": true
+      },
+      {
+        "id": "sequence-field-width-introduced",
+        "jsonl_line": 33,
+        "changed_roles": [
+          "user"
+        ],
+        "description": "Rule explicitly requires keeping or restoring the 64-bit wire field; it does not preserve an already incorrect layout.",
+        "gold_label_unchanged": true
+      },
+      {
+        "id": "sequence-field-width-repaired",
+        "jsonl_line": 34,
+        "changed_roles": [
+          "user"
+        ],
+        "description": "Rule explicitly requires keeping or restoring the 64-bit wire field; it does not preserve an already incorrect layout.",
+        "gold_label_unchanged": true
+      }
+    ],
+    "operation": "Replace the six existing introduced/repaired pairs with the six four-cell blocks below; retain the other14 review pairs and all24 voice/code rows unchanged from v3. Do not append18 variants to v3, which would produce26 concern versus32 clean reviews.",
+    "proposed_counts": {
+      "total_rows": 76,
+      "review_rows": 52,
+      "concern_reviews": 26,
+      "clean_reviews": 26,
+      "review_pairs": 26,
+      "new_quartet_rows": 24,
+      "retained_review_rows": 28,
+      "voice_rows": 12,
+      "code_rows": 12,
+      "pure_deletion": {
+        "concern": 6,
+        "clean": 6
+      },
+      "has_added_line": {
+        "concern": 20,
+        "clean": 20
+      }
+    },
+    "attribution_of_results": "v3 wording repairs plus the six quartets form a combined corpus revision. A comparison against the ongoing v2 joint run measures that combined revision; a gain cannot be attributed solely to either edit.",
+    "unchanged_current_artifacts": "The current v2 joint run, frozen diagnostics, matched fixtures, wrapper, plan and all completed receipts stay unchanged. Proposed rows are specified here only.",
+    "training_schedule": "Decide after current joint generation. If chosen, regenerate native pair maps and exact token counts;52 decisions and the new residual targets replace the current40/792 counts. Preserve the joint term definitions, and predeclare update/token budget and selection rule before running. This design does not schedule training."
+  },
+  "quartet_contract": {
+    "factors": [
+      "harmful versus redundant protection/credit",
+      "pure deletion versus replacement by a neutral statement/notice"
+    ],
+    "common_prompt": "Within each family keep repository, path, purpose, system, rules, shared description, final output instruction, role framing and candidate physical coordinate fixed. The notice description is repaired identically in all four cells.",
+    "semantic_context_edit": "Every cell contains one unchanged context line at the same position: a neutral statement/notice in harmful cells or an equivalent remaining protection/credit in redundant cells. Thus label changes do not change hunk lengths, context-line counts, changed-line IDs or changed-line text.",
+    "shape_edit": "Replacement cells add exactly one neutral line at the removed candidate position. Pure deletions add no changed line. Update the new-side hunk count and bracket listing mechanically.",
+    "difference_from_matched_probe": "The harmful cells receive the neutral context line to balance context counts; this revision does not claim byte-identical original baseline prompts. Original v2/v3 and matched probe receipts remain archived references.",
+    "neutral_language_forms": "C uses (void)0; JavaScript uses void 0;. The NOTICE control uses a plain statement that contains no upstream credit.",
+    "labels": "The harmful cells remove the only effective protection/credit. The redundant cells leave an explicitly shown equivalent intact. No unseen validator, license notice or missing file is assumed.",
+    "grouping": "Each shape forms one concern/clean pair. Keep both pairs and every spelling/placement variant of one family together for any future split. Metadata IDs and labels never enter model prompts.",
+    "cell_names_and_gold": {
+      "harmful_deletion": "concern_gold",
+      "redundant_deletion": "clean_gold",
+      "harmful_replacement": "concern_gold",
+      "redundant_replacement": "clean_gold"
+    },
+    "proposed_ids": "Use family-shape-label IDs and family-shape pair IDs for the24 proposed reviews; each shape pair has one concern and one clean row.",
+    "changed_line_listing": "Removed candidate is bracket ID1 at the family candidate_line, side LEFT. Replacement also adds bracket ID2 at the same line, side RIGHT, with exact replacement_addition text. Prefix each physical side coordinate with the family path. The retained unchanged context has no bracket ID.",
+    "context_position": "Place the unchanged neutral/protective line immediately after the candidate removed/replaced line, before the original following operation; preserve hunk start11 and candidate physical coordinates."
+  },
+  "families": [
+    {
+      "family": "preserve-trie-credit",
+      "source_introduced_id": "preserve-trie-credit-introduced",
+      "source_repaired_id": "preserve-trie-credit-repaired",
+      "source_v2_v3_jsonl_lines": [
+        17,
+        18
+      ],
+      "path": "NOTICE",
+      "shared_description": "The adapted trie implementation remains in this repository. The diff below shows all source attribution for that implementation.",
+      "shared_description_changes_from_v3": true,
+      "removed_candidate": "Trie design adapted from firwood/trie (MIT).",
+      "replacement_addition": "Implementation notice.",
+      "harmful_unchanged_context": "Trie implementation.",
+      "redundant_unchanged_context": "Trie implementation derived from firwood/trie (MIT).",
+      "semantic_basis": "The unchanged equivalent attribution preserves firwood/trie and MIT for the retained derived implementation. This is a provenance control with explicit equivalent credit, not a code guard.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "Removing the sole upstream credit loses the lineage of the trie implementation, which remains in the repository."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 11,
+      "patches": {
+        "harmful_deletion": "@@ -11,2 +11,1 @@\n-Trie design adapted from firwood/trie (MIT).\n Trie implementation.",
+        "redundant_deletion": "@@ -11,2 +11,1 @@\n-Trie design adapted from firwood/trie (MIT).\n Trie implementation derived from firwood/trie (MIT).",
+        "harmful_replacement": "@@ -11,2 +11,2 @@\n-Trie design adapted from firwood/trie (MIT).\n+Implementation notice.\n Trie implementation.",
+        "redundant_replacement": "@@ -11,2 +11,2 @@\n-Trie design adapted from firwood/trie (MIT).\n+Implementation notice.\n Trie implementation derived from firwood/trie (MIT)."
+      }
+    },
+    {
+      "family": "allocation-null-guard",
+      "source_introduced_id": "allocation-null-guard-introduced",
+      "source_repaired_id": "allocation-null-guard-repaired",
+      "source_v2_v3_jsonl_lines": [
+        37,
+        38
+      ],
+      "path": "src/list_node.c",
+      "shared_description": "calloc is the standard C allocator and may fail. The following assignment dereferences its result.",
+      "shared_description_changes_from_v3": false,
+      "removed_candidate": "    if (n == NULL) return NULL;",
+      "replacement_addition": "    (void)0;",
+      "harmful_unchanged_context": "    (void)0;",
+      "redundant_unchanged_context": "    if (n == NULL) return NULL;",
+      "semantic_basis": "The retained NULL check still returns before n->value on failed allocation. The neutral statement performs no check.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "Removing this check lets a failed calloc reach n->value, dereferencing NULL."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 12,
+      "patches": {
+        "harmful_deletion": "@@ -11,5 +11,4 @@\n     node *n = calloc(1, sizeof(*n));\n-    if (n == NULL) return NULL;\n     (void)0;\n     n->value = value;\n     return n;",
+        "redundant_deletion": "@@ -11,5 +11,4 @@\n     node *n = calloc(1, sizeof(*n));\n-    if (n == NULL) return NULL;\n     if (n == NULL) return NULL;\n     n->value = value;\n     return n;",
+        "harmful_replacement": "@@ -11,5 +11,5 @@\n     node *n = calloc(1, sizeof(*n));\n-    if (n == NULL) return NULL;\n+    (void)0;\n     (void)0;\n     n->value = value;\n     return n;",
+        "redundant_replacement": "@@ -11,5 +11,5 @@\n     node *n = calloc(1, sizeof(*n));\n-    if (n == NULL) return NULL;\n+    (void)0;\n     if (n == NULL) return NULL;\n     n->value = value;\n     return n;"
+      }
+    },
+    {
+      "family": "zero-worker-guard",
+      "source_introduced_id": "zero-worker-guard-introduced",
+      "source_repaired_id": "zero-worker-guard-repaired",
+      "source_v2_v3_jsonl_lines": [
+        41,
+        42
+      ],
+      "path": "src/shard.c",
+      "shared_description": "workers is supplied by the caller and can be zero. There is no validation outside the shown hunk.",
+      "shared_description_changes_from_v3": false,
+      "removed_candidate": "    if (workers == 0) return EINVAL;",
+      "replacement_addition": "    (void)0;",
+      "harmful_unchanged_context": "    (void)0;",
+      "redundant_unchanged_context": "    if (workers == 0) return EINVAL;",
+      "semantic_basis": "The retained workers==0 check still returns EINVAL before total/workers. No external validation is added; the protection is visible inside the hunk.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "This removes the only zero-worker check before total / workers, making division by zero reachable."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 11,
+      "patches": {
+        "harmful_deletion": "@@ -11,4 +11,3 @@\n-    if (workers == 0) return EINVAL;\n     (void)0;\n     size_t share = total / workers;\n     return assign_share(share);",
+        "redundant_deletion": "@@ -11,4 +11,3 @@\n-    if (workers == 0) return EINVAL;\n     if (workers == 0) return EINVAL;\n     size_t share = total / workers;\n     return assign_share(share);",
+        "harmful_replacement": "@@ -11,4 +11,4 @@\n-    if (workers == 0) return EINVAL;\n+    (void)0;\n     (void)0;\n     size_t share = total / workers;\n     return assign_share(share);",
+        "redundant_replacement": "@@ -11,4 +11,4 @@\n-    if (workers == 0) return EINVAL;\n+    (void)0;\n     if (workers == 0) return EINVAL;\n     size_t share = total / workers;\n     return assign_share(share);"
+      }
+    },
+    {
+      "family": "write-permission-check",
+      "source_introduced_id": "write-permission-check-introduced",
+      "source_repaired_id": "write-permission-check-repaired",
+      "source_v2_v3_jsonl_lines": [
+        55,
+        56
+      ],
+      "path": "src/edit_record.c",
+      "shared_description": "Sessions may be read-only. replace_record writes the record and performs no permission check itself.",
+      "shared_description_changes_from_v3": false,
+      "removed_candidate": "    if (!session.can_write) return DENIED;",
+      "replacement_addition": "    (void)0;",
+      "harmful_unchanged_context": "    (void)0;",
+      "redundant_unchanged_context": "    if (!session.can_write) return DENIED;",
+      "semantic_basis": "The retained can_write check still returns DENIED before replace_record. The stated lack of checking inside replace_record stays true.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "Removing the only permission check allows read-only sessions to reach replace_record and change stored data."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 11,
+      "patches": {
+        "harmful_deletion": "@@ -11,3 +11,2 @@\n-    if (!session.can_write) return DENIED;\n     (void)0;\n     return replace_record(id, value);",
+        "redundant_deletion": "@@ -11,3 +11,2 @@\n-    if (!session.can_write) return DENIED;\n     if (!session.can_write) return DENIED;\n     return replace_record(id, value);",
+        "harmful_replacement": "@@ -11,3 +11,3 @@\n-    if (!session.can_write) return DENIED;\n+    (void)0;\n     (void)0;\n     return replace_record(id, value);",
+        "redundant_replacement": "@@ -11,3 +11,3 @@\n-    if (!session.can_write) return DENIED;\n+    (void)0;\n     if (!session.can_write) return DENIED;\n     return replace_record(id, value);"
+      }
+    },
+    {
+      "family": "stable-manifest-order",
+      "source_introduced_id": "stable-manifest-order-introduced",
+      "source_repaired_id": "stable-manifest-order-repaired",
+      "source_v2_v3_jsonl_lines": [
+        57,
+        58
+      ],
+      "path": "tools/manifest.mjs",
+      "shared_description": "Entry insertion order can vary between runs. All keys are ASCII names; sorting them produces the required stable order.",
+      "shared_description_changes_from_v3": false,
+      "removed_candidate": "names.sort();",
+      "replacement_addition": "void 0;",
+      "harmful_unchanged_context": "void 0;",
+      "redundant_unchanged_context": "names.sort();",
+      "semantic_basis": "A retained second default sort before the output loop still sorts primitive ASCII keys. The two consecutive sorts are idempotent; a neutral statement supplies no ordering.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "Without sorting, output follows insertion order. Equivalent mappings can then produce different manifest bytes."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 12,
+      "patches": {
+        "harmful_deletion": "@@ -11,4 +11,3 @@\n const names = Object.keys(entries);\n-names.sort();\n void 0;\n for (const name of names) output.push(`${name}:${entries[name]}`);",
+        "redundant_deletion": "@@ -11,4 +11,3 @@\n const names = Object.keys(entries);\n-names.sort();\n names.sort();\n for (const name of names) output.push(`${name}:${entries[name]}`);",
+        "harmful_replacement": "@@ -11,4 +11,4 @@\n const names = Object.keys(entries);\n-names.sort();\n+void 0;\n void 0;\n for (const name of names) output.push(`${name}:${entries[name]}`);",
+        "redundant_replacement": "@@ -11,4 +11,4 @@\n const names = Object.keys(entries);\n-names.sort();\n+void 0;\n names.sort();\n for (const name of names) output.push(`${name}:${entries[name]}`);"
+      }
+    },
+    {
+      "family": "allocation-product-overflow",
+      "source_introduced_id": "allocation-product-overflow-introduced",
+      "source_repaired_id": "allocation-product-overflow-repaired",
+      "source_v2_v3_jsonl_lines": [
+        63,
+        64
+      ],
+      "path": "src/vector_alloc.c",
+      "shared_description": "count is an arbitrary size_t from decoded input. items points to uint64_t; the caller fills count elements after a successful allocation.",
+      "shared_description_changes_from_v3": false,
+      "removed_candidate": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;",
+      "replacement_addition": "    (void)0;",
+      "harmful_unchanged_context": "    (void)0;",
+      "redundant_unchanged_context": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;",
+      "semantic_basis": "The retained bound check still returns before multiplication for oversized size_t counts. sizeof(*items) remains the uint64_t element size; the neutral statement supplies no bound.",
+      "concern_gold": {
+        "findings": [
+          {
+            "line_id": 1,
+            "reason": "Removing the product-overflow check allows count * sizeof(*items) to wrap, allocating fewer bytes than count elements require."
+          }
+        ]
+      },
+      "clean_gold": {
+        "findings": []
+      },
+      "candidate_line": 11,
+      "patches": {
+        "harmful_deletion": "@@ -11,4 +11,3 @@\n-    if (count > SIZE_MAX / sizeof(*items)) return NULL;\n     (void)0;\n     size_t bytes = count * sizeof(*items);\n     items = malloc(bytes);",
+        "redundant_deletion": "@@ -11,4 +11,3 @@\n-    if (count > SIZE_MAX / sizeof(*items)) return NULL;\n     if (count > SIZE_MAX / sizeof(*items)) return NULL;\n     size_t bytes = count * sizeof(*items);\n     items = malloc(bytes);",
+        "harmful_replacement": "@@ -11,4 +11,4 @@\n-    if (count > SIZE_MAX / sizeof(*items)) return NULL;\n+    (void)0;\n     (void)0;\n     size_t bytes = count * sizeof(*items);\n     items = malloc(bytes);",
+        "redundant_replacement": "@@ -11,4 +11,4 @@\n-    if (count > SIZE_MAX / sizeof(*items)) return NULL;\n+    (void)0;\n     if (count > SIZE_MAX / sizeof(*items)) return NULL;\n     size_t bytes = count * sizeof(*items);\n     items = malloc(bytes);"
+      }
+    }
+  ],
+  "context_coverage": {
+    "retained_14_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "model-parent-provenance",
+      "scoped-design-record",
+      "checksum-indirection",
+      "sequence-field-width",
+      "validated-port-conversion",
+      "negative-offset-type",
+      "exact-property-name",
+      "idempotent-event-retry",
+      "atomic-snapshot-publication",
+      "save-status-propagation"
+    ],
+    "retained_14_pair_subscore": "Report28 individual reviews and14 complete grounded pairs separately from the24 revised quartet reviews.",
+    "retained_exact_same_diff_context_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "scoped-design-record",
+      "checksum-indirection"
+    ],
+    "exact_same_diff_audit": "Independently verified on v3: these six pairs have byte-identical Surrounding diff and Changed lines sections, with opposite gold labels determined by supplied context/rules. Preserve all12 rows and report this6-pair subset separately.",
+    "new_context_pairs": "The12 harmful/redundant pairs in the quartets have byte-identical changed-line listings and equal hunk/context-line counts; one unchanged line differs semantically. Their full hunks are not byte-identical.",
+    "shape_pairs": "Within each family and label, deletion versus replacement preserves after-change protection/credit status. Report all12 such shape comparisons."
+  },
+  "gold_and_citation_audit_before_materialization": [
+    "Read all24 before/after changes against their explicit rules. Confirm each concern gold names a reachable concrete consequence and each clean cell retains an effective protection/credit.",
+    "Use the exact concern_gold object for both harmful shapes and exactly {\"findings\":[]} for both redundant shapes. The canonical concern citation is removed bracket ID1 in both shapes, which keeps the gold opening/citation/reason invariant under the neutral shape edit.",
+    "Re-render host chunks and bracket listings from each patch; assert old/new hunk counts, candidate coordinates, exact quotes and IDs. Parse every gold through production parseReview. The retained context line is never a valid changed-line citation.",
+    "For generated harmful replacements, accept changed ID1 or ID2 only with the corresponding supported removal/replacement mechanism. Keep source physical line numbers distinct from bracket IDs. Gold training emits numeric line_id1 consistently.",
+    "Before training, syntax-check wrapped C snippets and parse JavaScript snippets; verify semantic examples including failed allocation, zero workers, read-only permission, SIZE_MAX boundary, differing insertion orders and retained upstream credit. These checks have not been executed for this new design.",
+    "Audit all retained v3 golds after serialization, assert exactly26 two-row opposite-label review pairs, and verify native common-prefix boundaries, masks and target counts before freezing the next run."
+  ],
+  "evaluation_boundary": {
+    "development_only": [
+      "The already inspected8 expanded-context shape cases.",
+      "The already inspected8 matched-template shape cases.",
+      "Original training reviews and their saved generation receipts."
+    ],
+    "development_status": "These inputs informed the revision and are development diagnostics. If their patterns or exact cases enter training, label subsequent scores as training/development behavior.",
+    "fresh_transfer_requirement": "Require fresh independently audited and frozen cases before any next transfer inference or selection. They must counterbalance shape and verdict, include genuinely different contexts, and include equivalent remaining protections with different spelling and placement. Keep complete families/variants together and record overlap with training.",
+    "equivalence_coverage_examples": "Use visible alternatives such as !n versus n==NULL, reversed valid overflow bounds, permission checks on an earlier return path, sorted-key construction before the deleted sort, and equivalent attribution in a separately shown notice block. Include harmful controls with ineffective or misplaced lookalike protections, so counting duplicate if/sort/credit strings cannot solve the set. These are design criteria, not frozen fixtures.",
+    "readout": "Report native first IDs as route measurements; also complete responses, EOS/limit, JSON validity, finding-object schema, exact citations, supported mechanisms, correct empty clean reviews and complete grounded pairs. Preserve null presence for malformed JSON. Report retained14 pairs, their six exact-same-diff pairs, quartet cells and fresh transfer separately.",
+    "selection": "Freeze the next rule before seeing fresh outputs; do not select checkpoints or edit labels from the inspected shape diagnostics."
+  },
+  "optional_discriminator": {
+    "path": "/workspace/scratch/ec5ba60588d8/reference/representation-next-probe.json",
+    "status": "Remains an optional independent discriminator. No representation extraction or additional experiment is requested by this design."
+  }
+}

@@ -1,0 +1,150 @@
+[
+  {
+    "job": "joint-train-natural-0",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "natural",
+      "--output",
+      "models/joint-review-joint-train-natural-0.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-train-natural-0-traces",
+      "--shard",
+      "0"
+    ],
+    "output": "models/joint-review-joint-train-natural-0.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 314.64116902899696
+  },
+  {
+    "job": "joint-train-natural-1",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "natural",
+      "--output",
+      "models/joint-review-joint-train-natural-1.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-train-natural-1-traces",
+      "--shard",
+      "1"
+    ],
+    "output": "models/joint-review-joint-train-natural-1.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 288.3904333870014
+  },
+  {
+    "job": "joint-diagnostics-natural",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "diagnostics",
+      "--mode",
+      "natural",
+      "--output",
+      "models/joint-review-joint-diagnostics-natural.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-diagnostics-natural-traces"
+    ],
+    "output": "models/joint-review-joint-diagnostics-natural.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 215.5450143969938
+  },
+  {
+    "job": "joint-train-shared-0",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-joint-train-shared-0.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-train-shared-0-traces",
+      "--shard",
+      "0"
+    ],
+    "output": "models/joint-review-joint-train-shared-0.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 312.2678550490018
+  },
+  {
+    "job": "joint-train-shared-1",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-joint-train-shared-1.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-train-shared-1-traces",
+      "--shard",
+      "1"
+    ],
+    "output": "models/joint-review-joint-train-shared-1.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 264.49920968199876
+  },
+  {
+    "job": "joint-audit-natural",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "audit",
+      "--mode",
+      "natural",
+      "--output",
+      "models/joint-review-joint-audit-natural.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-audit-natural-traces"
+    ],
+    "output": "models/joint-review-joint-audit-natural.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 116.50999972499994
+  },
+  {
+    "job": "joint-audit-shared",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "audit",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-joint-audit-shared.jsonl",
+      "--trace-dir",
+      "models/joint-review-joint-audit-shared-traces"
+    ],
+    "output": "models/joint-review-joint-audit-shared.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 112.48369272399577
+  }
+]

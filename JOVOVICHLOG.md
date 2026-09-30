@@ -2,6 +2,159 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — Teach the opening. Interrogate the shortcut.
+
+The independent JOVOVICH audit found a precise alignment in the selected
+smaller-step model: all six winning concern targets belong to the six
+pure-deletion examples. The other fourteen concern targets lose. The native
+runner now records the actual sampled IDs, including EOS. All 40 shared-prefix
+control answers replay byte-for-byte, and all 40 first emitted IDs agree with
+the selected teacher-forced winners.
+
+### Ask the diff a different question
+
+Eight new cases cross harmful/redundant guard removal with pure deletion/no-op
+replacement in two C contexts: NULL allocation and write permission. The
+expanded examples expose the complete function. Natural control generation
+returns eight empty arrays. Supplying the shared opening produces eight
+attempts to copy the changed lines: six valid JSON responses with string-valued
+findings and two malformed responses. The existing guard does not receive a causal explanation.
+
+Comparing exact prompts shows the same system, ChatML framing and output
+instruction. The expanded cases change the description, surrounding code and
+line coordinates. The runner's 2048/8192 context argument controls input bounds;
+these prompts fit both bounds and follow the same Qwen arithmetic.
+
+A second, separately frozen eight-case control retains the original training
+descriptions, rules, coordinates and framing. Its two harmful-deletion baselines
+are byte-identical to the original prompts. The two edits are explicit: add an
+unchanged second guard before the dangerous operation, or replace the removed
+guard with `(void)0;`. Required hunk counts and changed-line listings follow
+those edits. All 16 before/after C snippets pass syntax checks.
+
+| Matched-template measurement | Result |
+| --- | ---: |
+| Original baseline responses replayed exactly | 2/2 |
+| Pure deletions selecting `66582` | 4/4 |
+| No-op replacements selecting `788` | 4/4 |
+| Token-route changes when diff shape changes | 4/4 |
+| Token-route changes when the guard remains | 0/4 |
+| Valid JSON / production parser accepted | 7/8 / 2/8 |
+| Completely correct reviews | 0/8 |
+
+In these two templates, the token route follows the deletion/replacement
+pattern, including when the unchanged guard still protects the operation.
+Token `788` encodes quote-colon; its continuation can contain findings.
+The permission-deletion answer mentions the permission requirement alongside
+an incorrect scope claim. The other explanations invent scope or AGENTS
+requirements, or copy the diff. Meaning, citation validity and token identity
+are retained separately in the case assessments.
+
+### Train the complete answer
+
+The native `joint` objective adds mean CE over the 792 remaining review-answer
+targets to mean CE over the 40 mapped decision targets. The remaining targets
+include the opening, explanation, changed-line ID and EOS. Forty-token
+microbatches accumulate gradients at unchanged parameters; one global clip and
+Adam step follows the complete 832-position partition. The corpus determines
+the two denominators. Fresh initialization, v2 data, LR 0.0001, seed 20260929,
+rank 16/alpha 32 and the 25/50/100 selector match the smaller-step control.
+
+Independent numerical tests compare every adapter derivative with a sum of
+per-token derivatives across six batch sizes, including partial tails. Maximum
+gradient error is `2.24e-8`; 40 clipped Adam updates agree within `1.49e-8` in
+the parameters. Interleaved diagnostics preserve parameters and moments
+bit-for-bit. Both initial corpus and decision readouts match the previous run.
+
+The run finishes all 100 updates in 4,513.68 seconds, with peak RSS
+1,460,148 KiB. The unchanged selector chooses update 100 before generation.
+All 100 updates use global clipping; gradient norms range from 1.25 to 29.48.
+
+| Selected training measurement | Decision only | Joint review |
+| --- | ---: | ---: |
+| Decision CE | 0.63640493 | 0.65207469 |
+| Concern / clean target wins | 6/20 / 20/20 | 11/20 / 15/20 |
+| Complete token-decision pairs | 6/20 | 7/20 |
+| One-sided updates | 10/100 | 9/100 |
+
+The remaining-answer CE falls from 2.69875527 to 0.59838170.
+Exact three-token openings rise from 0/40 initially to 39/40 at update 25,
+then 40/40 at updates 50, 75 and 100. The final teacher-forced readout has
+one exact concern answer and fifteen exact clean answers, with zero pairs
+whose two entire gold answers are exact. Generated explanations are assessed
+separately below.
+
+### Let her finish the sentence
+
+All 108 new joint-model responses complete the fixed evaluation. Each arm's
+40 actual emitted decision IDs agree with its selected teacher-forced winners.
+Natural and shared-prefix joint generation each produce 38/40 parser-accepted
+training reviews, with two repetitions reaching the token limit. The existing
+twelve diagnostics produce eleven parser-accepted answers and one repetition.
+The expanded eight-case guard audit returns empty findings in both modes.
+Natural and shared-prefix paths agree on all 40 sampled continuations over
+the natural budget. Their 38 EOS-complete answers are byte-identical; each
+shared-prefix looping answer has three extra generated tokens because its
+opening sits outside the 192-token continuation budget.
+
+| Complete-response measurement | Previous natural | Joint natural | Joint diagnostics |
+| --- | ---: | ---: | ---: |
+| Production parser accepted | 40/40 | 38/40 | 11/12 |
+| Fully grounded concern reviews | 0/20 | 3/20 | 0/6 |
+| Correct clean reviews | 20/20 | 15/20 | 5/6 |
+| Complete grounded pairs | 0/20 | 2/20 | 0/6 |
+
+The three fully supported concern reviews identify lost trie lineage,
+zero-worker execution and unauthorized replacement by read-only sessions.
+The zero-worker answer identifies the prohibited execution without spelling
+out division by zero; the permission answer is awkward but describes the
+actual authorization failure. Neither needs to repeat the gold answer.
+
+A fourth answer correctly detects multiplication overflow after removal of
+the `SIZE_MAX / sizeof(*items)` guard. Its added sentence says the product can
+reach `SIZE_MAX`, making overflow more likely. The strict assessment rejects
+that numerical addition: with the shown `uint64_t` elements the unsigned
+product is a multiple of eight, and exceeding the checked quotient gives
+deterministic overflow. A broader reading of "reach" as reaching the numeric
+bound accepts the warning; that one-case sensitivity yields four grounded
+concern reviews and three full pairs. Both readings and the complete answer
+are preserved. Genuine issue detection remains four under either reading.
+
+The export preserves all 288 frozen tensor payloads and replaces exactly the
+three trained matrices. Cached-adapter and merged-GGUF argmax choices agree
+on all 93 probed completion positions; maximum logit difference is
+`5.91278076e-05`.
+
+Five native tests and fifty Node tests pass. The final runner also handles
+closed stdout through ordinary cleanup, removing its reserved token trace;
+buffered tokenizer-output errors are covered separately. The exact inference
+source and binary hashes used before that cleanup fix remain with the run.
+The 13 weight files and three training-input files are privately archived at
+`38bdcfb3480f5eda86a8cbd7c49adc39a8c42aa5` in `ataeff/jovovich`, with all
+sixteen downloaded files verified by SHA-256.
+Source, evidence and the measured model-card update are archived at
+`e8238393fa89ec03910ba613dbc7d2c12f19ffae`; all 87 files pass downloaded
+SHA-256 verification. The 172 new responses, manual judgments, traces,
+protocols and reproduction helpers live in
+[`training/results/2026-10-01-joint-review`](training/results/2026-10-01-joint-review).
+
+### Give the shortcut nowhere to hide
+
+The next corpus design replaces six introduced/repaired pairs with six
+four-case blocks: harmful/redundant change crossed with deletion/no-op
+replacement. Each semantic pair keeps the changed lines and context-line
+counts equal. The other fourteen review pairs remain, including the six
+pairs with identical complete diffs and different supplied rules or context.
+The proposed corpus has 52 reviews, balanced 26/26, and retains the 24
+voice/code rows. Its three existing v3 wording repairs and these new blocks
+form one combined corpus revision.
+
+Both inspected eight-case suites become development diagnostics for that
+revision. Fresh transfer cases must vary the spelling and placement of
+equivalent protections, including ineffective lookalikes. The saved design
+contains exact hunks and labels; corpus materialization and training are the
+next experiment. SERGE still has one cigarette.
+
 ## 2026-09-29 — A smaller step, a shared opening
 
 The matched decision-only run changes LR from `0.001` to `0.0001`. It keeps

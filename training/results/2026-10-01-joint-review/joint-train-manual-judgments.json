@@ -1,0 +1,763 @@
+{
+  "method": "Manual reading of all80 complete joint training responses against their exact v2 prompt/rules. Shared/natural identical complete responses reuse the same semantic reading; two truncated variants in each mode were read in full. Nonempty judgments below are case-specific. Empty-response judgments are derived only after complete text and clean/concern context were manually read.",
+  "nonempty_case_judgments": {
+    "scoped-python-analysis-concern": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The changed line adds Python code in analysis/."
+      ],
+      "unsupported_claims": [
+        "The required Python standard-library modules can only be found in AGENTS.md.",
+        "The hunk does not establish that this creates a new file."
+      ],
+      "reason_class": "invented_rule",
+      "assessment": "The answer recognizes Python code in analysis/ and cites ID1, but invents a statement about standard-library modules residing in AGENTS.md. It never identifies the nearer Lua-only/no-Python rule or its precedence over the root permission.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "background-service-scope-concern": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The intended release scope is limited to help text."
+      ],
+      "unsupported_claims": [
+        "The supplied scope requires a new installation or new installation targets."
+      ],
+      "reason_class": "reversed_rule",
+      "assessment": "The first sentence gestures at the help-text-only scope. The second reverses the rule by saying new installation targets are required, although the rule expressly forbids them. It does not give a sound explanation that the added watcher exceeds scope.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "preserve-trie-credit-introduced": {
+      "reason_grounded": true,
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": true,
+      "citation_causally_appropriate": true,
+      "supported_fragments": [
+        "The removed notice is the sole upstream credit.",
+        "The adapted trie implementation remains in the repository.",
+        "Removing the credit loses attribution/lineage for that retained code."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "grounded_attribution_loss",
+      "assessment": "The cited removed ID1 is the sole explicit upstream credit, and the supplied description says the adapted implementation remains. The reason correctly connects deleting that notice to lost lineage under the attribution rule.",
+      "full_review_pass": true,
+      "correct_clean": false
+    },
+    "scoped-design-record-concern": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The patch adds a separate decision document."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "truncated_repetition",
+      "assessment": "The visible opening identifies the separate decision document and ID1 is available, but the reason then repeats repository-wide until the token limit. It never completes the actual conflict with the README-only rule, and the JSON remains incomplete.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "background-service-scope-clean": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The release introduces an approved systemd watcher.",
+        "Installing this one observer --watch service is explicitly in scope."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "benign_rule_as_finding",
+      "assessment": "The reason repeats true approval/in-scope statements, so it describes why the change is clean. Returning that benign approval as a nonempty finding violates the required empty clean verdict.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "preserve-trie-credit-repaired": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The addition restores credit to firwood/trie."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "benign_change_as_finding",
+      "assessment": "The added ID1 restores the required upstream attribution. The response describes that credit as a finding without identifying a conflict; the correct review is empty.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "model-parent-provenance-repaired": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [],
+      "unsupported_claims": [
+        "The patch removes a required permission.",
+        "Removing the false trained-from-scratch label allows the adapter to continue training."
+      ],
+      "reason_class": "invented_permission_and_training_effect",
+      "assessment": "The patch replaces a false trained-from-scratch parent claim with the actual Qwen checkpoint. The answer invents a permission removal and a resulting training effect; neither follows from this manifest change.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "allocation-null-guard-introduced": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The changed check precedes the n->value assignment."
+      ],
+      "unsupported_claims": [
+        "A while loop and its end are part of the supplied change.",
+        "Repeated n->next = NULL assignments are part of the shown code."
+      ],
+      "reason_class": "invented_context_and_truncated_repetition",
+      "assessment": "The answer cites the removed guard but invents a while loop and n->next assignments, then repeats until the token limit. It never connects failed calloc returning NULL to the n->value dereference. The incomplete JSON keeps parsed presence null.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "idempotent-event-retry-introduced": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The original path calls retry_delivery with an event ID."
+      ],
+      "unsupported_claims": [
+        "The required acknowledgement check is removed.",
+        "retry_delivery appends the event ID."
+      ],
+      "reason_class": "reversed_function_contract",
+      "assessment": "The !acknowledged condition remains in both versions. The new path calls append_event, which creates a new event; retry_delivery explicitly resends the existing ID. The reason instead attributes appending to retry_delivery and invents a removed check.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "idempotent-event-retry-repaired": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The repair replaces append_event with retry_delivery on the unacknowledged path."
+      ],
+      "unsupported_claims": [
+        "An append_event check is removed.",
+        "retry_delivery appends the existing event ID."
+      ],
+      "reason_class": "false_positive_reversed_function_contract",
+      "assessment": "The repair retains !acknowledged and replaces creation of a new event with resending the existing ID. The reason invents a removed check and incorrectly says retry_delivery appends the event, contradicting its explicit resend-only contract.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "stable-manifest-order-repaired": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The supplied context says sorting ASCII keys produces the required stable order."
+      ],
+      "unsupported_claims": [
+        "The supplied contract requires insertion of a sorted manifest into the repository."
+      ],
+      "reason_class": "benign_requirement_as_finding_with_added_context",
+      "assessment": "The added sort provides the stated stable ordering. The response cites that correct addition and restates a sorting requirement without identifying a defect; it also introduces an unspecified insertion-into-repository step. The clean repair should receive empty findings.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "zero-worker-guard-introduced": {
+      "reason_grounded": true,
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": true,
+      "citation_causally_appropriate": true,
+      "supported_fragments": [
+        "Removing the cited guard lets the sizing algorithm proceed with zero workers.",
+        "The supplied rule requires rejecting that invalid count before arithmetic."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "grounded_invalid_input_reachability",
+      "assessment": "The reason explicitly connects removal of ID1 to proceeding with zero workers. In this finding, work reasonably means run/proceed, directly violating the supplied reject-before-arithmetic rule and the shown total/workers path. A literal division-by-zero phrase is not required for semantic credit.",
+      "full_review_pass": true,
+      "correct_clean": false
+    },
+    "write-permission-check-introduced": {
+      "reason_grounded": true,
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": true,
+      "all_findings_grounded": true,
+      "citation_causally_appropriate": true,
+      "supported_fragments": [
+        "The removed line is the only write-permission check.",
+        "Removing it allows read-only sessions to reach the record replacement."
+      ],
+      "unsupported_claims": [],
+      "reason_class": "grounded_permission_bypass",
+      "assessment": "Despite the awkward phrase replace the actual replacement, the reason clearly connects removal of the only permission check to read-only sessions performing replacement. That is the supplied permission violation, and ID1 correctly cites the deleted guard. Fluency and exact gold wording are not grading requirements.",
+      "full_review_pass": true,
+      "correct_clean": false
+    },
+    "stable-manifest-order-introduced": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [],
+      "unsupported_claims": [
+        "The patch removes a required rename.",
+        "That removal causes the manifest to remain unchanged."
+      ],
+      "reason_class": "invented_operation",
+      "assessment": "The removed line sorts key names; the patch contains no rename operation. The reason invents a rename and a remain-unchanged consequence instead of connecting the removed sort to insertion-order-dependent output.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "atomic-snapshot-publication-introduced": {
+      "reason_grounded": false,
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": false,
+      "supported_fragments": [
+        "The task concerns access to snapshots."
+      ],
+      "unsupported_claims": [
+        "The removed write-to-temporary operation is a required permission.",
+        "Removing that permission explains access to a new complete snapshot."
+      ],
+      "reason_class": "invented_permission",
+      "assessment": "ID1 is an available removed temporary-file write, but no permission check is present. The reason invents permission removal and omits the actual loss of atomic publication that exposes partial/truncated live-file contents.",
+      "full_review_pass": false,
+      "correct_clean": false
+    },
+    "allocation-product-overflow-introduced": {
+      "reason_grounded": true,
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": false,
+      "all_findings_grounded": false,
+      "citation_causally_appropriate": true,
+      "supported_fragments": [
+        "Removing the cited guard permits count above SIZE_MAX / sizeof(*items) to reach multiplication.",
+        "That unguarded multiplication can overflow."
+      ],
+      "unsupported_claims": [
+        "For the specified uint64_t elements, the size_t product can literally reach SIZE_MAX.",
+        "Reaching that bound makes overflow more likely, rather than overflow following deterministically from a count above the guard threshold."
+      ],
+      "reason_class": "detected_overflow_with_inaccurate_numeric_elaboration",
+      "assessment": "The first sentence detects the real overflow mechanism at the exact removed bound check and ID1 is causally appropriate. Under the strict all-material-claims rubric, the added numerical account prevents a full pass: with 8-byte uint64_t elements the computed unsigned product is a multiple of8, whereas SIZE_MAX is not, and exceeding the threshold makes overflow deterministic. This is a genuine detected issue with inaccurate elaboration, not a missed overflow.",
+      "full_review_pass": false,
+      "correct_clean": false,
+      "adjudication": {
+        "initial_parent_reading": "Generous full-pass reading: reach SIZE_MAX denotes reaching the numerical bound, and more likely is loose risk wording.",
+        "independent_second_reading": "Genuine issue detected, but literal added numerical/causal claims are inaccurate; strict full review fails.",
+        "primary": "Strict full-review failure, with genuine_issue_detected retained true; parent accepted after independent comparison.",
+        "sensitivity": "Under the generous bound-language interpretation this one case becomes a full pass in each training mode, increasing grounded concern reviews3->4 and full review pairs2->3."
+      }
+    }
+  },
+  "reviewed_responses": [
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 1,
+      "name": "scoped-python-analysis-concern",
+      "response_sha256": "609ee9b81642e1ceacd4b3a0d42a33de8680b9c2354a89abdf37cad72cb0ae11"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 2,
+      "name": "scoped-python-analysis-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 3,
+      "name": "approved-binary-decoder-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 4,
+      "name": "approved-binary-decoder-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 5,
+      "name": "sqlite-build-requirement-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 6,
+      "name": "sqlite-build-requirement-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 7,
+      "name": "background-service-scope-concern",
+      "response_sha256": "a5745829f5ee3f5d98ef9de870df149a14fafe408551fd70d6522b8d5a307ed7"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 8,
+      "name": "background-service-scope-clean",
+      "response_sha256": "64c08015e67a724793a84e67193fa822247e576958f94eb77fa09243b1fa1d1c"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 9,
+      "name": "preserve-trie-credit-introduced",
+      "response_sha256": "379eee350976ddde14556fdf17af7a8980af304d5644939e7d94b376887d14e5"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 10,
+      "name": "preserve-trie-credit-repaired",
+      "response_sha256": "219b74b1ba0aff926881ffabf9d4c18d8c63824afc49baf758d909407abd8731"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 11,
+      "name": "model-parent-provenance-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 12,
+      "name": "model-parent-provenance-repaired",
+      "response_sha256": "c88316287d5d43a2d12d1e8c4e4391f8c20dc7eea5755300a729df84131064cb"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 13,
+      "name": "scoped-design-record-concern",
+      "response_sha256": "8460ba8175223da380c7430c020a2becdf08911a6559b4f39f9c8a4ab630ee3c"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 14,
+      "name": "scoped-design-record-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 15,
+      "name": "checksum-indirection-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 16,
+      "name": "checksum-indirection-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 17,
+      "name": "sequence-field-width-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 18,
+      "name": "sequence-field-width-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 19,
+      "name": "allocation-null-guard-introduced",
+      "response_sha256": "e7ffbd5f78920e6fd6061df2b07e3ff82e6b689d2b79957eca49ed476283c84f"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 20,
+      "name": "allocation-null-guard-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 21,
+      "name": "zero-worker-guard-introduced",
+      "response_sha256": "e6ca0ecc7fdb342de491df90adaf3cae105502ef771479b41c0c2fb0834d2560"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 22,
+      "name": "zero-worker-guard-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 23,
+      "name": "validated-port-conversion-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 24,
+      "name": "validated-port-conversion-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 25,
+      "name": "negative-offset-type-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 26,
+      "name": "negative-offset-type-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 27,
+      "name": "exact-property-name-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 28,
+      "name": "exact-property-name-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 29,
+      "name": "idempotent-event-retry-introduced",
+      "response_sha256": "185f3a14b7fffddb7b71259ddcdb18ed5d30b9f6d1aa57f1d6ea790eed2cb88f"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 30,
+      "name": "idempotent-event-retry-repaired",
+      "response_sha256": "56ae785ec427d6f0f1b8f2b981470e2000db552dd2e9467d88595d8727e3ecdf"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 31,
+      "name": "write-permission-check-introduced",
+      "response_sha256": "49e90517885cbf9dae205cec150f636190a98323be183586242d1b4102a8c076"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 32,
+      "name": "write-permission-check-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 33,
+      "name": "stable-manifest-order-introduced",
+      "response_sha256": "0e7dee639fd43d10b5226d8ef7f547f7e51bee8aa0c04f0be787a0a8d3b565d3"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 34,
+      "name": "stable-manifest-order-repaired",
+      "response_sha256": "f66aa21071ef0c823a1097bb0a1d0fe6328cfa37ac8bf58fe50a375cd7e0dd31"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 35,
+      "name": "atomic-snapshot-publication-introduced",
+      "response_sha256": "c137a07ce084773001c99d4b450f929e8a837153cbb0c11e91cb74efa83d49d8"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 36,
+      "name": "atomic-snapshot-publication-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 37,
+      "name": "save-status-propagation-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 38,
+      "name": "save-status-propagation-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 39,
+      "name": "allocation-product-overflow-introduced",
+      "response_sha256": "2dc6b30b0c1c462de468d67b7790a9e6209cdb4971b60b7b0d93a76e343e17cf"
+    },
+    {
+      "source": "joint-review-joint-train-natural.jsonl",
+      "record_line": 40,
+      "name": "allocation-product-overflow-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 1,
+      "name": "scoped-python-analysis-concern",
+      "response_sha256": "609ee9b81642e1ceacd4b3a0d42a33de8680b9c2354a89abdf37cad72cb0ae11"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 2,
+      "name": "scoped-python-analysis-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 3,
+      "name": "approved-binary-decoder-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 4,
+      "name": "approved-binary-decoder-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 5,
+      "name": "sqlite-build-requirement-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 6,
+      "name": "sqlite-build-requirement-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 7,
+      "name": "background-service-scope-concern",
+      "response_sha256": "a5745829f5ee3f5d98ef9de870df149a14fafe408551fd70d6522b8d5a307ed7"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 8,
+      "name": "background-service-scope-clean",
+      "response_sha256": "64c08015e67a724793a84e67193fa822247e576958f94eb77fa09243b1fa1d1c"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 9,
+      "name": "preserve-trie-credit-introduced",
+      "response_sha256": "379eee350976ddde14556fdf17af7a8980af304d5644939e7d94b376887d14e5"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 10,
+      "name": "preserve-trie-credit-repaired",
+      "response_sha256": "219b74b1ba0aff926881ffabf9d4c18d8c63824afc49baf758d909407abd8731"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 11,
+      "name": "model-parent-provenance-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 12,
+      "name": "model-parent-provenance-repaired",
+      "response_sha256": "c88316287d5d43a2d12d1e8c4e4391f8c20dc7eea5755300a729df84131064cb"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 13,
+      "name": "scoped-design-record-concern",
+      "response_sha256": "b51aa6956c78d2e44ee25cd8683791f1b8d8dc0afcc06ae818fa24842025bc85"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 14,
+      "name": "scoped-design-record-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 15,
+      "name": "checksum-indirection-concern",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 16,
+      "name": "checksum-indirection-clean",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 17,
+      "name": "sequence-field-width-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 18,
+      "name": "sequence-field-width-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 19,
+      "name": "allocation-null-guard-introduced",
+      "response_sha256": "535ce1c3855804c749ed2c68a0eb910725d0b70b9cd5f29eb0c2e98d3da7aef0"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 20,
+      "name": "allocation-null-guard-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 21,
+      "name": "zero-worker-guard-introduced",
+      "response_sha256": "e6ca0ecc7fdb342de491df90adaf3cae105502ef771479b41c0c2fb0834d2560"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 22,
+      "name": "zero-worker-guard-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 23,
+      "name": "validated-port-conversion-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 24,
+      "name": "validated-port-conversion-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 25,
+      "name": "negative-offset-type-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 26,
+      "name": "negative-offset-type-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 27,
+      "name": "exact-property-name-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 28,
+      "name": "exact-property-name-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 29,
+      "name": "idempotent-event-retry-introduced",
+      "response_sha256": "185f3a14b7fffddb7b71259ddcdb18ed5d30b9f6d1aa57f1d6ea790eed2cb88f"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 30,
+      "name": "idempotent-event-retry-repaired",
+      "response_sha256": "56ae785ec427d6f0f1b8f2b981470e2000db552dd2e9467d88595d8727e3ecdf"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 31,
+      "name": "write-permission-check-introduced",
+      "response_sha256": "49e90517885cbf9dae205cec150f636190a98323be183586242d1b4102a8c076"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 32,
+      "name": "write-permission-check-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 33,
+      "name": "stable-manifest-order-introduced",
+      "response_sha256": "0e7dee639fd43d10b5226d8ef7f547f7e51bee8aa0c04f0be787a0a8d3b565d3"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 34,
+      "name": "stable-manifest-order-repaired",
+      "response_sha256": "f66aa21071ef0c823a1097bb0a1d0fe6328cfa37ac8bf58fe50a375cd7e0dd31"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 35,
+      "name": "atomic-snapshot-publication-introduced",
+      "response_sha256": "c137a07ce084773001c99d4b450f929e8a837153cbb0c11e91cb74efa83d49d8"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 36,
+      "name": "atomic-snapshot-publication-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 37,
+      "name": "save-status-propagation-introduced",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 38,
+      "name": "save-status-propagation-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 39,
+      "name": "allocation-product-overflow-introduced",
+      "response_sha256": "2dc6b30b0c1c462de468d67b7790a9e6209cdb4971b60b7b0d93a76e343e17cf"
+    },
+    {
+      "source": "joint-review-joint-train-shared.jsonl",
+      "record_line": 40,
+      "name": "allocation-product-overflow-repaired",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36"
+    }
+  ]
+}

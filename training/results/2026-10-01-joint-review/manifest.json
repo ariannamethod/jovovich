@@ -1,0 +1,529 @@
+{
+  "parent_commit": "2948c91ec122ee5eb2e0eeb09e869960497b836f",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "training": {
+    "objective": "joint",
+    "initialization": "Fresh adapters on the same verified base; use the same seed as the comparator.",
+    "base_model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v2.jsonl",
+    "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training_rows": "The same 40 explicitly paired review rows from the unchanged 64-row v2 corpus.",
+    "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "adapter_targets": "Final-layer MLP gate, up and down projections.",
+    "trainable_parameters": 276480,
+    "learning_rate": 0.0001,
+    "optimizer": "Adam with the comparator hyperparameters.",
+    "optimizer_updates": 100,
+    "global_gradient_clip": 1,
+    "data_phase": "v3 wording changes form a subsequent data comparison.",
+    "normalization": {
+      "decision_positions": 40,
+      "residual_answer_positions": 792,
+      "distinct_positions_per_update": 832,
+      "decision_loss": "L_decision = (1/40) * sum CE over the existing mapped decision positions.",
+      "residual_loss": "L_residual = (1/792) * sum CE over every remaining review-answer target, including prefix, line ID, reason, closing syntax and EOS.",
+      "combined_loss": "L = L_decision + lambda * L_residual",
+      "lambda": 1,
+      "partition": "The two sets are disjoint and cover all 832 review-answer targets exactly once.",
+      "nominal_token_coefficients": {
+        "decision": "1/40",
+        "residual": "1/792"
+      },
+      "update_interpretation": "The decision coefficient stays 1/40. The auxiliary gradient contributes to the combined norm, clipping and Adam moments."
+    },
+    "checkpoint_selection": {
+      "saved_updates": [
+        25,
+        50,
+        75,
+        100
+      ],
+      "eligible_updates": [
+        25,
+        50,
+        100
+      ],
+      "rule": "Maximize complete decision pairs, then full-vocabulary target hits, then earlier eligible update.",
+      "timing": "Select before free generation.",
+      "scope": "Keep the comparator selector; prefix and whole-answer results are additional measurements."
+    }
+  },
+  "source_sha256": {
+    "training/train_mlp.c": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+    "training/score_decisions.py": "f07a33ee5bc01decf861b8f0205cef9bfaa90fab2a409ba6f15f2df1c2eca770",
+    "training/score_training.py": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33",
+    "training/prepare.py": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+    "training/merge_mlp.c": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67",
+    "training/probe_mlp.c": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac",
+    "training/probe_tokenization.c": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6",
+    "training/export_adapter.c": "3ccae9d4473328e8a921f14bd5083b495d676de349a74473171f266aadaaf337",
+    "training/evaluate.py": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544",
+    "training/evaluate_review.mjs": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d",
+    "training/train_head.c": "98aa97c82bc4d2620037dea6886001d75e42e262d92a7264a6ad5b9ca47ae8b0",
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training/sft_review_v3.jsonl": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7",
+    "training/review_holdout_v2.jsonl": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "prompts/identity.txt": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "bin/jovovich.mjs": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "src/infer.c": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+    "model.json": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+    "Makefile": "0af4acc6df13a45f4d0217177424aeca16a987ab05741bd713e1945cfbf73503",
+    "test/joint.c": "79ebc6cb879ae31ff355dbf91d572541e5dac430a7a7a03ae1d86a3984ce50d9",
+    "test/weighting.c": "c560007a447717ef5689b146c02d32209150ab25328da8bad3324480fad1ba77",
+    "test/optimizer.c": "f15d111b65b08d783cad877ba8fcd57a50a7949985025680283dcecbd0b1b4c2",
+    "test/mlp.c": "770bebab2e65e03ec049bb36f96249a2b4082c68db4a4c6d6ce6ed82f9756483",
+    "test/head.c": "284347177c6962cd0895b5bf2b0e4302bb43b94fe5d420d5de99ab89fae3176d",
+    "test/runner.test.mjs": "1a6664f44b5ea8e48a7a90ceecdd0ea5fe9b8565ee6ce1df9dfe551220d58dbf",
+    "test/decision_score.test.mjs": "c041aeb877d09804b7a8b2e91cf93b901b21da33ef00871310e5b56497fc917e",
+    "test/training_score.test.mjs": "9c58b6da97a29df3ceef4d43a07a5dbac1fe28945b885763b5967a533c504ece",
+    "test/prepare_pairs.test.mjs": "bb69f38eb726de28e76dc5e84c50f0f584593e1056cd1193840a77f9abe7de34",
+    "test/chatml.test.mjs": "08802c06872ac08663cd754ef07efe932a0e1c29c9b6d264b82a8eab06192499",
+    "training/results/2026-09-29-small-step/probe_shared_prefix.mjs": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+    "training/results/2026-09-29-verdict-balance/verify_verdict_export.py": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1",
+    "training/results/2026-09-29-convergence/check_convergence_export.py": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+  },
+  "evidence_sha256": {
+    "plan.json": "5ef22e3a732d8ea787a36a8850b100233634204bc63bd9ee2718876644cbad9f",
+    "metrics.jsonl": "43b7470ff8f226f2c2fe5235e8eaeb2bd0fd4e1b7d085d4f4c2022d6eb4be247",
+    "scores.json": "e30370fbe6e691aa69abe77d0c0168655d505c644355185fa17b4e3868205199",
+    "resource.json": "b1f96ec4e465629511949ca9a396c9eab8aebb528168a153862883fdc07b6315",
+    "training-source.json": "4b8934680afb5e9f475a006dc8198a64db7511b9137b1c47f07d0cd886dbdb71",
+    "selected-model.json": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1",
+    "export-audit.json": "833fd6f10a10aa600d90073e004392d863fe4fa7566e912fb26c1d9c9446ee32",
+    "parity.jsonl": "0d3a4af758bcc20886f97ca10f465fd663d258369762812aeb39000eee4c352a",
+    "control-evaluation-jobs.json": "e69a13195b1ff8b3170dfa26c31fae462abbfb385d1c261be3e14a324aee1476",
+    "control-evaluation-model-check.json": "fb0c06ebd335aba796119a4712d52afbaf9c9231f96725e2c2891cbd7bd6b81d",
+    "joint-evaluation-jobs.json": "dfd1fe09e303904ba897d80beb93bd04fd923616c2d818cc5ba5f5cbf49a0cff",
+    "joint-evaluation-model-check.json": "9401f4cde2769dd350f74610b2e49c2b9122216a3d8d5a4b605dcdad88e2cfaf",
+    "control-train-shared.jsonl": "a76979ddd266a958fb8bd9d9b9acda28c1695ebefacc744fd6b4292df2b46d12",
+    "control-audit-natural.jsonl": "d79721c3b1ad9b73cba9145f604686eb0e004e0ef911ee2131cc5610ee6e1d0e",
+    "control-audit-shared.jsonl": "eca215773465ea8013f74aa13ad37cc053e99507331ea3d237b0259918e00b65",
+    "joint-train-natural.jsonl": "8405ac382d7c46f843c87d8ce2c1db8f44b4b5422e21dc054b015c35f86e7d6a",
+    "joint-train-shared.jsonl": "7bf34a4df97372896b46fb447c295e077ea122858f4789e86cef4175d22b7e5c",
+    "joint-diagnostics-natural.jsonl": "5c275bf1d0254f04667519da83823eac2e8ad4a33825a25365d4518b1491ca59",
+    "joint-audit-natural.jsonl": "5b2860ac9929004796189fe2f53ff224032ba250afde1d99201a50de3127d508",
+    "joint-audit-shared.jsonl": "9a9e5e0337f1079a0aa160d899d94634b553a50286a8c4e018d2404dd913a1b0",
+    "generation-summary.json": "011ddc4cc705986dbfdedc580b3fb9365f7a2ad124caeafc3e895216481ee48c",
+    "semantic-assessment.json": "dae7039cee259edec61924acd0cb665e316f7a91ff5b0484a1d4d731e6c5712f",
+    "trajectory-assessment.json": "439181b8b7cecb3d1132e853276e3e3fc710fd8cd61c8dd372b7518d28928b90",
+    "hf-weights.json": "22c79b480e8bc4dd4f34f5eb6ece1c3684136174891d0b9ff3ac8e40680c55c6",
+    "infer-experiment.c": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566",
+    "independent-jovovich-audit.json": "6035c376acba96f8ab03a2c8699b848e0186449c62bc32ca2eadef0f23ab768b",
+    "diff-shape-audit.jsonl": "913875ef445ed1c4e5aa4534927e919b44d9ad50bfeb69b2a7e0efd2f044a392",
+    "control-diff-shape-assessment.json": "f4e9114cff7670ddc8ccc05f9fb7788ef78568d0e39e15a7c0263a7690d25712",
+    "joint-train-manual-judgments.json": "faa22366f609479242c6737b15102eb70200faa72d9d058ddcb30142d8b6e72c",
+    "joint-eval-manual-judgments.json": "1f1810786ecfc449b751822322a016d71c84ff35d87a32a72572e301e45a1450",
+    "assess_joint_semantics.py": "0398ab395b1962a39ff979e10452c683a333c8cced3988cc63b522a5a605f3e3",
+    "shape-control-scope.json": "326bb235acfb1aa3f1b976c334031c1644f9a1b8c20496a7d5d60aecf2ee5059",
+    "matched-shape-cases.jsonl": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+    "matched-shape-plan.json": "f4ac11fd7221b9351603456a3242c725be5aabb35c16af9e8293031ef0dcafee",
+    "probe_matched_shape.mjs": "ad9357bc68c23243fff9303becaefc2a00aa9269f8fe8b4e47bd7b8c02e5c34f",
+    "prepare_matched_shape.py": "eea8e87521c8553a6ba80dc22cfaab570afdb12b9b02aa29c786df8f9832bc7e",
+    "run_joint_review.py": "614e1f06ca65dd255ece44b4b1f7c0ad40843ee95a898f152a45c7c5fd07d2c4",
+    "run_joint_evaluation.py": "7c8f5f2352a190fbf7d0815b5e6f9aa1c8366a95152c56b2391c98bf9d445e4f",
+    "evaluate_joint_reviews.mjs": "4989283a88e90434d274f6386aa467d34516388e98d68396d5e7ec57360aaaf7",
+    "summarize_joint_reviews.mjs": "3d3e4a8f28740ec4eb2c6506707cb87dfb1e59dd8e2090dce12ae26c01433da8",
+    "prepare_joint_run.py": "60b184a8a328467840f9e33b21ba46b103102ad97256dbeaaacf60e2b2d5215b",
+    "assess_joint_trajectory.py": "8be7aebfe938d642c9f3184791d3a7e20aafe0f7644f54c12c0de992034c9738",
+    "representation-next-probe.json": "ff21ad89c1fef62b1b8edc340b806edaf9ee14b9ff517543d9ce245a24f9f9ea",
+    "trace-sigpipe.patch": "6c2f257742c007080df2825add342e8c4a8821d67cc3f4ff7e7416f3a5ad0989",
+    "trace-sigpipe-test.patch": "58f951398d88f6133727d4d6d61d6bfcb025db68323b9410201f75880284dbd4",
+    "archive_joint_weights.py": "0baa303c6caca7fe1ff5a957f4c316e82f49100663495acc7c80b6df480adfa9",
+    "collect_joint_review.py": "6470774127e79edcc3482e2040a9f1030b5d23933afa89a05fa04fd44e544057",
+    "archive_joint_evidence.py": "7cb836b0eb8ec9a54399fc0041eed961c98c938cb92c63a2d213d51d9cac15a3",
+    "matched-shape-control.jsonl": "dc151f2b0d8a99652953df76cc760e8c03b491fa2e7105657243719e856f5d52",
+    "matched-shape-summary.json": "b266ad86e66f2f5e5c15cec1c6ef19525539e7d0cae5932d7d8a69efa0eeb90d",
+    "tests-before.txt": "27decee633cb818683b8552084f510f049fe81628df2af0fd552a2a31f57d70b",
+    "tests-after.txt": "81dc401c50b536cf09b6e166dfcbe66cf8aa78485d14a264ce22ff5bc43a4317",
+    "joint-next-control.json": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9"
+  },
+  "selected_model": {
+    "path": "models/joint-review-selected.gguf",
+    "update": 100,
+    "bytes": 714116992,
+    "sha256": "6aaf2f70764de35db1ee13b2c7d974b1064b6dfbd044024b164a2856fdafadd1"
+  },
+  "training_source": {
+    "source_sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+    "binary_sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+    "dataset_binary_sha256": "c952e8af942c4ee71fed9b67229edd03c9d11b237d67fa6811e306dba6415ee5",
+    "pair_map_sha256": "0ae2c2bf43bd995af5ca03e3b0010230ab32f389164b67e996ccf0f704438edc",
+    "plan_sha256": "5ef22e3a732d8ea787a36a8850b100233634204bc63bd9ee2718876644cbad9f"
+  },
+  "experiment_inference": {
+    "source": "src/infer.c",
+    "evidence": "infer-experiment.c",
+    "sha256": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566",
+    "runner_sha256": "36f33861536b1291d5b1b7a9433a418cc66ab64c1bd9414581c888fc504e5def",
+    "current_source_sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+    "distinction": "The experiment used the preserved source snapshot. The current source records the subsequent SIGPIPE/output-error cleanup."
+  },
+  "evidence_bytes": "All evidence files are copied byte-for-byte. Embedded paths and source hashes remain exactly as recorded.",
+  "runtime_path_prefix_mapping": {
+    "/workspace/scratch/ec5ba60588d8/jovovich/": "./",
+    "/workspace/scratch/ec5ba60588d8/reference/": "training/results/2026-10-01-joint-review/"
+  },
+  "evidence_origins": {
+    "plan.json": {
+      "runtime_path": "models/joint-review-plan.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-plan.json",
+      "archived_path": "training/results/2026-10-01-joint-review/plan.json"
+    },
+    "metrics.jsonl": {
+      "runtime_path": "models/joint-review-metrics.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-metrics.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/metrics.jsonl"
+    },
+    "scores.json": {
+      "runtime_path": "models/joint-review-scores.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-scores.json",
+      "archived_path": "training/results/2026-10-01-joint-review/scores.json"
+    },
+    "resource.json": {
+      "runtime_path": "models/joint-review-resource.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-resource.json",
+      "archived_path": "training/results/2026-10-01-joint-review/resource.json"
+    },
+    "training-source.json": {
+      "runtime_path": "models/joint-review-training-source.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-training-source.json",
+      "archived_path": "training/results/2026-10-01-joint-review/training-source.json"
+    },
+    "selected-model.json": {
+      "runtime_path": "models/joint-review-selected-model.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-selected-model.json",
+      "archived_path": "training/results/2026-10-01-joint-review/selected-model.json"
+    },
+    "export-audit.json": {
+      "runtime_path": "models/joint-review-export-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-export-audit.json",
+      "archived_path": "training/results/2026-10-01-joint-review/export-audit.json"
+    },
+    "parity.jsonl": {
+      "runtime_path": "models/joint-review-parity.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-parity.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/parity.jsonl"
+    },
+    "control-evaluation-jobs.json": {
+      "runtime_path": "models/joint-review-control-evaluation-jobs.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-evaluation-jobs.json",
+      "archived_path": "training/results/2026-10-01-joint-review/control-evaluation-jobs.json"
+    },
+    "control-evaluation-model-check.json": {
+      "runtime_path": "models/joint-review-control-evaluation-model-check.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-evaluation-model-check.json",
+      "archived_path": "training/results/2026-10-01-joint-review/control-evaluation-model-check.json"
+    },
+    "joint-evaluation-jobs.json": {
+      "runtime_path": "models/joint-review-joint-evaluation-jobs.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-evaluation-jobs.json",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-evaluation-jobs.json"
+    },
+    "joint-evaluation-model-check.json": {
+      "runtime_path": "models/joint-review-joint-evaluation-model-check.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-evaluation-model-check.json",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-evaluation-model-check.json"
+    },
+    "control-train-shared.jsonl": {
+      "runtime_path": "models/joint-review-control-train-shared.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-train-shared.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/control-train-shared.jsonl"
+    },
+    "control-audit-natural.jsonl": {
+      "runtime_path": "models/joint-review-control-audit-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-audit-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/control-audit-natural.jsonl"
+    },
+    "control-audit-shared.jsonl": {
+      "runtime_path": "models/joint-review-control-audit-shared.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-audit-shared.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/control-audit-shared.jsonl"
+    },
+    "joint-train-natural.jsonl": {
+      "runtime_path": "models/joint-review-joint-train-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-train-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-train-natural.jsonl"
+    },
+    "joint-train-shared.jsonl": {
+      "runtime_path": "models/joint-review-joint-train-shared.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-train-shared.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-train-shared.jsonl"
+    },
+    "joint-diagnostics-natural.jsonl": {
+      "runtime_path": "models/joint-review-joint-diagnostics-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-diagnostics-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-diagnostics-natural.jsonl"
+    },
+    "joint-audit-natural.jsonl": {
+      "runtime_path": "models/joint-review-joint-audit-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-audit-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-audit-natural.jsonl"
+    },
+    "joint-audit-shared.jsonl": {
+      "runtime_path": "models/joint-review-joint-audit-shared.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-joint-audit-shared.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-audit-shared.jsonl"
+    },
+    "generation-summary.json": {
+      "runtime_path": "models/joint-review-generation-summary.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-generation-summary.json",
+      "archived_path": "training/results/2026-10-01-joint-review/generation-summary.json"
+    },
+    "semantic-assessment.json": {
+      "runtime_path": "models/joint-review-semantic-assessment.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-semantic-assessment.json",
+      "archived_path": "training/results/2026-10-01-joint-review/semantic-assessment.json"
+    },
+    "trajectory-assessment.json": {
+      "runtime_path": "models/joint-review-trajectory-assessment.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-trajectory-assessment.json",
+      "archived_path": "training/results/2026-10-01-joint-review/trajectory-assessment.json"
+    },
+    "hf-weights.json": {
+      "runtime_path": "models/joint-review-hf-weights.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-hf-weights.json",
+      "archived_path": "training/results/2026-10-01-joint-review/hf-weights.json"
+    },
+    "infer-experiment.c": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/infer-experiment.c",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/infer-experiment.c",
+      "archived_path": "training/results/2026-10-01-joint-review/infer-experiment.c"
+    },
+    "independent-jovovich-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/independent-jovovich-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/independent-jovovich-audit.json",
+      "archived_path": "training/results/2026-10-01-joint-review/independent-jovovich-audit.json"
+    },
+    "diff-shape-audit.jsonl": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/diff-shape-audit.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/diff-shape-audit.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/diff-shape-audit.jsonl"
+    },
+    "control-diff-shape-assessment.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/control-diff-shape-assessment.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/control-diff-shape-assessment.json",
+      "archived_path": "training/results/2026-10-01-joint-review/control-diff-shape-assessment.json"
+    },
+    "joint-train-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-train-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-train-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-train-manual-judgments.json"
+    },
+    "joint-eval-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-eval-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-eval-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-eval-manual-judgments.json"
+    },
+    "assess_joint_semantics.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/assess_joint_semantics.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/assess_joint_semantics.py",
+      "archived_path": "training/results/2026-10-01-joint-review/assess_joint_semantics.py"
+    },
+    "shape-control-scope.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/shape-control-scope.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/shape-control-scope.json",
+      "archived_path": "training/results/2026-10-01-joint-review/shape-control-scope.json"
+    },
+    "matched-shape-cases.jsonl": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-cases.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-cases.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/matched-shape-cases.jsonl"
+    },
+    "matched-shape-plan.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-plan.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-plan.json",
+      "archived_path": "training/results/2026-10-01-joint-review/matched-shape-plan.json"
+    },
+    "probe_matched_shape.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/probe_matched_shape.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/probe_matched_shape.mjs",
+      "archived_path": "training/results/2026-10-01-joint-review/probe_matched_shape.mjs"
+    },
+    "prepare_matched_shape.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/prepare_matched_shape.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/prepare_matched_shape.py",
+      "archived_path": "training/results/2026-10-01-joint-review/prepare_matched_shape.py"
+    },
+    "run_joint_review.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/run_joint_review.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/run_joint_review.py",
+      "archived_path": "training/results/2026-10-01-joint-review/run_joint_review.py"
+    },
+    "run_joint_evaluation.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/run_joint_evaluation.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/run_joint_evaluation.py",
+      "archived_path": "training/results/2026-10-01-joint-review/run_joint_evaluation.py"
+    },
+    "evaluate_joint_reviews.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "archived_path": "training/results/2026-10-01-joint-review/evaluate_joint_reviews.mjs"
+    },
+    "summarize_joint_reviews.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/summarize_joint_reviews.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/summarize_joint_reviews.mjs",
+      "archived_path": "training/results/2026-10-01-joint-review/summarize_joint_reviews.mjs"
+    },
+    "prepare_joint_run.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/prepare_joint_run.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/prepare_joint_run.py",
+      "archived_path": "training/results/2026-10-01-joint-review/prepare_joint_run.py"
+    },
+    "assess_joint_trajectory.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/assess_joint_trajectory.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/assess_joint_trajectory.py",
+      "archived_path": "training/results/2026-10-01-joint-review/assess_joint_trajectory.py"
+    },
+    "representation-next-probe.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/representation-next-probe.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/representation-next-probe.json",
+      "archived_path": "training/results/2026-10-01-joint-review/representation-next-probe.json"
+    },
+    "trace-sigpipe.patch": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/trace-sigpipe.patch",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/trace-sigpipe.patch",
+      "archived_path": "training/results/2026-10-01-joint-review/trace-sigpipe.patch"
+    },
+    "trace-sigpipe-test.patch": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/trace-sigpipe-test.patch",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/trace-sigpipe-test.patch",
+      "archived_path": "training/results/2026-10-01-joint-review/trace-sigpipe-test.patch"
+    },
+    "archive_joint_weights.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/archive_joint_weights.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/archive_joint_weights.py",
+      "archived_path": "training/results/2026-10-01-joint-review/archive_joint_weights.py"
+    },
+    "collect_joint_review.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/collect_joint_review.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/collect_joint_review.py",
+      "archived_path": "training/results/2026-10-01-joint-review/collect_joint_review.py"
+    },
+    "archive_joint_evidence.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/archive_joint_evidence.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/archive_joint_evidence.py",
+      "archived_path": "training/results/2026-10-01-joint-review/archive_joint_evidence.py"
+    },
+    "matched-shape-control.jsonl": {
+      "runtime_path": "models/matched-shape-control.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control.jsonl",
+      "archived_path": "training/results/2026-10-01-joint-review/matched-shape-control.jsonl"
+    },
+    "matched-shape-summary.json": {
+      "runtime_path": "models/matched-shape-summary.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-summary.json",
+      "archived_path": "training/results/2026-10-01-joint-review/matched-shape-summary.json"
+    },
+    "tests-before.txt": {
+      "runtime_path": "models/joint-tests.txt",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-tests.txt",
+      "archived_path": "training/results/2026-10-01-joint-review/tests-before.txt"
+    },
+    "tests-after.txt": {
+      "runtime_path": "models/joint-tests-final.txt",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-tests-final.txt",
+      "archived_path": "training/results/2026-10-01-joint-review/tests-after.txt"
+    },
+    "joint-next-control.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-next-control.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/reference/joint-next-control.json",
+      "archived_path": "training/results/2026-10-01-joint-review/joint-next-control.json"
+    }
+  },
+  "trace_storage": "Every cohort record embeds the complete native trace object, sampled IDs and original trace SHA; standalone trace files are recoverable with JSON.stringify(trace) plus one newline.",
+  "manual_aggregation": {
+    "helper": "assess_joint_semantics.py",
+    "scope": "Reaggregates the recorded run with its hash-bound manual judgments. Restore its models/ evidence and standalone traces from the embedded objects first. Fresh generations require fresh human judgments and updated bindings; these historical labels are not an automatic evaluator."
+  },
+  "validation": {
+    "before": {
+      "native_tests": 5,
+      "node_tests": 47,
+      "node_failures": 0
+    },
+    "after": {
+      "native_tests": 5,
+      "node_tests": 50,
+      "node_failures": 0
+    },
+    "export_audit": {
+      "base": {
+        "path": "models/base-qwen.gguf",
+        "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+        "bytes": 675710848
+      },
+      "model": {
+        "path": "models/joint-review-selected.gguf",
+        "sha256": "6aaf2f70764de35db1ee13b2c7d974b1064b6dfbd044024b164a2856fdafadd1",
+        "bytes": 714116992
+      },
+      "prefix": "models/joint-review.epoch100",
+      "metadata_equal": true,
+      "expected_extent": 714116992,
+      "unchanged": 288,
+      "adapted": 3,
+      "valid": true
+    },
+    "parity_rows": [
+      0,
+      1,
+      2
+    ]
+  },
+  "result_counts": {
+    "cohorts": {
+      "control-train-shared.jsonl": 40,
+      "control-audit-natural.jsonl": 8,
+      "control-audit-shared.jsonl": 8,
+      "joint-train-natural.jsonl": 40,
+      "joint-train-shared.jsonl": 40,
+      "joint-diagnostics-natural.jsonl": 12,
+      "joint-audit-natural.jsonl": 8,
+      "joint-audit-shared.jsonl": 8
+    },
+    "main_generated_responses": 164,
+    "matched_generated_responses": 8,
+    "generated_responses": 172,
+    "decision_readouts": 101,
+    "full_readouts": 5
+  },
+  "runtime_model_promoted": false,
+  "optional_evidence": {
+    "joint-next-control.json": true
+  },
+  "archive_receipt": "hf-evidence.json is created after remote verification and excluded from this frozen manifest.",
+  "reproduction": [
+    "Run from the repository root in an isolated checkout with unused models/ outputs and an unused /tmp/jovovich-joint-review-selected-2948c91.gguf.",
+    "unset JOVOVICH_CHAT_TEMPLATE JOVOVICH_INFER",
+    "git submodule update --init deps/notorch",
+    "Restore the checksum-pinned base as models/base-qwen.gguf and the selected smaller-step comparator as models/decision-small-step-selected.gguf.",
+    "For the recorded inference source, copy training/results/2026-10-01-joint-review/infer-experiment.c to src/infer.c in the isolated checkout before building.",
+    "make harness train-mlp merge-mlp probe-mlp",
+    "python3 training/prepare.py models/joint-review.bin --sft training/sft_review_v2.jsonl --sft-only --review-pairs models/joint-review.pairs",
+    "python3 training/results/2026-10-01-joint-review/prepare_joint_run.py",
+    "The preparer reconstructs a fresh plan bound to the current build and copied helpers; retain its hashes separately from the archived original plan.",
+    "python3 training/results/2026-10-01-joint-review/run_joint_review.py",
+    "python3 training/results/2026-10-01-joint-review/run_joint_evaluation.py control",
+    "python3 training/results/2026-10-01-joint-review/prepare_matched_shape.py --template training/results/2026-10-01-joint-review/matched-shape-plan.json --output models/matched-shape-plan.json",
+    "node training/results/2026-10-01-joint-review/probe_matched_shape.mjs --output models/matched-shape-control.jsonl --trace-dir models/matched-shape-control-traces --plan models/matched-shape-plan.json",
+    "Assess the eight matched-template responses against their exact cases and record the separate models/matched-shape-summary.json; the main generation summary retains 164 responses.",
+    "python3 training/results/2026-10-01-joint-review/run_joint_evaluation.py joint",
+    "node training/results/2026-10-01-joint-review/summarize_joint_reviews.mjs",
+    "python3 training/results/2026-10-01-joint-review/assess_joint_trajectory.py",
+    "Review complete generated responses against their exact diff and rules to produce the separate semantic assessment."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/joint-review.bin",
+    "models/joint-review",
+    "100",
+    "0.0001",
+    "40",
+    "25",
+    "joint",
+    "models/joint-review.pairs"
+  ],
+  "objective": "joint",
+  "elapsed_seconds": 4513.683119276997,
+  "peak_rss_kib": 1460148,
+  "user_seconds": 9128.44087,
+  "system_seconds": 91.864853,
+  "exit_code": 0,
+  "sources_unchanged": true
+}

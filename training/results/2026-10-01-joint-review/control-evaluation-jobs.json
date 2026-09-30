@@ -1,0 +1,86 @@
+[
+  {
+    "job": "control-train-shared-0",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/decision-small-step-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-control-train-shared-0.jsonl",
+      "--trace-dir",
+      "models/joint-review-control-train-shared-0-traces",
+      "--shard",
+      "0"
+    ],
+    "output": "models/joint-review-control-train-shared-0.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 316.1830219420008
+  },
+  {
+    "job": "control-train-shared-1",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/decision-small-step-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-control-train-shared-1.jsonl",
+      "--trace-dir",
+      "models/joint-review-control-train-shared-1-traces",
+      "--shard",
+      "1"
+    ],
+    "output": "models/joint-review-control-train-shared-1.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 291.00769490800303
+  },
+  {
+    "job": "control-audit-natural",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/decision-small-step-selected.gguf",
+      "--kind",
+      "audit",
+      "--mode",
+      "natural",
+      "--output",
+      "models/joint-review-control-audit-natural.jsonl",
+      "--trace-dir",
+      "models/joint-review-control-audit-natural-traces"
+    ],
+    "output": "models/joint-review-control-audit-natural.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 127.85354514599749
+  },
+  {
+    "job": "control-audit-shared",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "--model",
+      "models/decision-small-step-selected.gguf",
+      "--kind",
+      "audit",
+      "--mode",
+      "shared",
+      "--output",
+      "models/joint-review-control-audit-shared.jsonl",
+      "--trace-dir",
+      "models/joint-review-control-audit-shared-traces"
+    ],
+    "output": "models/joint-review-control-audit-shared.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 139.20077365200268
+  }
+]

@@ -1,0 +1,305 @@
+{
+  "auditor": "Independent JOVOVICH technical audit",
+  "baseline_commit": "2948c91ec122ee5eb2e0eeb09e869960497b836f",
+  "scope": "Read-only audit of baseline sources and preserved native notorch C experiment evidence. Counts below were recomputed from raw JSONL. No model download, training, or inference was performed by this auditor.",
+  "conclusion": "The selected control learns a template-conditioned token distinction while natural decoding starts elsewhere. Its six concern-token successes align exactly with the corpus pure-deletion subset. Restoring full-answer supervision addresses the missing output path; eight frozen counterfactuals now test whether the learned distinction tracks harm or diff shape.",
+  "demonstrated_findings": [
+    {
+      "id": "untrained_output_path",
+      "priority": 1,
+      "finding": "Decision-only training supervises completion position 3 after three gold prefix tokens; opening syntax, citations, explanations and EOS receive no training gradient. All 40 selected natural reviews leave the supervised path at position zero.",
+      "evidence": [
+        {
+          "path": "training/train_mlp.c",
+          "lines": "116-124,369-400",
+          "detail": "decision_order selects only one mapped position per review; train_total equals batch=40."
+        },
+        {
+          "path": "training/results/2026-09-29-small-step/parity.jsonl",
+          "lines": "1-2",
+          "detail": "Both cached and full-GGUF computations predict 73594 rather than target4913 at position0 for concern and clean controls; all47 compared target argmaxes agree."
+        },
+        {
+          "path": "training/results/2026-09-29-small-step/train-generation.jsonl",
+          "detail": "40 natural review answers follow the fenced empty-array route."
+        }
+      ],
+      "impact": "A better position-3 teacher-forced margin has no direct route into these natural completions.",
+      "smallest_discriminating_check": "Joint full-answer objective plus per-position prefix accuracy and actual native emitted IDs, followed by natural generation on unchanged prompts."
+    },
+    {
+      "id": "template_token_is_not_clean_verdict",
+      "priority": 1,
+      "finding": "Target token788 decodes to quote-colon and leaves finding presence undecided. All20 clean prompts win788 at selected update100, yet six shared-prefix continuations contain nonempty findings; two concern prompts lose66582 and still produce nonempty findings.",
+      "evidence": [
+        {
+          "path": "training/score_decisions.py",
+          "lines": "186-187",
+          "detail": "Checkpoint ranking is complete target-token pairs, then target hits."
+        },
+        {
+          "path": "training/results/2026-09-29-small-step/metrics.jsonl",
+          "lines": "105",
+          "detail": "Selected update100 has26 target wins and6 paired target wins."
+        },
+        {
+          "path": "training/results/2026-09-29-small-step/shared-prefix-new.jsonl",
+          "lines": "5,6,15,20,22,32,34,40",
+          "detail": "Raw continuations demonstrate the syntactic/semantic distinction."
+        },
+        {
+          "path": "JOVOVICHLOG.md",
+          "lines": "316-318",
+          "detail": "Token788 is quote-colon; clean empty-array content comes with next token66277."
+        }
+      ],
+      "impact": "The selector measures canonical token-route fit. It can favor a checkpoint whose clean finding decisions are worse; the objective rewards788 even when its free continuation emits a concern.",
+      "smallest_discriminating_check": "Retain existing selector for the matched experiment, but report target-hit vs parsed-presence confusion and actual first emitted IDs. Any later objective intended to classify harm should use a complete clean-versus-concern sequence or an explicitly semantic token, with canonical and generated behavior separately measured."
+    },
+    {
+      "id": "all_wins_follow_pure_deletion",
+      "priority": 1,
+      "finding": "Exactly the six pure-deletion concern rows win66582 at selected update100. Every concern with an added line loses it. The dataset contains no pure-deletion clean row.",
+      "evidence": [
+        {
+          "path": "training/sft_review_v2.jsonl",
+          "lines": "17,37,41,55,57,63",
+          "detail": "The six pure-deletion rows are also the six concern-target wins."
+        },
+        {
+          "path": "training/results/2026-09-29-small-step/metrics.jsonl",
+          "lines": "105",
+          "detail": "Winner pattern recomputed against changed-line shape."
+        }
+      ],
+      "impact": "The 6/20 paired-token result is exactly reproduced by the rule: emit concern route for pure deletion, clean route otherwise. Semantic sensitivity and this diff-shape shortcut require an explicit intervention to distinguish.",
+      "smallest_discriminating_check": "Frozen eight-case factorial audit at reference/diff-shape-audit.jsonl. In each of two familiar contexts, compare harmful/clean with deletion/replacement by no-op. All32 planned generations use fixed checkpoints and remain outside training and selection."
+    },
+    {
+      "id": "token_average_hides_branch_failure",
+      "priority": 2,
+      "finding": "Whole-answer token fit became high while every concern first failed at position3: token mean2294/2359 and equal-answer2290/2359. Later words benefit from supplied gold concern prefixes. Equal whole-answer coefficients also overweight the clean route because clean answers have6 tokens.",
+      "evidence": [
+        {
+          "path": "training/results/2026-09-29-convergence/tokens-metrics.jsonl",
+          "detail": "Final native teacher-forced rows."
+        },
+        {
+          "path": "training/results/2026-09-29-convergence/examples-metrics.jsonl",
+          "detail": "Final native teacher-forced rows."
+        },
+        {
+          "path": "training/train_mlp.c",
+          "lines": "215-219",
+          "detail": "Equal-example coefficient average_tokens / answer_tokens."
+        }
+      ],
+      "impact": "Low aggregate CE and high aggregate token accuracy prioritize many easy continuation tokens while the decisive branch remains wrong. Equal answer weight is a different objective from equal class-decision weight.",
+      "smallest_discriminating_check": "Maintain exact pair accuracy, first-error positions, natural review presence and reason meaning as separate readouts. The joint objective has40 decision targets and792 residual targets with explicit global coefficients."
+    }
+  ],
+  "verified_implementation_properties": [
+    {
+      "area": "target alignment and prompt masking",
+      "result": "Correct in inspected baseline: targett reads position prompt_length-1+t. Prompt states are context and only completion/EOS targets enter losses.",
+      "source": "training/train_mlp.c:77-87,126-144"
+    },
+    {
+      "area": "cached last-MLP state",
+      "result": "Causal attention is computed before final MLP. Final-layer MLP updates cannot change the cached pre-MLP input for any fixed token sequence. Baseline zero-down capture and restored projection follow that dependency.",
+      "source": "deps/notorch/harness/arch_llama.c:348-407; training/train_mlp.c:373-383"
+    },
+    {
+      "area": "loss normalization",
+      "result": "Masked CE divides by sum of token weights; trainer multiplies by sum_weights/actual_batch_size, yielding mean(weight*CE) for token-sampled minibatches. Decisions uses ordinary mean over40 positions.",
+      "source": "deps/notorch/notorch.c:4222-4256; training/train_mlp.c:195-202"
+    },
+    {
+      "area": "optimizer",
+      "result": "Stable registered parameter slots receive standard Adam beta1=.9,beta2=.999,eps1e-8 with one step per full40 decision batch. Existing decision objective clips all trainable parameter gradients once.",
+      "source": "deps/notorch/notorch.c:2438-2455; training/train_mlp.c:397-400"
+    },
+    {
+      "area": "model/export path",
+      "result": "Preserved selected-model audit records metadata equality,288 untouched tensors and3 adapted F32 tensors. Cached/full-GGUF parity agrees at93 target positions, including first wrong output token in both review controls.",
+      "source": "training/results/2026-09-29-small-step/export-audit.json; parity.jsonl; evaluation-model-check.json"
+    },
+    {
+      "area": "labels",
+      "result": "Reviewed all20 concern/clean pairs. Target harm labels match supplied fixtures. v2 has overprecise file-creation wording atrow0 and public-layout ambiguity atrows32-33; v3 repairs these three text fields while preserving labels. The broad behavioral collapse spans the remaining unambiguous pairs.",
+      "source": "training/sft_review_v2.jsonl; training/results/2026-09-29-small-step/dataset-repairs.json"
+    }
+  ],
+  "remaining_hypotheses": [
+    {
+      "hypothesis": "Frozen representation versus adaptation-site bottleneck",
+      "basis": "Only final MLP gate/up/down adapters train. Attention, preceding blocks and vocabulary head remain fixed. No trained site changes which prompt tokens attend to each other.",
+      "source": "training/train_mlp.c:155-192; deps/notorch/harness/arch_llama.c:348-415",
+      "minimal_check": "If full-answer restoration still fails same-shape paired distinctions, run a small native C binary linear readout on the40 cached decision states; fit quality measures linear accessibility of the training labels. Compare against existing vocabulary-route fit before broadening adapters. A successful readout localizes difficulty to the constrained decoder/objective path; further intervention must measure generalization separately."
+    },
+    {
+      "hypothesis": "Difference between direct evidence and style learning",
+      "basis": "Shared-prefix continuations copy changed-line strings, confuse bracketed IDs with physical line numbers, and invent scope explanations. Current curriculum contains20 distinct concern rationales but identical6-token clean targets.",
+      "minimal_check": "Score one explicit mechanism per concern and the actual cited changed line; use label-preserving renaming and the frozen diff-shape cases to test whether copying survives without reasoning."
+    }
+  ],
+  "next_control_review": {
+    "assessment": "The specified joint objective directly supervises the missing natural opening and explanation path and preserves a matched position-3 comparison.",
+    "arithmetically_verified_partition": {
+      "review_targets": 832,
+      "concern_targets": 712,
+      "clean_targets": 120,
+      "decision_targets": 40,
+      "concern_residual_targets": 692,
+      "clean_residual_targets": 100,
+      "residual_targets": 792
+    },
+    "implementation_gate": "For explicit global coefficients1/40 and1/792, a masked microbatch weighted-average CE must be multiplied by its coefficient sum, then gradients accumulated without parameter updates; clip once and call Adam once after all832 positions. The final microbatch has32 positions.",
+    "selection_interpretation": "Existing template-token selector preserves comparison continuity; success of the new experiment is assessed by natural complete reviews and frozen counterfactuals.",
+    "residual_balance": "The residual token mean allocates692/792 auxiliary coefficient mass to concern targets and100/792 to clean targets; the decision component remains exactly balanced20/20. This is an explicit objective choice.",
+    "bounded_followup": "Complete the already planned joint control and32 frozen audit generations; use their observed failure mode to choose the next change."
+  },
+  "recomputed_counts": {
+    "dataset_shape_counts": {
+      "concern_has_added_line": 14,
+      "clean_has_added_line": 20,
+      "concern_pure_deletion": 6
+    },
+    "pure_deletion_concern_rows": [
+      {
+        "row_zero_based": 16,
+        "jsonl_line": 17,
+        "id": "preserve-trie-credit-introduced"
+      },
+      {
+        "row_zero_based": 36,
+        "jsonl_line": 37,
+        "id": "allocation-null-guard-introduced"
+      },
+      {
+        "row_zero_based": 40,
+        "jsonl_line": 41,
+        "id": "zero-worker-guard-introduced"
+      },
+      {
+        "row_zero_based": 54,
+        "jsonl_line": 55,
+        "id": "write-permission-check-introduced"
+      },
+      {
+        "row_zero_based": 56,
+        "jsonl_line": 57,
+        "id": "stable-manifest-order-introduced"
+      },
+      {
+        "row_zero_based": 62,
+        "jsonl_line": 63,
+        "id": "allocation-product-overflow-introduced"
+      }
+    ],
+    "concern_target_win_ids": [
+      "preserve-trie-credit-introduced",
+      "allocation-null-guard-introduced",
+      "zero-worker-guard-introduced",
+      "write-permission-check-introduced",
+      "stable-manifest-order-introduced",
+      "allocation-product-overflow-introduced"
+    ],
+    "same_set": true,
+    "clean_target_wins": 20,
+    "clean_actual_nonempty_after_shared_prefix": 6,
+    "concern_lost_target_but_actual_nonempty_after_shared_prefix": 2,
+    "complete_presence_pairs_after_shared_prefix": 1,
+    "complete_usable_presence_pairs_after_shared_prefix": 0,
+    "syntax_semantic_counterexamples": [
+      {
+        "id": "sqlite-build-requirement-concern",
+        "shared_generation_jsonl_line": 5,
+        "expected_concern": true,
+        "teacher_forced_target_hit": false,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"ADDED CMakeLists.txt:11: find_package(SQLite3 REQUIRED)\"]}"
+      },
+      {
+        "id": "sqlite-build-requirement-clean",
+        "shared_generation_jsonl_line": 6,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"1: ADDED CMakeLists.txt:11: find_package(SQLite3 REQUIRED)\"]}"
+      },
+      {
+        "id": "checksum-indirection-concern",
+        "shared_generation_jsonl_line": 15,
+        "expected_concern": true,
+        "teacher_forced_target_hit": false,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"[1] REMOVED src/digest.c:11:     return crc32(data, length);\", \"[2] ADDED src/digest.c:11:     return digest_registry_run(kind, data, length);\"]}"
+      },
+      {
+        "id": "allocation-null-guard-repaired",
+        "shared_generation_jsonl_line": 20,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"ADDED src/list_node.c:12:     if (n == NULL) return NULL\"]}"
+      },
+      {
+        "id": "zero-worker-guard-repaired",
+        "shared_generation_jsonl_line": 22,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"ADDED src/shard.c:11:     if (workers == 0) return EINVAL\"]}"
+      },
+      {
+        "id": "write-permission-check-repaired",
+        "shared_generation_jsonl_line": 32,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"ADDED src/edit_record.c:11:     if (!session.can_write) return DENIED\"]}"
+      },
+      {
+        "id": "stable-manifest-order-repaired",
+        "shared_generation_jsonl_line": 34,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"[1] ADDED tools/manifest.mjs:12: names.sort();\"]}"
+      },
+      {
+        "id": "allocation-product-overflow-repaired",
+        "shared_generation_jsonl_line": 40,
+        "expected_concern": false,
+        "teacher_forced_target_hit": true,
+        "teacher_forced_winner_id": 788,
+        "parsed_presence": true,
+        "response": "{\"findings\": [\"ADDED src/vector_alloc.c:11:     if (count > SIZE_MAX / sizeof(*items)) return NULL;\"]}"
+      }
+    ]
+  },
+  "frozen_counterfactual_fixture": {
+    "path": "/workspace/scratch/ec5ba60588d8/reference/diff-shape-audit.jsonl",
+    "sha256": "913875ef445ed1c4e5aa4534927e919b44d9ad50bfeb69b2a7e0efd2f044a392",
+    "cases": 8,
+    "contexts": 2,
+    "shape_levels": [
+      "pure-deletion",
+      "replacement-noop"
+    ],
+    "label_levels": [
+      "harmful",
+      "clean"
+    ],
+    "validation": "All16 before/after C programs pass syntax checks; all8 host prompts form one chunk and all declared citations are accepted by parseReview.",
+    "citation_scoring": "For harmful replacement, cite removed ID1 or added ID2. Golden expected_line_ids contains canonicalID2; audit_metadata lists both valid alternatives."
+  }
+}

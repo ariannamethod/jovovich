@@ -6,7 +6,6 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <math.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -140,16 +139,6 @@ int main(int argc, char **argv) {
     if (trace_path && (tokens_only || token_ids)) {
         fprintf(stderr, "jovovich: --trace-tokens requires generation, not a tokenizer-only mode\n");
         return 2;
-    }
-
-    /* A closed reader must report EPIPE through the ordinary cleanup path,
-     * so an interrupted stdout write cannot strand a reserved token trace. */
-    struct sigaction ignore_pipe = {0};
-    ignore_pipe.sa_handler = SIG_IGN;
-    sigemptyset(&ignore_pipe.sa_mask);
-    if (sigaction(SIGPIPE, &ignore_pipe, NULL)) {
-        fprintf(stderr, "jovovich: cannot configure stdout error handling: %s\n", strerror(errno));
-        return 1;
     }
 
     int result = 1;
@@ -295,17 +284,6 @@ int main(int argc, char **argv) {
             stopped ? "eos" : "token-limit");
     result = 0;
 done:
-    /* Tokenizer-only modes can still have buffered output here. Preserve a
-     * prior stream error even if close itself succeeds, and check close's
-     * flush/error result before retaining a completed trace. */
-    {
-        int output_failed = ferror(stdout);
-        if (fclose(stdout)) output_failed = 1;
-        if (output_failed) {
-            fprintf(stderr, "jovovich: cannot finish stdout\n");
-            result = 1;
-        }
-    }
     if (trace && fclose(trace)) {
         fprintf(stderr, "jovovich: cannot close token trace '%s': %s\n",
                 trace_path, strerror(errno));

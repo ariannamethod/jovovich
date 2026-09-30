@@ -1,0 +1,778 @@
+{
+  "schema_version": 1,
+  "experiment": "matched_template_diff_shape_followup",
+  "assessment_created_at_utc": "2026-09-30T22:16:03.716628+00:00",
+  "assessment_method": "Independent read-only verification of all eight completed native trace receipts against frozen fixtures, plan, sources and prior baseline receipts, followed by manual comparison of each complete response with the shown before/after control flow. No new inference was executed for this assessment.",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-plan.json",
+    "sha256": "f4ac11fd7221b9351603456a3242c725be5aabb35c16af9e8293031ef0dcafee",
+    "bytes": 9574
+  },
+  "fixtures": {
+    "path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-cases.jsonl",
+    "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+    "bytes": 54951
+  },
+  "responses": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control.jsonl",
+    "sha256": "dc151f2b0d8a99652953df76cc760e8c03b491fa2e7105657243719e856f5d52",
+    "bytes": 155722
+  },
+  "model": {
+    "path": "/tmp/jovovich-hf-joint/blobs/59/59c88f3822fae0add8b4fb206a0691e7230145a751fbb0c780bc5798204b5db1",
+    "sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c",
+    "bytes": 714116992
+  },
+  "verified_sources": {
+    "cases": {
+      "path": "/workspace/scratch/ec5ba60588d8/reference/matched-shape-cases.jsonl",
+      "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+      "bytes": 54951
+    },
+    "runner": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-infer",
+      "sha256": "36f33861536b1291d5b1b7a9433a418cc66ab64c1bd9414581c888fc504e5def",
+      "bytes": 229040
+    },
+    "infer": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566",
+      "bytes": 12318
+    },
+    "host": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+      "bytes": 16336
+    },
+    "wrapper": {
+      "path": "/workspace/scratch/ec5ba60588d8/reference/probe_matched_shape.mjs",
+      "sha256": "ad9357bc68c23243fff9303becaefc2a00aa9269f8fe8b4e47bd7b8c02e5c34f",
+      "bytes": 16421
+    },
+    "sft": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+      "bytes": 133845
+    },
+    "baseline_receipts": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/joint-review-control-train-shared.jsonl",
+      "sha256": "a76979ddd266a958fb8bd9d9b9acda28c1695ebefacc744fd6b4292df2b46d12",
+      "bytes": 402896
+    },
+    "control_selection": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-small-step/selected-model.json",
+      "sha256": "716a57e31ad58a0b06648e8c24590c8e655ab6335f5c044920b3111c13ec8ebb",
+      "bytes": 192
+    },
+    "control_metrics": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-small-step/metrics.jsonl",
+      "sha256": "503c78ccc7f3eb0c0f6f86b7d4af7cda640950db17b5d43de742135e271b9f4e",
+      "bytes": 832740
+    },
+    "basis_wrapper": {
+      "path": "/workspace/scratch/ec5ba60588d8/reference/evaluate_joint_reviews.mjs",
+      "sha256": "4989283a88e90434d274f6386aa467d34516388e98d68396d5e7ec57360aaaf7",
+      "bytes": 6339
+    },
+    "scope_assessment": {
+      "path": "/workspace/scratch/ec5ba60588d8/reference/shape-control-scope.json",
+      "sha256": "326bb235acfb1aa3f1b976c334031c1644f9a1b8c20496a7d5d60aecf2ee5059",
+      "bytes": 11590
+    },
+    "model": {
+      "path": "/tmp/jovovich-hf-joint/blobs/59/59c88f3822fae0add8b4fb206a0691e7230145a751fbb0c780bc5798204b5db1",
+      "sha256": "a60b4009f22b036ccbd4982559332cd0f85439a74a5db721810efbb6ccd96e6c",
+      "bytes": 714116992
+    }
+  },
+  "decoding": {
+    "temperature": 0,
+    "continuation_tokens": 192,
+    "context": 2048,
+    "threads": 2,
+    "NT_NO_I8": "1"
+  },
+  "supplied_prefix": "{\"findings",
+  "supplied_prefix_ids": [
+    4913,
+    3903,
+    819
+  ],
+  "provenance": {
+    "complete_rows": 8,
+    "unique_case_ids": 8,
+    "ordered_case_ids_match_frozen_plan": true,
+    "frozen_source_hashes_match": true,
+    "row_plan_hashes_match": true,
+    "native_trace_files_hash_and_object_match": 8,
+    "actual_first_ids_equal_trace_first_ids": 8,
+    "prompt_and_prefix_boundaries_verified": 8,
+    "all_eos_with_final_id151645": 8,
+    "generation_budget_truncations": 0,
+    "original_baseline_replays": [
+      {
+        "id": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+        "original_training_id": "allocation-null-guard-introduced",
+        "prompt_bytes_equal": true,
+        "original_prompt_ids_equal": true,
+        "supplied_prompt_ids_equal": true,
+        "all_generated_ids_equal": true,
+        "first_token_id": 66582,
+        "continuation_bytes_equal": true,
+        "assembled_response_bytes_equal": true,
+        "stop_reason_equal": true,
+        "prompt_sha256": "8d1055c99b622f2faca45449e4cadad338a2f6a6b6e7ae3b256ea403df5f2ba2",
+        "assembled_response_sha256": "ce6318d6de5717ca487358932aee73335c67e01052e00ab3d91898c364c34e48",
+        "continuation_sha256": "d75262f705b2adee04752005f2d82e056fc86a9bad2506c402fb3aede6f924c0"
+      },
+      {
+        "id": "matched-shape-write-permission-check-pure-deletion-harmful",
+        "original_training_id": "write-permission-check-introduced",
+        "prompt_bytes_equal": true,
+        "original_prompt_ids_equal": true,
+        "supplied_prompt_ids_equal": true,
+        "all_generated_ids_equal": true,
+        "first_token_id": 66582,
+        "continuation_bytes_equal": true,
+        "assembled_response_bytes_equal": true,
+        "stop_reason_equal": true,
+        "prompt_sha256": "59e9a5e01c86ba60ff39a55a56c6fe386a68cae0deea768659fa3b3fd1c4683a",
+        "assembled_response_sha256": "9af073eb15491f6289607102b864372b2afda73fc90caf86c1199016a2d30012",
+        "continuation_sha256": "3599f4179d832fcf5c40a7d7e4b68b3e7960076760c2e01229705e5bcc726ad5"
+      }
+    ]
+  },
+  "counts": {
+    "cases": 8,
+    "harmful": 4,
+    "redundant_clean": 4,
+    "baseline_response_byte_matches": 2,
+    "baseline_all_generated_id_matches": 2,
+    "first_ids": {
+      "66582": 4,
+      "788": 4
+    },
+    "pure_deletion_first66582": 4,
+    "replacement_first788": 4,
+    "predeclared_shape_pattern_matches": 8,
+    "predeclared_harm_pattern_matches": 4,
+    "behavior_preserving_shape_pairs_with_route_flip": 4,
+    "behavior_preserving_shape_pairs": 4,
+    "harmful_to_redundant_pairs_with_route_flip": 0,
+    "harmful_to_redundant_pairs": 4,
+    "json_valid": 7,
+    "json_invalid": 1,
+    "finding_objects_schema": 4,
+    "production_parse_accepted": 2,
+    "parsed_presence_true": 7,
+    "parsed_presence_false": 0,
+    "parsed_presence_null": 1,
+    "harmful_parsed_presence_true": 3,
+    "harmful_parsed_presence_null": 1,
+    "redundant_false_positive_presence": 4,
+    "fully_grounded_harmful_reviews": 0,
+    "partly_relevant_harmful_reviews_with_incorrect_claims": 1,
+    "correct_empty_clean_reviews": 0,
+    "complete_correct_reviews": 0,
+    "complete_correct_harmful_clean_pairs": 0
+  },
+  "token_meaning": {
+    "66582": "The token opens \":[{ and selects the compact finding-object continuation route in these responses.",
+    "788": "The token is quote-colon. All four observed788 responses continue into nonempty copied-diff arrays; it does not denote an empty clean review."
+  },
+  "shape_comparisons": [
+    {
+      "context": "allocation-null-guard",
+      "label": "harmful",
+      "pure_deletion_id": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+      "replacement_id": "matched-shape-allocation-null-guard-replacement-noop-harmful",
+      "pure_deletion_first_id": 66582,
+      "replacement_first_id": 788,
+      "route_changed": true,
+      "response_bytes_changed": true,
+      "runtime_behavior_held_fixed": true
+    },
+    {
+      "context": "allocation-null-guard",
+      "label": "redundant",
+      "pure_deletion_id": "matched-shape-allocation-null-guard-pure-deletion-redundant",
+      "replacement_id": "matched-shape-allocation-null-guard-replacement-noop-redundant",
+      "pure_deletion_first_id": 66582,
+      "replacement_first_id": 788,
+      "route_changed": true,
+      "response_bytes_changed": true,
+      "runtime_behavior_held_fixed": true
+    },
+    {
+      "context": "write-permission-check",
+      "label": "harmful",
+      "pure_deletion_id": "matched-shape-write-permission-check-pure-deletion-harmful",
+      "replacement_id": "matched-shape-write-permission-check-replacement-noop-harmful",
+      "pure_deletion_first_id": 66582,
+      "replacement_first_id": 788,
+      "route_changed": true,
+      "response_bytes_changed": true,
+      "runtime_behavior_held_fixed": true
+    },
+    {
+      "context": "write-permission-check",
+      "label": "redundant",
+      "pure_deletion_id": "matched-shape-write-permission-check-pure-deletion-redundant",
+      "replacement_id": "matched-shape-write-permission-check-replacement-noop-redundant",
+      "pure_deletion_first_id": 66582,
+      "replacement_first_id": 788,
+      "route_changed": true,
+      "response_bytes_changed": true,
+      "runtime_behavior_held_fixed": true
+    }
+  ],
+  "harm_comparisons": [
+    {
+      "context": "allocation-null-guard",
+      "shape": "pure-deletion",
+      "harmful_id": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+      "redundant_id": "matched-shape-allocation-null-guard-pure-deletion-redundant",
+      "harmful_first_id": 66582,
+      "redundant_first_id": 66582,
+      "route_changed": false,
+      "response_bytes_changed": true,
+      "changed_guard_line_and_shape_held_fixed": true,
+      "clean_response_empty": false
+    },
+    {
+      "context": "allocation-null-guard",
+      "shape": "replacement-noop",
+      "harmful_id": "matched-shape-allocation-null-guard-replacement-noop-harmful",
+      "redundant_id": "matched-shape-allocation-null-guard-replacement-noop-redundant",
+      "harmful_first_id": 788,
+      "redundant_first_id": 788,
+      "route_changed": false,
+      "response_bytes_changed": true,
+      "changed_guard_line_and_shape_held_fixed": true,
+      "clean_response_empty": false
+    },
+    {
+      "context": "write-permission-check",
+      "shape": "pure-deletion",
+      "harmful_id": "matched-shape-write-permission-check-pure-deletion-harmful",
+      "redundant_id": "matched-shape-write-permission-check-pure-deletion-redundant",
+      "harmful_first_id": 66582,
+      "redundant_first_id": 66582,
+      "route_changed": false,
+      "response_bytes_changed": true,
+      "changed_guard_line_and_shape_held_fixed": true,
+      "clean_response_empty": false
+    },
+    {
+      "context": "write-permission-check",
+      "shape": "replacement-noop",
+      "harmful_id": "matched-shape-write-permission-check-replacement-noop-harmful",
+      "redundant_id": "matched-shape-write-permission-check-replacement-noop-redundant",
+      "harmful_first_id": 788,
+      "redundant_first_id": 788,
+      "route_changed": false,
+      "response_bytes_changed": false,
+      "changed_guard_line_and_shape_held_fixed": true,
+      "clean_response_empty": false
+    }
+  ],
+  "conclusions": [
+    "In both original SFT prompt templates, adding the behavior-preserving no-op replacement switches the first token from66582 to788 for both harmful and redundant guards: four flips in four matched comparisons.",
+    "Retaining an unchanged identical guard changes the correct verdict from concern to clean while keeping the first token unchanged in all four matched comparisons. The observed first-token route follows the prescribed diff-shape manipulation across these eight prompts.",
+    "Both original harmful-deletion cases reproduce every generated token and complete response byte-for-byte. This directly connects the matched controls to two of the original six deletion-associated training wins.",
+    "All four replacement responses copy changed lines instead of explaining a mechanism. Both NULL deletion responses invent a scope defect. The permission harmful-deletion response contains the relevant permission requirement alongside a false scope claim; the redundant permission deletion invents an AGENTS.md runtime effect.",
+    "The expanded-context audit and matched-template control occupy different input conditions: the expanded audit selected788 for all eight prompts, while preserving the original SFT template exposes the exact shape-sensitive pattern. Together they identify sensitivity to both the matched shape manipulation and the wider prompt-content changes.",
+    "The matched shape manipulation includes the no-op added line, its required hunk count and its required changed-line ID2. This experiment measures their combined effect. Its observed scope is the selected control checkpoint, shared-prefix route and these two original templates.",
+    "No generated answer is a complete correct review under the predeclared semantic rubric. Two responses pass the production citation parser, both permission pure deletions; parser acceptance and first-token classification are recorded separately from semantic correctness."
+  ],
+  "per_case": [
+    {
+      "id": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+      "context": "allocation-null-guard",
+      "shape": "pure-deletion",
+      "label": "harmful",
+      "expected_concern": true,
+      "expected_reason_concept": "Deleting or replacing the only NULL guard lets failed calloc reach n->value and dereference NULL.",
+      "expected_valid_citation_alternatives": [
+        1
+      ],
+      "is_original_baseline": true,
+      "actual_first_token_id": 66582,
+      "first_token_matches_training_label_route": true,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": true,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "With the only NULL check removed, calloc may return NULL and the next statement dereferences n.",
+        "object_schema": true,
+        "citation_valid": false,
+        "mechanism": "incorrect_scope_claim",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The answer claims the guard belongs in the scope of calloc rather than the source file. The shown code supports no scope defect. It never explains failed allocation reaching n->value. Its line_id string \"12\" is the physical source line; the sole bracket citation ID is1."
+      },
+      "assembled_response": "{\"findings\":[{\"line_id\": \"12\", \"reason\": \"The line `if (n == NULL) return NULL;` is not in the correct scope for the `calloc` function. It should be in the scope of the `calloc` function itself, not the `src/list_node.c` file.\"}]}",
+      "continuation": "\":[{\"line_id\": \"12\", \"reason\": \"The line `if (n == NULL) return NULL;` is not in the correct scope for the `calloc` function. It should be in the scope of the `calloc` function itself, not the `src/list_node.c` file.\"}]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": null,
+        "citation_error": "Model finding lacks an exact changed-line citation"
+      },
+      "receipt": {
+        "id": "matched-shape-allocation-null-guard-pure-deletion-harmful",
+        "record_line": 1,
+        "prompt_sha256": "8d1055c99b622f2faca45449e4cadad338a2f6a6b6e7ae3b256ea403df5f2ba2",
+        "original_prompt_token_count": 434,
+        "supplied_prompt_token_count": 437,
+        "original_prompt_ids_sha256": "a3ebd894620cfc556a407ae2ae6180be76d794e956a4580b0d297f96614d2d3e",
+        "supplied_prompt_ids_sha256": "d8c7594d5ae4214fad407d3769d0a0aebd1ba64c18b502992c3b382af2ac485c",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/000.json",
+          "sha256": "f9e47363f76f8e1d5e179553ec76af7e58dbae590f064b7349ccfb5c68294767",
+          "bytes": 2430
+        },
+        "generated_id_count_including_eos": 65,
+        "emitted_token_count_excluding_eos": 64,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "ce6318d6de5717ca487358932aee73335c67e01052e00ab3d91898c364c34e48",
+        "continuation_sha256": "d75262f705b2adee04752005f2d82e056fc86a9bad2506c402fb3aede6f924c0",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-allocation-null-guard-pure-deletion-redundant",
+      "context": "allocation-null-guard",
+      "shape": "pure-deletion",
+      "label": "redundant",
+      "expected_concern": false,
+      "expected_reason_concept": "The unchanged NULL guard immediately after the changed line still returns before n->value when calloc fails.",
+      "expected_valid_citation_alternatives": [],
+      "is_original_baseline": false,
+      "actual_first_token_id": 66582,
+      "first_token_matches_training_label_route": false,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": false,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "An unchanged identical NULL check remains immediately before n->value. Removing the duplicate preserves the check; empty findings is correct.",
+        "object_schema": true,
+        "citation_valid": false,
+        "mechanism": "false_positive_scope_claim",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The answer reports an unrelated scope defect despite the retained guard. Its line_id \"12\" also fails the required bracket citation ID1."
+      },
+      "assembled_response": "{\"findings\":[{\"line_id\": \"12\", \"reason\": \"The line `if (n == NULL) return NULL;` is not in the correct scope. It should be in the scope of the `calloc` function call.\"}]}",
+      "continuation": "\":[{\"line_id\": \"12\", \"reason\": \"The line `if (n == NULL) return NULL;` is not in the correct scope. It should be in the scope of the `calloc` function call.\"}]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": null,
+        "citation_error": "Model finding lacks an exact changed-line citation"
+      },
+      "receipt": {
+        "id": "matched-shape-allocation-null-guard-pure-deletion-redundant",
+        "record_line": 2,
+        "prompt_sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652",
+        "original_prompt_token_count": 444,
+        "supplied_prompt_token_count": 447,
+        "original_prompt_ids_sha256": "312f9f0256081cca86fcaaf871dcee5ba115fdcbbe75dc8c7a362fdc206abb8e",
+        "supplied_prompt_ids_sha256": "f7e42a5e7fd87d128d864590ca5639c0e210d2634697c3ed258020d0747f1778",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/001.json",
+          "sha256": "facb6220d64dcd41b05f3832b1bae8af970b4eb2a13edf577b5cab57af062975",
+          "bytes": 2399
+        },
+        "generated_id_count_including_eos": 49,
+        "emitted_token_count_excluding_eos": 48,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "c1b0f80d768ec7e8b4216c26a9c200f66488ba730f10e6210cc3140c6b67ace5",
+        "continuation_sha256": "aa4fdffc875f6f28c18b89cbd39da7028e215894087b7b9fd07c9e228e665e46",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-allocation-null-guard-replacement-noop-harmful",
+      "context": "allocation-null-guard",
+      "shape": "replacement-noop",
+      "label": "harmful",
+      "expected_concern": true,
+      "expected_reason_concept": "Deleting or replacing the only NULL guard lets failed calloc reach n->value and dereference NULL.",
+      "expected_valid_citation_alternatives": [
+        1,
+        2
+      ],
+      "is_original_baseline": false,
+      "actual_first_token_id": 788,
+      "first_token_matches_training_label_route": false,
+      "json_valid": false,
+      "parsed_concern": null,
+      "parsed_presence_matches_expected": null,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "Replacing the only NULL check with (void)0 leaves failed allocation able to reach n->value. Changed ID1 or ID2 can anchor that mechanism.",
+        "object_schema": false,
+        "citation_valid": false,
+        "mechanism": "diff_copy_without_reason",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The response copies both diff lines into strings and adds an extra closing brace. It supplies no finding object, line_id field or explanation of the NULL dereference. Malformed JSON keeps parsed presence null."
+      },
+      "assembled_response": "{\"findings\": [\"[1] REMOVED src/list_node.c:12:     if (n == NULL) return NULL;\", \"[2] ADDED src/list_node.c:12:     (void)0;\"]}}",
+      "continuation": "\": [\"[1] REMOVED src/list_node.c:12:     if (n == NULL) return NULL;\", \"[2] ADDED src/list_node.c:12:     (void)0;\"]}}",
+      "automatic_assessment": {
+        "json_valid": false,
+        "findings_count": null,
+        "concern": null,
+        "parsed_findings": null,
+        "citation_error": "Model did not return a complete JSON review"
+      },
+      "receipt": {
+        "id": "matched-shape-allocation-null-guard-replacement-noop-harmful",
+        "record_line": 3,
+        "prompt_sha256": "7263460dac7a81b107fd425199e667889888768ca351590d413351f3fb6180b3",
+        "original_prompt_token_count": 460,
+        "supplied_prompt_token_count": 463,
+        "original_prompt_ids_sha256": "096065ec595b0182ccf8101256fe0c8d9c8bb40a74837e2e12e61674386c3bb5",
+        "supplied_prompt_ids_sha256": "2e678d2d4405b8fd646a8d8965dabd043b546a22be781da4e344a22e5a624e5f",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/002.json",
+          "sha256": "a01cd4e40c2ef0283a51ba8dbe9f18e4dacfede77f0593d9d14498de4bebd2bc",
+          "bytes": 2449
+        },
+        "generated_id_count_including_eos": 49,
+        "emitted_token_count_excluding_eos": 48,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "b0ff3c5ccdc26e5c8596b02270f51892b9328d079d89a16e200ba737c99ed45c",
+        "continuation_sha256": "0c6778b0c16bfa72b0aca1d8583b0f7d9f063ebf928e51b7743f49546c03c878",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-allocation-null-guard-replacement-noop-redundant",
+      "context": "allocation-null-guard",
+      "shape": "replacement-noop",
+      "label": "redundant",
+      "expected_concern": false,
+      "expected_reason_concept": "The unchanged NULL guard immediately after the changed line still returns before n->value when calloc fails.",
+      "expected_valid_citation_alternatives": [],
+      "is_original_baseline": false,
+      "actual_first_token_id": 788,
+      "first_token_matches_training_label_route": true,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": false,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "After the first guard becomes (void)0, the unchanged second NULL check still protects n->value. Empty findings is correct.",
+        "object_schema": false,
+        "citation_valid": false,
+        "mechanism": "diff_copy_false_positive",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The nonempty string array copies the removed line. It gives no reason and ignores the remaining guard. The string prefix12 is not a line_id field."
+      },
+      "assembled_response": "{\"findings\": [\"12: REMOVED src/list_node.c:12:     if (n == NULL) return NULL;\"]}",
+      "continuation": "\": [\"12: REMOVED src/list_node.c:12:     if (n == NULL) return NULL;\"]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": null,
+        "citation_error": "Model finding lacks an exact changed-line citation"
+      },
+      "receipt": {
+        "id": "matched-shape-allocation-null-guard-replacement-noop-redundant",
+        "record_line": 4,
+        "prompt_sha256": "227210015a62558b979a4242768978813daa8d7c42eb22c1c3b0af5d7e63c795",
+        "original_prompt_token_count": 470,
+        "supplied_prompt_token_count": 473,
+        "original_prompt_ids_sha256": "71489923da89d04327bfedf84a585b592f259ca44692a3fe27364d69545e43bd",
+        "supplied_prompt_ids_sha256": "30f7a8eb73a2e05b10cda678b6f2d55924f8f187c39779b1e0bfe95cfb660445",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/003.json",
+          "sha256": "e66df219f0dab98446951436482b3d8c2ee7eac047150d4655f526c58c5bd4ad",
+          "bytes": 2404
+        },
+        "generated_id_count_including_eos": 28,
+        "emitted_token_count_excluding_eos": 27,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "d2b0ca97dc0dd54ce7f8ce43ea51f4eb0ddb2f75af1c222785b296b913776433",
+        "continuation_sha256": "9c87f02aa27b6ddb484a2a229398a7f140d041a535ef1e58ccfa93ba2d976cc0",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-write-permission-check-pure-deletion-harmful",
+      "context": "write-permission-check",
+      "shape": "pure-deletion",
+      "label": "harmful",
+      "expected_concern": true,
+      "expected_reason_concept": "Deleting or replacing the only permission guard lets a read-only session reach unchecked replace_record and modify stored data.",
+      "expected_valid_citation_alternatives": [
+        1
+      ],
+      "is_original_baseline": true,
+      "actual_first_token_id": 66582,
+      "first_token_matches_training_label_route": true,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": true,
+      "production_parse_accepted": true,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "Deleting the only can_write check permits replace_record when can_write is false. A grounded finding identifies the permission bypass at removed bracket ID1.",
+        "object_schema": true,
+        "citation_valid": true,
+        "mechanism": "relevant_permission_requirement_mixed_with_false_scope_claim",
+        "mechanism_partial_credit": true,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The second sentence correctly states that replace_record should only run with write permission, and line_id \"1\" resolves to the removed guard. The first sentence invents a scope defect. The answer never states the changed path in which false can_write reaches replace_record. This is partial recognition of the permission requirement with an incorrect causal claim."
+      },
+      "assembled_response": "{\"findings\":[{\"line_id\": \"1\", \"reason\": \"The line `if (!session.can_write) return DENIED;` is not in the correct scope for the `replace_record` function. The `replace_record` function should only be called if the session has write permission.\"}]}",
+      "continuation": "\":[{\"line_id\": \"1\", \"reason\": \"The line `if (!session.can_write) return DENIED;` is not in the correct scope for the `replace_record` function. The `replace_record` function should only be called if the session has write permission.\"}]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": [
+          {
+            "path": "src/edit_record.c",
+            "side": "LEFT",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;",
+            "reason": "The line `if (!session.can_write) return DENIED;` is not in the correct scope for the `replace_record` function. The `replace_record` function should only be called if the session has write permission."
+          }
+        ],
+        "citation_error": null
+      },
+      "receipt": {
+        "id": "matched-shape-write-permission-check-pure-deletion-harmful",
+        "record_line": 5,
+        "prompt_sha256": "59e9a5e01c86ba60ff39a55a56c6fe386a68cae0deea768659fa3b3fd1c4683a",
+        "original_prompt_token_count": 422,
+        "supplied_prompt_token_count": 425,
+        "original_prompt_ids_sha256": "7f12bf879fad8d60b7df29f49235586c22258025bf1be5c27957d720a6bba9b9",
+        "supplied_prompt_ids_sha256": "bd4152d912aa7a3d00608d362e8bd163b907ab4d80c8cdd4ee43d1b202463543",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/004.json",
+          "sha256": "8aab48403da6c83ae1dcfe3d6c9776d049b0a07152aca956025a162e3daf958d",
+          "bytes": 2387
+        },
+        "generated_id_count_including_eos": 59,
+        "emitted_token_count_excluding_eos": 58,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "9af073eb15491f6289607102b864372b2afda73fc90caf86c1199016a2d30012",
+        "continuation_sha256": "3599f4179d832fcf5c40a7d7e4b68b3e7960076760c2e01229705e5bcc726ad5",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-write-permission-check-pure-deletion-redundant",
+      "context": "write-permission-check",
+      "shape": "pure-deletion",
+      "label": "redundant",
+      "expected_concern": false,
+      "expected_reason_concept": "The unchanged permission guard immediately after the changed line still returns DENIED for read-only sessions before replace_record.",
+      "expected_valid_citation_alternatives": [],
+      "is_original_baseline": false,
+      "actual_first_token_id": 66582,
+      "first_token_matches_training_label_route": false,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": false,
+      "production_parse_accepted": true,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "An unchanged identical can_write check remains directly before replace_record. Removing the duplicate preserves denial; empty findings is correct.",
+        "object_schema": true,
+        "citation_valid": true,
+        "mechanism": "false_positive_agents_rule_claim",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The response cites bracket ID1 but claims AGENTS.md ordering should ensure can_write is true. File ordering does not set a runtime permission flag, and the retained guard still blocks denied writes. The production parser accepts this false positive with an incorrect mechanism."
+      },
+      "assembled_response": "{\"findings\":[{\"line_id\": \"1\", \"reason\": \"The line `if (!session.can_write) return DENIED;` is not in the `AGENTS.md` file, which is ordered root to nearest directory. The `AGENTS.md` file should be ordered root to nearest directory to ensure that the `can_write` property is always set to `true` before the `replace_record` function is called.\"}]}",
+      "continuation": "\":[{\"line_id\": \"1\", \"reason\": \"The line `if (!session.can_write) return DENIED;` is not in the `AGENTS.md` file, which is ordered root to nearest directory. The `AGENTS.md` file should be ordered root to nearest directory to ensure that the `can_write` property is always set to `true` before the `replace_record` function is called.\"}]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": [
+          {
+            "path": "src/edit_record.c",
+            "side": "LEFT",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;",
+            "reason": "The line `if (!session.can_write) return DENIED;` is not in the `AGENTS.md` file, which is ordered root to nearest directory. The `AGENTS.md` file should be ordered root to nearest directory to ensure that the `can_write` property is always set to `true` before the `replace_record` function is called."
+          }
+        ],
+        "citation_error": null
+      },
+      "receipt": {
+        "id": "matched-shape-write-permission-check-pure-deletion-redundant",
+        "record_line": 6,
+        "prompt_sha256": "ec799cc4652a03732ad793eacc3a5b7acc328481922d01a936c40280b6789b3a",
+        "original_prompt_token_count": 433,
+        "supplied_prompt_token_count": 436,
+        "original_prompt_ids_sha256": "7178f40a599a7ade9e3483590a6158d9260c32a7f367e9e9ce6e7767b13ccc0b",
+        "supplied_prompt_ids_sha256": "6f2295c00dade9d02f95988b8187731ca08caa93ac59d6554288b0812da8378b",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/005.json",
+          "sha256": "186d02eeec61dfbbbe8291d96709543bff0cb8dde46de97e11f289e9c9bdf493",
+          "bytes": 2570
+        },
+        "generated_id_count_including_eos": 87,
+        "emitted_token_count_excluding_eos": 86,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "0109a224aea903b6139d54c12ba80026c9b60c6d72ec6378460a89a63e957977",
+        "continuation_sha256": "bf1f2aae1a6f1732a6ded7ef8927b7aac0f3cd5e23a256145aa40c2f567013a8",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-write-permission-check-replacement-noop-harmful",
+      "context": "write-permission-check",
+      "shape": "replacement-noop",
+      "label": "harmful",
+      "expected_concern": true,
+      "expected_reason_concept": "Deleting or replacing the only permission guard lets a read-only session reach unchecked replace_record and modify stored data.",
+      "expected_valid_citation_alternatives": [
+        1,
+        2
+      ],
+      "is_original_baseline": false,
+      "actual_first_token_id": 788,
+      "first_token_matches_training_label_route": false,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": true,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "Replacing the only can_write check with (void)0 allows replace_record when can_write is false. Either changed ID can anchor the bypass.",
+        "object_schema": false,
+        "citation_valid": false,
+        "mechanism": "diff_copy_without_reason",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "The nonempty string array copies the removal and no-op addition. It contains no finding object or explanation that the permission check was bypassed."
+      },
+      "assembled_response": "{\"findings\": [\"[1] REMOVED src/edit_record.c:11:     if (!session.can_write) return DENIED; [2] ADDED src/edit_record.c:11:     (void)0;\"]}",
+      "continuation": "\": [\"[1] REMOVED src/edit_record.c:11:     if (!session.can_write) return DENIED; [2] ADDED src/edit_record.c:11:     (void)0;\"]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": null,
+        "citation_error": "Model finding lacks an exact changed-line citation"
+      },
+      "receipt": {
+        "id": "matched-shape-write-permission-check-replacement-noop-harmful",
+        "record_line": 7,
+        "prompt_sha256": "b735f1428ae2f5e02e58f001968843263dc3989bfabeeb44d769fdc795a169ac",
+        "original_prompt_token_count": 448,
+        "supplied_prompt_token_count": 451,
+        "original_prompt_ids_sha256": "79b0fb991c44bbbe46ba488f2280a88126c930c1532cf4f7d7e7ba6a28bb2829",
+        "supplied_prompt_ids_sha256": "3d9feeaa52f6eec2a653aa3b2778d9e700f2c4be889c39940dde73cefcd47447",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/006.json",
+          "sha256": "6ceb971b2f07b69764a518aa6fccfc808e15d43529f85df9266889facbbe3c68",
+          "bytes": 2426
+        },
+        "generated_id_count_including_eos": 48,
+        "emitted_token_count_excluding_eos": 47,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "ac06b44cca9256254eb08942a6ac6613f30ccf2ed327a498836aa7bb2112f7fe",
+        "continuation_sha256": "723e1b70fc31de6f3979d50af3ceab2486dec400ecad3339f2ff1e555eca6122",
+        "native_receipt_checks_passed": true
+      }
+    },
+    {
+      "id": "matched-shape-write-permission-check-replacement-noop-redundant",
+      "context": "write-permission-check",
+      "shape": "replacement-noop",
+      "label": "redundant",
+      "expected_concern": false,
+      "expected_reason_concept": "The unchanged permission guard immediately after the changed line still returns DENIED for read-only sessions before replace_record.",
+      "expected_valid_citation_alternatives": [],
+      "is_original_baseline": false,
+      "actual_first_token_id": 788,
+      "first_token_matches_training_label_route": true,
+      "json_valid": true,
+      "parsed_concern": true,
+      "parsed_presence_matches_expected": false,
+      "production_parse_accepted": false,
+      "complete_review_correct": false,
+      "manual_semantics": {
+        "expected_behavior": "The unchanged second can_write check remains before replace_record after the first becomes (void)0. Empty findings is correct.",
+        "object_schema": false,
+        "citation_valid": false,
+        "mechanism": "diff_copy_false_positive",
+        "mechanism_partial_credit": false,
+        "fully_grounded": false,
+        "semantically_correct": false,
+        "reason": "This answer is byte-identical to the harmful replacement answer. It copies both changed lines without addressing the remaining permission check; nonempty findings is incorrect for this redundant change."
+      },
+      "assembled_response": "{\"findings\": [\"[1] REMOVED src/edit_record.c:11:     if (!session.can_write) return DENIED; [2] ADDED src/edit_record.c:11:     (void)0;\"]}",
+      "continuation": "\": [\"[1] REMOVED src/edit_record.c:11:     if (!session.can_write) return DENIED; [2] ADDED src/edit_record.c:11:     (void)0;\"]}",
+      "automatic_assessment": {
+        "json_valid": true,
+        "findings_count": 1,
+        "concern": true,
+        "parsed_findings": null,
+        "citation_error": "Model finding lacks an exact changed-line citation"
+      },
+      "receipt": {
+        "id": "matched-shape-write-permission-check-replacement-noop-redundant",
+        "record_line": 8,
+        "prompt_sha256": "1ecf2dd6e072db610980bf5e662861449088b432228206b9fef3947af0f3ad4b",
+        "original_prompt_token_count": 459,
+        "supplied_prompt_token_count": 462,
+        "original_prompt_ids_sha256": "d9204edac2971afd9aad177d0f7e985c3fa379a24a652b7f05806473ba48dad4",
+        "supplied_prompt_ids_sha256": "e2cbec09227b8bcbb8409ca5c7dc6707dd92dc5fbc29a136452933bff737e70d",
+        "trace": {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/matched-shape-control-traces/007.json",
+          "sha256": "b1398bf127b5049302ef5bddec697d27639219d0d16c4007bfe85b525f264670",
+          "bytes": 2476
+        },
+        "generated_id_count_including_eos": 48,
+        "emitted_token_count_excluding_eos": 47,
+        "final_token_id": 151645,
+        "stop_reason": "eos",
+        "assembled_response_sha256": "ac06b44cca9256254eb08942a6ac6613f30ccf2ed327a498836aa7bb2112f7fe",
+        "continuation_sha256": "723e1b70fc31de6f3979d50af3ceab2486dec400ecad3339f2ff1e555eca6122",
+        "native_receipt_checks_passed": true
+      }
+    }
+  ],
+  "archive_accounting": {
+    "main_experiment_responses": 164,
+    "separate_matched_followup_responses": 8,
+    "total_planned_archive_responses": 172,
+    "main_training_or_selection_modified": false
+  }
+}

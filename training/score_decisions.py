@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the fixed 100-update decision control and select before generation."""
+"""Validate fixed 100-update decisions/joint controls and select before generation."""
 import argparse
 import hashlib
 import json
@@ -14,6 +14,8 @@ ELIGIBLE = (25, 50, 100)
 SNAPSHOTS = (25, 50, 75, 100)
 DECISION_FIELDS = {'decision_position', 'decision_correct', 'decision_margin',
                    'decision_predicted_id', 'decision_target_id', 'decision_alternative_id'}
+PREFIX_FIELDS = {'prefix_tokens', 'prefix_correct', 'prefix_exact'}
+GRADIENT_FIELDS = {'gradient_norm', 'clip_scale', 'clipped', 'gradient_measurement', 'online_joint_ce'}
 
 
 def require(condition, message):
@@ -84,7 +86,7 @@ def validate_decision(score, reference=None, tokens=None):
 
 
 def references(initial, mapping, pairs):
-    require(initial.get('objective') == 'decisions', 'initial objective must be decisions')
+    require(initial.get('objective') in ('decisions', 'joint'), 'initial objective must be decisions or joint')
     require(initial.get('examples') == 64 and type(initial.get('examples')) is int,
             'initial example count disagrees')
     require(integer(initial.get('decision_pairs'), 'initial decision pairs') == 20,
@@ -107,6 +109,85 @@ def references(initial, mapping, pairs):
                 result[b]['decision_target_id'] == result[a]['decision_alternative_id'],
                 'paired decision positions or target/alternative IDs are not reciprocal')
     return result
+
+
+def joint_config(initial, refs, mapping):
+    positions = sum(refs[index]['tokens'] for index in mapping)
+    counts = dict(decision_positions=len(mapping), residual_positions=positions-len(mapping),
+                  joint_positions=positions)
+    require(counts['residual_positions'] > 0, 'joint objective requires residual answer targets')
+    for key, expected in counts.items():
+        require(integer(initial.get(key), key, 1) == expected,
+                f'{key} disagrees with mapped corpus token counts')
+    require(finite(initial.get('residual_lambda'), 'residual lambda') == 1,
+            'joint residual lambda must be one')
+    require(finite(initial.get('clip_limit'), 'clip limit') == 1, 'joint clip limit must be one')
+    require(integer(initial.get('microbatch_tokens'), 'microbatch tokens', 1) == len(mapping),
+            'joint microbatch must contain 40 tokens')
+    return dict(**counts, residual_lambda=1, clip_limit=1, microbatch_tokens=len(mapping))
+
+
+def joint_summary(metric, config, previous):
+    for key in ('residual_positions', 'joint_positions'):
+        require(integer(metric.get(key), key, 1) == config[key],
+                f'{key} changed from joint normalization')
+    require(finite(metric.get('residual_lambda'), 'residual lambda') == config['residual_lambda'],
+            'joint residual lambda changed')
+    residual = finite(metric.get('mean_residual_ce'), 'residual CE', nonnegative=True)
+    loss = finite(metric.get('mean_joint_ce'), 'joint CE', nonnegative=True)
+    require(math.isclose(loss, metric['mean_decision_ce'] + config['residual_lambda'] * residual,
+                         rel_tol=1e-5, abs_tol=2e-5), 'joint CE disagrees with its component means')
+    require(GRADIENT_FIELDS <= metric.keys(), 'incomplete joint gradient diagnostics')
+    if previous is None:
+        require(all(metric[key] is None for key in GRADIENT_FIELDS),
+                'initial joint gradient diagnostics must be null')
+    else:
+        require(metric['gradient_measurement'] == 'pre_update', 'joint gradient measurement must be pre_update')
+        norm = finite(metric['gradient_norm'], 'gradient norm', nonnegative=True)
+        scale = finite(metric['clip_scale'], 'clip scale', nonnegative=True)
+        clipped = norm > config['clip_limit']
+        expected_scale = config['clip_limit'] / (norm + 1e-6) if clipped else 1.0
+        require(0 < scale <= 1 and math.isclose(scale, expected_scale, rel_tol=1e-5, abs_tol=0.0),
+                'clip scale disagrees with native gradient norm')
+        require(type(metric['clipped']) is bool and metric['clipped'] == clipped,
+                'clipped flag disagrees with gradient norm')
+        online = finite(metric['online_joint_ce'], 'online joint CE', nonnegative=True)
+        require(math.isclose(online, previous['mean_joint_ce'], rel_tol=1e-5, abs_tol=2e-5),
+                'online joint CE must measure the preceding parameter state')
+    return dict(mean_residual_ce=residual, mean_joint_ce=loss,
+                residual_positions=config['residual_positions'], joint_positions=config['joint_positions'],
+                residual_lambda=config['residual_lambda'], **{key: metric[key] for key in sorted(GRADIENT_FIELDS)})
+
+
+def prefix_summary(metric, scores, mapping, refs, required):
+    aggregate = {'prefix_positions', 'prefix_correct', 'prefix_exact_examples', 'prefix_examples'}
+    present = bool(aggregate.intersection(metric)) or any(PREFIX_FIELDS.intersection(r) for r in scores.values())
+    if not required and not present:
+        return None
+    totals = dict(prefix_positions=0, prefix_correct=0, prefix_exact_examples=0, prefix_examples=len(mapping))
+    for index, row in scores.items():
+        if index not in mapping:
+            require(not PREFIX_FIELDS.intersection(row), 'prefix fields on a non-review row')
+            continue
+        require(PREFIX_FIELDS <= row.keys(), 'incomplete prefix token fields')
+        n = integer(row['prefix_tokens'], 'prefix tokens')
+        correct = integer(row['prefix_correct'], 'prefix correct')
+        require(n == refs[index]['decision_position'] and correct <= n,
+                'prefix counts disagree with decision position')
+        require(type(row['prefix_exact']) is bool and row['prefix_exact'] == (correct == n),
+                'prefix exact disagrees with prefix correct')
+        require(correct <= row['correct'] <= correct + row['tokens'] - n,
+                'prefix correct contradicts full token count')
+        first = row['first_error_position']
+        require((first == -1 or first >= n) and correct == n or
+                0 <= first < n and first <= correct < n,
+                'prefix correctness contradicts first-error position')
+        totals['prefix_positions'] += n
+        totals['prefix_correct'] += correct
+        totals['prefix_exact_examples'] += row['prefix_exact']
+    for key, expected in totals.items():
+        require(integer(metric.get(key), key) == expected, f'{key} aggregate disagrees with row scores')
+    return totals
 
 
 def decision_summary(metric, mapping, pairs, refs):
@@ -145,7 +226,7 @@ def decision_summary(metric, mapping, pairs, refs):
                 min_pair_context_separation=min(separation)), scores
 
 
-def full_summary(data, metric, update, decision_rows, refs, mapping):
+def full_summary(data, metric, update, decision_rows, refs, mapping, joint=False):
     scores = indexed(metric.get('teacher_forced_rows'), range(64), 'full scores')
     for index, score in scores.items():
         n = integer(score.get('tokens'), 'completion tokens', 1)
@@ -179,6 +260,9 @@ def full_summary(data, metric, update, decision_rows, refs, mapping):
         integer(metric.get(field), field)
     result = summarize(data, metric)
     require(result.get('review_decision_pairs') == 20, 'full readout must cover all 20 decision pairs')
+    prefix = prefix_summary(metric, scores, mapping, refs, joint)
+    if prefix is not None:
+        result.update(prefix)
     result['update'] = update
     return result
 
@@ -193,6 +277,8 @@ def score_run(data, metrics):
             'first metric must be full sft_initial')
     initial = metrics[0]
     refs = references(initial, mapping, pairs)
+    objective = initial['objective']
+    config = joint_config(initial, refs, mapping) if objective == 'joint' else None
     decisions, full, trajectory = {}, {0: initial}, []
     sequence = [('sft_initial', 0)]
     for update in range(101):
@@ -203,10 +289,12 @@ def score_run(data, metrics):
     for metric, (stage, update) in zip(metrics, sequence):
         require(metric.get('stage') == stage, 'unexpected metric stage/order')
         if 'objective' in metric:
-            require(metric['objective'] == 'decisions', 'objective changed within decision run')
+            require(metric['objective'] == objective, 'objective changed within decision run')
         if stage == 'decision_train':
             require(metric.get('update') == update, 'decision updates must be exactly 0..100 in order')
             summary, rows = decision_summary(metric, mapping, pairs, refs)
+            if config is not None:
+                summary.update(joint_summary(metric, config, trajectory[-1] if trajectory else None))
             trajectory.append(summary)
             decisions[update] = rows
         elif stage == 'sft':
@@ -214,16 +302,23 @@ def score_run(data, metrics):
                     'full snapshot epoch disagrees with fixed schedule')
             if 'update' in metric:
                 require(type(metric['update']) is int and metric['update'] == update, 'full update/epoch mismatch')
+            if config is not None and 'online_mean_objective_ce' in metric:
+                online = finite(metric['online_mean_objective_ce'], 'full online joint CE', nonnegative=True)
+                require(math.isclose(online, trajectory[-1]['online_joint_ce'], rel_tol=1e-5, abs_tol=2e-5),
+                        'full online joint CE disagrees with the update diagnostic')
             full[update] = metric
-    readouts = [full_summary(data, full[u], u, decisions[u], refs, mapping)
+    readouts = [full_summary(data, full[u], u, decisions[u], refs, mapping, config is not None)
                 for u in (0, *SNAPSHOTS)]
     candidates = [s for s in trajectory if s['eligible']]
     require([s['update'] for s in candidates] == list(ELIGIBLE), 'missing eligible saved checkpoint')
     selected = max(candidates, key=selection_key)
-    return dict(objective='decisions', selection='maximize complete full-vocabulary decision pairs, then correct decision targets, then earlier update',
+    result = dict(objective=objective, selection='maximize complete full-vocabulary decision pairs, then correct decision targets, then earlier update',
                 eligible_updates=list(ELIGIBLE), selected_update=selected['update'], selected_epoch=selected['update'],
                 selected=selected, trajectory=trajectory, full_readouts=readouts,
                 interpretation='Decision margins compare two target-template tokens. Full-vocabulary hits govern selection; positive margins alone do not. Generated JSON and reasons must be assessed separately.')
+    if config is not None:
+        result['joint_normalization'] = config
+    return result
 
 
 def main():

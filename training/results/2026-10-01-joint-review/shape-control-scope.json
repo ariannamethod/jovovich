@@ -1,0 +1,113 @@
+{
+  "purpose": "Define the scope of the completed eight-case factorial audit and its relationship to the original six-deletion correlation. Read-only comparison; no fixtures, model weights or generations changed.",
+  "observations": {
+    "original_training_prompts": "Exactly six pure-deletion concern rows win66582; the other14 concern rows and all20 clean rows win788 at selected update100.",
+    "original_replay": "All40 shared continuations repeat the archive byte-for-byte and all40 actual first sampled IDs equal teacher argmax.",
+    "new_factorial": "All8 shared continuations begin788 and copy changed-line text. Retaining an effective guard and changing deletion to no-op replacement do not separate that first ID. No response explains the harm mechanism."
+  },
+  "exact_format_comparison": [
+    {
+      "context_block": "allocation-null-guard",
+      "original_sft_row_zero_based": 36,
+      "original_sft_jsonl_line": 37,
+      "original_name": "allocation-null-guard-introduced",
+      "audit_name": "diff-shape-allocation-null-guard-pure-deletion-harmful",
+      "sft_chatml_equals_replay_prompt": true,
+      "system_byte_identical": true,
+      "system_sha256": "e4e99ca62a3d6687c62cc7dfef1b38e297047ca0b010bf751500c6716400f72e",
+      "output_instruction_byte_identical": true,
+      "original_prompt_sha256": "8d1055c99b622f2faca45449e4cadad338a2f6a6b6e7ae3b256ea403df5f2ba2",
+      "audit_prompt_sha256": "bc80f09258cf7d2967f1a8a64db1605f83fd69ed56f821f7fdcabb3663a72cd1",
+      "original_prompt_tokens": 434,
+      "audit_prompt_tokens": 475,
+      "original_actual_first_id": 66582,
+      "audit_actual_first_id": 788,
+      "original_context_argument": 2048,
+      "audit_context_argument": 8192,
+      "user_content_diff": "--- original_sft_user\n+++ audit_user\n@@ -1,19 +1,23 @@\n Repository: curriculum/linked-items\n Purpose: Simplify node construction\n-calloc is the standard C allocator and may fail. The following assignment dereferences its result.\n+calloc is the standard C allocator and may fail. The assignment to n->value dereferences its result. Every allocation-failure check in make_node is shown; no other validation occurs.\n Repository rules for src/list_node.c:\n AGENTS.md rules below are ordered root to nearest directory. Where they conflict, the closest scope wins.\n AGENTS.md:\n Check allocation failure before dereferencing a newly allocated pointer.\n \n Surrounding diff:\n-@@ -11,4 +11,3 @@\n+@@ -1,8 +1,7 @@\n+ #include <stdlib.h>\n+ typedef struct node { int value; } node;\n+ node *make_node(int value) {\n      node *n = calloc(1, sizeof(*n));\n -    if (n == NULL) return NULL;\n      n->value = value;\n      return n;\n+ }\n \n Changed lines to review:\n-[1] REMOVED src/list_node.c:12:     if (n == NULL) return NULL;\n+[1] REMOVED src/list_node.c:5:     if (n == NULL) return NULL;\n \n Review the changed lines against these rules. Return only a JSON object with findings. Each finding uses line_id (the bracketed number) and reason (explain the concrete conflict). If clean, return an empty findings list. At most two findings."
+    },
+    {
+      "context_block": "write-permission-check",
+      "original_sft_row_zero_based": 54,
+      "original_sft_jsonl_line": 55,
+      "original_name": "write-permission-check-introduced",
+      "audit_name": "diff-shape-write-permission-check-pure-deletion-harmful",
+      "sft_chatml_equals_replay_prompt": true,
+      "system_byte_identical": true,
+      "system_sha256": "e4e99ca62a3d6687c62cc7dfef1b38e297047ca0b010bf751500c6716400f72e",
+      "output_instruction_byte_identical": true,
+      "original_prompt_sha256": "59e9a5e01c86ba60ff39a55a56c6fe386a68cae0deea768659fa3b3fd1c4683a",
+      "audit_prompt_sha256": "e5b6f41b2ff78e8dc54db64eb46b54fd7c85782cd5cbd5aa157992b8f2afa571",
+      "original_prompt_tokens": 422,
+      "audit_prompt_tokens": 476,
+      "original_actual_first_id": 66582,
+      "audit_actual_first_id": 788,
+      "original_context_argument": 2048,
+      "audit_context_argument": 8192,
+      "user_content_diff": "--- original_sft_user\n+++ audit_user\n@@ -1,17 +1,22 @@\n Repository: curriculum/record-editor\n Purpose: Simplify record updates\n-Sessions may be read-only. replace_record writes the record and performs no permission check itself.\n+Sessions may be read-only. replace_record writes the record and performs no permission check itself. Every permission check in update_record is shown; no outside check occurs.\n Repository rules for src/edit_record.c:\n AGENTS.md rules below are ordered root to nearest directory. Where they conflict, the closest scope wins.\n AGENTS.md:\n Read-only sessions must never modify records; enforce write permission before replacement.\n \n Surrounding diff:\n-@@ -11,2 +11,1 @@\n+@@ -1,7 +1,6 @@\n+ typedef struct { int can_write; } session_t;\n+ enum { DENIED = -1 };\n+ int replace_record(int id, int value);\n+ int update_record(session_t session, int id, int value) {\n -    if (!session.can_write) return DENIED;\n      return replace_record(id, value);\n+ }\n \n Changed lines to review:\n-[1] REMOVED src/edit_record.c:11:     if (!session.can_write) return DENIED;\n+[1] REMOVED src/edit_record.c:5:     if (!session.can_write) return DENIED;\n \n Review the changed lines against these rules. Return only a JSON object with findings. Each finding uses line_id (the bracketed number) and reason (explain the concrete conflict). If clean, return an empty findings list. At most two findings."
+    }
+  ],
+  "serialization_result": "The original and new prompts share byte-identical system messages, ChatML role framing, repository/rule/changed-line headings and final output instruction. The audit uses the host constructor, while training uses stored messages, but these two routes produce the same prompt format. The substantive transfer changes are user-content expansion and wording, rather than a different chat template.",
+  "what_current_factorial_holds_fixed": [
+    "Within each four-case context block: model, shared prefix and its three IDs, system text, ChatML framing, repository/path/title, description, rule and final output instruction.",
+    "Shape comparison at a fixed harm label: the deleted candidate guard is replaced by (void)0, leaving behavior unchanged.",
+    "Harm comparison at a fixed shape: the clean example retains another effective identical guard; the harmful example has only the changed guard.",
+    "Decoding within the audit: greedy temperature0, continuation limit192, two threads and floating activations."
+  ],
+  "what_current_factorial_changes": [
+    "Across original versus expanded audit: descriptions explicitly name the consequence and state that checks are fully shown.",
+    "Across original versus expanded audit: partial hunks become full functions with declarations/includes and enclosing braces; prompt length and attention positions change.",
+    "Across original versus expanded audit: hunk starts and physical cited line numbers change to the new function coordinates.",
+    "Within the present audit clean/harm contrast: inserting an earlier guard also shifts the changed guard from physical line5 to6. These metadata changes accompany the intended semantic contrast."
+  ],
+  "context_argument_source_audit": {
+    "arguments": [
+      2048,
+      8192
+    ],
+    "semantic_or_architecture_change": false,
+    "effect": "The argument controls token-ID allocation capacity and input/output budget validation. Both prompts fit within2048. It is not passed as an inference position, RoPE scale, or architecture parameter.",
+    "evidence": [
+      {
+        "path": "src/infer.c",
+        "lines": "162-188",
+        "detail": "Checks model maximum context; allocates context+1 IDs and rejects prompt/output overflow."
+      },
+      {
+        "path": "src/infer.c",
+        "lines": "224",
+        "detail": "KV cache length is n+max_tokens, independent of the configured context argument for identical token input."
+      },
+      {
+        "path": "src/infer.c",
+        "lines": "233-237,260-261",
+        "detail": "Forward positions derive from token count and loop position."
+      },
+      {
+        "path": "deps/notorch/harness/arch_llama.c",
+        "lines": "37-50,207-211",
+        "detail": "RoPE base comes from GGUF metadata; rotation uses each actual token position."
+      }
+    ],
+    "conclusion": "The2048-to8192 bookkeeping difference supplies no mechanism for a different first-token decision on these bounded prompts."
+  },
+  "scope_of_conclusion": "The original six-for-six association remains an exact observation on the original training prompts. The expanded factorial shows that its token preference does not transfer unchanged to these two richer contexts, and that these contexts produce changed-line copying across both harm labels and shapes. Because original-to-audit content changes occur together, this comparison does not attribute the shift from66582 to788 to deletion shape alone.",
+  "smallest_next_control": {
+    "status": "Proposed only; no implementation or generation.",
+    "basis": "Use original v2 rows36 and54 directly. Preserve their system/user bytes, ChatML boundary, shared prefix and decoding. Apply only the two transformations below to the shown hunk and mechanically required diff metadata.",
+    "shape_edit": "At the original removed guard, add the replacement line `+    (void)0;`. Update new-side hunk count and add bracketed changed-line ID2 at the same original new-side coordinate. Preserve the guard as removed ID1. Harm remains unchanged.",
+    "semantic_edit": "Insert an unchanged identical guard immediately after the candidate changed guard and before n->value or replace_record. It is a context line on both sides of the patch, so it survives deletion/replacement. Update both hunk lengths. The candidate guard keeps its original physical coordinate and bracketed ID1. Leave original prose unchanged; its stated allocator and permission facts remain true.",
+    "design": "Two contexts x original deletion/no-op replacement x sole/retained guard. Original harmful-deletion cells already have verified native first IDs, so six new shared-prefix continuations complete the factorial if checkpoint, runner and decoding remain fixed.",
+    "absolute_minimum_for_shape_only": "Two new shared-prefix continuations: no-op replacement of the original harmful NULL and permission deletions, compared with their two existing originals. The semantic control adds four further cells.",
+    "readouts": "Actual first emitted ID, parsed presence with null preserved, schema/citation acceptance and explicit consequence explanation. Neither788 nor66582 is used as a substitute for the complete semantic result.",
+    "interpretation": "A shape-only token switch measures sensitivity to the replacement edit while preserving original surroundings. Harm sensitivity requires the sole-guard versus retained-guard contrast under each shape.",
+    "usage": "Diagnostic cases; exclude from training and checkpoint selection."
+  },
+  "sources": {
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "models/joint-review-control-train-shared.jsonl": "a76979ddd266a958fb8bd9d9b9acda28c1695ebefacc744fd6b4292df2b46d12",
+    "models/joint-review-control-audit-shared.jsonl": "eca215773465ea8013f74aa13ad37cc053e99507331ea3d237b0259918e00b65",
+    "src/infer.c": "0a13cf9c47fba947cb48d0383a0012eb26f95dcc3d87b6c59cca6aa856332566",
+    "deps/notorch/harness/arch_llama.c": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+  }
+}

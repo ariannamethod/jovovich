@@ -1,0 +1,112 @@
+{
+  "status": "Design only. No implementation, feature extraction or additional training executed.",
+  "hypothesis": "The frozen final-MLP input already contains a transferable clean/concern distinction that a direct binary head can extract more easily than the current adapted vocabulary head.",
+  "source_evidence": {
+    "trainer": "training/train_mlp.c",
+    "trainer_sha256_at_design": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+    "architecture": "capture_sequence supplies start = prompt_tokens - 1; zeroing only the final down projection and its bias exposes z after final attention and before final MLP. prepare_cache computes xn = RMSNorm(z, ffn_norm), and frozen gate/up products. Final-MLP adapters change neither z nor preceding attention/KV.",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v2.jsonl",
+    "dataset_sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "diagnostics": "training/review_holdout_v2.jsonl",
+    "diagnostics_sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad"
+  },
+  "native_only": "All capture, normalization, forward/backward, optimizer and scoring use native notorch C; scripting handles serialization and receipts.",
+  "features": {
+    "primary": "E-dimensional z at the first divergent answer-target position. z is the post-attention residual exposed by zeroing the final down projection and bias; xn is its existing fixed RMSNorm transformation.",
+    "secondary": "The same z at assistant answer position 0, before answer-prefix tokens. Fit and report separately with identical folds/settings.",
+    "causality": "Forward only prompt plus shared prefix; stop at prompt_tokens - 1 + decision_position. Verify decision_position=3 and common IDs [4913,3903,819] on every mapped row. Neither decision token nor later gold answer enters capture. Compare truncated capture against the existing cached position and record maximum error.",
+    "normalization": "Subtract the training-fold feature mean and divide by its scalar RMS vector length, then append constant 1 for the intercept. Reuse training constants on held-out rows; preserve per-example norms.",
+    "exclude": "Case/pair/family IDs, gold answer lengths, class-specific answer tokens, expected citations/reasons, metadata suffixes and features computed using the paired test example."
+  },
+  "cohort": {
+    "train": "Exactly 40 mapped review rows from frozen v2, 20 complete pairs. Label nonempty gold findings 1 and empty findings 0; cross-check map orientation. Exclude the other 24 voice/code rows.",
+    "same_diff_context_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "scoped-design-record",
+      "checksum-indirection"
+    ],
+    "same_diff_readout": "These six pairs have byte-identical serialized diff sections and different context/rules; report complete-pair results separately.",
+    "fixed_families": {
+      "nearest_scope": [
+        "scoped-python-analysis",
+        "scoped-design-record"
+      ],
+      "dependency_and_scope": [
+        "approved-binary-decoder",
+        "sqlite-build-requirement",
+        "background-service-scope",
+        "checksum-indirection"
+      ],
+      "provenance": [
+        "preserve-trie-credit",
+        "model-parent-provenance"
+      ],
+      "numeric_and_validation": [
+        "sequence-field-width",
+        "zero-worker-guard",
+        "validated-port-conversion",
+        "negative-offset-type",
+        "exact-property-name"
+      ],
+      "memory_allocation": [
+        "allocation-null-guard",
+        "allocation-product-overflow"
+      ],
+      "effect_contracts": [
+        "idempotent-event-retry",
+        "write-permission-check",
+        "stable-manifest-order",
+        "atomic-snapshot-publication",
+        "save-status-propagation"
+      ]
+    },
+    "cross_validation": "Six leave-one-family-out folds. Both pair members and all wording/duplicate variants stay together. Assert all 20 pairs receive exactly one held-out prediction. Use identical folds for both representations and label controls."
+  },
+  "head": {
+    "architecture": "Two affine logits, zero initialization, native two-class CE; freeze all model weights.",
+    "interpolation_control": "Fit all 40 training rows with lambda=0. Record CE, individual hits, complete pairs and margins. Repeat for one fixed pair-permuted label set to measure interpolation capacity.",
+    "transfer_fit": "Mean CE + 0.01/2 * sum(non-intercept weights squared). Fit each training fold; then fit once on all 40 rows for the locked diagnostics. Native regularizer gradient gets a finite-difference fixture.",
+    "optimizer": "Native Adam, learning rate 0.01, full batch, global clip 1, maximum 5000 updates. Stop regularized fits at gradient infinity-norm below 1e-5 for 20 updates; unregularized fits may stop at CE<0.001 and 40/40 correct. Select by this rule alone.",
+    "controls": "Generate 99 unique nonconstant pair-orientation masks, seed 20261001, swapping labels within whole pairs and keeping class balance. Refit the same grouped protocol; retain masks and complete-pair/individual accuracy distributions. Also fit a nuisance-only head on prompt token count and added/removed/context line counts.",
+    "freeze_before_scores": "Fix representation positions, folds, normalization, regularization, optimizer, masks and thresholds before reading held-out predictions.",
+    "optimizer_receipt": "Initial/final CE, penalty, objective, gradient norm, update count, clipping count, stopping reason, finite weights and every prediction."
+  },
+  "heldout_constraints": {
+    "existing_12": "Use training/review_holdout_v2.jsonl once with the final full-training regularized heads. Prior project reviews of these cases are recorded history; this is the locked transfer comparison.",
+    "serialization": "Render normal host prompts and append the identical common prefix before native tokenization. Evaluation labels remain in the sidecar.",
+    "fresh_followup": "For the next fresh comparison, independently audit and freeze new counterbalanced cases, keeping complete families outside training and checkpoint selection.",
+    "report": "40 family-held-out predictions, 20 complete pairs, family breakdown, six same-diff context pairs, permutation and nuisance distributions, and 12 existing diagnostic predictions."
+  },
+  "result_interpretation": [
+    {
+      "observed": "True-label training fit succeeds; grouped scores exceed permutation/nuisance scores; vocabulary decisions remain weak.",
+      "distinguishes": "Frozen-state class information transfers across these families; the measured gap lies in the adapted vocabulary readout or answer-generation route. Compare binary margins with vocabulary margins and prefix entry."
+    },
+    {
+      "observed": "True and shuffled labels both fit; grouped true-label scores overlap permutation scores.",
+      "distinguishes": "The head interpolates this small cohort; the next data control needs more counterbalanced contexts and unseen families."
+    },
+    {
+      "observed": "Decision-prefix features transfer better than answer-position-0 features.",
+      "distinguishes": "The common prefix makes class information more accessible. Prioritize learned prefix entry and measure whether generation reaches that state."
+    },
+    {
+      "observed": "Nuisance-only scores match representation scores.",
+      "distinguishes": "Length/edit-pattern features account for that discrimination. Balance them and inspect identical-diff context pairs."
+    },
+    {
+      "observed": "Training fit stays weak and gradient convergence remains active at the update limit.",
+      "distinguishes": "Readout optimization is the immediate unresolved variable; inspect gradients/conditioning/convergence before changing the model body."
+    },
+    {
+      "observed": "The regularized affine objective converges with weak training and grouped scores.",
+      "distinguishes": "This affine head and regularization setting extract little class separation from this state; next compare a small nonlinear head or an earlier adapter location."
+    }
+  ],
+  "artifacts": "JSON plan, native source/test, hash-pinned feature matrix, split/mask receipt and per-case JSONL in the existing results tree; append conclusions to JOVOVICHLOG.md."
+}

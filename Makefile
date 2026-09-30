@@ -75,11 +75,16 @@ build/test-weighting: test/weighting.c training/train_mlp.c $(SUBSTRATE) $(HEADE
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/weighting.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
-test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting
+build/test-joint: test/joint.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/joint.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting build/test-joint
 	./build/test-head
 	./build/test-mlp
 	./build/test-optimizer
 	./build/test-weighting
+	./build/test-joint
 	node --test test/*.test.mjs
 
 clean:
