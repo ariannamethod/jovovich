@@ -1,0 +1,49 @@
+
+## Counterbalanced review corpus (2026-10-01)
+
+The v4 corpus crosses harmful/redundant removal with deletion/no-op replacement
+in six families. It contains 52 review examples and 24 readout-only voice/code
+examples. Native notorch joint training completed 100 updates in 5,731.93 seconds;
+the unchanged checkpoint selector chose update 100. The source and binary match
+the previous joint run. Each update covers 52 decision and 1,012 remaining-answer
+targets. No Torch training or inference is used.
+
+The selected experimental GGUF is
+`experiments/counterbalanced-review/counterbalanced-review-selected.gguf`, SHA256
+`aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a`.
+Its native adapter/export parity checks pass. The 12 saved adapters, selected
+GGUF and three corpus artifacts were downloaded and verified after archival.
+
+Both models answered the same 88 prompts naturally; all 176 complete responses
+were manually assessed. A grounded concern requires a genuine issue, causal
+citation and support for every material claim.
+
+| Cohort | Model | Grounded concerns | Correct clean | Complete pairs |
+| --- | --- | ---: | ---: | ---: |
+| Training | Previous joint | 3/26 | 16/26 | 1/26 |
+| Training | v4 | 1/26 | 23/26 | 0/26 |
+| Fresh transfer | Previous joint | 0/12 | 11/12 | 0/12 |
+| Fresh transfer | v4 | 0/12 | 12/12 | 0/12 |
+| Established diagnostics | Previous joint | 0/6 | 5/6 | 0/6 |
+| Established diagnostics | v4 | 1/6 | 4/6 | 0/6 |
+
+The v4 model recognizes two causally cited training issues, but an unsupported
+separate-product claim spoils the attribution review. Another explanation
+recognizes lost input validation while citing the wrong changed line. The
+diagnostic close-removal answer receives credit for identifying the sole
+required fclose; its awkward wording and a stricter alternate reading are
+retained. The latter would remove that full-review credit, without changing
+any complete-pair result. All 24 fresh transfer responses are empty.
+
+This checkpoint is not promoted as the runtime model. The data intervention
+combines wording repairs and quartets, changes loss denominators, and retains
+a protection-count cue in training. Fresh opposite-label transfer pairs have
+equal counts. Better empty-answer accuracy does not establish contextual review
+competence or prove that the current adapter route received sufficient training.
+
+Full responses, exact native token traces, manual judgments, sensitivities,
+source hashes and reproduction instructions are preserved under
+`experiments/counterbalanced-review/evidence/` and `source/`. The next recorded
+diagnostic is a native affine readout of frozen final-MLP input states with
+family grouping, count-feature baselines and paired-label permutations. It has
+not been run.

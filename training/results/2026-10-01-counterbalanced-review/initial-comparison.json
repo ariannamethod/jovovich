@@ -1,0 +1,2196 @@
+{
+  "schema_version": 1,
+  "assessor_sha256": "db82d5ff1d41745704dc3e2109b51b94448349afac48cc60200014272f06cfa2",
+  "sources": {
+    "plan": {
+      "path": "models/counterbalanced-review-plan.json",
+      "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a"
+    },
+    "control_corpus": {
+      "path": "training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    "counterbalanced_corpus": {
+      "path": "training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+    }
+  },
+  "metric_prefixes": {
+    "control": {
+      "path": "training/results/2026-10-01-joint-review/metrics.jsonl",
+      "prefix_records": 2,
+      "prefix_sha256": "b55779372806fd50a0b0c403582106d748a4ae29b90c6877d9031d23f0c8c262"
+    },
+    "counterbalanced": {
+      "path": "models/counterbalanced-review-metrics.jsonl",
+      "prefix_records": 2,
+      "prefix_sha256": "3685173949204862a51bd6c210d546c61d626b552b650e4129fe403080df0cc8"
+    }
+  },
+  "initial_comparison": {
+    "method": "Match complete system/user/assistant content bytes. Compare every field exactly except row/pair_index ordinals and finite decision_margin differences at mapped full/edge SIMD switches. Preserve raw deltas and exact=false. Changed message triples are listed without equality assertions.",
+    "identical_fixed_fields": [
+      "objective",
+      "rank",
+      "alpha",
+      "layer",
+      "trainable_parameters",
+      "seed",
+      "residual_lambda",
+      "clip_limit",
+      "microbatch_tokens"
+    ],
+    "compared_rows": 49,
+    "compared_by_kind": {
+      "review": 25,
+      "voice": 12,
+      "code": 12
+    },
+    "numerical_policy": {
+      "allowed_field": "decision_margin",
+      "absolute_tolerance": 1e-05,
+      "category": "Explicit diagnostic comparison tolerance; no relative tolerance.",
+      "additional_requirement": "The source-derived full 6x16 FMA versus scalar edge mapping must switch.",
+      "all_other_values_must_be_exact": true,
+      "calibration": "Observed maximum margin delta is 5.72e-6. The independently measured zero-adapter reconstruction logit maximum is 3.0517578e-5; this sample is contextual calibration, not a universal bound for these logits."
+    },
+    "arithmetic_evidence": {
+      "source": "deps/notorch/notorch_simd.h",
+      "trainer_binary_sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+      "full_tile": "nt_simd_sgemm_block uses vfmadd231ps for full 6x16 tiles.",
+      "edge_tile": "The same binary at 0xde45 uses vmulss, followed at 0xde52 by vaddss.",
+      "teacher_batch": "40 tokens: full rows 0..35 and scalar rows 36..39, with final short batch handled from its actual size.",
+      "decision_batch": "Control has 40 rows (edge36..39); counterbalanced has 52 rows (edge48..51).",
+      "independent_review": "counterbalanced_protocol independently confirmed source partitioning and binary fused-versus-separate arithmetic."
+    },
+    "teacher_rows_exact": 41,
+    "decision_rows_compared": 25,
+    "decision_rows_exact": 23,
+    "nonexact_teacher_margins": 8,
+    "nonexact_decision_margins": 2,
+    "max_absolute_margin_delta": 5.719999999875824e-06,
+    "matched_rows": [
+      {
+        "control_id": "scoped-python-analysis-clean",
+        "counterbalanced_id": "scoped-python-analysis-clean",
+        "control_row": 1,
+        "counterbalanced_row": 1,
+        "kind": "review",
+        "messages_sha256": "03602763ff1fc80ed885021df28b6add57b46e3c32160a6c0a523a1d41803c4f",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 44,
+            "batch_index": 1,
+            "token_index": 4,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 43,
+            "batch_index": 1,
+            "token_index": 3,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 1,
+            "batch_index": 0,
+            "token_index": 1,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1,
+            "batch_index": 0,
+            "token_index": 1,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-01",
+        "counterbalanced_id": "voice-01",
+        "control_row": 2,
+        "counterbalanced_row": 2,
+        "kind": "voice",
+        "messages_sha256": "e3fcf18f727848a5b6c622095e7c30a0d7bb6c1b6d7f192adf16b431861e20ee",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-01",
+        "counterbalanced_id": "code-01",
+        "control_row": 3,
+        "counterbalanced_row": 3,
+        "kind": "code",
+        "messages_sha256": "d0651f1d8cd0b7643d41c19d9897ea8ec6de024663982898c931e799faf904aa",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "approved-binary-decoder-concern",
+        "counterbalanced_id": "approved-binary-decoder-concern",
+        "control_row": 4,
+        "counterbalanced_row": 4,
+        "kind": "review",
+        "messages_sha256": "c880d398f37c3fbea4046c2a492da6baa22bd5e47919eea69240c97f2bdb85ae",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 186,
+            "batch_index": 4,
+            "token_index": 26,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 185,
+            "batch_index": 4,
+            "token_index": 25,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2,
+            "batch_index": 0,
+            "token_index": 2,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2,
+            "batch_index": 0,
+            "token_index": 2,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "approved-binary-decoder-clean",
+        "counterbalanced_id": "approved-binary-decoder-clean",
+        "control_row": 5,
+        "counterbalanced_row": 5,
+        "kind": "review",
+        "messages_sha256": "068c5afe5f3ae84cb9b41d44ec0f8b119d358cd8b1a8a40d32df74449ee17c34",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 221,
+            "batch_index": 5,
+            "token_index": 21,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 220,
+            "batch_index": 5,
+            "token_index": 20,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 3,
+            "batch_index": 0,
+            "token_index": 3,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 3,
+            "batch_index": 0,
+            "token_index": 3,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-02",
+        "counterbalanced_id": "voice-02",
+        "control_row": 6,
+        "counterbalanced_row": 6,
+        "kind": "voice",
+        "messages_sha256": "fef02581e63ebb3bec4f769675c4e020f8afb9c79e7a036d81f0781f3ea3005f",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-02",
+        "counterbalanced_id": "code-02",
+        "control_row": 7,
+        "counterbalanced_row": 7,
+        "kind": "code",
+        "messages_sha256": "7b29131ece44635e6d098e703f0a66b26736fe7bccbf0c56ce68885438f33440",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "sqlite-build-requirement-concern",
+        "counterbalanced_id": "sqlite-build-requirement-concern",
+        "control_row": 8,
+        "counterbalanced_row": 8,
+        "kind": "review",
+        "messages_sha256": "7c91e5768dba11cff3035b4c590e26046f58ea652a5a6123fd3a7a1f893b0037",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 354,
+            "batch_index": 8,
+            "token_index": 34,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 353,
+            "batch_index": 8,
+            "token_index": 33,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 4,
+            "batch_index": 0,
+            "token_index": 4,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 4,
+            "batch_index": 0,
+            "token_index": 4,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "sqlite-build-requirement-clean",
+        "counterbalanced_id": "sqlite-build-requirement-clean",
+        "control_row": 9,
+        "counterbalanced_row": 9,
+        "kind": "review",
+        "messages_sha256": "7c4d42efe149d3223bb475bd7448163e77bd97b0c3b713bc8fc33125452e912d",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 389,
+            "batch_index": 9,
+            "token_index": 29,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 388,
+            "batch_index": 9,
+            "token_index": 28,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 5,
+            "batch_index": 0,
+            "token_index": 5,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 5,
+            "batch_index": 0,
+            "token_index": 5,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-03",
+        "counterbalanced_id": "voice-03",
+        "control_row": 10,
+        "counterbalanced_row": 10,
+        "kind": "voice",
+        "messages_sha256": "43a4fbe6b0e76c137fd4449ffc8b602e03c24af1b4171cceb10f58f91d39a199",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-03",
+        "counterbalanced_id": "code-03",
+        "control_row": 11,
+        "counterbalanced_row": 11,
+        "kind": "code",
+        "messages_sha256": "57402393d9f0edb7ee519ce98090bb92d91db983a45ce1e9cbc5ae7c774d20e8",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "background-service-scope-concern",
+        "counterbalanced_id": "background-service-scope-concern",
+        "control_row": 12,
+        "counterbalanced_row": 12,
+        "kind": "review",
+        "messages_sha256": "24376ed59ec28bdff7c8acb6d0e2806df501095f435902c7657110fd8df305cb",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 529,
+            "batch_index": 13,
+            "token_index": 9,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 528,
+            "batch_index": 13,
+            "token_index": 8,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 6,
+            "batch_index": 0,
+            "token_index": 6,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 6,
+            "batch_index": 0,
+            "token_index": 6,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "background-service-scope-clean",
+        "counterbalanced_id": "background-service-scope-clean",
+        "control_row": 13,
+        "counterbalanced_row": 13,
+        "kind": "review",
+        "messages_sha256": "8531b6bec4f9f20939eaaf1abac359c99458164eddeef7659b20fecba6f63957",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 562,
+            "batch_index": 14,
+            "token_index": 2,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 561,
+            "batch_index": 14,
+            "token_index": 1,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 7,
+            "batch_index": 0,
+            "token_index": 7,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 7,
+            "batch_index": 0,
+            "token_index": 7,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-04",
+        "counterbalanced_id": "voice-04",
+        "control_row": 14,
+        "counterbalanced_row": 14,
+        "kind": "voice",
+        "messages_sha256": "bd529e7c4743f772aab7a29a6bd542e59cd8d3d2766d1ee193f771dc3a7cc22e",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-04",
+        "counterbalanced_id": "code-04",
+        "control_row": 15,
+        "counterbalanced_row": 15,
+        "kind": "code",
+        "messages_sha256": "21577a52fa0917d7c04e26ee1a97befc8ec662df57d2ba9a751d8c5d2b785ca6",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "voice-05",
+        "counterbalanced_id": "voice-05",
+        "control_row": 18,
+        "counterbalanced_row": 20,
+        "kind": "voice",
+        "messages_sha256": "030b961665568aadae79b5207000a5f43d56f5cd8702d76dc0c6b9601d05fa80",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-05",
+        "counterbalanced_id": "code-05",
+        "control_row": 19,
+        "counterbalanced_row": 21,
+        "kind": "code",
+        "messages_sha256": "d938fcfa8074124eb383a6f39402904dfbd2211c92cf1e3d27ceb0f2cf117dd4",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "model-parent-provenance-introduced",
+        "counterbalanced_id": "model-parent-provenance-introduced",
+        "control_row": 20,
+        "counterbalanced_row": 22,
+        "kind": "review",
+        "messages_sha256": "64ae4ae89d04e91e114dc23148e89d0e45611fc2dfff85a678dfb1880b59f982",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 928,
+            "batch_index": 23,
+            "token_index": 8,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 966,
+            "batch_index": 24,
+            "token_index": 6,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 10,
+            "batch_index": 0,
+            "token_index": 10,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 12,
+            "batch_index": 0,
+            "token_index": 12,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "model-parent-provenance-repaired",
+        "counterbalanced_id": "model-parent-provenance-repaired",
+        "control_row": 21,
+        "counterbalanced_row": 23,
+        "kind": "review",
+        "messages_sha256": "d9fe3b2b1aa8ad6f7b85d07614a465dbdb9d7cd8af944ffe4b3fdae95720cf5a",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 977,
+            "batch_index": 24,
+            "token_index": 17,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1015,
+            "batch_index": 25,
+            "token_index": 15,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 11,
+            "batch_index": 0,
+            "token_index": 11,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 13,
+            "batch_index": 0,
+            "token_index": 13,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-06",
+        "counterbalanced_id": "voice-06",
+        "control_row": 22,
+        "counterbalanced_row": 24,
+        "kind": "voice",
+        "messages_sha256": "df4a48d08f27915684b64a101bfcf7db557e6bd5d4ecd60a2fd39ce1daab77fd",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-06",
+        "counterbalanced_id": "code-06",
+        "control_row": 23,
+        "counterbalanced_row": 25,
+        "kind": "code",
+        "messages_sha256": "d3fbf1683bbb0ebe76bed709c3e0e2665ecbab45b5235147537c9840b313f158",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "scoped-design-record-concern",
+        "counterbalanced_id": "scoped-design-record-concern",
+        "control_row": 24,
+        "counterbalanced_row": 26,
+        "kind": "review",
+        "messages_sha256": "546371467d9aa9145c0913e141c44d62984896eb6f7d2f93051111c3ae6dfadf",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 1128,
+            "batch_index": 28,
+            "token_index": 8,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1166,
+            "batch_index": 29,
+            "token_index": 6,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 12,
+            "batch_index": 0,
+            "token_index": 12,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 14,
+            "batch_index": 0,
+            "token_index": 14,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "scoped-design-record-clean",
+        "counterbalanced_id": "scoped-design-record-clean",
+        "control_row": 25,
+        "counterbalanced_row": 27,
+        "kind": "review",
+        "messages_sha256": "318f903fee9498ee45feb935d446a152a598d11c0bd054140bbe9f0691d3668d",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": 4.42696571,
+              "new": 4.42696381,
+              "delta": -1.8999999999991246e-06,
+              "absolute_delta": 1.8999999999991246e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 1160,
+            "batch_index": 29,
+            "token_index": 0,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1198,
+            "batch_index": 29,
+            "token_index": 38,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 13,
+            "batch_index": 0,
+            "token_index": 13,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 15,
+            "batch_index": 0,
+            "token_index": 15,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-07",
+        "counterbalanced_id": "voice-07",
+        "control_row": 26,
+        "counterbalanced_row": 28,
+        "kind": "voice",
+        "messages_sha256": "f0436e2673d6f4fb062a4f0a2b868dcf14411d31b00eff6301afece78632aa04",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-07",
+        "counterbalanced_id": "code-07",
+        "control_row": 27,
+        "counterbalanced_row": 29,
+        "kind": "code",
+        "messages_sha256": "72530b378091debeb105e63e73c52ddf35fd5a8aa5619c422aaa079f8be15fe3",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "checksum-indirection-concern",
+        "counterbalanced_id": "checksum-indirection-concern",
+        "control_row": 28,
+        "counterbalanced_row": 30,
+        "kind": "review",
+        "messages_sha256": "a1d60c2d26f0846b75cc5945ddbaf6709346081ba70254b6c5962d47156de6db",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": -3.82780266,
+              "new": -3.82780457,
+              "delta": -1.90999999993835e-06,
+              "absolute_delta": 1.90999999993835e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 1280,
+            "batch_index": 32,
+            "token_index": 0,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1318,
+            "batch_index": 32,
+            "token_index": 38,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 14,
+            "batch_index": 0,
+            "token_index": 14,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 16,
+            "batch_index": 0,
+            "token_index": 16,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "checksum-indirection-clean",
+        "counterbalanced_id": "checksum-indirection-clean",
+        "control_row": 29,
+        "counterbalanced_row": 31,
+        "kind": "review",
+        "messages_sha256": "8508f085ca8475081d8e9df981026528fb96247518a77ac5121328f612fad817",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 1318,
+            "batch_index": 32,
+            "token_index": 38,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 1356,
+            "batch_index": 33,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 15,
+            "batch_index": 0,
+            "token_index": 15,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 17,
+            "batch_index": 0,
+            "token_index": 17,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-08",
+        "counterbalanced_id": "voice-08",
+        "control_row": 30,
+        "counterbalanced_row": 32,
+        "kind": "voice",
+        "messages_sha256": "3a1e1948bbae44643083c4cf8016ca5713e1e8986fa0a4a1ca8b4c97ee119a08",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-08",
+        "counterbalanced_id": "code-08",
+        "control_row": 31,
+        "counterbalanced_row": 33,
+        "kind": "code",
+        "messages_sha256": "1aceee70522d3181254a6cfe5b22dae4f90635d3192a355ac6458e9f26e92863",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "voice-09",
+        "counterbalanced_id": "voice-09",
+        "control_row": 34,
+        "counterbalanced_row": 36,
+        "kind": "voice",
+        "messages_sha256": "66026d195cf8db2ad7aa288d3560412cc8efe81ed03c87fa6e9df92f064b03ad",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-09",
+        "counterbalanced_id": "code-09",
+        "control_row": 35,
+        "counterbalanced_row": 37,
+        "kind": "code",
+        "messages_sha256": "34d17cbe0bfcdb6432d8fea25b16c57ce829f547a69ae4478313e20397f8b8bc",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "voice-10",
+        "counterbalanced_id": "voice-10",
+        "control_row": 38,
+        "counterbalanced_row": 42,
+        "kind": "voice",
+        "messages_sha256": "e5b0aef01ede770eab27fa4f120e2a71a03333ed612aca74ce05033f7409e254",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-10",
+        "counterbalanced_id": "code-10",
+        "control_row": 39,
+        "counterbalanced_row": 43,
+        "kind": "code",
+        "messages_sha256": "07f46ad20043f1b561cfbe6159c97da335e65f540375bc69f3162cc3ea63b569",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "voice-11",
+        "counterbalanced_id": "voice-11",
+        "control_row": 42,
+        "counterbalanced_row": 48,
+        "kind": "voice",
+        "messages_sha256": "a1a3d895eb8dd2cb0fce1b7df870009042194e511db287633f4f0b2bd2fc3562",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-11",
+        "counterbalanced_id": "code-11",
+        "control_row": 43,
+        "counterbalanced_row": 49,
+        "kind": "code",
+        "messages_sha256": "5e1c14e87f8c5a82f457d2073c324d217a09de848e7bbf5edf2a1883a4a7f963",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "validated-port-conversion-introduced",
+        "counterbalanced_id": "validated-port-conversion-introduced",
+        "control_row": 44,
+        "counterbalanced_row": 50,
+        "kind": "review",
+        "messages_sha256": "0ae43b7ec9f70b9339a30f1c53506a5c0cd41d1d023703b2575376b820a87591",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": -3.75320435,
+              "new": -3.75320244,
+              "delta": 1.90999999993835e-06,
+              "absolute_delta": 1.90999999993835e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 1843,
+            "batch_index": 46,
+            "token_index": 3,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1956,
+            "batch_index": 48,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 22,
+            "batch_index": 0,
+            "token_index": 22,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 28,
+            "batch_index": 0,
+            "token_index": 28,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "validated-port-conversion-repaired",
+        "counterbalanced_id": "validated-port-conversion-repaired",
+        "control_row": 45,
+        "counterbalanced_row": 51,
+        "kind": "review",
+        "messages_sha256": "c6f7a185cfa0f2717df16b827cf76725b60f42eb3b22b6012e92a190d36d2166",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": 3.87193489,
+              "new": 3.87194061,
+              "delta": 5.719999999875824e-06,
+              "absolute_delta": 5.719999999875824e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 1883,
+            "batch_index": 47,
+            "token_index": 3,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 1996,
+            "batch_index": 49,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 23,
+            "batch_index": 0,
+            "token_index": 23,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 29,
+            "batch_index": 0,
+            "token_index": 29,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "voice-12",
+        "counterbalanced_id": "voice-12",
+        "control_row": 46,
+        "counterbalanced_row": 52,
+        "kind": "voice",
+        "messages_sha256": "f5f543b5b673e025b678711355021b39fb3ab98ab7d7e04d6dffd38bfe185990",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "code-12",
+        "counterbalanced_id": "code-12",
+        "control_row": 47,
+        "counterbalanced_row": 53,
+        "kind": "code",
+        "messages_sha256": "c17e248614fcfcbfc1203a62ea86079ea33d66d2822eb99d5a9c2758bcc98542",
+        "teacher_values_exact": true,
+        "decision_values_exact": null,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": null,
+          "new_tile": null
+        },
+        "decision_comparison": null
+      },
+      {
+        "control_id": "negative-offset-type-introduced",
+        "counterbalanced_id": "negative-offset-type-introduced",
+        "control_row": 48,
+        "counterbalanced_row": 54,
+        "kind": "review",
+        "messages_sha256": "da4ca91367e7bdb0c22f47901b874a3764c8449dfc83af701e48089630db6ad9",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2042,
+            "batch_index": 51,
+            "token_index": 2,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2155,
+            "batch_index": 53,
+            "token_index": 35,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 24,
+            "batch_index": 0,
+            "token_index": 24,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 30,
+            "batch_index": 0,
+            "token_index": 30,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "negative-offset-type-repaired",
+        "counterbalanced_id": "negative-offset-type-repaired",
+        "control_row": 49,
+        "counterbalanced_row": 55,
+        "kind": "review",
+        "messages_sha256": "61e2699c3a0694d833572e95945a30342d9fc95c8b81850dd8c09ad5fc160581",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": 4.15416718,
+              "new": 4.15416527,
+              "delta": -1.90999999993835e-06,
+              "absolute_delta": 1.90999999993835e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 2076,
+            "batch_index": 51,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 2189,
+            "batch_index": 54,
+            "token_index": 29,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 25,
+            "batch_index": 0,
+            "token_index": 25,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 31,
+            "batch_index": 0,
+            "token_index": 31,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "exact-property-name-introduced",
+        "counterbalanced_id": "exact-property-name-introduced",
+        "control_row": 50,
+        "counterbalanced_row": 56,
+        "kind": "review",
+        "messages_sha256": "7a2717cbe6c83433c5cda8b7c30b2803a1caac7631cb229e7f25e05bded346d1",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2082,
+            "batch_index": 52,
+            "token_index": 2,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2195,
+            "batch_index": 54,
+            "token_index": 35,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 26,
+            "batch_index": 0,
+            "token_index": 26,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 32,
+            "batch_index": 0,
+            "token_index": 32,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "exact-property-name-repaired",
+        "counterbalanced_id": "exact-property-name-repaired",
+        "control_row": 51,
+        "counterbalanced_row": 57,
+        "kind": "review",
+        "messages_sha256": "79ab2e336d62799518a57704945f8dbb29d83c3ed8ef76b1ef44c74873309235",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2113,
+            "batch_index": 52,
+            "token_index": 33,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2226,
+            "batch_index": 55,
+            "token_index": 26,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 27,
+            "batch_index": 0,
+            "token_index": 27,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 33,
+            "batch_index": 0,
+            "token_index": 33,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "idempotent-event-retry-introduced",
+        "counterbalanced_id": "idempotent-event-retry-introduced",
+        "control_row": 52,
+        "counterbalanced_row": 58,
+        "kind": "review",
+        "messages_sha256": "93d24ec6234ed054e8a335c6d68e09920e88e361dfb966ab34c65e3139dabfdd",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": -4.27681923,
+              "new": -4.27681541,
+              "delta": 3.8199999998767e-06,
+              "absolute_delta": 3.8199999998767e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 2119,
+            "batch_index": 52,
+            "token_index": 39,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 2232,
+            "batch_index": 55,
+            "token_index": 32,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 28,
+            "batch_index": 0,
+            "token_index": 28,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 34,
+            "batch_index": 0,
+            "token_index": 34,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "idempotent-event-retry-repaired",
+        "counterbalanced_id": "idempotent-event-retry-repaired",
+        "control_row": 53,
+        "counterbalanced_row": 59,
+        "kind": "review",
+        "messages_sha256": "7605e3f0ec23dbabc59130d9c52576db188d39a58ac6a896de72559f31a19001",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": 4.26654053,
+              "new": 4.26653862,
+              "delta": -1.90999999993835e-06,
+              "absolute_delta": 1.90999999993835e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 2156,
+            "batch_index": 53,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 2269,
+            "batch_index": 56,
+            "token_index": 29,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 29,
+            "batch_index": 0,
+            "token_index": 29,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 35,
+            "batch_index": 0,
+            "token_index": 35,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "atomic-snapshot-publication-introduced",
+        "counterbalanced_id": "atomic-snapshot-publication-introduced",
+        "control_row": 58,
+        "counterbalanced_row": 68,
+        "kind": "review",
+        "messages_sha256": "9705a2e33e53b9c285d24f1aff27823f3d0518e8f7922ffa00d5eedba8f65e8f",
+        "teacher_values_exact": false,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": -3.78129768,
+              "new": -3.78129578,
+              "delta": 1.8999999999991246e-06,
+              "absolute_delta": 1.8999999999991246e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 2237,
+            "batch_index": 55,
+            "token_index": 37,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 2425,
+            "batch_index": 60,
+            "token_index": 25,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 34,
+            "batch_index": 0,
+            "token_index": 34,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 44,
+            "batch_index": 0,
+            "token_index": 44,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "atomic-snapshot-publication-repaired",
+        "counterbalanced_id": "atomic-snapshot-publication-repaired",
+        "control_row": 59,
+        "counterbalanced_row": 69,
+        "kind": "review",
+        "messages_sha256": "68b60426de78c4b120a5622f66c8e1fa30f3e5205a174bbbd3b9ed0f6ccef5a4",
+        "teacher_values_exact": true,
+        "decision_values_exact": true,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2274,
+            "batch_index": 56,
+            "token_index": 34,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2462,
+            "batch_index": 61,
+            "token_index": 22,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 35,
+            "batch_index": 0,
+            "token_index": 35,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 45,
+            "batch_index": 0,
+            "token_index": 45,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "save-status-propagation-introduced",
+        "counterbalanced_id": "save-status-propagation-introduced",
+        "control_row": 60,
+        "counterbalanced_row": 70,
+        "kind": "review",
+        "messages_sha256": "9672dce5115387e172a96246a2c7893a774fea19e1fddc9a3818eec1b72465ae",
+        "teacher_values_exact": true,
+        "decision_values_exact": false,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2280,
+            "batch_index": 57,
+            "token_index": 0,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2468,
+            "batch_index": 61,
+            "token_index": 28,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": -4.03300476,
+              "new": -4.03300858,
+              "delta": -3.8199999998767e-06,
+              "absolute_delta": 3.8199999998767e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 36,
+            "batch_index": 0,
+            "token_index": 36,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 46,
+            "batch_index": 0,
+            "token_index": 46,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      },
+      {
+        "control_id": "save-status-propagation-repaired",
+        "counterbalanced_id": "save-status-propagation-repaired",
+        "control_row": 61,
+        "counterbalanced_row": 71,
+        "kind": "review",
+        "messages_sha256": "db1e3b2ed78cb774b3d866620e8ae117643cf776ac717aa3cd6d36cc55fe5228",
+        "teacher_values_exact": true,
+        "decision_values_exact": false,
+        "teacher_comparison": {
+          "exact": true,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {},
+          "old_tile": {
+            "global_position": 2312,
+            "batch_index": 57,
+            "token_index": 32,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          },
+          "new_tile": {
+            "global_position": 2500,
+            "batch_index": 62,
+            "token_index": 20,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "fma_6x16"
+          }
+        },
+        "decision_comparison": {
+          "exact": false,
+          "all_other_fields_exact": true,
+          "within_diagnostic_tolerance": true,
+          "differences": {
+            "decision_margin": {
+              "old": 4.09686852,
+              "new": 4.09687042,
+              "delta": 1.8999999999991246e-06,
+              "absolute_delta": 1.8999999999991246e-06
+            }
+          },
+          "old_tile": {
+            "global_position": 37,
+            "batch_index": 0,
+            "token_index": 37,
+            "batch_size": 40,
+            "full_tile_rows": 36,
+            "kernel": "scalar_edge"
+          },
+          "new_tile": {
+            "global_position": 47,
+            "batch_index": 0,
+            "token_index": 47,
+            "batch_size": 52,
+            "full_tile_rows": 48,
+            "kernel": "fma_6x16"
+          }
+        }
+      }
+    ],
+    "unmatched_new_rows": [
+      {
+        "id": "scoped-python-analysis-concern",
+        "row": 0,
+        "kind": "review",
+        "messages_sha256": "136b47abeb1d2ddb89816f43fc4588ec56248050a3df6596798d8f96312ac00a"
+      },
+      {
+        "id": "preserve-trie-credit-deletion-concern",
+        "row": 16,
+        "kind": "review",
+        "messages_sha256": "ff360dae81c541d93774cbe5e7e57832951e4a26a1d667e0747762be893e6987"
+      },
+      {
+        "id": "preserve-trie-credit-deletion-clean",
+        "row": 17,
+        "kind": "review",
+        "messages_sha256": "e064de51c6a170fe1880c8557a78cd038beed296ee8c410e6583331272f87236"
+      },
+      {
+        "id": "preserve-trie-credit-replacement-concern",
+        "row": 18,
+        "kind": "review",
+        "messages_sha256": "a6d766d22c9a22d31c27d8542d009a3dffe8762c3960c9cb53a3a635def69875"
+      },
+      {
+        "id": "preserve-trie-credit-replacement-clean",
+        "row": 19,
+        "kind": "review",
+        "messages_sha256": "74613b3d9214e89dcd706c1c4bcf90774f341c1fb7e54d1e5ed64bd649382140"
+      },
+      {
+        "id": "sequence-field-width-introduced",
+        "row": 34,
+        "kind": "review",
+        "messages_sha256": "53dabdd6141350dcef129d13f635e10b0727e3815ca5b89d4ea768280cd4e841"
+      },
+      {
+        "id": "sequence-field-width-repaired",
+        "row": 35,
+        "kind": "review",
+        "messages_sha256": "dd8f08eb3f57501be1eb54685b785b0556c0f5aefa2a8175cfc094d1d5745ae7"
+      },
+      {
+        "id": "allocation-null-guard-deletion-concern",
+        "row": 38,
+        "kind": "review",
+        "messages_sha256": "a80b224efee821fcc54c572c310dcba467053a0f5aea1fef603fa3f7caecfebd"
+      },
+      {
+        "id": "allocation-null-guard-deletion-clean",
+        "row": 39,
+        "kind": "review",
+        "messages_sha256": "3bb12d034cb49d240a1cf559384b960e065b6aa4afbba4f83b5035774f61a111"
+      },
+      {
+        "id": "allocation-null-guard-replacement-concern",
+        "row": 40,
+        "kind": "review",
+        "messages_sha256": "caccb5226aa995c8df89627690a0987a04b97b402c8669b9c380eb332c64b750"
+      },
+      {
+        "id": "allocation-null-guard-replacement-clean",
+        "row": 41,
+        "kind": "review",
+        "messages_sha256": "2d47f3a93b28c102397196e6edb6229946190357298a572b53016b61c5a81db1"
+      },
+      {
+        "id": "zero-worker-guard-deletion-concern",
+        "row": 44,
+        "kind": "review",
+        "messages_sha256": "3b086ecb72eaacca608c72b3e0fde6d180d8287c18d82e8d9f0db882f5f85b66"
+      },
+      {
+        "id": "zero-worker-guard-deletion-clean",
+        "row": 45,
+        "kind": "review",
+        "messages_sha256": "ec6dfc1fc9d39360838f9407364e8f3dd83160191abbcec8ae009687c563072d"
+      },
+      {
+        "id": "zero-worker-guard-replacement-concern",
+        "row": 46,
+        "kind": "review",
+        "messages_sha256": "9bd7db3a3d4ab8e20987bb04cc87f85f69649006233f54be0861a1d4c5242a2b"
+      },
+      {
+        "id": "zero-worker-guard-replacement-clean",
+        "row": 47,
+        "kind": "review",
+        "messages_sha256": "26e00bf2daab10d02529b4c0ed83b7b5a32ff4a80c400a22d98646cd8def7059"
+      },
+      {
+        "id": "write-permission-check-deletion-concern",
+        "row": 60,
+        "kind": "review",
+        "messages_sha256": "9f3896f510f42cd824f95883509c27b85685342d14de9a3e0132b627367ab646"
+      },
+      {
+        "id": "write-permission-check-deletion-clean",
+        "row": 61,
+        "kind": "review",
+        "messages_sha256": "604f6602d3c0e1c0fbd4daf4086a5ee41dc163a3d689862fa3db359df5c6ae67"
+      },
+      {
+        "id": "write-permission-check-replacement-concern",
+        "row": 62,
+        "kind": "review",
+        "messages_sha256": "61b86d75334f70a7c39f3a3d6817c18ab1b1c589021c07723f558993e57148c2"
+      },
+      {
+        "id": "write-permission-check-replacement-clean",
+        "row": 63,
+        "kind": "review",
+        "messages_sha256": "aff78bd3acd36592044628d78f8dd47655b8891f5e5ae5da1ff23c925999fc97"
+      },
+      {
+        "id": "stable-manifest-order-deletion-concern",
+        "row": 64,
+        "kind": "review",
+        "messages_sha256": "971bab4621880892436adbcba572e1e4d871518a5163ae7a30da659601c98aab"
+      },
+      {
+        "id": "stable-manifest-order-deletion-clean",
+        "row": 65,
+        "kind": "review",
+        "messages_sha256": "f3a81ac546bb6196989bd5bab0808d07cc73d43c039ed0d78ef7a7d42ca3825a"
+      },
+      {
+        "id": "stable-manifest-order-replacement-concern",
+        "row": 66,
+        "kind": "review",
+        "messages_sha256": "dad580fbc438204579624980bc895744352e70a7cd2ac66896637bd449d11942"
+      },
+      {
+        "id": "stable-manifest-order-replacement-clean",
+        "row": 67,
+        "kind": "review",
+        "messages_sha256": "bba17853a840d67cd48459f9bf9dd01ab371f9b824cf0ccd556ce47bec8a3205"
+      },
+      {
+        "id": "allocation-product-overflow-deletion-concern",
+        "row": 72,
+        "kind": "review",
+        "messages_sha256": "a52a10c55111fb8c247c8720e1714911365f093a3ba6d688053abf0e4e17ae2b"
+      },
+      {
+        "id": "allocation-product-overflow-deletion-clean",
+        "row": 73,
+        "kind": "review",
+        "messages_sha256": "79d126d2bff59ee423832da90e15a3b0c420a05f98e90beb6cd14727f765342d"
+      },
+      {
+        "id": "allocation-product-overflow-replacement-concern",
+        "row": 74,
+        "kind": "review",
+        "messages_sha256": "0f52806f07d2cf7da3b6a5f5929cb734504dedeecd36003676179c9a82adf0b1"
+      },
+      {
+        "id": "allocation-product-overflow-replacement-clean",
+        "row": 75,
+        "kind": "review",
+        "messages_sha256": "10fbd3a0904f07570bc3617fd2f5518dbacded6470cde3ea5541dacea74a716d"
+      }
+    ],
+    "unmatched_control_rows": [
+      {
+        "id": "scoped-python-analysis-concern",
+        "row": 0,
+        "kind": "review"
+      },
+      {
+        "id": "preserve-trie-credit-introduced",
+        "row": 16,
+        "kind": "review"
+      },
+      {
+        "id": "preserve-trie-credit-repaired",
+        "row": 17,
+        "kind": "review"
+      },
+      {
+        "id": "sequence-field-width-introduced",
+        "row": 32,
+        "kind": "review"
+      },
+      {
+        "id": "sequence-field-width-repaired",
+        "row": 33,
+        "kind": "review"
+      },
+      {
+        "id": "allocation-null-guard-introduced",
+        "row": 36,
+        "kind": "review"
+      },
+      {
+        "id": "allocation-null-guard-repaired",
+        "row": 37,
+        "kind": "review"
+      },
+      {
+        "id": "zero-worker-guard-introduced",
+        "row": 40,
+        "kind": "review"
+      },
+      {
+        "id": "zero-worker-guard-repaired",
+        "row": 41,
+        "kind": "review"
+      },
+      {
+        "id": "write-permission-check-introduced",
+        "row": 54,
+        "kind": "review"
+      },
+      {
+        "id": "write-permission-check-repaired",
+        "row": 55,
+        "kind": "review"
+      },
+      {
+        "id": "stable-manifest-order-introduced",
+        "row": 56,
+        "kind": "review"
+      },
+      {
+        "id": "stable-manifest-order-repaired",
+        "row": 57,
+        "kind": "review"
+      },
+      {
+        "id": "allocation-product-overflow-introduced",
+        "row": 62,
+        "kind": "review"
+      },
+      {
+        "id": "allocation-product-overflow-repaired",
+        "row": 63,
+        "kind": "review"
+      }
+    ],
+    "matched_initial_readouts_identical": false,
+    "all_discrete_and_nonmargin_values_exact": true,
+    "all_margin_deltas_within_diagnostic_tolerance": true,
+    "all_nonzero_margin_deltas_have_kernel_switch": true
+  }
+}

@@ -24,12 +24,12 @@ def decisions(update,hits):
     return dict(stage='decision_train',epoch=update,update=update,
                 measurement='initial' if update==0 else 'post_update',
                 snapshot_saved=update in (25,50,75,100),mean_decision_ce=.1,
-                decision_positions=40,decision_correct=len(hits),decision_pairs=20,
+                decision_positions=len(mapping),decision_correct=len(hits),decision_pairs=len(pairs),
                 decision_pairs_exact=sum(a in hits and b in hits for a,b in pairs),decision_rows=scores)
 def full(update,decision):
     dec={s['row']:s for s in decision['decision_rows']}
     scores=[]
-    for row in range(64):
+    for row in range(len(data)):
         n=native[row]['tokens']; hit=dec.get(row,{}).get('decision_correct',True)
         score=dict(row=row,tokens=n,correct=n if hit else n-1,first_error_position=-1 if hit else 3)
         if row in dec:
@@ -38,7 +38,7 @@ def full(update,decision):
                 score.pop('decision_target_id');score.pop('decision_alternative_id')
         scores.append(score)
     return dict(stage='sft_initial' if update==0 else 'sft',objective='decisions',epoch=update,
-                examples=64,tokens=sum(r['tokens'] for r in scores),decision_pairs=20,
+                examples=len(data),tokens=sum(r['tokens'] for r in scores),decision_pairs=len(pairs),
                 mean_token_ce=.1,teacher_forced_correct_tokens=sum(r['correct'] for r in scores),
                 teacher_forced_exact_examples=sum(r['correct']==r['tokens'] for r in scores),teacher_forced_rows=scores)
 def run(pattern=None):
@@ -194,7 +194,6 @@ const jointFixture = `
 def joint(pattern=None):
     metrics=run(pattern)
     total=sum(native[row]['tokens'] for row in mapping)
-    assert total==832
     for metric in metrics:
         if metric['stage']=='decision_train':
             update=metric['update']
@@ -203,7 +202,7 @@ def joint(pattern=None):
             norm=(0.,1.,1.000001,2.5)[update%4]
             metric.update(mean_decision_ce=decision_ce,mean_residual_ce=residual_ce,
                           mean_joint_ce=decision_ce+residual_ce,
-                          residual_positions=total-40,joint_positions=total,residual_lambda=1.,
+                          residual_positions=total-len(mapping),joint_positions=total,residual_lambda=1.,
                           gradient_norm=None if update==0 else norm,
                           clip_scale=None if update==0 else (1./(norm+1e-6) if norm>1 else 1.),
                           clipped=None if update==0 else norm>1,
@@ -220,8 +219,8 @@ def joint(pattern=None):
                     row.update(prefix_tokens=n,prefix_correct=n,prefix_exact=True)
             metric.update(prefix_positions=sum(native[r]['decision_position'] for r in mapping),
                           prefix_correct=sum(native[r]['decision_position'] for r in mapping),
-                          prefix_exact_examples=40,prefix_examples=40)
-    metrics[0].update(decision_positions=40,residual_positions=total-40,joint_positions=total,
+                          prefix_exact_examples=len(mapping),prefix_examples=len(mapping))
+    metrics[0].update(decision_positions=len(mapping),residual_positions=total-len(mapping),joint_positions=total,
                       residual_lambda=1.,clip_limit=1.,microbatch_tokens=40)
     return metrics
 def full_at(metrics,update):
@@ -457,5 +456,172 @@ bad=copy.deepcopy(metrics);prefix_miss(bad,25,pairs[0][0])
 metric=full_at(bad,25);row=metric['teacher_forced_rows'][pairs[0][0]]
 row['prefix_correct']=1;metric['prefix_correct']-=1
 invalid_joint(bad,'full row has fewer errors than its prefix')
+`);
+});
+
+const expandedCorpus = `
+# Keep the original 64 rows, then add six complete pairs after the voice/code rows.
+# This exercises mapped indices beyond 63 and a microbatch smaller than 52 decisions.
+original_pairs=list(pairs)
+for number,(concern,clean) in enumerate(original_pairs[:6]):
+    for original in (concern,clean):
+        index=len(data)
+        row=copy.deepcopy(data[original])
+        row['id']='expanded-'+row['id']
+        row['pair']='expanded-'+str(number)
+        data.append(row)
+        native[index]=dict(native[original],row=index)
+pairs,mapping=corpus_map(data)
+assert len(data)==76 and len(pairs)==26 and len(mapping)==52
+`;
+
+test('joint scorer derives 76-row coverage, 26-pair group means and residual normalization from the corpus', () => {
+  jointPython(expandedCorpus + `
+metrics=joint({25:hits(21),50:hits(23,1),75:hits(26),100:hits(23,1)})
+result=score_run(data,metrics,joint_microbatch_tokens=40)
+assert result['selected_update']==50 and result['selected_epoch']==50
+assert result['selected']['correct_targets']==47
+assert result['selected']['complete_decision_pairs']==23
+assert result['trajectory'][75]['complete_decision_pairs']==26 and not result['trajectory'][75]['eligible']
+groups=result['selected']['groups']
+assert groups['concern']['examples']==groups['clean']['examples']==26
+assert groups['concern']['correct']==24 and groups['clean']['correct']==23
+assert abs(groups['concern']['mean_margin']-22/26)<1e-14
+assert abs(groups['clean']['mean_margin']-20/26)<1e-14
+assert abs(result['selected']['mean_pair_context_separation']-42/26)<1e-14
+assert result['selected']['min_pair_context_separation']==-2.
+total=sum(native[row]['tokens'] for row in mapping)
+assert result['joint_normalization']==dict(decision_positions=52,residual_positions=total-52,
+    joint_positions=total,residual_lambda=1,clip_limit=1,microbatch_tokens=40)
+readout=result['full_readouts'][2]
+assert readout['review_pairs']==readout['review_decision_pairs']==26
+assert readout['review_pairs_exact']==readout['review_decision_pairs_exact']==23
+assert readout['groups']['concern']['examples']==readout['groups']['clean']['examples']==26
+assert readout['groups']['voice']['examples']==readout['groups']['code']['examples']==12
+assert readout['prefix_positions']==156 and readout['prefix_examples']==52
+assert readout['prefix_exact_examples']==52 and readout['prefix_correct']==156
+assert sum(g['tokens'] for g in readout['groups'].values())==sum(r['tokens'] for r in native.values())
+assert result==score_run(data,metrics)  # The documented default is explicitly 40, not the row count.
+`);
+});
+
+test('expanded joint corpus rejects tampered counts, row coverage, token totals and microbatch declarations', () => {
+  jointPython(expandedCorpus + `
+metrics=joint()
+for field,value in (('examples',64),('examples',True),('decision_pairs',20),
+                    ('decision_positions',40),('residual_positions',792),('joint_positions',832),
+                    ('microbatch_tokens',52),('microbatch_tokens',39),('microbatch_tokens',True)):
+    bad=copy.deepcopy(metrics);bad[0][field]=value
+    invalid_joint(bad,'expanded initial '+field)
+for field,value in (('decision_pairs',20),('decision_positions',40)):
+    bad=copy.deepcopy(metrics);at(bad,1)[field]=value
+    invalid_joint(bad,'expanded decision '+field)
+for field,value in (('examples',64),('decision_pairs',20),('tokens',1),('prefix_examples',40)):
+    bad=copy.deepcopy(metrics);full_at(bad,25)[field]=value
+    invalid_joint(bad,'expanded full '+field)
+for stage in ('decision','full'):
+    bad=copy.deepcopy(metrics)
+    metric=at(bad,25) if stage=='decision' else full_at(bad,25)
+    metric['microbatch_tokens']=52
+    invalid_joint(bad,'changed '+stage+' microbatch declaration')
+for update in (0,25):
+    bad=copy.deepcopy(metrics);full_at(bad,update)['teacher_forced_rows'].pop()
+    invalid_joint(bad,'missing expanded full row')
+    bad=copy.deepcopy(metrics);rows=full_at(bad,update)['teacher_forced_rows'];rows[-1]=copy.deepcopy(rows[0])
+    invalid_joint(bad,'duplicate expanded full row')
+bad=copy.deepcopy(metrics);at(bad,1)['decision_rows'].pop()
+invalid_joint(bad,'missing expanded mapped decision row')
+bad=copy.deepcopy(metrics);at(bad,1)['decision_rows'][-1]['row']=76
+invalid_joint(bad,'mapped decision index outside corpus')
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][-1]['decision_alternative_id']=999
+invalid_joint(bad,'expanded nonreciprocal decision IDs')
+for expected in (0,-1,True,40.,52):
+    try:score_run(data,metrics,joint_microbatch_tokens=expected)
+    except ValueError:pass
+    else:raise AssertionError('invalid expected joint microbatch accepted: '+str(expected))
+# A different deliberate run size is valid only if the native metadata agrees.
+explicit=copy.deepcopy(metrics);explicit[0]['microbatch_tokens']=32
+assert score_run(data,explicit,joint_microbatch_tokens=32)['joint_normalization']['microbatch_tokens']==32
+invalid_joint(explicit,'undeclared different joint microbatch')
+`);
+});
+
+test('corpus validation requires unique IDs, known task kinds and complete role-valid review pairs', () => {
+  python(`
+def invalid_corpus(candidate):
+    try:corpus_map(candidate)
+    except ValueError:pass
+    else:raise AssertionError('invalid corpus accepted')
+invalid_corpus([])
+invalid_corpus({})
+invalid_corpus([None])
+for mutation in ('id','kind','roles','content','missing_messages','pair','findings'):
+    bad=copy.deepcopy(data)
+    if mutation=='id':bad[-1]['id']=bad[0]['id']
+    elif mutation=='kind':bad[-1]['kind']='unknown'
+    elif mutation=='roles':bad[-1]['messages'][2]['role']='user'
+    elif mutation=='content':bad[-1]['messages'][2]['content']=None
+    elif mutation=='missing_messages':bad[-1].pop('messages')
+    elif mutation=='pair':bad[0]['pair']=''
+    elif mutation=='findings':bad[0]['messages'][2]['content']='{}'
+    invalid_corpus(bad)
+bad=copy.deepcopy(data);bad.pop(pairs[-1][1]);invalid_corpus(bad)
+bad=copy.deepcopy(data);bad[pairs[-1][1]]['messages'][2]['content']=bad[pairs[-1][0]]['messages'][2]['content']
+invalid_corpus(bad)
+invalid_corpus([r for r in data if r['kind']!='review'])
+`);
+});
+
+test('supplied corpus determines non-review group sizes as well as mapped decision ranges', () => {
+  jointPython(`
+indices=[pairs[0][0],pairs[0][1],pairs[1][0],pairs[1][1]]
+indices += [i for i,r in enumerate(data) if r['kind']=='voice'][:1]
+indices += [i for i,r in enumerate(data) if r['kind']=='code'][:2]
+data=[data[i] for i in indices]
+native={j:dict(native[i],row=j) for j,i in enumerate(indices)}
+pairs,mapping=corpus_map(data)
+metrics=joint({25:hits(1),50:hits(2),100:hits(2)})
+result=score_run(data,metrics)
+assert result['selected_update']==50
+assert result['selected']['groups']['concern']['examples']==2
+groups=result['full_readouts'][2]['groups']
+assert groups['voice']['examples']==1 and groups['code']['examples']==2
+assert result['joint_normalization']['decision_positions']==4
+assert result['joint_normalization']['microbatch_tokens']==40
+`);
+});
+
+test('historical decision-only, small-step and joint scores remain exactly unchanged', () => {
+  python(`
+for name in ('2026-09-29-decision-only','2026-09-29-small-step','2026-10-01-joint-review'):
+    directory=Path('training/results')/name
+    metrics=[json.loads(line) for line in (directory/'metrics.jsonl').read_text().splitlines()]
+    stored=json.loads((directory/'scores.json').read_text())
+    for key in ('metrics','metrics_sha256','sft','sft_sha256'):stored.pop(key)
+    actual=score_run(data,metrics)
+    assert actual==stored,name
+`);
+});
+
+test('joint scorer CLI requires explicit agreement for a nondefault microbatch', () => {
+  jointPython(expandedCorpus + `
+import subprocess,tempfile
+metrics=joint();metrics[0]['microbatch_tokens']=32
+with tempfile.TemporaryDirectory() as temporary:
+    directory=Path(temporary)
+    corpus_path=directory/'sft.jsonl';metric_path=directory/'metrics.jsonl'
+    corpus_path.write_text(''.join(json.dumps(row)+chr(10) for row in data))
+    metric_path.write_text(''.join(json.dumps(row)+chr(10) for row in metrics))
+    command=[sys.executable,'training/score_decisions.py',str(metric_path),'--sft',str(corpus_path)]
+    output=directory/'explicit.json'
+    result=subprocess.run(command+['--output',str(output),'--joint-microbatch-tokens','32'],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
+    scored=json.loads(output.read_text())
+    assert scored['joint_normalization']['microbatch_tokens']==32
+    assert scored['selected']['groups']['concern']['examples']==26
+    rejected_output=directory/'default.json'
+    result=subprocess.run(command+['--output',str(rejected_output)],capture_output=True,text=True)
+    assert result.returncode!=0 and 'joint microbatch disagrees' in result.stderr
+    assert not rejected_output.exists()
 `);
 });

@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "reviewer": "counterbalanced_corpus",
+  "independence": "Read frozen rubric and complete two prompt/response records, without reading other readers’ judgments. No inference or frozen-file edits.",
+  "frozen_plan": {
+    "path": "models/counterbalanced-review-plan.json",
+    "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a"
+  },
+  "rubric": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "source_binding": "Exact selected raw JSONL record, prompt, response and trace hashes identify the evidence.",
+  "counts": {
+    "cases": 2,
+    "genuine_issues": 1,
+    "full_grounded_concerns": 1,
+    "clean_passes": 0,
+    "full_pairs": 0
+  },
+  "cases": [
+    {
+      "name": "owned-stream-close-removed",
+      "source": "models/counterbalanced-review-counterbalanced-diagnostics-natural.jsonl",
+      "jsonl_line": 11,
+      "raw_record_sha256": "43cf2dec88987355f16efbf7b92dfe461d47bb3d4e0d57150e640dd455b36144",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "ec3473bbd09fd1d9afc578bf428e9c933bf55dc36053e6389d5c134e0f9ecc9b",
+      "response_sha256": "09a12075b7b4e2da86c27338f1399b6bd69e7f138d3e8096e2448990692ee784",
+      "trace_sha256": "b70459b29a70f2191fb417c03073a4ef64513ee758fab80d37c5f8698905761f",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing the only required fclose in peek.c allows access to the stream before returning. Equivalent to removing the only required fclose in peek.c allows access to the stream before returning.\"}]}",
+      "expected_concern": true,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "src/peek.c",
+          "side": "LEFT",
+          "line": 6,
+          "quote": "    fclose(file);",
+          "reason": "Removing the only required fclose in peek.c allows access to the stream before returning. Equivalent to removing the only required fclose in peek.c allows access to the stream before returning."
+        }
+      ],
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": true,
+      "clean_pass": false,
+      "citation_causally_appropriate": true,
+      "reasoning": "The response identifies removal of the sole required fclose and cites that exact removed call. Required is justified by the explicit fopen/fclose-before-return rule, so this identifies a concrete missing required operation. The deleted close would end valid stream access at that point; without it, the owned stream remains open and accessible up to return. Reading allows access as that continued availability, the consequence is supported, although expressed awkwardly and repeated.",
+      "supported_material_claims": [
+        "The cited call is the only fclose in the complete shown function.",
+        "The repository requires that fclose before return.",
+        "Deleting that call leaves the stream open/accessible at the point immediately before return."
+      ],
+      "ambiguity": "The stream was already accessed by fgetc earlier in both versions, and the patch adds no access call. Therefore the phrase does not identify a new read operation. My primary reading is continued accessibility after the point where fclose used to terminate it. A reading that asserts the deletion newly enables the earlier fgetc would be unsupported, but the response does not specify that earlier call.",
+      "consistency_with_sqlite": "As with the accepted short SQLite concern, the answer may identify a concrete forbidden change without reciting the full rule or using a prescribed word. Here removal of the only required fclose identifies the missing mandated release; I do not require the word leak. The additional accessibility clause was separately checked against this function.",
+      "sensitivity": {
+        "strict_new_access_reading": {
+          "genuine_issue_detected": true,
+          "all_material_claims_supported": false,
+          "full_grounded_concern": false,
+          "reason": "Only if allows access is interpreted as claiming a newly enabled read rather than continued validity at the removed close location."
+        }
+      }
+    },
+    {
+      "name": "owned-stream-close-restored",
+      "source": "models/counterbalanced-review-counterbalanced-diagnostics-natural.jsonl",
+      "jsonl_line": 12,
+      "raw_record_sha256": "b7e72eaa1e31af79dafbb5988e13dfe92d9cb419b16c1d9d1a3a8d3487ee6874",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "3cfbce3a1be3891d4f4f785b3bab1105029137157fa0e18d23a034ee03156af6",
+      "response_sha256": "a9ce18ba75b3768b831e11c221c1d3b2580c43dd3d2c93b7b1540a789930ab9a",
+      "trace_sha256": "a3ae52183305afcb6c1aae44c2b7efadef32cfe3e67d95f24c36beb2b6ef1b8d",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This helper reads one byte and releases its stream before returning. The return value is the first byte or EOF. The only required fclose before return does not affect that return contract.\"}]}",
+      "expected_concern": false,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "src/peek.c",
+          "side": "RIGHT",
+          "line": 6,
+          "quote": "    fclose(file);",
+          "reason": "This helper reads one byte and releases its stream before returning. The return value is the first byte or EOF. The only required fclose before return does not affect that return contract."
+        }
+      ],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "citation_causally_appropriate": true,
+      "reasoning": "The added close releases the owned stream before returning the first byte or EOF. The supplied prompt expressly says read-only close errors do not affect that return contract. The response correctly describes these facts and identifies no conflict. Its nonempty findings list fails the required clean review.",
+      "supported_material_claims": [
+        "The helper reads one byte on successful open and releases its stream before return.",
+        "The return value is the first byte or EOF.",
+        "The required fclose does not change the stated return contract."
+      ],
+      "ambiguity": null,
+      "consistency_with_sqlite": "A supported description of an approved operation is not a concern; the clean case requires empty findings."
+    }
+  ]
+}

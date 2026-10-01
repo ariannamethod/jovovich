@@ -1,0 +1,21 @@
+{
+  "command": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/counterbalanced-review.bin",
+    "models/counterbalanced-review",
+    "100",
+    "0.0001",
+    "40",
+    "25",
+    "joint",
+    "models/counterbalanced-review.pairs"
+  ],
+  "objective": "joint",
+  "elapsed_seconds": 5731.933823573003,
+  "peak_rss_kib": 1470592,
+  "user_seconds": 11595.800616,
+  "system_seconds": 53.636025,
+  "exit_code": 0,
+  "sources_unchanged": true
+}

@@ -1,0 +1,838 @@
+{
+  "schema_version": 1,
+  "parent_commit": "12f35554536d4554dacaa52ab2bafc25adff61c9",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "training": {
+    "initialization": "Fresh adapters on the verified Qwen base, same initialization seed as comparator.",
+    "base_model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v4.jsonl",
+    "dataset_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "training_rows": "52 explicitly paired review rows; 12 voice and 12 code rows are diagnostic only.",
+    "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "adapter_targets": "Final-layer MLP gate, up and down projections.",
+    "trainable_parameters": 276480,
+    "learning_rate": 0.0001,
+    "optimizer": "Adam with unchanged native hyperparameters.",
+    "optimizer_updates": 100,
+    "global_gradient_clip": 1,
+    "microbatch_tokens": 40,
+    "objective": "joint",
+    "lambda_residual": 1,
+    "decision_targets_per_update": 52,
+    "residual_targets_per_update": 1012,
+    "joint_targets_per_update": 1064,
+    "total_target_visits": 106400,
+    "microbatches_per_update": 27,
+    "final_microbatch_targets": 24,
+    "data_phase": "Combined v3 wording repairs plus six counterbalanced quartets; causal attribution is to this whole corpus revision.",
+    "objective_definition": "mean decision CE + 1 * mean residual review-token CE, including terminal im_end; independent global denominators.",
+    "checkpoint_selection": {
+      "saved_updates": [
+        25,
+        50,
+        75,
+        100
+      ],
+      "eligible_updates": [
+        25,
+        50,
+        100
+      ],
+      "rule": "Maximize complete full-vocabulary decision pairs, then target hits, then earlier eligible update.",
+      "timing": "Select once before new-arm free generation; no transfer/generation-based choice."
+    }
+  },
+  "source_sha256": {
+    "Makefile": "0af4acc6df13a45f4d0217177424aeca16a987ab05741bd713e1945cfbf73503",
+    "bin/jovovich.mjs": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "deps/notorch/examples/bpe.c": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+    "deps/notorch/examples/bpe.h": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+    "deps/notorch/examples/unicode_numbers.h": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+    "deps/notorch/gguf.c": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+    "deps/notorch/gguf.h": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+    "deps/notorch/harness/arch.h": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+    "deps/notorch/harness/arch_llama.c": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+    "deps/notorch/harness/arch_models.h": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+    "deps/notorch/harness/runtime.c": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+    "deps/notorch/harness/runtime.h": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+    "deps/notorch/notorch.c": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+    "deps/notorch/notorch.h": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+    "deps/notorch/notorch_simd.h": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+    "model.json": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+    "prompts/identity.txt": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "src/infer.c": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+    "test/chatml.test.mjs": "08802c06872ac08663cd754ef07efe932a0e1c29c9b6d264b82a8eab06192499",
+    "test/decision_score.test.mjs": "9df7221a29a00ae5bfa2574569fabd1e273ea58908893a5cf4606a5f22dce998",
+    "test/head.c": "284347177c6962cd0895b5bf2b0e4302bb43b94fe5d420d5de99ab89fae3176d",
+    "test/joint.c": "79ebc6cb879ae31ff355dbf91d572541e5dac430a7a7a03ae1d86a3984ce50d9",
+    "test/mlp.c": "770bebab2e65e03ec049bb36f96249a2b4082c68db4a4c6d6ce6ed82f9756483",
+    "test/optimizer.c": "f15d111b65b08d783cad877ba8fcd57a50a7949985025680283dcecbd0b1b4c2",
+    "test/prepare_pairs.test.mjs": "bb69f38eb726de28e76dc5e84c50f0f584593e1056cd1193840a77f9abe7de34",
+    "test/review_v4.test.mjs": "92dda36b7333e5290d9a6bd5664142f1528f6b983ef00f70c50c43c119298ca1",
+    "test/runner.test.mjs": "1a6664f44b5ea8e48a7a90ceecdd0ea5fe9b8565ee6ce1df9dfe551220d58dbf",
+    "test/training_score.test.mjs": "9c58b6da97a29df3ceef4d43a07a5dbac1fe28945b885763b5967a533c504ece",
+    "test/weighting.c": "c560007a447717ef5689b146c02d32209150ab25328da8bad3324480fad1ba77",
+    "training/build_review_v4.mjs": "1991b740cf004a2fd2f55ffcd6514ae589d37cfdb1182e697075d4d70aacbe14",
+    "training/evaluate.py": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544",
+    "training/evaluate_review.mjs": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d",
+    "training/export_adapter.c": "3ccae9d4473328e8a921f14bd5083b495d676de349a74473171f266aadaaf337",
+    "training/merge_mlp.c": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67",
+    "training/prepare.py": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+    "training/probe_mlp.c": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac",
+    "training/probe_tokenization.c": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6",
+    "training/results/2026-09-29-convergence/check_convergence_export.py": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99",
+    "training/results/2026-09-29-small-step/probe_shared_prefix.mjs": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+    "training/results/2026-09-29-verdict-balance/verify_verdict_export.py": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1",
+    "training/results/2026-10-01-joint-review/joint-diagnostics-natural.jsonl": "5c275bf1d0254f04667519da83823eac2e8ad4a33825a25365d4518b1491ca59",
+    "training/results/2026-10-01-joint-review/joint-next-control.json": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9",
+    "training/results/2026-10-01-joint-review/joint-train-natural.jsonl": "8405ac382d7c46f843c87d8ce2c1db8f44b4b5422e21dc054b015c35f86e7d6a",
+    "training/results/2026-10-01-joint-review/metrics.jsonl": "43b7470ff8f226f2c2fe5235e8eaeb2bd0fd4e1b7d085d4f4c2022d6eb4be247",
+    "training/results/2026-10-01-joint-review/scores.json": "e30370fbe6e691aa69abe77d0c0168655d505c644355185fa17b4e3868205199",
+    "training/results/2026-10-01-joint-review/selected-model.json": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1",
+    "training/review_holdout_v2.jsonl": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+    "training/score_decisions.py": "f79205594c62eba2f71a46ad6a9cb5d864b3b41cb09a5f325f8a12564d0f44f8",
+    "training/score_training.py": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33",
+    "training/sft_review_v2.jsonl": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+    "training/sft_review_v3.jsonl": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7",
+    "training/sft_review_v4.jsonl": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "training/train_head.c": "98aa97c82bc4d2620037dea6886001d75e42e262d92a7264a6ad5b9ca47ae8b0",
+    "training/train_mlp.c": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+  },
+  "evidence_sha256": {
+    "plan.json": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a",
+    "metrics.jsonl": "73b416f3da70a06269b55588b92050d08fb3ef19418c7090638f2482ba224075",
+    "scores.json": "17c37a2e497c86bc0b57c9f4e389d529f7170c235cf8dc58c73d3fa4fed8befb",
+    "resource.json": "c3fbcf347fb5fbeba5d5cd296af819e26568328876c86497fb333cfd9b87d694",
+    "training-source.json": "df5d19447d57289943fd3a3672d112d1f8fb0d13b5970d7b32c06e4f2c504159",
+    "selected-model.json": "937cc7012d678f1a9e08110b2c4ce15e2ffebbd719443a090a9882ffecb81be6",
+    "export-audit.json": "4891112cab30725cbf7d1752ad6e6dbf058cbd701410d4ac811138f2bdf36411",
+    "parity.jsonl": "92ad8cba3ea1f6b06bc1a0d5d864837aab06318460694735c40023ebaeae7320",
+    "generation-summary.json": "003256a5450fcb36c562add4202913210ecb28c69f7d588f091728f7c45b8f24",
+    "semantic-assessment.json": "ca3a40c78dbddcda005c814dde43b4c9b6aecd641402b55e14818e27443e8297",
+    "trajectory-assessment.json": "7e98ad7f06593a7d33ca7c853e52ddadc76e5b7456b67d6742083b4994f5ea78",
+    "initial-comparison.json": "e65f73355584d81568e19c49f6433fd6a206ed497155856fab0cda03b362e4c8",
+    "control-replay.json": "7d2bb27efedbf606c95632c613c73f70ef72627d964a03207ada5aaaceb8cfbb",
+    "hf-weights.json": "dfa754d928ef3b9f2056579a715b5b4b726d542b8a2c7628e0e1bc0c996ee150",
+    "control-evaluation-jobs.json": "535fa954f377ed1740ba0d21002aaccbd06296ee2e1c4f33a0289add39840b80",
+    "control-evaluation-model-check.json": "9401f4cde2769dd350f74610b2e49c2b9122216a3d8d5a4b605dcdad88e2cfaf",
+    "control-train-natural.jsonl": "0101278e4ce8288dd9f32a67c16d2ef774513cfc85a6f0558cf955bff5bcad19",
+    "control-transfer-natural.jsonl": "3d1d9e9076725afbe03683a9532fdce1ebc6948f6b085e2e8fea42c2b8ed9e6f",
+    "control-diagnostics-natural.jsonl": "67af8f2267df2d29fc3aa1a03d166b874634942ef33357efd0f8ce0224c10048",
+    "control-train-natural-0.jsonl": "68cf73ec7c0812a788c0091e19a9fa6a6e2e9945f8c068908d06f74613d7d02f",
+    "control-train-natural-1.jsonl": "ea7c68f9b3b4d79e92e79c6669acaf1186aeddacf0a922dab8425083d59ac59a",
+    "counterbalanced-evaluation-jobs.json": "de3adbcfaaf09dec3d10632359cb6026f76665c6351560605d1661d70158dacf",
+    "counterbalanced-evaluation-model-check.json": "7c158012d82a440f946aff7c6ea1704de290b814c8644e9351c599ee979eed9f",
+    "counterbalanced-train-natural.jsonl": "04f5378ac27ffae8c1068121fa60c29141450833a816035210a34cd97a4428de",
+    "counterbalanced-transfer-natural.jsonl": "521e3e52251348f173a5a88881bfe620083be99fbda79b30169b76941f29b710",
+    "counterbalanced-diagnostics-natural.jsonl": "89f785909deef257aeb2bf41831d2132098ab0d1dcacf7163b041d29b60f414d",
+    "counterbalanced-train-natural-0.jsonl": "a39ac0bdef74e106999e3d6e99e077f79f72717fd275893312fcd44f46d62915",
+    "counterbalanced-train-natural-1.jsonl": "031ace1a57c4ab6e6330fefd3ea6a0eea3a6a2fe7f9d280da3dd99401a6950b8",
+    "corpus-audit.json": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6",
+    "fresh-transfer.jsonl": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d",
+    "fresh-transfer-audit.json": "9463bed5bca174a95fb40d204cf10c4f809a616450bef1a7bfefcdaf4b4eef6d",
+    "build_fresh_transfer.py": "8489c5bc17ef9787e80d714aba3a806fd978f1235dac4cdeb59ca9740eb4e284",
+    "audit_fresh_transfer_independent.py": "60fd4231f265d6b4a4a98de7cbc7aa3203801392482f0d39a95458f0979a016f",
+    "finalize_fresh_transfer.mjs": "3d45c32a6f21fb4fe6ce84ac876d9b45e644a4488716d7d33514654f34f5edc8",
+    "fresh-transfer-independent-audit.json": "4926000ec210003c500d48352ebf2a3b75d60f15d67d6867f12fa638a9d33c11",
+    "protocol-audit.json": "3a950e726458869e4b4ad81d2063222029812f8ee783f48ee24fe492b56884d5",
+    "orchestration-audit.json": "9eb91840e8ef3832d7231b4ad5e83c847844df656cb7238c391347fd7eb2ccad",
+    "native-preflight.json": "bf923863467cf73d56d6cd1792d65e8344066392b8a25157b057dea879fee559",
+    "summarize_native_preflight.py": "03726ee2d7bc6a45d117fbfcd3bfc6b80c1da3335ae2e6d5f17a2e8c2b3a4720",
+    "assess_counterbalanced_trajectory.py": "db82d5ff1d41745704dc3e2109b51b94448349afac48cc60200014272f06cfa2",
+    "assess_counterbalanced_replay.py": "6c5474609584d78ecf78d07f90106363f2ab65d7bd09aca3f62ebddd49cad9db",
+    "control-train-semantic-audit.json": "b0945e33ab97844eaed44805ef275742038b110e3aa14d271a30bf3aa88f5eb1",
+    "semantic-aggregation-audit.json": "e772e730e83113d7438b8a4f905522898c6c323a9b514d8af39ac23949906cca",
+    "probe_counterbalanced.c": "9f3ac33fc017cd205b91c9ce572558800b639b06374e698f594394bcfa972d0e",
+    "counterbalanced-manual-judgments.json": "151045144a476e64c3c32da3d33e3beff224b33e5ce34398f819709606ddd050",
+    "prepare_counterbalanced_run.py": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81",
+    "run_counterbalanced_review.py": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7",
+    "run_counterbalanced_evaluation.py": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a",
+    "evaluate_counterbalanced_reviews.mjs": "6fea84be2c67cc6baa45d790dbbc463bf02397b2eb8164564c9533ae184615ac",
+    "summarize_counterbalanced_reviews.mjs": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b",
+    "assess_counterbalanced_semantics.py": "5aefb8bee19ccde56c9844eb3048bf217977141740ef2a1859e22f9e58a2f425",
+    "archive_counterbalanced_weights.py": "ec76cba20156afd487b0778c8e490cfe184d24ce1bfeeeeaf919bea6743a74b9",
+    "collect_counterbalanced_review.py": "e3d5ec863336be0cbe08382c69824d58dcdab7f21fa3080e7758ad5406ab0927",
+    "archive_counterbalanced_evidence.py": "2b7d1d464a61cf25baba3ec0e9c4980a85e551bcf616bf62b5ba395fe88ad1d9",
+    "nuisance-cue-audit.json": "bb9e1a72669a79f035090a531acc57adf37b97c69f6931b89495b2d6ce540154",
+    "finish_counterbalanced_generation.py": "656d1a17657b427170498c81472855434a98e22e5e03f040faed203b5dab6168",
+    "archival-reproduction-audit.json": "a60e38180aa4b187bd777acf10aca8d4e084fd35df99a475bad473b44e30c2a7",
+    "combine_counterbalanced_judgments.py": "793f471d96b76ef68ca4ae8e66216a1161e66f4d234c081a321f4a37b18250da",
+    "next-diagnostic-decision.json": "7ee71ac95b1d624ef5cfa7f8ae363d7c81222823c647b096d3ccf5a71d4dcfa4",
+    "new-concern-second-opinion.json": "034634ad443a1dd2348b6b33e2d1a0ea0807b7700569960ed97d688219f6b8f6",
+    "new-diagnostic-second-opinion.json": "0ba8c6f325c0573faa6f1519c59f9e211ac04dbed4e3d9ae63e4baf5a3b09de1",
+    "root-semantic-audit.json": "e6ec3e98c9cc5f20fefd5cd81099bec38e8ae51a78c65b74ad15955985cbce26",
+    "next-action.json": "487280aa1d32057d34bb8f18023d8165b29beee03a1f70686a018b555b725158",
+    "hf-model-card-section.txt": "d448bd404fcecef24f9cbef14927ddaa323fa8056d39cc65928b9ba13282b3b0",
+    "infer-experiment.c": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+    "tokenization.json": "ef7c2e2c3e36602bcbe05f123a6c46656b90ca85ac182328f90c2e4e244e2a34",
+    "native-preflight-raw.jsonl": "bb7b2329354073d1e13b6983895f429defaa41ffdf7b6ddb21d8dfc5f602e0c3",
+    "build.txt": "0fb864bb76ba3ac40826649132f063ef3cd75d3bb7b84ad79bcac11de20a5c85",
+    "tests-before.txt": "546cdee426d5ce69de5ad5475ad1fa335861ef94094504da8d94699af53d4037",
+    "control-train-manual-judgments.json": "3344b320f97dd76b884c713d06243b3ff62a9706796c384976e6c3581b979b76",
+    "control-eval-manual-judgments.json": "737c20370ba254741b1dec892269ab3ff9b727339af7e7324092ba0d4a7541ed",
+    "counterbalanced-train-manual-judgments.json": "4b7774afce72ad044eb5fa4c6aec3e6625461a1a01659fbbcc801fb64f1a75ce",
+    "counterbalanced-eval-manual-judgments.json": "0fe9928cb3f0c0f10892e48b12c4b98df1b8333dd76cf360bdbb51986a26944c"
+  },
+  "selected_model": {
+    "path": "models/counterbalanced-review-selected.gguf",
+    "update": 100,
+    "bytes": 714116992,
+    "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a"
+  },
+  "training_source": {
+    "source_sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+    "binary_sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+    "dataset_binary_sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+    "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+    "plan_sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a"
+  },
+  "comparator_sha256": "6aaf2f70764de35db1ee13b2c7d974b1064b6dfbd044024b164a2856fdafadd1",
+  "weight_archive": {
+    "selected_update": 100,
+    "selected_model": {
+      "bytes": 714116992,
+      "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a"
+    },
+    "base_model": {
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    "plan_sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a",
+    "training_source_sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+    "training_binary_sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+    "dataset_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "dataset_binary_sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+    "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+    "metrics_sha256": "73b416f3da70a06269b55588b92050d08fb3ef19418c7090638f2482ba224075",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "source_parent_commit": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+  },
+  "experiment_inference": {
+    "source": "src/infer.c",
+    "evidence": "infer-experiment.c",
+    "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+    "runner_sha256": "adaec885eab0e7964f7252b146bbcc038688bd40ae93e55d0c86815063f5303c"
+  },
+  "evidence_bytes": "All evidence files are copied byte-for-byte. Embedded paths and source hashes remain exactly as recorded.",
+  "runtime_path_prefix_mapping": {
+    "/workspace/scratch/ec5ba60588d8/jovovich/": "./",
+    "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/": "training/results/2026-10-01-counterbalanced-review/"
+  },
+  "evidence_origins": {
+    "plan.json": {
+      "runtime_path": "models/counterbalanced-review-plan.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-plan.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/plan.json"
+    },
+    "metrics.jsonl": {
+      "runtime_path": "models/counterbalanced-review-metrics.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-metrics.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/metrics.jsonl"
+    },
+    "scores.json": {
+      "runtime_path": "models/counterbalanced-review-scores.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-scores.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/scores.json"
+    },
+    "resource.json": {
+      "runtime_path": "models/counterbalanced-review-resource.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-resource.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/resource.json"
+    },
+    "training-source.json": {
+      "runtime_path": "models/counterbalanced-review-training-source.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-training-source.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/training-source.json"
+    },
+    "selected-model.json": {
+      "runtime_path": "models/counterbalanced-review-selected-model.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-selected-model.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/selected-model.json"
+    },
+    "export-audit.json": {
+      "runtime_path": "models/counterbalanced-review-export-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-export-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/export-audit.json"
+    },
+    "parity.jsonl": {
+      "runtime_path": "models/counterbalanced-review-parity.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-parity.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/parity.jsonl"
+    },
+    "generation-summary.json": {
+      "runtime_path": "models/counterbalanced-review-generation-summary.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-generation-summary.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/generation-summary.json"
+    },
+    "semantic-assessment.json": {
+      "runtime_path": "models/counterbalanced-review-semantic-assessment.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-semantic-assessment.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/semantic-assessment.json"
+    },
+    "trajectory-assessment.json": {
+      "runtime_path": "models/counterbalanced-review-trajectory-assessment.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-trajectory-assessment.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/trajectory-assessment.json"
+    },
+    "initial-comparison.json": {
+      "runtime_path": "models/counterbalanced-review-initial-comparison.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-initial-comparison.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/initial-comparison.json"
+    },
+    "control-replay.json": {
+      "runtime_path": "models/counterbalanced-review-control-replay.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-replay.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-replay.json"
+    },
+    "hf-weights.json": {
+      "runtime_path": "models/counterbalanced-review-hf-weights.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-hf-weights.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/hf-weights.json"
+    },
+    "control-evaluation-jobs.json": {
+      "runtime_path": "models/counterbalanced-review-control-evaluation-jobs.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-evaluation-jobs.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-evaluation-jobs.json"
+    },
+    "control-evaluation-model-check.json": {
+      "runtime_path": "models/counterbalanced-review-control-evaluation-model-check.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-evaluation-model-check.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-evaluation-model-check.json"
+    },
+    "control-train-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-control-train-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-train-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-train-natural.jsonl"
+    },
+    "control-transfer-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-control-transfer-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-transfer-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-transfer-natural.jsonl"
+    },
+    "control-diagnostics-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-control-diagnostics-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-diagnostics-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-diagnostics-natural.jsonl"
+    },
+    "control-train-natural-0.jsonl": {
+      "runtime_path": "models/counterbalanced-review-control-train-natural-0.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-train-natural-0.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-train-natural-0.jsonl"
+    },
+    "control-train-natural-1.jsonl": {
+      "runtime_path": "models/counterbalanced-review-control-train-natural-1.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-control-train-natural-1.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-train-natural-1.jsonl"
+    },
+    "counterbalanced-evaluation-jobs.json": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-evaluation-jobs.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-evaluation-jobs.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-evaluation-jobs.json"
+    },
+    "counterbalanced-evaluation-model-check.json": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-evaluation-model-check.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-evaluation-model-check.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-evaluation-model-check.json"
+    },
+    "counterbalanced-train-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-train-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-train-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-train-natural.jsonl"
+    },
+    "counterbalanced-transfer-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-transfer-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-transfer-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-transfer-natural.jsonl"
+    },
+    "counterbalanced-diagnostics-natural.jsonl": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-diagnostics-natural.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-diagnostics-natural.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-diagnostics-natural.jsonl"
+    },
+    "counterbalanced-train-natural-0.jsonl": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-train-natural-0.jsonl"
+    },
+    "counterbalanced-train-natural-1.jsonl": {
+      "runtime_path": "models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-train-natural-1.jsonl"
+    },
+    "corpus-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/corpus-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/corpus-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/corpus-audit.json"
+    },
+    "fresh-transfer.jsonl": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/fresh-transfer.jsonl"
+    },
+    "fresh-transfer-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/fresh-transfer-audit.json"
+    },
+    "build_fresh_transfer.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/build_fresh_transfer.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/build_fresh_transfer.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/build_fresh_transfer.py"
+    },
+    "audit_fresh_transfer_independent.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/audit_fresh_transfer_independent.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/audit_fresh_transfer_independent.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/audit_fresh_transfer_independent.py"
+    },
+    "finalize_fresh_transfer.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finalize_fresh_transfer.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finalize_fresh_transfer.mjs",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/finalize_fresh_transfer.mjs"
+    },
+    "fresh-transfer-independent-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-independent-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-independent-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/fresh-transfer-independent-audit.json"
+    },
+    "protocol-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/protocol-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/protocol-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/protocol-audit.json"
+    },
+    "orchestration-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/orchestration-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/orchestration-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/orchestration-audit.json"
+    },
+    "native-preflight.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/native-preflight.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/native-preflight.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/native-preflight.json"
+    },
+    "summarize_native_preflight.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_native_preflight.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_native_preflight.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/summarize_native_preflight.py"
+    },
+    "assess_counterbalanced_trajectory.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_trajectory.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_trajectory.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/assess_counterbalanced_trajectory.py"
+    },
+    "assess_counterbalanced_replay.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_replay.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_replay.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/assess_counterbalanced_replay.py"
+    },
+    "control-train-semantic-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-train-semantic-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-train-semantic-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-train-semantic-audit.json"
+    },
+    "semantic-aggregation-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/semantic-aggregation-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/semantic-aggregation-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/semantic-aggregation-audit.json"
+    },
+    "probe_counterbalanced.c": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/probe_counterbalanced.c",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/probe_counterbalanced.c",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/probe_counterbalanced.c"
+    },
+    "counterbalanced-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-manual-judgments.json"
+    },
+    "prepare_counterbalanced_run.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/prepare_counterbalanced_run.py"
+    },
+    "run_counterbalanced_review.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_review.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_review.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/run_counterbalanced_review.py"
+    },
+    "run_counterbalanced_evaluation.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_evaluation.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_evaluation.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/run_counterbalanced_evaluation.py"
+    },
+    "evaluate_counterbalanced_reviews.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/evaluate_counterbalanced_reviews.mjs"
+    },
+    "summarize_counterbalanced_reviews.mjs": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/summarize_counterbalanced_reviews.mjs"
+    },
+    "assess_counterbalanced_semantics.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_semantics.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_semantics.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/assess_counterbalanced_semantics.py"
+    },
+    "archive_counterbalanced_weights.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archive_counterbalanced_weights.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archive_counterbalanced_weights.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/archive_counterbalanced_weights.py"
+    },
+    "collect_counterbalanced_review.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/collect_counterbalanced_review.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/collect_counterbalanced_review.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/collect_counterbalanced_review.py"
+    },
+    "archive_counterbalanced_evidence.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archive_counterbalanced_evidence.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archive_counterbalanced_evidence.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/archive_counterbalanced_evidence.py"
+    },
+    "nuisance-cue-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/nuisance-cue-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/nuisance-cue-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/nuisance-cue-audit.json"
+    },
+    "finish_counterbalanced_generation.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finish_counterbalanced_generation.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finish_counterbalanced_generation.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/finish_counterbalanced_generation.py"
+    },
+    "archival-reproduction-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archival-reproduction-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/archival-reproduction-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/archival-reproduction-audit.json"
+    },
+    "combine_counterbalanced_judgments.py": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/combine_counterbalanced_judgments.py",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/combine_counterbalanced_judgments.py",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/combine_counterbalanced_judgments.py"
+    },
+    "next-diagnostic-decision.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/next-diagnostic-decision.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/next-diagnostic-decision.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/next-diagnostic-decision.json"
+    },
+    "new-concern-second-opinion.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-concern-second-opinion.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-concern-second-opinion.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/new-concern-second-opinion.json"
+    },
+    "new-diagnostic-second-opinion.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-diagnostic-second-opinion.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-diagnostic-second-opinion.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/new-diagnostic-second-opinion.json"
+    },
+    "root-semantic-audit.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/root-semantic-audit.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/root-semantic-audit.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/root-semantic-audit.json"
+    },
+    "next-action.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/next-action.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/next-action.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/next-action.json"
+    },
+    "hf-model-card-section.txt": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/hf-model-card-section.txt",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/hf-model-card-section.txt",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/hf-model-card-section.txt"
+    },
+    "infer-experiment.c": {
+      "runtime_path": "src/infer.c",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/infer-experiment.c"
+    },
+    "tokenization.json": {
+      "runtime_path": "models/counterbalanced-tokenization.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-tokenization.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/tokenization.json"
+    },
+    "native-preflight-raw.jsonl": {
+      "runtime_path": "models/counterbalanced-review-preflight.jsonl",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-preflight.jsonl",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/native-preflight-raw.jsonl"
+    },
+    "build.txt": {
+      "runtime_path": "models/counterbalanced-build.txt",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-build.txt",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/build.txt"
+    },
+    "tests-before.txt": {
+      "runtime_path": "models/counterbalanced-tests.txt",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-tests.txt",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/tests-before.txt"
+    },
+    "control-train-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-train-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-train-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-train-manual-judgments.json"
+    },
+    "control-eval-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-eval-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/control-eval-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/control-eval-manual-judgments.json"
+    },
+    "counterbalanced-train-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-train-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-train-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-train-manual-judgments.json"
+    },
+    "counterbalanced-eval-manual-judgments.json": {
+      "runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-eval-manual-judgments.json",
+      "absolute_runtime_path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-eval-manual-judgments.json",
+      "archived_path": "training/results/2026-10-01-counterbalanced-review/counterbalanced-eval-manual-judgments.json"
+    }
+  },
+  "trace_storage": "Each cohort record embeds its complete native trace and original trace SHA. Standalone traces can be restored with JSON.stringify(trace) plus one newline.",
+  "manual_aggregation": {
+    "helper": "assess_counterbalanced_semantics.py",
+    "judgments": "counterbalanced-manual-judgments.json",
+    "scope": "Reaggregates these complete responses with their hash-bound manual judgments. Fresh responses need fresh judgments; these labels are not an automatic evaluator."
+  },
+  "validation": {
+    "tests": {
+      "native_tests": 5,
+      "node_tests": 59,
+      "node_failures": 0
+    },
+    "repeated_tests": null,
+    "export_audit": {
+      "base": {
+        "path": "models/base-qwen.gguf",
+        "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+        "bytes": 675710848
+      },
+      "model": {
+        "path": "models/counterbalanced-review-selected.gguf",
+        "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+        "bytes": 714116992
+      },
+      "prefix": "models/counterbalanced-review.epoch100",
+      "metadata_equal": true,
+      "expected_extent": 714116992,
+      "unchanged": 288,
+      "adapted": 3,
+      "valid": true
+    },
+    "parity_rows": [
+      0,
+      1,
+      2
+    ]
+  },
+  "result_counts": {
+    "cohorts": {
+      "control-train-natural.jsonl": 52,
+      "control-transfer-natural.jsonl": 24,
+      "control-diagnostics-natural.jsonl": 12,
+      "counterbalanced-train-natural.jsonl": 52,
+      "counterbalanced-transfer-natural.jsonl": 24,
+      "counterbalanced-diagnostics-natural.jsonl": 12
+    },
+    "generated_responses": 176,
+    "decision_readouts": 101,
+    "full_readouts": 5
+  },
+  "semantic_counts": {
+    "control": {
+      "train-natural": {
+        "cases": 52,
+        "concerns": 26,
+        "clean": 26,
+        "json_syntax_valid": 50,
+        "production_usable": 50,
+        "parsed_concern": 20,
+        "parsed_empty": 30,
+        "parsed_presence_null": 2,
+        "correct_presence": 27,
+        "genuine_issues_detected": 3,
+        "reason_grounded_cases": 3,
+        "grounded_concern_reviews": 3,
+        "correct_clean_reviews": 16,
+        "full_reviews_pass": 19,
+        "clean_nonempty_responses": 9,
+        "invalid_clean_responses": 1,
+        "pairs": 26,
+        "full_review_pairs": 1,
+        "complete_presence_pairs": 3,
+        "complete_usable_presence_pairs": 3,
+        "eos": 50,
+        "token_limit": 2
+      },
+      "transfer-natural": {
+        "cases": 24,
+        "concerns": 12,
+        "clean": 12,
+        "json_syntax_valid": 24,
+        "production_usable": 24,
+        "parsed_concern": 2,
+        "parsed_empty": 22,
+        "parsed_presence_null": 0,
+        "correct_presence": 12,
+        "genuine_issues_detected": 0,
+        "reason_grounded_cases": 0,
+        "grounded_concern_reviews": 0,
+        "correct_clean_reviews": 11,
+        "full_reviews_pass": 11,
+        "clean_nonempty_responses": 1,
+        "invalid_clean_responses": 0,
+        "pairs": 12,
+        "full_review_pairs": 0,
+        "complete_presence_pairs": 0,
+        "complete_usable_presence_pairs": 0,
+        "eos": 24,
+        "token_limit": 0
+      },
+      "diagnostics-natural": {
+        "cases": 12,
+        "concerns": 6,
+        "clean": 6,
+        "json_syntax_valid": 11,
+        "production_usable": 11,
+        "parsed_concern": 1,
+        "parsed_empty": 10,
+        "parsed_presence_null": 1,
+        "correct_presence": 6,
+        "genuine_issues_detected": 0,
+        "reason_grounded_cases": 0,
+        "grounded_concern_reviews": 0,
+        "correct_clean_reviews": 5,
+        "full_reviews_pass": 5,
+        "clean_nonempty_responses": 0,
+        "invalid_clean_responses": 1,
+        "pairs": 6,
+        "full_review_pairs": 0,
+        "complete_presence_pairs": 0,
+        "complete_usable_presence_pairs": 0,
+        "eos": 11,
+        "token_limit": 1
+      }
+    },
+    "counterbalanced": {
+      "train-natural": {
+        "cases": 52,
+        "concerns": 26,
+        "clean": 26,
+        "json_syntax_valid": 51,
+        "production_usable": 51,
+        "parsed_concern": 8,
+        "parsed_empty": 43,
+        "parsed_presence_null": 1,
+        "correct_presence": 28,
+        "genuine_issues_detected": 2,
+        "reason_grounded_cases": 3,
+        "grounded_concern_reviews": 1,
+        "correct_clean_reviews": 23,
+        "full_reviews_pass": 24,
+        "clean_nonempty_responses": 3,
+        "invalid_clean_responses": 0,
+        "pairs": 26,
+        "full_review_pairs": 0,
+        "complete_presence_pairs": 2,
+        "complete_usable_presence_pairs": 2,
+        "eos": 51,
+        "token_limit": 1
+      },
+      "transfer-natural": {
+        "cases": 24,
+        "concerns": 12,
+        "clean": 12,
+        "json_syntax_valid": 24,
+        "production_usable": 24,
+        "parsed_concern": 0,
+        "parsed_empty": 24,
+        "parsed_presence_null": 0,
+        "correct_presence": 12,
+        "genuine_issues_detected": 0,
+        "reason_grounded_cases": 0,
+        "grounded_concern_reviews": 0,
+        "correct_clean_reviews": 12,
+        "full_reviews_pass": 12,
+        "clean_nonempty_responses": 0,
+        "invalid_clean_responses": 0,
+        "pairs": 12,
+        "full_review_pairs": 0,
+        "complete_presence_pairs": 0,
+        "complete_usable_presence_pairs": 0,
+        "eos": 24,
+        "token_limit": 0
+      },
+      "diagnostics-natural": {
+        "cases": 12,
+        "concerns": 6,
+        "clean": 6,
+        "json_syntax_valid": 12,
+        "production_usable": 12,
+        "parsed_concern": 4,
+        "parsed_empty": 8,
+        "parsed_presence_null": 0,
+        "correct_presence": 6,
+        "genuine_issues_detected": 1,
+        "reason_grounded_cases": 1,
+        "grounded_concern_reviews": 1,
+        "correct_clean_reviews": 4,
+        "full_reviews_pass": 5,
+        "clean_nonempty_responses": 2,
+        "invalid_clean_responses": 0,
+        "pairs": 6,
+        "full_review_pairs": 0,
+        "complete_presence_pairs": 0,
+        "complete_usable_presence_pairs": 0,
+        "eos": 12,
+        "token_limit": 0
+      }
+    }
+  },
+  "runtime_model_promoted": false,
+  "archive_receipt": "hf-evidence.json is created after remote verification and excluded from this frozen manifest.",
+  "reproduction": [
+    "This is a fresh experimental rerun recipe, not a command to overwrite the archived run. Use an isolated checkout containing these archived helpers, v4 source changes and historical comparator evidence. Run every command below from that checkout root. The selected output /tmp/jovovich-counterbalanced-review-selected-12f3555.gguf and models/counterbalanced-* outputs must be unused.",
+    "unset JOVOVICH_CHAT_TEMPLATE JOVOVICH_INFER",
+    "git submodule update --init deps/notorch",
+    "Verify notorch HEAD equals the recorded pin. Restore the SHA256-pinned Qwen base at models/base-qwen.gguf and prior joint-selected comparator at models/joint-review-selected.gguf; access to the private comparator archive is required.",
+    "JOVOVICH_REPRO_ARCHIVE=\"training/results/2026-10-01-counterbalanced-review\"",
+    "JOVOVICH_REPRO_REF=\"$(mktemp -d /tmp/jovovich-counterbalanced-reference.XXXXXX)\"",
+    "cp \"$JOVOVICH_REPRO_ARCHIVE\"/*.py \"$JOVOVICH_REPRO_ARCHIVE\"/*.mjs \"$JOVOVICH_REPRO_ARCHIVE\"/*.c \"$JOVOVICH_REPRO_REF\"/",
+    "cp \"$JOVOVICH_REPRO_ARCHIVE/fresh-transfer.jsonl\" \"$JOVOVICH_REPRO_ARCHIVE/protocol-audit.json\" \"$JOVOVICH_REPRO_ARCHIVE/orchestration-audit.json\" \"$JOVOVICH_REPRO_REF\"/",
+    "The two copied protocol/orchestration reports are historical review records with their original paths and source versions, not newly executed audits. Retain that distinction. The following corpus, transfer and native preflight checks create fresh receipts in the scratch reference directory. Do not copy native-preflight.json or corpus-audit.json into that directory: their writers reserve new files exclusively.",
+    "make harness train-mlp merge-mlp probe-mlp probe-tokenization",
+    "node training/build_review_v4.mjs --output \"$JOVOVICH_REPRO_REF/sft_review_v4.jsonl\" --audit \"$JOVOVICH_REPRO_REF/corpus-audit.json\"",
+    "cmp training/sft_review_v4.jsonl \"$JOVOVICH_REPRO_REF/sft_review_v4.jsonl\"",
+    "python3 \"$JOVOVICH_REPRO_REF/build_fresh_transfer.py\"",
+    "cmp \"$JOVOVICH_REPRO_ARCHIVE/fresh-transfer.jsonl\" \"$JOVOVICH_REPRO_REF/fresh-transfer.jsonl\"",
+    "python3 \"$JOVOVICH_REPRO_REF/audit_fresh_transfer_independent.py\"",
+    "node \"$JOVOVICH_REPRO_REF/finalize_fresh_transfer.mjs\"",
+    "python3 training/prepare.py models/counterbalanced-review.bin --sft training/sft_review_v4.jsonl --sft-only --review-pairs models/counterbalanced-review.pairs",
+    "build/jovovich-probe-tokenization models/base-qwen.gguf models/counterbalanced-review.bin > models/counterbalanced-tokenization.json 2> models/counterbalanced-tokenization.stderr",
+    "cc -Ideps/notorch -Itraining -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/jovovich-probe-counterbalanced \"$JOVOVICH_REPRO_REF/probe_counterbalanced.c\" deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -lm -pthread",
+    "The explicit preflight compile flags describe the recorded AVX2/SIMD build. On another architecture/toolchain, review the supported native flags and record that new build; identical binary hashes and floating-point results are not promised. The moved probe source resolves train_mlp.c and ../src/infer.c through -Itraining when invoked from the repository root.",
+    "build/jovovich-probe-counterbalanced models/base-qwen.gguf models/counterbalanced-review.bin models/counterbalanced-review.pairs 40 > models/counterbalanced-review-preflight.jsonl 2> models/counterbalanced-review-preflight.stderr",
+    "python3 \"$JOVOVICH_REPRO_REF/summarize_native_preflight.py\"",
+    "python3 \"$JOVOVICH_REPRO_REF/prepare_counterbalanced_run.py\"",
+    "This freezes new paths, executable/source hashes and newly regenerated preflight receipts. Preserve the archived original plan separately. Do not change any newly frozen helper or input after this step.",
+    "python3 \"$JOVOVICH_REPRO_REF/run_counterbalanced_review.py\"",
+    "python3 \"$JOVOVICH_REPRO_REF/run_counterbalanced_evaluation.py\" control",
+    "python3 \"$JOVOVICH_REPRO_REF/run_counterbalanced_evaluation.py\" counterbalanced",
+    "node \"$JOVOVICH_REPRO_REF/summarize_counterbalanced_reviews.mjs\"",
+    "finish_counterbalanced_generation.py is an optional one-shot watcher for training completion followed by new-arm evaluation; never run it in addition to the explicit new-arm evaluation command for the same outputs.",
+    "Posthoc helpers are diagnostic gates with recorded-run assumptions. assess_counterbalanced_trajectory.py --initial-only requires the original training binary SHA and its specific SIMD tile comparison; full trajectory aggregation also requires that fresh initial-comparison receipt. assess_counterbalanced_replay.py demands exact replay against historical outputs. On a different build, inspect and justify a new comparison protocol rather than relabeling old evidence or weakening those guards silently.",
+    "Fresh semantic assessment requires reading all newly generated complete responses and writing new model/prompt/response/trace-hash-bound judgments, including their source fragments, before assess_counterbalanced_semantics.py. Archived manual judgments cannot be assumed valid for new outputs.",
+    "Archival collectors/uploaders reserve the original fixed result directory and remote experiment prefix. A later rerun needs a separately reviewed new archive destination and expected private HF head; the commands above recreate the experiment, not a second upload over this archive."
+  ]
+}

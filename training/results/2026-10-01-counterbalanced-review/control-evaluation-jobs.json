@@ -1,0 +1,86 @@
+[
+  {
+    "job": "control-train-natural-0",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "natural",
+      "--output",
+      "models/counterbalanced-review-control-train-natural-0.jsonl",
+      "--trace-dir",
+      "models/counterbalanced-review-control-train-natural-0-traces",
+      "--shard",
+      "0"
+    ],
+    "output": "models/counterbalanced-review-control-train-natural-0.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 401.32760779800446
+  },
+  {
+    "job": "control-train-natural-1",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "train",
+      "--mode",
+      "natural",
+      "--output",
+      "models/counterbalanced-review-control-train-natural-1.jsonl",
+      "--trace-dir",
+      "models/counterbalanced-review-control-train-natural-1-traces",
+      "--shard",
+      "1"
+    ],
+    "output": "models/counterbalanced-review-control-train-natural-1.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 401.7253671080034
+  },
+  {
+    "job": "control-transfer-natural",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "transfer",
+      "--mode",
+      "natural",
+      "--output",
+      "models/counterbalanced-review-control-transfer-natural.jsonl",
+      "--trace-dir",
+      "models/counterbalanced-review-control-transfer-natural-traces"
+    ],
+    "output": "models/counterbalanced-review-control-transfer-natural.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 435.41479293899465
+  },
+  {
+    "job": "control-diagnostics-natural",
+    "command": [
+      "node",
+      "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "--model",
+      "models/joint-review-selected.gguf",
+      "--kind",
+      "diagnostics",
+      "--mode",
+      "natural",
+      "--output",
+      "models/counterbalanced-review-control-diagnostics-natural.jsonl",
+      "--trace-dir",
+      "models/counterbalanced-review-control-diagnostics-natural-traces"
+    ],
+    "output": "models/counterbalanced-review-control-diagnostics-natural.jsonl",
+    "exit_code": 0,
+    "elapsed_seconds": 238.89933762999863
+  }
+]

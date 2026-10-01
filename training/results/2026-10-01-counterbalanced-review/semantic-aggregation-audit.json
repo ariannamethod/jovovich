@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-09-30T23:47:35.528632+00:00",
+  "scope": "Read-only review of the manual-judgment aggregator while training is live. No frozen file edits and no model calls.",
+  "verdict": "No correctness blocker found in the inspected aggregator.",
+  "source": {
+    "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_semantics.py",
+    "sha256": "5aefb8bee19ccde56c9844eb3048bf217977141740ef2a1859e22f9e58a2f425",
+    "bytes": 10421
+  },
+  "reviewed_dependencies": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-plan.json",
+      "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a",
+      "bytes": 12162
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+      "bytes": 16336
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+      "bytes": 10672
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+      "sha256": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b",
+      "bytes": 18577
+    }
+  ],
+  "findings": {
+    "strict_concern_pass": "Requires production parse, nonempty findings, a genuine issue, all findings grounded, and all material claims supported=True. Genuine-issue validation separately requires grounded reason and causally appropriate citation. None or false material-claim support fails.",
+    "clean_pass": "Requires production parse and empty findings, matching the frozen clean-review rule. Empty parsed responses cannot carry genuine-issue or grounded-reason flags.",
+    "unsupported_claims": "Any explicit unsupported_claims entry requires all_material_claims_supported=False, preventing full concern pass while retaining genuine detected issues separately.",
+    "genuine_vs_complete": "genuine_issues_detected counts concern cases with a manually supported issue. Complete reviews additionally require parse/schema/citations and no unsupported material claims or findings.",
+    "citation_alternatives": "No exact gold wording, canonical line_id, expected_line_ids equality or structural reference-line-set flag gates semantic full pass. Production citation availability and manual causal appropriateness govern it.",
+    "counts": "Six fixed cohorts total176rows. Exactly176unique manual(arm,cohort,id)keys are required, each consumed key must exist, and final used==judgments equality rejects missing coverage. Given fixed176rawrows, any repeated rawcase would leave a unique judgment unconsumed and fail. Each summarized pair must contain exactly one concern and one clean.",
+    "subsets": "Retained14pairs, nested6same-diffpairs and12newquartetpairs are reported separately from the complete training cohort; their counts are not summed as independent cases.",
+    "contrasts": "Each family requires all four semantic/shape cells. Within-shape success requires both full reviews; across-shape success likewise requires both full reviews, with raw presence and sampled decision agreement separately reported. Malformed presence comparisons remain null.",
+    "hashes": "Generation summary binds the frozen plan; every source hash in its manifest is checked against disk. Manual notes bind model,prompt,response and trace hashes for each matched record. Raw response hashes and structural/raw parse-presence consistency are checked, and all read evidence appears in result.sources.",
+    "manual_evidence": "The aggregator validates and counts explicit manual notes. Semantic support is supplied by those complete-response readings; this audit examined aggregation logic before the final176notes are available.",
+    "manual_fragment_closure": "The combined notes require a nonempty sources list. Each referenced fragment is read through the provenance-recording read function and its SHA must match the binding. Every fragment case must equal the combined case dictionary exactly, duplicate (arm,cohort,id) keys across fragments fail, and the fragment-key union must equal all176combined judgments. Reading fragments records their bytes/SHA in final result.sources, preserving the individual readings in source closure."
+  },
+  "focused_checks": {
+    "full_pass_boolean_combinations": 144,
+    "full_pass_boolean_checks": "passed",
+    "four_case_distinction_fixture": {
+      "cases": 4,
+      "concerns": 2,
+      "clean": 2,
+      "json_syntax_valid": 4,
+      "production_usable": 4,
+      "parsed_concern": 2,
+      "parsed_empty": 2,
+      "parsed_presence_null": 0,
+      "correct_presence": 4,
+      "genuine_issues_detected": 2,
+      "reason_grounded_cases": 2,
+      "grounded_concern_reviews": 1,
+      "correct_clean_reviews": 2,
+      "full_reviews_pass": 3,
+      "clean_nonempty_responses": 0,
+      "invalid_clean_responses": 0,
+      "pairs": 2,
+      "full_review_pairs": 1,
+      "complete_presence_pairs": 2,
+      "complete_usable_presence_pairs": 2,
+      "eos": 4,
+      "token_limit": 0
+    },
+    "fixture_interpretation": "Two detected issues, one complete concern, two complete clean reviews:3fullreviews and1completepair."
+  },
+  "open_bugs": [],
+  "fragment_closure_reviewed_at_utc": "2026-09-30T23:49:05.243511+00:00",
+  "fragment_closure_review": {
+    "status": "Passed source review; no new bug found.",
+    "new_block_changes_full_pass_rule": false,
+    "new_block_changes_counts": false,
+    "frozen_files_modified": false
+  }
+}

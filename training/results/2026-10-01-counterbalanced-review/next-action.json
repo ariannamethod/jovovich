@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-01T01:35:47.145228+00:00",
+  "status": "DESIGN ONLY / NOT RUN",
+  "protocol_frozen": false,
+  "selected_next_step": "Native frozen-state affine binary readout probe; no new model run or implementation in this action.",
+  "question": "Can a direct binary readout extract the context-sensitive concern/clean distinction from the frozen final-MLP input more reliably than the adapted vocabulary-output and full-generation route?",
+  "completed_run_evidence": {
+    "selected_update": 100,
+    "teacher_forced_opening_exact": "52/52 common three-token openings, not complete answers",
+    "teacher_forced_decision": "29/52: 6/26 concern, 23/26 clean; 3/26 complete decision pairs",
+    "residual_ce": 0.67983035,
+    "new_full_reviews": {
+      "train": "24/52, 0/26 pairs",
+      "fresh_transfer": "12/24, 0/12 pairs; all 24 responses empty",
+      "older_diagnostics": "5/12, 0/6 pairs"
+    },
+    "interpretation": "More correct clean responses do not establish context-sensitive transfer. Existing results leave data cues, readout/objective limitations and insufficient optimization unresolved.",
+    "runtime_base_promoted": false
+  },
+  "probe_scope": {
+    "model": "Frozen existing Qwen body; only a separate native affine two-logit head is fitted in the future diagnostic.",
+    "feature": "Causal post-final-attention residual z before the final MLP; capture before the class-specific token using the prompt plus common prefix.",
+    "known_prefix": {
+      "decision_position": 3,
+      "token_ids": [
+        4913,
+        3903,
+        819
+      ]
+    },
+    "exclusions": "No class token, later gold text, target lengths, case IDs or paired held-out features. Normalization must use only the training fold.",
+    "claim_limit": "Binary separation tests accessible information, not full-review competence. Failure of one affine head cannot prove that the state contains no semantic information."
+  },
+  "cohort": {
+    "review_rows": 52,
+    "pairs": 26,
+    "held_out_families": 20,
+    "retained_pair_families": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "model-parent-provenance",
+      "scoped-design-record",
+      "checksum-indirection",
+      "sequence-field-width",
+      "validated-port-conversion",
+      "negative-offset-type",
+      "exact-property-name",
+      "idempotent-event-retry",
+      "atomic-snapshot-publication",
+      "save-status-propagation"
+    ],
+    "quartet_families": [
+      "preserve-trie-credit",
+      "allocation-null-guard",
+      "zero-worker-guard",
+      "write-permission-check",
+      "stable-manifest-order",
+      "allocation-product-overflow"
+    ],
+    "grouping": "Leave one of these 20 families out. Each retained pair stays together; each quartet keeps both diff shapes and both labels together. Every review receives one held-out prediction. Exclude the 24 voice/code rows.",
+    "supersedes": "The archived v2 proposal used 40 rows/20 pairs and six broader folds. Its cohort assertions and grouping must be explicitly revised before execution."
+  },
+  "required_controls": [
+    "Nuisance-only comparison using the demonstrated if/sort/upstream-credit counts and the previous length/edit-count features; freeze the exact vector.",
+    "Paired label permutations under the same grouped evaluation; preserve pair balance and freeze quartet coupling and masks before scoring.",
+    "True-label and paired-permuted-label training-interpolation controls; successful fit alone is insufficient on this small high-dimensional cohort.",
+    "Report per-class and complete-pair results, including the nested six same-full-diff/context pairs without double-counting."
+  ],
+  "protocol_still_pending": "Freeze exact features and normalization, whether to include answer-position-0, optimizer and regularization, convergence and numerical checks, permutation count/seed/masks/coupling, and comparison criteria. No final numeric hyperparameters are set here; the older proposal is a reference, not an implicit freeze.",
+  "evaluation_boundary": "Current fresh transfer and older diagnostics have been read. Reuse only as explicitly labelled development diagnostics; any subsequent confirmatory claim needs independently frozen fresh cases.",
+  "interpretation": "Grouped separation above nuisance/permutation controls supports information accessible at this state. Training interpolation without grouped advantage does not establish transfer. Weak fit with active gradients leaves optimization unresolved.",
+  "undertraining": "Still open: component-mean denominators changed from 40 to 52 decisions and 792 to 1012 residual targets. Equal 100 visits do not ensure equal gradient contribution or enough optimization. Existing .lora files omit Adam moments/step state, so reloading them with fresh Adam is not continuous resume. A later duration control requires genuine optimizer resume or a deterministic rerun with its first 100 updates checked.",
+  "separate_later_option": "A same-size 52-row corpus intervention can replace harmful neutral contexts with ineffective lookalikes that match clean protection counts. Keep this separate from the readout probe, any longer budget and adapter-placement changes.",
+  "execution_record": "No feature extraction, fitting, new model run or frozen-input change was performed for this action. The revised protocol must be frozen before execution.",
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-semantic-assessment.json",
+      "sha256": "ca3a40c78dbddcda005c814dde43b4c9b6aecd641402b55e14818e27443e8297",
+      "bytes": 678199
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-trajectory-assessment.json",
+      "sha256": "7e98ad7f06593a7d33ca7c853e52ddadc76e5b7456b67d6742083b4994f5ea78",
+      "bytes": 97510
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/next-diagnostic-decision.json",
+      "sha256": "7ee71ac95b1d624ef5cfa7f8ae363d7c81222823c647b096d3ccf5a71d4dcfa4",
+      "bytes": 13593
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-joint-review/representation-next-probe.json",
+      "sha256": "ff21ad89c1fef62b1b8edc340b806edaf9ee14b9ff517543d9ce245a24f9f9ea",
+      "bytes": 8533
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/nuisance-cue-audit.json",
+      "sha256": "bb9e1a72669a79f035090a531acc57adf37b97c69f6931b89495b2d6ce540154",
+      "bytes": 58243
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/corpus-audit.json",
+      "sha256": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6",
+      "bytes": 45659
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-resource.json",
+      "sha256": "c3fbcf347fb5fbeba5d5cd296af819e26568328876c86497fb333cfd9b87d694",
+      "bytes": 463
+    }
+  ]
+}

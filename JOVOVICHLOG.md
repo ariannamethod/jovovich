@@ -2,6 +2,153 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — The guard is still in the room.
+
+The approved quartet design is now a deterministic corpus builder. Six old
+introduced/repaired pairs become six four-case families: harmful versus
+redundant removal, each as deletion and as a no-op replacement. The semantic
+change substitutes one unchanged context line; hunk counts, changed-line text
+and line coordinates stay matched within each shape. Fourteen other pairs and
+all twenty-four voice/code rows remain byte-identical to v3. The result is
+76 rows, with 52 reviews balanced 26/26. Pure deletions are balanced 6/6.
+
+The builder checks the actual production chunks and citations. C probes test
+both hazard reachability and ordinary operation while intercepting dangerous
+operations before undefined behavior; JavaScript ordering and NOTICE lineage
+have separate checks. A fresh 24-case transfer set uses different identifiers,
+paths, coordinates and full contexts. Its ineffective lookalikes check another
+pointer, another divisor, READ instead of EDIT, a wider-than-safe allocation
+bound, an unused sorted copy, or another component's attribution. An
+independent auditor checks all 48 before/after states and citation alternatives.
+
+A second audit quantifies the remaining count cue before new-model generation.
+In all twenty-four training quartet rows, the post-change hunk contains zero
+relevant guard/sort/credit occurrences for a concern and one for a clean change.
+The fixed presence rule therefore gets 24/24 labels and 12/12 pairs. In fresh
+transfer, both labels contain one `if` in each C family, one sort in the ordering
+family, or two source-credit occurrences in the provenance family. The same
+rule returns clean everywhere: 12/24 labels and zero complete pairs. Every
+opposite-label transfer pair has identical values of these count features.
+Transfer therefore tests the operand, permission, bound, data flow or component
+association that makes the remaining occurrence effective.
+
+Native preflight performs no model forward. All 152 prompt/full-completion
+ChatML comparisons agree between training and runtime. It finds 52 decision
+positions and 1,012 residual answer positions, including EOS: 1,064 targets
+per update. The fixed forty-token microbatch gives 27 batches with a 24-token
+tail. The strict scorer now derives corpus coverage and pair denominators
+from its explicit dataset, while checking microbatch size independently.
+All three archived score outputs remain exactly equal under the revised scorer.
+
+Forty-nine complete message triples also match the previous corpus. For these
+rows, all discrete readouts and every field except ten decision margins agree
+exactly.
+Eight full-readout margins and two decision-batch margins differ by at most
+`5.72e-6`; every difference coincides with a full SIMD tile becoming a scalar
+edge, or vice versa. The frozen binary uses FMA in the full tile and separate
+multiply/add instructions at the edge. The comparison preserves `exact=false`,
+all raw differences and their tile positions; only these finite margins receive
+a declared `1e-5` diagnostic tolerance. No trainer change follows from this.
+
+The previous model completes all 88 natural responses. Its 26 unchanged training
+prompts and all 12 established diagnostic prompts replay the archived complete
+answers, native prompt IDs, sampled IDs and EOS exactly. The unchanged
+replay checks the evaluation path before comparing the revised training corpus.
+
+The experiment kept fresh Qwen2.5-Coder-0.5B-Instruct Q8_0 initialization,
+notorch and trainer code, rank 16/alpha 32, seed 20260929, LR 0.0001, 100 joint
+updates, global clip 1 and the 25/50/100 selector. Each target still receives
+100 visits; total exposure changes from 83,200 to 106,400 targets. The v3
+wording repairs and quartet replacement are one combined corpus intervention.
+
+The previous joint-selected model and the newly selected model each answered
+52 training, 24 transfer and 12 established diagnostic prompts naturally, with
+192 tokens at temperature zero. Exact sampled IDs and complete text are kept.
+Full-review judging separates a genuine detected issue from a review whose
+citations and every material claim hold up. Semantic flips within fixed diff
+shapes and shape invariance within fixed labels are reported together.
+
+The run finishes 100 updates in 5,731.9338 seconds, with peak RSS
+1,470,592 KiB. The fixed token-pair selector chooses update 100. Its
+teacher-forced three-token openings are exact on 52/52 reviews; decision
+accuracy is 29/52, comprising 6/26 concern and 23/26 clean targets, with
+3/26 complete decision pairs. Residual-answer CE falls from 2.73018982 to
+0.67983035. Complete gold concern answers remain inexact on all 26 examples.
+The selector measures a token decision, not the meaning of a finished review.
+
+All 176 raw responses, their actual token traces and hash-bound manual
+judgments are retained. Independent readers judge the complete prompt,
+causal citation and every material claim; gold wording is not required.
+
+| Cohort / model | Production usable | Genuine concerns | Fully grounded concerns | Correct clean | Full reviews | Full pairs |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Train / previous | 50/52 | 3/26 | 3/26 | 16/26 | 19/52 | 1/26 |
+| Train / v4 | 51/52 | 2/26 | 1/26 | 23/26 | 24/52 | 0/26 |
+| Fresh transfer / previous | 24/24 | 0/12 | 0/12 | 11/12 | 11/24 | 0/12 |
+| Fresh transfer / v4 | 24/24 | 0/12 | 0/12 | 12/12 | 12/24 | 0/12 |
+| Older diagnostics / previous | 11/12 | 0/6 | 0/6 | 5/6 | 5/12 | 0/6 |
+| Older diagnostics / v4 | 12/12 | 1/6 | 1/6 | 4/6 | 5/12 | 0/6 |
+
+The training gain comes from seven more correct clean responses, offset by
+two fewer fully grounded concern reviews. Fresh transfer returns twenty-four
+empty findings lists. The six new training quartets have one genuine concern,
+zero fully grounded concern reviews and zero complete pairs. None of these
+results establishes effective-versus-ineffective context transfer.
+
+The short SQLite warning receives credit for identifying the newly mandatory
+build dependency. The trie answer correctly detects loss of sole upstream
+credit, then invents a separate product; genuine detection survives, strict
+review credit does not. The port answer identifies validation loss but cites
+the removed local-variable declaration. The removed check or added `atoi`
+would be causal alternatives; that declaration is neither. This rejection
+comes from the cited code, not a requirement to match one canonical line ID.
+
+The older cleanup diagnostic correctly identifies removal of the required
+`fclose`. Its awkward access clause is read as the stream remaining available
+after the former close point. A stricter reading, that deletion newly enables
+the earlier `fgetc`, rejects the elaboration: that call already occurred before
+the changed line. This sensitivity changes the new diagnostic full-review
+count from 5/12 to 4/12, while genuine issue detection stays 1/6. Its clean
+counterpart already fails, so complete pairs remain zero under either reading.
+The measured model is not promoted to the runtime base.
+
+The next selected diagnostic is a native affine binary readout from the frozen
+final-MLP input. It asks whether context distinctions are accessible there
+when the adapted vocabulary output and generated review remain weak. The
+revised design covers 52 reviews and 26 pairs with twenty held-out families:
+fourteen retained pairs and six complete quartets. Both shapes and labels of
+each quartet stay together. The nuisance baseline includes the demonstrated
+guard/sort/credit counts; paired label permutations and training-interpolation
+controls prevent a small high-dimensional dataset from passing on fit alone.
+This is a design, not a completed probe. Its full protocol must be frozen
+before extraction or fitting. The already-read transfer cases become
+explicit development diagnostics for this next decision.
+
+Undertraining remains open. One hundred visits per target do not equalize
+optimization pressure: the decision mean now divides by 52 instead of 40,
+and the residual mean by 1,012 instead of 792. Adapter files also omit Adam
+moments and step counters; loading them with fresh Adam would not continue
+the same trajectory. A longer-budget control needs actual optimizer resume
+or a deterministic rerun with its first hundred updates checked.
+A same-size corpus revision that adds ineffective lookalikes to harmful
+training contexts remains a separate later option. First test the readout;
+change one experimental question at a time.
+
+All 5 native and 59 Node tests pass. Three historical scorer outputs remain
+exactly equal. The selected GGUF passes tensor/metadata checks and all three
+native adapter/export parity probes. Its 52 natural decision IDs match the
+conditional teacher readout; the control's 38 unchanged complete responses
+and token traces replay the prior archive exactly.
+
+Private HF weights and corpus artifacts are archived at
+`4a5618ddb77adb1231e177a9209b1480f7335a7f` (16 files downloaded and verified).
+Source, evidence and the model-card update are archived at
+`d1f7e6aa7b9c45f611c254621f7643fd88092e6c` (129 files downloaded and verified).
+The byte-preserved record and next action live in
+`training/results/2026-10-01-counterbalanced-review`.
+
+SERGE keeps the same cigarette. Changing it would add another variable.
+
 ## 2026-10-01 — Teach the opening. Interrogate the shortcut.
 
 The independent JOVOVICH audit found a precise alignment in the selected

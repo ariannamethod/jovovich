@@ -1,0 +1,1825 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-01T00:10:23.348321+00:00",
+  "method": "Read-only lexical counting of the frozen before/after patch sides; no model outputs, inference, training, fitted classifier or corpus edits. Verified all48before/after reconstruction hashes against the existing fixture audits.",
+  "scope": {
+    "training_rows": 24,
+    "training_quartet_families": 6,
+    "complete_training_review_rows": 52,
+    "transfer_rows": 24,
+    "transfer_families": 6
+  },
+  "feature_definitions": {
+    "if_statements": "\\bif\\s*\\(",
+    "sort_calls": "\\.sort\\s*\\(",
+    "upstream_reference_occurrences": "Exact occurrences of firwood/trie in training notice text and dawnline/leaf-cache in transfer notice text; each occurrence here is an upstream credit line. Counts are over a single patch side, excluding removed lines from the after side.",
+    "raw_patch": "A secondary count over the Surrounding diff patch, including removed/context/added lines once; repeated Changed lines listings are excluded."
+  },
+  "conclusion": "The24new training quartet labels are perfectly separated by remaining protection-looking occurrence presence. The same three count features are equal within every opposite-label fresh-transfer pair.",
+  "fixed_unfitted_rules": {
+    "after_presence": {
+      "rule": "Predict concern iff if_count+sort_call_count+upstream_reference_count==0.",
+      "training": {
+        "cases": 24,
+        "correct_labels": 24,
+        "concern_labels_correct": 12,
+        "clean_labels_correct": 12,
+        "pairs": 12,
+        "complete_label_pairs": 12
+      },
+      "transfer": {
+        "cases": 24,
+        "correct_labels": 12,
+        "concern_labels_correct": 0,
+        "clean_labels_correct": 12,
+        "pairs": 12,
+        "complete_label_pairs": 0
+      }
+    },
+    "raw_patch_count": {
+      "rule": "Predict concern iff the sum of the same raw-patch occurrence counts is1.",
+      "training": {
+        "cases": 24,
+        "correct_labels": 24,
+        "concern_labels_correct": 12,
+        "clean_labels_correct": 12,
+        "pairs": 12,
+        "complete_label_pairs": 12
+      },
+      "transfer": {
+        "cases": 24,
+        "correct_labels": 12,
+        "concern_labels_correct": 0,
+        "clean_labels_correct": 12,
+        "pairs": 12,
+        "complete_label_pairs": 0
+      }
+    }
+  },
+  "equal_feature_collision": {
+    "transfer_opposite_label_pairs_with_identical_before_after_and_raw_count_vectors": 12,
+    "transfer_pairs": 12,
+    "maximum_correct_transfer_labels_for_any_deterministic_function_of_these_counts_even_with_family_and_shape": 12,
+    "total_transfer_labels": 24,
+    "maximum_complete_transfer_label_pairs": 0,
+    "argument": "Each of the12semantic pairs has identical count inputs and opposite labels. A deterministic count-only decision gives both members the same label, so one member of each pair is correct and none of the pairs is fully correct."
+  },
+  "interpretation": [
+    "The diff-shape revision removes the earlier deletion-versus-replacement label cue. In these24training rows it simultaneously makes presence of one retained guard/sort/upstream reference a perfect label cue.",
+    "Transfer varies the protected operand, permission bit, selected bound, output dataflow or notice component while preserving the audited counts. Its frozen semantic witnesses distinguish effective from ineffective retained lookalikes.",
+    "If new training-quartet scores improve while transfer scores do not, the simple remaining presence/count cue is a concrete alternative explanation to a limitation in last-MLP representations. The measured model outputs and family-level contrasts can then determine the next control.",
+    "The count result covers the specified three occurrence features and the24new quartet rows. The full52review training corpus also retains14other pairs, including six pairs with identical full diffs and differing rules; the24-row perfect label rule is not a result for all52reviews.",
+    "The calculated12/24transfer ceiling concerns decisions using only these counts, even with family and shape supplied. Identifier choice, control/dataflow, component scope and other textual features are outside that restricted input."
+  ],
+  "families": [
+    {
+      "training_family": "allocation-null-guard",
+      "transfer_family": "allocation-failure",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_concern_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain one NULL-checking if. Harmful checks the always-non-NULL borrowed sentinel; clean checks the newly allocated fresh pointer before its dereference."
+    },
+    {
+      "training_family": "zero-worker-guard",
+      "transfer_family": "zero-divisor",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_concern_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain one zero-comparison if. Harmful checks units; clean checks lanes, the denominator used by available/lanes."
+    },
+    {
+      "training_family": "write-permission-check",
+      "transfer_family": "write-permission",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_concern_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain one rights-checking if. Harmful checks READ; clean checks EDIT, the right required for commit_blob."
+    },
+    {
+      "training_family": "allocation-product-overflow",
+      "transfer_family": "allocation-overflow",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_concern_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_clean_after": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain one bound-checking if and both bound definitions. Harmful selects limit.narrow based on uint32_t; clean selects limit.wide based on the actual uint64_t element."
+    },
+    {
+      "training_family": "stable-manifest-order",
+      "transfer_family": "stable-output-order",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "transfer_clean_after": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain one sort call creating sortedView. Harmful serializes view; clean serializes sortedView, so the dataflow to output determines whether that sort protects ordering."
+    },
+    {
+      "training_family": "preserve-trie-credit",
+      "transfer_family": "component-provenance",
+      "training_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "training_clean_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "transfer_concern_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "transfer_clean_after": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "same_counts_for_both_shapes": true,
+      "semantic_difference": "Both labels retain two identical upstream source/license lines. Harmful scopes both to leaf_scan.c; clean scopes one to the retained leaf_store.c implementation whose original credit was removed."
+    }
+  ],
+  "training_cases": [
+    {
+      "id": "preserve-trie-credit-deletion-concern",
+      "family": "preserve-trie-credit",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "after_sha256": "cc244596d0157aea08347b504c5be16cd3c772bafade7b87d7cda4f8a711a566",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "preserve-trie-credit-deletion-clean",
+      "family": "preserve-trie-credit",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "after_sha256": "7a930b32451fd027cd2e037a2b06f01a0f23098f5c2f76d7ae99e34b53fe747c",
+      "after_matching_lines": [
+        "Trie implementation derived from firwood/trie (MIT)."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "preserve-trie-credit-replacement-concern",
+      "family": "preserve-trie-credit",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "after_sha256": "813801e4e088a18475ecc16d58779a7ffaa16a79fd88f235de572265619e66e0",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "preserve-trie-credit-replacement-clean",
+      "family": "preserve-trie-credit",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 1
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "after_sha256": "b0318df6cb65ea61319a6b50fef33827f46d8ceb2d4d0e62cb9c25d91962c165",
+      "after_matching_lines": [
+        "Trie implementation derived from firwood/trie (MIT)."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "family": "allocation-null-guard",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "dd5d1f5dcc1f76a41bb72bd66e4975b497b31acf33516bd0fe09ed7208654d70",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "family": "allocation-null-guard",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "99d5b48cbda1290121ec64a64b4f523e0beaacad64c0ff424c1d83416dd16d73",
+      "after_matching_lines": [
+        "    if (n == NULL) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "allocation-null-guard-replacement-concern",
+      "family": "allocation-null-guard",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "1b99507645089c3434703e31e75453dcd57250b555cc93ad5cb049e4d29b67c4",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "allocation-null-guard-replacement-clean",
+      "family": "allocation-null-guard",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "b85a69ebbc1012e035ca350ee1e2f9e80ef4a3aefc614a0fecebea9ba5c29898",
+      "after_matching_lines": [
+        "    if (n == NULL) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "zero-worker-guard-deletion-concern",
+      "family": "zero-worker-guard",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "667b2817396d523e3e2a1a2ed713870352e4eda3f15cd6e11f3084c7b2223234",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "zero-worker-guard-deletion-clean",
+      "family": "zero-worker-guard",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "3fc5c1d3a3956ba595d8f198f975fa3148c4a7f88259ef019897be491f06d571",
+      "after_matching_lines": [
+        "    if (workers == 0) return EINVAL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "zero-worker-guard-replacement-concern",
+      "family": "zero-worker-guard",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "0455367b67daf53869aea2a70d67ffab5f6ea56f5757072113b0ebc9b4b4c7aa",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "zero-worker-guard-replacement-clean",
+      "family": "zero-worker-guard",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "062a7da32d3d90a03d6ac88548e5b5ac2e7189f6abfeb8438aad612da1c9e3ee",
+      "after_matching_lines": [
+        "    if (workers == 0) return EINVAL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "write-permission-check-deletion-concern",
+      "family": "write-permission-check",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "5a89e67cd7710c227e91d51126675b8e14adc9dad7bd34830f4c4b94c511c926",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "write-permission-check-deletion-clean",
+      "family": "write-permission-check",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "2c63e8b2b8c5f5203cc1f312d309a4d90d5fcab02820ce524ef4a4d314efdba0",
+      "after_matching_lines": [
+        "    if (!session.can_write) return DENIED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "write-permission-check-replacement-concern",
+      "family": "write-permission-check",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "84edaf81e421b64f74fbe41bdd4fba6178ef83c0c09c5516bbed109e67132416",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "write-permission-check-replacement-clean",
+      "family": "write-permission-check",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "e4416aab3938c85a6bc1b61b569c6e4bb23f57da5b26db99586536d02e4a88de",
+      "after_matching_lines": [
+        "    if (!session.can_write) return DENIED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "stable-manifest-order-deletion-concern",
+      "family": "stable-manifest-order",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "0905992d48f07477e936108edc1038b0a78c48f190e77257d6c91bc589673330",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "stable-manifest-order-deletion-clean",
+      "family": "stable-manifest-order",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "edc0a93425ab2d3b1bcb9cf336a8391e4d7b01212cb1906e510f994757b18784",
+      "after_matching_lines": [
+        "names.sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "stable-manifest-order-replacement-concern",
+      "family": "stable-manifest-order",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "3ba52f14b5bb4a83a82fda4af885bc82cc7610d24c8a8658e5ed332d32de9b18",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "stable-manifest-order-replacement-clean",
+      "family": "stable-manifest-order",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "46999872be19184e37c84985f764cf9959a8bd295e00cb1db2c03ab7880f680a",
+      "after_matching_lines": [
+        "names.sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "allocation-product-overflow-deletion-concern",
+      "family": "allocation-product-overflow",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "a8d36ed1689218e8380781451d0a26e90cab2673639fde06dbe93e659ec36d05",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "allocation-product-overflow-deletion-clean",
+      "family": "allocation-product-overflow",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "db222042e47cf7cc0ab1d2f61c91d5dc21f51a8b78b4a020a2958cab4418fd41",
+      "after_matching_lines": [
+        "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    },
+    {
+      "id": "allocation-product-overflow-replacement-concern",
+      "family": "allocation-product-overflow",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "817a994bec95cfbe39bdf390973f997ee94c24429199d851a52c9184da992da4",
+      "after_matching_lines": [],
+      "presence_rule_predicted_concern": true,
+      "raw_count_rule_predicted_concern": true
+    },
+    {
+      "id": "allocation-product-overflow-replacement-clean",
+      "family": "allocation-product-overflow",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "c13059373f20b7d4412b640f8f62bd38d9f2875cb9ecc1777a52a513413f9ec9",
+      "after_matching_lines": [
+        "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false
+    }
+  ],
+  "transfer_cases": [
+    {
+      "id": "transfer-allocation-failure-pure-deletion-harmful",
+      "family": "allocation-failure",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "fdcb4a30e96ee8a2ec5d73a07a3c7005d65f9c884b7e0260c65df72eff30528b",
+      "after_matching_lines": [
+        "    if (NULL == sentinel) { free(fresh); return NULL; }"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-pure-deletion-redundant",
+      "family": "allocation-failure",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "de5a985a35dfabfc5b3664a5709b3c9bf27d28c883ebbbe12e050abb51233476",
+      "after_matching_lines": [
+        "    if (NULL == fresh) { free(fresh); return NULL; }"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-harmful",
+      "family": "allocation-failure",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "02e02ecaaf68302f7a554b724a972589c9db9b5787d029efaea064e739af3176",
+      "after_matching_lines": [
+        "    if (NULL == sentinel) { free(fresh); return NULL; }"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-redundant",
+      "family": "allocation-failure",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "103792521cfde3fb19422d29b1aba6c69ac304e2b35a6a3116b136c2ae9e7fea",
+      "after_matching_lines": [
+        "    if (NULL == fresh) { free(fresh); return NULL; }"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-harmful",
+      "family": "zero-divisor",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "fe2cc176b7d2a41b0bd7234b5ec293a99b52d7dbab546237f5f023f08014cc28",
+      "after_matching_lines": [
+        "    if (0U == units) return -1;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-redundant",
+      "family": "zero-divisor",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "414914bedfec71bbb3224d5f0e0f1dd30a374d74513c6d3e6cb5c69a11ed9bc7",
+      "after_matching_lines": [
+        "    if (0U == lanes) return -1;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-harmful",
+      "family": "zero-divisor",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "ac70e876dfcac7cab753726999f19c1e14eee722d1bdf0093a6b3bd89cf9c03f",
+      "after_matching_lines": [
+        "    if (0U == units) return -1;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-redundant",
+      "family": "zero-divisor",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "cce0d5560ff193ac30c2a8714bd1968eb9071dacf52932c441ebd569ba18a1a1",
+      "after_matching_lines": [
+        "    if (0U == lanes) return -1;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-harmful",
+      "family": "write-permission",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "ab36d99cdc49d7ba9f989b54a13b437653b958a6b81c5b334c8d1e5557bd245b",
+      "after_matching_lines": [
+        "    if ((active & READ) == 0U) return BLOCKED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-redundant",
+      "family": "write-permission",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "2a3825a8afcb47b89533f3811bd32d7beaa0f1c21aabe0ccd66d20a24d0a4148",
+      "after_matching_lines": [
+        "    if ((active & EDIT) == 0U) return BLOCKED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-harmful",
+      "family": "write-permission",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "d71f0063ad76f46248b969791272297b476073979d562b2c313b5f2fe4e316e6",
+      "after_matching_lines": [
+        "    if ((active & READ) == 0U) return BLOCKED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-redundant",
+      "family": "write-permission",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "fb228f3c7e28e1cbe160bc5df7351b1aa80223670527caa6fd250a5fda0de60f",
+      "after_matching_lines": [
+        "    if ((active & EDIT) == 0U) return BLOCKED;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-harmful",
+      "family": "allocation-overflow",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "ffdbe33a298ef051ed0c4a822d5226642d3db319108c7175cb2023316c504c93",
+      "after_matching_lines": [
+        "    if (limit.narrow < slots) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-redundant",
+      "family": "allocation-overflow",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "a21425315ac2c1d0a03e8a3aba99760cc58a4e44e166f83f5fee2196ca9f0c6e",
+      "after_matching_lines": [
+        "    if (limit.wide < slots) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-harmful",
+      "family": "allocation-overflow",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "2c8c0a7cb6c3b4070c71fde56efecb6655f004e64d39c59487954e9c298467ea",
+      "after_matching_lines": [
+        "    if (limit.narrow < slots) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-redundant",
+      "family": "allocation-overflow",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 1,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 2,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "882d1eb12d36abb58fde0d2d495de7bd3c956447cf23354c34c5faabd25d3b22",
+      "after_matching_lines": [
+        "    if (limit.wide < slots) return NULL;"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-harmful",
+      "family": "stable-output-order",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "fd9f1d3969a2b0ae571b8db6aea7d8055163c7e148b9a1b4b4e7a25c74ff61a4",
+      "after_matching_lines": [
+        "    const sortedView = view.slice().sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-redundant",
+      "family": "stable-output-order",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "336c011e4a238477ee328e8d62430f3d03eb5004cbf73a80df8c8bddba87b992",
+      "after_matching_lines": [
+        "    const sortedView = view.slice().sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-harmful",
+      "family": "stable-output-order",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "2d081d658b7233b1ac0a4b8f5dc0f95f24528380318aa4dc8aecbdfbddcee8df",
+      "after_matching_lines": [
+        "    const sortedView = view.slice().sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-redundant",
+      "family": "stable-output-order",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 1,
+        "upstream_reference_occurrences": 0
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 2,
+        "upstream_reference_occurrences": 0
+      },
+      "after_sha256": "626e3bb0aa0f2b76da27b4eecb9bfe0b7e4270779bd3877e8c46e1d40ccfb74e",
+      "after_matching_lines": [
+        "    const sortedView = view.slice().sort();"
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-harmful",
+      "family": "component-provenance",
+      "shape": "deletion",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_sha256": "eb18b020a8cd92c63bba07ff282fdb2862f53d965e452fb7055340f436834230",
+      "after_matching_lines": [
+        "Source: dawnline/leaf-cache; license: ISC.",
+        "Source: dawnline/leaf-cache; license: ISC."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "credited_components": [
+            "cache/leaf_scan.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-redundant",
+      "family": "component-provenance",
+      "shape": "deletion",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_sha256": "eda3f49fc0d43fa440693e925a0cc9738ecb7154d805d779cbe3da5cdf78d774",
+      "after_matching_lines": [
+        "Source: dawnline/leaf-cache; license: ISC.",
+        "Source: dawnline/leaf-cache; license: ISC."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-harmful",
+      "family": "component-provenance",
+      "shape": "replacement",
+      "expected_concern": true,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_sha256": "5d53844df4350b469e79cfa76d703bc8634a5d6a2083433084206189c6a1f0ed",
+      "after_matching_lines": [
+        "Source: dawnline/leaf-cache; license: ISC.",
+        "Source: dawnline/leaf-cache; license: ISC."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "credited_components": [
+            "cache/leaf_scan.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-redundant",
+      "family": "component-provenance",
+      "shape": "replacement",
+      "expected_concern": false,
+      "before_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 2
+      },
+      "raw_patch_counts": {
+        "if_statements": 0,
+        "sort_calls": 0,
+        "upstream_reference_occurrences": 3
+      },
+      "after_sha256": "68c9f5f85d794606c9f952a7cd33df0092b174537b7b687b5856f689cfb404ad",
+      "after_matching_lines": [
+        "Source: dawnline/leaf-cache; license: ISC.",
+        "Source: dawnline/leaf-cache; license: ISC."
+      ],
+      "presence_rule_predicted_concern": false,
+      "raw_count_rule_predicted_concern": false,
+      "archived_semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        }
+      }
+    }
+  ],
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/corpus-audit.json",
+      "sha256": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6",
+      "bytes": 45659
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer.jsonl",
+      "sha256": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d",
+      "bytes": 63444
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-audit.json",
+      "sha256": "9463bed5bca174a95fb40d204cf10c4f809a616450bef1a7bfefcdaf4b4eef6d",
+      "bytes": 24246
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer-independent-audit.json",
+      "sha256": "4926000ec210003c500d48352ebf2a3b75d60f15d67d6867f12fa638a9d33c11",
+      "bytes": 28622
+    }
+  ]
+}

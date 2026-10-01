@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "status": "Frozen before training and control generation.",
+  "created_utc": "2026-09-30T23:42:44.484414+00:00",
+  "parent_commit": "12f35554536d4554dacaa52ab2bafc25adff61c9",
+  "question": "Does explicit semantic/shape counterbalancing improve grounded full reviews on training pairs and new transfer quartets?",
+  "approved_design": {
+    "path": "training/results/2026-10-01-joint-review/joint-next-control.json",
+    "sha256": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9",
+    "bytes": 24293
+  },
+  "fixed_training": {
+    "initialization": "Fresh adapters on the verified Qwen base, same initialization seed as comparator.",
+    "base_model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v4.jsonl",
+    "dataset_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "training_rows": "52 explicitly paired review rows; 12 voice and 12 code rows are diagnostic only.",
+    "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "adapter_targets": "Final-layer MLP gate, up and down projections.",
+    "trainable_parameters": 276480,
+    "learning_rate": 0.0001,
+    "optimizer": "Adam with unchanged native hyperparameters.",
+    "optimizer_updates": 100,
+    "global_gradient_clip": 1,
+    "microbatch_tokens": 40,
+    "objective": "mean decision CE + 1 * mean residual review-token CE, including terminal im_end; independent global denominators.",
+    "lambda_residual": 1,
+    "decision_targets_per_update": 52,
+    "residual_targets_per_update": 1012,
+    "joint_targets_per_update": 1064,
+    "total_target_visits": 106400,
+    "microbatches_per_update": 27,
+    "final_microbatch_targets": 24,
+    "data_phase": "Combined v3 wording repairs plus six counterbalanced quartets; causal attribution is to this whole corpus revision."
+  },
+  "comparator": {
+    "model": "models/joint-review-selected.gguf",
+    "model_sha256": "6aaf2f70764de35db1ee13b2c7d974b1064b6dfbd044024b164a2856fdafadd1",
+    "selection": {
+      "path": "training/results/2026-10-01-joint-review/selected-model.json",
+      "sha256": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1",
+      "bytes": 169
+    },
+    "scores": {
+      "path": "training/results/2026-10-01-joint-review/scores.json",
+      "sha256": "e30370fbe6e691aa69abe77d0c0168655d505c644355185fa17b4e3868205199",
+      "bytes": 116397
+    },
+    "metrics": {
+      "path": "training/results/2026-10-01-joint-review/metrics.jsonl",
+      "sha256": "43b7470ff8f226f2c2fe5235e8eaeb2bd0fd4e1b7d085d4f4c2022d6eb4be247",
+      "bytes": 870910
+    },
+    "corpus": {
+      "path": "training/sft_review_v2.jsonl",
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+      "bytes": 133845
+    },
+    "previous_generations": {
+      "train": {
+        "path": "training/results/2026-10-01-joint-review/joint-train-natural.jsonl",
+        "sha256": "8405ac382d7c46f843c87d8ce2c1db8f44b4b5422e21dc054b015c35f86e7d6a",
+        "bytes": 407430
+      },
+      "diagnostics": {
+        "path": "training/results/2026-10-01-joint-review/joint-diagnostics-natural.jsonl",
+        "sha256": "5c275bf1d0254f04667519da83823eac2e8ad4a33825a25365d4518b1491ca59",
+        "bytes": 127888
+      }
+    }
+  },
+  "checkpoint_selection": {
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "eligible_updates": [
+      25,
+      50,
+      100
+    ],
+    "rule": "Maximize complete full-vocabulary decision pairs, then target hits, then earlier eligible update.",
+    "timing": "Select once before new-arm free generation; no transfer/generation-based choice."
+  },
+  "frozen_training": {
+    "source": {
+      "path": "training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    "binary": {
+      "path": "build/jovovich-train-mlp",
+      "sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+      "bytes": 254792
+    },
+    "dataset_binary": {
+      "path": "models/counterbalanced-review.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123
+    },
+    "pair_map": {
+      "path": "models/counterbalanced-review.pairs",
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+      "bytes": 224
+    }
+  },
+  "frozen_evaluation": {
+    "infer": {
+      "path": "src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    "runner": {
+      "path": "build/jovovich-infer",
+      "sha256": "adaec885eab0e7964f7252b146bbcc038688bd40ae93e55d0c86815063f5303c",
+      "bytes": 229136
+    },
+    "host": {
+      "path": "bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+      "bytes": 16336
+    },
+    "corpus_audit": {
+      "path": "../counterbalanced-reference/corpus-audit.json",
+      "sha256": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6",
+      "bytes": 45659
+    },
+    "probe": {
+      "path": "../counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "sha256": "6fea84be2c67cc6baa45d790dbbc463bf02397b2eb8164564c9533ae184615ac",
+      "bytes": 10322
+    },
+    "summary": {
+      "path": "../counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+      "sha256": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b",
+      "bytes": 18577
+    },
+    "controller": {
+      "path": "../counterbalanced-reference/run_counterbalanced_evaluation.py",
+      "sha256": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a",
+      "bytes": 5847
+    },
+    "transfer": {
+      "path": "../counterbalanced-reference/fresh-transfer.jsonl",
+      "sha256": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d",
+      "bytes": 63444
+    },
+    "corpus": {
+      "path": "training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    "diagnostics": {
+      "path": "training/review_holdout_v2.jsonl",
+      "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+      "bytes": 14028
+    },
+    "identity": {
+      "path": "prompts/identity.txt",
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+      "bytes": 1096
+    },
+    "shared_helper": {
+      "path": "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d",
+      "bytes": 10672
+    },
+    "scorer": {
+      "path": "training/score_decisions.py",
+      "sha256": "f79205594c62eba2f71a46ad6a9cb5d864b3b41cb09a5f325f8a12564d0f44f8",
+      "bytes": 21428
+    },
+    "merger": {
+      "path": "build/jovovich-merge-mlp",
+      "sha256": "4218482a0e2730c7984fb364ab799658282ef4b39a08d13bd9e2eca2f505d572",
+      "bytes": 52784
+    },
+    "parity": {
+      "path": "build/jovovich-probe-mlp",
+      "sha256": "964b90719895746d8335936c7709fb3bf9d8ee61cd174720287f13fa46cbe773",
+      "bytes": 263256
+    },
+    "export_verifier": {
+      "path": "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1",
+      "bytes": 2197
+    }
+  },
+  "training_runner": {
+    "path": "../counterbalanced-reference/run_counterbalanced_review.py",
+    "sha256": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7",
+    "bytes": 2970
+  },
+  "preflight": {
+    "chatml": {
+      "path": "models/counterbalanced-tokenization.json",
+      "sha256": "ef7c2e2c3e36602bcbe05f123a6c46656b90ca85ac182328f90c2e4e244e2a34",
+      "bytes": 99
+    },
+    "native": {
+      "path": "../counterbalanced-reference/native-preflight.json",
+      "sha256": "bf923863467cf73d56d6cd1792d65e8344066392b8a25157b057dea879fee559",
+      "bytes": 60623
+    },
+    "corpus": {
+      "path": "../counterbalanced-reference/corpus-audit.json",
+      "sha256": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6",
+      "bytes": 45659
+    },
+    "transfer": {
+      "path": "../counterbalanced-reference/fresh-transfer-audit.json",
+      "sha256": "9463bed5bca174a95fb40d204cf10c4f809a616450bef1a7bfefcdaf4b4eef6d",
+      "bytes": 24246
+    },
+    "protocol": {
+      "path": "../counterbalanced-reference/protocol-audit.json",
+      "sha256": "3a950e726458869e4b4ad81d2063222029812f8ee783f48ee24fe492b56884d5",
+      "bytes": 17029
+    },
+    "orchestration": {
+      "path": "../counterbalanced-reference/orchestration-audit.json",
+      "sha256": "9eb91840e8ef3832d7231b4ad5e83c847844df656cb7238c391347fd7eb2ccad",
+      "bytes": 4140
+    }
+  },
+  "evaluation": {
+    "new_responses": 176,
+    "control": {
+      "train_natural": 52,
+      "transfer_natural": 24,
+      "diagnostics_natural": 12
+    },
+    "counterbalanced": {
+      "train_natural": 52,
+      "transfer_natural": 24,
+      "diagnostics_natural": 12
+    },
+    "temperature": 0,
+    "budget_tokens": 192,
+    "threads_per_process": 2,
+    "activation_quantization": false,
+    "training_threads": 4,
+    "control_workers": 2,
+    "counterbalanced_workers": 4,
+    "schedule": "Control generation may overlap training; selected new-arm generation follows training/export parity.",
+    "trace": "Native prompt IDs and sampled IDs including terminal EOS retained for every response.",
+    "shared_prefix": "No forced-prefix generation. Compare actual natural decision to teacher only where prompt matches and preceding prefix IDs are exact."
+  },
+  "full_answer_judgment": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "comparisons": {
+    "retained_pairs": 14,
+    "counterbalanced_quartet_families": 6,
+    "training_quartet_rows": 24,
+    "identical_full_diff_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "scoped-design-record",
+      "checksum-indirection"
+    ],
+    "fresh_transfer": "24 new cases in six families with effective vs ineffective differently placed/spelled lookalikes; development diagnostic, not a population benchmark.",
+    "quartet_contrasts": "Report semantic flips within each fixed shape and shape invariance within each fixed label, with full-review correctness alongside raw invariance.",
+    "exposure": "100 full-corpus updates: every target visited 100 times. Total target exposure and corpus weighting change with the revision; exact native counts retained.",
+    "interpretation": "Same model/init/native objective/optimizer/selector; combined corpus revision. One deterministic run per corpus, no uncertainty over seeds."
+  }
+}

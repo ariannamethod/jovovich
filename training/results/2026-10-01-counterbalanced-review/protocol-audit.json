@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-09-30T23:34:40.862803+00:00",
+  "review_type": "Independent source/protocol audit plus native tokenization-only preflight; no inference, training or repository source edits.",
+  "reviewed_revision": "12f35554536d4554dacaa52ab2bafc25adff61c9",
+  "conclusion": "The proposed fixed-update corpus comparison addresses diff-shape dependence through controlled semantic and shape contrasts. Native training supports the enlarged corpus. Native preflight passed for all76rows and52mapped decisions; the reviewed working-tree scorer generalizes corpus counts and validates the40-token microbatch independently.",
+  "scope": {
+    "corpus_rows": 76,
+    "review_rows": 52,
+    "review_pairs": 26,
+    "nonreview_readout_rows": 24,
+    "natural_cases_per_model": 88,
+    "model_comparison_responses": 176,
+    "training_updates": 100,
+    "microbatch_tokens": 40,
+    "eligible_saved_updates": [
+      25,
+      50,
+      100
+    ]
+  },
+  "blockers_found_at_merged_revision": [
+    {
+      "id": "scorer-fixed-corpus",
+      "location": "training/score_decisions.py: corpus_map, references, decision_summary, full_summary",
+      "evidence": "The merged scorer requires64rows/40reviews/20pairs, indexes range(64), and divides class/context margins by20.",
+      "required_resolution": "Derive coverage and class/pair denominators from the validated corpus; preserve exactly100updates and the25/50/100 selector. Add enlarged-corpus coverage and historical replay checks.",
+      "status": "Resolved in the independently read working-tree scorer patch; parent reports historical equivalence tests passed."
+    },
+    {
+      "id": "scorer-microbatch-coupling",
+      "location": "training/score_decisions.py: joint_config",
+      "evidence": "The merged scorer requires microbatch_tokens==len(mapping), tying the old40-token microbatch to its40decisions. Native joint training treats these dimensions independently.",
+      "required_resolution": "Validate the predeclared40-token microbatch independently of52mapped decisions.",
+      "status": "Resolved in the independently read working-tree scorer patch; parent reports historical equivalence tests passed."
+    }
+  ],
+  "live_review_note": {
+    "observed": "The initial live scorer patch added unconditional full_summary assertions for examples and tokens. Native full stage=sft records omit both fields; only sft_initial declares them.",
+    "action": "Reported to parent immediately: keep corpus/ref-derived coverage and validate optional declared aggregates when present.",
+    "scope": "This note records review of an in-progress patch, not the final implementation.",
+    "resolution": "Verified current full_summary validates examples/tokens only when present; row coverage remains corpus-derived."
+  },
+  "native_compatibility": {
+    "example_count": "mlp_data accepts1..10000rows;76fits.",
+    "pair_count": "JVPR accepts at most count/2pairs and validates unique in-range row indices;26pairs/76rows fits.",
+    "decision_count": "decision_order permits1..128mapped positions. Joint passes joint_decisions, not microbatch size;52fits.",
+    "microbatch": "CLI accepts1..128tokens;40fits. joint_accumulate uses global partition coefficients and accumulates all targets before one clip/Adam update.",
+    "token_capacity": "MLP_MAX_TOKENS=4096 with a strict no-truncation reserve. Every serialized prompt+answer must pass native tokenize and GGUF ctx_len bounds before launch.",
+    "schedule": "CLI permits0..100updates;100is valid. save_every25 writes25/50/75/100; selector eligibility remains25/50/100.",
+    "adapter": "MLP_RANK16, alpha2*rank=32, seed20260929, final block gate/up/down. Cached upstream activations remain independent of these final-MLP adapters.",
+    "activation_mode": "Trainer forces NT_NO_I8=1. Both model evaluations must also fix NT_NO_I8=1.",
+    "nonreview_rows": "The24voice/code rows are cached and included in readouts, but joint_order excludes unmapped rows from updates.",
+    "architecture": "Trainer requires qwen2 and RMSNorm epsilon1e-6, as in the previously verified Qwen2.5-Coder0.5B base.",
+    "exact_counts_status": "Completed on serialized v4:52decisions,1012residual targets,1064joint targets; all152trainer/runtime comparisons passed. All52review prefixes are[4913,3903,819], with26target66582 and26target788."
+  },
+  "cheap_native_preflight": {
+    "implementation_pattern": "A small include-based native probe can reuse train_mlp.c as probe_tokenization.c already does. It should call mlp_data, bpe_load, tokenize, load_pairs, joint_order and decision_order. Reading GGUF metadata checks architecture/context. No arch->load, bank_init, capture_sequence, forward or optimizer call is needed.",
+    "steps": [
+      "Pack JVDS and JVPR with prepare.py.",
+      "For each row emit prompt_tokens=start+1, completion_targets=cache.n including final im_end, total_ids=n_ids, final target ID and prompt/full token-ID hashes.",
+      "Set temporary bank.average_tokens to total completion targets / row count before load_pairs; map every review row exactly once.",
+      "Emit pair index, first divergent non-EOS decision position, target/alternative IDs, and common-prefix IDs.",
+      "Invoke joint_order and decision_order with the resulting52decisions; emit review targets, residual targets=review targets-52, global coefficients1/52 and1/residual, and ceil(review targets/40) microbatches with final tail size.",
+      "Run the existing tokenizer boundary probe for76rows:152prompt/full comparisons. Check exact trainer/runtime ChatML ID equality.",
+      "Assert every planned generation prompt fits its declared context minus192output slots."
+    ],
+    "freeze_outputs": [
+      "dataset and JVPR hashes",
+      "all token and decision counts",
+      "per-row token boundaries and pair membership",
+      "target visits=100*review targets",
+      "decision visits=5200",
+      "residual visits=100*residual targets",
+      "source/binary/base-model/protocol hashes"
+    ]
+  },
+  "design_assessment": {
+    "comparison": "Old joint-v2 selected100 SHA6aaf2f70764de35db1ee13b2c7d974b1064b6dfbd044024b164a2856fdafadd1 and the new protocol-selected checkpoint receive the same88natural prompts.",
+    "fresh_initialization": "New adapters begin on base SHAe1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1; do not continue training the old selected model.",
+    "intervention": "V3 wording changes, replacement of six source pairs by six quartets, corpus composition and partition normalizers are one combined corpus revision.",
+    "update_budget": "100full-corpus updates gives each supervised target100visits. Total token exposure and relative family mass increase/change with the corpus; record exact counts and report this fixed-update budget.",
+    "train_context_contrast": "For each of six families and two shapes, harmful versus redundant cells hold changed lines, citation coordinate and hunk/context-line counts fixed; one unchanged context line changes effective protection or credit. There are12suchpairs.",
+    "train_shape_contrast": "For each family and label, deletion versus neutral replacement preserves post-change semantics. There are12suchcomparisons.",
+    "transfer": "Freeze all24fresh cases, prompts, labels, valid citations and mechanism rubric before any generation. Record shared semantic families with training. Include different spelling/placement and ineffective or misplaced lookalikes so protection/credit string counting cannot solve the set.",
+    "selection": "Use only the declared training teacher-forced readouts: maximize complete decision pairs, then correct full-vocabulary decision targets, then earliest eligible update. Neither transfer outputs nor diagnostic outputs select the checkpoint.",
+    "required_subscores": [
+      "retained14pairs",
+      "their6exact-same-full-diff/context-rule pairs",
+      "12quartet semantic pairs",
+      "12quartet shape comparisons",
+      "fresh transfer semantic pairs and shape comparisons",
+      "12existing diagnostic reviews/6pairs"
+    ],
+    "metrics": "Report JSON validity, production usability, correct clean responses, supported concern mechanism with valid citation, full grounded pairs, EOS/token-limit and native sampled-ID traces. Keep malformed-JSON presence null. Shape invariance must accompany semantic contrast success, because a constant answer is also invariant.",
+    "citation_rule": "Canonical training line_id is1. Harmful replacement outputs may cite changed1or2 when their reason supports that removal/replacement; unchanged protection lines are not valid changed-line IDs.",
+    "baseline_scope": "The same52v4prompt evaluation is the direct model comparison. Archived old40-row counts remain historical context and use a different denominator."
+  },
+  "natural_only_generation_check": {
+    "archived_files": [
+      "training/results/2026-10-01-joint-review/joint-train-natural.jsonl",
+      "training/results/2026-10-01-joint-review/joint-train-shared.jsonl"
+    ],
+    "measured_cases": 40,
+    "natural_prefix_exact_ids": [
+      4913,
+      3903,
+      819
+    ],
+    "exact_natural_prefix_cases": 40,
+    "natural_vs_shared_decision_id_matches": 40,
+    "natural_tail_vs_shared_tail_common_budget_matches": 40,
+    "complete_response_byte_matches": 38,
+    "two_byte_differences": "Two token-limit runs have3additional available continuation tokens in shared mode, matching the supplied3-token prefix. Their common-budget token streams agree.",
+    "recommendation": "Natural-only176responses is appropriate for this end-to-end comparison. Retain native prefix readouts and traces; compare a naturally generated decision ID to teacher-forced metadata only after confirming all preceding generated IDs match the supervised prefix."
+  },
+  "readiness_gate": [
+    "Native preflight passes and exact counts are frozen.",
+    "Scorer enlarged-corpus and historical-regression tests pass.",
+    "Fresh transfer corpus and semantic rubric pass independent audit and are frozen.",
+    "Training source/binary remains unchanged; evaluation sources, prompts, both model hashes, selection rule and decoder options are frozen before generation."
+  ],
+  "sources": {
+    "training/train_mlp.c": {
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/score_decisions.py": {
+      "sha256": "f07a33ee5bc01decf861b8f0205cef9bfaa90fab2a409ba6f15f2df1c2eca770",
+      "bytes": 19863,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/score_training.py": {
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33",
+      "bytes": 7249,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/prepare.py": {
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/probe_tokenization.c": {
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6",
+      "bytes": 3221,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "src/infer.c": {
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/results/2026-10-01-joint-review/joint-next-control.json": {
+      "sha256": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9",
+      "bytes": 24293,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    },
+    "training/results/2026-10-01-joint-review/selected-model.json": {
+      "sha256": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1",
+      "bytes": 169,
+      "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+    }
+  },
+  "completed_preflight": {
+    "receipt": {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/native-preflight.json",
+      "sha256": "bf923863467cf73d56d6cd1792d65e8344066392b8a25157b057dea879fee559",
+      "bytes": 60623
+    },
+    "native_output": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-preflight.jsonl",
+      "sha256": "bb7b2329354073d1e13b6983895f429defaa41ffdf7b6ddb21d8dfc5f602e0c3",
+      "bytes": 176090
+    },
+    "summary": {
+      "stage": "summary",
+      "pass": true,
+      "examples": 76,
+      "review_examples": 52,
+      "readout_only_examples": 24,
+      "review_pairs": 26,
+      "all_completion_targets": 2591,
+      "decision_positions": 52,
+      "residual_positions": 1012,
+      "joint_positions": 1064,
+      "decision_coefficient": 0.019230769230769232,
+      "residual_coefficient": 0.0009881422924901185,
+      "native_float_decision_coefficient": 0.0192307699,
+      "native_float_residual_coefficient": 0.000988142332,
+      "microbatch_tokens": 40,
+      "microbatches_per_update": 27,
+      "last_microbatch_tokens": 24,
+      "chatml_comparisons": 152,
+      "prompt_tokens_max": 555,
+      "full_tokens_max": 595,
+      "model_context": 32768,
+      "chatml_im_start": 151644,
+      "chatml_im_end": 151645,
+      "model_forward_calls": 0
+    },
+    "training_targets_per100updates": 106400,
+    "record_persistence": "Raw output176090bytes and receipt60623bytes independently reread after writing. Native stdout was captured before atomic raw-file save."
+  },
+  "procedure_helpers_review": {
+    "training_runner": "Fresh verified base and unchanged native trainer;100jointupdates, LR0.0001,40-token microbatches, save_every25,4threads, NT_NO_I8=1. Before/after source, binary, packed data, pair map, plan and base-model bindings checked.",
+    "selection_export_runner": "Strict scorer runs before new-arm generation. Eligibility25/50/100; selected export passes full GGUF audit plus native cached/merged parity on three rows. Control hash is the old selected100model. Each arm covers52train+24transfer+12diagnostics.",
+    "generation_wrapper": "Both arms derive cases from the same frozen corpus/transfer/diagnostic bindings. Natural ChatML prompt,192-token budget,temperature0,2threads and NT_NO_I8=1 are fixed. Every response carries actual native prompt/sample IDs and output hashes.",
+    "summary_wrapper": "Checks same input prompt/token IDs across both models, full cohort/pair coverage, selected model/metrics bindings and trace integrity. TF decision comparison requires identical teacher prompt and matching sampled prefix. Semantic judgments remain separate from structural parsing.",
+    "recommendations_sent": [
+      "Have the plan preparer inspect native receipt pass/counts and verify its input/source hashes, then bind the receipt.",
+      "Optionally report conditional sampled decision-ID invariance across shape in addition to same_first_token, because the natural first token is usually JSON opening4913."
+    ],
+    "reviewed_files": [
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+        "sha256": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81",
+        "bytes": 9648
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_review.py",
+        "sha256": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7",
+        "bytes": 2970
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_evaluation.py",
+        "sha256": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a",
+        "bytes": 5847
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+        "sha256": "6fea84be2c67cc6baa45d790dbbc463bf02397b2eb8164564c9533ae184615ac",
+        "bytes": 10322
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+        "sha256": "e0c91537bd6c77dfbcc5e6f8dbefbdf0f3f3fadcbbba952bcaa55ec29447757b",
+        "bytes": 17626
+      }
+    ],
+    "source_review_status": "Protocol audit finalized. Native-binding and full-answer-rubric changes were reviewed specifically after the initial helper audit; sampled-decision contrast reporting remains a separately owned final helper patch.",
+    "prefreeze_native_binding": "Verified final preparer reads77native records, checks exact76/52/26/52/1012/1064coverage,40/27/24microbatch counts,152ChatML comparisons and0forward calls, compares receipt summary, and verifies every receipt source/artifact SHA and byte count.",
+    "full_answer_rubric": "Verified final preparer freezes complete-response mechanism/citation judgments, complete clean/concern pairs, explicit unsupported-extra-claim handling, and alternative valid changed-line citations; an orchestration audit receipt is also bound."
+  }
+}

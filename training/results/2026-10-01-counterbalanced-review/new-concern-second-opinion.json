@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "reviewer": "counterbalanced_corpus",
+  "independence": "Read only the frozen rubric and complete eight prompt/response records. Did not read another reader’s manual judgments. No inference or frozen-file edits.",
+  "frozen_plan": {
+    "path": "models/counterbalanced-review-plan.json",
+    "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a"
+  },
+  "rubric": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "source_binding": "Shard files were still being produced; exact selected raw JSONL record bytes, prompt, response and trace hashes bind this review rather than a changing whole-file hash.",
+  "counts": {
+    "cases": 8,
+    "genuine_issues": 2,
+    "full_grounded_concerns": 1,
+    "clean_passes": 2
+  },
+  "cases": [
+    {
+      "name": "sqlite-build-requirement-concern",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "jsonl_line": 3,
+      "raw_record_sha256": "3360062808590631a34a6b7df714be14b70d6bd4a0159915a4125a841150275a",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "9deec985816f5f7143703ca15c2efc766862ef31ab2847d85979c54f4e7c57eb",
+      "response_sha256": "29ca66c6ef6e270d59829989570f271abeda611c87cc0bba722a7c3ac472c699",
+      "trace_sha256": "2d1385af92025dcf81d0bbc880c05387a7710744d4e2d6c9e1c772b0f7a65dcc",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This adds the required SQLite3 dependency to the build.\"}]}",
+      "expected_concern": true,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "CMakeLists.txt",
+          "side": "RIGHT",
+          "line": 11,
+          "quote": "find_package(SQLite3 REQUIRED)",
+          "reason": "This adds the required SQLite3 dependency to the build."
+        }
+      ],
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": true,
+      "clean_pass": false,
+      "reasoning": "The cited addition imposes SQLite3 as a required build dependency. That concrete build consequence conflicts directly with the supplied compiler-only default/opt-in rule. The short reason names the consequential requirement; the rubric does not require repeating the rule or saying violates.",
+      "ambiguity": "The phrase the required dependency could be read as describing an approved requirement, but the sentence says the patch adds it. In this prompt the supported reading is the new mandatory dependency. An assessment demanding explicit mention of default/opt-in would be a stricter completeness convention than this frozen rubric.",
+      "supported_mechanism": "CMake now requires SQLite3 during the unconditional top-level build."
+    },
+    {
+      "name": "sqlite-build-requirement-clean",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "jsonl_line": 3,
+      "raw_record_sha256": "a91e20cb8463cf2748a326fc12d623ed3ea33fe21ead85c8433a3f133d407dc6",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "f16fe5b88c562db7bbc5512646239610be289797ffe36ce4bd0983ec51fdd20f",
+      "response_sha256": "cfc53119a831017213944eadb99e95dd3191ce0ba23821bc18f6ab613bef6d02",
+      "trace_sha256": "384e98a39252594f8b21f5b0631add1a0986e90d93e485570def2f21ab4aec09",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This adds SQLite3 as a required component of every supported build. The only required SQLite3 component required by every build appears at the top-level build rule.\"}]}",
+      "expected_concern": false,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "CMakeLists.txt",
+          "side": "RIGHT",
+          "line": 11,
+          "quote": "find_package(SQLite3 REQUIRED)",
+          "reason": "This adds SQLite3 as a required component of every supported build. The only required SQLite3 component required by every build appears at the top-level build rule."
+        }
+      ],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "reasoning": "The response describes the required SQLite3 dependency at the top-level configuration, which the supplied rules explicitly require. It identifies no conflict. A nonempty findings list fails the clean-case requirement.",
+      "ambiguity": "The second sentence is redundant and awkward. Its only required SQLite3 component phrasing reads as a restatement of this package requirement, rather than evidence of another defect or a claim that SQLite3 is the build’s only dependency.",
+      "supported_mechanism": null
+    },
+    {
+      "name": "background-service-scope-concern",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "jsonl_line": 4,
+      "raw_record_sha256": "0d6e6704eeafd878ade7ea15936e5e759c4311b2f25a1a2c8149defc858c140b",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "ed4bcb24835e6aca06aeaab5d23f0f340d5b90505044752f747dda43e2ac14cb",
+      "response_sha256": "f6335e1b188bfbf8de59a38f358971ef3800b4ab90927edc057335b18edaade6",
+      "trace_sha256": "85151adc35e7211799a989472e25c62ae945fe380c4837e2dd240b9a51917a06",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This release contains only a limited scope to correcting help text. The supplied only contains the required help text and does not require any new installation or new service components.\"}]}",
+      "expected_concern": true,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "deploy/observer.service",
+          "side": "RIGHT",
+          "line": 11,
+          "quote": "ExecStart=/usr/bin/observer --watch",
+          "reason": "This release contains only a limited scope to correcting help text. The supplied only contains the required help text and does not require any new installation or new service components."
+        }
+      ],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": false,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "reasoning": "The first sentence recalls the help-text-only release scope. The second says the supplied change contains only help text and needs no new installation/service components, contradicting the shown new service unit that the prompt says will be installed. The answer does not identify the actual new-service scope violation.",
+      "ambiguity": "If the second sentence were read as describing only the permitted scope rather than the patch, it would repeat the rule without identifying the actual added service. That reading still does not provide the required concrete issue.",
+      "supported_mechanism": null,
+      "unsupported_material_claims": [
+        "The supplied change contains only required help text.",
+        "The supplied change requires no new installation or service components."
+      ]
+    },
+    {
+      "name": "background-service-scope-clean",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "jsonl_line": 4,
+      "raw_record_sha256": "9414dbea4961f81ddae7675025f74c8d1155819ca47ef923e5433eda37b0cd0c",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "4d6fb45106d3ae667871df9f3dd552cc13581584f081181783eb8ccc66186f4b",
+      "response_sha256": "64c08015e67a724793a84e67193fa822247e576958f94eb77fa09243b1fa1d1c",
+      "trace_sha256": "ccdbff97644760c051284c8bb870974c9cb944e124b4985d59011a26f8da981b",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"This release introduces the approved systemd watcher. Installing one service unit for observer --watch is in scope.\"}]}",
+      "expected_concern": false,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "deploy/observer.service",
+          "side": "RIGHT",
+          "line": 11,
+          "quote": "ExecStart=/usr/bin/observer --watch",
+          "reason": "This release introduces the approved systemd watcher. Installing one service unit for observer --watch is in scope."
+        }
+      ],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "reasoning": "Every sentence accurately describes the approved watcher and permitted service installation. Those are reasons to accept the change. Packaging them as a nonempty finding fails the clean-case requirement.",
+      "ambiguity": null,
+      "supported_mechanism": null
+    },
+    {
+      "name": "preserve-trie-credit-deletion-concern",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "jsonl_line": 5,
+      "raw_record_sha256": "d10150a2f79898446d6884f2a0b2cba525b0d1a8ddc393588799623f4159286f",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "0b8609b35179dfd9c4d6646c03878fa7444df0cebbe0b6ed7778c99b9b2f7ed9",
+      "response_sha256": "848acf3d2a07e1b44a59437d20e942bfc1131521ba5e08e5ae820f47ac42b258",
+      "trace_sha256": "c259ea17f9d6216579d0fb85007bb3826549cc01ba497d6ba32d1ac49f479d76",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing the sole upstream credit loses the lineage of the trie implementation, making the trie now a separate product.\"}]}",
+      "expected_concern": true,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "NOTICE",
+          "side": "LEFT",
+          "line": 11,
+          "quote": "Trie design adapted from firwood/trie (MIT).",
+          "reason": "Removing the sole upstream credit loses the lineage of the trie implementation, making the trie now a separate product."
+        }
+      ],
+      "genuine_issue_detected": true,
+      "all_material_claims_supported": false,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "reasoning": "The first clause correctly identifies removal of the sole upstream credit while the adapted implementation remains. The changed-line citation is causal. The added claim that removing the notice makes the trie a separate product is unsupported: the shown change removes attribution, not the implementation’s product/repository relationship.",
+      "ambiguity": "Separate product could be intended as a metaphor for falsely appearing independent of upstream. The response states an actual consequence without that qualification, so I count the genuine attribution issue but reject the complete answer for the unsupported material elaboration.",
+      "supported_mechanism": "Removal of the only shown firwood/trie credit erases the retained implementation’s source attribution.",
+      "unsupported_material_claims": [
+        "Removing this notice makes the trie a separate product."
+      ]
+    },
+    {
+      "name": "preserve-trie-credit-deletion-clean",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "jsonl_line": 5,
+      "raw_record_sha256": "78c2d9275a4722c7ce88cb7d346bf011adbd963500bc674d7234f7494c8a56e7",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "5f7b16055ff8797e0d3a4bef42e80ef32704951db0b00923dedb09fb18480246",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36",
+      "trace_sha256": "634c32d850eeae407b262fc4e48348e49031bb8cb32c9cc3d37e89e8f627a8db",
+      "response": "{\"findings\":[]}",
+      "expected_concern": false,
+      "production_usable": true,
+      "parsed_findings": [],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": true,
+      "reasoning": "The remaining unchanged notice explicitly preserves firwood/trie and MIT attribution. Production accepts the empty findings object, which is the correct clean review.",
+      "ambiguity": null,
+      "supported_mechanism": null
+    },
+    {
+      "name": "validated-port-conversion-introduced",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-0.jsonl",
+      "jsonl_line": 15,
+      "raw_record_sha256": "2e9271ede313873bfe1fb67236772dad2ca1e4105841b520bc6171c07cb2fc22",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "81983862e486af093f272180925a15e610e55d8316c10a5744d85510f52f3164",
+      "response_sha256": "dd1baa6205161c636835bfe5c9cfdec44b9cfe853455c2f137a3c74f6abbf731",
+      "trace_sha256": "0502e89e11ed58bcfd597eecd9dffb8b472b6f852b549c52f88a8a9eff92e746",
+      "response": "{\"findings\":[{\"line_id\":1,\"reason\":\"Removing the only now-removed parse_decimal_range check allows parsing decimal ranges even when text contains non-decimal characters or values outside the allowed range.\"}]}",
+      "expected_concern": true,
+      "production_usable": true,
+      "parsed_findings": [
+        {
+          "path": "src/endpoint.c",
+          "side": "LEFT",
+          "line": 11,
+          "quote": "    unsigned long value;",
+          "reason": "Removing the only now-removed parse_decimal_range check allows parsing decimal ranges even when text contains non-decimal characters or values outside the allowed range."
+        }
+      ],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": false,
+      "factual_mechanism_recognized": true,
+      "citation_causally_appropriate": false,
+      "reasoning": "The prose correctly recognizes that replacing validation with atoi accepts malformed or out-of-range port input. Its line_id1, however, cites removal of the unsigned long value declaration, not the removed check (ID2) or added unchecked conversion (ID4). Removing that declaration is not the described mechanism. Production accepts the available ID, but the frozen genuine-issue criterion also requires an appropriate causal citation.",
+      "ambiguity": "A human could read ID1 as a pointer to the beginning of the whole removed three-line validation idiom. Under the frozen exact changed-line criterion I do not promote this adjacent declaration into the check it does not perform. The correctly identified mechanism is recorded separately from the citation failure.",
+      "supported_mechanism": "The removed parse_decimal_range guard no longer rejects invalid text/range before the replacement atoi assignment.",
+      "acceptable_causal_line_ids_for_this_reason": [
+        2,
+        4
+      ]
+    },
+    {
+      "name": "validated-port-conversion-repaired",
+      "source": "models/counterbalanced-review-counterbalanced-train-natural-1.jsonl",
+      "jsonl_line": 15,
+      "raw_record_sha256": "8d7791c9c615576ed2aebf125614c596d513c1bcf2218e9b53068be49a0503f6",
+      "model_sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+      "prompt_sha256": "17b6fd8bc480b12328532a93d582367042cb3430674f87e56454c60dbca566c9",
+      "response_sha256": "9d0f2143c61cfbb6c0cf0425ce8b447811a32d48ec37333ba8b3700218631b36",
+      "trace_sha256": "375a0e2cc294397bbaae4c5a14e406f4a7f911a07f44729fb72f4c53b1b40531",
+      "response": "{\"findings\":[]}",
+      "expected_concern": false,
+      "production_usable": true,
+      "parsed_findings": [],
+      "genuine_issue_detected": false,
+      "all_material_claims_supported": true,
+      "full_grounded_concern": false,
+      "clean_pass": true,
+      "factual_mechanism_recognized": false,
+      "citation_causally_appropriate": null,
+      "reasoning": "The added parse_decimal_range check restores explicit decimal/range validation and EINVAL rejection before assigning the port. The empty findings object is production-accepted and correct.",
+      "ambiguity": null,
+      "supported_mechanism": null
+    }
+  ],
+  "citation_interpretation": "A factually correct mechanism with an available but causally inappropriate selected line_id is recorded as factual_mechanism_recognized, but not genuine_issue_detected under the frozen rubric."
+}
