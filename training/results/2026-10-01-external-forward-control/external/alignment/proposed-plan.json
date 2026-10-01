@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "status": "proposed_not_authorized",
+  "conversion_executed": false,
+  "model_forward_calls": 0,
+  "original_protocol": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+    "bytes": 18662,
+    "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+  },
+  "original_execution": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+    "bytes": 14479,
+    "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+  },
+  "original_frozen_bindings_rechecked": 43,
+  "original_frozen_files_unchanged": true,
+  "scope": "Arithmetic alignment of the same original Q8 tensor values; no alternate model, training, selection or prompt choice.",
+  "trigger": "Only a separate root decision after completed original-Q8 measurements and independent source review may authorize conversion/forwards.",
+  "original_model": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "fixed_inputs": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+    "bytes": 2797,
+    "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+  },
+  "cases": [
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "pair": "allocation-null-guard-deletion",
+      "review_row": 20,
+      "expected_concern": true,
+      "prompt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+        "bytes": 2087,
+        "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+      },
+      "ids": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+        "bytes": 2063,
+        "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+      },
+      "prompt_tokens": 444,
+      "total_input_tokens": 447,
+      "captured_prefix_lengths": [
+        444,
+        447
+      ],
+      "captured_positions_zero_based": [
+        443,
+        446
+      ],
+      "supplied_prefix": "{\"findings",
+      "supplied_prefix_ids": [
+        4913,
+        3903,
+        819
+      ]
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "pair": "allocation-null-guard-deletion",
+      "review_row": 21,
+      "expected_concern": false,
+      "prompt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+        "bytes": 2086,
+        "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+      },
+      "ids": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+        "bytes": 2061,
+        "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+      },
+      "prompt_tokens": 444,
+      "total_input_tokens": 447,
+      "captured_prefix_lengths": [
+        444,
+        447
+      ],
+      "captured_positions_zero_based": [
+        443,
+        446
+      ],
+      "supplied_prefix": "{\"findings",
+      "supplied_prefix_ids": [
+        4913,
+        3903,
+        819
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert_f32.cpp",
+      "bytes": 1165,
+      "sha256": "d53f5bcd8aac241608d377c55ba71fe075ba1a851d61e916a6a6aac8905ed2a3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_tensor_values.c",
+      "bytes": 3528,
+      "sha256": "70735056ee9877c922b43d940a4bb9510cfb19fbbf1b417940cccbaaa43c3166"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "bytes": 7717,
+      "sha256": "7791ed2b6c9cce0eaf28e1bff57af89657a861742f24a8e48b1c79a259abf4c6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare_alignment_logits.c",
+      "bytes": 2935,
+      "sha256": "8ad1353ab2b45d58efb13a9864d70627fb355d9c88f0c1fa1d53fc631554164a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_alignment_plan.py",
+      "bytes": 6886,
+      "sha256": "16166069b53598e854c43399b812c87d6a16f9f76b83bc2667eeb748b502db79"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-quant.cpp",
+      "bytes": 64522,
+      "sha256": "a33dea76120a10b2eac8b5d81b9425dcd401e2c8ae4bb04f59b00922f0355fdd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    }
+  ],
+  "binaries": {
+    "convert-f32": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+      "bytes": 6001552,
+      "sha256": "74c887ae299e02e7333ebf98411d4e6fc7918383360b2041c48db91bba6734b4"
+    },
+    "verify-tensor-values": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+      "bytes": 48432,
+      "sha256": "94a224bb4920486c890d9a63f25143e52c7758a0f37466d20a4d0ce62cc17c38"
+    },
+    "compare-alignment-logits": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare-alignment-logits",
+      "bytes": 16872,
+      "sha256": "3dbda29842d5e7ab04e449bae7342503f28de7e84ba6e85ee7d4f0ec30a9b750"
+    }
+  },
+  "linked_reference_libraries": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/libllama.a",
+      "bytes": 9522508,
+      "sha256": "fd81a8915d393fb282eda274c4932a11adcff01eb35cf71ef52de18875b0c236"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml.a",
+      "bytes": 65166,
+      "sha256": "21eedeca3eecf5d9bfcac9e65c9838f9278da67cc4c6819c1d819d819945ea5b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-cpu.a",
+      "bytes": 1815358,
+      "sha256": "33dd2c5fc69fdbf5c84060397181794d89da58f7d7b8da61d4fb95bd75c5c200"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-base.a",
+      "bytes": 1356830,
+      "sha256": "d3b8a4895385177dc1083999d2dade29fc501a94b6e746b1b29a692dd0d4c923"
+    }
+  ],
+  "compiler": {
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "c++": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "build": {
+    "location": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment",
+    "serial": true,
+    "nice": 15,
+    "converter_flags": [
+      "-O2",
+      "-std=c++17",
+      "-ldl",
+      "-lm"
+    ],
+    "verifier_flags": [
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu11",
+      "-lm"
+    ],
+    "reference_build_reconfigured": false,
+    "logs": [
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-converter.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-converter.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-verifier.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-verifier.stderr",
+        "bytes": 3530,
+        "sha256": "a8b6fc72c299d4a64cf42806ee6be2e8a6edc0e02927d824bf13f60ce1b95f42"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-comparison.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-comparison.stderr",
+        "bytes": 2540,
+        "sha256": "575982fada1b431233c311844b44b458065cd401d33385bb82343c004e47a6f0"
+      }
+    ]
+  },
+  "converter": {
+    "producer": "Pinned llama.cpp llama_model_quantize, using ggml dequantization",
+    "threads": 1,
+    "ftype": "ALL_F32",
+    "allow_requantize": true,
+    "pure": true,
+    "output_tensor_type": "F32",
+    "token_embedding_type": "F32",
+    "maximum_buffer_bytes": 67108864,
+    "output_creation": "O_EXCL reservation; producer may rewrite only its newly created file; partial file retained on error.",
+    "expected_stored_elements": 630167424,
+    "expected_tensors": 291,
+    "expected_byte_extent": 2526617472,
+    "expected_metadata_changes": {
+      "general.file_type": {
+        "original_u32": 7,
+        "converted_u32": 0
+      }
+    },
+    "unchanged_quantization_version": 2,
+    "no_split_metadata": true
+  },
+  "independent_validation": {
+    "numeric": "Every value via notorch gguf_dequant_row, independent of producer ggml; require bit-exact F32 and finite values.",
+    "coverage": "All291 original names, shapes and630167424 stored values; physical tensor order may change, compare by exact name.",
+    "metadata": "Independent standard-library byte parsing compares every typed metadata value, including all tokenizer arrays, RoPE/norm parameters and output/tie metadata. Only documented file_type rewrite is expected.",
+    "layout": "All converted payload types F32; directory offsets contiguous/aligned; full file length exactly2526617472 with data offset5947776. Hash every converted tensor payload.",
+    "validation_gates": "Require completed native exit0 with291 exact/finite tensor rows, all metadata/layout checks, and unchanged pre/post base/converted/source/binary hashes before any aligned forward."
+  },
+  "proposed_commands": {
+    "convert": [
+      "nice",
+      "-n",
+      "15",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+      "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf"
+    ],
+    "verify": [
+      "python3",
+      "-E",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "--base",
+      "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "--converted",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "--native-verifier",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+      "--output-dir",
+      "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation"
+    ]
+  },
+  "forward_followup": {
+    "execute": false,
+    "requires_converted_model_hash_and_fresh_execution_plan": true,
+    "reused_harness_binaries": {
+      "notorch": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+        "bytes": 203312,
+        "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+      },
+      "llama": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+        "bytes": 5931328,
+        "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+      },
+      "comparison": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+        "bytes": 16864,
+        "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+      }
+    },
+    "same_ID_files_and_capture_positions": true,
+    "new_forward_processes": 4,
+    "threads": 1,
+    "serial": true,
+    "decoding": null,
+    "comparisons": [
+      {
+        "first": "prior notorch original-Q8 dump",
+        "second": "new notorch expanded-F32 dump",
+        "purpose": "isolate native packed-weight arithmetic"
+      },
+      {
+        "first": "new notorch expanded-F32 dump",
+        "second": "new llama.cpp same expanded-F32 dump",
+        "purpose": "independent forward arithmetic with identical fully verified F32 weights"
+      }
+    ],
+    "comparator": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare-alignment-logits",
+      "bytes": 16872,
+      "sha256": "3dbda29842d5e7ab04e449bae7342503f28de7e84ba6e85ee7d4f0ec30a9b750"
+    },
+    "field_labels": "first/second; second defines the relative-L2 denominator, without incorrectly naming two native arms as different engines."
+  },
+  "interpretation": "Do not declare a forward defect from original-Q8 disagreement or from an arbitrary F32 aggregate tolerance alone. Preserve exact vector differences, ranks and margins; use verified conversion plus matched arithmetic to localize any discrepancy.",
+  "persistence": "Converted model is a temporary weight artifact, excluded from public code/evidence archives; retain receipts/per-tensor hashes and bounded logit dumps separately."
+}

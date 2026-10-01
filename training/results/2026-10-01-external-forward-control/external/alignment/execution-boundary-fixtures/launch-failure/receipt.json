@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-executable"
+  ],
+  "started_utc": "2026-10-01T13:46:11.424162+00:00",
+  "status": "failed",
+  "exit_code": null,
+  "peak_rss_kib": null,
+  "user_seconds": null,
+  "system_seconds": null,
+  "failure_type": "FileNotFoundError",
+  "failure": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-executable'",
+  "elapsed_seconds": 0.000999660995148588,
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/partial.txt",
+      "hash_error_type": "FileNotFoundError",
+      "hash_error": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/partial.txt'"
+    }
+  ],
+  "missing_or_unhashable_outputs": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/partial.txt",
+      "hash_error_type": "FileNotFoundError",
+      "hash_error": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/partial.txt'"
+    }
+  ]
+}

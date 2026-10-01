@@ -1,0 +1,25 @@
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c: In function ‘read_row’:
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c:7:5: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    7 |     for(int i=0;i<vocab;i++)if(!isfinite(v[i]))fail("nonfinite dump");return v;
+      |     ^~~
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c:7:71: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    7 |     for(int i=0;i<vocab;i++)if(!isfinite(v[i]))fail("nonfinite dump");return v;
+      |                                                                       ^~~~~~
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c: In function ‘main’:
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c:38:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   38 |     if(fclose(a)||fclose(b)||fflush(stdout))fail("I/O close failed");return 0;
+      |     ^~
+/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c:38:70: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   38 |     if(fclose(a)||fclose(b)||fflush(stdout))fail("I/O close failed");return 0;
+      |                                                                      ^~~~~~
+In file included from /workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c:2:
+/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h: At top level:
+/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h:26:13: warning: ‘dump_row’ defined but not used [-Wunused-function]
+   26 | static void dump_row(FILE *out,int prefix_len,const float *logits,int vocab) {
+      |             ^~~~~~~~
+/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h:19:14: warning: ‘start_dump’ defined but not used [-Wunused-function]
+   19 | static FILE *start_dump(const char *path,int vocab,int tokens,const int *ids) {
+      |              ^~~~~~~~~~
+/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h:11:13: warning: ‘load_ids’ defined but not used [-Wunused-function]
+   11 | static int *load_ids(const char *path,int *count) {
+      |             ^~~~~~~~

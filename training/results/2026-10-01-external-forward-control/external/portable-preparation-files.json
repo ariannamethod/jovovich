@@ -1,0 +1,295 @@
+{
+  "stage": "preparation_only",
+  "model_forward_calls": 0,
+  "relative_paths": [
+    "CMakeLists.txt",
+    "build/CMakeCache.txt",
+    "build/CMakeFiles/dump-llama.dir/flags.make",
+    "build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+    "build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+    "build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+    "build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+    "build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+    "build-commands.json",
+    "build-compare.stderr",
+    "build-compare.stdout",
+    "build-llama.stderr",
+    "build-llama.stdout",
+    "build-notorch.stderr",
+    "build-notorch.stdout",
+    "check_execution_receipts.py",
+    "check_execution_receipts_v2.py",
+    "check_synthetic_dumps.py",
+    "clean.ids.txt",
+    "clean.prompt.txt",
+    "cmake-install-report.json",
+    "cmake-install.stderr",
+    "cmake-install.stdout",
+    "compare_logits.c",
+    "concern.ids.txt",
+    "concern.prompt.txt",
+    "configure-v2.stderr",
+    "configure-v2.stdout",
+    "configure.stderr",
+    "configure.stdout",
+    "controller-check-v2.json",
+    "controller-check.json",
+    "dump_llama.cpp",
+    "dump_notorch.c",
+    "execution-plan-v2.json",
+    "execution-plan.json",
+    "fixed-inputs.json",
+    "logit_io.h",
+    "prepare_execution.py",
+    "prepare_execution_v2.py",
+    "prepare_inputs.py",
+    "prepare_protocol.py",
+    "protocol.json",
+    "run_external.py",
+    "run_external_v2.py",
+    "synthetic-check.json"
+  ],
+  "files": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+      "bytes": 387,
+      "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+      "bytes": 1245,
+      "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+      "bytes": 1439,
+      "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+      "bytes": 495,
+      "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+      "bytes": 657,
+      "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+      "bytes": 1238,
+      "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-commands.json",
+      "bytes": 2936,
+      "sha256": "4ca4d9dfc44ae27799b6c9c2f33461d41df647f611979c04933724f3c54f5f90"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stderr",
+      "bytes": 2348,
+      "sha256": "1b141f093092646d7207e29b7cfa36765686c8061e220e9f68a56d75c075cbc1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stdout",
+      "bytes": 6407,
+      "sha256": "e21b486d03b92fe903ab26c04479b9ad169560491b48cbb3a4f4bc2050dca6b9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stderr",
+      "bytes": 5436,
+      "sha256": "727bc3bc6691529bd460c75705ebe78614a99b3608bb3a5e35eb745598df406b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts.py",
+      "bytes": 2685,
+      "sha256": "07806c8dbd08302acdf6767823451cc436c606c6d4c47aa9310dd7c8d62558f1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts_v2.py",
+      "bytes": 2697,
+      "sha256": "e42725827df2543696709e13e6f6a3169b6ffa1d6fdca0c4169ce63fa642cf6a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_synthetic_dumps.py",
+      "bytes": 3201,
+      "sha256": "6bb7266079eea342c28d839c6ffd43292cb0f6708f7955537276dffcf4cddb0b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install.stdout",
+      "bytes": 438,
+      "sha256": "fcc631de4380d44d050ed12bcad53759a08325d5ae7cdcd1173788bbef317d05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stderr",
+      "bytes": 25,
+      "sha256": "561a75a0b1ff67462d4d4422c66d6f97270694ee4d28835c9689cc580f3a9855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stdout",
+      "bytes": 1268,
+      "sha256": "52f2c7a7c71d5b5c4a2b2d56f5f48f98c369654e0e77c166dbabf9ad24964f10"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stderr",
+      "bytes": 45,
+      "sha256": "1b3c4bbd76bb30a98c4b7de39b44a24e54bf92ad720562a92941f84505f404d8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2.json",
+      "bytes": 6461,
+      "sha256": "8d7eed97267a915821717ff18985797f6c453bec0481cc21cb2d3a1cf1708bf6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check.json",
+      "bytes": 6383,
+      "sha256": "869200b426d48f1e2d95e2edc152081f3f4e1f6638a2189ac8aae4bd912783ae"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+      "bytes": 14479,
+      "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan.json",
+      "bytes": 14271,
+      "sha256": "23046a52a3d272c3142df5c85ce1f198d07a3250d3db7984ff47ece652dc71e5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution.py",
+      "bytes": 3069,
+      "sha256": "f686ba91d71603027016a8816313b22a6d4987fff4ecd7c0f8e7de3250d36ba9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+      "bytes": 3286,
+      "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+      "bytes": 18662,
+      "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external.py",
+      "bytes": 8428,
+      "sha256": "34c825c3eea6209a9c112f7f7ca6c8632c5bec05bd8eb9abd86984b1da81e709"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+      "bytes": 8848,
+      "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check.json",
+      "bytes": 1710,
+      "sha256": "6373964c284cf97f249f932553b1af2f0b34f33e9f5e5ab6f29d5c7b7bce5a44"
+    }
+  ],
+  "file_count": 46,
+  "bytes": 188749,
+  "excluded": [
+    "llama.cpp checkout",
+    "compiled executables/static libraries",
+    "build tree except compact CMake configuration receipts",
+    "build-venv",
+    "model weights",
+    "synthetic binary fixtures (reproducible from preserved checker)"
+  ],
+  "future_outputs": "After root-authorized execution, add the separate q8-control-1 receipts, logs, four .dump vectors and two metric JSONLs; do not add to current matched-training collector."
+}

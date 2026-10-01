@@ -1,0 +1,326 @@
+{
+  "status": "prepared_source_and_binding_audit_passed",
+  "protocol": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+    "bytes": 18662,
+    "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+  },
+  "audit_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/audit_external_preparation.py",
+    "bytes": 8763,
+    "sha256": "57307a22195d94975bbbc22263660ad94db814701ace673a40639da7506fbd96"
+  },
+  "model_forwards": 0,
+  "builds": 0,
+  "test_executions": 0,
+  "execution_authorized_by_audit": false,
+  "unique_bindings_verified": 51,
+  "bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+      "bytes": 132111,
+      "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+      "bytes": 45124,
+      "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+      "bytes": 5535,
+      "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+      "bytes": 158953,
+      "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+      "bytes": 158212,
+      "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+      "bytes": 203312,
+      "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+      "bytes": 5931328,
+      "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+      "bytes": 16864,
+      "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+      "bytes": 387,
+      "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+      "bytes": 1238,
+      "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+      "bytes": 657,
+      "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+      "bytes": 1439,
+      "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+      "bytes": 495,
+      "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+      "bytes": 1245,
+      "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stderr",
+      "bytes": 45,
+      "sha256": "1b3c4bbd76bb30a98c4b7de39b44a24e54bf92ad720562a92941f84505f404d8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stdout",
+      "bytes": 1268,
+      "sha256": "52f2c7a7c71d5b5c4a2b2d56f5f48f98c369654e0e77c166dbabf9ad24964f10"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stderr",
+      "bytes": 25,
+      "sha256": "561a75a0b1ff67462d4d4422c66d6f97270694ee4d28835c9689cc580f3a9855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stderr",
+      "bytes": 5436,
+      "sha256": "727bc3bc6691529bd460c75705ebe78614a99b3608bb3a5e35eb745598df406b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stdout",
+      "bytes": 6407,
+      "sha256": "e21b486d03b92fe903ab26c04479b9ad169560491b48cbb3a4f4bc2050dca6b9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stderr",
+      "bytes": 2348,
+      "sha256": "1b141f093092646d7207e29b7cfa36765686c8061e220e9f68a56d75c075cbc1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-matched-protections/v5-token-final/token-trace.jsonl",
+      "bytes": 118946,
+      "sha256": "261e6a6a3745a325f6c6fe4c1d214b0fc5034ced82e5e05db1496ca9c1607e22"
+    }
+  ],
+  "additional_native_preflight": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-matched-protections/v5-native-v2/phase-1.stdout",
+    "bytes": 176456,
+    "sha256": "bf63cf0196b7d0979fda9031fbff739155b04b4d6cfac8cf79b319093fd4ce55"
+  },
+  "cases": [
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "review_row": 20,
+      "full_sft_row": 38,
+      "exact_chatml_and_447_archived_ids": true,
+      "capture_positions": [
+        443,
+        446
+      ],
+      "next_token_after_prefix": 66582
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "review_row": 21,
+      "full_sft_row": 39,
+      "exact_chatml_and_447_archived_ids": true,
+      "capture_positions": [
+        443,
+        446
+      ],
+      "next_token_after_prefix": 788
+    }
+  ],
+  "source_review": {
+    "capture_indexing": "Both engines capture logits after absolute positions 443 and 446; native head_rows=1 selects the final row and llama_get_logits_ith(-1) selects the only flagged final output row.",
+    "complete_vector": "All 151936 logits per capture are checked finite before writing and again while comparing; headers, token IDs, row lengths and final byte extent are checked.",
+    "comparator": "Double accumulators cover every vocabulary ID. Argmax, top margins, top10, relative L2, RMSE, max/mean absolute difference and decision IDs 66582/788 are reported. No correctness classifier is embedded.",
+    "q8_arithmetic": "Pinned ggml CPU traits use quantize_row_q8_0 and ggml_vec_dot_q8_0_q8_0, whereas NT_NO_I8=1 retains float activations. Original Q8 differences therefore do not isolate a forward defect.",
+    "failure_preservation": "Exclusive binary dump creation and fail-fast finite/I/O checks preserve partial dumps. Execution must retain nonzero exit status with partial metric/log artifacts rather than accepting partial stdout.",
+    "isolation": "Only the original e1a777 base and this fixed pair are in scope. No v5 selection inputs, generation prompts, model scores or rubric are altered."
+  },
+  "interpretation": {
+    "screening": "Prespecified thresholds are acceptable for deciding whether to request F32 alignment, not as numerical proof that either engine is correct or defective. A non-trigger result only bounds disagreement at these four captures.",
+    "signs": "Use a three-way sign convention including exact zero; preserve both unrounded margins. A near-tie flip remains a screening trigger, not a model correctness failure.",
+    "hard_failures": "Nonfinite logits, mismatched token/shape/capture data, incomplete dumps or nonzero child exits invalidate that comparison separately from finite numerical disagreement.",
+    "f32_gate": "Separate authorization is required. Audit exact dequantized values of every tensor and metadata/tie semantics first; then compare native Q8 vs native F32 and native F32 vs reference F32 separately.",
+    "f32_limits": "Aligned F32 differences still permit floating-point operation-order/implementation effects. Their size/location may motivate localization; an arbitrary aggregate tolerance alone cannot assign blame."
+  },
+  "execution_requirements": [
+    "Before and after execution, verify model, sources, binaries and fixed inputs against this frozen protocol.",
+    "Explicitly remove inherited NT_* and apply fixed single-thread environment; no alternate prompts/models or sampling.",
+    "Bind each dump embedded input sequence to its particular fixed case, in addition to the comparator engine-to-engine equality check.",
+    "Require successful process exits and exact complete four-dump coverage before interpreting aggregate measurements.",
+    "Preserve argv, resources, stdout/stderr, partial outputs and any failed attempt; do not silently retry or authorize F32."
+  ]
+}

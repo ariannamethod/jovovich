@@ -1,0 +1,766 @@
+{
+  "name": "convert-exact-f32",
+  "kind": "conversion",
+  "command": [
+    "/usr/bin/nice",
+    "-n",
+    "15",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf"
+  ],
+  "status": "completed",
+  "exit_code": 0,
+  "input_bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+      "bytes": 132111,
+      "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+      "bytes": 45124,
+      "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+      "bytes": 5535,
+      "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+      "bytes": 158953,
+      "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+      "bytes": 158212,
+      "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+      "bytes": 203312,
+      "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+      "bytes": 5931328,
+      "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+      "bytes": 16864,
+      "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+      "bytes": 18662,
+      "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+      "bytes": 8848,
+      "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+      "bytes": 3286,
+      "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+    },
+    {
+      "path": "/usr/bin/nice",
+      "bytes": 35336,
+      "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+      "bytes": 14479,
+      "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+      "bytes": 387,
+      "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+      "bytes": 1238,
+      "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+      "bytes": 657,
+      "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+      "bytes": 1439,
+      "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+      "bytes": 495,
+      "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+      "bytes": 1245,
+      "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert_f32.cpp",
+      "bytes": 1165,
+      "sha256": "d53f5bcd8aac241608d377c55ba71fe075ba1a851d61e916a6a6aac8905ed2a3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_tensor_values.c",
+      "bytes": 3528,
+      "sha256": "70735056ee9877c922b43d940a4bb9510cfb19fbbf1b417940cccbaaa43c3166"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "bytes": 7717,
+      "sha256": "7791ed2b6c9cce0eaf28e1bff57af89657a861742f24a8e48b1c79a259abf4c6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare_alignment_logits.c",
+      "bytes": 2935,
+      "sha256": "8ad1353ab2b45d58efb13a9864d70627fb355d9c88f0c1fa1d53fc631554164a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_alignment_plan.py",
+      "bytes": 6886,
+      "sha256": "16166069b53598e854c43399b812c87d6a16f9f76b83bc2667eeb748b502db79"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-quant.cpp",
+      "bytes": 64522,
+      "sha256": "a33dea76120a10b2eac8b5d81b9425dcd401e2c8ae4bb04f59b00922f0355fdd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+      "bytes": 6001552,
+      "sha256": "74c887ae299e02e7333ebf98411d4e6fc7918383360b2041c48db91bba6734b4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+      "bytes": 48432,
+      "sha256": "94a224bb4920486c890d9a63f25143e52c7758a0f37466d20a4d0ce62cc17c38"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare-alignment-logits",
+      "bytes": 16872,
+      "sha256": "3dbda29842d5e7ab04e449bae7342503f28de7e84ba6e85ee7d4f0ec30a9b750"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/libllama.a",
+      "bytes": 9522508,
+      "sha256": "fd81a8915d393fb282eda274c4932a11adcff01eb35cf71ef52de18875b0c236"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml.a",
+      "bytes": 65166,
+      "sha256": "21eedeca3eecf5d9bfcac9e65c9838f9278da67cc4c6819c1d819d819945ea5b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-cpu.a",
+      "bytes": 1815358,
+      "sha256": "33dd2c5fc69fdbf5c84060397181794d89da58f7d7b8da61d4fb95bd75c5c200"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-base.a",
+      "bytes": 1356830,
+      "sha256": "d3b8a4895385177dc1083999d2dade29fc501a94b6e746b1b29a692dd0d4c923"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/proposed-plan.json",
+      "bytes": 14165,
+      "sha256": "7fda2c239d1a6eb55b7b14888d592deefbe871ffa50c480312d242ae1b8f7cf4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/receipt.json",
+      "bytes": 115172,
+      "sha256": "20ce067bbd31302ad53d8bbdeb4550c15355fb81d768483016ef867d5c6cbdd7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-summary.json",
+      "bytes": 13979,
+      "sha256": "c17a4591afc5f4e240dbdcb69c651d98bfbb697992ba926521e9bd7df8707e41"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-forward-preparation-independent-audit.json",
+      "bytes": 15372,
+      "sha256": "6e4160f28bcd86c332b32c6c1b371e06c70065b8dbc4f85ea35717644fd6ca2e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-execution-v2-independent-audit.json",
+      "bytes": 3775,
+      "sha256": "02844b2519785814096b5c4895c26d9f7d111e49a91b7b93568c4fdbe2ce2d3f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/f32-alignment-preparation-independent-audit.json",
+      "bytes": 4205,
+      "sha256": "39ce4b2c62870976a6fb98412ecee2d07636dd2ca8bd06d1c6022d5e043f1559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_execution.py",
+      "bytes": 9368,
+      "sha256": "0da2f2e4b9e271ea511fb6d322e1e0ae78ab7e6a6c3413827f0660f9fd240284"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/check_execution_boundary.py",
+      "bytes": 4578,
+      "sha256": "20c2a06f6c1dffd8d54f4409787276750b9659ad8a47e5beb6a7939533e70a2b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-check.json",
+      "bytes": 2189,
+      "sha256": "727d1a6971858e4183adb616b56c8f70e037544856c0a4b314d4ded4771b847e"
+    },
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "bytes": 30894944,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    }
+  ],
+  "started_utc": "2026-10-01T13:50:04.781634+00:00",
+  "peak_rss_kib": 239020,
+  "user_seconds": 4.0807,
+  "system_seconds": 20.077621,
+  "pid": 6,
+  "elapsed_seconds": 25.374757347999548,
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/convert-exact-f32.stdout.jsonl",
+      "bytes": 88,
+      "sha256": "33fa776da43ae2eb5f067ceff492ad31bbd86fa8fae023ed278dc948279b9154"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/convert-exact-f32.stderr",
+      "bytes": 44425,
+      "sha256": "e37d11b51bfe0ef770fb5b233eb339a097ca69c00927d1c1f29d2561f47bb331"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "bytes": 2526617472,
+      "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428"
+    }
+  ],
+  "missing_or_unhashable_outputs": [],
+  "converted_model": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+    "bytes": 2526617472,
+    "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428"
+  },
+  "input_bindings_after": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+      "bytes": 132111,
+      "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+      "bytes": 45124,
+      "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+      "bytes": 5535,
+      "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+      "bytes": 158953,
+      "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+      "bytes": 158212,
+      "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+      "bytes": 203312,
+      "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+      "bytes": 5931328,
+      "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+      "bytes": 16864,
+      "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+      "bytes": 18662,
+      "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+      "bytes": 8848,
+      "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+      "bytes": 3286,
+      "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+    },
+    {
+      "path": "/usr/bin/nice",
+      "bytes": 35336,
+      "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+      "bytes": 14479,
+      "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+      "bytes": 387,
+      "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+      "bytes": 1238,
+      "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+      "bytes": 657,
+      "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+      "bytes": 1439,
+      "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+      "bytes": 495,
+      "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+      "bytes": 1245,
+      "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert_f32.cpp",
+      "bytes": 1165,
+      "sha256": "d53f5bcd8aac241608d377c55ba71fe075ba1a851d61e916a6a6aac8905ed2a3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_tensor_values.c",
+      "bytes": 3528,
+      "sha256": "70735056ee9877c922b43d940a4bb9510cfb19fbbf1b417940cccbaaa43c3166"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "bytes": 7717,
+      "sha256": "7791ed2b6c9cce0eaf28e1bff57af89657a861742f24a8e48b1c79a259abf4c6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare_alignment_logits.c",
+      "bytes": 2935,
+      "sha256": "8ad1353ab2b45d58efb13a9864d70627fb355d9c88f0c1fa1d53fc631554164a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_alignment_plan.py",
+      "bytes": 6886,
+      "sha256": "16166069b53598e854c43399b812c87d6a16f9f76b83bc2667eeb748b502db79"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-quant.cpp",
+      "bytes": 64522,
+      "sha256": "a33dea76120a10b2eac8b5d81b9425dcd401e2c8ae4bb04f59b00922f0355fdd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+      "bytes": 6001552,
+      "sha256": "74c887ae299e02e7333ebf98411d4e6fc7918383360b2041c48db91bba6734b4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+      "bytes": 48432,
+      "sha256": "94a224bb4920486c890d9a63f25143e52c7758a0f37466d20a4d0ce62cc17c38"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare-alignment-logits",
+      "bytes": 16872,
+      "sha256": "3dbda29842d5e7ab04e449bae7342503f28de7e84ba6e85ee7d4f0ec30a9b750"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/libllama.a",
+      "bytes": 9522508,
+      "sha256": "fd81a8915d393fb282eda274c4932a11adcff01eb35cf71ef52de18875b0c236"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml.a",
+      "bytes": 65166,
+      "sha256": "21eedeca3eecf5d9bfcac9e65c9838f9278da67cc4c6819c1d819d819945ea5b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-cpu.a",
+      "bytes": 1815358,
+      "sha256": "33dd2c5fc69fdbf5c84060397181794d89da58f7d7b8da61d4fb95bd75c5c200"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-base.a",
+      "bytes": 1356830,
+      "sha256": "d3b8a4895385177dc1083999d2dade29fc501a94b6e746b1b29a692dd0d4c923"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/proposed-plan.json",
+      "bytes": 14165,
+      "sha256": "7fda2c239d1a6eb55b7b14888d592deefbe871ffa50c480312d242ae1b8f7cf4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/receipt.json",
+      "bytes": 115172,
+      "sha256": "20ce067bbd31302ad53d8bbdeb4550c15355fb81d768483016ef867d5c6cbdd7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-summary.json",
+      "bytes": 13979,
+      "sha256": "c17a4591afc5f4e240dbdcb69c651d98bfbb697992ba926521e9bd7df8707e41"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-forward-preparation-independent-audit.json",
+      "bytes": 15372,
+      "sha256": "6e4160f28bcd86c332b32c6c1b371e06c70065b8dbc4f85ea35717644fd6ca2e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-execution-v2-independent-audit.json",
+      "bytes": 3775,
+      "sha256": "02844b2519785814096b5c4895c26d9f7d111e49a91b7b93568c4fdbe2ce2d3f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/f32-alignment-preparation-independent-audit.json",
+      "bytes": 4205,
+      "sha256": "39ce4b2c62870976a6fb98412ecee2d07636dd2ca8bd06d1c6022d5e043f1559"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_execution.py",
+      "bytes": 9368,
+      "sha256": "0da2f2e4b9e271ea511fb6d322e1e0ae78ab7e6a6c3413827f0660f9fd240284"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/check_execution_boundary.py",
+      "bytes": 4578,
+      "sha256": "20c2a06f6c1dffd8d54f4409787276750b9659ad8a47e5beb6a7939533e70a2b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-check.json",
+      "bytes": 2189,
+      "sha256": "727d1a6971858e4183adb616b56c8f70e037544856c0a4b314d4ded4771b847e"
+    },
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "bytes": 30894944,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    }
+  ],
+  "sources_unchanged": true,
+  "dynamic_bindings_after": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "bytes": 2526617472,
+      "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428"
+    }
+  ],
+  "dynamic_unchanged": true
+}

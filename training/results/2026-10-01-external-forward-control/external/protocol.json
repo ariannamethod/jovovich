@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "status": "prepared_no_model_forwards",
+  "execution_authorized": false,
+  "scientific_scope": "External independent forward comparison on one preselected original-base pair; no v5 checkpoint choice or behavioral score is changed.",
+  "model": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "reference_commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+  "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "fixed_inputs": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+    "bytes": 2797,
+    "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+  },
+  "cases": [
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "pair": "allocation-null-guard-deletion",
+      "review_row": 20,
+      "expected_concern": true,
+      "prompt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+        "bytes": 2087,
+        "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+      },
+      "ids": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+        "bytes": 2063,
+        "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+      },
+      "prompt_tokens": 444,
+      "total_input_tokens": 447,
+      "captured_prefix_lengths": [
+        444,
+        447
+      ],
+      "captured_positions_zero_based": [
+        443,
+        446
+      ],
+      "supplied_prefix": "{\"findings",
+      "supplied_prefix_ids": [
+        4913,
+        3903,
+        819
+      ]
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "pair": "allocation-null-guard-deletion",
+      "review_row": 21,
+      "expected_concern": false,
+      "prompt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+        "bytes": 2086,
+        "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+      },
+      "ids": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+        "bytes": 2061,
+        "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+      },
+      "prompt_tokens": 444,
+      "total_input_tokens": 447,
+      "captured_prefix_lengths": [
+        444,
+        447
+      ],
+      "captured_positions_zero_based": [
+        443,
+        446
+      ],
+      "supplied_prefix": "{\"findings",
+      "supplied_prefix_ids": [
+        4913,
+        3903,
+        819
+      ]
+    }
+  ],
+  "captures_per_engine": 4,
+  "model_forward_calls": 0,
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+      "bytes": 132111,
+      "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+      "bytes": 45124,
+      "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+      "bytes": 5535,
+      "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+      "bytes": 158953,
+      "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+      "bytes": 158212,
+      "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+    }
+  ],
+  "binaries": {
+    "notorch": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+      "bytes": 203312,
+      "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+    },
+    "llama": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+      "bytes": 5931328,
+      "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+    },
+    "comparison": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+      "bytes": 16864,
+      "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+    }
+  },
+  "compiler": {
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "c++": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "cmake_dependency": [
+    {
+      "name": "cmake",
+      "version": "4.4.3",
+      "wheel_hashes": {
+        "sha256": "bae3c4954623ec4d62e62c70443f0da7988b733111c2871fcc6a31ead5137e20"
+      }
+    }
+  ],
+  "build": {
+    "priority_nice": 15,
+    "parallel_workers": 1,
+    "cmake_cache": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f"
+    },
+    "cmake_flags": {
+      "build/CMakeFiles/dump-llama.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+        "bytes": 387,
+        "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418"
+      },
+      "build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+        "bytes": 1238,
+        "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366"
+      },
+      "build/llama.cpp/src/CMakeFiles/llama.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+        "bytes": 657,
+        "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de"
+      },
+      "build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+        "bytes": 1439,
+        "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938"
+      },
+      "build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+        "bytes": 495,
+        "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559"
+      },
+      "build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+        "bytes": 1245,
+        "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2"
+      }
+    },
+    "logs": [
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stderr",
+        "bytes": 45,
+        "sha256": "1b3c4bbd76bb30a98c4b7de39b44a24e54bf92ad720562a92941f84505f404d8"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stdout",
+        "bytes": 1268,
+        "sha256": "52f2c7a7c71d5b5c4a2b2d56f5f48f98c369654e0e77c166dbabf9ad24964f10"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stderr",
+        "bytes": 25,
+        "sha256": "561a75a0b1ff67462d4d4422c66d6f97270694ee4d28835c9689cc580f3a9855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stderr",
+        "bytes": 5436,
+        "sha256": "727bc3bc6691529bd460c75705ebe78614a99b3608bb3a5e35eb745598df406b"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stdout",
+        "bytes": 6407,
+        "sha256": "e21b486d03b92fe903ab26c04479b9ad169560491b48cbb3a4f4bc2050dca6b9"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stderr",
+        "bytes": 2348,
+        "sha256": "1b141f093092646d7207e29b7cfa36765686c8061e220e9f68a56d75c075cbc1"
+      }
+    ],
+    "native_compile_flags": [
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu11",
+      "-march=native",
+      "-lm",
+      "-pthread"
+    ],
+    "reference_configuration": [
+      "Release",
+      "BUILD_SHARED_LIBS=OFF",
+      "GGML_CPU_REPACK=OFF",
+      "GGML_OPENMP=OFF",
+      "GGML_BLAS=OFF",
+      "GGML_LLAMAFILE=OFF",
+      "GGML_NATIVE=ON"
+    ]
+  },
+  "execution": {
+    "order": "Serial, concern then clean, native and reference per case; only after root explicitly authorizes forwards.",
+    "environment": {
+      "NT_NO_I8": "1",
+      "NT_QMV_THREADS": "1",
+      "NT_ATTN_THREADS": "1",
+      "NT_SIMD_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "environment_cleanup": "Remove inherited NT_* before assigning the listed native settings.",
+    "reference": {
+      "cpu_only": true,
+      "threads": 1,
+      "kv_dtype": "F32",
+      "flash_attention": false,
+      "repacking": false,
+      "sampler": null
+    },
+    "prefill_chunk": 32,
+    "context": 2048,
+    "tokenization": "Use archived IDs directly in both engines; no engine template, tokenizer or BOS insertion.",
+    "positions": "Last assistant-header token at 443, then consume all three exact prefix IDs and capture position446.",
+    "required_receipts": "Before and after: exact model/source/binary/input hashes. Preserve argv, exit status, logs, resources, all created binary dumps and metrics, including failed attempts."
+  },
+  "format": {
+    "name": "JVL2",
+    "byte_order": "little-endian",
+    "dtype": "IEEE754 float32",
+    "header_u32": [
+      "magic0x324c564a",
+      "version2",
+      "dtype1",
+      "vocabulary151936",
+      "capture_rows2",
+      "input_ids447"
+    ],
+    "input_tokens": "447 uint32 IDs in exact forward order",
+    "row_layout": "uint32 prefix_length followed by 151936 float32 logits in vocabulary-ID order",
+    "expected_bytes_per_dump": 1217308,
+    "expected_dump_count": 4,
+    "expected_total_dump_bytes": 4869232
+  },
+  "metrics": [
+    "max absolute logit difference and its token ID",
+    "relative L2 using reference norm",
+    "RMSE",
+    "mean absolute difference",
+    "bitwise-different float count",
+    "full-vocabulary argmax",
+    "top1 minus top2 margins for each engine",
+    "top10 IDs/logits for each engine",
+    "concern66582 minus clean788 logit margin"
+  ],
+  "q8_interpretation": {
+    "notorch": "NT_NO_I8=1 keeps float activations for quantized weight operations.",
+    "reference": "ggml CPU Q8_0 traits specify vec_dot_q8_0_q8_0 and vec_dot_type Q8_0; activation quantization introduces an expected arithmetic difference.",
+    "conclusion": "Original Q8 comparisons measure actual engine disagreement. A discrepancy alone is not evidence of a notorch forward defect.",
+    "alignment_trigger": {
+      "status": "proposed_for_independent_review_before_any_forward",
+      "any_of": [
+        "argmax differs at any capture",
+        "concern-minus-clean signs differ at prefix447",
+        "relative_l2 > 1e-4",
+        "max_abs > 1e-3 * (1 + reference_max_abs)"
+      ],
+      "purpose": "Screening threshold to request a separately authorized arithmetic alignment control, not a pass/fail correctness threshold."
+    }
+  },
+  "optional_alignment_control": {
+    "execute": false,
+    "requires_root_authorization": true,
+    "method": "Use native llama-quantize F32 or a native GGUF converter on this exact Q8 file. Validate each expanded tensor against an independent notorch Q8 dequantization element-for-element before any aligned forward.",
+    "weight_contract": "Every tensor name, shape and numeric value must agree exactly with dequantization of the original; preserve architecture/tokenizer/position/norm metadata and tie/output semantics; explicitly enumerate converter bookkeeping changes such as general.file_type and quantization-version metadata. Bind full per-tensor hashes and model byte extent. No fine-tuning or alternate source weights.",
+    "comparisons": "Native Q8-float-activation versus native expanded-F32 isolates packed-kernel arithmetic; native expanded-F32 versus reference same-F32 isolates shared-weight forward differences. Keep both separately from original-Q8 comparison.",
+    "decision": "Review original-Q8 measurements and all-tensor conversion audit before deciding whether to execute alignment; no silent fallback."
+  },
+  "portable_evidence": "Archive only sources, fixed inputs, compact compiler/configuration receipts, logs, plan, binary logit dumps and metric receipts. Exclude full llama checkout, build tree, venv and model weights."
+}

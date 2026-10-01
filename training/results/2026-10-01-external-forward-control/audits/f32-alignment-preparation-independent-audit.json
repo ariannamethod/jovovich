@@ -1,0 +1,64 @@
+{
+  "status": "scientific_source_preparation_passed_execution_plan_still_required",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/proposed-plan.json",
+    "bytes": 14165,
+    "sha256": "7fda2c239d1a6eb55b7b14888d592deefbe871ffa50c480312d242ae1b8f7cf4"
+  },
+  "source_bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert_f32.cpp",
+      "bytes": 1165,
+      "sha256": "d53f5bcd8aac241608d377c55ba71fe075ba1a851d61e916a6a6aac8905ed2a3"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_tensor_values.c",
+      "bytes": 3528,
+      "sha256": "70735056ee9877c922b43d940a4bb9510cfb19fbbf1b417940cccbaaa43c3166"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "bytes": 7717,
+      "sha256": "7791ed2b6c9cce0eaf28e1bff57af89657a861742f24a8e48b1c79a259abf4c6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare_alignment_logits.c",
+      "bytes": 2935,
+      "sha256": "8ad1353ab2b45d58efb13a9864d70627fb355d9c88f0c1fa1d53fc631554164a"
+    }
+  ],
+  "unique_bindings_verified": 64,
+  "original_frozen_bindings_unchanged": true,
+  "independent_header_read": {
+    "metadata_keys": 26,
+    "tensors": 291,
+    "dtype_counts": {
+      "8": 170,
+      "0": 121
+    },
+    "stored_values": 630167424,
+    "data_offset": 5947776,
+    "expanded_expected_bytes": 2526617472,
+    "tensor_value_dequantization_performed": false
+  },
+  "review": {
+    "producer": "Pinned llama_model_quantize uses ALL_F32 with explicit output/embedding F32, one thread, no alternate weights, and exclusive reservation. Exact source non-F32 tensors are all quantizable weight matrices.",
+    "independent_numeric_gate": "Native validator matches all291 unique names and shapes, requires F32 destination and bounded rows, dequantizes each original row through independent notorch code, and checks all630167424 values bitwise and finite.",
+    "metadata_gate": "Typed byte comparison covers all original metadata values and tokenizer arrays; known file_type7->0 rewrite is allowed, quantization_version is fixed2, split metadata forbidden. Fixed base hash prevents altered original metadata from widening this allowance.",
+    "layout_gate": "All names/shapes retained, all payloads F32, contiguous aligned physical offsets and exact2526617472-byte extent required. All payloads hashed; physical order may change by exact name.",
+    "coverage_gate": "Python requires native exit0, exactly291 unique original names and each exact/finite flag before completed validation; model/source/verifier hashes must remain equal.",
+    "comparison": "Alignment comparator differs from previously audited one only in arm field labels, usage text and relative include path. Complete-vocabulary metrics, finite checks and position/ID guards are unchanged.",
+    "isolation": "Same fixed pair/captures and original weights. No training, v5 selection, benchmark rubric or original-Q8 files changed. Four optional F32 forwards remain disabled pending converted hash and fresh execution plan."
+  },
+  "execution_conditions": [
+    "A separate root decision must authorize conversion; this source audit does not.",
+    "Before any aligned forward, retain successful all-tensor validation plus exact converted-model binding and separately audit/freeze the execution controller.",
+    "Outer controller must retain early validation initialization/launch failures: verify_alignment.py creates/hashes/checks the initial base before its internal try/finally.",
+    "Outer controller must record actual post-execution hashes or missing/error records for base, converted file and validator bindings even when internal validation fails; the internal helper currently retains a failure string for posthash mismatch.",
+    "Keep nativeQ8->nativeF32 and nativeF32->referenceF32 metrics separate. Finite numerical differences alone do not identify a defective implementation."
+  ],
+  "conversions_by_auditor": 0,
+  "model_forwards_by_auditor": 0,
+  "builds_by_auditor": 0,
+  "tests_by_auditor": 0
+}

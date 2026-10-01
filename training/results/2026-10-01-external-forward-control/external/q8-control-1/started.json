@@ -1,0 +1,10 @@
+{
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+    "bytes": 14479,
+    "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+  },
+  "pid": 6,
+  "started_utc": "2026-10-01T13:28:13.757989+00:00",
+  "explicit_execute": true
+}

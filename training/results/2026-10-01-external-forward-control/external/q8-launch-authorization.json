@@ -1,0 +1,19 @@
+{
+  "authorized_by": "root",
+  "received_decision": "Explicit execution NOW; replaces only the earlier wait-for-v5 scheduling prerequisite.",
+  "recorded_utc": "2026-10-01T13:28:11.656974+00:00",
+  "scientific_protocol_sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7",
+  "execution_plan_sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64",
+  "root_reported_resource_check": {
+    "cgroup_limit": "8GiB",
+    "anonymous_memory": "~948MB",
+    "file_cache": "~7.09GB",
+    "inactive_reclaimable_file_cache": "~1.2GB",
+    "OOM_events": 0,
+    "CPU_quota_cores": 8,
+    "training_threads": 4
+  },
+  "schedule": "One serial nice15 external worker with prescribed1thread; may overlap current training.",
+  "v5_selection_unchanged": true,
+  "F32_conversion_and_forwards_authorized": false
+}

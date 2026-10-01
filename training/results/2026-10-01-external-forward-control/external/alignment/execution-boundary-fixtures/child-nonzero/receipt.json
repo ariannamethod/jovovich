@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-E",
+    "-c",
+    "from pathlib import Path; print('partial stream',flush=True); Path('partial.txt').write_text('retained'); raise SystemExit(7)"
+  ],
+  "started_utc": "2026-10-01T13:46:11.425749+00:00",
+  "status": "failed",
+  "exit_code": 7,
+  "peak_rss_kib": 12032,
+  "user_seconds": 0.037281999999999996,
+  "system_seconds": 0.011611999999999999,
+  "pid": 6,
+  "failure_type": "ValueError",
+  "failure": "child exited unsuccessfully",
+  "elapsed_seconds": 0.04961588099831715,
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/stdout",
+      "bytes": 15,
+      "sha256": "58aa3ffd54d7f00c8d7ec6efc3df69c77084555da019a2220c55ba560f35fe50"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/partial.txt",
+      "bytes": 8,
+      "sha256": "ca67bd59cc4116ac80db5f64cbf4747f26ba929c85e8cc689a6123368d08719b"
+    }
+  ],
+  "missing_or_unhashable_outputs": []
+}

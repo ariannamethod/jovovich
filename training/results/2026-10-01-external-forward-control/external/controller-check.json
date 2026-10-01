@@ -1,0 +1,162 @@
+{
+  "passed": true,
+  "model_forward_calls": 0,
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external.py",
+    "bytes": 8428,
+    "sha256": "34c825c3eea6209a9c112f7f7ca6c8632c5bec05bd8eb9abd86984b1da81e709"
+  },
+  "helper": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts.py",
+    "bytes": 2685,
+    "sha256": "07806c8dbd08302acdf6767823451cc436c606c6d4c47aa9310dd7c8d62558f1"
+  },
+  "fixtures": [
+    {
+      "name": "launch_failure",
+      "receipt": {
+        "command": [
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/nonexistent-command"
+        ],
+        "started_utc": "2026-10-01T13:14:48.380417+00:00",
+        "status": "failed",
+        "exit_code": null,
+        "peak_rss_kib": null,
+        "user_seconds": null,
+        "system_seconds": null,
+        "failure_type": "FileNotFoundError",
+        "failure": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/nonexistent-command'",
+        "elapsed_seconds": 0.0012579120011650957,
+        "artifacts": [
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/stdout",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "missing_outputs": [
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/partial.dump"
+        ]
+      }
+    },
+    {
+      "name": "partial_failure",
+      "receipt": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-c",
+          "from pathlib import Path; Path('partial.dump').write_bytes(b'partial'); raise SystemExit(7)"
+        ],
+        "started_utc": "2026-10-01T13:14:48.382517+00:00",
+        "status": "failed",
+        "exit_code": 7,
+        "peak_rss_kib": 11264,
+        "user_seconds": 0.153794,
+        "system_seconds": 0.069619,
+        "pid": 7,
+        "failure_type": "ValueError",
+        "failure": "native child failed",
+        "elapsed_seconds": 0.22582218699972145,
+        "artifacts": [
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/stdout",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/partial.dump",
+            "bytes": 7,
+            "sha256": "9834a14ab9bcaa0f6a8da71073617eac8f004e596a3fa11d807b84631b825d9d"
+          }
+        ],
+        "missing_outputs": []
+      }
+    },
+    {
+      "name": "missing_output",
+      "receipt": {
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+          "-c",
+          "pass"
+        ],
+        "started_utc": "2026-10-01T13:14:48.609455+00:00",
+        "status": "failed",
+        "exit_code": 0,
+        "peak_rss_kib": 11264,
+        "user_seconds": 0.011686,
+        "system_seconds": 0.023738,
+        "pid": 8,
+        "elapsed_seconds": 0.0360197350019007,
+        "artifacts": [
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/missing_output/stdout",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/missing_output/stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "missing_outputs": [
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/missing_output/partial.dump"
+        ],
+        "failure_type": "ValueError",
+        "failure": "successful child omitted required output"
+      }
+    },
+    {
+      "name": "stderr_open_failure",
+      "receipt": {
+        "command": [
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/nonexistent-command"
+        ],
+        "started_utc": "2026-10-01T13:14:48.646298+00:00",
+        "status": "failed",
+        "exit_code": null,
+        "peak_rss_kib": null,
+        "user_seconds": null,
+        "system_seconds": null,
+        "failure_type": "FileNotFoundError",
+        "failure": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/missing-parent/stderr'",
+        "elapsed_seconds": 0.00012331500329310074,
+        "artifacts": [
+          {
+            "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/stdout",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "missing_outputs": [
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/missing-parent/stderr",
+          "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/partial.dump"
+        ]
+      }
+    }
+  ],
+  "dump_fixed_case_validation": {
+    "expected_ids": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+    },
+    "captured_prefix_lengths": [
+      444,
+      447
+    ],
+    "embedded_ids_match_fixed_case": true
+  },
+  "wrong_case_rejected": true
+}

@@ -2,6 +2,189 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — The archive lost its floor.
+
+During final publication, local files disappeared across multiple working
+folders, including the matched run, evaluations, semantic judgments, independent
+audits and the local Git directory. At 15:42:48 UTC the selected model was absent
+and its artifacts directory was empty. Two independent agents observed the same
+loss; none reported issuing cleanup. The cause is unresolved. This later broad
+loss must not be assigned the same cause as the earlier transient GGUF anomaly.
+
+The collector's read-only material check had just passed for 373 files and
+8,248,571 payload bytes, with 32 bound repository sources. The subsequent write
+failed on a missing selected GGUF before creating its output directory. No
+completed matched-review manifest or byte-preserved public bundle exists. The
+results reported below were read and independently checked before the loss;
+their raw responses, full judgments and training receipts are now unavailable.
+Known hashes identify those missing originals, but cannot replace them.
+
+The separate external-forward archive survived as already uploaded Git objects:
+158 files, 12,232,383 bytes, tree `30470619bc523273a76998903f33c11f943f0a30`.
+README and this log were copied into a surviving tool buffer. The selected model,
+adapters and three packed/data inputs had already passed verification in private
+HF revision `c9484feec99c5df47be5702d29098297aced1389`. They can support recovery
+or a newly labeled evaluation; they cannot recreate the original training trace.
+The new [`evidence-loss.json`](training/results/2026-10-01-matched-review/evidence-loss.json)
+records availability and previously observed identities without fabricating
+missing payloads. The external archive and these surviving records are published
+now; the full matched-run archive remains incomplete.
+
+## 2026-10-01 — A falling loss curve has not earned a verdict.
+
+The matched v5 experiment completes 100 native updates with every bound source
+and input unchanged. Joint CE falls from 4.75684598 to 1.37147876. The residual
+component falls from 2.73500350 to 0.67996486, while decision CE ends at
+0.69151390. All 101 measurements were recorded before the later loss, including the
+transient decision pair successes between saved checkpoints.
+
+The eligible updates 25, 50 and 100 each have zero complete decision pairs.
+Their individual target counts are 26, 25 and 26 out of 52. The prespecified
+tie-break selects update 25, before natural generation. The prior v4 procedure
+selected update 100. This difference is part of the fixed selection procedure;
+the comparison does not hold the selected update constant. Update 75 and the
+better transient measurements were recorded without becoming eligible;
+their payload is now unavailable.
+
+The first postprocess attempt completes selection, export and its byte audit,
+then stops on a changed-model binding. Its final failure snapshot contains
+674,725,888 bytes: an independently verified exact prefix of the original
+714,116,992-byte export. Subsequent reads again match the original full SHA256
+`277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532`.
+The precise bytes seen by the first rejecting guard were not logged; the prefix
+claim applies to the preserved final failure snapshot. The exporter closes its
+output before success, and the audit opens it read-only. The source of the
+transient truncation and restoration remains unresolved.
+
+A separate, independently reviewed continuation preserves the failed receipt,
+checks the original full export and all carried bindings, and runs only the
+unfinished native parity check. Training, selection and export are not repeated.
+All three parity rows pass, with 92/92 completion-token argmax matches and maximum
+CE difference 0.0000027418. The full model hash and file identity remain unchanged
+through the check. The failure is evidence, not a successful model artifact.
+
+Natural generation then completes all 88 cases for each selected model on the
+same v5 prompts. The primary evaluator and independent auditor agree on all
+88 new outcomes. The old judgments remain unchanged. Production-usable responses
+fall from 83/88 to 62/88; grounded concern reviews remain 2/44, while correct clean
+reviews fall from 36/44 to 4/44. Full individual reviews are 38/88 versus 6/88.
+Complete concern/clean pairs are **0/44 in both arms**: 0/26 training, 0/12 fresh
+transfer and 0/6 established diagnostics.
+
+The new full reviews split into 5/52 training, 1/24 transfer and 0/12 diagnostics;
+the corresponding control counts are 24/52, 9/24 and 5/12. One transfer answer
+awkwardly describes the removed required final-byte zeroing. The accepted reading
+and a strict rule-echo alternative were both recorded before the loss: the latter reduces the
+new total to 5/88 and grounded concerns to 1/44, without changing any pair result.
+Eight harmless empty-list grounding conventions differ between the independent
+working notes and primary records; none affects the final verdicts.
+
+The selected GGUF, twelve saved adapters and three data/packed-input files are
+archived privately in `ataeff/jovovich` at revision
+`c9484feec99c5df47be5702d29098297aced1389`, under `experiments/matched-review/`.
+All sixteen files pass a pinned-revision download and SHA256/size check. The
+single upload commit, initial verification failures and read-only timeout retry
+were recorded in the receipts before their later loss. No model weight enters
+GitHub or replaces the runtime model. The intended public bundle included the
+independent audit, raw token traces and all 101 training measures; its write did
+not complete, as documented in the later incident above.
+
+This matched-data intervention fails to improve the primary pair outcome under
+the fixed training and selection procedure. Its selected model also regresses
+on usable output and clean cases. Different selected updates, one seed and the
+limited final-MLP budget prevent attributing that regression to one mechanism.
+The next diagnostic should map transferable signal across layers using our exact
+Qwen prompt, explicit capture boundaries and grouped evaluation, with layer
+selection separated from untouched confirmation families. SUBLITERATUS supplies
+a useful collection pattern below. It does not supply this experiment's verdict.
+SERGE has not lit a second cigarette to make the loss curve look warmer.
+
+## 2026-10-01 — The arithmetic witness brought all the logits.
+
+The exact original 0.5B Q8_0 body had token-ID and generation comparisons, but
+no full-logit external check at the review decision boundary. A separate native
+diagnostic now compares notorch with pinned llama.cpp on one fixed allocation
+guard concern/clean pair. Each input has 444 prompt tokens; captures occur after
+the assistant header and after the shared three-token answer prefix. No sampler,
+tokenizer difference, class-specific answer prefix or checkpoint selection is
+involved. Each capture preserves all 151,936 logits and its exact input IDs.
+
+The original Q8 comparison agrees on all four argmax choices, but exceeds the
+prespecified numerical screening thresholds. This requests arithmetic alignment;
+it does not establish a bug. llama.cpp's Q8 path quantizes activations, whereas
+the native run uses `NT_NO_I8=1`.
+
+A native converter expands the original stored tensor values to F32. Independent
+verification checks every value in all 291 tensors, their names and shapes, the
+file layout and all 26 typed metadata keys. Only the storage file-type field
+changes. All tensor values are bitwise exact and finite before either engine
+is allowed to use the converted file.
+
+| Fixed four-capture comparison | Maximum absolute logit difference | Maximum relative L2 | Argmax agreement |
+| --- | ---: | ---: | ---: |
+| notorch Q8 vs llama.cpp Q8 | 0.29679763 | 0.02563207 | 4/4 |
+| notorch Q8 vs notorch exact F32 | 0.00003910 | 0.000002084 | 4/4 |
+| notorch F32 vs llama.cpp same F32 | 0.00006104 | 0.000002719 | 4/4 |
+
+Decision-margin signs agree throughout. An independent auditor recomputes the
+saved metrics, ranks and margins from all eight full-logit dumps, and verifies
+the conversion proof and unchanged input bindings. The large original Q8
+difference collapses with matched arithmetic on these inputs. This supports
+activation arithmetic as its dominant source here; it does not establish
+universal forward parity, validate training gradients or explain the review
+quality. Timings include concurrent training and are not a speed benchmark.
+
+Complete evidence and reconstruction bindings live in
+[`training/results/2026-10-01-external-forward-control`](training/results/2026-10-01-external-forward-control).
+This is a numerical control, not a new training arm or a runtime dependency.
+
+## 2026-10-01 — The audit found the previous defendant.
+
+Fable's external review inspected the historical output-head trainer. An
+independent check against the running experiment's bound source, binary and
+inputs confirms that v5 already uses rank-16 gate/up/down adapters in the
+last MLP, separately normalized decision and residual losses, and one Adam
+update after all 1,064 review targets accumulate. The objective is
+`sum(decision CE) / 52 + sum(residual CE) / 1012`. Equal group coefficients do
+not establish equal gradient strength. Earlier blocks and attention remain
+frozen, so adapter placement is still an empirical limitation to investigate.
+
+The alleged missing forbidden-Python supervision is present in both the old
+SFT corpus and the current scoped-rule pair. Fable retracted the DPO length
+claim; the current run uses SFT only. This review establishes no new native
+training defect and does not justify changing the frozen optimizer mid-run.
+
+Fable's follow-up traced and confirmed the current gradient implementation.
+His proposed layer-by-layer probe is a useful next diagnostic, but the existing
+29/52 family-held-out state result does not prove that the state contains no
+usable signal. The held-out primary uses ridge 0.01. Separate capacity controls
+using the same affine model family with ridge 1e-8 classify all 52 training rows
+correctly, including the prespecified shuffled-label control; both still fail
+the frozen CE threshold of 0.001. Memorization and transfer are
+different measurements. Neither establishes the sole cause of the MLP result.
+Layer selection needs a separate confirmation set; rationale-before-verdict is
+a distinct future intervention. Neither changes the current experiment.
+
+Read-only inspection of SUBLITERATUS main
+`589eae367c593605da94a8cc1404c2f72823835d` confirms the related native tooling.
+Its classic `probe` projects the states of two supplied answers along a learned
+contrast direction; it does not classify our diff before seeing the answer.
+`research/validation/self_inquiry_collect.c` supplies the more useful pattern:
+fresh KV, exact native IDs, raw vectors from every layer and explicit incomplete
+request receipts. That executable currently requires Gemma. The general CLI
+supports Qwen, but uses a different system message and evaluation contract.
+Their residual hook is after a complete block; our archived `z` is before the
+last MLP. A future JOVOVICH layer study should reuse the collection/accounting
+pattern in our existing Qwen extractor, retain our ChatML and grouped affine
+evaluation, and validate the capture boundary explicitly. Neither repository
+was modified or a new model run launched by this inspection.
+
+It does expose a documentation problem: `make train` still names the original
+head prototype, while current experiments require `make train-mlp` and explicit
+`joint` arguments. README now distinguishes those paths at the start of its
+training section. The bound Makefile and trainer remain unchanged during the
+experiment. SERGE requested the correct case file. Still one cigarette.
+
 ## 2026-10-01 — Even a process that never started leaves evidence.
 
 Copilot's PR #13 finding was reproducible: `Popen` could fail before the phase

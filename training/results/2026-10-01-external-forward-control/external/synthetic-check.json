@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "model_forward_calls": 0,
+  "synthetic_only": true,
+  "helper": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_synthetic_dumps.py",
+    "bytes": 3201,
+    "sha256": "6bb7266079eea342c28d839c6ffd43292cb0f6708f7955537276dffcf4cddb0b"
+  },
+  "comparator": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+    "bytes": 16864,
+    "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+  },
+  "assertions": [
+    "constant relative L2 0.5",
+    "constant max/mean/RMS error1",
+    "identical row zero error",
+    "stable argmax tie IDs",
+    "mismatched token IDs refused"
+  ],
+  "metrics": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/metrics.jsonl",
+    "bytes": 1541,
+    "sha256": "adf4f67aca9d9f0896826838455c14c5b8017daaa567f0215eb8e49f8368a4d7"
+  },
+  "input_bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/native.dump",
+      "bytes": 1217308,
+      "sha256": "668d1a1876884c1625c33edaf62690ef2b8d3f15d010950ee38c0f93ef164426"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/reference.dump",
+      "bytes": 1217308,
+      "sha256": "4ef5fb2fd6a04c3a8bf8076abb9000c9ce58ad37962c8fd33863e17e5d7eb936"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/different-ids.dump",
+      "bytes": 1217308,
+      "sha256": "9b60535566aa958d8db035770f8408da8a538b1292f7bcce82c822eb36fb25f1"
+    }
+  ],
+  "rejection": {
+    "exit_code": 1,
+    "stderr": "external-parity: different input token IDs\n"
+  }
+}

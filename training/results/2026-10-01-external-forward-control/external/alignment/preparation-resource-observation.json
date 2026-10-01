@@ -1,0 +1,26 @@
+{
+  "observed_utc": "2026-10-01T13:46:48.481880+00:00",
+  "cpu_max": "800000 100000",
+  "memory_max": "8589934592",
+  "memory_current": 8188633088,
+  "memory_stat": {
+    "anon": 947531776,
+    "file": 7102050304,
+    "inactive_file": 1195438080,
+    "active_file": 5906612224,
+    "file_dirty": 2453504,
+    "file_writeback": 0
+  },
+  "memory_events": "low 0\nhigh 0\nmax 98546\noom 0\noom_kill 0\noom_group_kill 0\n",
+  "disk_usage": {
+    "total": 33770192896,
+    "used": 16592044032,
+    "free": 15443386368
+  },
+  "planned_maximum_serial_children": 1,
+  "estimated_peak_rss_bytes": 3600000000,
+  "converted_weight_bytes": 2526617472,
+  "new_logit_dump_bytes": 4869232,
+  "conversion_and_forward_calls": 0,
+  "decision": "Preparation resource observation only; root execution go still required."
+}

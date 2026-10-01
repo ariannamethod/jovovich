@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "requested_plan": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash-plan.json",
+  "expected_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "output_directory": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash",
+  "phases": [],
+  "model_forward_processes_started": 0,
+  "conversion_processes_started": 0,
+  "started_utc": "2026-10-01T13:46:11.419881+00:00",
+  "sources_unchanged": false,
+  "plan_before": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash-plan.json",
+    "bytes": 1207,
+    "sha256": "79d00437bed41c59fdf36ec67aac2d0185f995e0a00afaec2c49ffbe50f06ea0"
+  },
+  "failure_type": "ValueError",
+  "failure": "execution plan hash mismatch or unreadable plan",
+  "plan_after": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash-plan.json",
+    "bytes": 1207,
+    "sha256": "79d00437bed41c59fdf36ec67aac2d0185f995e0a00afaec2c49ffbe50f06ea0"
+  },
+  "input_bindings_after": [],
+  "dynamic_bindings_after": [],
+  "dynamic_unchanged": true,
+  "plan_unchanged": true,
+  "final_binding_failure": "actual before/after bindings retained",
+  "completed_utc": "2026-10-01T13:46:11.420456+00:00",
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash/started.json",
+      "bytes": 333,
+      "sha256": "922de2fbe509eac8d2c4f9a9e9c73834ff3d702e400dd1ce06d1e0b96bcf8676"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "archive_preparation_only",
+  "intended_repository_target": "training/results/2026-10-01-external-forward-control",
+  "scope": "Independent forward arithmetic diagnostic; no model weights and no effect on frozen v5 model selection.",
+  "preserve_bytes": true,
+  "preserve_literal_historical_paths": true,
+  "path_relocation": "A separate path-alias manifest maps original scratch/repository paths to portable relative files; archived evidence bytes stay unchanged.",
+  "formats": {
+    "logits": {
+      "format": "JVL2 version2 binary",
+      "endianness": "little",
+      "header_dtype": "6 uint32: magic,version,float32_dtype,vocabulary,capture_count,total_token_count",
+      "header_values": [
+        843863626,
+        2,
+        1,
+        151936,
+        2,
+        447
+      ],
+      "payload": "447 uint32 token IDs, then2 records each prefix_length uint32 followed by151936 IEEE float32 logits",
+      "capture_prefix_lengths": [
+        444,
+        447
+      ],
+      "bytes_per_dump": 1217308,
+      "file_extension": ".dump"
+    },
+    "records": "UTF-8 JSON and JSONL",
+    "sources": "Plain UTF-8 C/C++/Python and headers",
+    "logs": "Raw stdout/stderr streams; no generated substitutions"
+  },
+  "projected_payload": {
+    "original_Q8_dumps": 4,
+    "aligned_F32_dumps": 4,
+    "all_dump_bytes": 9738464,
+    "metadata_source_receipt_estimate_bytes": 2000000,
+    "approximate_total_upper_estimate_bytes": 12000000
+  },
+  "include_groups": [
+    "immutable scientific protocol and both external execution plans",
+    "fixed prompt text, token-ID files, preparation scripts and provenance receipts",
+    "minimal native harness/converter/verifier/comparator sources plus native/pinned source identities",
+    "CMake/compiler flag snapshots and dependency install report/wheel hash; no executable distribution",
+    "completed Q8 streams/phase receipts/scalar metrics/full-logit dumps/summary",
+    "completed alignment streams/phase receipts/scalar metrics/full-logit dumps/summary only if fully successful",
+    "all-tensor exact validation receipt,291 rows, per-tensor payload hashes and actual F32 model hash",
+    "independent static/execution audit receipts",
+    "focused execution-boundary checker scripts and tiny failure-evidence receipts",
+    "literal-path relocation aliases and byte-count/SHA256 manifest"
+  ],
+  "exclude_groups": [
+    "all GGUF model files including temporary exact-F32 conversion",
+    "executables and static/shared libraries",
+    "full llama.cpp checkout",
+    "full build directories",
+    "local dependency venv",
+    "synthetic binary logit fixture payloads",
+    "credentials and private token files",
+    "all unrelated matched-training selection artifacts"
+  ],
+  "completion_gates": [
+    "Require completed original-Q8 and alignment receipts with all phase exits0 and source/dynamic/plan hashes unchanged.",
+    "Require exactly4 original-Q8 and4 aligned-F32 model forward processes, the original frozen token IDs and both fixed boundaries.",
+    "Require independent tensor/metadata/layout validation completed before first aligned forward.",
+    "Archive copy and repository changes are root-owned; this preparation JSON does not authorize a copy."
+  ],
+  "collector_owner": "/root/fable_triage",
+  "archive_copy_performed": false
+}

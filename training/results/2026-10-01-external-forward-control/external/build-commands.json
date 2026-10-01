@@ -1,0 +1,102 @@
+{
+  "recorded_after_build": true,
+  "model_forward_calls": 0,
+  "commands": [
+    {
+      "name": "native_dump_build",
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "cc",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-I",
+        "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch",
+        "-o",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+        "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+        "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+        "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+        "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+        "-lm",
+        "-pthread"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "name": "reference_configure",
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-venv/bin/cmake",
+        "-S",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity",
+        "-B",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DLLAMA_BUILD_COMMON=OFF",
+        "-DLLAMA_BUILD_TESTS=OFF",
+        "-DLLAMA_BUILD_TOOLS=OFF",
+        "-DLLAMA_BUILD_EXAMPLES=OFF",
+        "-DLLAMA_BUILD_SERVER=OFF",
+        "-DLLAMA_BUILD_APP=OFF",
+        "-DGGML_CPU_REPACK=OFF",
+        "-DGGML_OPENMP=OFF",
+        "-DGGML_BLAS=OFF",
+        "-DGGML_LLAMAFILE=OFF",
+        "-DGGML_NATIVE=ON"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "name": "reference_build",
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-venv/bin/cmake",
+        "--build",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build",
+        "--target",
+        "dump-llama",
+        "--parallel",
+        "1"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "name": "comparison_build",
+      "argv": [
+        "nice",
+        "-n",
+        "15",
+        "cc",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-o",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+        "-lm"
+      ],
+      "observed_exit_code": 0
+    }
+  ],
+  "failed_initial_configure": {
+    "cause": "cmake executable absent",
+    "observed_exit_code": 127,
+    "stderr": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stderr",
+      "bytes": 45,
+      "sha256": "1b3c4bbd76bb30a98c4b7de39b44a24e54bf92ad720562a92941f84505f404d8"
+    }
+  }
+}

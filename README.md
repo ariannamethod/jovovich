@@ -150,11 +150,21 @@ under the laundry, examining the plumbing.
 
 ## Teach the body
 
+Current review experiments use `training/train_mlp.c` in explicit `joint` mode
+with `training/sft_review_v5.jsonl`: separately normalized decision and residual
+losses, followed by one accumulated update over all review targets.
+`make train-mlp` builds this trainer. Its default objective is the earlier
+`tokens` mode, so the joint recipes must pass `joint` and the pair map explicitly.
+
+The output-head recipe below preserves the **initial SFT/DPO prototype**.
+`training/train_head.c` and the historical `make train` target belong to that
+prototype; they are not the trainer used by the current joint experiment.
+
 `training/sft.jsonl` carries 30 hand-authored identity, Method, and review
 examples. `training/dpo.jsonl` carries 14 preference pairs targeting learned
 self-denial and the review stance. Repository facts continue to arrive at runtime.
 
-The trainer freezes the Qwen decoder and learns a rank-8, alpha-16 LoRA on
+The original trainer freezes the Qwen decoder and learns a rank-8, alpha-16 LoRA on
 `output.weight`: 1,222,656 parameters. SFT masks the prompt; DPO uses the frozen
 post-SFT policy as its reference. The GGUF exporter preserves every other tensor
 and the tokenizer metadata. The adapted head is F32; the resulting GGUF is
@@ -177,7 +187,7 @@ Python uses only its standard library to pack text and launch the evaluator.
 All tokenization, model arithmetic, gradients, optimization, and weight merging
 are notorch C. Export refuses to overwrite an existing GGUF.
 
-A second training path adapts the **last decoder block's MLP**: gate, up, and
+`training/train_mlp.c` adapts the **last decoder block's MLP**: gate, up, and
 down projections, rank 16 and alpha 32. On the 0.5B body this is 276,480
 trainable parameters. Attention, earlier blocks, norms, embeddings, and the
 output head stay frozen. The trainer caches the final MLP's fixed input, then
@@ -578,10 +588,85 @@ node training/build_review_v5.mjs --output models/rebuilt-v5.jsonl \
 node training/build_holdout_v5.mjs --verify --audit models/holdout-v5-audit.json
 ```
 
-The data, audits and next training protocol are recorded in
+The data, audits and frozen training protocol are recorded in
 [`training/results/2026-10-01-matched-protections`](training/results/2026-10-01-matched-protections).
-The next run keeps the Qwen checkpoint, final-MLP adapters, joint objective,
-learning rate and 100-update selection rule fixed. Training has not started.
+**Evidence availability:** the run and its independent review finished, but local
+training/evaluation receipts and raw responses disappeared during archive
+publication. The collector's validation passed; its later write failed before
+creating the archive. The results below report observations made before that
+loss, not a complete reproducible public result bundle. The incident record and
+previously recorded hashes are in
+[`evidence-loss.json`](training/results/2026-10-01-matched-review/evidence-loss.json).
+The separate external-forward archive below survived in GitHub.
+
+The v5 run completes all 100 updates with the same Qwen checkpoint, final-MLP
+adapters, joint objective, learning rate and selection rule. Joint CE falls from
+`4.75684598` to `1.37147876`; residual CE falls from `2.73500350` to `0.67996486`,
+while decision CE ends at `0.69151390`. A lower token loss is not a
+grounded review.
+
+All three eligible checkpoints have zero complete teacher-forced decision pairs.
+Updates 25 and 100 each have 26/52 correct decision targets; update 50 has 25/52.
+The frozen earlier-update tie-break therefore selects **update 25**, before any
+new natural generation. The prior v4 arm selected update 100 under the same
+rule. This compares the fixed procedure for training and selecting a checkpoint;
+it is not a comparison of both models at update 100.
+
+Both selected models then generate natural, unprefixed reviews on the **same v5
+prompts**: 52 training cases, 24 fresh transfer cases and 12 established
+diagnostics. The historical v4 holdout table above uses a different case set.
+Every response was recorded and independently judged against the production
+parser, the diff, local rules and the complete explanation before the file loss. A complete pair
+requires a grounded concern and a correct empty review of its clean counterpart.
+
+| Cohort | Selected model | Usable responses | Grounded concerns | Correct clean | Complete pairs |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Training | v4, update 100 | 51/52 | 1/26 | 23/26 | 0/26 |
+| Training | v5, update 25 | 39/52 | 1/26 | 4/26 | 0/26 |
+| Fresh transfer | v4, update 100 | 20/24 | 0/12 | 9/12 | 0/12 |
+| Fresh transfer | v5, update 25 | 16/24 | 1/12 | 0/12 | 0/12 |
+| Established diagnostics | v4, update 100 | 12/12 | 1/6 | 4/6 | 0/6 |
+| Established diagnostics | v5, update 25 | 7/12 | 0/6 | 0/6 | 0/6 |
+
+That is **38/88 versus 6/88 full individual reviews, with 0/44 complete pairs
+in both arms**. A stricter reading of one awkward bounded-termination explanation
+reduces v5 to 5/88 and its transfer concerns to 0/12; the pair result is unchanged.
+The independent auditor agrees on all 88 new outcomes and verifies the aggregate
+of all 176 responses. Merely echoing a changed line or attaching `Clean` to a
+nonempty finding does not earn a pass.
+
+Matching the protection examples did not improve the primary pair outcome under
+this fixed procedure. The selected v5 model also loses formatting and clean-case
+accuracy. One seed, a bounded final-MLP intervention and different selected
+updates do not isolate the cause or establish that small Qwens cannot review.
+**No runtime model is promoted.** The 101 token measurements, 176 raw responses,
+token traces, judgments and matched-run audits are currently unavailable as
+complete payloads. Their recorded hashes do not replace the missing evidence.
+The selected GGUF and saved adapters were archived privately in `ataeff/jovovich`
+at `c9484feec99c5df47be5702d29098297aced1389`; all 16 files passed pinned-revision
+download and hash verification before the loss. Recovery or a clearly labeled
+new evaluation is required before publishing a complete matched-run evidence
+bundle; rerunning cannot recreate the historical training receipts.
+
+An independent full-logit control now compares the original 0.5B body with
+llama.cpp on one fixed concern/clean pair, at the assistant header and shared
+answer-prefix boundaries. All 151,936 logits are retained at each position.
+Expanding the stored Q8 values to F32 passes an independent, bitwise check of
+every tensor before either engine uses the result.
+
+| Same four captures | Maximum absolute logit difference | Maximum relative L2 | Argmax agreement |
+| --- | ---: | ---: | ---: |
+| notorch Q8 / llama.cpp Q8 | 0.29679763 | 0.02563207 | 4/4 |
+| notorch Q8 / notorch exact F32 | 0.00003910 | 0.000002084 | 4/4 |
+| notorch F32 / llama.cpp same F32 | 0.00006104 | 0.000002719 | 4/4 |
+
+The large original Q8 discrepancy collapses when the activation arithmetic is
+aligned. This supports close forward agreement on these two prompts and four
+positions; training gradients and other contexts need their own evidence.
+The fixed inputs, native sources, eight complete logit arrays and independent
+audit are in
+[`training/results/2026-10-01-external-forward-control`](training/results/2026-10-01-external-forward-control).
+llama.cpp remains a diagnostic reference. SERGE has one cigarette and two engines.
 
 The review evaluator uses the actual host prompt and native inference path:
 
