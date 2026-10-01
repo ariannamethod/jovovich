@@ -1,0 +1,182 @@
+[
+  {
+    "id": "zero-worker-guard-deletion-candidate-0",
+    "candidate": "    if (workers == 0) return EINVAL;",
+    "baseline": true
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-1",
+    "candidate": "    if (total == 0) errno = EDOM;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-2",
+    "candidate": "    if (total == 0) errno = ERANGE;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-3",
+    "candidate": "    if (total == 0) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-4",
+    "candidate": "    if (total == 0) puts(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-5",
+    "candidate": "    if (!total) { errno = EINVAL; }",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-6",
+    "candidate": "    if (total == 0) warn_empty();",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-7",
+    "candidate": "    if (total == 0) ++errno;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-8",
+    "candidate": "    if (total == 0) errno |= EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-0",
+    "candidate": "    if (workers == 0) return EINVAL;",
+    "baseline": true
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-1",
+    "candidate": "    if (total == 0) errno = EDOM;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-2",
+    "candidate": "    if (total == 0) errno = ERANGE;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-3",
+    "candidate": "    if (total == 0) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-4",
+    "candidate": "    if (total == 0) puts(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-5",
+    "candidate": "    if (!total) { errno = EINVAL; }",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-6",
+    "candidate": "    if (total == 0) warn_empty();",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-7",
+    "candidate": "    if (total == 0) ++errno;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-8",
+    "candidate": "    if (total == 0) errno |= EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-1",
+    "candidate": "    if (id == 0) errno = EDOM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-2",
+    "candidate": "    if (id == 0) errno = ERANGE;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-3",
+    "candidate": "    if (id == 0) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-4",
+    "candidate": "    if (id == 0) puts(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-5",
+    "candidate": "    if (!id) { errno = EINVAL; }",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-6",
+    "candidate": "    if (id == 0) warn_empty();",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-7",
+    "candidate": "    if (id == 0) ++errno;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-8",
+    "candidate": "    if (id == 0) errno |= EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-1",
+    "candidate": "    if (id == 0) errno = EDOM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-2",
+    "candidate": "    if (id == 0) errno = ERANGE;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-3",
+    "candidate": "    if (id == 0) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-4",
+    "candidate": "    if (id == 0) puts(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-5",
+    "candidate": "    if (!id) { errno = EINVAL; }",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-6",
+    "candidate": "    if (id == 0) warn_empty();",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-7",
+    "candidate": "    if (id == 0) ++errno;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-8",
+    "candidate": "    if (id == 0) errno |= EINVAL;",
+    "baseline": false
+  }
+]

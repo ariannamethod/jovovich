@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Independent reparse of saved native token-only evidence; no tokenizer rerun, inference or training.",
+  "evidence": [
+    {
+      "cohort": "training",
+      "input": {
+        "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+        "bytes": 163753,
+        "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+      },
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-token-final/receipt.json",
+        "bytes": 38169,
+        "sha256": "2e3e939a49b7b362579bd22fb7899b1013ee2fabc8a29673c7e42e20bf8eacbd"
+      },
+      "native_prompt_binary": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-token-final/prompts.bin",
+        "bytes": 108108,
+        "sha256": "168c860647f1bead45d3c31ea5cb3cd2629f3834c21041955a41a4fc5b9303f6"
+      },
+      "token_trace": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-token-final/token-trace.jsonl",
+        "bytes": 118946,
+        "sha256": "261e6a6a3745a325f6c6fe4c1d214b0fc5034ced82e5e05db1496ca9c1607e22"
+      },
+      "rows": 52,
+      "paired_groups": 26,
+      "exact_system_user_only_serialized_rows": 52,
+      "all_trace_counts_and_feature_vectors_recomputed": 52,
+      "target_pairs_matching_seven_coordinates_and_return_count": [
+        "preserve-trie-credit-deletion",
+        "preserve-trie-credit-replacement",
+        "allocation-null-guard-deletion",
+        "allocation-null-guard-replacement",
+        "zero-worker-guard-deletion",
+        "zero-worker-guard-replacement",
+        "write-permission-check-deletion",
+        "write-permission-check-replacement",
+        "stable-manifest-order-deletion",
+        "stable-manifest-order-replacement",
+        "allocation-product-overflow-deletion",
+        "allocation-product-overflow-replacement"
+      ],
+      "seven_feature_identical_pairs_in_entire_cohort": 17,
+      "target_pair_feature_only_complete_correct_upper_bound": 0
+    },
+    {
+      "cohort": "holdout",
+      "input": {
+        "path": "/workspace/scratch/ec5ba60588d8/holdout-v5-final-tokenize.jsonl",
+        "bytes": 60864,
+        "sha256": "478de2e3710759829da146fbaa140502f4a0f57cc93dde0e313385c5f9367812"
+      },
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-final/receipt.json",
+        "bytes": 21341,
+        "sha256": "fb74c92292913fd64128b460a3e7831123f1c97727990ac4146649d50a188a7b"
+      },
+      "native_prompt_binary": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-final/prompts.bin",
+        "bytes": 52292,
+        "sha256": "fd7e02e4289a657fcef479804a8294172a8faae7d03e4064b900feb902f6a2d3"
+      },
+      "token_trace": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-final/token-trace.jsonl",
+        "bytes": 58304,
+        "sha256": "ef21214b73cb3bcc4fb37ceb38b589659b510c5af3c5c76fff99fba0621a624c"
+      },
+      "rows": 24,
+      "paired_groups": 12,
+      "exact_system_user_only_serialized_rows": 24,
+      "all_trace_counts_and_feature_vectors_recomputed": 24,
+      "target_pairs_matching_seven_coordinates_and_return_count": [
+        "holdout-v5-shift-width-pure-deletion",
+        "holdout-v5-shift-width-replacement-noop",
+        "holdout-v5-bounded-termination-pure-deletion",
+        "holdout-v5-bounded-termination-replacement-noop",
+        "holdout-v5-reserved-flag-bits-pure-deletion",
+        "holdout-v5-reserved-flag-bits-replacement-noop",
+        "holdout-v5-finite-number-pure-deletion",
+        "holdout-v5-finite-number-replacement-noop",
+        "holdout-v5-array-end-boundary-pure-deletion",
+        "holdout-v5-array-end-boundary-replacement-noop",
+        "holdout-v5-erase-target-pure-deletion",
+        "holdout-v5-erase-target-replacement-noop"
+      ],
+      "seven_feature_identical_pairs_in_entire_cohort": 12,
+      "target_pair_feature_only_complete_correct_upper_bound": 0
+    }
+  ],
+  "extractor_source_branch_inspection": "tokenize_only emits traces immediately after model metadata/tokenizer loading and prompt tokenization. The transformer load and forward_residual path is exclusively in the else branch.",
+  "feature_matching_consequence": "Each selected opposite-label pair has the same feature vector. A deterministic classifier given only that vector assigns the same label to both rows and therefore completes zero such pairs.",
+  "holdout_projection_note": "The separately audited holdout projection must remain bound to the canonical 24-row holdout corpus."
+}

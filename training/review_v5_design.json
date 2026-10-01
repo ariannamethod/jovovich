@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "name": "Matched protective lookalikes in six existing review quartets",
+  "base": {
+    "path": "training/sft_review_v4.jsonl",
+    "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+  },
+  "scope": "Data-only intervention. Preserve all 76 rows, 26 review pairs, task text, changed lines and gold answers. Replace only the declared unchanged context line in the six existing quartets; retain all other raw rows. No training or model evaluation.",
+  "counts": {
+    "total_rows": 76,
+    "review_rows": 52,
+    "review_pairs": 26,
+    "quartet_rows": 24,
+    "retained_raw_rows": 52,
+    "voice_rows": 12,
+    "code_rows": 12
+  },
+  "nuisance_features": {
+    "source": "Surrounding diff only, except native prompt token count; exactly the frozen-readout seven-feature definition.",
+    "feature_order": [
+      "native_prompt_tokens",
+      "added_lines",
+      "removed_lines",
+      "context_lines",
+      "after_if_count",
+      "after_sort_count",
+      "after_firwood_trie_count"
+    ],
+    "required_matching": "Within each of the 12 opposite-label quartet pairs, all seven feature values must match exactly. The 14 retained pairs are unchanged.",
+    "native_prompt_tokens": {
+      "status": "verified",
+      "template": "Production notorch ChatML system/user plus assistant header; excludes the fixed three-token prefix.",
+      "corpus_sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "model_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "receipt_basename": "v5-token-final/receipt.json",
+      "receipt_sha256": "2e3e939a49b7b362579bd22fb7899b1013ee2fabc8a29673c7e42e20bf8eacbd",
+      "method": "build/jovovich-extract-readout models/base-qwen.gguf PROMPTS.bin --tokenize-only",
+      "native_forward_passes": 0,
+      "opposite_label_quartet_pairs_matched": 12
+    }
+  },
+  "families": [
+    {
+      "family": "preserve-trie-credit",
+      "path": "NOTICE",
+      "v4_concern_context": "Trie implementation.",
+      "v4_clean_context": "Trie implementation derived from firwood/trie (MIT).",
+      "concern_context": "Trie documentation derived from firwood/trie (MIT).",
+      "clean_context": "Trie implementation derived from firwood/trie (MIT).",
+      "semantic_basis": "The unchanged attribution names the documentation rather than the retained implementation. The deleted implementation credit is the only implementation attribution in the concern case.",
+      "native_prompt_tokens": {
+        "deletion": 420,
+        "replacement": 437
+      }
+    },
+    {
+      "family": "allocation-null-guard",
+      "path": "src/list_node.c",
+      "v4_concern_context": "    (void)0;",
+      "v4_clean_context": "    if (n == NULL) return NULL;",
+      "concern_context": "    if (&n == NULL) return NULL;",
+      "clean_context": "    if (n == NULL) return NULL;",
+      "semantic_basis": "The address of the local pointer object is non-NULL even when the allocator returned NULL. The retained pointee-value check returns before the dereference.",
+      "native_prompt_tokens": {
+        "deletion": 444,
+        "replacement": 470
+      }
+    },
+    {
+      "family": "zero-worker-guard",
+      "path": "src/shard.c",
+      "v4_concern_context": "    (void)0;",
+      "v4_clean_context": "    if (workers == 0) return EINVAL;",
+      "concern_context": "    if (workers < 0) return EINVAL;",
+      "clean_context": "    if (workers == 0) return EINVAL;",
+      "semantic_basis": "workers has unsigned size_t type, so the negative comparison never rejects zero. The retained equality check returns before division.",
+      "native_prompt_tokens": {
+        "deletion": 441,
+        "replacement": 467
+      }
+    },
+    {
+      "family": "write-permission-check",
+      "path": "src/edit_record.c",
+      "v4_concern_context": "    (void)0;",
+      "v4_clean_context": "    if (!session.can_write) return DENIED;",
+      "concern_context": "    if (&session.can_write == NULL) return DENIED;",
+      "clean_context": "    if (session.can_write == false) return DENIED;",
+      "semantic_basis": "The address of the live session field is non-NULL for every capability value. The retained comparison to false rejects exactly the read-only zero value. false comes from the standard C stdbool.h header in the fixture.",
+      "native_prompt_tokens": {
+        "deletion": 435,
+        "replacement": 461
+      }
+    },
+    {
+      "family": "stable-manifest-order",
+      "path": "tools/manifest.mjs",
+      "v4_concern_context": "void 0;",
+      "v4_clean_context": "names.sort();",
+      "concern_context": "output.sort();",
+      "clean_context": "names.sort();",
+      "semantic_basis": "Sorting the still-empty output accumulator before construction leaves names in insertion order. Sorting names determines the manifest order.",
+      "native_prompt_tokens": {
+        "deletion": 437,
+        "replacement": 460
+      }
+    },
+    {
+      "family": "allocation-product-overflow",
+      "path": "src/vector_alloc.c",
+      "v4_concern_context": "    (void)0;",
+      "v4_clean_context": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;",
+      "concern_context": "    if (count > SIZE_MAX / sizeof(uint32_t)) return NULL;",
+      "clean_context": "    if (count > SIZE_MAX / sizeof(uint64_t)) return NULL;",
+      "semantic_basis": "A uint32_t bound admits counts whose uint64_t allocation wraps. The uint64_t bound matches the allocated element type.",
+      "native_prompt_tokens": {
+        "deletion": 466,
+        "replacement": 492
+      }
+    }
+  ],
+  "additional_matched_features": [
+    "after_return_count"
+  ],
+  "compiler_diagnostics": {
+    "expected_classes": [
+      "address",
+      "type-limits"
+    ],
+    "reason": "The harmful context intentionally tests a local object address against NULL or unsigned workers against zero. These ordinary C mistakes are the ineffective checks under study. Keep all other warnings fatal.",
+    "original_raw_states_per_class": {
+      "address": 8,
+      "type-limits": 4
+    },
+    "fixture_headers": [
+      "assert.h",
+      "stddef.h",
+      "stdint.h",
+      "stdbool.h",
+      "errno.h",
+      "stdlib.h",
+      "string.h"
+    ]
+  }
+}

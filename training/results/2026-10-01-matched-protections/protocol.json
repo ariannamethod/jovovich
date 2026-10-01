@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "status": "data_ready_training_not_started",
+  "scientific_design_frozen": true,
+  "execution_frozen": false,
+  "created_at_utc": "2026-10-01T10:10:49.029433+00:00",
+  "parent_commit": "ac27d09d5ab880b1718a05a8cc35f0e69ae4e88c",
+  "question": "Does matching effective and ineffective context protections on native prompt length and the declared occurrence/count features improve grounded full review compared with the existing v4-trained checkpoint?",
+  "data": {
+    "training": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "bytes": 163753
+    },
+    "training_design": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/review_v5_design.json",
+      "sha256": "519423d9d0c0c688d69f35c1a2da31ac5c239089244a719c95c873cf22ff8af1",
+      "bytes": 6245
+    },
+    "fresh_holdout": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/review_holdout_v5.jsonl",
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451",
+      "bytes": 40748
+    },
+    "holdout_design": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/holdout_v5_design.json",
+      "sha256": "e314af96f91d4d14985ef0329b483be7becd770bfee9fd351e599c61e18dce53",
+      "bytes": 8279
+    },
+    "training_rows": 76,
+    "review_rows": 52,
+    "review_pairs": 26,
+    "affected_quartet_rows": 24,
+    "actually_changed_context_rows": 16,
+    "unchanged_rows_total": 60,
+    "retained_rows_outside_quartets": 52,
+    "heldout_rows": 24,
+    "heldout_pairs": 12,
+    "heldout_families": 6,
+    "gold_and_system_preserved_rows": 76,
+    "changed_line_listings_preserved_rows": 52,
+    "training_modified_pairs_seven_features_plus_return_matched": 12,
+    "heldout_pairs_seven_features_plus_return_matched": 12,
+    "all_training_pairs_seven_features_matched": 17,
+    "previous_v4_pairs_seven_features_matched": 5,
+    "holdout_role": "Evaluation only; never optimized or used for checkpoint selection. Its creation used source semantics, lexical counts and native tokenizer results; no model responses.",
+    "count_matching_definition": "Native full ChatML prompt token count excluding common prefix; added/removed/unchanged hunk lines; after-side if, sort and firwood/trie counts. after_return_count is also matched. Byte counts are recorded but not generally equal."
+  },
+  "fixed_training": {
+    "initialization": "Fresh adapters on the verified Qwen base, same initialization seed as comparator.",
+    "base_model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "dataset": "training/sft_review_v5.jsonl",
+    "dataset_sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+    "training_rows": "52 explicitly paired review rows; 12 voice and 12 code rows are diagnostic only.",
+    "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "adapter_targets": "Final-layer MLP gate, up and down projections.",
+    "trainable_parameters": 276480,
+    "learning_rate": 0.0001,
+    "optimizer": "Adam with unchanged native hyperparameters.",
+    "optimizer_updates": 100,
+    "global_gradient_clip": 1,
+    "microbatch_tokens": 40,
+    "objective": "mean decision CE + 1 * mean residual review-token CE, including terminal im_end; independent global denominators.",
+    "lambda_residual": 1,
+    "decision_targets_per_update": 52,
+    "residual_targets_per_update": 1012,
+    "joint_targets_per_update": 1064,
+    "total_target_visits": 106400,
+    "microbatches_per_update": 27,
+    "final_microbatch_targets": 24,
+    "data_phase": "Six existing quartets receive matched effective/ineffective context protections; sixteen unchanged-context lines actually differ from v4. All gold responses, system prompts, changed-line listings, order and other rows remain identical. The intervention includes native token-length and occurrence-count matching.",
+    "training_threads": 4
+  },
+  "checkpoint_selection": {
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "eligible_updates": [
+      25,
+      50,
+      100
+    ],
+    "rule": "Maximize complete full-vocabulary decision pairs, then target hits, then earlier eligible update.",
+    "timing": "Select once before new-arm free generation; no transfer/generation-based choice."
+  },
+  "comparator": {
+    "model": "Prior v4 counterbalanced-review selected update100 GGUF",
+    "update": 100,
+    "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+    "bytes": 714116992,
+    "private_hf": {
+      "repo": "ataeff/jovovich",
+      "revision": "4a5618ddb77adb1231e177a9209b1480f7335a7f",
+      "file": "experiments/counterbalanced-review/counterbalanced-review-selected.gguf",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-counterbalanced-review/hf-weights.json",
+        "sha256": "dfa754d928ef3b9f2056579a715b5b4b726d542b8a2c7628e0e1bc0c996ee150",
+        "bytes": 7423
+      }
+    },
+    "selection_receipt": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-counterbalanced-review/selected-model.json",
+      "sha256": "937cc7012d678f1a9e08110b2c4ce15e2ffebbd719443a090a9882ffecb81be6",
+      "bytes": 179
+    }
+  },
+  "evaluation": {
+    "arms": [
+      "prior_v4_selected",
+      "new_v5_selected"
+    ],
+    "per_arm": {
+      "v5_training": 52,
+      "fresh_holdout_v5": 24,
+      "established_diagnostics": 12
+    },
+    "total_responses": 176,
+    "temperature": 0,
+    "maximum_new_tokens": 192,
+    "threads_per_process": 2,
+    "NT_NO_I8": "1",
+    "prompt_contract": "Existing production host system/user rules and changed-line mapping; record exact rendered prompts and native IDs.",
+    "generation_contract": "Natural generation from assistant header with no forced answer prefix; retain full raw output, parser result, sampled IDs including terminal EOS, actual model/source hashes and exit status.",
+    "teacher_comparison": "Compare natural decisions to teacher readouts only on identical prompts and an actually generated exact shared prefix.",
+    "established_diagnostics": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/review_holdout_v2.jsonl",
+      "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+      "bytes": 14028
+    },
+    "scheduling": "Worker count and launch order are execution choices to bind in the future runtime plan; the scientific cohort, decoding and selection stay fixed."
+  },
+  "full_answer_judgment": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "reporting": {
+    "primary": "Grounded full concern/clean pairs by cohort: v5 training 26, fresh holdout 12, established diagnostics 6. Each complete concern needs a genuine cited issue and support for all material claims; clean needs accepted empty findings.",
+    "secondary": [
+      "Parser validity, genuine causal issue detection, fully grounded concerns and correct clean cases separately",
+      "26 training pairs split into14 retained pairs and12 quartet pairs; the six same-full-diff pairs are a nested subset",
+      "Quartet semantic flips within each fixed diff shape and shape invariance within each label",
+      "Native objective trajectory, decision targets, prefix correctness and actual complete generated answers"
+    ],
+    "comparison": "Both selected arms receive the same new prompts. The prior model is not rescored solely using its historical differently worded prompt outputs. This is one fixed-seed data intervention; it does not change adapter placement, checkpoint family, objective or duration."
+  },
+  "preflight": {
+    "train": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/receipt.json",
+      "sha256": "01242ed42afd4918224245862f44b4136ff3cbb6c9814125160501078518b521",
+      "bytes": 4628
+    },
+    "fresh_holdout": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/receipt.json",
+      "sha256": "6a7f7e6221bf10e0cd478c1620d2a2f18204e504e9f19e5843101bc4c389a93d",
+      "bytes": 4686
+    },
+    "decision_targets": 52,
+    "residual_targets": 1012,
+    "joint_targets": 1064,
+    "microbatches": 27,
+    "tail_targets": 24,
+    "model_forward_calls": 0,
+    "target_exposure_unchanged_from_v4": true
+  },
+  "execution_before_training": [
+    "Build and bind exact native training, inference, export, parity and evaluation binaries and source hashes in a fresh runtime-specific plan.",
+    "Verify base GGUF and restored private v4 comparator SHA256; reserve new output paths.",
+    "Bind this scientific protocol, exact v5 corpus/pair map, held-out fixture, host prompt source and planned full-answer scoring contracts.",
+    "Run export/parity checks before selected-model generation. Preserve runtime/source/resource receipts and all natural responses."
+  ],
+  "current_actions": {
+    "training_started": false,
+    "model_forward_calls": 0,
+    "new_model_weights": false,
+    "new_model_generations": 0,
+    "runtime_model_promoted": false
+  }
+}

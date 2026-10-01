@@ -1,0 +1,751 @@
+{
+  "status": "complete",
+  "command": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-4/prompts.bin",
+    "--tokenize-only"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.4718998960015597,
+  "native_operation": "GGUF metadata and tokenizer loading, exact ChatML tokenization, no forward pass",
+  "feature_names": [
+    "native_prompt_token_count_without_common_prefix",
+    "added_lines",
+    "removed_lines",
+    "context_lines",
+    "after_if_statements",
+    "after_sort_calls",
+    "after_firwood_trie_occurrences"
+  ],
+  "review_rows": 24,
+  "pairs": [
+    {
+      "pair": "write-permission-check-deletion-candidate-0",
+      "rows": [
+        0
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-1",
+      "rows": [
+        1
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-2",
+      "rows": [
+        2
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-3",
+      "rows": [
+        3
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-4",
+      "rows": [
+        4
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-5",
+      "rows": [
+        5
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-6",
+      "rows": [
+        6
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-7",
+      "rows": [
+        7
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-8",
+      "rows": [
+        8
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-9",
+      "rows": [
+        9
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-10",
+      "rows": [
+        10
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-11",
+      "rows": [
+        11
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-0",
+      "rows": [
+        12
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-1",
+      "rows": [
+        13
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-2",
+      "rows": [
+        14
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-3",
+      "rows": [
+        15
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-4",
+      "rows": [
+        16
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-5",
+      "rows": [
+        17
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-6",
+      "rows": [
+        18
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-7",
+      "rows": [
+        19
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-8",
+      "rows": [
+        20
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-9",
+      "rows": [
+        21
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-10",
+      "rows": [
+        22
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-11",
+      "rows": [
+        23
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    }
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "id": "write-permission-check-deletion-candidate-0",
+      "pair": "write-permission-check-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d0e9c2df7e5c81203d63d991efdb971f969f000b5a5c9c782c16d4054e83b011"
+    },
+    {
+      "row": 1,
+      "id": "write-permission-check-deletion-candidate-1",
+      "pair": "write-permission-check-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        435,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "49437b2b1ea8727dcdab8991d99d98ef6023f9ef1065c22aadfd2891eae8f0e9"
+    },
+    {
+      "row": 2,
+      "id": "write-permission-check-deletion-candidate-2",
+      "pair": "write-permission-check-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "24fcf664af15e0961dc91c3fab72cd2225a77e7aec1b650f6112f57b100aa1ad"
+    },
+    {
+      "row": 3,
+      "id": "write-permission-check-deletion-candidate-3",
+      "pair": "write-permission-check-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        435,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "01c4f565f0c2e090077dc78d9ae00638e632826ff27a3e92d75f85c098af89fc"
+    },
+    {
+      "row": 4,
+      "id": "write-permission-check-deletion-candidate-4",
+      "pair": "write-permission-check-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "826bc9b321e90c3077a43aa2ca689c3b5c8efb7675ea1cce49be58970c475971"
+    },
+    {
+      "row": 5,
+      "id": "write-permission-check-deletion-candidate-5",
+      "pair": "write-permission-check-deletion-candidate-5",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "738b3593d858159c923cad4ec0a24ece4c853a9f40505292d595e13f250af315"
+    },
+    {
+      "row": 6,
+      "id": "write-permission-check-deletion-candidate-6",
+      "pair": "write-permission-check-deletion-candidate-6",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "6a47dea975093d5c8b4c5f224665eca90b72ef5e1d2ed647a5c9dd1f6fe61410"
+    },
+    {
+      "row": 7,
+      "id": "write-permission-check-deletion-candidate-7",
+      "pair": "write-permission-check-deletion-candidate-7",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5b8d024267a842e0dfc926682f7d86da10641d8c207ad8ae5e7179b278dbb05c"
+    },
+    {
+      "row": 8,
+      "id": "write-permission-check-deletion-candidate-8",
+      "pair": "write-permission-check-deletion-candidate-8",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5987af98369aa44500c4ea7f094c75846496620b4bf8305ef8910c040b199d9c"
+    },
+    {
+      "row": 9,
+      "id": "write-permission-check-deletion-candidate-9",
+      "pair": "write-permission-check-deletion-candidate-9",
+      "label": 0,
+      "features": [
+        432,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "7d2f06e9393e349d0c9be478e09212d6c180d256b25cd131078304cf76943df7"
+    },
+    {
+      "row": 10,
+      "id": "write-permission-check-deletion-candidate-10",
+      "pair": "write-permission-check-deletion-candidate-10",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "4f9a1a7af83715a89e5db3f4826b91bff8f6578e44879d3434d3db9d39c428e8"
+    },
+    {
+      "row": 11,
+      "id": "write-permission-check-deletion-candidate-11",
+      "pair": "write-permission-check-deletion-candidate-11",
+      "label": 0,
+      "features": [
+        435,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "46dfbe93f9164541d7ac51eb957b8520f20f9e839c5bb03da61a2e4720c67d3a"
+    },
+    {
+      "row": 12,
+      "id": "write-permission-check-replacement-candidate-0",
+      "pair": "write-permission-check-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "600b4fa9145bed8e5fafbf01b522c038ee0dd3a84196e99e9f56e5cbcc89ee6c"
+    },
+    {
+      "row": 13,
+      "id": "write-permission-check-replacement-candidate-1",
+      "pair": "write-permission-check-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        461,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e26166192dcb851510298a28aed302191132b3b28f4e17c455de132f236b7e81"
+    },
+    {
+      "row": 14,
+      "id": "write-permission-check-replacement-candidate-2",
+      "pair": "write-permission-check-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "7f7a9c312da07efdc01e5c3193e526b613e5cc67e361e30889b5efc340c65a2a"
+    },
+    {
+      "row": 15,
+      "id": "write-permission-check-replacement-candidate-3",
+      "pair": "write-permission-check-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        461,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "cc6da4fe64dacc2ba78370199b3f89cb074c744d2be15735f95ae443956d3a96"
+    },
+    {
+      "row": 16,
+      "id": "write-permission-check-replacement-candidate-4",
+      "pair": "write-permission-check-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "34e5cdb33f1f84a03e3b14c0855ed3cfd88e3faf15a9f433461003479ec2b603"
+    },
+    {
+      "row": 17,
+      "id": "write-permission-check-replacement-candidate-5",
+      "pair": "write-permission-check-replacement-candidate-5",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5e34547b67ed6af06e27d3326bc3ff66e117f594b8cbb835a171342bd74e8151"
+    },
+    {
+      "row": 18,
+      "id": "write-permission-check-replacement-candidate-6",
+      "pair": "write-permission-check-replacement-candidate-6",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e338c16759f2db03cc2a0f174e262ef272311b368ac683abf02122f8188e4f9a"
+    },
+    {
+      "row": 19,
+      "id": "write-permission-check-replacement-candidate-7",
+      "pair": "write-permission-check-replacement-candidate-7",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "cc99dc80139a6760c5250423561d3640c6235a84d9ae2f22e779f03832a318ba"
+    },
+    {
+      "row": 20,
+      "id": "write-permission-check-replacement-candidate-8",
+      "pair": "write-permission-check-replacement-candidate-8",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "072d2bd34de6329c30592139897fc729d5d6ee5d5f0e3e167925ff92b28879d3"
+    },
+    {
+      "row": 21,
+      "id": "write-permission-check-replacement-candidate-9",
+      "pair": "write-permission-check-replacement-candidate-9",
+      "label": 0,
+      "features": [
+        458,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "6b06e63959736bdef114dd8b4176efcc46dd349f45c0e8c150bf1d637d48ce23"
+    },
+    {
+      "row": 22,
+      "id": "write-permission-check-replacement-candidate-10",
+      "pair": "write-permission-check-replacement-candidate-10",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "731d0ac49e4fd0f1610fc5490109a8f38264950cafac80b65720d70358738809"
+    },
+    {
+      "row": 23,
+      "id": "write-permission-check-replacement-candidate-11",
+      "pair": "write-permission-check-replacement-candidate-11",
+      "label": 0,
+      "features": [
+        461,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "da47c30bb4cfda6ffd4075e9f1641d58cc2c23b819fe57195aeff02652da37c3"
+    }
+  ],
+  "bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-prompts-4.jsonl",
+      "bytes": 56090,
+      "sha256": "4bdd0d82fdc6379733070d6ee01e3473667ef6df6aa10a3cf200a27598a20b19"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "bytes": 259160,
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/token_audit.py",
+      "bytes": 5831,
+      "sha256": "dcc6e6145b6c1eedd100828c0a735895222e189e19738eba1b8e8da192b87c9f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "bytes": 6008,
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    }
+  ],
+  "bindings_unchanged": true,
+  "outputs": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-4/prompts.bin",
+      "bytes": 49302,
+      "sha256": "bb46e832ab13b17111ec837efe2bada13e011f6a14e28f90ee8f7b7e30dbe9bf"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-4/token-trace.jsonl",
+      "bytes": 53990,
+      "sha256": "31107e8cc66f00ee992a4b45e3431bac3def7103b51dae653adda145e6c363f4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-4/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "write-permission-check-deletion-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-1",
+    "candidate": "    if (id == 0) return(DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-2",
+    "candidate": "    if (id < 0) return EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-3",
+    "candidate": "    if (id < 0) return EPERM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-4",
+    "candidate": "    if (id <=0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-5",
+    "candidate": "    if(id == 0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-6",
+    "candidate": "    if (!id) { return DENIED; }",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-7",
+    "candidate": "    if (!session.can_write) return (DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-8",
+    "candidate": "    if (!session.can_write) return(DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-9",
+    "candidate": "    if (!id) return (DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-10",
+    "candidate": "    if (!session.valid_id) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-11",
+    "candidate": "    if (id < 0) return ENOENT;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-1",
+    "candidate": "    if (id == 0) return(DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-2",
+    "candidate": "    if (id < 0) return EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-3",
+    "candidate": "    if (id < 0) return EPERM;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-4",
+    "candidate": "    if (id <=0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-5",
+    "candidate": "    if(id == 0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-6",
+    "candidate": "    if (!id) { return DENIED; }",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-7",
+    "candidate": "    if (!session.can_write) return (DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-8",
+    "candidate": "    if (!session.can_write) return(DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-9",
+    "candidate": "    if (!id) return (DENIED);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-10",
+    "candidate": "    if (!session.valid_id) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-11",
+    "candidate": "    if (id < 0) return ENOENT;",
+    "baseline": false
+  }
+]

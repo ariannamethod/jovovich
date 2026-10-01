@@ -1,0 +1,46 @@
+{
+  "argv": [
+    "cc",
+    "-Itraining",
+    "-Ideps/notorch",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-std=gnu11",
+    "-march=native",
+    "-DUSE_SIMD",
+    "-o",
+    "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-counterbalanced-review/probe_counterbalanced.c",
+    "deps/notorch/notorch.c",
+    "deps/notorch/gguf.c",
+    "deps/notorch/harness/runtime.c",
+    "deps/notorch/harness/arch_llama.c",
+    "deps/notorch/examples/bpe.c",
+    "-lm",
+    "-pthread"
+  ],
+  "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+  "returncode": 0,
+  "elapsed_seconds": 8.729016271998262,
+  "source": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-counterbalanced-review/probe_counterbalanced.c",
+    "sha256": "9f3ac33fc017cd205b91c9ce572558800b639b06374e698f594394bcfa972d0e",
+    "bytes": 5947
+  },
+  "stdout": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-reference/preflight-build.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "stderr": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-reference/preflight-build.stderr",
+    "sha256": "f140990645461fec985c9f634c3f3c8cfc5dca58fe288b449bcc09db190a6c1b",
+    "bytes": 5942
+  },
+  "executable": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+    "sha256": "df2f2abf46683d75469af4a3fd1231be092f916122613d4c7e72827faf909119",
+    "bytes": 267896
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "status": "pass",
+  "change": "Add missing readout CLI prerequisite to make test; compilation recipes and native sources unchanged.",
+  "before": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-reference/Makefile.before-test-dependency",
+    "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76",
+    "bytes": 6008
+  },
+  "after": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+    "sha256": "06bd0380fb8ef8d26eb41874efa22c31276cae37cd2f437e3a24dd7a1ae59543",
+    "bytes": 6035
+  },
+  "verification": {
+    "command": [
+      "make",
+      "test"
+    ],
+    "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+    "readout_cli_absent_before_launch": true,
+    "native_tests": 7,
+    "node_tests": 80,
+    "failures": 0,
+    "log": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/tests-clean-readout-cli.txt",
+      "sha256": "db45e09df1d07fce85adf2ce6b43ccaf25169fc86b89245780db62343e3792b0",
+      "bytes": 56786
+    },
+    "readout_cli_before": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/readout-fit-before-test-prerequisite",
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "bytes": 33840
+    },
+    "readout_cli_after": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "bytes": 33840
+    },
+    "rebuilt_cli_bytes_identical": true
+  },
+  "historical_binding_resolution": "Earlier native token/preflight receipts retain their original Makefile hash. The exact historical Makefile snapshot is preserved; current source bindings use the changed prerequisite."
+}

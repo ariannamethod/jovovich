@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py", line 76, in <module>
+    prepare(a.sft, None if a.sft_only else a.dpo, a.output, a.review_pairs)
+  File "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py", line 35, in prepare
+    messages = row["messages"]
+               ~~~^^^^^^^^^^^^
+KeyError: 'messages'

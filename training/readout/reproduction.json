@@ -1,0 +1,203 @@
+{
+  "schema_version": 2,
+  "purpose": "Fresh v4 reproduction with maintained validation and failure-evidence helpers; historical archive files remain unchanged.",
+  "placeholders": {
+    "REPO": "Absolute checkout containing this archive and the corresponding source implementation, with recursive notorch submodule initialized.",
+    "ARCHIVE": "REPO/training/results/2026-10-01-frozen-readout",
+    "FRESH_REF": "A new empty absolute scratch directory for fresh tests, numerical audit outputs and the newly bound plan.",
+    "FRESH_RUN": "FRESH_REF/run; prepare_readout.py creates it.",
+    "NEW_AUDIT": "A fresh independent numerical/source review receipt, not a historical receipt relabeled as current.",
+    "NEW_RESULTS_DIRECTORY": "A new absolute output directory for the reproduced archive; it must not already exist and must differ from the published archive.",
+    "HELPERS": "REPO/training/readout; maintained production helpers."
+  },
+  "commands": [
+    {
+      "step": "Initialize exact dependency",
+      "cwd": "REPO",
+      "argv": [
+        "git",
+        "submodule",
+        "update",
+        "--init",
+        "--recursive"
+      ]
+    },
+    {
+      "step": "Restore checksum-pinned public base",
+      "cwd": "REPO",
+      "environment": {
+        "JOVOVICH_MODEL": "REPO/models/base-qwen.gguf"
+      },
+      "argv": [
+        "node",
+        "bin/jovovich.mjs",
+        "fetch-model"
+      ],
+      "expect_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "step": "Build native extractor/probe/solver and execute regression gates",
+      "cwd": "REPO",
+      "argv": [
+        "make",
+        "harness",
+        "extract-readout",
+        "probe-readout",
+        "build/jovovich-readout-fit",
+        "test"
+      ],
+      "capture_combined_output": "FRESH_REF/tests-before.txt",
+      "require_exit_code": 0
+    },
+    {
+      "step": "Prepare system/user-only input, metadata and fixed masks",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "HELPERS/prepare_readout.py",
+        "--repo",
+        "REPO",
+        "--out",
+        "FRESH_RUN"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Prepare full-gold data solely for independent extractor/cache parity",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "training/prepare.py",
+        "FRESH_RUN/readout-sft.bin",
+        "--sft",
+        "training/sft_review_v4.jsonl",
+        "--sft-only"
+      ],
+      "require_exit_code": 0,
+      "limit": "The production extractor never opens this file. The parity gate alone uses it."
+    },
+    {
+      "step": "Compile independent native numerical gate",
+      "cwd": "REPO",
+      "argv": [
+        "cc",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-Itraining",
+        "ARCHIVE/independent_solver_audit.c",
+        "-lm",
+        "-o",
+        "FRESH_REF/independent-solver-audit"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Execute independent native numerical gate",
+      "cwd": "REPO",
+      "argv": [
+        "FRESH_REF/independent-solver-audit"
+      ],
+      "capture_stdout": "FRESH_REF/independent-solver-test.json",
+      "require_exit_code": 0
+    },
+    {
+      "step": "Freeze after fresh source review and all native gates",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "HELPERS/bind_readout_v2.py",
+        "--repo",
+        "REPO",
+        "--reference",
+        "HELPERS",
+        "--run-dir",
+        "FRESH_RUN",
+        "--sft",
+        "FRESH_RUN/readout-sft.bin",
+        "--output",
+        "FRESH_REF/readout-plan.json",
+        "--evidence",
+        "FRESH_REF/tests-before.txt",
+        "--evidence",
+        "ARCHIVE/independent_solver_audit.c",
+        "--evidence",
+        "FRESH_REF/independent-solver-test.json",
+        "--evidence",
+        "NEW_AUDIT",
+        "--draft",
+        "ARCHIVE/readout-plan-draft-v2.json"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Run recorded native phases and aggregate saved predictions",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "HELPERS/run_readout.py",
+        "--plan",
+        "FRESH_REF/readout-plan.json",
+        "--output-dir",
+        "FRESH_RUN"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Collect completed evidence into a new result directory",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "HELPERS/collect_readout.py",
+        "--repo",
+        "REPO",
+        "--reference",
+        "HELPERS",
+        "--run-dir",
+        "FRESH_RUN",
+        "--plan",
+        "FRESH_REF/readout-plan.json",
+        "--summary",
+        "FRESH_RUN/readout-summary.json",
+        "--output",
+        "NEW_RESULTS_DIRECTORY",
+        "--evidence",
+        "HELPERS/reproduction.json"
+      ],
+      "require_exit_code": 0
+    }
+  ],
+  "execution_notes": [
+    "The archived draft supplies the v4 scientific design. The new binder freezes current helper/source/binary bytes and new evidence, so every reproduction receives its own plan and receipts.",
+    "Command argv entries and environment values use literal placeholders above; substitute absolute paths before execution. They are structured instructions, not a shell script.",
+    "Make uses -march=native when available and the active compiler. Different CPU/compiler/libm versions can change executable hashes and floating-point outputs. Fresh plans bind fresh executable hashes; do not relax failed numerical criteria after inspecting results.",
+    "A run directory is allowed to contain prepared inputs before execution; declared streams and phase-created outputs must not already exist. A failed attempt is retained and cannot be silently resumed under the same filenames.",
+    "C performs model inference, feature normalization, Newton optimization and scores/probabilities/class predictions. Python serializes inputs, prepares lexical counts, checks provenance, and aggregates saved prediction counts and permutation references.",
+    "All six phases are fixed by bind_readout_v2.py: causal parity, prompt-only extraction, nuisance serialization, state head fitting, nuisance head fitting, summary. Native numerical or convergence failure prevents completed archive creation.",
+    "Each view has 20 family holdouts times 100 label sets plus two in-sample interpolation fits. This produces 2002 fits per view.",
+    "The 52-by-896 state file and 52-by-7 nuisance file contain float32 features with explicit headers. All fitted coefficients and intercepts remain unexported; no new generative checkpoint is produced."
+  ],
+  "artifacts": {
+    "features": "readout-features.bin",
+    "nuisance": "readout-nuisance.bin",
+    "prompt_only": "readout-input.bin",
+    "exact_input_ids": "extract.stdout.jsonl",
+    "causal_parity": "parity.stdout.jsonl",
+    "solver_outputs": [
+      "state-fits.jsonl",
+      "nuisance-fit-fits.jsonl"
+    ],
+    "summary": "readout-summary.json",
+    "resource_and_provenance": "readout-run.json"
+  },
+  "historical_paths": "Archived evidence is immutable. Use the maintained helper directory above with new scratch paths; archived scripts and receipts retain their original bytes.",
+  "historical_failed_attempt": {
+    "location": "failed-attempt-1/",
+    "status": "The first attempt failed in its native parity gate before feature extraction or classifier fitting. Its textual assertion wrongly said the three fixed IDs spell {\"findings\":; they spell {\"findings. The guard text was corrected without changing the three IDs or statistical design.",
+    "source_snapshot": "Original source, exact inputs, plan and failure receipts are preserved. The local-snapshot manifest also lists three compiled executables; the top-level archive manifest explicitly records their omission from the public archive.",
+    "binary_limit": "Exact old binary bytes remain only in the local snapshot. Rebuilding the archived failing source reproduces the guard condition; compiler/CPU differences may change executable hashes."
+  },
+  "helper_directory": "REPO/training/readout",
+  "historical_design_source": "ARCHIVE/readout-plan-draft-v2.json"
+}
