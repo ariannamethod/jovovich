@@ -1,0 +1,1 @@
+{"status":"pass","checks":["closed_form_symmetric_logistic_optimum","closed_form_logistic_objective","weight_and_intercept_gradient_finite_differences","training_only_normalization_and_kernel","global_constant_coordinate_zero_weight","nuisance_constant_coordinate_zero_heldout","constant_features_zero_tie_clean"]}

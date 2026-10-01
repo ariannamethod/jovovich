@@ -1,0 +1,52 @@
+{
+  "status": "prepared before model feature extraction or fitting",
+  "corpus": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+    "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "bytes": 163405
+  },
+  "rows": 52,
+  "pairs": 26,
+  "families": 20,
+  "same_full_diff_pairs": 6,
+  "prompt_input_contains": "system and user UTF-8 only; neither labels, identifiers nor assistant answers",
+  "nuisance_features": [
+    "native_prompt_token_count_without_common_prefix",
+    "added_lines",
+    "removed_lines",
+    "context_lines",
+    "after_if_statements",
+    "after_sort_calls",
+    "after_firwood_trie_occurrences"
+  ],
+  "files": [
+    {
+      "path": "readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760
+    },
+    {
+      "path": "readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    {
+      "path": "readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    {
+      "path": "readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    {
+      "path": "readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    }
+  ],
+  "preparer": {
+    "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992"
+  }
+}

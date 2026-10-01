@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "status": "PASS: independent pre-extraction design, source, preparation and synthetic-native numerical audit; frozen final plan binding and runtime parity gate remain execution responsibilities",
+  "created_at_utc": "2026-10-01T09:05:54.788196+00:00",
+  "scope": "Independent auditor for frozen-state affine readout diagnostic",
+  "source": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+    "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+  },
+  "corpus_checks": {
+    "all_pass": true,
+    "reviews": 52,
+    "excluded_voice_and_code": 24,
+    "pairs": 26,
+    "families": 20,
+    "concern": 26,
+    "clean": 26,
+    "pairs_have_two_distinct_prompts": true,
+    "pair_labels_derived_from_gold_json_findings_not_identifier_suffixes": true,
+    "balanced_pairs": true,
+    "quartet_family_members": {
+      "preserve-trie-credit": 4,
+      "allocation-null-guard": 4,
+      "zero-worker-guard": 4,
+      "write-permission-check": 4,
+      "stable-manifest-order": 4,
+      "allocation-product-overflow": 4
+    },
+    "same_full_diff_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "scoped-design-record",
+      "checksum-indirection"
+    ]
+  },
+  "risk_register": [
+    {
+      "risk": "896-dimensional readout over 52 rows can interpolate arbitrary labels",
+      "required_control": "Grouped out-of-family predictions, paired permutations and nuisance comparison; interpolation is capacity only"
+    },
+    {
+      "risk": "Permutation global-complement canonicalization assumes score symmetry despite fixed clean tie breaking",
+      "recommended_resolution": "Uniform unique nonidentity full 20-family bitmasks, same mask for both pairs of each quartet; or explicitly label conditional fixed-first-family randomization"
+    },
+    {
+      "risk": "Training and heldout feature normalization leakage",
+      "required_control": "All means/scales/constant-column detection derived on each training fold only, then applied unchanged to heldout"
+    },
+    {
+      "risk": "Multiple endpoints and parameter selection after outcomes",
+      "required_control": "Freeze primary complete-pair statistic, separate nuisance-gap statistic, seed/masks/hyperparameters/convergence/thresholds before feature extraction or fitting"
+    },
+    {
+      "risk": "Convergence failures or selectively omitted permutation fits",
+      "required_control": "Record every fit; any unconverged required fit blocks headline comparison, never silently drop it or tune based on scores"
+    },
+    {
+      "risk": "Changing scalar versus two-logit head convention silently changes ridge strength",
+      "required_control": "Specify logits and penalty exactly; scalar difference-weight ridge differs factor two from symmetric two-head ridge at same numeric lambda"
+    },
+    {
+      "risk": "20 template families overlap in semantic concepts",
+      "required_control": "Describe family heldouts narrowly; no claim of independent domain-level or full-review generalization"
+    },
+    {
+      "risk": "Pre-final-MLP state taken after label-specific target or later gold tokens",
+      "required_control": "Forward prompt plus shared three-token prefix only; capture final position before class target; record IDs and hashes"
+    },
+    {
+      "risk": "Count-based nuisance controls do not exhaust lexical/context shortcuts",
+      "required_control": "Representation advantage supports accessible discrimination on this cohort; it does not prove causal semantic understanding"
+    }
+  ],
+  "final_audit_pending": [
+    "Freeze reviewed final protocol with exact source/binary/input bindings before any model feature extraction or classifier fitting",
+    "Require model runtime parity gates and all4004fits convergence as preregistered"
+  ],
+  "updated_at_utc": "2026-10-01T09:13:58.835846+00:00",
+  "resolution_notes": [
+    "Protocol uses one scalar logistic difference with explicit ridge; no hyperparameter selection",
+    "99 unique full20-bit nonidentity masks; quartet pairs coupled and exactsame masks for bothviews",
+    "Native train-only normalization; all4004fit convergence mandatory inclcapacity; no failures dropped",
+    "Capacitycontrols run on bothviews but are training interpolation only",
+    "No public fittedweight/intercept export per root instruction; reproduce with frozen data and native source",
+    "Trace row/rowindex mismatch corrected beforefreeze; extractor include main naming guard verified",
+    "Representation normalization retains testvariation in individuallyconstanttraincoordinates, but zeroinitialized/Newton weight stays exactlyzero; globalallconstant maps allrowszero",
+    "Draft includes suppliedprefix/no fullreviewcompetence/no solecausalbottleneck/templatefamily/limitednuisance and exploratorypermutation caveats"
+  ],
+  "source_review": {
+    "extractor": "Inputbinary contains system/user only; ChatML uses actual trainer functions; prefix fixed after tokenizer verification; forwards exactly through input_tokens-1 before class target. Final down/bias zero gives z at postlayer callback before finalnorm, originalweights restored.",
+    "probe": "Firsttwo exactsystem/user matched rows compare truncatedz to trainercacheposition3, oppositefuturetoken+39tokens causality, originalresidual reconstruction. Frozen relativeL2<=1e-5 and maxabs<=1e-4*(1+maxreferenceabs). No scorebased paritythreshold tuning.",
+    "solver": "Reviewed exact meanCE+lambda/2||w||\u00b2, unpenalizedintercept, sample-space IRLS A=XXT+n*lambda*D^-1, constraint sumalpha0, trueobjective Armijo, fullgradient\u221e convergence and explicitfinite checks.",
+    "aggregation": "Inspected all4004fits coverage, exactfold/mask/label alignment, perrow and completepair counts, nestedsubset, +1 upper-tail and paired z-minus-nuisance null. Python counts only; no fitting/normalization/logits."
+  },
+  "independent_tests": [
+    {
+      "status": "pass",
+      "checks": [
+        "closed_form_symmetric_logistic_optimum",
+        "closed_form_logistic_objective",
+        "weight_and_intercept_gradient_finite_differences",
+        "training_only_normalization_and_kernel",
+        "global_constant_coordinate_zero_weight",
+        "nuisance_constant_coordinate_zero_heldout",
+        "constant_features_zero_tie_clean"
+      ]
+    },
+    {
+      "status": "pass",
+      "scope": "Preparation, not model extraction or fitting",
+      "checks": [
+        "corpus and all input receipt hashes",
+        "prompt binary contains exactly all52 original system/user strings and no other fields",
+        "labels derive directly from gold findings",
+        "20fold disjoint heldout coverage and training class balance",
+        "99 unique nonidentity SHA-family masks independently reproduced",
+        "paired balance and quartet shared-family coupling for every mask"
+      ],
+      "bound_sources": {
+        "corpus": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+        "preparer": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+        "prompt_input": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+        "rows": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+        "masks": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd"
+      },
+      "model_run_performed": false
+    }
+  ],
+  "audited_file_bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-draft.json",
+      "sha256": "012215d7012e964f892aa8f1d5575b64fa7a28ef54bbd413b9332a8c3e27347b",
+      "bytes": 12203
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+      "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+      "bytes": 8735
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+      "sha256": "60d6dcae257c40302d1d544a916faa43fcdfc4206a30db100673a5f38734cee7",
+      "bytes": 10625
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "sha256": "6275361e2a2f714625e4819097721126455a4749528aabd37d071f373b06da86",
+      "bytes": 8103
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_readout.c",
+      "sha256": "9d43da993ca6a41beb800335a83ac2fd052e3b6884ab622a237328b9b9a5de97",
+      "bytes": 6582
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/readout_fit.c",
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "bytes": 21701
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout.c",
+      "sha256": "359a98cbb79ce910ede40aa55504d99f4eb231ada7762c8139a8e9752ddff4eb",
+      "bytes": 8388
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_extract.c",
+      "sha256": "0475238f650801df2ac059c76dc61a3bd2790cdefcf9288463244bb102b98f7f",
+      "bytes": 2061
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_solver_audit.c",
+      "sha256": "9cac3289cbd79d69bf1cce759e80901655260e4cbe270a0b42bbcfb16c9b51b3",
+      "bytes": 3301
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_preparation_audit.py",
+      "sha256": "07302234e62f1ddb91b1f64b1518093e82115b0486b7230d91a40e9207bf9648",
+      "bytes": 3700
+    }
+  ],
+  "model_run_performed_by_auditor": false
+}

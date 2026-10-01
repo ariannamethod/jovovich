@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-01T09:19:12.876757+00:00",
+  "status": "corrected preflight guard; binaries rebuilt and native unit test passed; awaiting revised protocol freeze",
+  "cause": "The first three common token IDs decode to {\"findings, without its closing quote and colon. The newly added guard encoded {\"findings\": and obtained four IDs, so it refused before any feature extraction or classifier fitting.",
+  "change": "Correct only the common-prefix validation literal and document the class-specific punctuation BPE boundary.",
+  "no_hypothesis_change": true,
+  "unchanged_prefix_ids": [
+    4913,
+    3903,
+    819
+  ],
+  "unchanged_capture_position": "prompt_tokens + 2; final observed token index, immediately before the class-specific target",
+  "class_specific_token_decodings": {
+    "66582": "\":[{\"",
+    "788": "\":"
+  },
+  "not_changed": [
+    "extractor input format",
+    "feature hook",
+    "feature rows",
+    "capture position",
+    "model",
+    "corpus",
+    "labels",
+    "folds",
+    "permutation masks",
+    "solver",
+    "numeric thresholds"
+  ],
+  "attempt1_snapshot_manifest": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/attempt1/manifest.json",
+    "bytes": 14211,
+    "sha256": "cf1126b26a53d01dffc7fcc5d71b1a7a5c3c9a7766dae48e379c154fb0912d28"
+  },
+  "old_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/attempt1/repository/training/extract_readout.c",
+    "bytes": 8103,
+    "sha256": "6275361e2a2f714625e4819097721126455a4749528aabd37d071f373b06da86"
+  },
+  "new_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+    "bytes": 8402,
+    "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+  },
+  "probe_source_unchanged": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_readout.c",
+    "bytes": 6582,
+    "sha256": "9d43da993ca6a41beb800335a83ac2fd052e3b6884ab622a237328b9b9a5de97"
+  },
+  "diagnostic": {
+    "source": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic.c",
+      "bytes": 936,
+      "sha256": "8f40e6adaf62455cbac4bb3a43bb73c13c49e83112c0bf16b49ab018bac44493"
+    },
+    "binary": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic",
+      "bytes": 34216,
+      "sha256": "c887535a8ab37fbfb6f153028151bb7277e0003c264535983830d0dc69519978"
+    },
+    "stdout": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic.jsonl",
+      "bytes": 751,
+      "sha256": "d4ed351a4ba5f6a318f729857c4e413ea5d528bfcf7006d699012b8610e7682e"
+    },
+    "compile_command": [
+      "cc",
+      "-O2",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-Ideps/notorch",
+      "-o",
+      "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic",
+      "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic.c",
+      "deps/notorch/examples/bpe.c",
+      "deps/notorch/gguf.c",
+      "-Wl,--gc-sections",
+      "-lm"
+    ],
+    "run_command": [
+      "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-tokenizer-diagnostic",
+      "models/base-qwen.gguf"
+    ],
+    "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+    "exit_code": 0,
+    "model_inference": false,
+    "linked_components": [
+      "bpe tokenizer",
+      "GGUF metadata reader"
+    ],
+    "no_forward_runtime_linked": true,
+    "base_model": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    }
+  },
+  "corrective_test": {
+    "command": "make extract-readout probe-readout build/test-readout-extract -j3 && ./build/test-readout-extract",
+    "exit_code": 0,
+    "log": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/corrective-tests.txt",
+      "bytes": 18771,
+      "sha256": "6d1ee5e8c524f56a90aaf3b7047bee01d3124b1c8787bbe82af6c3ca82e17180"
+    },
+    "model_inference": false
+  },
+  "rebuilt_binaries": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "bytes": 259160,
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+      "bytes": 263616,
+      "sha256": "6815c8f098fa884d4cbcee0c19a0fc9ed053fae66e406f970850097a746b7acd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/test-readout-extract",
+      "bytes": 263936,
+      "sha256": "2e52687da7f9c1df4c9342835a22de6e401bae6ef92e51f5b597f83bbeaae20a"
+    }
+  ],
+  "execution_boundary": "No parity forward, feature extraction or classifier fit executed after this correction. Require revised protocol source/binary freeze before another attempt."
+}

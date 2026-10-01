@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "Synthetic runner verification passed; no model inference or fitting",
+  "source_sha256": "11752f2d3201cc24e5883d8c6f77066bda607cad2ba727643a54ac856a384215",
+  "checks": [
+    {
+      "mutated_prior_output": false,
+      "status": "completed",
+      "expected": true
+    },
+    {
+      "mutated_prior_output": true,
+      "status": "failed",
+      "expected": true
+    }
+  ],
+  "rerun_refused": true,
+  "per_process_rss_recorded": true
+}

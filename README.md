@@ -513,12 +513,43 @@ The corpus intervention combines v3 wording repairs with the quartets and change
 the loss denominators; this run does not isolate a single cause or prove that
 100 updates suffice. The runtime model remains at its base checkpoint.
 
-The next diagnostic is a native affine readout of frozen final-MLP input states,
-with family-grouped evaluation, count-feature controls and paired-label
-permutations. It is a recorded next action, not an executed experiment. Full
-responses, native token traces, manual judgments, alternative readings and
-reproduction instructions are in
+Full responses, native token traces, manual judgments, alternative readings and
+reproduction instructions for that experiment are in
 [`training/results/2026-10-01-counterbalanced-review`](training/results/2026-10-01-counterbalanced-review).
+
+The frozen-state diagnostic is now complete. A separate native affine classifier
+reads the 896-dimensional state immediately before the final MLP, after the
+supplied common answer prefix. It holds out each of twenty template families,
+keeping all four members of each quartet together. A second classifier gets
+only seven token-length, diff-shape and occurrence-count features.
+
+| Family-held-out binary classification | Correct rows | Complete pairs | Same-full-diff pairs (nested subset) |
+| --- | ---: | ---: | ---: |
+| Frozen Qwen state | 29/52 | 4/26 | 2/6 |
+| Seven lexical/count features | 35/52 | 9/26 | 0/6 |
+
+All 4,004 prespecified fits converge. The state probe does not beat the lexical
+baseline overall. Against 99 coupled family-label permutations, the exploratory
+complete-pair tail fractions are `0.07` for the state and `0.08` for the baseline;
+the state-minus-baseline difference is `-5` pairs with tail fraction `0.89`.
+These references assume family-label exchangeability and establish no universal
+generalization claim. The same-full-diff subset belongs inside the 26 pairs.
+
+With weaker ridge, the state classifier fits all 52 training labels, including
+the prespecified shuffled labels. Its two cross entropies remain just above the
+frozen `0.001` capacity threshold, so both strict capacity controls fail. The
+criterion stays put. This probe supplies the prefix and predicts a binary label;
+it does not generate a review, a reason or a citation. No model weights change.
+
+The next corpus intervention will match effective and ineffective protection
+while controlling the remaining count and length cues across fresh templates.
+Broader adapters, training duration and Base versus Instruct remain separate
+hypotheses. Official Qwen documentation permits tuning either checkpoint, and
+a published exact-model Instruct adaptation uses substantially broader adapters
+and more training examples than this experiment. This corpus intervention is
+recorded as the next design; it has not run. The research, failed first
+diagnostic guard, corrected run, exact features and reproduction commands live in
+[`training/results/2026-10-01-frozen-readout`](training/results/2026-10-01-frozen-readout).
 
 The review evaluator uses the actual host prompt and native inference path:
 
