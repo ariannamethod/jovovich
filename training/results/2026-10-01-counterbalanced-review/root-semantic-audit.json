@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "created_at_utc": "2026-10-01T01:33:10.887240+00:00",
+  "method": "Root manually read every complete user prompt, changed-line list, complete generated response and production outcome for the 52 new training cases and 12 established diagnostics. Shared system framing was already inspected. Primary readers separately read the full 52 and 36-case cohorts; a further reader independently assessed eight training cases and two diagnostic cases without those judgments. This script validates the serialized decisions and binds their sources; it is not an automatic semantic classifier.",
+  "root_cases_read": {
+    "train-natural": 52,
+    "diagnostics-natural": 12
+  },
+  "fresh_transfer_read_by": "fresh_transfer independent primary reader, all 24 full prompts and responses",
+  "agreement": {
+    "training_primary_pass_decisions": 52,
+    "diagnostic_primary_pass_decisions": 12,
+    "unresolved_pass_score_disagreements": 0
+  },
+  "notes": {
+    "sqlite-build-requirement-concern": "Root and two independently initiated readings agree that naming the newly required SQLite dependency on its unconditional build line identifies the concrete compiler-only conflict. Repeating the rule or using the word violates is unnecessary.",
+    "background-service-scope-concern": "Repeats the help-only rule but falsely describes the service-adding patch as containing only help text; no correct conflict is established.",
+    "preserve-trie-credit-deletion-concern": "The actual attribution loss is recognized and causally cited. Becoming a separate product is unsupported and prevents full credit.",
+    "validated-port-conversion-introduced": "The validation-loss mechanism is supported, but the cited declaration is not the removed check or unsafe conversion. The frozen genuine metric requires causal citation; reason_grounded remains true.",
+    "stable-manifest-order-deletion-concern": "The garbled statement never explains loss of ordering. A charitable fragment reading can preserve the general fact that sorting produces stable order; it still supplies no grounded harmful consequence and does not change any pass or pair score.",
+    "allocation-product-overflow-replacement-concern": "The original strict-greater-than guard already permits equality at the bound. The response wrongly attributes that permission to removal, then repeats until token limit without explaining overflow.",
+    "owned-stream-close-removed": "Three readings agree on the primary pass: removing the only required fclose identifies the concrete release obligation, and the stream remains available after the old close point. Repetition adds no new assertion. A stricter reading that it newly enables the earlier fgetc would remove full credit but preserve genuine detection; the clean counterpart fails either way.",
+    "descriptive_clean_findings": "SQLite, approved background service, opt-in HTTP publication and restored stream cleanup may contain supported facts while still being incorrect nonempty findings. Factual prose alone is not an actual issue."
+  },
+  "sources": {
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-semantic-assessment.json": {
+      "bytes": 678199,
+      "sha256": "ca3a40c78dbddcda005c814dde43b4c9b6aecd641402b55e14818e27443e8297"
+    },
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-train-natural.jsonl": {
+      "bytes": 543216,
+      "sha256": "04f5378ac27ffae8c1068121fa60c29141450833a816035210a34cd97a4428de"
+    },
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-counterbalanced-diagnostics-natural.jsonl": {
+      "bytes": 128813,
+      "sha256": "89f785909deef257aeb2bf41831d2132098ab0d1dcacf7163b041d29b60f414d"
+    },
+    "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-train-manual-judgments.json": {
+      "bytes": 51567,
+      "sha256": "4b7774afce72ad044eb5fa4c6aec3e6625461a1a01659fbbcc801fb64f1a75ce"
+    },
+    "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/counterbalanced-eval-manual-judgments.json": {
+      "bytes": 36183,
+      "sha256": "0fe9928cb3f0c0f10892e48b12c4b98df1b8333dd76cf360bdbb51986a26944c"
+    },
+    "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-concern-second-opinion.json": {
+      "bytes": 17466,
+      "sha256": "034634ad443a1dd2348b6b33e2d1a0ea0807b7700569960ed97d688219f6b8f6"
+    },
+    "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/new-diagnostic-second-opinion.json": {
+      "bytes": 7660,
+      "sha256": "0ba8c6f325c0573faa6f1519c59f9e211ac04dbed4e3d9ae63e4baf5a3b09de1"
+    }
+  },
+  "counts": {
+    "train-natural": {
+      "cases": 52,
+      "concerns": 26,
+      "clean": 26,
+      "json_syntax_valid": 51,
+      "production_usable": 51,
+      "parsed_concern": 8,
+      "parsed_empty": 43,
+      "parsed_presence_null": 1,
+      "correct_presence": 28,
+      "genuine_issues_detected": 2,
+      "reason_grounded_cases": 3,
+      "grounded_concern_reviews": 1,
+      "correct_clean_reviews": 23,
+      "full_reviews_pass": 24,
+      "clean_nonempty_responses": 3,
+      "invalid_clean_responses": 0,
+      "pairs": 26,
+      "full_review_pairs": 0,
+      "complete_presence_pairs": 2,
+      "complete_usable_presence_pairs": 2,
+      "eos": 51,
+      "token_limit": 1
+    },
+    "diagnostics-natural": {
+      "cases": 12,
+      "concerns": 6,
+      "clean": 6,
+      "json_syntax_valid": 12,
+      "production_usable": 12,
+      "parsed_concern": 4,
+      "parsed_empty": 8,
+      "parsed_presence_null": 0,
+      "correct_presence": 6,
+      "genuine_issues_detected": 1,
+      "reason_grounded_cases": 1,
+      "grounded_concern_reviews": 1,
+      "correct_clean_reviews": 4,
+      "full_reviews_pass": 5,
+      "clean_nonempty_responses": 2,
+      "invalid_clean_responses": 0,
+      "pairs": 6,
+      "full_review_pairs": 0,
+      "complete_presence_pairs": 0,
+      "complete_usable_presence_pairs": 0,
+      "eos": 12,
+      "token_limit": 0
+    }
+  }
+}

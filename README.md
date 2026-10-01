@@ -442,6 +442,84 @@ The complete responses, exact emitted IDs and a proposed corpus balancing
 diff shape against actual harm are preserved with the joint experiment in
 [`training/results/2026-10-01-joint-review`](training/results/2026-10-01-joint-review).
 
+The v4 corpus crosses diff shape with surviving protection in six four-case
+blocks: lost credit, NULL allocation, zero workers, write permission, stable
+ordering and allocation overflow. Each block contains harmful and redundant
+removal, both as pure deletion and as replacement by a no-op. The other
+fourteen review pairs and all twenty-four voice/code diagnostic rows remain
+byte-identical to the prepared v3 corpus.
+`training/build_review_v4.mjs` rebuilds these rows deterministically and checks
+the before/after behavior. Use fresh output paths to inspect a reconstruction:
+
+```sh
+node training/build_review_v4.mjs --output models/rebuilt-v4.jsonl \
+  --audit models/rebuilt-v4-audit.json
+```
+
+```sh
+python3 training/prepare.py models/counterbalanced-review.bin \
+  --sft training/sft_review_v4.jsonl --sft-only \
+  --review-pairs models/counterbalanced-review.pairs
+NT_NO_I8=1 NT_QMV_THREADS=4 NT_ATTN_THREADS=4 NT_SIMD_THREADS=4 \
+  build/jovovich-train-mlp models/base-qwen.gguf models/counterbalanced-review.bin \
+  models/counterbalanced-review 100 0.0001 40 25 joint \
+  models/counterbalanced-review.pairs > models/counterbalanced-review-metrics.jsonl
+python3 training/score_decisions.py models/counterbalanced-review-metrics.jsonl \
+  --sft training/sft_review_v4.jsonl --joint-microbatch-tokens 40 \
+  --output models/counterbalanced-review-scores.json
+```
+
+The corpus has 52 reviews in 26 concern/clean pairs. Native tokenization derives
+52 decision targets and 1,012 residual answer targets per joint update. The
+forty-token microbatch size is independent of the number of reviews. The
+scorer checks both against the supplied corpus and declared configuration.
+
+The completed v4 control keeps the same native trainer, initialization, rank,
+learning rate and 100-update selector. It selects update 100: 29/52 teacher
+decision targets and 3/26 complete token-decision pairs. All 52 three-token
+openings are exact; residual answer CE falls from `2.73018982` to `0.67983035`.
+These are training readouts, not a verdict on the full reviews.
+
+Both selected models answer the same 52 training, 24 fresh transfer and 12
+established diagnostic prompts naturally. All 176 complete responses receive
+manual semantic assessment. A grounded concern needs a real issue, a causal
+changed-line citation and support for every material claim; a complete pair
+also needs the corresponding clean response to be empty.
+
+| Cohort | Model | Grounded concerns | Correct clean | Complete pairs |
+| --- | --- | ---: | ---: | ---: |
+| Training | Previous joint | 3/26 | 16/26 | 1/26 |
+| Training | v4 | 1/26 | 23/26 | 0/26 |
+| Fresh transfer | Previous joint | 0/12 | 11/12 | 0/12 |
+| Fresh transfer | v4 | 0/12 | 12/12 | 0/12 |
+| Established diagnostics | Previous joint | 0/6 | 5/6 | 0/6 |
+| Established diagnostics | v4 | 1/6 | 4/6 | 0/6 |
+
+The new model recognizes two causally cited training issues, but its added
+claim that removing attribution creates a separate product spoils one review.
+Another answer describes lost input validation while citing only a removed
+variable declaration. The diagnostic `fclose` answer receives credit for
+identifying removal of the sole required close; its awkward wording and a
+stricter alternative reading are preserved. Neither reading produces a correct
+pair. All 24 fresh transfer responses are empty. More correct clean responses
+therefore do not establish better context-sensitive review.
+
+The quartet data removes the demonstrated diff-shape imbalance, but leaves a
+count cue: zero versus one remaining guard, sort or source credit separates all
+24 new training rows. The fresh transfer pairs have equal counts on both sides
+while changing whether the remaining operation actually protects the right value
+or component.
+The corpus intervention combines v3 wording repairs with the quartets and changes
+the loss denominators; this run does not isolate a single cause or prove that
+100 updates suffice. The runtime model remains at its base checkpoint.
+
+The next diagnostic is a native affine readout of frozen final-MLP input states,
+with family-grouped evaluation, count-feature controls and paired-label
+permutations. It is a recorded next action, not an executed experiment. Full
+responses, native token traces, manual judgments, alternative readings and
+reproduction instructions are in
+[`training/results/2026-10-01-counterbalanced-review`](training/results/2026-10-01-counterbalanced-review).
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

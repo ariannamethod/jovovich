@@ -1,0 +1,759 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_new_model_outputs",
+  "fixtures_sha256": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d",
+  "fixtures_bytes": 63444,
+  "count": 24,
+  "families": 6,
+  "harmful": 12,
+  "clean": 12,
+  "semantic_checks": [
+    {
+      "id": "transfer-allocation-failure-pure-deletion-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-pure-deletion-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-harmful",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "probe_calls": 1
+        }
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-redundant",
+      "language": "c",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "probe_calls": 0
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-harmful",
+      "language": "javascript",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-redundant",
+      "language": "javascript",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-harmful",
+      "language": "javascript",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-redundant",
+      "language": "javascript",
+      "syntax_checked": true,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "serialized_outputs": [
+            "alpha=1\nzeta=9",
+            "alpha=1\nzeta=9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-harmful",
+      "language": "notice",
+      "syntax_checked": false,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "credited_components": [
+            "cache/leaf_scan.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-redundant",
+      "language": "notice",
+      "syntax_checked": false,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-harmful",
+      "language": "notice",
+      "syntax_checked": false,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": true,
+          "credited_components": [
+            "cache/leaf_scan.c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-redundant",
+      "language": "notice",
+      "syntax_checked": false,
+      "semantic_witness": {
+        "before": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        },
+        "after": {
+          "bad_operation_reachable": false,
+          "credited_components": [
+            "cache/leaf_scan.c",
+            "cache/leaf_store.c"
+          ]
+        }
+      }
+    }
+  ],
+  "probe_method": "The actual fixture C control flow is compiled. For allocation failure and division, the single dangerous expression is replaced by a recording sentinel before executing it; no NULL dereference or division by zero is executed. Allocation-overflow multiplication is unsigned and defined; malloc is replaced by a recording stub. Permission uses a recording write stub. JS executes complete serializers; NOTICE is parsed into explicitly scoped component records.",
+  "no_model_inference": true,
+  "generator_sha256": "8489c5bc17ef9787e80d714aba3a806fd978f1235dac4cdeb59ca9740eb4e284",
+  "prompt_checks": {
+    "host_sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+    "identity_sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8",
+    "chat_template": "chatml",
+    "cases": [
+      {
+        "id": "transfer-allocation-failure-pure-deletion-harmful",
+        "prompt_sha256": "8cb83c36ff2e51f0cd8329f0132503d2312d17ce1b259e6e20d21aaf0bf9683e",
+        "prompt_bytes": 2678,
+        "patch_characters": 617,
+        "candidate_physical_line": 16,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-failure-pure-deletion-redundant",
+        "prompt_sha256": "0dc0d654b75e6fabafaf85bb11c27a1ac3cc9597ec0b7439d065340fadd8c83a",
+        "prompt_bytes": 2675,
+        "patch_characters": 614,
+        "candidate_physical_line": 16,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-failure-replacement-noop-harmful",
+        "prompt_sha256": "012b25ebd1f88c784281cec00b44114f8126eb7417ba9f80e04bf65655ad9616",
+        "prompt_bytes": 2741,
+        "patch_characters": 631,
+        "candidate_physical_line": 16,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-failure-replacement-noop-redundant",
+        "prompt_sha256": "57345c4892510fac41ed1c350ee7440600099d4d51e3a2084632c96622b1cafa",
+        "prompt_bytes": 2738,
+        "patch_characters": 628,
+        "candidate_physical_line": 16,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-zero-divisor-pure-deletion-harmful",
+        "prompt_sha256": "f367fe14c007771b5c667f59e73a7bc6092dda3065619336e4240383a8fd7cfb",
+        "prompt_bytes": 2389,
+        "patch_characters": 371,
+        "candidate_physical_line": 8,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-zero-divisor-pure-deletion-redundant",
+        "prompt_sha256": "d2a653e12d1758eeda6f7d296b9f9f87c78c95f887f040596d4ae7563563d659",
+        "prompt_bytes": 2389,
+        "patch_characters": 371,
+        "candidate_physical_line": 8,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-zero-divisor-replacement-noop-harmful",
+        "prompt_sha256": "eb01851ea84b9a4b07e44a7d2589b19d569a97c099abea9032de454a6d992dbd",
+        "prompt_bytes": 2454,
+        "patch_characters": 385,
+        "candidate_physical_line": 8,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-zero-divisor-replacement-noop-redundant",
+        "prompt_sha256": "cff85bcce708192c2439a74d403486dd543a8ef52e9456eb59f1dd783a3d0a4b",
+        "prompt_bytes": 2454,
+        "patch_characters": 385,
+        "candidate_physical_line": 8,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-write-permission-pure-deletion-harmful",
+        "prompt_sha256": "5f32853ec0026fdfc0be2d9f3db63e435d10bdb9621efbfa262b6a279e361ffe",
+        "prompt_bytes": 2580,
+        "patch_characters": 507,
+        "candidate_physical_line": 10,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-write-permission-pure-deletion-redundant",
+        "prompt_sha256": "195f8d2e6cfefe773a6cfb19c37ffa21272935bda659aabd10ee467b8c20c798",
+        "prompt_bytes": 2580,
+        "patch_characters": 507,
+        "candidate_physical_line": 10,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-write-permission-replacement-noop-harmful",
+        "prompt_sha256": "0ea96104fbf91defc477cfaeaaf9182bb3c84db97e0feb0ee74d40dee19be5c2",
+        "prompt_bytes": 2643,
+        "patch_characters": 521,
+        "candidate_physical_line": 10,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-write-permission-replacement-noop-redundant",
+        "prompt_sha256": "63fc195cef7a698f6acd6c284ef8b118fa5ae566dad00926baea868299198fd6",
+        "prompt_bytes": 2643,
+        "patch_characters": 521,
+        "candidate_physical_line": 10,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-overflow-pure-deletion-harmful",
+        "prompt_sha256": "484d2fb4ef84f110df3342272158abe9d4bd2adad68d703ec0ef3a66b5c5e0a0",
+        "prompt_bytes": 2855,
+        "patch_characters": 694,
+        "candidate_physical_line": 17,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-overflow-pure-deletion-redundant",
+        "prompt_sha256": "4e5e76fa735babde37fd321bc05d43f0c1489ae058f6a57b5d6c4fe425093ccc",
+        "prompt_bytes": 2853,
+        "patch_characters": 692,
+        "candidate_physical_line": 17,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-overflow-replacement-noop-harmful",
+        "prompt_sha256": "e0e75c2780ce0f1bf5378bda7a3b5f1f2817ff6dd047d1a03c8afe47a838a202",
+        "prompt_bytes": 2919,
+        "patch_characters": 708,
+        "candidate_physical_line": 17,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-allocation-overflow-replacement-noop-redundant",
+        "prompt_sha256": "e6c5dcdf9c019e4bbda72fd3edf6c362adfcb35c7119ff60107b346c59801497",
+        "prompt_bytes": 2917,
+        "patch_characters": 706,
+        "candidate_physical_line": 17,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-stable-output-order-pure-deletion-harmful",
+        "prompt_sha256": "ede438efcf33ec448afa0efc31e16e3ffcc7135ce757372cd029da3c8f52b837",
+        "prompt_bytes": 2409,
+        "patch_characters": 306,
+        "candidate_physical_line": 6,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-stable-output-order-pure-deletion-redundant",
+        "prompt_sha256": "ea63d96fc4591a06ac08f604642fa4b30b35666dc318394d718a8774d37f2d23",
+        "prompt_bytes": 2415,
+        "patch_characters": 312,
+        "candidate_physical_line": 6,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-stable-output-order-replacement-noop-harmful",
+        "prompt_sha256": "cffb3b2a702f379641aa9b239481ac9a3b119d6f5fcfda03b04dff4729766f30",
+        "prompt_bytes": 2473,
+        "patch_characters": 319,
+        "candidate_physical_line": 6,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-stable-output-order-replacement-noop-redundant",
+        "prompt_sha256": "af820a6bc55f02a9283bc56eecea7adb1020696451edd431626c74dc62a0a5d6",
+        "prompt_bytes": 2479,
+        "patch_characters": 325,
+        "candidate_physical_line": 6,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-component-provenance-pure-deletion-harmful",
+        "prompt_sha256": "c5a0bb677be69be85ab713f7642a71b1ca66db114f88b0d69849992537bcce84",
+        "prompt_bytes": 2675,
+        "patch_characters": 380,
+        "candidate_physical_line": 4,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-component-provenance-pure-deletion-redundant",
+        "prompt_sha256": "a735a1555752f68f3700f109b694454d63fc1102233dfe31f4f60df861e14e1e",
+        "prompt_bytes": 2676,
+        "patch_characters": 381,
+        "candidate_physical_line": 4,
+        "changed_line_count": 1,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-component-provenance-replacement-noop-harmful",
+        "prompt_sha256": "5e1c7ed5f66e0a12665bdf3cdfb66593fa9ec5fdc5d58ad00913e28ba936a073",
+        "prompt_bytes": 2763,
+        "patch_characters": 405,
+        "candidate_physical_line": 4,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      },
+      {
+        "id": "transfer-component-provenance-replacement-noop-redundant",
+        "prompt_sha256": "24db834733223a63223b603711e87f08cc627564be7c65afc2cf8402224191e6",
+        "prompt_bytes": 2764,
+        "patch_characters": 406,
+        "candidate_physical_line": 4,
+        "changed_line_count": 2,
+        "gold_parses": true,
+        "alternative_citations_parse": true
+      }
+    ],
+    "all_patches_visible_without_truncation": true,
+    "semantic_pairs_same_changed_lines": true,
+    "semantic_pairs_equal_hunk_and_context_counts": true,
+    "semantic_pair_diff_exactly_one_unchanged_line": true,
+    "semantic_pairs_equal_if_sort_upstream_string_counts": true
+  },
+  "overlap_report": {
+    "sources": [
+      {
+        "source": "training/sft_review_v2.jsonl",
+        "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e",
+        "rows": 64,
+        "review_rows": 40,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": []
+      },
+      {
+        "source": "training/sft_review_v3.jsonl",
+        "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7",
+        "rows": 64,
+        "review_rows": 40,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": []
+      },
+      {
+        "source": "training/sft_review_v4.jsonl",
+        "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+        "rows": 76,
+        "review_rows": 52,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": [
+          "(void)0;",
+          "void 0;"
+        ]
+      },
+      {
+        "source": "training/review_holdout_v2.jsonl",
+        "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad",
+        "rows": 12,
+        "review_rows": 12,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": []
+      },
+      {
+        "source": "training/results/2026-10-01-joint-review/diff-shape-audit.jsonl",
+        "sha256": "913875ef445ed1c4e5aa4534927e919b44d9ad50bfeb69b2a7e0efd2f044a392",
+        "rows": 8,
+        "review_rows": 8,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": [
+          "(void)0;"
+        ]
+      },
+      {
+        "source": "training/results/2026-10-01-joint-review/matched-shape-cases.jsonl",
+        "sha256": "d9a33c64658eaf6e7da5221cdd01db7743518318fe5adcc03c4ad8c98b03e9a4",
+        "rows": 8,
+        "review_rows": 8,
+        "exact_user_prompt_matches": [],
+        "exact_patch_matches": [],
+        "reused_paths": [],
+        "reused_repositories": [],
+        "shared_changed_line_quotes": [
+          "(void)0;"
+        ]
+      }
+    ],
+    "shared_structure": "Production identity, Qwen ChatML framing, review instruction and JSON output contract are shared intentionally. Six semantic families are shared by design; repository names, source paths, candidate code/credit, full patches and contextual mechanisms are fresh. Neutral C (void)0; and JS void 0; shape controls are intentionally reused.",
+    "variant_split": "Each four-case family is frozen together. No fixture enters training, checkpoint selection, or dataset revision during this run."
+  },
+  "independent_audit": {
+    "path": "fresh-transfer-independent-audit.json",
+    "sha256": "4926000ec210003c500d48352ebf2a3b75d60f15d67d6867f12fa638a9d33c11",
+    "bytes": 28622
+  },
+  "frozen_at_utc": "2026-09-30T23:40:12.884Z",
+  "finalizer_sha256": "3d45c32a6f21fb4fe6ce84ac876d9b45e644a4488716d7d33514654f34f5edc8"
+}

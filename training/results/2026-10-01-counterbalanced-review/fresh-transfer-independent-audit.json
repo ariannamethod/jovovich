@@ -1,0 +1,987 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "auditor": "independent subagent; did not edit fixtures or reuse builder witness implementation",
+  "fixtures": {
+    "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/fresh-transfer.jsonl",
+    "sha256": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d",
+    "bytes": 63444
+  },
+  "audit_script_sha256": "60fd4231f265d6b4a4a98de7cbc7aa3203801392482f0d39a95458f0979a016f",
+  "production_source_sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+  "training_overlap_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+    "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+  },
+  "no_model_inference": true,
+  "reviewed_all_cases": 24,
+  "counts": {
+    "families": 6,
+    "semantic_pairs": 12,
+    "harmful": 12,
+    "clean": 12,
+    "before_after_semantic_checks": 48,
+    "native_c_versions": 32,
+    "javascript_versions": 8,
+    "notice_versions": 8,
+    "production_gold_parses": 24,
+    "replacement_alternate_citations": 6
+  },
+  "semantic_method": "Fresh native wrappers preserve every guard/control path, intercept only NULL dereference and zero division before undefined behavior, replace allocation with an observation stub for huge sizes, and stub commit_blob to record unauthorized calls. Exact JavaScript runs on four insertion orders. Explicit NOTICE component records are parsed by independently written code.",
+  "family_review": {
+    "allocation-failure": "The harmful remaining NULL comparison is against a supplied non-NULL sentinel; the redundant comparison tests fresh with reversed spelling before the tag write.",
+    "zero-divisor": "The harmful remaining comparison checks positive units; the redundant comparison checks the divisor lanes before division.",
+    "write-permission": "READ cannot authorize EDIT; the retained alias active is unchanged and its EDIT test is equivalent to the removed auth.rights test.",
+    "allocation-overflow": "The uint32_t threshold permits counts that overflow uint64_t allocation; the retained uint64_t threshold is equivalent to the removed bound.",
+    "stable-output-order": "Sorting a copy does not order the original view. Only the redundant outputOrder alias points at the sorted copy.",
+    "component-provenance": "The explicit record-scoping rule binds remaining credits to their named file. Only the redundant ledger retains an alternate credit for leaf_store.c."
+  },
+  "lexical_controls": "Equal changed lines, context lengths, if/sort/credit counts within opposite-label pairs verified. Family paths and context/rules are identical across cells. Metadata and labels are excluded by production prompt construction.",
+  "coordinate_note": "All six candidate physical coordinates are absent from v4 changed-line coordinates (11,12,13); coordinates remain balanced across all four cells within each family.",
+  "overlap": "Transfer preserves six trained defect families and host/system framing, with new repositories, paths, local symbols and alternative-protection dataflow. All six paths and all24 full diff strings are absent from v4. This is fresh-context transfer within familiar defect families.",
+  "novelty": [
+    {
+      "family": "allocation-failure",
+      "new_path": "core/parcel_factory.c",
+      "candidate_physical_line": 16,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    },
+    {
+      "family": "allocation-overflow",
+      "new_path": "buffers/tick_reserve.c",
+      "candidate_physical_line": 17,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    },
+    {
+      "family": "component-provenance",
+      "new_path": "licenses/COMPONENT-NOTICE",
+      "candidate_physical_line": 4,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    },
+    {
+      "family": "stable-output-order",
+      "new_path": "scripts/catalog_bytes.mjs",
+      "candidate_physical_line": 6,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    },
+    {
+      "family": "write-permission",
+      "new_path": "storage/blob_commit.c",
+      "candidate_physical_line": 10,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    },
+    {
+      "family": "zero-divisor",
+      "new_path": "engine/partition_width.c",
+      "candidate_physical_line": 8,
+      "path_absent_from_v4": true,
+      "coordinate_absent_from_v4": true,
+      "all_family_diffs_absent_from_v4": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "transfer-allocation-failure-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            1
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-failure-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 16,
+        "untruncated_diff": true,
+        "prompt_bytes": 2678
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-failure-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 16,
+        "untruncated_diff": true,
+        "prompt_bytes": 2675
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            1
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-failure-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 16,
+        "untruncated_diff": true,
+        "prompt_bytes": 2741
+      }
+    },
+    {
+      "id": "transfer-allocation-failure-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-failure-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 16,
+        "untruncated_diff": true,
+        "prompt_bytes": 2738
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-zero-divisor-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 8,
+        "untruncated_diff": true,
+        "prompt_bytes": 2389
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-zero-divisor-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 8,
+        "untruncated_diff": true,
+        "prompt_bytes": 2389
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-zero-divisor-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 8,
+        "untruncated_diff": true,
+        "prompt_bytes": 2454
+      }
+    },
+    {
+      "id": "transfer-zero-divisor-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-zero-divisor-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 8,
+        "untruncated_diff": true,
+        "prompt_bytes": 2454
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-write-permission-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 10,
+        "untruncated_diff": true,
+        "prompt_bytes": 2580
+      }
+    },
+    {
+      "id": "transfer-write-permission-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-write-permission-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 10,
+        "untruncated_diff": true,
+        "prompt_bytes": 2580
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-write-permission-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 10,
+        "untruncated_diff": true,
+        "prompt_bytes": 2643
+      }
+    },
+    {
+      "id": "transfer-write-permission-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-write-permission-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 10,
+        "untruncated_diff": true,
+        "prompt_bytes": 2643
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-overflow-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 17,
+        "untruncated_diff": true,
+        "prompt_bytes": 2855
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-overflow-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 17,
+        "untruncated_diff": true,
+        "prompt_bytes": 2853
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-overflow-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 17,
+        "untruncated_diff": true,
+        "prompt_bytes": 2919
+      }
+    },
+    {
+      "id": "transfer-allocation-overflow-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "per_input_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-allocation-overflow-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 17,
+        "untruncated_diff": true,
+        "prompt_bytes": 2917
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1\nmiddle=4",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "middle=4\nzeta=9\nalpha=1",
+            "middle=4\nalpha=1\nzeta=9"
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-stable-output-order-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 6,
+        "untruncated_diff": true,
+        "prompt_bytes": 2409
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-stable-output-order-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 6,
+        "untruncated_diff": true,
+        "prompt_bytes": 2415
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "serialized_outputs": [
+            "zeta=9\nalpha=1\nmiddle=4",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "middle=4\nzeta=9\nalpha=1",
+            "middle=4\nalpha=1\nzeta=9"
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-stable-output-order-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 6,
+        "untruncated_diff": true,
+        "prompt_bytes": 2473
+      }
+    },
+    {
+      "id": "transfer-stable-output-order-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "serialized_outputs": [
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9",
+            "alpha=1\nmiddle=4\nzeta=9"
+          ]
+        }
+      },
+      "production": {
+        "id": "transfer-stable-output-order-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 6,
+        "untruncated_diff": true,
+        "prompt_bytes": 2479
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "component_coverage": {
+            "cache/leaf_store.c": false,
+            "cache/leaf_scan.c": true
+          }
+        }
+      },
+      "production": {
+        "id": "transfer-component-provenance-pure-deletion-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 4,
+        "untruncated_diff": true,
+        "prompt_bytes": 2675
+      }
+    },
+    {
+      "id": "transfer-component-provenance-pure-deletion-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        }
+      },
+      "production": {
+        "id": "transfer-component-provenance-pure-deletion-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1
+        ],
+        "candidate_physical_line": 4,
+        "untruncated_diff": true,
+        "prompt_bytes": 2676
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-harmful",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        },
+        "after": {
+          "unsafe_reachability": true,
+          "component_coverage": {
+            "cache/leaf_store.c": false,
+            "cache/leaf_scan.c": true
+          }
+        }
+      },
+      "production": {
+        "id": "transfer-component-provenance-replacement-noop-harmful",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 4,
+        "untruncated_diff": true,
+        "prompt_bytes": 2763
+      }
+    },
+    {
+      "id": "transfer-component-provenance-replacement-noop-redundant",
+      "semantic_label_correct": true,
+      "hunk_counts_correct": true,
+      "source_hashes_match": true,
+      "context_and_changed_lines_balanced": true,
+      "guard_sort_credit_counts_balanced": true,
+      "semantic": {
+        "before": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        },
+        "after": {
+          "unsafe_reachability": false,
+          "component_coverage": {
+            "cache/leaf_store.c": true,
+            "cache/leaf_scan.c": true
+          }
+        }
+      },
+      "production": {
+        "id": "transfer-component-provenance-replacement-noop-redundant",
+        "gold_production_parse": true,
+        "changed_line_ids": [
+          1,
+          2
+        ],
+        "candidate_physical_line": 4,
+        "untruncated_diff": true,
+        "prompt_bytes": 2764
+      }
+    }
+  ],
+  "findings": []
+}

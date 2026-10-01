@@ -1,0 +1,84 @@
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.76047e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70228e-05; gate/up/down max_grad=0.189277/0.377374/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=2.38419e-07; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=7.82311e-08); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=2.23517e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+./build/test-joint
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.36614e-06 gradient=2.23517e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=5.96046e-08 trajectory=2.98023e-08)
+Joint selection: 7 invalid map/objective inputs rejected
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (39.327757ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (37.002856ms)
+✔ runner rejects unsupported Qwen MoE architecture (13.811317ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (169.493858ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (285.047174ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (303.005264ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (247.845974ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (78.808956ms)
+✔ joint scoring preserves checkpoint selection and exposes loss, gradient and prefix diagnostics (119.532306ms)
+✔ joint scoring enforces fixed coverage and independently normalized finite losses (844.007468ms)
+✔ joint online loss is measured before the update and matches the previous frozen readout (263.233221ms)
+✔ joint gradient diagnostics distinguish zero, boundary and clipped norms with declared tolerance (483.356638ms)
+✔ joint initial gradient diagnostics are explicitly null and later diagnostics are mandatory (510.923814ms)
+✔ joint runs retain the fixed stage order, objective and complete snapshot schedule (206.56764ms)
+✔ joint prefix summaries require complete mapped-row coverage and consistent aggregates (802.802325ms)
+✔ joint prefix accuracy must agree with first error and complete-row accuracy (226.969114ms)
+✔ joint scorer derives 76-row coverage, 26-pair group means and residual normalization from the corpus (84.744831ms)
+✔ expanded joint corpus rejects tampered counts, row coverage, token totals and microbatch declarations (733.715553ms)
+✔ corpus validation requires unique IDs, known task kinds and complete role-valid review pairs (39.405571ms)
+✔ supplied corpus determines non-review group sizes as well as mapped decision ranges (47.241393ms)
+✔ historical decision-only, small-step and joint scores remain exactly unchanged (127.870135ms)
+✔ joint scorer CLI requires explicit agreement for a nondefault microbatch (214.845698ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (559.407048ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (15.468381ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (7.291231ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (44.21278ms)
+✔ MLP export refuses to overwrite an existing file (9.876786ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (13.227416ms)
+✔ review pair maps retain original row indices and concern/clean direction (78.313233ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (212.1827ms)
+✔ pair maps require SFT-only packing and a distinct output (92.742408ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (3.073581ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (1.545795ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.769062ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.576631ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (31.799914ms)
+✔ GitHub context rules come from the base revision and collection detects a push (8.742017ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (3.273438ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (1.064799ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (6.942389ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (239.827459ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (254.071691ms)
+✔ v4 artifact exactly regenerates approved quartets while retaining every other v3 raw row (55.631964ms)
+✔ v4 builder refuses existing destinations and removes its unused reservation if audit already exists (1750.381901ms)
+✔ v4 semantics exercise unsafe inputs, retained protections, ordering and credit; lost redundant guard fails (1420.435685ms)
+✔ runner traces sampled IDs before decoding and EOS, without changing stdout (22.833814ms)
+✔ runner traces immediate stopping ID 1 with empty response stdout (8.917377ms)
+✔ runner traces immediate stopping ID 2 with empty response stdout (5.203318ms)
+✔ runner traces exactly the token limit and the complete supplied prompt IDs (10.217971ms)
+✔ runner refuses existing trace files and symlinks before inference (13.274778ms)
+✔ runner validates trace options and destination before generation (12.4024ms)
+✔ runner removes its incomplete trace when model loading fails (8.156799ms)
+✔ runner reports trace write failure and removes the incomplete file (5.943315ms)
+✔ runner reports a closed stdout reader and removes its reserved trace (15.213465ms)
+✔ runner reports buffered stdout failure in --tokens-only mode (9.990192ms)
+✔ runner reports buffered stdout failure in --token-ids mode (5.796379ms)
+✔ training summaries preserve pair direction and select by complete review pairs (40.421859ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (68.664261ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (54.751845ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 59
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6009.523472

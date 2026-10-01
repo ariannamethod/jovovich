@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "scope": "Independent read-only audit of orchestration, native packing, dataset pairing, CLI and frozen-contract checks. No model inference or training. Source hashes identify inspected revisions.",
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+      "sha256": "dcd8f692add6147a19a6f04d48dd1da9b9bcf2ba64f1e2fae61744a2c356567a",
+      "bytes": 9591
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_review.py",
+      "sha256": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7",
+      "bytes": 2970
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_evaluation.py",
+      "sha256": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a",
+      "bytes": 5847
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/evaluate_counterbalanced_reviews.mjs",
+      "sha256": "6fea84be2c67cc6baa45d790dbbc463bf02397b2eb8164564c9533ae184615ac",
+      "bytes": 10322
+    }
+  ],
+  "checks": {
+    "python_ast": 3,
+    "node_syntax": true,
+    "jvds_rows_identical_to_jsonl": 76,
+    "jvpr_pairs_identical_to_jsonl": 26,
+    "pair_field": "pair",
+    "pair_id_field_used": false,
+    "cohorts": {
+      "train": {
+        "rows": 52,
+        "pairs": 26,
+        "concern": 26,
+        "clean": 26
+      },
+      "transfer": {
+        "rows": 24,
+        "pairs": 12,
+        "concern": 12,
+        "clean": 12
+      },
+      "diagnostics": {
+        "rows": 12,
+        "pairs": 6,
+        "concern": 6,
+        "clean": 6
+      }
+    },
+    "new_responses": 176,
+    "trainer_cli": "BASE BIN PREFIX 100 0.0001 40 25 joint PAIRS matches argc/argv parsing; fresh adapters use seed 20260929.",
+    "scorer_cli": "--sft v4 --joint-microbatch-tokens 40 --output matches current scorer; selection is complete pairs, hits, earlier saved update among 25/50/100.",
+    "merge_cli": "BASE PREFIX OUTPUT matches native merger.",
+    "parity_cli": "BASE MERGED BIN PREFIX 0 1 2 matches native probe; native emits one pass boolean per requested row and exits nonzero on any failure; controller also requires argmax_agree==completion_tokens.",
+    "generation": "Natural only; all three cohorts pass casesFor construction, 26/12/6 paired concern/clean cases; native trace budgets and source hashes asserted.",
+    "paths": "Preparation/evaluation helpers resolve reference files relative to __file__; repository inputs use root CWD. No stale v2 or pair_id routing found.",
+    "stage_guards": "Training completion rechecks base/model source hashes and notorch pin; selected-arm evaluation rechecks base and frozen_training before export/parity."
+  },
+  "findings": [
+    {
+      "id": "freeze-base-and-training-at-stage-boundaries",
+      "severity": "validation",
+      "status": "resolved before freeze",
+      "files": [
+        "run_counterbalanced_review.py",
+        "run_counterbalanced_evaluation.py"
+      ],
+      "initial_evidence": "The first inspected revision omitted base SHA from end-of-training unchanged status and omitted base/frozen_training rechecks at selected-arm entry.",
+      "verified_resolution": "Root added base SHA at completion, frozen_training plus base SHA before merge/parity, and notorch pin checks. Final inspected source hashes above include those guards."
+    }
+  ],
+  "pending_inputs_at_read": [],
+  "pending_note": "Plan creation hashes any pending files and will fail until they exist; inputs are not bypassed.",
+  "packed_sources": [
+    {
+      "path": "training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    {
+      "path": "models/counterbalanced-review.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123
+    },
+    {
+      "path": "models/counterbalanced-review.pairs",
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+      "bytes": 224
+    }
+  ]
+}

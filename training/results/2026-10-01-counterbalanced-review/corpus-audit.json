@@ -1,0 +1,1240 @@
+{
+  "schema_version": 1,
+  "design": {
+    "path": "training/results/2026-10-01-joint-review/joint-next-control.json",
+    "sha256": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9"
+  },
+  "base": {
+    "path": "training/sft_review_v3.jsonl",
+    "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7"
+  },
+  "corpus": {
+    "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "bytes": 163405
+  },
+  "counts": {
+    "total_rows": 76,
+    "review_rows": 52,
+    "concern_reviews": 26,
+    "clean_reviews": 26,
+    "review_pairs": 26,
+    "new_quartet_rows": 24,
+    "retained_review_rows": 28,
+    "voice_rows": 12,
+    "code_rows": 12,
+    "pure_deletion": {
+      "concern": 6,
+      "clean": 6
+    },
+    "has_added_line": {
+      "concern": 20,
+      "clean": 20
+    }
+  },
+  "structural_checks": {
+    "production_chunks_and_gold_acceptance": 52,
+    "unchanged_citation_rejections": 52,
+    "raw_retained_rows_identical": 52,
+    "same_diff_context_pairs_preserved": 6,
+    "one_unchanged_context_line_per_label_pair": 12,
+    "identical_gold_across_shape_per_label": 12
+  },
+  "retained_pairs": [
+    "scoped-python-analysis",
+    "approved-binary-decoder",
+    "sqlite-build-requirement",
+    "background-service-scope",
+    "model-parent-provenance",
+    "scoped-design-record",
+    "checksum-indirection",
+    "sequence-field-width",
+    "validated-port-conversion",
+    "negative-offset-type",
+    "exact-property-name",
+    "idempotent-event-retry",
+    "atomic-snapshot-publication",
+    "save-status-propagation"
+  ],
+  "retained_same_diff_pairs": [
+    "scoped-python-analysis",
+    "approved-binary-decoder",
+    "sqlite-build-requirement",
+    "background-service-scope",
+    "scoped-design-record",
+    "checksum-indirection"
+  ],
+  "retained_rows": [
+    {
+      "id": "scoped-python-analysis-concern",
+      "source_line": 1,
+      "output_line": 1,
+      "raw_row_sha256": "a2fc6c0b53180f22cf4f3fa63e3cc22318892fd460592b779e96f3dc959bf2d0"
+    },
+    {
+      "id": "scoped-python-analysis-clean",
+      "source_line": 2,
+      "output_line": 2,
+      "raw_row_sha256": "813c3cec1a322c310cf9022f8c03a0350c51efac798c4dca688c424a18455171"
+    },
+    {
+      "id": "voice-01",
+      "source_line": 3,
+      "output_line": 3,
+      "raw_row_sha256": "ccfc1e7d0b5a0bb8a5b934dce549f0e944347ce9300a893705db10521495438f"
+    },
+    {
+      "id": "code-01",
+      "source_line": 4,
+      "output_line": 4,
+      "raw_row_sha256": "c935652bed442549a0088840bc645edcb058409b741c673d2eb8995a7dc71da3"
+    },
+    {
+      "id": "approved-binary-decoder-concern",
+      "source_line": 5,
+      "output_line": 5,
+      "raw_row_sha256": "f4f20835e2d33f3cf9a8fb1c81b4fac6f010210e728587b6f69a73993cc515b4"
+    },
+    {
+      "id": "approved-binary-decoder-clean",
+      "source_line": 6,
+      "output_line": 6,
+      "raw_row_sha256": "70acf24a9243fd22e25451753a1562f2f0a6ee591814b1a5b757721f9539a8bd"
+    },
+    {
+      "id": "voice-02",
+      "source_line": 7,
+      "output_line": 7,
+      "raw_row_sha256": "1099441370d53f5433b4f776d76c8eff066ad26482f895971dc62568faeccc42"
+    },
+    {
+      "id": "code-02",
+      "source_line": 8,
+      "output_line": 8,
+      "raw_row_sha256": "cc8ce2e07ee7640a62863abe7b3ea774227ecdbc17c16e7ecac44258dc403f61"
+    },
+    {
+      "id": "sqlite-build-requirement-concern",
+      "source_line": 9,
+      "output_line": 9,
+      "raw_row_sha256": "bafbce7213a0bc215a23c3c5addd02f963a66f525cc4192da3223f9f512461a2"
+    },
+    {
+      "id": "sqlite-build-requirement-clean",
+      "source_line": 10,
+      "output_line": 10,
+      "raw_row_sha256": "324840469fec1f6526a6a2f3cf9888c2a820edfd7fae1e783e7e210541908d22"
+    },
+    {
+      "id": "voice-03",
+      "source_line": 11,
+      "output_line": 11,
+      "raw_row_sha256": "c915066cc4dc94eef9a721b6dd72e51f975399d047a57241589e48498f689e25"
+    },
+    {
+      "id": "code-03",
+      "source_line": 12,
+      "output_line": 12,
+      "raw_row_sha256": "23a705e71f70cfdf6f8260307374e37a8d46a22e940b4683f3d0925ad2a90a4c"
+    },
+    {
+      "id": "background-service-scope-concern",
+      "source_line": 13,
+      "output_line": 13,
+      "raw_row_sha256": "3c471c5b13bfc4500663bedb26ce14eeebfef3fb46332c4acd5e240db5c8edcc"
+    },
+    {
+      "id": "background-service-scope-clean",
+      "source_line": 14,
+      "output_line": 14,
+      "raw_row_sha256": "9b9bffd9f7f317d0b9b9514ccb14b031d99a2cb8e24f7e588a6043c2e819dd2d"
+    },
+    {
+      "id": "voice-04",
+      "source_line": 15,
+      "output_line": 15,
+      "raw_row_sha256": "86352216995cfac0180f93921424ea9b4c7a2a529bbe25031b332778df1c6059"
+    },
+    {
+      "id": "code-04",
+      "source_line": 16,
+      "output_line": 16,
+      "raw_row_sha256": "9383c8b46ea3f41d1be5f352265ab36f71304f5f22d11b09fa4e4a0beaf726b4"
+    },
+    {
+      "id": "voice-05",
+      "source_line": 19,
+      "output_line": 21,
+      "raw_row_sha256": "3e58ac14b1b26e7ea034838aa64d25110188983506f45c69218c119926ec97bc"
+    },
+    {
+      "id": "code-05",
+      "source_line": 20,
+      "output_line": 22,
+      "raw_row_sha256": "3aab2c9037a2076177a20ccf495d9b94d04311924f063b4d3957a042d555326a"
+    },
+    {
+      "id": "model-parent-provenance-introduced",
+      "source_line": 21,
+      "output_line": 23,
+      "raw_row_sha256": "08ff359149c4e1bcaff0087a723e62481176a3518d8b80a0ee9a83ba18a783c6"
+    },
+    {
+      "id": "model-parent-provenance-repaired",
+      "source_line": 22,
+      "output_line": 24,
+      "raw_row_sha256": "04b17c6329a644253d1f639f9b673426d8ebb1d49bae66a145b4b06044b00a65"
+    },
+    {
+      "id": "voice-06",
+      "source_line": 23,
+      "output_line": 25,
+      "raw_row_sha256": "850f155e42b3c4e92207cb417850fa85810ff7cfb164a5c43c14c3b5b20cf1d5"
+    },
+    {
+      "id": "code-06",
+      "source_line": 24,
+      "output_line": 26,
+      "raw_row_sha256": "9d52084b5ff240394d930805e23621eadc884c1d8af6a1665931abe7f726124d"
+    },
+    {
+      "id": "scoped-design-record-concern",
+      "source_line": 25,
+      "output_line": 27,
+      "raw_row_sha256": "ac138805d60abc93bb2e6baca29aedf689d69ea854c48fd5dde6f950ed582563"
+    },
+    {
+      "id": "scoped-design-record-clean",
+      "source_line": 26,
+      "output_line": 28,
+      "raw_row_sha256": "e869ed4e676fdf81332f92bb07e0f2db1560913b35125172f32ee9cc4a9a8bbd"
+    },
+    {
+      "id": "voice-07",
+      "source_line": 27,
+      "output_line": 29,
+      "raw_row_sha256": "1195013ca03b23846dc39044b5c73f7fe3124e557841cd1e976e8b78c1b366f9"
+    },
+    {
+      "id": "code-07",
+      "source_line": 28,
+      "output_line": 30,
+      "raw_row_sha256": "066b62c496647b346015888a21f4bae63994dbde9683ddb6d04de48f446c2251"
+    },
+    {
+      "id": "checksum-indirection-concern",
+      "source_line": 29,
+      "output_line": 31,
+      "raw_row_sha256": "a4b313946b71803c614c6d9c58fe41a50609f262e0f25938f34bf11864a2baa2"
+    },
+    {
+      "id": "checksum-indirection-clean",
+      "source_line": 30,
+      "output_line": 32,
+      "raw_row_sha256": "5b0f682884b4ab3b68df5a670300e9b9d3516d8c9fc914159f8691465d4513fd"
+    },
+    {
+      "id": "voice-08",
+      "source_line": 31,
+      "output_line": 33,
+      "raw_row_sha256": "f216492ee52bffd0fd3b51595c7797ed3ba9958ce4ccdd3457efc4a791ddeec8"
+    },
+    {
+      "id": "code-08",
+      "source_line": 32,
+      "output_line": 34,
+      "raw_row_sha256": "45ba98d5764e4f9f62a8c1f84948e8cdec5c9a75853d839d163c2c5a99a0d552"
+    },
+    {
+      "id": "sequence-field-width-introduced",
+      "source_line": 33,
+      "output_line": 35,
+      "raw_row_sha256": "e6b0aef56d78daacf3991d483b853598049cd0d6ec04c7e44effceb11a443f32"
+    },
+    {
+      "id": "sequence-field-width-repaired",
+      "source_line": 34,
+      "output_line": 36,
+      "raw_row_sha256": "efef5522b41dc6144abc1d3aee37eb6a6db50c60b665a92e0138bc86fd5243dd"
+    },
+    {
+      "id": "voice-09",
+      "source_line": 35,
+      "output_line": 37,
+      "raw_row_sha256": "9b08a890b2310ae5c088a8cc4c64ed662ce1747560693a753ac53198fb1ae0e3"
+    },
+    {
+      "id": "code-09",
+      "source_line": 36,
+      "output_line": 38,
+      "raw_row_sha256": "c55bb26ac3397416a9f935506ee965c523e6c71a155bf93dfac43650edaff8d0"
+    },
+    {
+      "id": "voice-10",
+      "source_line": 39,
+      "output_line": 43,
+      "raw_row_sha256": "5de3c89dda9002a9174ec6474172374008aa983c5905217fb89da614edbcb2e5"
+    },
+    {
+      "id": "code-10",
+      "source_line": 40,
+      "output_line": 44,
+      "raw_row_sha256": "54fda4f81491f10cfdcf3cadc989026dfbd42909f27f9b8921944cf61c53684b"
+    },
+    {
+      "id": "voice-11",
+      "source_line": 43,
+      "output_line": 49,
+      "raw_row_sha256": "d6e80f126ac540b10b526e78c4fbd8fa3ba5669ff3169d1ea340afcb5448f9c3"
+    },
+    {
+      "id": "code-11",
+      "source_line": 44,
+      "output_line": 50,
+      "raw_row_sha256": "78a59baaad6f10a440481791d3493287968a792a2856004d78d053904fb17022"
+    },
+    {
+      "id": "validated-port-conversion-introduced",
+      "source_line": 45,
+      "output_line": 51,
+      "raw_row_sha256": "761659f650d196d1c306cb8a2b599e0c87276de3f858b0cb97fe2f01a533a8be"
+    },
+    {
+      "id": "validated-port-conversion-repaired",
+      "source_line": 46,
+      "output_line": 52,
+      "raw_row_sha256": "4c77430e050757fc344365e3fe1c5c43ec43f745d9a0a5b1ab92757ce0cbf5f9"
+    },
+    {
+      "id": "voice-12",
+      "source_line": 47,
+      "output_line": 53,
+      "raw_row_sha256": "07accdb189297c41933173117a5a30459ee95b68d1bc8a8e5e0f32783748b00f"
+    },
+    {
+      "id": "code-12",
+      "source_line": 48,
+      "output_line": 54,
+      "raw_row_sha256": "59382aaf7ef22598dc51ce2b8fd441e90caad5d9ac6d88d4e18bb59ed139134d"
+    },
+    {
+      "id": "negative-offset-type-introduced",
+      "source_line": 49,
+      "output_line": 55,
+      "raw_row_sha256": "6326fe1840bcc29ada0869d417993f67d6e1d71e25aefbaf7b7db2941fe9bae5"
+    },
+    {
+      "id": "negative-offset-type-repaired",
+      "source_line": 50,
+      "output_line": 56,
+      "raw_row_sha256": "2703bb15360533aa4a2083767239271ea90025ac03343381a98d0d32e9617a54"
+    },
+    {
+      "id": "exact-property-name-introduced",
+      "source_line": 51,
+      "output_line": 57,
+      "raw_row_sha256": "5e3751a7954787e87c70655dcee172ba7b9decd3fbc0906132512fc8726b3e74"
+    },
+    {
+      "id": "exact-property-name-repaired",
+      "source_line": 52,
+      "output_line": 58,
+      "raw_row_sha256": "de7431299a08cb4f50b4b0ad01668cbedf75adea7e9c2267bea011e04ff37edb"
+    },
+    {
+      "id": "idempotent-event-retry-introduced",
+      "source_line": 53,
+      "output_line": 59,
+      "raw_row_sha256": "383b743ebc3ee630af968f1bd7538b7544b010e9736f63dbc843d64107e265a8"
+    },
+    {
+      "id": "idempotent-event-retry-repaired",
+      "source_line": 54,
+      "output_line": 60,
+      "raw_row_sha256": "5f1dfffa14aeb15a261963e8ed5c80f9749973f17c27f5d2c150228f9ff11f3f"
+    },
+    {
+      "id": "atomic-snapshot-publication-introduced",
+      "source_line": 59,
+      "output_line": 69,
+      "raw_row_sha256": "64b4d7001713a73befbc75300ff9ceb2ff42e527524fdfefdebc19496cc8adad"
+    },
+    {
+      "id": "atomic-snapshot-publication-repaired",
+      "source_line": 60,
+      "output_line": 70,
+      "raw_row_sha256": "d6b55f9832d035373c067fea9446b7c6fb8423be1343b3fbc0c1d55e16a784ea"
+    },
+    {
+      "id": "save-status-propagation-introduced",
+      "source_line": 61,
+      "output_line": 71,
+      "raw_row_sha256": "eadbf7e91e512d037eb12b767443dfc869395a115a11c948494270c1fe56bc8b"
+    },
+    {
+      "id": "save-status-propagation-repaired",
+      "source_line": 62,
+      "output_line": 72,
+      "raw_row_sha256": "b2aed8e43a2568dd83ba0aefcf723af568642aa1b6a73d1f591634283238824b"
+    }
+  ],
+  "quartet_rows": [
+    {
+      "id": "preserve-trie-credit-deletion-concern",
+      "family": "preserve-trie-credit",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "preserve-trie-credit-introduced",
+      "output_line": 17,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "73d136e89a7fee8c4f4cb35f723dea2f7bb242a64073c5bf3a658e3aad39af9e",
+      "before_sha256": "db62e12b06f4516adf88cf9baa0d09d3315b80c6cbc8902dc22c13726d1bd446",
+      "after_sha256": "cc244596d0157aea08347b504c5be16cd3c772bafade7b87d7cda4f8a711a566"
+    },
+    {
+      "id": "preserve-trie-credit-deletion-clean",
+      "family": "preserve-trie-credit",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "preserve-trie-credit-introduced",
+      "output_line": 18,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "5a43e77c777f72e948cc7121d5c79c8e193a55912bb305e7878eeeed4b4f7794",
+      "before_sha256": "e605135ecd37046e9d67f15874494fc0f643dbaa7bc0fc04cec31a16252c6ee6",
+      "after_sha256": "7a930b32451fd027cd2e037a2b06f01a0f23098f5c2f76d7ae99e34b53fe747c"
+    },
+    {
+      "id": "preserve-trie-credit-replacement-concern",
+      "family": "preserve-trie-credit",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "preserve-trie-credit-introduced",
+      "output_line": 19,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "3a853ca6a04bb792a2eca781482e96af1cc713ef2af1c97b7744545a9eae29c9",
+      "before_sha256": "db62e12b06f4516adf88cf9baa0d09d3315b80c6cbc8902dc22c13726d1bd446",
+      "after_sha256": "813801e4e088a18475ecc16d58779a7ffaa16a79fd88f235de572265619e66e0"
+    },
+    {
+      "id": "preserve-trie-credit-replacement-clean",
+      "family": "preserve-trie-credit",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "preserve-trie-credit-introduced",
+      "output_line": 20,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "b80516513d2fdca36a95783437b6edecaf2e12b0e52cf70a3b52ed352b5c41d9",
+      "before_sha256": "e605135ecd37046e9d67f15874494fc0f643dbaa7bc0fc04cec31a16252c6ee6",
+      "after_sha256": "b0318df6cb65ea61319a6b50fef33827f46d8ceb2d4d0e62cb9c25d91962c165"
+    },
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "family": "allocation-null-guard",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "allocation-null-guard-introduced",
+      "output_line": 39,
+      "candidate_line": 12,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "2849c314d7055e395230ca131df8c347b05bc649c8e0fa82bcc119894e0106f0",
+      "before_sha256": "806e3420a9cc5a0d60e5c95eb9bafbbb29b3da1847bb9563b560f2209b5b6a8c",
+      "after_sha256": "dd5d1f5dcc1f76a41bb72bd66e4975b497b31acf33516bd0fe09ed7208654d70"
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "family": "allocation-null-guard",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "allocation-null-guard-introduced",
+      "output_line": 40,
+      "candidate_line": 12,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "89c8453ef3c5a75fff7d8d37790f147b4580c8432c7b31985269694b8aa4f7d4",
+      "before_sha256": "f84a6b647aa235407acd746159aca21b741e5fa6eb9e762be00c769c7f02ccb3",
+      "after_sha256": "99d5b48cbda1290121ec64a64b4f523e0beaacad64c0ff424c1d83416dd16d73"
+    },
+    {
+      "id": "allocation-null-guard-replacement-concern",
+      "family": "allocation-null-guard",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "allocation-null-guard-introduced",
+      "output_line": 41,
+      "candidate_line": 12,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "f931248285d0ba4a1e240356b334723e2484824bb6598201d78ffb757dc3945d",
+      "before_sha256": "806e3420a9cc5a0d60e5c95eb9bafbbb29b3da1847bb9563b560f2209b5b6a8c",
+      "after_sha256": "1b99507645089c3434703e31e75453dcd57250b555cc93ad5cb049e4d29b67c4"
+    },
+    {
+      "id": "allocation-null-guard-replacement-clean",
+      "family": "allocation-null-guard",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "allocation-null-guard-introduced",
+      "output_line": 42,
+      "candidate_line": 12,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "4b5ee6d3a257e04719b10ba4c9f07fe9bf77ce32eff23e120aae04f90870847c",
+      "before_sha256": "f84a6b647aa235407acd746159aca21b741e5fa6eb9e762be00c769c7f02ccb3",
+      "after_sha256": "b85a69ebbc1012e035ca350ee1e2f9e80ef4a3aefc614a0fecebea9ba5c29898"
+    },
+    {
+      "id": "zero-worker-guard-deletion-concern",
+      "family": "zero-worker-guard",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "zero-worker-guard-introduced",
+      "output_line": 45,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "f68f793325719b0320ac8393860f6d310f0f51d5de4c2be41150fc48fa621f65",
+      "before_sha256": "03bb5c0a62ce12a8d0169be6395bbde6489a489fd3ba5e811b33469589b6977e",
+      "after_sha256": "667b2817396d523e3e2a1a2ed713870352e4eda3f15cd6e11f3084c7b2223234"
+    },
+    {
+      "id": "zero-worker-guard-deletion-clean",
+      "family": "zero-worker-guard",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "zero-worker-guard-introduced",
+      "output_line": 46,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "0e16bb7f0644018242dccf033841bae41ee28b5aaa1766ad8a525345199010b8",
+      "before_sha256": "b9f16054c9f4595220aa683d83758661e06307c67b8160b580286f28410c20aa",
+      "after_sha256": "3fc5c1d3a3956ba595d8f198f975fa3148c4a7f88259ef019897be491f06d571"
+    },
+    {
+      "id": "zero-worker-guard-replacement-concern",
+      "family": "zero-worker-guard",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "zero-worker-guard-introduced",
+      "output_line": 47,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "0cecee1a0d63b9d843619161de37b5b2b104adbb58193eca0bd654ca87f75b13",
+      "before_sha256": "03bb5c0a62ce12a8d0169be6395bbde6489a489fd3ba5e811b33469589b6977e",
+      "after_sha256": "0455367b67daf53869aea2a70d67ffab5f6ea56f5757072113b0ebc9b4b4c7aa"
+    },
+    {
+      "id": "zero-worker-guard-replacement-clean",
+      "family": "zero-worker-guard",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "zero-worker-guard-introduced",
+      "output_line": 48,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "85ff22feff3edfce21ef4d62fa7a8799b8603b820523254943e93ecf0b002225",
+      "before_sha256": "b9f16054c9f4595220aa683d83758661e06307c67b8160b580286f28410c20aa",
+      "after_sha256": "062a7da32d3d90a03d6ac88548e5b5ac2e7189f6abfeb8438aad612da1c9e3ee"
+    },
+    {
+      "id": "write-permission-check-deletion-concern",
+      "family": "write-permission-check",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "write-permission-check-introduced",
+      "output_line": 61,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "794cc3401fb9c78f79593c227a7685b38166e51650ec03a590fd090c2a2edac4",
+      "before_sha256": "26ba9c57c6f3df54f36a663cf139338ffccf5efe11655ae87e4558943602c6ee",
+      "after_sha256": "5a89e67cd7710c227e91d51126675b8e14adc9dad7bd34830f4c4b94c511c926"
+    },
+    {
+      "id": "write-permission-check-deletion-clean",
+      "family": "write-permission-check",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "write-permission-check-introduced",
+      "output_line": 62,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "a44c091a7b29574fd7be54d15f01d935534b31dd869db9b66a568ed06c901106",
+      "before_sha256": "dbbe364d20165787e920dc5295d63f2ba891cc18fc0a10a45f44c0ef9a050ff1",
+      "after_sha256": "2c63e8b2b8c5f5203cc1f312d309a4d90d5fcab02820ce524ef4a4d314efdba0"
+    },
+    {
+      "id": "write-permission-check-replacement-concern",
+      "family": "write-permission-check",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "write-permission-check-introduced",
+      "output_line": 63,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "d7fdc9bdf580923f524b827e416533f73cdfb287130f39a683a65a7ab38c1b76",
+      "before_sha256": "26ba9c57c6f3df54f36a663cf139338ffccf5efe11655ae87e4558943602c6ee",
+      "after_sha256": "84edaf81e421b64f74fbe41bdd4fba6178ef83c0c09c5516bbed109e67132416"
+    },
+    {
+      "id": "write-permission-check-replacement-clean",
+      "family": "write-permission-check",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "write-permission-check-introduced",
+      "output_line": 64,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "44b955db702a593ee373e7d42cf7576d85ae197f35c914b3d6d75b2821ddb31b",
+      "before_sha256": "dbbe364d20165787e920dc5295d63f2ba891cc18fc0a10a45f44c0ef9a050ff1",
+      "after_sha256": "e4416aab3938c85a6bc1b61b569c6e4bb23f57da5b26db99586536d02e4a88de"
+    },
+    {
+      "id": "stable-manifest-order-deletion-concern",
+      "family": "stable-manifest-order",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "stable-manifest-order-introduced",
+      "output_line": 65,
+      "candidate_line": 12,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "7451e9c826b00088907c491d41003d097f868f16294466adbb8626f12419183f",
+      "before_sha256": "bd6b8842ae56852b5d8b73596f10d0443354c0b13d52396eb9794c7af210f1e5",
+      "after_sha256": "0905992d48f07477e936108edc1038b0a78c48f190e77257d6c91bc589673330"
+    },
+    {
+      "id": "stable-manifest-order-deletion-clean",
+      "family": "stable-manifest-order",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "stable-manifest-order-introduced",
+      "output_line": 66,
+      "candidate_line": 12,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "9c83e85e0324520379a07c2c83a175b03b4ac2e2798d9b63d1371f9d5e1de6cf",
+      "before_sha256": "6745dad79527a99b31dc018124b00d23affa3b3f1444eadf8df90729c1fa05a6",
+      "after_sha256": "edc0a93425ab2d3b1bcb9cf336a8391e4d7b01212cb1906e510f994757b18784"
+    },
+    {
+      "id": "stable-manifest-order-replacement-concern",
+      "family": "stable-manifest-order",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "stable-manifest-order-introduced",
+      "output_line": 67,
+      "candidate_line": 12,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "e320baa870fa07250a5b174a09431b8457618b7a975d9a08216d637e0bc4230d",
+      "before_sha256": "bd6b8842ae56852b5d8b73596f10d0443354c0b13d52396eb9794c7af210f1e5",
+      "after_sha256": "3ba52f14b5bb4a83a82fda4af885bc82cc7610d24c8a8658e5ed332d32de9b18"
+    },
+    {
+      "id": "stable-manifest-order-replacement-clean",
+      "family": "stable-manifest-order",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "stable-manifest-order-introduced",
+      "output_line": 68,
+      "candidate_line": 12,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "6cf3fc377394e30c9f0a266b828dd87d9fdc12ce7d1ea48ea9ba0afdda68366a",
+      "before_sha256": "6745dad79527a99b31dc018124b00d23affa3b3f1444eadf8df90729c1fa05a6",
+      "after_sha256": "46999872be19184e37c84985f764cf9959a8bd295e00cb1db2c03ab7880f680a"
+    },
+    {
+      "id": "allocation-product-overflow-deletion-concern",
+      "family": "allocation-product-overflow",
+      "shape": "deletion",
+      "concern": true,
+      "source_id": "allocation-product-overflow-introduced",
+      "output_line": 73,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "c3e441940233c7a29f8c382b68a7a172ac5cab6d4dfed8c6c68bdc25d6e73cfe",
+      "before_sha256": "d1fff7e2b23ae448522dacb1eacaa69c6c47583e646cecddcb3ea25320bb32a4",
+      "after_sha256": "a8d36ed1689218e8380781451d0a26e90cab2673639fde06dbe93e659ec36d05"
+    },
+    {
+      "id": "allocation-product-overflow-deletion-clean",
+      "family": "allocation-product-overflow",
+      "shape": "deletion",
+      "concern": false,
+      "source_id": "allocation-product-overflow-introduced",
+      "output_line": 74,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "a697dd05ce5656e7b8894e1c4fdb9199d9468fa5f49345df3ac71d0f130383c8",
+      "before_sha256": "49b3b9d63b494accb056200ac700c0d54f6a2d434089c278605bdc2a33ff1ef5",
+      "after_sha256": "db222042e47cf7cc0ab1d2f61c91d5dc21f51a8b78b4a020a2958cab4418fd41"
+    },
+    {
+      "id": "allocation-product-overflow-replacement-concern",
+      "family": "allocation-product-overflow",
+      "shape": "replacement",
+      "concern": true,
+      "source_id": "allocation-product-overflow-introduced",
+      "output_line": 75,
+      "candidate_line": 11,
+      "expected_line_ids": [
+        1,
+        2
+      ],
+      "canonical_line_id": 1,
+      "citation_condition": "A removal or replacement mechanism must support the cited changed line.",
+      "patch_sha256": "b7934b4aea11b2348b8480c9e2329ceb8292541432d46bed311ed0585f2adc99",
+      "before_sha256": "d1fff7e2b23ae448522dacb1eacaa69c6c47583e646cecddcb3ea25320bb32a4",
+      "after_sha256": "817a994bec95cfbe39bdf390973f997ee94c24429199d851a52c9184da992da4"
+    },
+    {
+      "id": "allocation-product-overflow-replacement-clean",
+      "family": "allocation-product-overflow",
+      "shape": "replacement",
+      "concern": false,
+      "source_id": "allocation-product-overflow-introduced",
+      "output_line": 76,
+      "candidate_line": 11,
+      "expected_line_ids": [],
+      "canonical_line_id": null,
+      "citation_condition": null,
+      "patch_sha256": "ac9e09fac220379e706c4a8ede4f562f63bc5ab4d93911035f0f9c6dafa3223f",
+      "before_sha256": "49b3b9d63b494accb056200ac700c0d54f6a2d434089c278605bdc2a33ff1ef5",
+      "after_sha256": "c13059373f20b7d4412b640f8f62bd38d9f2875cb9ecc1777a52a513413f9ec9"
+    }
+  ],
+  "interpretation": "v3 wording repairs plus the six quartets form a combined corpus revision. A comparison against the ongoing v2 joint run measures that combined revision; a gain cannot be attributed solely to either edit.",
+  "evaluation_boundary": {
+    "development_only": [
+      "The already inspected8 expanded-context shape cases.",
+      "The already inspected8 matched-template shape cases.",
+      "Original training reviews and their saved generation receipts."
+    ],
+    "development_status": "These inputs informed the revision and are development diagnostics. If their patterns or exact cases enter training, label subsequent scores as training/development behavior.",
+    "fresh_transfer_requirement": "Require fresh independently audited and frozen cases before any next transfer inference or selection. They must counterbalance shape and verdict, include genuinely different contexts, and include equivalent remaining protections with different spelling and placement. Keep complete families/variants together and record overlap with training.",
+    "equivalence_coverage_examples": "Use visible alternatives such as !n versus n==NULL, reversed valid overflow bounds, permission checks on an earlier return path, sorted-key construction before the deleted sort, and equivalent attribution in a separately shown notice block. Include harmful controls with ineffective or misplaced lookalike protections, so counting duplicate if/sort/credit strings cannot solve the set. These are design criteria, not frozen fixtures.",
+    "readout": "Report native first IDs as route measurements; also complete responses, EOS/limit, JSON validity, finding-object schema, exact citations, supported mechanisms, correct empty clean reviews and complete grounded pairs. Preserve null presence for malformed JSON. Report retained14 pairs, their six exact-same-diff pairs, quartet cells and fresh transfer separately.",
+    "selection": "Freeze the next rule before seeing fresh outputs; do not select checkpoints or edit labels from the inspected shape diagnostics."
+  },
+  "semantic_checks": {
+    "method": "Compile all original C before/after snippets; execute instrumented C control flow with failing/ordinary inputs and overflow boundary; parse and execute exact JavaScript snippets; inspect explicit upstream name/license credit in every NOTICE state.",
+    "c_original_syntax_checks": 32,
+    "c_executed_states": 32,
+    "c_undefined_operations_instrumentation": "NULL dereference and zero division get a sentinel immediately before the original unsafe operation; a sentinel records arrival and returns. No preceding guard or statement changes.",
+    "c_stubs": "calloc supplies success or failure; malloc records requested byte count without allocating huge boundary buffers; assign_share and replace_record record calls.",
+    "c_syntax_source_sha256": "1874368264134e111dcc793f6b1fa248ce537298653adda1972ab40774f9b89e",
+    "c_probe_source_sha256": "f3e0bf04338bd542f7fa69785a42153ff72b24c43d89162695dd2c86f33f5503",
+    "javascript_syntax_and_execution_states": 8,
+    "notice_provenance_states": 8,
+    "states": [
+      {
+        "family": "preserve-trie-credit",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie design adapted from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": false,
+        "credits": [],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie design adapted from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": false,
+        "credits": [],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "preserve-trie-credit",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "NOTICE",
+        "explicit_equivalent_upstream_credit_present": true,
+        "credits": [
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "retained_implementation_explicit_in_description": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "allocation-null-guard",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "zero-worker-guard",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "write-permission-check",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": true,
+        "output_insertion_beta_first": "beta:2\nalpha:1",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": true,
+        "output_insertion_beta_first": "beta:2\nalpha:1",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "stable-manifest-order",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "JavaScript",
+        "syntax_passed": true,
+        "equal_mappings_produce_different_bytes": false,
+        "output_insertion_beta_first": "alpha:1\nbeta:2",
+        "output_insertion_alpha_first": "alpha:1\nbeta:2"
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "harmful_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "harmful_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": 8
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "redundant_deletion",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "redundant_deletion",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "harmful_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "harmful_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": true,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": 8
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "redundant_replacement",
+        "stage": "before",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      },
+      {
+        "family": "allocation-product-overflow",
+        "cell": "redundant_replacement",
+        "stage": "after",
+        "language": "C",
+        "unsafe_condition_reaches_operation": false,
+        "ordinary_input_passes": true,
+        "exact_safe_boundary_passes": true,
+        "wrapped_allocation_bytes": null
+      }
+    ]
+  },
+  "builder": {
+    "path": "training/build_review_v4.mjs",
+    "sha256": "1991b740cf004a2fd2f55ffcd6514ae589d37cfdb1182e697075d4d70aacbe14"
+  }
+}

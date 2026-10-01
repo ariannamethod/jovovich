@@ -1,0 +1,661 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "d1f7e6aa7b9c45f611c254621f7643fd88092e6c",
+  "parent_commit": "4a5618ddb77adb1231e177a9209b1480f7335a7f",
+  "files_uploaded": 129,
+  "verified_by_download": [
+    {
+      "file": "experiments/counterbalanced-review/source/Makefile",
+      "bytes": 4592,
+      "sha256": "0af4acc6df13a45f4d0217177424aeca16a987ab05741bd713e1945cfbf73503"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/model.json",
+      "bytes": 325,
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/chatml.test.mjs",
+      "bytes": 4449,
+      "sha256": "08802c06872ac08663cd754ef07efe932a0e1c29c9b6d264b82a8eab06192499"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/decision_score.test.mjs",
+      "bytes": 32851,
+      "sha256": "9df7221a29a00ae5bfa2574569fabd1e273ea58908893a5cf4606a5f22dce998"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/head.c",
+      "bytes": 2603,
+      "sha256": "284347177c6962cd0895b5bf2b0e4302bb43b94fe5d420d5de99ab89fae3176d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/joint.c",
+      "bytes": 16400,
+      "sha256": "79ebc6cb879ae31ff355dbf91d572541e5dac430a7a7a03ae1d86a3984ce50d9"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/mlp.c",
+      "bytes": 4795,
+      "sha256": "770bebab2e65e03ec049bb36f96249a2b4082c68db4a4c6d6ce6ed82f9756483"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/optimizer.c",
+      "bytes": 7370,
+      "sha256": "f15d111b65b08d783cad877ba8fcd57a50a7949985025680283dcecbd0b1b4c2"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/prepare_pairs.test.mjs",
+      "bytes": 2914,
+      "sha256": "bb69f38eb726de28e76dc5e84c50f0f584593e1056cd1193840a77f9abe7de34"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/review_v4.test.mjs",
+      "bytes": 3048,
+      "sha256": "92dda36b7333e5290d9a6bd5664142f1528f6b983ef00f70c50c43c119298ca1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/runner.test.mjs",
+      "bytes": 11160,
+      "sha256": "1a6664f44b5ea8e48a7a90ceecdd0ea5fe9b8565ee6ce1df9dfe551220d58dbf"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/training_score.test.mjs",
+      "bytes": 6169,
+      "sha256": "9c58b6da97a29df3ceef4d43a07a5dbac1fe28945b885763b5967a533c504ece"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/test/weighting.c",
+      "bytes": 21013,
+      "sha256": "c560007a447717ef5689b146c02d32209150ab25328da8bad3324480fad1ba77"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/build_review_v4.mjs",
+      "bytes": 21339,
+      "sha256": "1991b740cf004a2fd2f55ffcd6514ae589d37cfdb1182e697075d4d70aacbe14"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/evaluate.py",
+      "bytes": 5177,
+      "sha256": "77638a14e5fb1f065963941115834d0234794e96f127556579d0c2c9d09c0544"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/evaluate_review.mjs",
+      "bytes": 5963,
+      "sha256": "985a1b4c3e4b5f24aa58858ef59135e3eea1ce31aeae5a395c54babf5bbf6c4d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/export_adapter.c",
+      "bytes": 1092,
+      "sha256": "3ccae9d4473328e8a921f14bd5083b495d676de349a74473171f266aadaaf337"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/merge_mlp.c",
+      "bytes": 8538,
+      "sha256": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/prepare.py",
+      "bytes": 3700,
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/probe_mlp.c",
+      "bytes": 9303,
+      "sha256": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/probe_tokenization.c",
+      "bytes": 3221,
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "bytes": 10672,
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "bytes": 2197,
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/joint-diagnostics-natural.jsonl",
+      "bytes": 127888,
+      "sha256": "5c275bf1d0254f04667519da83823eac2e8ad4a33825a25365d4518b1491ca59"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/joint-next-control.json",
+      "bytes": 24293,
+      "sha256": "b8b0158c08129342215f4349accc7dce4fdfda56af45dac01a09cabbf52668c9"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/joint-train-natural.jsonl",
+      "bytes": 407430,
+      "sha256": "8405ac382d7c46f843c87d8ce2c1db8f44b4b5422e21dc054b015c35f86e7d6a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/metrics.jsonl",
+      "bytes": 870910,
+      "sha256": "43b7470ff8f226f2c2fe5235e8eaeb2bd0fd4e1b7d085d4f4c2022d6eb4be247"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/scores.json",
+      "bytes": 116397,
+      "sha256": "e30370fbe6e691aa69abe77d0c0168655d505c644355185fa17b4e3868205199"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/results/2026-10-01-joint-review/selected-model.json",
+      "bytes": 169,
+      "sha256": "06738be864b758d81c347e2dfab32c7be6cd2310c4bcecbcb7f0e047a882edb1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/review_holdout_v2.jsonl",
+      "bytes": 14028,
+      "sha256": "ac1b1284705c27e94a1c47e2b7f9a74d6724907b8e6a37771d3c87c660b554ad"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/score_decisions.py",
+      "bytes": 21428,
+      "sha256": "f79205594c62eba2f71a46ad6a9cb5d864b3b41cb09a5f325f8a12564d0f44f8"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/sft_review_v2.jsonl",
+      "bytes": 133845,
+      "sha256": "d7ff125366d00f8756d96c84c14a2df5107e00d2851f524144b564e26fa0e78e"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/sft_review_v3.jsonl",
+      "bytes": 133900,
+      "sha256": "98f42d19c7b5b5d2c59f5cbd597e606e3e4d1455182ac077378944d5448398e7"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/sft_review_v4.jsonl",
+      "bytes": 163405,
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/train_head.c",
+      "bytes": 13976,
+      "sha256": "98aa97c82bc4d2620037dea6886001d75e42e262d92a7264a6ad5b9ca47ae8b0"
+    },
+    {
+      "file": "experiments/counterbalanced-review/source/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/plan.json",
+      "bytes": 12162,
+      "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/metrics.jsonl",
+      "bytes": 1115617,
+      "sha256": "73b416f3da70a06269b55588b92050d08fb3ef19418c7090638f2482ba224075"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/scores.json",
+      "bytes": 116884,
+      "sha256": "17c37a2e497c86bc0b57c9f4e389d529f7170c235cf8dc58c73d3fa4fed8befb"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/resource.json",
+      "bytes": 463,
+      "sha256": "c3fbcf347fb5fbeba5d5cd296af819e26568328876c86497fb333cfd9b87d694"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/training-source.json",
+      "bytes": 446,
+      "sha256": "df5d19447d57289943fd3a3672d112d1f8fb0d13b5970d7b32c06e4f2c504159"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/selected-model.json",
+      "bytes": 179,
+      "sha256": "937cc7012d678f1a9e08110b2c4ce15e2ffebbd719443a090a9882ffecb81be6"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/export-audit.json",
+      "bytes": 509,
+      "sha256": "4891112cab30725cbf7d1752ad6e6dbf058cbd701410d4ac811138f2bdf36411"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/parity.jsonl",
+      "bytes": 1664,
+      "sha256": "92ad8cba3ea1f6b06bc1a0d5d864837aab06318460694735c40023ebaeae7320"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/generation-summary.json",
+      "bytes": 478086,
+      "sha256": "003256a5450fcb36c562add4202913210ecb28c69f7d588f091728f7c45b8f24"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/semantic-assessment.json",
+      "bytes": 678199,
+      "sha256": "ca3a40c78dbddcda005c814dde43b4c9b6aecd641402b55e14818e27443e8297"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/trajectory-assessment.json",
+      "bytes": 97510,
+      "sha256": "7e98ad7f06593a7d33ca7c853e52ddadc76e5b7456b67d6742083b4994f5ea78"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/initial-comparison.json",
+      "bytes": 70607,
+      "sha256": "e65f73355584d81568e19c49f6433fd6a206ed497155856fab0cda03b362e4c8"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-replay.json",
+      "bytes": 60690,
+      "sha256": "7d2bb27efedbf606c95632c613c73f70ef72627d964a03207ada5aaaceb8cfbb"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/hf-weights.json",
+      "bytes": 7423,
+      "sha256": "dfa754d928ef3b9f2056579a715b5b4b726d542b8a2c7628e0e1bc0c996ee150"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-evaluation-jobs.json",
+      "bytes": 2603,
+      "sha256": "535fa954f377ed1740ba0d21002aaccbd06296ee2e1c4f33a0289add39840b80"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-evaluation-model-check.json",
+      "bytes": 104,
+      "sha256": "9401f4cde2769dd350f74610b2e49c2b9122216a3d8d5a4b605dcdad88e2cfaf"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-train-natural.jsonl",
+      "bytes": 552230,
+      "sha256": "0101278e4ce8288dd9f32a67c16d2ef774513cfc85a6f0558cf955bff5bcad19"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-transfer-natural.jsonl",
+      "bytes": 293226,
+      "sha256": "3d1d9e9076725afbe03683a9532fdce1ebc6948f6b085e2e8fea42c2b8ed9e6f"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-diagnostics-natural.jsonl",
+      "bytes": 129220,
+      "sha256": "67af8f2267df2d29fc3aa1a03d166b874634942ef33357efd0f8ce0224c10048"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-train-natural-0.jsonl",
+      "bytes": 251531,
+      "sha256": "68cf73ec7c0812a788c0091e19a9fa6a6e2e9945f8c068908d06f74613d7d02f"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-train-natural-1.jsonl",
+      "bytes": 245282,
+      "sha256": "ea7c68f9b3b4d79e92e79c6669acaf1186aeddacf0a922dab8425083d59ac59a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-evaluation-jobs.json",
+      "bytes": 2769,
+      "sha256": "de3adbcfaaf09dec3d10632359cb6026f76665c6351560605d1661d70158dacf"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-evaluation-model-check.json",
+      "bytes": 104,
+      "sha256": "7c158012d82a440f946aff7c6ea1704de290b814c8644e9351c599ee979eed9f"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-train-natural.jsonl",
+      "bytes": 543216,
+      "sha256": "04f5378ac27ffae8c1068121fa60c29141450833a816035210a34cd97a4428de"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-transfer-natural.jsonl",
+      "bytes": 292784,
+      "sha256": "521e3e52251348f173a5a88881bfe620083be99fbda79b30169b76941f29b710"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-diagnostics-natural.jsonl",
+      "bytes": 128813,
+      "sha256": "89f785909deef257aeb2bf41831d2132098ab0d1dcacf7163b041d29b60f414d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-train-natural-0.jsonl",
+      "bytes": 247923,
+      "sha256": "a39ac0bdef74e106999e3d6e99e077f79f72717fd275893312fcd44f46d62915"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-train-natural-1.jsonl",
+      "bytes": 240389,
+      "sha256": "031ace1a57c4ab6e6330fefd3ea6a0eea3a6a2fe7f9d280da3dd99401a6950b8"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/corpus-audit.json",
+      "bytes": 45659,
+      "sha256": "fdcd4c2b4ce02a2efd0e55ab6578a86ae5b40638d58bca97b60952292fa727c6"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/fresh-transfer.jsonl",
+      "bytes": 63444,
+      "sha256": "97eb7ce7d8607e1d273ee50d9e5c8b6c5c651c8368cce2d7ff7c348dccfb749d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/fresh-transfer-audit.json",
+      "bytes": 24246,
+      "sha256": "9463bed5bca174a95fb40d204cf10c4f809a616450bef1a7bfefcdaf4b4eef6d"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/build_fresh_transfer.py",
+      "bytes": 18198,
+      "sha256": "8489c5bc17ef9787e80d714aba3a806fd978f1235dac4cdeb59ca9740eb4e284"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/audit_fresh_transfer_independent.py",
+      "bytes": 12963,
+      "sha256": "60fd4231f265d6b4a4a98de7cbc7aa3203801392482f0d39a95458f0979a016f"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/finalize_fresh_transfer.mjs",
+      "bytes": 7288,
+      "sha256": "3d45c32a6f21fb4fe6ce84ac876d9b45e644a4488716d7d33514654f34f5edc8"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/fresh-transfer-independent-audit.json",
+      "bytes": 28622,
+      "sha256": "4926000ec210003c500d48352ebf2a3b75d60f15d67d6867f12fa638a9d33c11"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/protocol-audit.json",
+      "bytes": 17029,
+      "sha256": "3a950e726458869e4b4ad81d2063222029812f8ee783f48ee24fe492b56884d5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/orchestration-audit.json",
+      "bytes": 4140,
+      "sha256": "9eb91840e8ef3832d7231b4ad5e83c847844df656cb7238c391347fd7eb2ccad"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/native-preflight.json",
+      "bytes": 60623,
+      "sha256": "bf923863467cf73d56d6cd1792d65e8344066392b8a25157b057dea879fee559"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/summarize_native_preflight.py",
+      "bytes": 5643,
+      "sha256": "03726ee2d7bc6a45d117fbfcd3bfc6b80c1da3335ae2e6d5f17a2e8c2b3a4720"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/assess_counterbalanced_trajectory.py",
+      "bytes": 19022,
+      "sha256": "db82d5ff1d41745704dc3e2109b51b94448349afac48cc60200014272f06cfa2"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/assess_counterbalanced_replay.py",
+      "bytes": 8157,
+      "sha256": "6c5474609584d78ecf78d07f90106363f2ab65d7bd09aca3f62ebddd49cad9db"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-train-semantic-audit.json",
+      "bytes": 57854,
+      "sha256": "b0945e33ab97844eaed44805ef275742038b110e3aa14d271a30bf3aa88f5eb1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/semantic-aggregation-audit.json",
+      "bytes": 5726,
+      "sha256": "e772e730e83113d7438b8a4f905522898c6c323a9b514d8af39ac23949906cca"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/probe_counterbalanced.c",
+      "bytes": 5947,
+      "sha256": "9f3ac33fc017cd205b91c9ce572558800b639b06374e698f594394bcfa972d0e"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-manual-judgments.json",
+      "bytes": 170870,
+      "sha256": "151045144a476e64c3c32da3d33e3beff224b33e5ce34398f819709606ddd050"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/prepare_counterbalanced_run.py",
+      "bytes": 9648,
+      "sha256": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/run_counterbalanced_review.py",
+      "bytes": 2970,
+      "sha256": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/run_counterbalanced_evaluation.py",
+      "bytes": 5847,
+      "sha256": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/evaluate_counterbalanced_reviews.mjs",
+      "bytes": 10322,
+      "sha256": "6fea84be2c67cc6baa45d790dbbc463bf02397b2eb8164564c9533ae184615ac"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/summarize_counterbalanced_reviews.mjs",
+      "bytes": 18577,
+      "sha256": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/assess_counterbalanced_semantics.py",
+      "bytes": 10421,
+      "sha256": "5aefb8bee19ccde56c9844eb3048bf217977141740ef2a1859e22f9e58a2f425"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/archive_counterbalanced_weights.py",
+      "bytes": 18697,
+      "sha256": "ec76cba20156afd487b0778c8e490cfe184d24ce1bfeeeeaf919bea6743a74b9"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/collect_counterbalanced_review.py",
+      "bytes": 20330,
+      "sha256": "e3d5ec863336be0cbe08382c69824d58dcdab7f21fa3080e7758ad5406ab0927"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/archive_counterbalanced_evidence.py",
+      "bytes": 13896,
+      "sha256": "2b7d1d464a61cf25baba3ec0e9c4980a85e551bcf616bf62b5ba395fe88ad1d9"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/nuisance-cue-audit.json",
+      "bytes": 58243,
+      "sha256": "bb9e1a72669a79f035090a531acc57adf37b97c69f6931b89495b2d6ce540154"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/finish_counterbalanced_generation.py",
+      "bytes": 1346,
+      "sha256": "656d1a17657b427170498c81472855434a98e22e5e03f040faed203b5dab6168"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/archival-reproduction-audit.json",
+      "bytes": 14073,
+      "sha256": "a60e38180aa4b187bd777acf10aca8d4e084fd35df99a475bad473b44e30c2a7"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/combine_counterbalanced_judgments.py",
+      "bytes": 2068,
+      "sha256": "793f471d96b76ef68ca4ae8e66216a1161e66f4d234c081a321f4a37b18250da"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/next-diagnostic-decision.json",
+      "bytes": 13593,
+      "sha256": "7ee71ac95b1d624ef5cfa7f8ae363d7c81222823c647b096d3ccf5a71d4dcfa4"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/new-concern-second-opinion.json",
+      "bytes": 17466,
+      "sha256": "034634ad443a1dd2348b6b33e2d1a0ea0807b7700569960ed97d688219f6b8f6"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/new-diagnostic-second-opinion.json",
+      "bytes": 7660,
+      "sha256": "0ba8c6f325c0573faa6f1519c59f9e211ac04dbed4e3d9ae63e4baf5a3b09de1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/root-semantic-audit.json",
+      "bytes": 6043,
+      "sha256": "e6ec3e98c9cc5f20fefd5cd81099bec38e8ae51a78c65b74ad15955985cbce26"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/next-action.json",
+      "bytes": 7297,
+      "sha256": "487280aa1d32057d34bb8f18023d8165b29beee03a1f70686a018b555b725158"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/hf-model-card-section.txt",
+      "bytes": 2765,
+      "sha256": "d448bd404fcecef24f9cbef14927ddaa323fa8056d39cc65928b9ba13282b3b0"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/infer-experiment.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/tokenization.json",
+      "bytes": 99,
+      "sha256": "ef7c2e2c3e36602bcbe05f123a6c46656b90ca85ac182328f90c2e4e244e2a34"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/native-preflight-raw.jsonl",
+      "bytes": 176090,
+      "sha256": "bb7b2329354073d1e13b6983895f429defaa41ffdf7b6ddb21d8dfc5f602e0c3"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/build.txt",
+      "bytes": 6397,
+      "sha256": "0fb864bb76ba3ac40826649132f063ef3cd75d3bb7b84ad79bcac11de20a5c85"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/tests-before.txt",
+      "bytes": 7454,
+      "sha256": "546cdee426d5ce69de5ad5475ad1fa335861ef94094504da8d94699af53d4037"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-train-manual-judgments.json",
+      "bytes": 50125,
+      "sha256": "3344b320f97dd76b884c713d06243b3ff62a9706796c384976e6c3581b979b76"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/control-eval-manual-judgments.json",
+      "bytes": 34991,
+      "sha256": "737c20370ba254741b1dec892269ab3ff9b727339af7e7324092ba0d4a7541ed"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-train-manual-judgments.json",
+      "bytes": 51567,
+      "sha256": "4b7774afce72ad044eb5fa4c6aec3e6625461a1a01659fbbcc801fb64f1a75ce"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/counterbalanced-eval-manual-judgments.json",
+      "bytes": 36183,
+      "sha256": "0fe9928cb3f0c0f10892e48b12c4b98df1b8333dd76cf360bdbb51986a26944c"
+    },
+    {
+      "file": "experiments/counterbalanced-review/evidence/manifest.json",
+      "bytes": 57433,
+      "sha256": "74c22d2e225fe579781daa289027f6d90ea9631e7987eb8d7aff1e9c23a9abe8"
+    },
+    {
+      "file": "README.md",
+      "bytes": 17109,
+      "sha256": "cfedfb7245c1dc2648f1172fc9850ce485cd6bb12dd7bd54f50c7f8d423a0f3f"
+    }
+  ],
+  "verification_workers": 4,
+  "manifest_sha256": "74c22d2e225fe579781daa289027f6d90ea9631e7987eb8d7aff1e9c23a9abe8",
+  "prior_card_sha256": "3d0b498945e0a1fa17d4dabb21ef286f338fe98a0c2a7ebc66ae6dd67065d31f",
+  "card_section_sha256": "d448bd404fcecef24f9cbef14927ddaa323fa8056d39cc65928b9ba13282b3b0",
+  "card_heading": "## Counterbalanced review corpus (2026-10-01)",
+  "source_parent_commit": "12f35554536d4554dacaa52ab2bafc25adff61c9",
+  "receipt_manifest_exclusion": "Created after upload; excluded from the frozen manifest to avoid self-reference."
+}

@@ -1,0 +1,18 @@
+{
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "model": {
+    "path": "models/counterbalanced-review-selected.gguf",
+    "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a",
+    "bytes": 714116992
+  },
+  "prefix": "models/counterbalanced-review.epoch100",
+  "metadata_equal": true,
+  "expected_extent": 714116992,
+  "unchanged": 288,
+  "adapted": 3,
+  "valid": true
+}

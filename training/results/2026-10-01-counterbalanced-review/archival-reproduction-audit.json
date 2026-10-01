@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-01T00:32:52.254603+00:00",
+  "status": "Static archival/reproduction review complete; no training, inference or uploads performed.",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/counterbalanced-review-plan.json",
+    "sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a",
+    "bytes": 12162
+  },
+  "current_frozen_bindings_verified": {
+    "frozen_training": [
+      "source",
+      "binary",
+      "dataset_binary",
+      "pair_map"
+    ],
+    "frozen_evaluation": [
+      "infer",
+      "runner",
+      "host",
+      "corpus_audit",
+      "probe",
+      "summary",
+      "controller",
+      "transfer",
+      "corpus",
+      "diagnostics",
+      "identity",
+      "shared_helper",
+      "scorer",
+      "merger",
+      "parity",
+      "export_verifier"
+    ],
+    "preflight": [
+      "chatml",
+      "native",
+      "corpus",
+      "transfer",
+      "protocol",
+      "orchestration"
+    ]
+  },
+  "archive_invariants": {
+    "frozen_sources_edited": false,
+    "historical_receipts_edited": false,
+    "archived_absolute_paths_rewritten": false,
+    "new_artifacts": [
+      "archival-reproduction-audit.json"
+    ],
+    "unfrozen_collector_changed": true
+  },
+  "reproduction_scope": "A fresh run with scratch-local helpers and regenerated receipts. Historical evidence remains immutable; new plans bind new paths and executable hashes.",
+  "helper_path_and_output_findings": [
+    {
+      "helper": "summarize_native_preflight.py",
+      "finding": "Writes native-preflight.json beside its own source using exclusive creation and binds that source location plus build/input paths. Direct execution from the populated archived evidence directory fails because the historical native-preflight.json already exists.",
+      "resolution": "Copy helper sources to a new empty reference directory, create fresh packed/tokenization/native outputs, then run summarizer there."
+    },
+    {
+      "helper": "training/build_review_v4.mjs",
+      "finding": "The checked-in v4 corpus already exists and builder reserves output/audit exclusively.",
+      "resolution": "Use --output SCRATCH_REF/sft_review_v4.jsonl --audit SCRATCH_REF/corpus-audit.json and compare regenerated corpus bytes with checked-in v4."
+    },
+    {
+      "helper": "build_fresh_transfer.py / audit_fresh_transfer_independent.py / finalize_fresh_transfer.mjs",
+      "finding": "These scripts write fresh-transfer.jsonl and audit receipts beside their source. Finalizer expects prior draft audit plus current independent audit and uses repository-root CWD for host and overlap inputs.",
+      "resolution": "Copy fixed fixture and helpers into scratch reference, regenerate there, compare fixture bytes to archive, then run independent auditor and finalizer. The builder ROOT constant is unused; no sibling checkout name is required."
+    },
+    {
+      "helper": "probe_counterbalanced.c",
+      "finding": "External source uses #include \"train_mlp.c\" and #include \"../src/infer.c\". With repository-root CWD and -Itraining, compiler include search resolves both after moving the probe.",
+      "verification": {
+        "command": [
+          "cc",
+          "-Ideps/notorch",
+          "-Itraining",
+          "-M",
+          "FRESH_TEMP/probe_counterbalanced.c"
+        ],
+        "exit_code": 0,
+        "dependencies_found": [
+          "training/train_mlp.c",
+          "training/../src/infer.c"
+        ],
+        "compiled_or_linked": false,
+        "model_forward_calls": 0
+      }
+    },
+    {
+      "helper": "prepare_counterbalanced_run.py",
+      "finding": "Validates freshly regenerated native receipt and each receipt source/artifact binding before freezing; requires corpus/transfer/protocol/orchestration audit files beside the helper.",
+      "resolution": "Use fresh corpus/transfer/native receipts. Copy original protocol/orchestration records only as explicitly historical context; their internal old paths/source versions remain historical and are not presented as fresh audits."
+    }
+  ],
+  "historical_source_versions": [
+    {
+      "file": "training/score_decisions.py",
+      "receipt": "protocol-audit.json sources",
+      "recorded": {
+        "sha256": "f07a33ee5bc01decf861b8f0205cef9bfaa90fab2a409ba6f15f2df1c2eca770",
+        "bytes": 19863,
+        "revision": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+      },
+      "current": {
+        "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/score_decisions.py",
+        "sha256": "f79205594c62eba2f71a46ad6a9cb5d864b3b41cb09a5f325f8a12564d0f44f8",
+        "bytes": 21428
+      },
+      "classification": "The sources block explicitly describes the merged parent revision, whose historical scorer hash was verified with git show. The planned count-generalization was implemented before freeze; current scorer exactly matches plan frozen_evaluation.scorer. This is an intended scoring change, not a training arithmetic change."
+    },
+    {
+      "file": "prepare_counterbalanced_run.py",
+      "earlier_receipt": "orchestration-audit.json",
+      "earlier": {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+        "sha256": "dcd8f692add6147a19a6f04d48dd1da9b9bcf2ba64f1e2fae61744a2c356567a",
+        "bytes": 9591
+      },
+      "final_review_receipt": "protocol-audit.json procedure_helpers_review",
+      "final_review": {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+        "sha256": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81",
+        "bytes": 9648
+      },
+      "current": {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+        "sha256": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81",
+        "bytes": 9648
+      },
+      "classification": "Earlier orchestration review predates final planner validation/provenance and full-answer-rubric additions. The later protocol review binds the exact current preparer and explicitly describes those additions. Current preparer was executed to create the frozen plan.",
+      "proof_limit": "The exact earlier preparer source bytes were not retained or reconstructed here; classification uses the later exact-hash review, inspected final code and root change record, not a fabricated historical diff."
+    },
+    {
+      "file": "summarize_counterbalanced_reviews.mjs",
+      "earlier_receipt": "protocol-audit.json procedure_helpers_review",
+      "earlier": {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+        "sha256": "e0c91537bd6c77dfbcc5e6f8dbefbdf0f3f3fadcbbba952bcaa55ec29447757b",
+        "bytes": 17626
+      },
+      "frozen_current": {
+        "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+        "sha256": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b",
+        "bytes": 18577
+      },
+      "classification": "The exact earlier bytes were reconstructed in memory by removing only four conditional sampled-decision reporting additions. Final frozen plan binds current summary; training, native generation, prompt construction, selection and decoding code are unaffected.",
+      "reconstruction": {
+        "sha256": "e0c91537bd6c77dfbcc5e6f8dbefbdf0f3f3fadcbbba952bcaa55ec29447757b",
+        "bytes": 17626,
+        "matches_historical_receipt": true,
+        "added_blocks": [
+          "        harmful_sampled_decision_id: harmful.sampled_decision_id, clean_sampled_decision_id: clean.sampled_decision_id,\n        decision_changes_with_context: harmful.sampled_decision_id === null || clean.sampled_decision_id === null ? null :\n          harmful.sampled_decision_id !== clean.sampled_decision_id,\n",
+          "        deletion_sampled_decision_id: deletion.sampled_decision_id, replacement_sampled_decision_id: replacement.sampled_decision_id,\n        same_sampled_decision_id: deletion.sampled_decision_id === null || replacement.sampled_decision_id === null ? null :\n          deletion.sampled_decision_id === replacement.sampled_decision_id,\n",
+          "        const generatedIds = r.trace.generated_token_ids;\n        const prefixExact = generatedIds.length > PREFIX_IDS.length && PREFIX_IDS.every((id, i) => generatedIds[i] === id);\n",
+          "          generated_prefix_exact: prefixExact, sampled_decision_id: prefixExact ? generatedIds[PREFIX_IDS.length] : null,\n"
+        ],
+        "wrote_reconstructed_source": false
+      }
+    }
+  ],
+  "exact_runtime_review_matches": [
+    "run_counterbalanced_review.py",
+    "run_counterbalanced_evaluation.py",
+    "evaluate_counterbalanced_reviews.mjs"
+  ],
+  "remaining_limits": [
+    "Private comparator weights must be restored with their recorded SHA256; repository source alone does not contain them.",
+    "The controller reserves fixed models/counterbalanced-review outputs and /tmp/jovovich-counterbalanced-review-selected-12f3555.gguf. Use unused locations; do not run the watcher and explicit selected-arm controller for the same outputs.",
+    "Recorded explicit preflight flags and diagnostic tile explanation describe an AVX2/SIMD build. -march=native and compiler differences can change binary hashes and floating-point results.",
+    "The initial-only trajectory helper pins the original training binary SHA and restricts permitted margin differences to its verified SIMD tile-switch case. Full trajectory requires that initial receipt. A different build needs an explicitly reviewed comparison protocol, not silent relaxation.",
+    "Replay helper asserts exact historical prompt/output/token replay, so a changed inference build may fail a valid diagnostic check rather than reproduce bit-for-bit.",
+    "Manual semantic judgments must be newly read and hash-bound for new outputs; old judgments are not an automatic scorer.",
+    "Archive collection and private upload helpers reserve the existing results directory and remote prefix. A new rerun needs a new reviewed archive destination and fresh exact-parent guard; rerun instructions do not overwrite the historical archive."
+  ],
+  "inspected_sources": [
+    {
+      "path": "training/build_review_v4.mjs",
+      "sha256": "1991b740cf004a2fd2f55ffcd6514ae589d37cfdb1182e697075d4d70aacbe14",
+      "bytes": 21339
+    },
+    {
+      "path": "training/probe_tokenization.c",
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6",
+      "bytes": 3221
+    },
+    {
+      "path": "Makefile",
+      "sha256": "0af4acc6df13a45f4d0217177424aeca16a987ab05741bd713e1945cfbf73503",
+      "bytes": 4592
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/prepare_counterbalanced_run.py",
+      "sha256": "57badd3c382da2a60aff7913f3b1e2c2754534d3996b724f04cdda8bb6563e81",
+      "bytes": 9648
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_native_preflight.py",
+      "sha256": "03726ee2d7bc6a45d117fbfcd3bfc6b80c1da3335ae2e6d5f17a2e8c2b3a4720",
+      "bytes": 5643
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/probe_counterbalanced.c",
+      "sha256": "9f3ac33fc017cd205b91c9ce572558800b639b06374e698f594394bcfa972d0e",
+      "bytes": 5947
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/build_fresh_transfer.py",
+      "sha256": "8489c5bc17ef9787e80d714aba3a806fd978f1235dac4cdeb59ca9740eb4e284",
+      "bytes": 18198
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/audit_fresh_transfer_independent.py",
+      "sha256": "60fd4231f265d6b4a4a98de7cbc7aa3203801392482f0d39a95458f0979a016f",
+      "bytes": 12963
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finalize_fresh_transfer.mjs",
+      "sha256": "3d45c32a6f21fb4fe6ce84ac876d9b45e644a4488716d7d33514654f34f5edc8",
+      "bytes": 7288
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_review.py",
+      "sha256": "3407abeb2f06bdb1ddffcea3944e91ec24d317b23dbbd46a16d1224fc3875dc7",
+      "bytes": 2970
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/run_counterbalanced_evaluation.py",
+      "sha256": "e8bc979e954dcb1b58232ac6c4ba42972e208fa47d847e33dd7cd74b195a766a",
+      "bytes": 5847
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/summarize_counterbalanced_reviews.mjs",
+      "sha256": "b6b7d1f61d1eecd177c0c8b66832763e5e8fa3f8a4256b89ae4e334e81f3f54b",
+      "bytes": 18577
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_trajectory.py",
+      "sha256": "db82d5ff1d41745704dc3e2109b51b94448349afac48cc60200014272f06cfa2",
+      "bytes": 19022
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_replay.py",
+      "sha256": "6c5474609584d78ecf78d07f90106363f2ab65d7bd09aca3f62ebddd49cad9db",
+      "bytes": 8157
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/assess_counterbalanced_semantics.py",
+      "sha256": "5aefb8bee19ccde56c9844eb3048bf217977141740ef2a1859e22f9e58a2f425",
+      "bytes": 10421
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/finish_counterbalanced_generation.py",
+      "sha256": "656d1a17657b427170498c81472855434a98e22e5e03f040faed203b5dab6168",
+      "bytes": 1346
+    }
+  ],
+  "checks_performed": [
+    "Python AST parse for modified collector",
+    "Exact-hash historical summarizer reconstruction in memory",
+    "git-show verification of parent-revision scorer hash",
+    "Current frozen training/evaluation/preflight source hashes",
+    "Moved probe preprocessor include-dependency resolution only"
+  ],
+  "expensive_jobs_started": 0
+}

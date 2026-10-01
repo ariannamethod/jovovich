@@ -47,14 +47,20 @@ def indexed(rows, expected, name):
 
 
 def corpus_map(data):
-    require(len(data) == 64, 'decision control requires the unchanged 64-row corpus')
+    require(isinstance(data, list) and data, 'decision control requires a nonempty corpus')
+    for row in data:
+        require(isinstance(row, dict), 'corpus rows must be objects')
+        require(row.get('kind') in ('review', 'voice', 'code'), 'unknown corpus task kind')
+        messages = row.get('messages')
+        require(isinstance(messages, list) and len(messages) == 3 and
+                all(isinstance(m, dict) for m in messages) and
+                [m.get('role') for m in messages] == ['system', 'user', 'assistant'] and
+                all(isinstance(m.get('content'), str) for m in messages),
+                'corpus messages must be system/user/assistant string triples')
     ids = [r.get('id') for r in data]
     require(all(isinstance(i, str) and i for i in ids) and len(set(ids)) == len(ids),
             'corpus IDs must be nonempty and unique')
-    require({k: sum(r.get('kind') == k for r in data) for k in ('review', 'voice', 'code')} ==
-            {'review': 40, 'voice': 12, 'code': 12}, 'unexpected corpus task counts')
     pairs = review_pairs(data)
-    require(len(pairs) == 20, 'decision control requires 20 complete corpus pairs')
     mapping = {}
     for number, (concern, clean) in enumerate(pairs):
         for index, kind in ((concern, 'concern'), (clean, 'clean')):
@@ -85,13 +91,13 @@ def validate_decision(score, reference=None, tokens=None):
             require(score[field] == reference[field], f'{field} changed from initial metadata')
 
 
-def references(initial, mapping, pairs):
+def references(initial, mapping, pairs, example_count):
     require(initial.get('objective') in ('decisions', 'joint'), 'initial objective must be decisions or joint')
-    require(initial.get('examples') == 64 and type(initial.get('examples')) is int,
+    require(initial.get('examples') == example_count and type(initial.get('examples')) is int,
             'initial example count disagrees')
-    require(integer(initial.get('decision_pairs'), 'initial decision pairs') == 20,
+    require(integer(initial.get('decision_pairs'), 'initial decision pairs') == len(pairs),
             'initial decision pair count disagrees')
-    scores = indexed(initial.get('teacher_forced_rows'), range(64), 'initial full scores')
+    scores = indexed(initial.get('teacher_forced_rows'), range(example_count), 'initial full scores')
     result = {}
     for index, score in scores.items():
         n = integer(score.get('tokens'), 'initial completion tokens', 1)
@@ -111,7 +117,8 @@ def references(initial, mapping, pairs):
     return result
 
 
-def joint_config(initial, refs, mapping):
+def joint_config(initial, refs, mapping, microbatch_tokens):
+    integer(microbatch_tokens, 'expected joint microbatch tokens', 1)
     positions = sum(refs[index]['tokens'] for index in mapping)
     counts = dict(decision_positions=len(mapping), residual_positions=positions-len(mapping),
                   joint_positions=positions)
@@ -122,9 +129,9 @@ def joint_config(initial, refs, mapping):
     require(finite(initial.get('residual_lambda'), 'residual lambda') == 1,
             'joint residual lambda must be one')
     require(finite(initial.get('clip_limit'), 'clip limit') == 1, 'joint clip limit must be one')
-    require(integer(initial.get('microbatch_tokens'), 'microbatch tokens', 1) == len(mapping),
-            'joint microbatch must contain 40 tokens')
-    return dict(**counts, residual_lambda=1, clip_limit=1, microbatch_tokens=len(mapping))
+    require(integer(initial.get('microbatch_tokens'), 'microbatch tokens', 1) == microbatch_tokens,
+            'joint microbatch disagrees with declared run configuration')
+    return dict(**counts, residual_lambda=1, clip_limit=1, microbatch_tokens=microbatch_tokens)
 
 
 def joint_summary(metric, config, previous):
@@ -197,11 +204,11 @@ def decision_summary(metric, mapping, pairs, refs):
             'decision readout is not the declared initial/post-update measurement')
     require(type(metric.get('snapshot_saved')) is bool and
             metric['snapshot_saved'] == (update in SNAPSHOTS), 'snapshot_saved disagrees with fixed schedule')
-    require(integer(metric.get('decision_positions'), 'decision positions') == 40 and
-            integer(metric.get('decision_pairs'), 'decision pairs') == 20, 'decision coverage counts disagree')
+    require(integer(metric.get('decision_positions'), 'decision positions') == len(mapping) and
+            integer(metric.get('decision_pairs'), 'decision pairs') == len(pairs), 'decision coverage counts disagree')
     ce = finite(metric.get('mean_decision_ce'), 'decision CE', nonnegative=True)
     scores = indexed(metric.get('decision_rows'), mapping, 'decision scores')
-    groups = {k: dict(examples=20, correct=0, positive_margin=0, mean_margin=0.0,
+    groups = {k: dict(examples=len(pairs), correct=0, positive_margin=0, mean_margin=0.0,
                      min_margin=math.inf) for k in ('concern', 'clean')}
     for index, score in scores.items():
         require(integer(score.get('pair_index'), 'pair index') == mapping[index]['pair_index'],
@@ -210,7 +217,7 @@ def decision_summary(metric, mapping, pairs, refs):
         group = groups[mapping[index]['kind']]
         group['correct'] += score['decision_correct']
         group['positive_margin'] += score['decision_margin'] > 0
-        group['mean_margin'] += score['decision_margin'] / 20
+        group['mean_margin'] += score['decision_margin'] / len(pairs)
         group['min_margin'] = min(group['min_margin'], score['decision_margin'])
     correct = sum(s['decision_correct'] for s in scores.values())
     exact = sum(scores[a]['decision_correct'] and scores[b]['decision_correct'] for a, b in pairs)
@@ -222,12 +229,19 @@ def decision_summary(metric, mapping, pairs, refs):
     return dict(update=update, mean_decision_ce=ce, snapshot_saved=metric['snapshot_saved'],
                 eligible=update in ELIGIBLE and metric['snapshot_saved'], correct_targets=correct,
                 complete_decision_pairs=exact, groups=groups,
-                mean_pair_context_separation=sum(separation) / 20,
+                mean_pair_context_separation=sum(separation) / len(pairs),
                 min_pair_context_separation=min(separation)), scores
 
 
 def full_summary(data, metric, update, decision_rows, refs, mapping, joint=False):
-    scores = indexed(metric.get('teacher_forced_rows'), range(64), 'full scores')
+    # Native snapshots omit these totals; validate them whenever a record declares them.
+    if 'examples' in metric:
+        require(integer(metric['examples'], 'full examples', 1) == len(data),
+                'full example count disagrees with corpus')
+    if 'tokens' in metric:
+        require(integer(metric['tokens'], 'full total tokens', 1) ==
+                sum(ref['tokens'] for ref in refs.values()), 'full token total disagrees')
+    scores = indexed(metric.get('teacher_forced_rows'), range(len(data)), 'full scores')
     for index, score in scores.items():
         n = integer(score.get('tokens'), 'completion tokens', 1)
         correct = integer(score.get('correct'), 'correct tokens')
@@ -259,7 +273,8 @@ def full_summary(data, metric, update, decision_rows, refs, mapping, joint=False
     for field in ('teacher_forced_correct_tokens', 'teacher_forced_exact_examples'):
         integer(metric.get(field), field)
     result = summarize(data, metric)
-    require(result.get('review_decision_pairs') == 20, 'full readout must cover all 20 decision pairs')
+    require(result.get('review_decision_pairs') == len(mapping) // 2,
+            'full readout must cover all corpus decision pairs')
     prefix = prefix_summary(metric, scores, mapping, refs, joint)
     if prefix is not None:
         result.update(prefix)
@@ -271,14 +286,14 @@ def selection_key(summary):
     return summary['complete_decision_pairs'], summary['correct_targets'], -summary['update']
 
 
-def score_run(data, metrics):
+def score_run(data, metrics, *, joint_microbatch_tokens=40):
     pairs, mapping = corpus_map(data)
     require(isinstance(metrics, list) and metrics and metrics[0].get('stage') == 'sft_initial',
             'first metric must be full sft_initial')
     initial = metrics[0]
-    refs = references(initial, mapping, pairs)
+    refs = references(initial, mapping, pairs, len(data))
     objective = initial['objective']
-    config = joint_config(initial, refs, mapping) if objective == 'joint' else None
+    config = joint_config(initial, refs, mapping, joint_microbatch_tokens) if objective == 'joint' else None
     decisions, full, trajectory = {}, {0: initial}, []
     sequence = [('sft_initial', 0)]
     for update in range(101):
@@ -290,6 +305,9 @@ def score_run(data, metrics):
         require(metric.get('stage') == stage, 'unexpected metric stage/order')
         if 'objective' in metric:
             require(metric['objective'] == objective, 'objective changed within decision run')
+        if config is not None and 'microbatch_tokens' in metric:
+            require(integer(metric['microbatch_tokens'], 'microbatch tokens', 1) == config['microbatch_tokens'],
+                    'joint microbatch changed from declared run configuration')
         if stage == 'decision_train':
             require(metric.get('update') == update, 'decision updates must be exactly 0..100 in order')
             summary, rows = decision_summary(metric, mapping, pairs, refs)
@@ -325,13 +343,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('metrics', type=Path)
     parser.add_argument('--sft', type=Path, default=Path(__file__).with_name('sft_review_v2.jsonl'))
+    parser.add_argument('--joint-microbatch-tokens', type=int, default=40,
+                        help='expected joint training microbatch size (default: 40)')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     def read(path):
         text = path.read_text()
         require(text.endswith('\n'), f'incomplete final JSONL record: {path}')
         return [json.loads(line) for line in text.splitlines() if line.strip()]
-    result = score_run(read(args.sft), read(args.metrics))
+    result = score_run(read(args.sft), read(args.metrics), joint_microbatch_tokens=args.joint_microbatch_tokens)
     result.update(metrics=str(args.metrics), metrics_sha256=hashlib.sha256(args.metrics.read_bytes()).hexdigest(),
                   sft=str(args.sft), sft_sha256=hashlib.sha256(args.sft.read_bytes()).hexdigest())
     args.output.parent.mkdir(parents=True, exist_ok=True)

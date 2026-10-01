@@ -1,0 +1,175 @@
+{
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "commit": "4a5618ddb77adb1231e177a9209b1480f7335a7f",
+  "parent_commit": "e8238393fa89ec03910ba613dbc7d2c12f19ffae",
+  "files_uploaded": 16,
+  "verified_weights": [
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "33eb0bb4d3e6730dff837ce32eb62b3f19da218ab073a4687f87163fd05319a7"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "6985cdd3acb2963b7f4f00ce81f224688c80f84ca17baf87981568a4c733bab1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "9824951c735fec7e71edbb15f9045649f062327c92ddb29cdf0eac95ff0971ee"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.gate.lora",
+      "bytes": 368695,
+      "sha256": "6f2bd2f95fe64192968b134931e15e245818b2ecb23738ff300f9c8ad265383b"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.up.lora",
+      "bytes": 368693,
+      "sha256": "a38e4d45ec0d055ca96a382ae8c8c7bdfb27e666da77aa22c341a3c7afa54db5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.down.lora",
+      "bytes": 368695,
+      "sha256": "6112f3fc295d6d3fccf857aef8dfc44fb16575682efa594e694689be164dbc54"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.gate.lora",
+      "bytes": 368695,
+      "sha256": "9508e8fa6cc8d9d97db5c08e52d2d62e95bd88a46ac43dfd9b8da1e155cc15b4"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.up.lora",
+      "bytes": 368693,
+      "sha256": "4f317388e2668fa9094b4dd8715ea887d0be85f3e54ea272e89b9392f5e38ca0"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.down.lora",
+      "bytes": 368695,
+      "sha256": "99e5b2d21f70be0a28ad816368762249b96135af96e138ce13dd3165e02f5c98"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "04fddf482a6a257f48b1aa3b75112253eb3c67baf6a005662c7a13d8dae3abb5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "81003c93eb482f02b2325e9bdb9a6971d78080160aacfe5defbb2a1f6a6e10c2"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "adeb7c5f1cbffe5e5f409cea0fb76546e1d2f5f72ebc8fb33d084d9b65d9226a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a"
+    }
+  ],
+  "verified_by_download": [
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "33eb0bb4d3e6730dff837ce32eb62b3f19da218ab073a4687f87163fd05319a7"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "6985cdd3acb2963b7f4f00ce81f224688c80f84ca17baf87981568a4c733bab1"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "9824951c735fec7e71edbb15f9045649f062327c92ddb29cdf0eac95ff0971ee"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.gate.lora",
+      "bytes": 368695,
+      "sha256": "6f2bd2f95fe64192968b134931e15e245818b2ecb23738ff300f9c8ad265383b"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.up.lora",
+      "bytes": 368693,
+      "sha256": "a38e4d45ec0d055ca96a382ae8c8c7bdfb27e666da77aa22c341a3c7afa54db5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch50.down.lora",
+      "bytes": 368695,
+      "sha256": "6112f3fc295d6d3fccf857aef8dfc44fb16575682efa594e694689be164dbc54"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.gate.lora",
+      "bytes": 368695,
+      "sha256": "9508e8fa6cc8d9d97db5c08e52d2d62e95bd88a46ac43dfd9b8da1e155cc15b4"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.up.lora",
+      "bytes": 368693,
+      "sha256": "4f317388e2668fa9094b4dd8715ea887d0be85f3e54ea272e89b9392f5e38ca0"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch75.down.lora",
+      "bytes": 368695,
+      "sha256": "99e5b2d21f70be0a28ad816368762249b96135af96e138ce13dd3165e02f5c98"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "04fddf482a6a257f48b1aa3b75112253eb3c67baf6a005662c7a13d8dae3abb5"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "81003c93eb482f02b2325e9bdb9a6971d78080160aacfe5defbb2a1f6a6e10c2"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "adeb7c5f1cbffe5e5f409cea0fb76546e1d2f5f72ebc8fb33d084d9b65d9226a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a"
+    },
+    {
+      "file": "experiments/counterbalanced-review/sft_review_v4.jsonl",
+      "bytes": 163405,
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.bin",
+      "bytes": 149123,
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b"
+    },
+    {
+      "file": "experiments/counterbalanced-review/counterbalanced-review.pairs",
+      "bytes": 224,
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472"
+    }
+  ],
+  "verification_workers": 4,
+  "selected_update": 100,
+  "selected_model": {
+    "bytes": 714116992,
+    "sha256": "aa201ef112dc925f3dc34fc1af9f9a51e61610efd5fe99da44f9cb344a19324a"
+  },
+  "base_model": {
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "plan_sha256": "74480ac3834fdc3cab2849494507a9afa634a1d33d812ac79a268751c3848f9a",
+  "training_source_sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+  "training_binary_sha256": "aedc1b9ed14f4a98c243c57b63f0aa65e0ee24ec4ea35dc30a3057fb387dc46f",
+  "dataset_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+  "dataset_binary_sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+  "pair_map_sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+  "metrics_sha256": "73b416f3da70a06269b55588b92050d08fb3ef19418c7090638f2482ba224075",
+  "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "source_parent_commit": "12f35554536d4554dacaa52ab2bafc25adff61c9"
+}

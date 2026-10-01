@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-01T00:40:02.847251+00:00",
+  "status": "DESIGN ONLY / NOT RUN. No feature extraction, inference, optimization, model-output inspection, or frozen-file modification for this decision tree.",
+  "purpose": "Choose the smallest next diagnostic after the already-frozen v4 run receives an independent full-response semantic reading.",
+  "known_limits": [
+    "Only the final MLP gate/up/down carry rank-16 adapters. Their input residual state is frozen for a fixed causal prompt and prefix.",
+    "Residual CE supervises answer format, reasons and citations jointly; improvement in its loss or JSON validity is not evidence of semantic discrimination by itself.",
+    "The frozen checkpoint selector measures teacher-forced decision-token pairs/hits. It is not a full-answer semantic evaluator. Do not replace it post hoc using transfer results.",
+    "The combined v3-wording plus quartet revision changes multiple corpus properties and total target exposure. This comparison cannot isolate wording, quartet addition, token exposure, or a particular learned cue.",
+    "Equal 100 visits per target is not equal optimization difficulty or equal per-row gradient weight: the separately normalized decision mean changes denominator 40 to 52, and the residual mean changes 792 to 1012. With the same learning rate and lambda, each individual target contributes less weight to its component mean. Count new targets and total exposure separately; fixed 100 steps does not establish sufficient training.",
+    "An unfitted protection-count rule classifies all 24 new training-quartet rows and all 12 corresponding pairs. On the 24 fresh transfer rows each opposite-label pair shares the same three counts: the rule gets 12/24 labels and 0/12 complete pairs. This is an available shortcut, not evidence that the model used it."
+  ],
+  "first_readout_no_new_experiment": {
+    "primary": "Compare strict, grounded full-review pairs between old selected control and the frozen-rule selected new model; report concern and clean sides separately.",
+    "separate_supporting_metrics": [
+      "Genuine concern mechanism identified, including cases whose extra unsupported claims prevent strict full credit",
+      "JSON validity and empty/nonempty decision",
+      "Teacher-forced decision pairs and actual generated decision IDs at the validated common prefix",
+      "Residual loss, decision loss, clipping and optimization trend across already-scheduled snapshots"
+    ],
+    "strata": [
+      "Retained 14 training pairs",
+      "The six same-full-diff/context-rule pairs nested inside those 14, not an additive cohort",
+      "New 12 training quartet pairs, also reported as six families by two diff shapes",
+      "Fresh 12 transfer pairs by six families",
+      "Existing six diagnostic pairs, explicitly historically inspected"
+    ],
+    "interpretation_guard": "More correct concern labels alone may be a global response-prior shift. A complete opposite-label pair plus a causally grounded reason is stronger evidence."
+  },
+  "decision_tree": [
+    {
+      "when": "A. Strict training pairs improve; fresh strict transfer remains 0/12 pairs.",
+      "allowed": "The revised corpus was learned better on observed training contexts, but transfer of full review behavior is unestablished. If gains concentrate in the 12 new quartet pairs, the known count shortcut is a concrete alternative explanation.",
+      "not_allowed": [
+        "Do not infer that the final residual states lack semantic information.",
+        "Do not infer the model actually counted guards from this outcome alone.",
+        "Zero complete pairs does not imply zero useful mechanism recognition; inspect genuine concerns and per-side outcomes."
+      ],
+      "smallest_data_control": "Keep the same 52 review rows, pair identities, output targets, objective, initialization and step budget. In the harmful member of each of the six training quartets, replace neutral unchanged context with a semantically ineffective guard/sort/credit lookalike matching the clean member's relevant count. Preserve diff shape and line budget where feasible; audit all before/after counts and actual target exposures before freezing. This changes context effectiveness while removing the demonstrated count-label shortcut. No such corpus or run is created here.",
+      "readout_control": "In parallel with interpretation, the existing native frozen-state binary-probe design is a cheaper way to test whether a direct readout can exploit semantic differences. Grouped evaluation and the expanded nuisance baseline are essential; training interpolation alone is not enough.",
+      "subsequent_evaluation": "The current fresh set remains a descriptive development diagnostic once its outcomes inform design. Freeze additional independently built counterexamples for a new confirmatory claim; do not select models on the reused set."
+    },
+    {
+      "when": "B. Strict training and fresh transfer pairs both improve.",
+      "allowed": "Every genuinely complete fresh pair demonstrates a distinction unavailable to a deterministic function of the audited if/sort/upstream-reference counts, because its two count vectors are equal. The current model body and adaptation route can support that observed distinction.",
+      "not_allowed": [
+        "A gain on these 12 pairs does not establish broad code-review competence or eliminate every other lexical shortcut.",
+        "No attribution to last-MLP representations alone: prompt construction, adapters and generation are a combined route."
+      ],
+      "next": "Retain this body and inspect which families and mechanisms transferred. Prefer new independently audited context/effect counterexamples and cause-grounded reviews before changing architecture. Expand only unresolved families and freeze evaluation before training changes."
+    },
+    {
+      "when": "C. Strict training pairs do not improve.",
+      "branches": [
+        {
+          "observation": "Teacher-forced decision pairs rise, but genuine/full reviews do not.",
+          "meaning": "Token readout is improving without reliable complete reviews. Inspect the actual decision path, citations, unsupported extra claims and EOS/completion. Increasing representation capacity is not yet the identified remedy."
+        },
+        {
+          "observation": "Genuine concerns rise but strict full credit is flat.",
+          "meaning": "Useful mechanism recognition is being offset by incorrect additional material or malformed/truncated output. Keep semantic detection and full-answer reliability separate."
+        },
+        {
+          "observation": "JSON/prefix/residual loss improves, but semantic decisions remain weak.",
+          "meaning": "Format supervision can explain the gain. Run the planned causal frozen-state readout diagnostic before claiming the body is inadequate."
+        },
+        {
+          "observation": "Semantic losses are still decreasing and optimization remains active at the fixed cap.",
+          "meaning": "Undertraining remains plausible, not proven. A predeclared longer-budget control with the same corpus and optimizer trajectory can test it; avoid jointly changing corpus, LR, adapter location and duration."
+        },
+        {
+          "observation": "The affine probe also fails training fit.",
+          "meaning": "Check optimizer convergence and the unregularized interpolation control first. Failure of one converged affine head is a limitation of that head/state/readout setup, not proof that the frozen state contains no semantic information. A small nonlinear head at the same state is a narrower next capacity change than changing the whole model."
+        }
+      ]
+    }
+  ],
+  "representation_probe_required_revision_before_any_run": {
+    "existing_design_reviewed": true,
+    "retain": [
+      "Native numerical execution only",
+      "Causal z capture after final attention, before final MLP; stop before the class token at the common-prefix decision position",
+      "Decision position 3 with shared IDs [4913,3903,819], plus separately reported answer-position-0 features",
+      "Fold-only normalization, frozen model, affine two-logit head, optimizer/convergence receipts",
+      "Unregularized true-label and fixed shuffled-label interpolation controls",
+      "Grouped family holdouts and 99 paired-label permutation controls, frozen before scores"
+    ],
+    "update": [
+      "The archived proposal still specifies v2: 40 reviews/20 pairs. Make an explicit new design for v4: 52 reviews/26 pairs; retain all variants of each family, including both quartet shapes and both labels, in the same fold. Do not silently reuse the stale cohort assertions.",
+      "Extend the nuisance-only feature set beyond prompt/edit lengths to include the demonstrated before/post-diff if, sort-call and upstream-reference counts. Preserve the exact feature definitions from nuisance-cue-audit.json.",
+      "Report retained same-diff pairs and fresh equal-count pairs separately. A representation-head advantage over counts is evidence about this cohort, not an exhaustive guarantee against all shortcuts.",
+      "Treat previously inspected diagnostics and the current transfer set as development after their outcomes are used. Reserve independently frozen fresh cases for confirmation."
+    ],
+    "interpretation": [
+      "If a fixed causal-state head transfers on counterbalanced pairs above its nuisance and permutation controls while the vocabulary route remains weak, semantic information is accessible in that state; investigate adapted readout/objective/generation next.",
+      "If true and shuffled labels both interpolate but grouped true-label transfer does not exceed controls, interpolation is uninformative; improve counterbalanced coverage before declaring representational nonseparability.",
+      "If training fit stays weak with active gradients, the probe has not excluded optimization failure. If only the regularized fit fails, inspect the lambda=0 control before a capacity claim."
+    ]
+  },
+  "longer_budget_control_constraint": {
+    "observed_source": "train_mlp.c currently caps the updates argument at 100. Its snapshots call nt_lora_save; that format serializes adapter A/B and metadata, not Adam first/second moments or step counters.",
+    "consequence": "Loading a saved adapter or merged GGUF and restarting Adam is a different optimization intervention, not a continuous 100-to-200 trajectory.",
+    "valid_future_options": [
+      "Add a separately reviewed complete optimizer-state resume and a trajectory-equivalence check.",
+      "Use a fresh deterministic longer-budget run under a separately reviewed cap change, preserving and comparing its first 100 updates with the current run before attributing later differences to duration."
+    ],
+    "status": "No implementation or run proposed as part of the current frozen experiment.",
+    "interpretation_limit": "A duration-only comparison measures whether additional optimization helps this corpus/objective. Because v2 and v4 component-mean denominators differ, equal visits alone never established equal optimization pressure between them."
+  },
+  "minimal_discrimination_summary": "First use the already-produced full responses and optimization receipts. For the shortcut question, make one same-size count-balanced context intervention. For representation versus readout, use the already-designed causal frozen-state probe with grouped/permutation and explicit count controls. For undertraining, vary duration alone with a genuine continuous optimizer trajectory. None alone proves absence of semantic information; these isolate different hypotheses.",
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-joint-review/representation-next-probe.json",
+      "bytes": 8533,
+      "sha256": "ff21ad89c1fef62b1b8edc340b806edaf9ee14b9ff517543d9ce245a24f9f9ea"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/nuisance-cue-audit.json",
+      "bytes": 58243,
+      "sha256": "bb9e1a72669a79f035090a531acc57adf37b97c69f6931b89495b2d6ce540154"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/counterbalanced-reference/semantic-aggregation-audit.json",
+      "bytes": 5726,
+      "sha256": "e772e730e83113d7438b8a4f905522898c6c323a9b514d8af39ac23949906cca"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    }
+  ],
+  "inflight_summary_from_parent_only": {
+    "update": 50,
+    "residual_ce": 1.8059,
+    "teacher_forced_decision_hits": 27,
+    "teacher_forced_decision_total": 52,
+    "teacher_forced_complete_decision_pairs": 2,
+    "teacher_forced_pair_total": 26,
+    "opening_hits": 52,
+    "opening_total": 52,
+    "teacher_forced_whole_answer_exact": 16,
+    "teacher_forced_whole_answer_total_all_row_types": 76,
+    "interpretation": "Interim evidence separates easy prefix/format acquisition from still-weak decision discrimination. It is not the final selected semantic result and does not establish convergence or insufficient representation capacity.",
+    "provenance": "Parent supplied this log summary; this task did not inspect new-model generations."
+  }
+}
