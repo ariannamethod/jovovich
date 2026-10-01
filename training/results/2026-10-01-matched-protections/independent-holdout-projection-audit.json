@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "rows": 24,
+  "method": "Rebuild every canonical holdout row through production chunksFor and promptFor; compare the complete ChatML prompt byte-for-byte to the native-token SFT projection system/user fields. Confirm id/pair/gold correspondence and exclude expected reason/metadata from prompts.",
+  "bindings": [
+    {
+      "path": "training/review_holdout_v5.jsonl",
+      "bytes": 40748,
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "path": "prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "path": "bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/holdout-v5-final-tokenize.jsonl",
+      "bytes": 60864,
+      "sha256": "478de2e3710759829da146fbaa140502f4a0f57cc93dde0e313385c5f9367812"
+    }
+  ]
+}

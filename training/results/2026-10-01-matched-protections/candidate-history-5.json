@@ -1,0 +1,102 @@
+[
+  {
+    "id": "write-permission-check-deletion-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-1",
+    "candidate": "    if (&session.can_write == NULL) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-2",
+    "candidate": "    if (session.can_write == 0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-3",
+    "candidate": "    if (session.can_write == false) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-4",
+    "candidate": "    if (NULL == &session.can_write) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-5",
+    "candidate": "    if (!&session.can_write) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-1",
+    "candidate": "    if (&session.can_write == NULL) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-2",
+    "candidate": "    if (session.can_write == 0) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-3",
+    "candidate": "    if (session.can_write == false) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-4",
+    "candidate": "    if (NULL == &session.can_write) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-5",
+    "candidate": "    if (!&session.can_write) return DENIED;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-0",
+    "candidate": "    if (n == NULL) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-1",
+    "candidate": "    if (n == (node *)-1) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-2",
+    "candidate": "    if (n == (node *)0) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-3",
+    "candidate": "    if (n == (node *)NULL) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-0",
+    "candidate": "    if (n == NULL) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-1",
+    "candidate": "    if (n == (node *)-1) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-2",
+    "candidate": "    if (n == (node *)0) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-3",
+    "candidate": "    if (n == (node *)NULL) return NULL;",
+    "baseline": false
+  }
+]

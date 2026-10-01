@@ -1,0 +1,88 @@
+{
+  "status": "pass",
+  "native_engine": "existing jovovich-extract-readout --tokenize-only; no model forward pass or fit",
+  "base_gguf_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+  "v4_archive_parity": "All 52 exact token ID vectors equal archived frozen-forward trace.",
+  "v5_modified_pairs": 12,
+  "v5_modified_pairs_equal_original_seven_and_return_count": 12,
+  "heldout_pairs": 12,
+  "heldout_pairs_equal_original_seven_and_return_count": 12,
+  "v5_retained_rows_unchanged": 52,
+  "corpus_change": "Six affected quartets contain 24 review rows: 16 context rows change, eight clean rows remain exact. The other 28 review + 24 voice/code rows remain exact.",
+  "observed_raw_user_bytes_equal_pairs": {
+    "v4": 5,
+    "v5": 9,
+    "holdout": 6
+  },
+  "original_seven_equal_pairs": {
+    "v4": 5,
+    "v5": 17,
+    "holdout": 12
+  },
+  "final_receipts": [
+    {
+      "path": "v4-token-final/receipt.json",
+      "bytes": 39373,
+      "sha256": "ca2e67514d81fc5dadde36fe05b60094889b6a2bebab8125f925af6bc201cfa4"
+    },
+    {
+      "path": "v5-token-final/receipt.json",
+      "bytes": 38169,
+      "sha256": "2e3e939a49b7b362579bd22fb7899b1013ee2fabc8a29673c7e42e20bf8eacbd"
+    },
+    {
+      "path": "holdout-token-final/receipt.json",
+      "bytes": 21341,
+      "sha256": "fb74c92292913fd64128b460a3e7831123f1c97727990ac4146649d50a188a7b"
+    },
+    {
+      "path": "token_audit.py",
+      "bytes": 7594,
+      "sha256": "f84ed377f6cbcd213caa6653dd448fa2500b01055cd7c5ba2a62af34266da93b"
+    },
+    {
+      "path": "project_holdout_tokens.mjs",
+      "bytes": 1262,
+      "sha256": "086b730adb5e8d9d936dc5627d27bb69e88b9fd112623b4e36fa2eb511ccf694"
+    },
+    {
+      "path": "holdout-token-source.jsonl",
+      "bytes": 60864,
+      "sha256": "478de2e3710759829da146fbaa140502f4a0f57cc93dde0e313385c5f9367812"
+    }
+  ],
+  "candidate_search": {
+    "training_batches": 5,
+    "training_prompt_rows": 174,
+    "heldout_initial_rows": 24,
+    "heldout_erase_rename_rows": 24,
+    "selection_inputs": "native tokens, code semantics and specified lexical counts only"
+  },
+  "reproduction": [
+    "node project_holdout_tokens.mjs REPO NEW_HOLDOUT_SFT.jsonl",
+    "python3 token_audit.py --repo REPO --corpus REPO/training/sft_review_v4.jsonl --out NEW_V4_AUDIT",
+    "python3 token_audit.py --repo REPO --corpus REPO/training/sft_review_v5.jsonl --out NEW_V5_AUDIT",
+    "python3 token_audit.py --repo REPO --corpus NEW_HOLDOUT_SFT.jsonl --out NEW_HOLDOUT_AUDIT"
+  ],
+  "actually_changed_review_rows": 16,
+  "affected_quartet_review_rows": 24,
+  "unchanged_rows_within_affected_quartets": 8,
+  "changed_review_row_ids": [
+    "preserve-trie-credit-deletion-concern",
+    "preserve-trie-credit-replacement-concern",
+    "allocation-null-guard-deletion-concern",
+    "allocation-null-guard-replacement-concern",
+    "zero-worker-guard-deletion-concern",
+    "zero-worker-guard-replacement-concern",
+    "write-permission-check-deletion-concern",
+    "write-permission-check-deletion-clean",
+    "write-permission-check-replacement-concern",
+    "write-permission-check-replacement-clean",
+    "stable-manifest-order-deletion-concern",
+    "stable-manifest-order-replacement-concern",
+    "allocation-product-overflow-deletion-concern",
+    "allocation-product-overflow-deletion-clean",
+    "allocation-product-overflow-replacement-concern",
+    "allocation-product-overflow-replacement-clean"
+  ]
+}

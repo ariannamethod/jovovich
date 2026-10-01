@@ -1,0 +1,659 @@
+{
+  "status": "complete",
+  "command": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-candidate-1/prompts.bin",
+    "--tokenize-only"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.3971656930007157,
+  "native_operation": "GGUF metadata and tokenizer loading, exact ChatML tokenization, no forward pass",
+  "feature_names": [
+    "native_prompt_token_count_without_common_prefix",
+    "added_lines",
+    "removed_lines",
+    "context_lines",
+    "after_if_statements",
+    "after_sort_calls",
+    "after_firwood_trie_occurrences"
+  ],
+  "review_rows": 24,
+  "pairs": [
+    {
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "rows": [
+        0,
+        1
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "rows": [
+        2,
+        3
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "rows": [
+        4,
+        5
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "rows": [
+        6,
+        7
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "rows": [
+        8,
+        9
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "rows": [
+        10,
+        11
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "rows": [
+        12,
+        13
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "rows": [
+        14,
+        15
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "rows": [
+        16,
+        17
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "rows": [
+        18,
+        19
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "rows": [
+        20,
+        21
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": false,
+      "differing_features": [
+        "native_prompt_token_count_without_common_prefix"
+      ]
+    },
+    {
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "rows": [
+        22,
+        23
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": false,
+      "differing_features": [
+        "native_prompt_token_count_without_common_prefix"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "id": "holdout-v5-shift-width-pure-deletion-concern",
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "label": 1,
+      "features": [
+        504,
+        0,
+        1,
+        7,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "7fa150800c398f57e72c3651483fab91310aa188de4a95c8e4c3a458d03d3522"
+    },
+    {
+      "row": 1,
+      "id": "holdout-v5-shift-width-pure-deletion-clean",
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "label": 0,
+      "features": [
+        504,
+        0,
+        1,
+        7,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "9a3c8f4506ee55312b7d46948506067e9f3e3c821fa3d6ecf977c18aeaef476d"
+    },
+    {
+      "row": 2,
+      "id": "holdout-v5-shift-width-replacement-noop-concern",
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "label": 1,
+      "features": [
+        529,
+        1,
+        1,
+        7,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "cf8ba9ce5501c1725b83666ab504cc2ad3cdff05fb0cf099a9fca4ef136b914b"
+    },
+    {
+      "row": 3,
+      "id": "holdout-v5-shift-width-replacement-noop-clean",
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "label": 0,
+      "features": [
+        529,
+        1,
+        1,
+        7,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d342de4f8a6de4cfc968f8b0c13c25b459141a159a61220b57377e6eeac54150"
+    },
+    {
+      "row": 4,
+      "id": "holdout-v5-bounded-termination-pure-deletion-concern",
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "label": 1,
+      "features": [
+        468,
+        0,
+        1,
+        5,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "8c2d3a0de2e482a44d02e52311cb5222d2bfa4b02e8a5a4675509b0c860346ea"
+    },
+    {
+      "row": 5,
+      "id": "holdout-v5-bounded-termination-pure-deletion-clean",
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "label": 0,
+      "features": [
+        468,
+        0,
+        1,
+        5,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "dfbab9c8b986821377f9279c9e509fe47ef27cd8a812f16915369becb1a76711"
+    },
+    {
+      "row": 6,
+      "id": "holdout-v5-bounded-termination-replacement-noop-concern",
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "label": 1,
+      "features": [
+        494,
+        1,
+        1,
+        5,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "2ee57b0530634fb5f69ae8f68e62929b9eb6ba383d52d81b2a726882a0d231a2"
+    },
+    {
+      "row": 7,
+      "id": "holdout-v5-bounded-termination-replacement-noop-clean",
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "label": 0,
+      "features": [
+        494,
+        1,
+        1,
+        5,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "c753c269f451ca00f9c2b03fcb4103ece3ff09cc5516bfa8ef6c5adfaf78728a"
+    },
+    {
+      "row": 8,
+      "id": "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "label": 1,
+      "features": [
+        459,
+        0,
+        1,
+        6,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "1dca1d632ecefe0161965eded4ece9a35c946e66524559fea4e3e0432ad0a1ac"
+    },
+    {
+      "row": 9,
+      "id": "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "label": 0,
+      "features": [
+        459,
+        0,
+        1,
+        6,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "5a4ce90ff36b0bfb62f223cd9e405c7b109f48bb8100250a5c9f714e1d9f9d6c"
+    },
+    {
+      "row": 10,
+      "id": "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "label": 1,
+      "features": [
+        485,
+        1,
+        1,
+        6,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "af0e1dd81f44547f6b393741fa59e03a4150258a11412cc2ebf8fb2a83f93b43"
+    },
+    {
+      "row": 11,
+      "id": "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "label": 0,
+      "features": [
+        485,
+        1,
+        1,
+        6,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "b2701d4e1fa6541eec0250c5a9228f7989b7c92e48ed358983fed7c942bf3c94"
+    },
+    {
+      "row": 12,
+      "id": "holdout-v5-finite-number-pure-deletion-concern",
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "label": 1,
+      "features": [
+        456,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2b65d02c2bd7a4a03564cae516e040a62920dc083057c684a7c1989de4427c36"
+    },
+    {
+      "row": 13,
+      "id": "holdout-v5-finite-number-pure-deletion-clean",
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "label": 0,
+      "features": [
+        456,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "49510f88ba049fcbf7fd53a71122cfb1c3a8716dd54e493de4b43a553611345e"
+    },
+    {
+      "row": 14,
+      "id": "holdout-v5-finite-number-replacement-noop-concern",
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "label": 1,
+      "features": [
+        481,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "91451e3923e87437ce8745aca2f71d6762aaddea34b83ececf2f51349e4fd5e2"
+    },
+    {
+      "row": 15,
+      "id": "holdout-v5-finite-number-replacement-noop-clean",
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "label": 0,
+      "features": [
+        481,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2c1cc14d6cf3c940bd31e893bd54d2b21eaabbabb9f80ef9c83239f83a1b92c4"
+    },
+    {
+      "row": 16,
+      "id": "holdout-v5-array-end-boundary-pure-deletion-concern",
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "label": 1,
+      "features": [
+        481,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "136a521944f839625c2b2bc55499522dffdcd327af80256b5fdfdb5d9d87f3a6"
+    },
+    {
+      "row": 17,
+      "id": "holdout-v5-array-end-boundary-pure-deletion-clean",
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "label": 0,
+      "features": [
+        481,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "9dc85777f72172ecf5422b5cfeb749d309a0bc183dda25ff2969bc59df24fcd4"
+    },
+    {
+      "row": 18,
+      "id": "holdout-v5-array-end-boundary-replacement-noop-concern",
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "label": 1,
+      "features": [
+        506,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "1880cf756e629d3a01b23961aaa46388e886be5327cfbd31eca0b295758c8446"
+    },
+    {
+      "row": 19,
+      "id": "holdout-v5-array-end-boundary-replacement-noop-clean",
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "label": 0,
+      "features": [
+        506,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "83e957f131349bdea139c19211727346a872f9bc66d4b3f237e0ad0362a03635"
+    },
+    {
+      "row": 20,
+      "id": "holdout-v5-erase-target-pure-deletion-concern",
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "label": 1,
+      "features": [
+        521,
+        0,
+        1,
+        9,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "9153b5201edc93c823ffd5a8b8b0a7863823fcc102b164ac7b6d3a0f22fe2365"
+    },
+    {
+      "row": 21,
+      "id": "holdout-v5-erase-target-pure-deletion-clean",
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "label": 0,
+      "features": [
+        520,
+        0,
+        1,
+        9,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "765ba7a15447be6e315827f7d2a875dc03b92823771e4e74f3eeb8c394e5191f"
+    },
+    {
+      "row": 22,
+      "id": "holdout-v5-erase-target-replacement-noop-concern",
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "label": 1,
+      "features": [
+        548,
+        1,
+        1,
+        9,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "e86d7ee37125c50d2dd4bd5d466d7c7d5b1f944eaef8c664c2df99365e83656e"
+    },
+    {
+      "row": 23,
+      "id": "holdout-v5-erase-target-replacement-noop-clean",
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "label": 0,
+      "features": [
+        547,
+        1,
+        1,
+        9,
+        0,
+        0,
+        0
+      ],
+      "user_sha256": "b9e4206912eeab1ab4f649d5e4acdc6787de4639cce77a7461439f977297d5c5"
+    }
+  ],
+  "bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/holdout-v5-tokenize.jsonl",
+      "bytes": 60882,
+      "sha256": "7cd95a9a3071228abf2ddbf1b3fdd49d9b5d53f9f14a10a0e00fb9749827821f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "bytes": 259160,
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/token_audit.py",
+      "bytes": 6807,
+      "sha256": "68fcaff9b2cdaa44b8422c2d86cc08a690f49972183b19db4b20fc194a5f2b7a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "bytes": 6008,
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    }
+  ],
+  "bindings_unchanged": true,
+  "outputs": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-candidate-1/prompts.bin",
+      "bytes": 52308,
+      "sha256": "8f8efb71f2624e734df0b9d8c9dd5a99fc7c1c0ca6c1b6263defc59db4639260"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-candidate-1/token-trace.jsonl",
+      "bytes": 58328,
+      "sha256": "fe49fd4284c6ac345eafd25d331befe35407177ecc8f46b09758a0c1bd95a8e6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-token-candidate-1/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

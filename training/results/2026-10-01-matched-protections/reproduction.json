@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "status": "Data/preflight reproduction commands; training commands below are planned and have not run.",
+  "placeholders": {
+    "REPO": "Absolute checkout of the commit containing this archive, with pinned notorch submodule initialized and checksum-verified models/base-qwen.gguf present.",
+    "ARCHIVE": "REPO/training/results/2026-10-01-matched-protections",
+    "FRESH": "New absolute scratch directory for all generated outputs; every command output path must be unused.",
+    "TRAIN_PREFIX": "New absolute prefix for a future training run; runtime/source/binary/model bindings must be frozen before launch."
+  },
+  "base_model": {
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "commands": [
+    {
+      "step": "Build native tools and run the regression suite",
+      "cwd": "REPO",
+      "argv": [
+        "make",
+        "harness",
+        "train-mlp",
+        "extract-readout",
+        "test"
+      ],
+      "capture_combined_output": "FRESH/tests.txt",
+      "require_exit_code": 0
+    },
+    {
+      "step": "Rebuild the matched training corpus",
+      "cwd": "REPO",
+      "argv": [
+        "node",
+        "training/build_review_v5.mjs",
+        "--output",
+        "FRESH/sft_review_v5.jsonl",
+        "--audit",
+        "FRESH/v5-builder-audit.json"
+      ],
+      "expected_output_sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "step": "Rebuild the fresh held-out fixture",
+      "cwd": "REPO",
+      "argv": [
+        "node",
+        "training/build_holdout_v5.mjs",
+        "--root",
+        "REPO",
+        "--out",
+        "FRESH/review_holdout_v5.jsonl",
+        "--audit",
+        "FRESH/holdout-builder-audit.json"
+      ],
+      "expected_output_sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "step": "Independently verify the checked-in training programs",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/independent_v5_audit.py",
+        "--repo",
+        "REPO",
+        "--output",
+        "FRESH/independent-v5-audit.json"
+      ],
+      "environment": {
+        "PYTHONOPTIMIZE": "0"
+      },
+      "require_exit_code": 0
+    },
+    {
+      "step": "Independently verify the checked-in held-out programs",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/independent_holdout_audit.py",
+        "--repo",
+        "REPO",
+        "--output",
+        "FRESH/independent-holdout-audit.json"
+      ],
+      "environment": {
+        "PYTHONOPTIMIZE": "0"
+      },
+      "require_exit_code": 0
+    },
+    {
+      "step": "Render evaluation prompts into their SFT-shaped tokenizer-only projection",
+      "cwd": "REPO",
+      "argv": [
+        "node",
+        "ARCHIVE/project_holdout_tokens.mjs",
+        "REPO",
+        "FRESH/holdout-token-source.jsonl"
+      ],
+      "expected_output_sha256": "478de2e3710759829da146fbaa140502f4a0f57cc93dde0e313385c5f9367812"
+    },
+    {
+      "step": "Audit full native ChatML and declared count features: v4",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/token_audit.py",
+        "--repo",
+        "REPO",
+        "--corpus",
+        "REPO/training/sft_review_v4.jsonl",
+        "--out",
+        "FRESH/v4-token-audit"
+      ],
+      "environment": {
+        "PYTHONOPTIMIZE": "0"
+      },
+      "require_exit_code": 0
+    },
+    {
+      "step": "Audit full native ChatML and declared count features: v5",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/token_audit.py",
+        "--repo",
+        "REPO",
+        "--corpus",
+        "REPO/training/sft_review_v5.jsonl",
+        "--out",
+        "FRESH/v5-token-audit"
+      ],
+      "environment": {
+        "PYTHONOPTIMIZE": "0"
+      },
+      "require_exit_code": 0
+    },
+    {
+      "step": "Audit full native ChatML and declared count features: holdout",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/token_audit.py",
+        "--repo",
+        "REPO",
+        "--corpus",
+        "FRESH/holdout-token-source.jsonl",
+        "--out",
+        "FRESH/holdout-token-audit"
+      ],
+      "environment": {
+        "PYTHONOPTIMIZE": "0"
+      },
+      "require_exit_code": 0
+    },
+    {
+      "step": "Compile the existing native objective/token preflight",
+      "cwd": "REPO",
+      "argv": [
+        "cc",
+        "-Itraining",
+        "-Ideps/notorch",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-DUSE_SIMD",
+        "-o",
+        "FRESH/probe-matched",
+        "training/results/2026-10-01-counterbalanced-review/probe_counterbalanced.c",
+        "deps/notorch/notorch.c",
+        "deps/notorch/gguf.c",
+        "deps/notorch/harness/runtime.c",
+        "deps/notorch/harness/arch_llama.c",
+        "deps/notorch/examples/bpe.c",
+        "-lm",
+        "-pthread"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Pack and check v5 ChatML/objective without model forward",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/preflight_matched.py",
+        "--repo",
+        "REPO",
+        "--corpus",
+        "REPO/training/sft_review_v5.jsonl",
+        "--probe",
+        "FRESH/probe-matched",
+        "--out",
+        "FRESH/v5-native"
+      ],
+      "require_exit_code": 0
+    },
+    {
+      "step": "Pack and check holdout ChatML/objective without model forward",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "ARCHIVE/preflight_matched.py",
+        "--repo",
+        "REPO",
+        "--corpus",
+        "FRESH/holdout-token-source.jsonl",
+        "--probe",
+        "FRESH/probe-matched",
+        "--out",
+        "FRESH/holdout-native"
+      ],
+      "require_exit_code": 0
+    }
+  ],
+  "planned_training_commands": [
+    {
+      "step": "Train the frozen scientific v5 intervention after runtime binding",
+      "cwd": "REPO",
+      "argv": [
+        "build/jovovich-train-mlp",
+        "models/base-qwen.gguf",
+        "FRESH/v5-native/data.bin",
+        "TRAIN_PREFIX",
+        "100",
+        "0.0001",
+        "40",
+        "25",
+        "joint",
+        "FRESH/v5-native/pairs.bin"
+      ],
+      "environment": {
+        "NT_NO_I8": "1",
+        "NT_QMV_THREADS": "4",
+        "NT_ATTN_THREADS": "4",
+        "NT_SIMD_THREADS": "4"
+      },
+      "capture_stdout": "TRAIN_PREFIX-metrics.jsonl",
+      "status": "not_run"
+    },
+    {
+      "step": "Apply unchanged eligible-checkpoint selector",
+      "cwd": "REPO",
+      "argv": [
+        "python3",
+        "training/score_decisions.py",
+        "TRAIN_PREFIX-metrics.jsonl",
+        "--sft",
+        "training/sft_review_v5.jsonl",
+        "--joint-microbatch-tokens",
+        "40",
+        "--output",
+        "TRAIN_PREFIX-scores.json"
+      ],
+      "status": "not_run"
+    }
+  ],
+  "path_handling": "Substitute absolute paths for the literal placeholders before execution. These are structured argv arrays, not a shell script. Archived receipts retain original runtime paths. Helpers shown under ARCHIVE write only to explicit FRESH outputs.",
+  "candidate_history": "All candidate prompt JSONLs, token traces, prompt binaries and receipts are retained. Legacy search scripts retain their original absolute workspace paths as historical source; portable reruns can pass each archived candidate prompt JSONL to token_audit.py with a fresh --out. The two historical token_audit helper versions are retained under versioned filenames matching their recorded hashes.",
+  "numeric_build": "The recorded preflight uses an AVX2-capable -march=native/-DUSE_SIMD build. New compiler or CPU builds receive new executable hashes; native prompt IDs and structural target counts can be compared with this archive.",
+  "private_comparator": "The planned two-arm evaluation restores the checksum-pinned private v4 selected GGUF identified in protocol.json. No comparator download, model training, model forward or generation is performed by the data-preparation commands above."
+}

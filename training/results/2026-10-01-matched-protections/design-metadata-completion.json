@@ -1,0 +1,36 @@
+{
+  "status": "pass",
+  "change": "Only native-token audit metadata completed; all family definitions and corpus bytes unchanged.",
+  "before": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-reference/review_v5_design.before-native-receipt.json",
+    "sha256": "117faa7a72b058bdf20eff14671c849bacfbc9459a5705298c4e9b6955a3a37e",
+    "bytes": 5776
+  },
+  "after": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/review_v5_design.json",
+    "sha256": "519423d9d0c0c688d69f35c1a2da31ac5c239089244a719c95c873cf22ff8af1",
+    "bytes": 6245
+  },
+  "native_prompt_tokens_before": {
+    "status": "candidate_counts_measured; final_corpus_audit_pending",
+    "template": "Production notorch ChatML system/user plus assistant header; excludes the fixed three-token prefix."
+  },
+  "native_prompt_tokens_after": {
+    "status": "verified",
+    "template": "Production notorch ChatML system/user plus assistant header; excludes the fixed three-token prefix.",
+    "corpus_sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+    "model_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "receipt_basename": "v5-token-final/receipt.json",
+    "receipt_sha256": "2e3e939a49b7b362579bd22fb7899b1013ee2fabc8a29673c7e42e20bf8eacbd",
+    "method": "build/jovovich-extract-readout models/base-qwen.gguf PROMPTS.bin --tokenize-only",
+    "native_forward_passes": 0,
+    "opposite_label_quartet_pairs_matched": 12
+  },
+  "all_other_design_fields_equal": true,
+  "corpus": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+    "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+    "bytes": 163753
+  },
+  "historical_receipt": "independent-v5-audit.json retains its original source binding; the exact older design bytes are preserved."
+}

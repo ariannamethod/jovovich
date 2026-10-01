@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Independent evaluation-only corpus audit; exact artifact before/after programs independently executed; no model inference.",
+  "bindings": [
+    {
+      "path": "training/review_holdout_v5.jsonl",
+      "bytes": 40748,
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "path": "training/holdout_v5_design.json",
+      "sha256": "e314af96f91d4d14985ef0329b483be7becd770bfee9fd351e599c61e18dce53"
+    }
+  ],
+  "structural": {
+    "rows": 24,
+    "pairs": 12,
+    "semantic_families": 6,
+    "pairwise_context_identical": 12,
+    "pairwise_changed_lines_identical": 12,
+    "pairwise_one_unchanged_context_line_difference": 12,
+    "pairwise_six_diff_nuisance_features_equal": 12,
+    "metadata_gold_consistency": 24
+  },
+  "semantic": {
+    "source_states": 48,
+    "independent_input_cases": 12920,
+    "original_c_syntax_checks": 32,
+    "all_compilation_and_execution_exit_codes": 0,
+    "invalid_shift_handling": "A sentinel immediately before the original shift records its reachability; valid shifts execute unchanged.",
+    "records": [
+      {
+        "id": "holdout-v5-shift-width-pure-deletion-concern",
+        "family": "shift-width",
+        "stage": "before",
+        "source_sha256": "3897702bd5e01073673d0728791207eaf7dd16b76e10d97fd2e5aa34d8517660",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-pure-deletion-concern",
+        "family": "shift-width",
+        "stage": "after",
+        "source_sha256": "67952b77bd7286067b683ba17427ee7ae0f29d49ccf91ae1b85d00430956377d",
+        "input_cases": 32,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-pure-deletion-clean",
+        "family": "shift-width",
+        "stage": "before",
+        "source_sha256": "9ba9f45e4b58d8907f61ce7a1bb8dbbb1d350e5da3af3ab4bacd2d7aab9c6102",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-pure-deletion-clean",
+        "family": "shift-width",
+        "stage": "after",
+        "source_sha256": "cefc22e179feae498beaa9c70571c7b3366d51a41b2180eafa0332272b6652d7",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-replacement-noop-concern",
+        "family": "shift-width",
+        "stage": "before",
+        "source_sha256": "3897702bd5e01073673d0728791207eaf7dd16b76e10d97fd2e5aa34d8517660",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-replacement-noop-concern",
+        "family": "shift-width",
+        "stage": "after",
+        "source_sha256": "0ce55da9a497e24ec4b4d740a5b88d3e6bdc946ce36c7a7fc08e6eb9410c155f",
+        "input_cases": 32,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-replacement-noop-clean",
+        "family": "shift-width",
+        "stage": "before",
+        "source_sha256": "9ba9f45e4b58d8907f61ce7a1bb8dbbb1d350e5da3af3ab4bacd2d7aab9c6102",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-shift-width-replacement-noop-clean",
+        "family": "shift-width",
+        "stage": "after",
+        "source_sha256": "6b96b4216a0ed2a927685e30ec5d102f0bd787583e4830ef1621895f000b7d08",
+        "input_cases": 32,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-pure-deletion-concern",
+        "family": "bounded-termination",
+        "stage": "before",
+        "source_sha256": "845f1e21d923c14ca1dc2cdb5382230106cce3acf442dc4f66149bcad70b016a",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-pure-deletion-concern",
+        "family": "bounded-termination",
+        "stage": "after",
+        "source_sha256": "f1caff166bcb7e46d6c601eaf98086fe1765787f05825fa4c05d97d84b745bef",
+        "input_cases": 1024,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-pure-deletion-clean",
+        "family": "bounded-termination",
+        "stage": "before",
+        "source_sha256": "7376261a580b0104d230f14dfd7cbfea43249d547e586ae168f270bb69b05fcc",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-pure-deletion-clean",
+        "family": "bounded-termination",
+        "stage": "after",
+        "source_sha256": "79cb34efee4ccca97d08395f92654f7d264102e2367f51065437390953687795",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-replacement-noop-concern",
+        "family": "bounded-termination",
+        "stage": "before",
+        "source_sha256": "845f1e21d923c14ca1dc2cdb5382230106cce3acf442dc4f66149bcad70b016a",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-replacement-noop-concern",
+        "family": "bounded-termination",
+        "stage": "after",
+        "source_sha256": "b5fef218cfdff0b217cbb92ea39688f63156c6e9e5d475091ece1b30bc76b381",
+        "input_cases": 1024,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-replacement-noop-clean",
+        "family": "bounded-termination",
+        "stage": "before",
+        "source_sha256": "7376261a580b0104d230f14dfd7cbfea43249d547e586ae168f270bb69b05fcc",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-bounded-termination-replacement-noop-clean",
+        "family": "bounded-termination",
+        "stage": "after",
+        "source_sha256": "7de7b30f0cd8274f86dc57717e91706a2ba2886776eb85ffb5b47a950109cb35",
+        "input_cases": 1024,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+        "family": "reserved-flag-bits",
+        "stage": "before",
+        "source_sha256": "4147ca5d64f387c426c6beab641369bc2631b010820cf60214b93dd01137819f",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+        "family": "reserved-flag-bits",
+        "stage": "after",
+        "source_sha256": "78fbe9306f0bd2fa256d371b6e3f51a0484c5ac2952917b42d6c5d50181c9ce8",
+        "input_cases": 256,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+        "family": "reserved-flag-bits",
+        "stage": "before",
+        "source_sha256": "73184699d7a18fd4dccdcf7b9c14f198be73a8363313bec6968b32bb3421d80a",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+        "family": "reserved-flag-bits",
+        "stage": "after",
+        "source_sha256": "c8e70c9d49083ae8e67cf2e3eb4acb0c5f4c7849bd778e27d416963419cd1ca7",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+        "family": "reserved-flag-bits",
+        "stage": "before",
+        "source_sha256": "4147ca5d64f387c426c6beab641369bc2631b010820cf60214b93dd01137819f",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+        "family": "reserved-flag-bits",
+        "stage": "after",
+        "source_sha256": "fb9ee7ec46bc63a88f023fe3897981b8b2aea9ba8216de797877e5f0c5d9feda",
+        "input_cases": 256,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+        "family": "reserved-flag-bits",
+        "stage": "before",
+        "source_sha256": "73184699d7a18fd4dccdcf7b9c14f198be73a8363313bec6968b32bb3421d80a",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+        "family": "reserved-flag-bits",
+        "stage": "after",
+        "source_sha256": "1401415ecffcee12a68ddddcb4498f92d245b1206cae857187696d446b973b09",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-pure-deletion-concern",
+        "family": "finite-number",
+        "stage": "before",
+        "source_sha256": "4efcf0aae1f73f87db88738346a3fc0bbc3046731c0e277f2700f03b480e0b6e",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-pure-deletion-concern",
+        "family": "finite-number",
+        "stage": "after",
+        "source_sha256": "d7d3e0fc9acc7d4b1d906d265ae91fbbec8c3d3b6d999be954fb24e49ac91060",
+        "input_cases": 12,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-pure-deletion-clean",
+        "family": "finite-number",
+        "stage": "before",
+        "source_sha256": "c2fcdbef0c7769b3f0d2f930027d95d5fc4f4baf18414756d0abe991d36a820f",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-pure-deletion-clean",
+        "family": "finite-number",
+        "stage": "after",
+        "source_sha256": "40ce24536a044cefd7a44788ba7f775185c92789b433379d76218b8644a9d77f",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-replacement-noop-concern",
+        "family": "finite-number",
+        "stage": "before",
+        "source_sha256": "4efcf0aae1f73f87db88738346a3fc0bbc3046731c0e277f2700f03b480e0b6e",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-replacement-noop-concern",
+        "family": "finite-number",
+        "stage": "after",
+        "source_sha256": "418ca8427f7d3b17d5613308aeed6fc9e9d87e6826738a6bddb57b98b984b4b0",
+        "input_cases": 12,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-replacement-noop-clean",
+        "family": "finite-number",
+        "stage": "before",
+        "source_sha256": "c2fcdbef0c7769b3f0d2f930027d95d5fc4f4baf18414756d0abe991d36a820f",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-finite-number-replacement-noop-clean",
+        "family": "finite-number",
+        "stage": "after",
+        "source_sha256": "05d1994089dbd718ed0552685f75726cc969e3d96d014d241054b2ccf6fdb267",
+        "input_cases": 12,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-pure-deletion-concern",
+        "family": "array-end-boundary",
+        "stage": "before",
+        "source_sha256": "387400df540c336795529ef84e7d10199720a0acecad31cf09efb9951c017229",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-pure-deletion-concern",
+        "family": "array-end-boundary",
+        "stage": "after",
+        "source_sha256": "df73d88ff21920d5b039b45aa72220d4430859d2ec489f04629edf51c7400a41",
+        "input_cases": 35,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-pure-deletion-clean",
+        "family": "array-end-boundary",
+        "stage": "before",
+        "source_sha256": "1f142e5b6dbe94bd198374900f03c3ffc74138b2a0798db319d26487e4a9bc60",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-pure-deletion-clean",
+        "family": "array-end-boundary",
+        "stage": "after",
+        "source_sha256": "2868d841e5040de9127bf790bad6eff52cdb08805fbb37893c2f29072000bbaf",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-replacement-noop-concern",
+        "family": "array-end-boundary",
+        "stage": "before",
+        "source_sha256": "387400df540c336795529ef84e7d10199720a0acecad31cf09efb9951c017229",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-replacement-noop-concern",
+        "family": "array-end-boundary",
+        "stage": "after",
+        "source_sha256": "a8d534692cffa2a3806338215c8c35f9010148d7d2c5b3b5b950838c84ab2af4",
+        "input_cases": 35,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-replacement-noop-clean",
+        "family": "array-end-boundary",
+        "stage": "before",
+        "source_sha256": "1f142e5b6dbe94bd198374900f03c3ffc74138b2a0798db319d26487e4a9bc60",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-array-end-boundary-replacement-noop-clean",
+        "family": "array-end-boundary",
+        "stage": "after",
+        "source_sha256": "4279e39794795bba24bc57ac72d5a0d160bdccc04d89f1fd7d28d465363cd955",
+        "input_cases": 35,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-pure-deletion-concern",
+        "family": "erase-target",
+        "stage": "before",
+        "source_sha256": "a45771cf8ae69d11cb0d41bbcdc4ab5b545d05f75f5bf62d4630690619ab6512",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-pure-deletion-concern",
+        "family": "erase-target",
+        "stage": "after",
+        "source_sha256": "1a6764ba9b571d5b5358f677a68403d58845fb9e81c5bb55cec85931ef085db0",
+        "input_cases": 256,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-pure-deletion-clean",
+        "family": "erase-target",
+        "stage": "before",
+        "source_sha256": "be301f3c1283f87d6af6f7cfe864852dfab3bc821adc148e4ed5d12d58568b1d",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-pure-deletion-clean",
+        "family": "erase-target",
+        "stage": "after",
+        "source_sha256": "d77cb9cd7f56ca537e8d423f078c354609dc81bfcc76be72aa5d0268d7d6e0cb",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-replacement-noop-concern",
+        "family": "erase-target",
+        "stage": "before",
+        "source_sha256": "a45771cf8ae69d11cb0d41bbcdc4ab5b545d05f75f5bf62d4630690619ab6512",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-replacement-noop-concern",
+        "family": "erase-target",
+        "stage": "after",
+        "source_sha256": "09d5e6331684921652f31eda66661e42b64b29dd44272bd0d489e96e5a3ff4cf",
+        "input_cases": 256,
+        "expected_harmful_after": true,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-replacement-noop-clean",
+        "family": "erase-target",
+        "stage": "before",
+        "source_sha256": "be301f3c1283f87d6af6f7cfe864852dfab3bc821adc148e4ed5d12d58568b1d",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      },
+      {
+        "id": "holdout-v5-erase-target-replacement-noop-clean",
+        "family": "erase-target",
+        "stage": "after",
+        "source_sha256": "aec6d07e529b53c09211daa71f7b305807b40d1d8021783afeb358f1d260faa3",
+        "input_cases": 256,
+        "expected_harmful_after": false,
+        "status": "PASS"
+      }
+    ]
+  },
+  "novelty_review": {
+    "source_paths": [
+      "training/sft_review_v4.jsonl",
+      "training/results/2026-10-01-counterbalanced-review/fresh-transfer.jsonl",
+      "training/results/2026-10-01-joint-review/joint-diagnostics-natural.jsonl"
+    ],
+    "new_ids_and_pair_ids_absent_from_prior_sources": true,
+    "family_mechanisms": [
+      "uint32 shift width boundary",
+      "bounded final-byte termination",
+      "reserved high-bit clearing",
+      "nonfinite numeric acceptance",
+      "exclusive array endpoint",
+      "zeroization destination"
+    ],
+    "shared_structural_relation": "Shift-width and array-end-boundary both distinguish inclusive from exclusive upper bounds. They are six semantic families."
+  },
+  "native_prompt_lengths": "Seventh nuisance coordinate comes from separate native tokenizer audit."
+}

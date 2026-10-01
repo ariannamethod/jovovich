@@ -1,0 +1,27 @@
+{
+  "pr": 12,
+  "merge": "ac27d09d5ab880b1718a05a8cc35f0e69ae4e88c",
+  "findings": [
+    {
+      "url": "https://github.com/ariannamethod/jovovich/pull/12#discussion_r4154074471",
+      "path": "training/results/2026-10-01-frozen-readout/prepare_readout.py",
+      "line": 41,
+      "body": "These are production input-integrity checks, but Python removes every `assert` when `PYTHONOPTIMIZE`/`-O` is enabled. In that mode a changed corpus, malformed pair/fold structure, or mismatched native trace can be serialized as valid experiment input. Use explicit validation that raises `ValueError` (or the existing `require` helper pattern) for all checks in `prepare` and `finish`.",
+      "author": "Copilot"
+    },
+    {
+      "url": "https://github.com/ariannamethod/jovovich/pull/12#discussion_r4154074545",
+      "path": "training/results/2026-10-01-frozen-readout/run_readout.py",
+      "line": 130,
+      "body": "A nonzero phase exits here before any declared created output is recorded. If the failed process produced a partial matrix or fit file, the failure receipt does not hash it, so the preserved failed attempt cannot detect later mutation of that artifact. Hash any existing declared outputs before raising, while still requiring every declared output on successful phases.",
+      "author": "Copilot"
+    },
+    {
+      "url": "https://github.com/ariannamethod/jovovich/pull/12#discussion_r4154074604",
+      "path": "training/results/2026-10-01-frozen-readout/summarize_readout.py",
+      "line": 53,
+      "body": "The summarizer's audit gate is implemented entirely with `assert`, so running under `python -O` skips configuration, convergence, fold, label, and prediction validation and can publish counts from invalid fit records. Replace these assertions with unconditional checks that raise an exception before writing the summary.",
+      "author": "Copilot"
+    }
+  ]
+}

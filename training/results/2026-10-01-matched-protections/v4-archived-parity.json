@@ -1,0 +1,15 @@
+{
+  "status": "pass",
+  "comparisons": [
+    "row",
+    "prompt_tokens",
+    "input_tokens",
+    "capture_position",
+    "prefix_ids",
+    "input_ids"
+  ],
+  "rows": 52,
+  "tokenizer_trace_sha256": "f9c980fedb8ecad0b4e30a739857a4ad22eeed680376b772ca31263457974e64",
+  "archived_inference_trace_sha256": "30f9f9ee5de0307e1073813de59002b657a0f4d07c8c61734e58e464f36911f8",
+  "all_52_native_prompt_ids_identical_to_archived_frozen_inference": true
+}

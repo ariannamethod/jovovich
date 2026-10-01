@@ -2,6 +2,58 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — SERGE counted the returns.
+
+Copilot reviewed PR #12 and found three defects in the experiment helpers:
+Python optimization removed preparation and summary validation, and a failed
+phase's partial files were absent from its receipt. Maintained helpers now live
+in `training/readout/`. They use unconditional validation and record existing
+declared outputs plus missing paths before rejecting a failed phase. Independent
+review also caught the collector rejecting prepared files in an external run
+directory; that layout now has its own regression test. Eleven workflow tests
+cover optimized Python, archive parity and failure evidence. The historical
+frozen-readout archive retains its original bytes.
+The final reproduction review also found that `make test` omitted its readout
+CLI prerequisite. That dependency is now explicit; the complete suite rebuilds
+the missing executable and passes.
+
+The v5 intervention replaces ineffective no-ops with plausible wrong checks:
+the address of a pointer or capability field, a negative unsigned worker count,
+and an allocation bound for the wrong element width. Sorting the output
+accumulator leaves the name sequence unsorted. Documentation attribution leaves
+the retained implementation without its own credit. Effective counterparts
+preserve the required property after deletion or replacement of the candidate.
+
+Six quartets contain sixteen changed context lines. All 76 gold answers and
+system messages, all 52 review changed-line listings, and all row IDs, kinds,
+pairs and order are preserved. Sixty complete raw rows remain byte-identical.
+All twelve quartet pairs match the seven original nuisance features and the
+additional after-side return count. Native Qwen prompt lengths match exactly.
+The original seven-feature equality count across all training pairs is 5/26 for
+v4 and 17/26 for v5. The remaining nine pairs belong to the retained inputs.
+
+The new evaluation set has six families and 24 cases: shift bounds, string
+termination, reserved bits, non-finite numbers, exclusive array bounds, and
+clearing the correct buffer. Each family crosses deletion/replacement with
+concern/clean; all twelve opposite-label pairs match the same eight measured
+features. This file is kept separate from training and checkpoint selection.
+
+Independent semantic checks execute all 48 before/after states in each set,
+with 424 training-fixture input cases and 12,920 holdout input cases. The
+intentional address and unsigned-negative mistakes produce recorded compiler
+warnings; other fixture warnings remain fatal. The unchanged native trainer
+still derives 52 decision targets plus 1,012 residual targets per update.
+
+The complete regression gate passes seven native and eighty Node tests.
+The next training protocol keeps the model, seed, adapter placement, rank,
+objective, learning rate, update budget and checkpoint selection fixed, then
+evaluates both selected arms on the same prompts. This stage prepares and
+audits the data; the 100-update training run is next.
+
+Evidence, source bindings and reproduction commands:
+[`training/results/2026-10-01-matched-protections`](training/results/2026-10-01-matched-protections).
+SERGE reviewed `return`. The cigarette remains singular.
+
 ## 2026-10-01 — The seven-feature witness took the stand.
 
 The frozen-state probe is complete. It extracts the 896-dimensional residual

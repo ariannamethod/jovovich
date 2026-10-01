@@ -1,0 +1,127 @@
+{
+  "status": "completed",
+  "bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "bytes": 163753
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+      "sha256": "df2f2abf46683d75469af4a3fd1231be092f916122613d4c7e72827faf909119",
+      "bytes": 267896
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/preflight_matched.py",
+      "sha256": "64d654718e54ec72c91975ccdd12455093da7062dfc14ac297d3b296cba0c6c3",
+      "bytes": 2991
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    }
+  ],
+  "phases": [
+    {
+      "argv": [
+        "python3",
+        "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/data.bin",
+        "--sft",
+        "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+        "--sft-only",
+        "--review-pairs",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/pairs.bin"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.040038567000010516,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/phase-0.stdout",
+        "sha256": "874c912e9eae56e1782431d7b976269c8a009b8d822f8bf314ed2cbe61cf5648",
+        "bytes": 197
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/phase-0.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/data.bin",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/pairs.bin",
+        "40"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.7354872430005344,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/phase-1.stdout",
+        "sha256": "bf63cf0196b7d0979fda9031fbff739155b04b4d6cfac8cf79b319093fd4ce55",
+        "bytes": 176456
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/phase-1.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  ],
+  "model_forward_calls": 0,
+  "summary": {
+    "stage": "summary",
+    "pass": true,
+    "examples": 76,
+    "review_examples": 52,
+    "readout_only_examples": 24,
+    "review_pairs": 26,
+    "all_completion_targets": 2591,
+    "decision_positions": 52,
+    "residual_positions": 1012,
+    "joint_positions": 1064,
+    "decision_coefficient": 0.019230769230769232,
+    "residual_coefficient": 0.0009881422924901185,
+    "native_float_decision_coefficient": 0.0192307699,
+    "native_float_residual_coefficient": 0.000988142332,
+    "microbatch_tokens": 40,
+    "microbatches_per_update": 27,
+    "last_microbatch_tokens": 24,
+    "chatml_comparisons": 152,
+    "prompt_tokens_max": 555,
+    "full_tokens_max": 595,
+    "model_context": 32768,
+    "chatml_im_start": 151644,
+    "chatml_im_end": 151645,
+    "model_forward_calls": 0
+  },
+  "sources_unchanged": true,
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/data.bin",
+      "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce",
+      "bytes": 149471
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native-v2/pairs.bin",
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+      "bytes": 224
+    }
+  ]
+}

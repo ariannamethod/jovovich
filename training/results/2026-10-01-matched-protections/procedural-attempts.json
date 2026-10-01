@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "model_forward_calls": 0,
+  "attempts": [
+    {
+      "directory": "v5-native",
+      "status": "native preflight output completed; orchestration receipt construction failed",
+      "native_summary": {
+        "stage": "summary",
+        "pass": true,
+        "examples": 76,
+        "review_examples": 52,
+        "readout_only_examples": 24,
+        "review_pairs": 26,
+        "all_completion_targets": 2591,
+        "decision_positions": 52,
+        "residual_positions": 1012,
+        "joint_positions": 1064,
+        "decision_coefficient": 0.019230769230769232,
+        "residual_coefficient": 0.0009881422924901185,
+        "native_float_decision_coefficient": 0.0192307699,
+        "native_float_residual_coefficient": 0.000988142332,
+        "microbatch_tokens": 40,
+        "microbatches_per_update": 27,
+        "last_microbatch_tokens": 24,
+        "chatml_comparisons": 152,
+        "prompt_tokens_max": 555,
+        "full_tokens_max": 595,
+        "model_context": 32768,
+        "chatml_im_start": 151644,
+        "chatml_im_end": 151645,
+        "model_forward_calls": 0
+      },
+      "reported_error": "AttributeError: record received a string where Path was expected",
+      "correction": "preflight_matched.py record now begins by converting path = Path(path). The corrected run uses v5-native-v2.",
+      "available_artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/data.bin",
+          "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce",
+          "bytes": 149471
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/pairs.bin",
+          "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+          "bytes": 224
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/phase-0.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/phase-0.stdout",
+          "sha256": "5f321ca327c973511ffc3b90bff2ff2fdd43609ad512655ab0f02e2e2f9560f4",
+          "bytes": 191
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/phase-1.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-reference/v5-native/phase-1.stdout",
+          "sha256": "bf63cf0196b7d0979fda9031fbff739155b04b4d6cfac8cf79b319093fd4ce55",
+          "bytes": 176456
+        }
+      ],
+      "historical_source_limit": "The exact pre-correction helper bytes and a traceback were not separately retained. Existing native output is retained byte-for-byte; this record does not invent a missing original receipt or timing."
+    },
+    {
+      "directory": "holdout-v5-native",
+      "status": "packing failed before native probe because runtime fixture rows lack the SFT messages field",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native/receipt.json",
+        "sha256": "ad2adf6a7939112897d89075f939660957726cba2246b2ae7bc372ef5e1bc737",
+        "bytes": 2578
+      },
+      "correction": "Use project_holdout_tokens.mjs to produce the exact runtime-prompt SFT-shaped projection solely for evaluation preflight, then rerun in holdout-v5-native-v2.",
+      "native_probe_started": false
+    }
+  ]
+}

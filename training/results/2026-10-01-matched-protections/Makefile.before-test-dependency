@@ -102,7 +102,7 @@ build/test-joint: test/joint.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NO
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/joint.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
-test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting build/test-joint build/test-readout-extract build/test-readout build/jovovich-readout-fit
+test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting build/test-joint build/test-readout-extract build/test-readout
 	./build/test-head
 	./build/test-mlp
 	./build/test-optimizer

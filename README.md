@@ -541,15 +541,47 @@ frozen `0.001` capacity threshold, so both strict capacity controls fail. The
 criterion stays put. This probe supplies the prefix and predicts a binary label;
 it does not generate a review, a reason or a citation. No model weights change.
 
-The next corpus intervention will match effective and ineffective protection
-while controlling the remaining count and length cues across fresh templates.
-Broader adapters, training duration and Base versus Instruct remain separate
-hypotheses. Official Qwen documentation permits tuning either checkpoint, and
-a published exact-model Instruct adaptation uses substantially broader adapters
-and more training examples than this experiment. This corpus intervention is
-recorded as the next design; it has not run. The research, failed first
-diagnostic guard, corrected run, exact features and reproduction commands live in
+The research, failed first diagnostic guard, corrected run, exact features and
+historical reproduction commands live in
 [`training/results/2026-10-01-frozen-readout`](training/results/2026-10-01-frozen-readout).
+Fresh reproductions use the maintained helpers and command recipe in
+[`training/readout/reproduction.json`](training/readout/reproduction.json).
+Their input and result validation remains active under optimized Python, and
+failed phases retain hashes of partial outputs.
+
+The v5 corpus now matches effective and ineffective protection by the seven
+measured features and by return-statement count. A check of `&n` can look
+reassuring while the pointer `n` walks directly into a wall. SERGE counted the
+returns. Still one cigarette.
+
+Six existing quartets receive sixteen context-line changes. All 76 system
+messages and gold answers, all changed-line listings, and all row identities
+stay identical; sixty raw rows are byte-identical. Every one of the twelve
+quartet pairs has equal native prompt length, added/removed/context line counts,
+and after-side `if`, `.sort`, `firwood/trie` and `return` counts. Across all 26
+training pairs, exact equality of the original seven features rises from 5 to
+17; the fourteen retained pairs keep their existing inputs.
+
+The separate v5 holdout contains 24 cases in six fresh families: shift width,
+buffer termination, reserved flag bits, finite numbers, array-end boundaries
+and the target of a memory clear. Its twelve pairs have the same feature
+matching. Executable witnesses cover all 48 before/after states in each set;
+the independent audit exercises 424 training-fixture inputs and 12,920 holdout
+inputs. Native training preparation retains 52 decision and 1,012 residual
+targets per update.
+
+Rebuild or verify these inputs with fresh output paths:
+
+```sh
+node training/build_review_v5.mjs --output models/rebuilt-v5.jsonl \
+  --audit models/rebuilt-v5-audit.json
+node training/build_holdout_v5.mjs --verify --audit models/holdout-v5-audit.json
+```
+
+The data, audits and next training protocol are recorded in
+[`training/results/2026-10-01-matched-protections`](training/results/2026-10-01-matched-protections).
+The next run keeps the Qwen checkpoint, final-MLP adapters, joint objective,
+learning rate and 100-update selection rule fixed. Training has not started.
 
 The review evaluator uses the actual host prompt and native inference path:
 

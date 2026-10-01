@@ -1,0 +1,1601 @@
+{
+  "status": "complete",
+  "command": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-1/prompts.bin",
+    "--tokenize-only"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.4855318529989745,
+  "native_operation": "GGUF metadata and tokenizer loading, exact ChatML tokenization, no forward pass",
+  "feature_names": [
+    "native_prompt_token_count_without_common_prefix",
+    "added_lines",
+    "removed_lines",
+    "context_lines",
+    "after_if_statements",
+    "after_sort_calls",
+    "after_firwood_trie_occurrences"
+  ],
+  "review_rows": 58,
+  "pairs": [
+    {
+      "pair": "preserve-trie-credit-deletion-candidate-0",
+      "rows": [
+        0
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "preserve-trie-credit-deletion-candidate-1",
+      "rows": [
+        1
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "preserve-trie-credit-replacement-candidate-0",
+      "rows": [
+        2
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "preserve-trie-credit-replacement-candidate-1",
+      "rows": [
+        3
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-0",
+      "rows": [
+        4
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-1",
+      "rows": [
+        5
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-2",
+      "rows": [
+        6
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-3",
+      "rows": [
+        7
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-4",
+      "rows": [
+        8
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-5",
+      "rows": [
+        9
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-6",
+      "rows": [
+        10
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-0",
+      "rows": [
+        11
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-1",
+      "rows": [
+        12
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-2",
+      "rows": [
+        13
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-3",
+      "rows": [
+        14
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-4",
+      "rows": [
+        15
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-5",
+      "rows": [
+        16
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-6",
+      "rows": [
+        17
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-0",
+      "rows": [
+        18
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-1",
+      "rows": [
+        19
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-2",
+      "rows": [
+        20
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-3",
+      "rows": [
+        21
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-4",
+      "rows": [
+        22
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-5",
+      "rows": [
+        23
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-6",
+      "rows": [
+        24
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-0",
+      "rows": [
+        25
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-1",
+      "rows": [
+        26
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-2",
+      "rows": [
+        27
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-3",
+      "rows": [
+        28
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-4",
+      "rows": [
+        29
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-5",
+      "rows": [
+        30
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-6",
+      "rows": [
+        31
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-0",
+      "rows": [
+        32
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-1",
+      "rows": [
+        33
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-2",
+      "rows": [
+        34
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-3",
+      "rows": [
+        35
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-4",
+      "rows": [
+        36
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-5",
+      "rows": [
+        37
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-6",
+      "rows": [
+        38
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-0",
+      "rows": [
+        39
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-1",
+      "rows": [
+        40
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-2",
+      "rows": [
+        41
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-3",
+      "rows": [
+        42
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-4",
+      "rows": [
+        43
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-5",
+      "rows": [
+        44
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-6",
+      "rows": [
+        45
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-deletion-candidate-0",
+      "rows": [
+        46
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-deletion-candidate-1",
+      "rows": [
+        47
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-replacement-candidate-0",
+      "rows": [
+        48
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-replacement-candidate-1",
+      "rows": [
+        49
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-deletion-candidate-0",
+      "rows": [
+        50
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-deletion-candidate-1",
+      "rows": [
+        51
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-deletion-candidate-2",
+      "rows": [
+        52
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-deletion-candidate-3",
+      "rows": [
+        53
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-replacement-candidate-0",
+      "rows": [
+        54
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-replacement-candidate-1",
+      "rows": [
+        55
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-replacement-candidate-2",
+      "rows": [
+        56
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-replacement-candidate-3",
+      "rows": [
+        57
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    }
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "id": "preserve-trie-credit-deletion-candidate-0",
+      "pair": "preserve-trie-credit-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        420,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "user_sha256": "4d12f956e790dbbf6b314ad02a93d5dbff83cd236fd2f74a507a4812344b2a21"
+    },
+    {
+      "row": 1,
+      "id": "preserve-trie-credit-deletion-candidate-1",
+      "pair": "preserve-trie-credit-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        420,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "user_sha256": "0e9b99c7e722ea1a745d7a0a05c42c7792ef766da43866dd5940d5c09d0a514a"
+    },
+    {
+      "row": 2,
+      "id": "preserve-trie-credit-replacement-candidate-0",
+      "pair": "preserve-trie-credit-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        437,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "user_sha256": "2a1f582893800cbbdd83d0bcf53a3e087dc0b91f2cd2214b194c10da01169651"
+    },
+    {
+      "row": 3,
+      "id": "preserve-trie-credit-replacement-candidate-1",
+      "pair": "preserve-trie-credit-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        437,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "user_sha256": "fe48cb30a9f51b3e479c8110f9ccd55a9da3ac38fb960b2cc690829fb1c5674f"
+    },
+    {
+      "row": 4,
+      "id": "allocation-null-guard-deletion-candidate-0",
+      "pair": "allocation-null-guard-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b94811f6620b1e161f002a35c8d882f5427b267484b0278e87c467014921f9f4"
+    },
+    {
+      "row": 5,
+      "id": "allocation-null-guard-deletion-candidate-1",
+      "pair": "allocation-null-guard-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        446,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "803bfe7ff416957bd5742a4d68935a03d1b46a41c93b6ebc85c9f7fe2e78d43c"
+    },
+    {
+      "row": 6,
+      "id": "allocation-null-guard-deletion-candidate-2",
+      "pair": "allocation-null-guard-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        443,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "74eddc43e3c90db240ecd65bb5b35457fb16e4ce081cc00292ef4b6100e3a01f"
+    },
+    {
+      "row": 7,
+      "id": "allocation-null-guard-deletion-candidate-3",
+      "pair": "allocation-null-guard-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "4bf227e02b6261c79cd54c083d1d57dfcbae4668991ed97e340cd61e50305843"
+    },
+    {
+      "row": 8,
+      "id": "allocation-null-guard-deletion-candidate-4",
+      "pair": "allocation-null-guard-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        445,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "78603a93474a30a1624d24682723eda923927abef8c9a662a2fcdeb30466734d"
+    },
+    {
+      "row": 9,
+      "id": "allocation-null-guard-deletion-candidate-5",
+      "pair": "allocation-null-guard-deletion-candidate-5",
+      "label": 0,
+      "features": [
+        446,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "237528af57efcdd97684f1ceb42402c58a0eb5a31c2d306815bb1dc58480a23f"
+    },
+    {
+      "row": 10,
+      "id": "allocation-null-guard-deletion-candidate-6",
+      "pair": "allocation-null-guard-deletion-candidate-6",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "0f6412aaf33300041313c37cfe5727ada312e17de705701a00fe51f826157673"
+    },
+    {
+      "row": 11,
+      "id": "allocation-null-guard-replacement-candidate-0",
+      "pair": "allocation-null-guard-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5aeeced0816764fce1289cea2d1f691ffde329a323741752e595ede6516ca714"
+    },
+    {
+      "row": 12,
+      "id": "allocation-null-guard-replacement-candidate-1",
+      "pair": "allocation-null-guard-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        472,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "1bcc8a70864af6e72afcf950afffd8e715b1ce19326c79c64be67d0eb842273a"
+    },
+    {
+      "row": 13,
+      "id": "allocation-null-guard-replacement-candidate-2",
+      "pair": "allocation-null-guard-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        469,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "576f7568a5c2d89f6762eb5ea7e9feb2c183f4f65c808afadf011ab0c961c248"
+    },
+    {
+      "row": 14,
+      "id": "allocation-null-guard-replacement-candidate-3",
+      "pair": "allocation-null-guard-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "818cdc4967c5481798ed7648956a0407efef81be9a1145c559db7dbf275e792d"
+    },
+    {
+      "row": 15,
+      "id": "allocation-null-guard-replacement-candidate-4",
+      "pair": "allocation-null-guard-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        471,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e1b64b5656f1356105e83cf740880898d94307cb7abf33ee82077a4bf8785cb4"
+    },
+    {
+      "row": 16,
+      "id": "allocation-null-guard-replacement-candidate-5",
+      "pair": "allocation-null-guard-replacement-candidate-5",
+      "label": 0,
+      "features": [
+        472,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f9853ab8812df30dfe9500e8aedfb9d1ed2532ee509ca6748a45006ce3b79cde"
+    },
+    {
+      "row": 17,
+      "id": "allocation-null-guard-replacement-candidate-6",
+      "pair": "allocation-null-guard-replacement-candidate-6",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e935ce31778601144053e1808d8e5def0fca795a926413cf1b4d34a53728f19d"
+    },
+    {
+      "row": 18,
+      "id": "zero-worker-guard-deletion-candidate-0",
+      "pair": "zero-worker-guard-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        441,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "a526aa6e370d72112575b8f16267c319cd523fbec7c2b1ed74070d0cc8f79efc"
+    },
+    {
+      "row": 19,
+      "id": "zero-worker-guard-deletion-candidate-1",
+      "pair": "zero-worker-guard-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        442,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "6ee90d798c9fa527589ca56b643bcc261027d760957e9b35d051b9104ae80226"
+    },
+    {
+      "row": 20,
+      "id": "zero-worker-guard-deletion-candidate-2",
+      "pair": "zero-worker-guard-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        439,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "206ad028f09ed2e858a989a123c541dab8bcfffad1391e1ecaa566d6dfc41587"
+    },
+    {
+      "row": 21,
+      "id": "zero-worker-guard-deletion-candidate-3",
+      "pair": "zero-worker-guard-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        440,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "fd2b831f80ffcf26eef49cf9228351d863934c53fa082ef251e3948965442a90"
+    },
+    {
+      "row": 22,
+      "id": "zero-worker-guard-deletion-candidate-4",
+      "pair": "zero-worker-guard-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        439,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b4b57b4ec8c566158dd7b23f1c80045f1f49b770cc84254a9b9128c509cba1ae"
+    },
+    {
+      "row": 23,
+      "id": "zero-worker-guard-deletion-candidate-5",
+      "pair": "zero-worker-guard-deletion-candidate-5",
+      "label": 0,
+      "features": [
+        443,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "93ad24e5929647d0085e8ad56fe1897e87d6ad64dc74f7c3b610b7e2913e92b3"
+    },
+    {
+      "row": 24,
+      "id": "zero-worker-guard-deletion-candidate-6",
+      "pair": "zero-worker-guard-deletion-candidate-6",
+      "label": 0,
+      "features": [
+        442,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e28aa7bd0797c827c49228ccd059f3e087fb44f336421d79861c8413f686a6c9"
+    },
+    {
+      "row": 25,
+      "id": "zero-worker-guard-replacement-candidate-0",
+      "pair": "zero-worker-guard-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        467,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "643bd17ea4c15ab8fdd5c7fe28cf9791a3657493a60479d66464413ab8de6cf9"
+    },
+    {
+      "row": 26,
+      "id": "zero-worker-guard-replacement-candidate-1",
+      "pair": "zero-worker-guard-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        468,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "c42de168fa78b068c1edf754fded945a6a1721e95ac57cb4daa663198a8c013d"
+    },
+    {
+      "row": 27,
+      "id": "zero-worker-guard-replacement-candidate-2",
+      "pair": "zero-worker-guard-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        465,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2172db06163e3c43fdcedce3a21f02e5a7cb13d52827b57e887bf5e737b290aa"
+    },
+    {
+      "row": 28,
+      "id": "zero-worker-guard-replacement-candidate-3",
+      "pair": "zero-worker-guard-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        466,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "1a650c7e05b5b761b7a0b664a19141546527a277214eba66442cf1aabb8be96b"
+    },
+    {
+      "row": 29,
+      "id": "zero-worker-guard-replacement-candidate-4",
+      "pair": "zero-worker-guard-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        465,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "585ea5c8a272c42bcd5259b4ba44b2fc5d21d1714de8c4097f437e17979a5f6c"
+    },
+    {
+      "row": 30,
+      "id": "zero-worker-guard-replacement-candidate-5",
+      "pair": "zero-worker-guard-replacement-candidate-5",
+      "label": 0,
+      "features": [
+        469,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b5b810f66e4e3dc8ab11eb904e39ba02b3fad3969e4e15f48823905c54241330"
+    },
+    {
+      "row": 31,
+      "id": "zero-worker-guard-replacement-candidate-6",
+      "pair": "zero-worker-guard-replacement-candidate-6",
+      "label": 0,
+      "features": [
+        468,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "201d800783ef5b52cd21dc71467c0922930aa88a3e240e8e500971c97e6f4eae"
+    },
+    {
+      "row": 32,
+      "id": "write-permission-check-deletion-candidate-0",
+      "pair": "write-permission-check-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d0e9c2df7e5c81203d63d991efdb971f969f000b5a5c9c782c16d4054e83b011"
+    },
+    {
+      "row": 33,
+      "id": "write-permission-check-deletion-candidate-1",
+      "pair": "write-permission-check-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "758933d2d689073b63bff564571015f8933bcba7597f4681f98c5a1cbbebabfe"
+    },
+    {
+      "row": 34,
+      "id": "write-permission-check-deletion-candidate-2",
+      "pair": "write-permission-check-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        431,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5b2532f93e67c107d7c8ca72a036468db64c55efac7bb45e1318157768b19ce6"
+    },
+    {
+      "row": 35,
+      "id": "write-permission-check-deletion-candidate-3",
+      "pair": "write-permission-check-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        432,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "a6987417bdac0013ddeba8c3ed94d2ef9eee194e5421fd79879c3c4c7b6a8de6"
+    },
+    {
+      "row": 36,
+      "id": "write-permission-check-deletion-candidate-4",
+      "pair": "write-permission-check-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        431,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "54b783c162dafe09972fec3b09efcc7662933f8c4e9e19a83017e41eb169520f"
+    },
+    {
+      "row": 37,
+      "id": "write-permission-check-deletion-candidate-5",
+      "pair": "write-permission-check-deletion-candidate-5",
+      "label": 0,
+      "features": [
+        435,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "aef388299c13f0b5588261d450c8098be43982a9909c659e4d3f36f0f45c56eb"
+    },
+    {
+      "row": 38,
+      "id": "write-permission-check-deletion-candidate-6",
+      "pair": "write-permission-check-deletion-candidate-6",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2a805d94d8cdc7c7c1324ab2f478a3f88f65e6b4186e35525e989ff0d7b6fce0"
+    },
+    {
+      "row": 39,
+      "id": "write-permission-check-replacement-candidate-0",
+      "pair": "write-permission-check-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "600b4fa9145bed8e5fafbf01b522c038ee0dd3a84196e99e9f56e5cbcc89ee6c"
+    },
+    {
+      "row": 40,
+      "id": "write-permission-check-replacement-candidate-1",
+      "pair": "write-permission-check-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "feec3712167bf616323f494c44776b728abf05f9ef8765f557707319b2d25c0e"
+    },
+    {
+      "row": 41,
+      "id": "write-permission-check-replacement-candidate-2",
+      "pair": "write-permission-check-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        457,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e6ce933e19c73da229ffb9a08c7dbfc6dfa26ea2ccc9210da5d7d24c35f7fb77"
+    },
+    {
+      "row": 42,
+      "id": "write-permission-check-replacement-candidate-3",
+      "pair": "write-permission-check-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        458,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "75b6bce3ab0a869daf2a53de22c52ef3999695be5646694e8c653c8f2c773d55"
+    },
+    {
+      "row": 43,
+      "id": "write-permission-check-replacement-candidate-4",
+      "pair": "write-permission-check-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        457,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "9a8b5f666f70809308edb1acc7f2b2173f93a0b7cf633305ad84da949774b317"
+    },
+    {
+      "row": 44,
+      "id": "write-permission-check-replacement-candidate-5",
+      "pair": "write-permission-check-replacement-candidate-5",
+      "label": 0,
+      "features": [
+        461,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "75d0e47423d54a355d6b71d85828dd06802673deb9efce4d665b10b9a8b15b0c"
+    },
+    {
+      "row": 45,
+      "id": "write-permission-check-replacement-candidate-6",
+      "pair": "write-permission-check-replacement-candidate-6",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "42a0af0fd445ca3ce558756fd92ceaaa3162b8f5f140c5a971cf30f5d3142a7e"
+    },
+    {
+      "row": 46,
+      "id": "stable-manifest-order-deletion-candidate-0",
+      "pair": "stable-manifest-order-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        437,
+        0,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "user_sha256": "ca2ff342691b4fc4dc4b4f824ba3cf23acb5d8102c49e6df8cde2ca9107908d9"
+    },
+    {
+      "row": 47,
+      "id": "stable-manifest-order-deletion-candidate-1",
+      "pair": "stable-manifest-order-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        437,
+        0,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "user_sha256": "71af9fceb53afbe49d97159145aa46e2ba19b5bfeb66aa4a4ab64b29a3bba50e"
+    },
+    {
+      "row": 48,
+      "id": "stable-manifest-order-replacement-candidate-0",
+      "pair": "stable-manifest-order-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "user_sha256": "df97761050bbe7f5e09a1a671530d1019cc84b5fb6db1c303f23a10d7bf82940"
+    },
+    {
+      "row": 49,
+      "id": "stable-manifest-order-replacement-candidate-1",
+      "pair": "stable-manifest-order-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "user_sha256": "20b28608a53bce105b11ffdab0a04dd1d2931f341e5d0beb98d907b396f917eb"
+    },
+    {
+      "row": 50,
+      "id": "allocation-product-overflow-deletion-candidate-0",
+      "pair": "allocation-product-overflow-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        464,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b081512d948db8bca68d0e9709143ed2ad2bc741e6bd1e30996071d40ff57cca"
+    },
+    {
+      "row": 51,
+      "id": "allocation-product-overflow-deletion-candidate-1",
+      "pair": "allocation-product-overflow-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        466,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "882c930fa4fd1124a42194f5dc516b9f26a02fd7be0ae43b7de07c4fc04774c3"
+    },
+    {
+      "row": 52,
+      "id": "allocation-product-overflow-deletion-candidate-2",
+      "pair": "allocation-product-overflow-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        463,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "3c953a25e4b4a136736f2ca3b82f58e81f7a064c7f6f7b8c41415be6447d6a48"
+    },
+    {
+      "row": 53,
+      "id": "allocation-product-overflow-deletion-candidate-3",
+      "pair": "allocation-product-overflow-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        466,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "c24583d1ce1c596a0b4a0a2a64d9202a05a99aaaa0d77ba1f04fc32aa77518db"
+    },
+    {
+      "row": 54,
+      "id": "allocation-product-overflow-replacement-candidate-0",
+      "pair": "allocation-product-overflow-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        490,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "a320b27e21b08761d7496ba6cc456655ce1fb019651118af52601bb1af6580cc"
+    },
+    {
+      "row": 55,
+      "id": "allocation-product-overflow-replacement-candidate-1",
+      "pair": "allocation-product-overflow-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        492,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "8ac42621abbbc6c40016158f2cdc17d452352ee6bb101a527e2396736b75e083"
+    },
+    {
+      "row": 56,
+      "id": "allocation-product-overflow-replacement-candidate-2",
+      "pair": "allocation-product-overflow-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        489,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "cfaa156816154173f9e5ef747cec2bc94513e5316bcf8e01064340562a8a328b"
+    },
+    {
+      "row": 57,
+      "id": "allocation-product-overflow-replacement-candidate-3",
+      "pair": "allocation-product-overflow-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        492,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b36e7f026c95e2c0238c486ff25cb848c1284d3ca8931b93ca2995fa73eaa12e"
+    }
+  ],
+  "bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-prompts-1.jsonl",
+      "bytes": 136029,
+      "sha256": "7068711ad4c2e91a3a95a4826ac882639e775fa2a4dd3a1a6de5a0f4d1195b82"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "bytes": 259160,
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/token_audit.py",
+      "bytes": 5831,
+      "sha256": "dcc6e6145b6c1eedd100828c0a735895222e189e19738eba1b8e8da192b87c9f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "bytes": 6008,
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    }
+  ],
+  "bindings_unchanged": true,
+  "outputs": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-1/prompts.bin",
+      "bytes": 119677,
+      "sha256": "e85b13910c250b96e2455112ca820651c4c656bd2843c1acacb98b6a9a81b3f8"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-1/token-trace.jsonl",
+      "bytes": 131971,
+      "sha256": "d3cb0880f4139da10f3174156d4c7b45d23f62a16856c3c8abf6e6b4a69aafa2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-1/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "status": "PASS after resolving independently discovered collector reproduction-path defect",
+  "created_at_utc": "2026-10-01T10:03:25.526156+00:00",
+  "base_commit": "ac27d09d5ab880b1718a05a8cc35f0e69ae4e88c",
+  "scope": "Read-only independent review of maintained readout helpers, regression tests and documented fresh-reproduction closure; no model inference or fitting.",
+  "confirmed_fixes": [
+    {
+      "issue": "Python optimized execution removed assertions used as integrity gates",
+      "confirmation": "Maintained helpers have zero ast.Assert nodes. Preparation and summarization now invoke explicit require() raising ValueError. Ten independently executed workflow tests pass with both python -O and PYTHONOPTIMIZE=1, covering corpus fingerprint, structural roles, token trace boundaries/IDs, convergence/labels/fold membership/settings/duplicate fits and transitive counts/tail checks. Valid archived outputs reproduce exactly except summary source bindings."
+    },
+    {
+      "issue": "Nonzero phase exit discarded hashes of partial declared artifacts",
+      "confirmation": "Runner appends phase receipt and hashes every existing declared file before checking returncode. Missing declared paths are recorded separately. Tests verify partial failure exit7, exit0 with missing output rejected, and fully completed output accepted."
+    },
+    {
+      "issue": "Maintained-helper reproduction moved reference directory inside repository but run remained external scratch, breaking collector classification",
+      "discovered_by": "independent auditor",
+      "confirmation": "Collector now handles bound run-contained paths before repository/reference classification, preserving byte collision checks. Independently executed synthetic collection regression uses disjoint repository/helper/run directories and verifies original prompt/SFT bytes and manifest hashes; passes under python -O."
+    }
+  ],
+  "tests": {
+    "workflow_existing_10": "pass; command node --test test/readout_workflow.test.mjs before collector case was added",
+    "collector_regression": "pass; command node --test --test-name-pattern=collector|collection test/readout_workflow.test.mjs after fix",
+    "total_distinct_cases_independently_executed": 11,
+    "model_runs": 0
+  },
+  "reproduction_review": {
+    "maintained_helper_location": "training/readout",
+    "historical_draft": "training/results/2026-10-01-frozen-readout/readout-plan-draft-v2.json",
+    "native_compile_include": "-Itraining correctly resolves archived independent_solver_audit.c include",
+    "binding_closure": "Binder records maintained prepare/run/summary/binder bytes, current implementation/tests, frozen dataset/metadata/masks, binaries and external fresh evidence. Collector now accepts all documented external run inputs including parity SFT.",
+    "full_model_reproduction_executed": false
+  },
+  "archive_integrity": {
+    "checked_evidence_files": 110,
+    "all_manifest_hashes_and_byte_counts_match": true,
+    "tracked_training_results_byte_changes_from_HEAD": [],
+    "archived_helpers_and_historical_receipts_modified": false
+  },
+  "remaining_blockers": [],
+  "audited_sources": [
+    {
+      "path": "test/readout_workflow.test.mjs",
+      "bytes": 12247,
+      "sha256": "b015d2cfd82b6f8b6795c174803e7c3b184edb06239489bbf1dec7af937c2e10"
+    },
+    {
+      "path": "training/readout/bind_readout_v2.py",
+      "bytes": 5970,
+      "sha256": "91fa8d261738d0224288ff0960cd1f8202b4628f1ded87251999317678050960"
+    },
+    {
+      "path": "training/readout/collect_readout.py",
+      "bytes": 10779,
+      "sha256": "31725f08100335f1b51305aad5e23b298a6efd4b2bbda90b29ef7ae155b575d4"
+    },
+    {
+      "path": "training/readout/prepare_readout.py",
+      "bytes": 10598,
+      "sha256": "c27a6463da05ebaeead09e41a319a26ca08959656f6ccee3a20d2322663e5989"
+    },
+    {
+      "path": "training/readout/reproduction.json",
+      "bytes": 8189,
+      "sha256": "d10e1fa6d83f8b019e8e3147ed73463efa2700046fbb6d35a2c6582169b41728"
+    },
+    {
+      "path": "training/readout/run_readout.py",
+      "bytes": 7616,
+      "sha256": "e696604bc049a7cc7b33c2f4d805eeb0118143e27ae9a5420d0241db14b6cd44"
+    },
+    {
+      "path": "training/readout/summarize_readout.py",
+      "bytes": 13404,
+      "sha256": "77a13e32360acd55c5a778919223e63ac5a382026f94ab4b07d8384d2012be4b"
+    }
+  ],
+  "documentation_followup": "Verified documentation-only trim in reproduction.json by reconstructing its previously audited exact bytes: removed final diagnostic-limit execution note and changed the 2002-fits sentence to positive count wording. Commands, paths and helper code remain unchanged; no additional test run needed."
+}

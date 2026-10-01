@@ -1,0 +1,292 @@
+[
+  {
+    "id": "preserve-trie-credit-deletion-candidate-0",
+    "candidate": "Trie implementation derived from firwood/trie (MIT).",
+    "baseline": true
+  },
+  {
+    "id": "preserve-trie-credit-deletion-candidate-1",
+    "candidate": "Trie documentation derived from firwood/trie (MIT).",
+    "baseline": false
+  },
+  {
+    "id": "preserve-trie-credit-replacement-candidate-0",
+    "candidate": "Trie implementation derived from firwood/trie (MIT).",
+    "baseline": true
+  },
+  {
+    "id": "preserve-trie-credit-replacement-candidate-1",
+    "candidate": "Trie documentation derived from firwood/trie (MIT).",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-0",
+    "candidate": "    if (n == NULL) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-1",
+    "candidate": "    if (n == NULL) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-2",
+    "candidate": "    if (n == NULL) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-3",
+    "candidate": "    if (n == NULL) free(n);",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-4",
+    "candidate": "    if (n == NULL) perror(\"calloc\");",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-5",
+    "candidate": "    if (n == NULL) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-deletion-candidate-6",
+    "candidate": "    if (!n) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-0",
+    "candidate": "    if (n == NULL) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-1",
+    "candidate": "    if (n == NULL) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-2",
+    "candidate": "    if (n == NULL) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-3",
+    "candidate": "    if (n == NULL) free(n);",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-4",
+    "candidate": "    if (n == NULL) perror(\"calloc\");",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-5",
+    "candidate": "    if (n == NULL) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-null-guard-replacement-candidate-6",
+    "candidate": "    if (!n) errno = ENOMEM;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-0",
+    "candidate": "    if (workers == 0) return EINVAL;",
+    "baseline": true
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-1",
+    "candidate": "    if (total == 0) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-2",
+    "candidate": "    if (!total) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-3",
+    "candidate": "    if (total == 0) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-4",
+    "candidate": "    if (!total) perror(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-5",
+    "candidate": "    if (total == 0) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-deletion-candidate-6",
+    "candidate": "    if (total == 0) clearerr(stderr);",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-0",
+    "candidate": "    if (workers == 0) return EINVAL;",
+    "baseline": true
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-1",
+    "candidate": "    if (total == 0) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-2",
+    "candidate": "    if (!total) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-3",
+    "candidate": "    if (total == 0) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-4",
+    "candidate": "    if (!total) perror(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-5",
+    "candidate": "    if (total == 0) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "zero-worker-guard-replacement-candidate-6",
+    "candidate": "    if (total == 0) clearerr(stderr);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-1",
+    "candidate": "    if (id == 0) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-2",
+    "candidate": "    if (!id) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-3",
+    "candidate": "    if (id == 0) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-4",
+    "candidate": "    if (!id) perror(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-5",
+    "candidate": "    if (id == 0) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-deletion-candidate-6",
+    "candidate": "    if (id == 0) clearerr(stderr);",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-0",
+    "candidate": "    if (!session.can_write) return DENIED;",
+    "baseline": true
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-1",
+    "candidate": "    if (id == 0) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-2",
+    "candidate": "    if (!id) errno = EINVAL;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-3",
+    "candidate": "    if (id == 0) errno++;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-4",
+    "candidate": "    if (!id) perror(\"empty\");",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-5",
+    "candidate": "    if (id == 0) errno = 0;",
+    "baseline": false
+  },
+  {
+    "id": "write-permission-check-replacement-candidate-6",
+    "candidate": "    if (id == 0) clearerr(stderr);",
+    "baseline": false
+  },
+  {
+    "id": "stable-manifest-order-deletion-candidate-0",
+    "candidate": "names.sort();",
+    "baseline": true
+  },
+  {
+    "id": "stable-manifest-order-deletion-candidate-1",
+    "candidate": "output.sort();",
+    "baseline": false
+  },
+  {
+    "id": "stable-manifest-order-replacement-candidate-0",
+    "candidate": "names.sort();",
+    "baseline": true
+  },
+  {
+    "id": "stable-manifest-order-replacement-candidate-1",
+    "candidate": "output.sort();",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-deletion-candidate-0",
+    "candidate": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-product-overflow-deletion-candidate-1",
+    "candidate": "    if (count > SIZE_MAX / sizeof(uint32_t)) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-deletion-candidate-2",
+    "candidate": "    if (count > SIZE_MAX / sizeof(char)) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-deletion-candidate-3",
+    "candidate": "    if (count > SIZE_MAX / sizeof(uint64_t)) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-replacement-candidate-0",
+    "candidate": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;",
+    "baseline": true
+  },
+  {
+    "id": "allocation-product-overflow-replacement-candidate-1",
+    "candidate": "    if (count > SIZE_MAX / sizeof(uint32_t)) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-replacement-candidate-2",
+    "candidate": "    if (count > SIZE_MAX / sizeof(char)) return NULL;",
+    "baseline": false
+  },
+  {
+    "id": "allocation-product-overflow-replacement-candidate-3",
+    "candidate": "    if (count > SIZE_MAX / sizeof(uint64_t)) return NULL;",
+    "baseline": false
+  }
+]

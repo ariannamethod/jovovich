@@ -1,0 +1,538 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Independent v5 corpus and exact before/after semantics audit; no model inference or training.",
+  "bindings": [
+    {
+      "path": "training/sft_review_v4.jsonl",
+      "bytes": 163405,
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e"
+    },
+    {
+      "path": "training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "training/review_v5_design.json",
+      "bytes": 6245,
+      "sha256": "519423d9d0c0c688d69f35c1a2da31ac5c239089244a719c95c873cf22ff8af1"
+    }
+  ],
+  "structural": {
+    "total_rows": 76,
+    "review_rows": 52,
+    "pairs": 26,
+    "quartet_rows": 24,
+    "raw_rows_changed": 16,
+    "raw_rows_unchanged": 60,
+    "gold_answers_identical": 76,
+    "unchanged_system_messages": 76,
+    "changed_rows_have_only_one_unchanged_diff_context_line_changed": 16,
+    "matched_six_nontoken_nuisance_features_pairs": 12,
+    "pairwise_preamble_changed_listing_instruction_identical": 12,
+    "pairwise_label_difference_confined_to_one_context_line": 12,
+    "row_ids_and_pair_ids_absent_from_model_user_text": 52
+  },
+  "semantic": {
+    "states": 48,
+    "witness_cases": 424,
+    "method": "Independent exact snippet compilation/execution; sentinels intercept null dereference and zero division immediately before the operation; allocation/writes are recorded with stubs. Boundary grids include zero total with nonzero workers, writable id zero, full integer domains at representative bounds and allocation mismatch band. JS independently tests three insertion orders, empty and singleton maps. NOTICE checks the attribution object.",
+    "c_source_sha256": "ea4b3364bce2b3611df42f1787025d70cc4cc0f4b56e200097dd4051530f588e",
+    "c_compile_exit": 0,
+    "c_compile_stderr": "/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_4_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:26:12: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018n\u2019 will never be NULL [-Waddress]\n   26 |     if (&n == NULL) return NULL;\n      |            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:24:11: note: \u2018n\u2019 declared here\n   24 |     node *n = calloc(1, sizeof(*n));\n      |           ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_4_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:32:12: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018n\u2019 will never be NULL [-Waddress]\n   32 |     if (&n == NULL) return NULL;\n      |            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:31:11: note: \u2018n\u2019 declared here\n   31 |     node *n = calloc(1, sizeof(*n));\n      |           ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_6_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:52:12: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018n\u2019 will never be NULL [-Waddress]\n   52 |     if (&n == NULL) return NULL;\n      |            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:50:11: note: \u2018n\u2019 declared here\n   50 |     node *n = calloc(1, sizeof(*n));\n      |           ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_6_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:59:12: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018n\u2019 will never be NULL [-Waddress]\n   59 |     if (&n == NULL) return NULL;\n      |            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:57:11: note: \u2018n\u2019 declared here\n   57 |     node *n = calloc(1, sizeof(*n));\n      |           ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_8_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:79:17: warning: comparison of unsigned expression in \u2018< 0\u2019 is always false [-Wtype-limits]\n   79 |     if (workers < 0) return EINVAL;\n      |                 ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_8_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:84:17: warning: comparison of unsigned expression in \u2018< 0\u2019 is always false [-Wtype-limits]\n   84 |     if (workers < 0) return EINVAL;\n      |                 ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_10_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:101:17: warning: comparison of unsigned expression in \u2018< 0\u2019 is always false [-Wtype-limits]\n  101 |     if (workers < 0) return EINVAL;\n      |                 ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_10_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:107:17: warning: comparison of unsigned expression in \u2018< 0\u2019 is always false [-Wtype-limits]\n  107 |     if (workers < 0) return EINVAL;\n      |                 ^\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_12_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:125:28: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018can_write\u2019 will never be NULL [-Waddress]\n  125 |     if (&session.can_write == NULL) return DENIED;\n      |                            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:10:22: note: \u2018can_write\u2019 declared here\n   10 | typedef struct { int can_write; } session_t;\n      |                      ^~~~~~~~~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_12_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:129:28: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018can_write\u2019 will never be NULL [-Waddress]\n  129 |     if (&session.can_write == NULL) return DENIED;\n      |                            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:10:22: note: \u2018can_write\u2019 declared here\n   10 | typedef struct { int can_write; } session_t;\n      |                      ^~~~~~~~~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_14_before\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:143:28: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018can_write\u2019 will never be NULL [-Waddress]\n  143 |     if (&session.can_write == NULL) return DENIED;\n      |                            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:10:22: note: \u2018can_write\u2019 declared here\n   10 | typedef struct { int can_write; } session_t;\n      |                      ^~~~~~~~~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c: In function \u2018fixture_14_after\u2019:\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:148:28: warning: the comparison will always evaluate as \u2018false\u2019 for the address of \u2018can_write\u2019 will never be NULL [-Waddress]\n  148 |     if (&session.can_write == NULL) return DENIED;\n      |                            ^~\n/tmp/jovovich-v5-independent-kjjbric9/probe.c:10:22: note: \u2018can_write\u2019 declared here\n   10 | typedef struct { int can_write; } session_t;\n      |                      ^~~~~~~~~\n",
+    "expected_nonfatal_warning_classes": [
+      "-Waddress",
+      "-Wtype-limits"
+    ],
+    "c_run_exit": 0,
+    "javascript_exit": 0,
+    "records": [
+      {
+        "id": "preserve-trie-credit-deletion-concern",
+        "stage": "before",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie documentation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-deletion-concern",
+        "stage": "after",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": false,
+        "credit_lines": [
+          "Trie documentation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-deletion-clean",
+        "stage": "before",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-deletion-clean",
+        "stage": "after",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-replacement-concern",
+        "stage": "before",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie documentation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-replacement-concern",
+        "stage": "after",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": false,
+        "credit_lines": [
+          "Trie documentation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-replacement-clean",
+        "stage": "before",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie design adapted from firwood/trie (MIT).",
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "preserve-trie-credit-replacement-clean",
+        "stage": "after",
+        "family": "preserve-trie-credit",
+        "language": "NOTICE",
+        "implementation_credit_present": true,
+        "credit_lines": [
+          "Trie implementation derived from firwood/trie (MIT)."
+        ],
+        "witness_cases": 1
+      },
+      {
+        "id": "allocation-null-guard-deletion-concern",
+        "stage": "before",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-deletion-concern",
+        "stage": "after",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-deletion-clean",
+        "stage": "before",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-deletion-clean",
+        "stage": "after",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-replacement-concern",
+        "stage": "before",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-replacement-concern",
+        "stage": "after",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-replacement-clean",
+        "stage": "before",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "allocation-null-guard-replacement-clean",
+        "stage": "after",
+        "family": "allocation-null-guard",
+        "witness_cases": 10
+      },
+      {
+        "id": "zero-worker-guard-deletion-concern",
+        "stage": "before",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-deletion-concern",
+        "stage": "after",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-deletion-clean",
+        "stage": "before",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-deletion-clean",
+        "stage": "after",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-replacement-concern",
+        "stage": "before",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-replacement-concern",
+        "stage": "after",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-replacement-clean",
+        "stage": "before",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "zero-worker-guard-replacement-clean",
+        "stage": "after",
+        "family": "zero-worker-guard",
+        "witness_cases": 16
+      },
+      {
+        "id": "write-permission-check-deletion-concern",
+        "stage": "before",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-deletion-concern",
+        "stage": "after",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-deletion-clean",
+        "stage": "before",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-deletion-clean",
+        "stage": "after",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-replacement-concern",
+        "stage": "before",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-replacement-concern",
+        "stage": "after",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-replacement-clean",
+        "stage": "before",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "write-permission-check-replacement-clean",
+        "stage": "after",
+        "family": "write-permission-check",
+        "witness_cases": 12
+      },
+      {
+        "id": "stable-manifest-order-deletion-concern",
+        "stage": "before",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-deletion-concern",
+        "stage": "after",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "gamma:5\nalpha:5\nbeta:4",
+          "alpha:5\nbeta:4\ngamma:5",
+          "beta:4\ngamma:5\nalpha:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-deletion-clean",
+        "stage": "before",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-deletion-clean",
+        "stage": "after",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-replacement-concern",
+        "stage": "before",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-replacement-concern",
+        "stage": "after",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "gamma:5\nalpha:5\nbeta:4",
+          "alpha:5\nbeta:4\ngamma:5",
+          "beta:4\ngamma:5\nalpha:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-replacement-clean",
+        "stage": "before",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "stable-manifest-order-replacement-clean",
+        "stage": "after",
+        "family": "stable-manifest-order",
+        "language": "JavaScript",
+        "outputs": [
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5",
+          "alpha:5\nbeta:4\ngamma:5"
+        ],
+        "witness_cases": 5
+      },
+      {
+        "id": "allocation-product-overflow-deletion-concern",
+        "stage": "before",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-deletion-concern",
+        "stage": "after",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-deletion-clean",
+        "stage": "before",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-deletion-clean",
+        "stage": "after",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-replacement-concern",
+        "stage": "before",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-replacement-concern",
+        "stage": "after",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-replacement-clean",
+        "stage": "before",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      },
+      {
+        "id": "allocation-product-overflow-replacement-clean",
+        "stage": "after",
+        "family": "allocation-product-overflow",
+        "witness_cases": 9
+      }
+    ]
+  },
+  "additional_count_audit": {
+    "feature": "after-side return token count",
+    "pairs": [
+      {
+        "pair": "preserve-trie-credit-deletion",
+        "return_counts_in_row_order": [
+          0,
+          0
+        ],
+        "equal": true
+      },
+      {
+        "pair": "preserve-trie-credit-replacement",
+        "return_counts_in_row_order": [
+          0,
+          0
+        ],
+        "equal": true
+      },
+      {
+        "pair": "allocation-null-guard-deletion",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "allocation-null-guard-replacement",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "zero-worker-guard-deletion",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "zero-worker-guard-replacement",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "write-permission-check-deletion",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "write-permission-check-replacement",
+        "return_counts_in_row_order": [
+          2,
+          2
+        ],
+        "equal": true
+      },
+      {
+        "pair": "stable-manifest-order-deletion",
+        "return_counts_in_row_order": [
+          0,
+          0
+        ],
+        "equal": true
+      },
+      {
+        "pair": "stable-manifest-order-replacement",
+        "return_counts_in_row_order": [
+          0,
+          0
+        ],
+        "equal": true
+      },
+      {
+        "pair": "allocation-product-overflow-deletion",
+        "return_counts_in_row_order": [
+          1,
+          1
+        ],
+        "equal": true
+      },
+      {
+        "pair": "allocation-product-overflow-replacement",
+        "return_counts_in_row_order": [
+          1,
+          1
+        ],
+        "equal": true
+      }
+    ],
+    "matched_pairs": 12,
+    "mismatched_pairs": 0,
+    "scope": "The seven prescribed nuisance coordinates are the declared matching target. This additional feature records residual lexical structure."
+  },
+  "native_token_matching": "Use the separately bound native-token audit for the seventh coordinate."
+}

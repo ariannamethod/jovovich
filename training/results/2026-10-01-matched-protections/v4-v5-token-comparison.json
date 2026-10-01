@@ -1,0 +1,192 @@
+{
+  "status": "pass",
+  "modified_pairs": 12,
+  "seven_features_and_after_return_count_equal_for_every_modified_pair": true,
+  "retained_review_pairs": 14,
+  "retained_review_rows": 28,
+  "retained_voice_code_rows": 24,
+  "all_52_retained_rows_exactly_equal": true,
+  "v4_all_seven_equal_pairs": 5,
+  "v5_all_seven_equal_pairs": 17,
+  "v4_receipt_sha256": "ca2e67514d81fc5dadde36fe05b60094889b6a2bebab8125f925af6bc201cfa4",
+  "v5_receipt_sha256": "2e3e939a49b7b362579bd22fb7899b1013ee2fabc8a29673c7e42e20bf8eacbd",
+  "modified_pairs_details": [
+    {
+      "pair": "preserve-trie-credit-deletion",
+      "rows": [
+        8,
+        9
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "preserve-trie-credit-replacement",
+      "rows": [
+        10,
+        11
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion",
+      "rows": [
+        20,
+        21
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement",
+      "rows": [
+        22,
+        23
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion",
+      "rows": [
+        24,
+        25
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement",
+      "rows": [
+        26,
+        27
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion",
+      "rows": [
+        36,
+        37
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement",
+      "rows": [
+        38,
+        39
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-deletion",
+      "rows": [
+        40,
+        41
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "stable-manifest-order-replacement",
+      "rows": [
+        42,
+        43
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-deletion",
+      "rows": [
+        48,
+        49
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": true,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-product-overflow-replacement",
+      "rows": [
+        50,
+        51
+      ],
+      "opposite_labels": true,
+      "all_seven_equal": true,
+      "return_count_equal": true,
+      "all_eight_equal": true,
+      "raw_user_utf8_bytes_equal": true,
+      "differing_features": []
+    }
+  ],
+  "affected_review_rows": 24,
+  "actually_changed_review_rows": 16,
+  "unchanged_rows_within_affected_quartets": 8,
+  "changed_review_row_ids": [
+    "preserve-trie-credit-deletion-concern",
+    "preserve-trie-credit-replacement-concern",
+    "allocation-null-guard-deletion-concern",
+    "allocation-null-guard-replacement-concern",
+    "zero-worker-guard-deletion-concern",
+    "zero-worker-guard-replacement-concern",
+    "write-permission-check-deletion-concern",
+    "write-permission-check-deletion-clean",
+    "write-permission-check-replacement-concern",
+    "write-permission-check-replacement-clean",
+    "stable-manifest-order-deletion-concern",
+    "stable-manifest-order-replacement-concern",
+    "allocation-product-overflow-deletion-concern",
+    "allocation-product-overflow-deletion-clean",
+    "allocation-product-overflow-replacement-concern",
+    "allocation-product-overflow-replacement-clean"
+  ]
+}

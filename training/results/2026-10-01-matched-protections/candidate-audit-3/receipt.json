@@ -1,0 +1,1051 @@
+{
+  "status": "complete",
+  "command": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-3/prompts.bin",
+    "--tokenize-only"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 0.3935203500004718,
+  "native_operation": "GGUF metadata and tokenizer loading, exact ChatML tokenization, no forward pass",
+  "feature_names": [
+    "native_prompt_token_count_without_common_prefix",
+    "added_lines",
+    "removed_lines",
+    "context_lines",
+    "after_if_statements",
+    "after_sort_calls",
+    "after_firwood_trie_occurrences"
+  ],
+  "review_rows": 36,
+  "pairs": [
+    {
+      "pair": "allocation-null-guard-deletion-candidate-0",
+      "rows": [
+        0
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-1",
+      "rows": [
+        1
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-2",
+      "rows": [
+        2
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-3",
+      "rows": [
+        3
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-4",
+      "rows": [
+        4
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-5",
+      "rows": [
+        5
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-6",
+      "rows": [
+        6
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-deletion-candidate-7",
+      "rows": [
+        7
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-0",
+      "rows": [
+        8
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-1",
+      "rows": [
+        9
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-2",
+      "rows": [
+        10
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-3",
+      "rows": [
+        11
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-4",
+      "rows": [
+        12
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-5",
+      "rows": [
+        13
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-6",
+      "rows": [
+        14
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "allocation-null-guard-replacement-candidate-7",
+      "rows": [
+        15
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-0",
+      "rows": [
+        16
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-1",
+      "rows": [
+        17
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-2",
+      "rows": [
+        18
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-3",
+      "rows": [
+        19
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-deletion-candidate-4",
+      "rows": [
+        20
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-0",
+      "rows": [
+        21
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-1",
+      "rows": [
+        22
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-2",
+      "rows": [
+        23
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-3",
+      "rows": [
+        24
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "zero-worker-guard-replacement-candidate-4",
+      "rows": [
+        25
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-0",
+      "rows": [
+        26
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-1",
+      "rows": [
+        27
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-2",
+      "rows": [
+        28
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-3",
+      "rows": [
+        29
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-deletion-candidate-4",
+      "rows": [
+        30
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-0",
+      "rows": [
+        31
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-1",
+      "rows": [
+        32
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-2",
+      "rows": [
+        33
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-3",
+      "rows": [
+        34
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    },
+    {
+      "pair": "write-permission-check-replacement-candidate-4",
+      "rows": [
+        35
+      ],
+      "opposite_labels": false,
+      "all_seven_equal": false,
+      "differing_features": []
+    }
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "id": "allocation-null-guard-deletion-candidate-0",
+      "pair": "allocation-null-guard-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b94811f6620b1e161f002a35c8d882f5427b267484b0278e87c467014921f9f4"
+    },
+    {
+      "row": 1,
+      "id": "allocation-null-guard-deletion-candidate-1",
+      "pair": "allocation-null-guard-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "31e1b33f9deb730a08cef396da6d72f972fafe13b2cdad12511abcada25f7531"
+    },
+    {
+      "row": 2,
+      "id": "allocation-null-guard-deletion-candidate-2",
+      "pair": "allocation-null-guard-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "223cc0d8762f2637b28ca38a0e398620e5e20010ca3592aee8e9b17a085c19ce"
+    },
+    {
+      "row": 3,
+      "id": "allocation-null-guard-deletion-candidate-3",
+      "pair": "allocation-null-guard-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        445,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "eea2a906afe1ac72d186e1882c0b1f670e85f64097691165adc4cde249a67214"
+    },
+    {
+      "row": 4,
+      "id": "allocation-null-guard-deletion-candidate-4",
+      "pair": "allocation-null-guard-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        445,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "3043ea606c1c19701b154afa301d896a2e608bbed76c63675b418ecd5d2646f4"
+    },
+    {
+      "row": 5,
+      "id": "allocation-null-guard-deletion-candidate-5",
+      "pair": "allocation-null-guard-deletion-candidate-5",
+      "label": 0,
+      "features": [
+        444,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "29116a983d3df3639be0a858ea67a44edf48ef79fcd2cb266e210af08f85bcbc"
+    },
+    {
+      "row": 6,
+      "id": "allocation-null-guard-deletion-candidate-6",
+      "pair": "allocation-null-guard-deletion-candidate-6",
+      "label": 0,
+      "features": [
+        443,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2e0f16b08b900ea61ba7de66cc972b2ef06a0cb1446e83c523f3d08f19d43bfc"
+    },
+    {
+      "row": 7,
+      "id": "allocation-null-guard-deletion-candidate-7",
+      "pair": "allocation-null-guard-deletion-candidate-7",
+      "label": 0,
+      "features": [
+        443,
+        0,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2cc4e8ec2a40d34629429e423ea6772dad0314eec649ed484eebb8d469ea0b41"
+    },
+    {
+      "row": 8,
+      "id": "allocation-null-guard-replacement-candidate-0",
+      "pair": "allocation-null-guard-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "5aeeced0816764fce1289cea2d1f691ffde329a323741752e595ede6516ca714"
+    },
+    {
+      "row": 9,
+      "id": "allocation-null-guard-replacement-candidate-1",
+      "pair": "allocation-null-guard-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "a498c68c2d0bf545668a0412ada0ac29f824012b95862c2bcfa239f668379516"
+    },
+    {
+      "row": 10,
+      "id": "allocation-null-guard-replacement-candidate-2",
+      "pair": "allocation-null-guard-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d70ed218b0d4b4acf559aede97f88374ab18ca0ec7807c52c2634c011eb68fb0"
+    },
+    {
+      "row": 11,
+      "id": "allocation-null-guard-replacement-candidate-3",
+      "pair": "allocation-null-guard-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        471,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "9c03562509b797f288317f5908d4baacd0cffacad49a667c3417d331d852ce56"
+    },
+    {
+      "row": 12,
+      "id": "allocation-null-guard-replacement-candidate-4",
+      "pair": "allocation-null-guard-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        471,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f946a8820145983525b56f5b328aac23cffe29747b7ffe5b833daa1f154998b2"
+    },
+    {
+      "row": 13,
+      "id": "allocation-null-guard-replacement-candidate-5",
+      "pair": "allocation-null-guard-replacement-candidate-5",
+      "label": 0,
+      "features": [
+        470,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f25e107985de050f14018baf41b8603b1beb0d0b1431767e8645840c3955beb7"
+    },
+    {
+      "row": 14,
+      "id": "allocation-null-guard-replacement-candidate-6",
+      "pair": "allocation-null-guard-replacement-candidate-6",
+      "label": 0,
+      "features": [
+        469,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "0f33315497df35da1136da6657e143de51211328540c1005a52c01d44f9b1106"
+    },
+    {
+      "row": 15,
+      "id": "allocation-null-guard-replacement-candidate-7",
+      "pair": "allocation-null-guard-replacement-candidate-7",
+      "label": 0,
+      "features": [
+        469,
+        1,
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f063280bd6e95e6dedcc347792dbb6251c838bf442d1675fb1ccdafd2fb72478"
+    },
+    {
+      "row": 16,
+      "id": "zero-worker-guard-deletion-candidate-0",
+      "pair": "zero-worker-guard-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        441,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "a526aa6e370d72112575b8f16267c319cd523fbec7c2b1ed74070d0cc8f79efc"
+    },
+    {
+      "row": 17,
+      "id": "zero-worker-guard-deletion-candidate-1",
+      "pair": "zero-worker-guard-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        441,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "b23bad996969b724bc44df997c6c9156051ed0c25115ec83af58c5b489993c25"
+    },
+    {
+      "row": 18,
+      "id": "zero-worker-guard-deletion-candidate-2",
+      "pair": "zero-worker-guard-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        442,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d4cf4e339189a1ad6659ee4c950938dd4b54fdeea8ee3019028e67c77069ac4d"
+    },
+    {
+      "row": 19,
+      "id": "zero-worker-guard-deletion-candidate-3",
+      "pair": "zero-worker-guard-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        442,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f0b712a091eb74a28b7d1bd08d52d2139f083bbba6b2833ccb7c04ffd76e885e"
+    },
+    {
+      "row": 20,
+      "id": "zero-worker-guard-deletion-candidate-4",
+      "pair": "zero-worker-guard-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        441,
+        0,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "f569fad0b2855ef0e27d3859bd6c17e0b74713cde86350e072008fca6c6f8b82"
+    },
+    {
+      "row": 21,
+      "id": "zero-worker-guard-replacement-candidate-0",
+      "pair": "zero-worker-guard-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        467,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "643bd17ea4c15ab8fdd5c7fe28cf9791a3657493a60479d66464413ab8de6cf9"
+    },
+    {
+      "row": 22,
+      "id": "zero-worker-guard-replacement-candidate-1",
+      "pair": "zero-worker-guard-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        467,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "4fec5ccf48d88dcb1a1921425c618f16392b5b23b1bbfdd5ff4b75f027598adf"
+    },
+    {
+      "row": 23,
+      "id": "zero-worker-guard-replacement-candidate-2",
+      "pair": "zero-worker-guard-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        468,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e8cd273c67934e668240c65c54fb39c7637d7b14c4c4e2d83a037d9983f73707"
+    },
+    {
+      "row": 24,
+      "id": "zero-worker-guard-replacement-candidate-3",
+      "pair": "zero-worker-guard-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        468,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "40fed35c1e469b62b9f30b12dd7e5eeaa30ca6810a01ad0391ed6139b4e6acf1"
+    },
+    {
+      "row": 25,
+      "id": "zero-worker-guard-replacement-candidate-4",
+      "pair": "zero-worker-guard-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        467,
+        1,
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e9be6fdb1b6eb07e957237d071254f6f3050f06b5b09ea2e7061cb6d2a14e751"
+    },
+    {
+      "row": 26,
+      "id": "write-permission-check-deletion-candidate-0",
+      "pair": "write-permission-check-deletion-candidate-0",
+      "label": 0,
+      "features": [
+        433,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d0e9c2df7e5c81203d63d991efdb971f969f000b5a5c9c782c16d4054e83b011"
+    },
+    {
+      "row": 27,
+      "id": "write-permission-check-deletion-candidate-1",
+      "pair": "write-permission-check-deletion-candidate-1",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "2079927c8c8c146723a699f4988f7981c6db021b9d95aa708bd970cdd2939dad"
+    },
+    {
+      "row": 28,
+      "id": "write-permission-check-deletion-candidate-2",
+      "pair": "write-permission-check-deletion-candidate-2",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "e383d0d286fd9634a7e638926c599b51860b8b07c19fbf83af14c7c67803bc9c"
+    },
+    {
+      "row": 29,
+      "id": "write-permission-check-deletion-candidate-3",
+      "pair": "write-permission-check-deletion-candidate-3",
+      "label": 0,
+      "features": [
+        431,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "fdde8eb8a9b9812cebdb923a153c6855d25324323831da1ca801f0257b7f4c6f"
+    },
+    {
+      "row": 30,
+      "id": "write-permission-check-deletion-candidate-4",
+      "pair": "write-permission-check-deletion-candidate-4",
+      "label": 0,
+      "features": [
+        434,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "d296fa445c040badb7fb04022a66a3d929fa76884edf4d1f3b4e781b305280bd"
+    },
+    {
+      "row": 31,
+      "id": "write-permission-check-replacement-candidate-0",
+      "pair": "write-permission-check-replacement-candidate-0",
+      "label": 0,
+      "features": [
+        459,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "600b4fa9145bed8e5fafbf01b522c038ee0dd3a84196e99e9f56e5cbcc89ee6c"
+    },
+    {
+      "row": 32,
+      "id": "write-permission-check-replacement-candidate-1",
+      "pair": "write-permission-check-replacement-candidate-1",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "6f17ed83c53b2d88017a1ad68f23bd603af0d04b6abd7cfd8622591ff694032a"
+    },
+    {
+      "row": 33,
+      "id": "write-permission-check-replacement-candidate-2",
+      "pair": "write-permission-check-replacement-candidate-2",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "0ffc3f4a6345e4db043c00c8ec07bb68031d5749f1dd0afca6a69364cb6c5742"
+    },
+    {
+      "row": 34,
+      "id": "write-permission-check-replacement-candidate-3",
+      "pair": "write-permission-check-replacement-candidate-3",
+      "label": 0,
+      "features": [
+        457,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "019c420238f7b293b2c55930441c8719d3db74ccd71a585c09a681b74127b644"
+    },
+    {
+      "row": 35,
+      "id": "write-permission-check-replacement-candidate-4",
+      "pair": "write-permission-check-replacement-candidate-4",
+      "label": 0,
+      "features": [
+        460,
+        1,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "user_sha256": "fcb27f90525dea02d93bfad5ee8b73b12a4ebd5dc9ac518b3effd688779fd02d"
+    }
+  ],
+  "bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-prompts-3.jsonl",
+      "bytes": 83568,
+      "sha256": "7e761e0768909b1feb6dbd6eb4555e3dd4ce0ad50029c2bc15ff0565be5361f9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "bytes": 259160,
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/token_audit.py",
+      "bytes": 5831,
+      "sha256": "dcc6e6145b6c1eedd100828c0a735895222e189e19738eba1b8e8da192b87c9f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "bytes": 6008,
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    }
+  ],
+  "bindings_unchanged": true,
+  "outputs": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-3/prompts.bin",
+      "bytes": 73482,
+      "sha256": "a441c2b2360edc7137c8211beaf25f113240e405b95102ca04d5e4ce100a39c9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-3/token-trace.jsonl",
+      "bytes": 81404,
+      "sha256": "a8ab9147f2974f9ac42c47b6ab42a6548b60a7341e3e881b99a7a2dc9451e399"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/candidate-audit-3/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

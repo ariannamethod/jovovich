@@ -1,0 +1,127 @@
+{
+  "status": "completed",
+  "bindings": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/holdout-v5-final-tokenize.jsonl",
+      "sha256": "478de2e3710759829da146fbaa140502f4a0f57cc93dde0e313385c5f9367812",
+      "bytes": 60864
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+      "sha256": "df2f2abf46683d75469af4a3fd1231be092f916122613d4c7e72827faf909119",
+      "bytes": 267896
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/preflight_matched.py",
+      "sha256": "64d654718e54ec72c91975ccdd12455093da7062dfc14ac297d3b296cba0c6c3",
+      "bytes": 2991
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    }
+  ],
+  "phases": [
+    {
+      "argv": [
+        "python3",
+        "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/data.bin",
+        "--sft",
+        "/workspace/scratch/ec5ba60588d8/holdout-v5-final-tokenize.jsonl",
+        "--sft-only",
+        "--review-pairs",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/pairs.bin"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.04131594100181246,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/phase-0.stdout",
+        "sha256": "a8cc4b9ace6a29596af9eba9b812c7a75aa06ecbd4b205e52896fa49d942d92e",
+        "bytes": 213
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/phase-0.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/matched-reference/probe-matched",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/data.bin",
+        "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/pairs.bin",
+        "40"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.4264632939994044,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/phase-1.stdout",
+        "sha256": "5a3c7f6c104d5244f2bb4e32d780bd513b6662b4c15393da9ad9d7ef6e8fe8d6",
+        "bytes": 66193
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/phase-1.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    }
+  ],
+  "model_forward_calls": 0,
+  "summary": {
+    "stage": "summary",
+    "pass": true,
+    "examples": 24,
+    "review_examples": 24,
+    "readout_only_examples": 0,
+    "review_pairs": 12,
+    "all_completion_targets": 574,
+    "decision_positions": 24,
+    "residual_positions": 550,
+    "joint_positions": 574,
+    "decision_coefficient": 0.041666666666666664,
+    "residual_coefficient": 0.0018181818181818182,
+    "native_float_decision_coefficient": 0.0416666679,
+    "native_float_residual_coefficient": 0.00181818183,
+    "microbatch_tokens": 40,
+    "microbatches_per_update": 15,
+    "last_microbatch_tokens": 14,
+    "chatml_comparisons": 48,
+    "prompt_tokens_max": 547,
+    "full_tokens_max": 590,
+    "model_context": 32768,
+    "chatml_im_start": 151644,
+    "chatml_im_end": 151645,
+    "model_forward_calls": 0
+  },
+  "sources_unchanged": true,
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/data.bin",
+      "sha256": "f33134d1c6e9b9c36c17df0bc0bcf0112b0e5e41c8b95278590c09d126d06414",
+      "bytes": 54968
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/holdout-v5-native-v2/pairs.bin",
+      "sha256": "cd46dda6f415dd125826c75530cbec8aa5c320fcd9b7041438a899404879734c",
+      "bytes": 112
+    }
+  ]
+}

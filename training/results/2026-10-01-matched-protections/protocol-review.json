@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "created_at_utc": "2026-10-01T10:17:51.927552+00:00",
+  "scope": "Independent read-only review of matched-protection scientific protocol and reproduction commands; this receipt records checks already performed.",
+  "sources": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/protocol.json",
+      "bytes": 10483,
+      "sha256": "1e66ed198c6f4b62b2b71d09e70c7b4c7aed9e3523380719042e1037103d8992"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/reproduction.json",
+      "bytes": 8238,
+      "sha256": "f349043a36a9ad97d8b73286f5a0a6c2ee54d487866bed53768a4cdb47168530"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-reference/makefile-test-dependency.json",
+      "bytes": 1729,
+      "sha256": "f7d8aeab477e7c61a4593f7826ee2494e273af225050c55e3a5f74ba4041b467"
+    }
+  ],
+  "confirmed_checks": [
+    "Twenty-four unchanged fixed-training fields match the prior counterbalanced-v4 plan; intended corpus and data-phase changes are explicit. Checkpoint selection and full-answer judgment contracts are identical.",
+    "Nine protocol-bound file records matched actual SHA256 and byte counts at review. Native trainer and inference source match the prior-v4 source bytes.",
+    "Prior selected comparator update100, private repository, revision, filename, SHA256 and byte count agree with both uploaded-weight and downloaded-weight verification receipts.",
+    "Established diagnostics contain exactly12 rows and6 pairs.",
+    "Final training preflight packs76 SFT-shaped rows including52 review rows. Final held-out preflight packs24 evaluation-only SFT projection rows, not the raw review-fixture schema. Both completed with zero model forward calls.",
+    "The earlier wrong-schema holdout preflight is preserved separately as a failed zero-forward attempt.",
+    "Reproduction creates the held-out SFT projection before tokenizer/objective checks. Builder, projection, preflight and scorer CLI arguments match their actual parsers; -Itraining resolves the archived native probe include.",
+    "Planned training command and environment match prior-v4 settings:100 updates, learning rate0.0001, microbatch40, save interval25, joint objective, four native threads and NT_NO_I8=1. Eligible checkpoint updates remain25,50,100.",
+    "Reviewed Makefile change adds only build/jovovich-readout-fit to test prerequisites, closing clean-build command dependencies without modifying compilation recipes or native source."
+  ],
+  "model_or_training_runs_by_auditor": 0,
+  "additional_tests_run_for_this_review": 0,
+  "scientific_design_frozen": true,
+  "runtime_execution_binding_still_future": true,
+  "remaining_blockers": [],
+  "clean_build_receipt": "Root-provided clean-build Makefile dependency receipt is bound as source evidence; no additional test execution by this auditor."
+}
