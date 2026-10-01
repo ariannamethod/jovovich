@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "started_at_utc": "2026-10-01T09:15:07.592341+00:00",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan.json",
+    "sha256": "1515115a0f19fb0c95868cf4dd8354c5eee2b7fee4a7c592f7a43279190823a3",
+    "bytes": 30427
+  },
+  "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+  "environment_overrides": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "phases": [
+    {
+      "name": "parity",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-input.bin",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-sft.bin",
+        "4"
+      ],
+      "elapsed_seconds": 0.4363820049984497,
+      "returncode": 1,
+      "peak_rss_kib": 684636,
+      "user_cpu_seconds": 0.189018,
+      "system_cpu_seconds": 0.24618099999999998,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stdout.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stderr.txt",
+        "sha256": "20e79ac780d418bb7fdcf4e4818658fdcff9c097dd68426a0304fbadca586718",
+        "bytes": 196
+      },
+      "created_files": []
+    }
+  ],
+  "model_training": false,
+  "model_weights_changed": false,
+  "all_frozen_inputs_unchanged": false,
+  "peak_rss_units": "KiB on this Linux host",
+  "peak_rss_note": "Exact child rusage from Linux wait4 for each phase.",
+  "failure_type": "ValueError",
+  "failure": "native/procedure phase failed: parity",
+  "elapsed_seconds": 1.9879863529968134,
+  "finished_at_utc": "2026-10-01T09:15:09.580324+00:00"
+}

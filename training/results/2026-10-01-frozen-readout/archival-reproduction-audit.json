@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "status": "Static archive/reproduction review passed; no inference, fitting, numerical rerun or file collection performed",
+  "plan_sha256": "1515115a0f19fb0c95868cf4dd8354c5eee2b7fee4a7c592f7a43279190823a3",
+  "frozen_binding_count": 50,
+  "all_bindings_match": true,
+  "native_dependency_closure": {
+    "compiler_flags": [
+      "-Ideps/notorch",
+      "-O2",
+      "-std=gnu11",
+      "-march=native",
+      "-DUSE_SIMD",
+      "-MM"
+    ],
+    "all_local_dependencies_bound": true,
+    "files": [
+      "deps/notorch/examples/bpe.c",
+      "deps/notorch/examples/bpe.h",
+      "deps/notorch/examples/unicode_numbers.h",
+      "deps/notorch/gguf.c",
+      "deps/notorch/gguf.h",
+      "deps/notorch/harness/arch.h",
+      "deps/notorch/harness/arch_llama.c",
+      "deps/notorch/harness/arch_models.h",
+      "deps/notorch/harness/runtime.c",
+      "deps/notorch/harness/runtime.h",
+      "deps/notorch/notorch.c",
+      "deps/notorch/notorch.h",
+      "deps/notorch/notorch_simd.h",
+      "training/extract_readout.c",
+      "training/probe_readout.c",
+      "training/train_mlp.c"
+    ],
+    "limit": "System/compiler headers and libraries are not copied; compiler/CPU metadata is a separate environment receipt. Inactive CUDA/scalar implementation branches are not part of this binary."
+  },
+  "output_integrity": "Runner verifies frozen inputs before and after each phase; accumulates and rehashes every previous phase stream/created artifact before the next phase and at completion. Archive collector independently repeats these output checks.",
+  "reproduction_helpers_use_explicit_fresh_paths": true,
+  "historical_receipts_rewritten": false,
+  "no_model_or_classifier_coefficients_exported": true,
+  "reproduction_limits": [
+    "Fresh compiler and CPU can change exact executable and floating-point bytes; new run must bind new binaries and pass fixed numeric gates.",
+    "A failed run cannot reuse the same outputs; preserve failure and create a separately versioned rerun.",
+    "Full model training or full-review generation is not performed by this diagnostic.",
+    "Fitted classifier coefficients/intercept are deliberately not retained; fitting is reproducible from frozen feature matrices, sidecars, masks and native source.",
+    "Static command review is not a second end-to-end rerun of the live model experiment."
+  ]
+}

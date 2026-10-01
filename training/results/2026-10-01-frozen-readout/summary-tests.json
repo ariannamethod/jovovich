@@ -1,0 +1,16 @@
+{
+  "summarizer_sha256": "60d6dcae257c40302d1d544a916faa43fcdfc4206a30db100673a5f38734cee7",
+  "synthetic_fits": 4004,
+  "z_observed_complete_pairs": 26,
+  "z_permuted_complete_pairs": 0,
+  "nuisance_correct_labels": 26,
+  "nuisance_complete_pairs": 0,
+  "nested_same_full_diff_pairs": 6,
+  "plus_one_tail_extremes": [
+    0.01,
+    1.0
+  ],
+  "capacity_success_distinguished_from_convergence": true,
+  "corrupt_label_rejected": true,
+  "scope": "Synthetic saved-prediction fixtures only; no model inference or fitting."
+}

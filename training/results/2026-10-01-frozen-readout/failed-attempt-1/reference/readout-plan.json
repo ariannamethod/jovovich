@@ -1,0 +1,538 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN before any model feature extraction or classifier fitting",
+  "protocol_frozen": true,
+  "question": "Does a frozen pre-final-MLP state support template-family-held-out binary concern/clean separation beyond a prespecified lexical nuisance model?",
+  "hypothesis_limit": "Accessible binary information at a supplied decision prefix is not complete review competence, natural prefix entry, or identification of a sole causal bottleneck in prior training.",
+  "model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "weights_frozen": true,
+    "native_only": "C performs model inference, feature normalization, optimization, logits and predictions. Python serializes inputs, prepares fixed lexical counts, orchestrates receipts and aggregates saved predictions into label/pair counts and permutation rank tail fractions; it performs no model arithmetic."
+  },
+  "representation": {
+    "primary": "896-dimensional post-final-attention residual z before final MLP",
+    "prompt": "Native Qwen ChatML from system and user only, followed by the assistant header and the common three-token answer prefix",
+    "common_prefix_ids": [
+      4913,
+      3903,
+      819
+    ],
+    "capture_position_zero_based": "native_prompt_token_count + 2",
+    "capture_boundary": "The class-specific target and all later gold answer tokens are excluded. The input binary contains only system and user UTF-8; labels, IDs, target lengths and answers exist solely in sidecars.",
+    "answer_position_zero": "Excluded from this experiment; one primary state only.",
+    "invariance": "Prior LoRA touched only final MLP gate/up/down; this earlier z is the same frozen feature location, so the base GGUF suffices.",
+    "shape_assertions": "Exactly 52 rows and feature width 896; finite float32 feature values, row order matches frozen sidecar.",
+    "causal_parity_gate": "On the first two input rows, truncated causal capture versus existing full-sequence trainer capture must satisfy relative L2 error <=1e-5 AND maximum absolute error <=1e-4*(1+maximum reference absolute value). Apply the same gate to changed-future capture and original residual reconstruction; changed future flips class and appends 39 tokens. Report exact bit-match separately; do not label tolerance agreement bit-identical.",
+    "normalization": "Training-fold mean per coordinate; divide the whole centered vector by s=sqrt(sum over training rows and coordinates of squared centered values / number of training rows). This gives mean squared training-vector norm 1 when s>0. If computed sumsq is exactly zero, zero all transformed rows including heldout rows. Use float64; no fitted quantities from heldout rows."
+  },
+  "cohort": {
+    "corpus": "training/sft_review_v4.jsonl",
+    "corpus_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "reviews": 52,
+    "labels": "concern=1 iff gold findings is nonempty; clean=0 iff empty. Cross-check one of each per pair.",
+    "pairs": 26,
+    "families": 20,
+    "grouping": "Leave one of 14 retained pair families or six quartet families out. Each quartet's two shapes and both labels remain in one fold. Every row receives exactly one heldout prediction per label set.",
+    "family_order": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "model-parent-provenance",
+      "scoped-design-record",
+      "checksum-indirection",
+      "sequence-field-width",
+      "validated-port-conversion",
+      "negative-offset-type",
+      "exact-property-name",
+      "idempotent-event-retry",
+      "atomic-snapshot-publication",
+      "save-status-propagation",
+      "preserve-trie-credit",
+      "allocation-null-guard",
+      "zero-worker-guard",
+      "write-permission-check",
+      "stable-manifest-order",
+      "allocation-product-overflow"
+    ],
+    "same_full_diff_pairs": [
+      "scoped-python-analysis",
+      "approved-binary-decoder",
+      "sqlite-build-requirement",
+      "background-service-scope",
+      "scoped-design-record",
+      "checksum-indirection"
+    ],
+    "exclusions": "24 voice/code rows; previous fresh-transfer and older diagnostics. Their previously viewed outcomes influenced design, so they cannot be confirmatory holdouts.",
+    "generalization_limit": "These are 20 template-family holdouts, not 20 independent semantic domains. Several templates share conceptual mechanisms."
+  },
+  "nuisance": {
+    "ordered_features": [
+      "native prompt token count before the common prefix",
+      "added hunk lines",
+      "removed hunk lines",
+      "unchanged context hunk lines",
+      "after-side if statement count",
+      "after-side sort call count",
+      "after-side firwood/trie substring count"
+    ],
+    "definitions": {
+      "patch": "The single Surrounding diff section only; exclude repeated Changed lines listings and repository rules.",
+      "after_side": "Strip the first character and concatenate hunk lines beginning space or plus; exclude minus lines and the hunk header.",
+      "if_regex_python": "\\bif\\s*\\(",
+      "sort_regex_python": "\\.sort\\s*\\(",
+      "credit_literal": "firwood/trie",
+      "line_counts": "Count raw body lines by first character plus/minus/space; do not count the hunk header."
+    },
+    "normalization": "Native training-fold per-coordinate centering and population standard deviation. Exact computed zero variance means inactive coordinate mapped to zero at both train/test. Divide standardized active coordinates by sqrt(active coordinate count); all inactive means allzero. No epsilon or heldout statistics. Geometry intentionally differs from z so token-count scale cannot drown count cues.",
+    "limitations": "These seven prespecified lexical/count features do not exhaust possible shortcuts. Higher z scores show an advantage over this baseline, not proof of semantic reasoning."
+  },
+  "head": {
+    "parameterization": "One affine logit difference s=x dot w+b; equivalent logits (0,s). Predict concern iff s>0; exact ties predict clean.",
+    "objective": "Mean binary cross entropy plus lambda/2 times squared L2 norm of difference weights w; intercept b unpenalized. This is not the same numeric ridge as penalizing both symmetric two-logit heads at the same lambda.",
+    "primary_lambda": 0.01,
+    "initialization": "All weights and intercept zero for every fit; no warm starts across folds or masks.",
+    "optimizer": "Native float64 full-batch Newton using low-rank/Woodbury solve and Armijo line search; exact mean loss and gradient for convergence.",
+    "gradient_infinity_tolerance": 1e-08,
+    "maximum_newton_iterations": 100,
+    "armijo_c1": 0.0001,
+    "backtracking": "At most 60 successive halvings from unit step.",
+    "curvature_floor": 1e-12,
+    "curvature_floor_scope": "Newton direction only; original unmodified logistic objective and gradient are the certification target.",
+    "zero_variance_threshold": "Exactly zero computed sum of squared deviations; no arbitrary epsilon. Nonzero tiny variance is standardized as specified.",
+    "failure_rule": "A nonfinite value, line-search failure, failed numerical check or any unconverged primary/null/capacity fit invalidates the completed protocol run. Preserve failure artifacts and diagnose before a separately versioned rerun; never silently drop fits, retune lambda or extend iterations after reading scores. Failure of the separate capacity-success CE/accuracy criterion is a result, not an invalidation when its solver converged.",
+    "receipt": "For every fit retain objective, CE, penalty, gradient infinity norm, convergence flag, iterations, line-search backtracks, curvature-floor count, scalar coefficient norms, normalization summary and predictions. Full training-fold means/scales are reproducible from frozen feature matrices and folds. Fitted coefficients/intercepts are not exported to public artifacts; native deterministic inputs/code reproduce the calculation."
+  },
+  "permutations": {
+    "count": 99,
+    "seed": 20261001,
+    "algorithm": "SHA256 of ASCII jovovich-readout-permutation:20261001:{counter}, counter starts 0. Interpret first four digest bytes little-endian and mask to 20 bits. Reject identity zero and repeats only. Bit k flips labels for every row in family_order[k]. Global complement is eligible; do not canonicalize complements.",
+    "coupling": "One bit per family; a quartet's two pairs flip together. Every pair and training fold stay class-balanced. Identical masks/folds are used for z and nuisance.",
+    "identity": "Unpermuted labels are evaluated separately as reference, not one of the 99 masks.",
+    "scoring_labels": "Each permutation trains and scores against that same permuted label vector, including heldout rows.",
+    "primary_statistic": "Number of complete correctly classified heldout concern/clean pairs for z, denominator 26.",
+    "comparative_statistic": "Paired difference between z and nuisance complete-pair counts for each identical label mask.",
+    "tail_fraction": "For observed statistic T and 99 reference statistics Tj, report (1 + count(Tj >= T))/100. Also show all raw statistics and observed rank. Calculate separately for z, nuisance and paired difference.",
+    "interpretation": "Exploratory conditional permutation reference; smallest attainable tail fraction is .01. Family label exchangeability is an assumption, not a randomized study fact, and masks are not 99 independent semantic datasets. Do not claim confirmatory significance or universal generalization."
+  },
+  "capacity_control": {
+    "lambda": 1e-08,
+    "label_sets": "Exactly unpermuted labels and the predesignated first accepted mask (index 0).",
+    "views": "Run both label sets on both z and nuisance views. Total experiment: 2*(20*100+2)=4004 native fits, including four capacity fits.",
+    "data": "All 52 rows; native normalization fit on these same 52 rows; report this as training interpolation only.",
+    "solver": "Same solver, iteration limit and gradient certification as primary fits; weak ridge is explicit and is not unregularized fitting.",
+    "capacity_success": "All 52 training labels correct and mean CE <= 0.001, in addition to solver convergence.",
+    "limit": "896 coordinates on 52 samples can fit arbitrary labels; success on true labels alone is weak evidence. Interpolation cannot substitute for grouped holdout results."
+  },
+  "secondary_reporting": [
+    "Individual accuracy and per-class recall",
+    "Complete pairs and row predictions by template family",
+    "Nested six same-full-diff/context pairs without adding them to the 26-pair denominator",
+    "Margins and every heldout score",
+    "Nuisance baseline's own permutation reference",
+    "Paired z-minus-nuisance permutation reference",
+    "Training interpolation true/shuffled labels"
+  ],
+  "acceptance_and_next_branch": [
+    "First require valid causal extraction, native numerical checks and convergence of all preregistered fits; numerical failure means optimization remains unresolved.",
+    "Describe grouped z separation beyond prespecified nuisance/permutation references as evidence of information accessible to this affine probe at the supplied common prefix; it does not locate the only cause of prior failure.",
+    "If both true/shuffled training fits succeed but grouped scores are weak or nuisance-like, prioritize a separate corpus intervention matching ineffective/effective protection counts across new template families.",
+    "If certified primary fits remain weak, this particular affine geometry and lambda reveal little; no claim that the state or model has no semantic information. A nonlinear head, alternate location or base-vs-Instruct control needs a new frozen experiment.",
+    "Prior vocabulary decisions and full reviews are descriptive context only: binary classification versus full-vocabulary selection/generation, and grouped heldout versus training scores, are different tasks and denominators."
+  ],
+  "sources": [],
+  "execution_record": "Run separately with run_readout.py --plan THIS_FILE --output-dir the prepared run directory. Every source/model/input is hash-checked before and after each phase. Preserve this file byte-for-byte.",
+  "frozen_at_utc": "2026-10-01T09:14:57.234003+00:00",
+  "parent_commit": "bf265a8a8b78cb1a7b1645ec4ade21ad3a4fa1fd",
+  "frozen_inputs": {
+    "helper:prepare_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+      "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+      "bytes": 8735
+    },
+    "helper:run_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/run_readout.py",
+      "sha256": "11752f2d3201cc24e5883d8c6f77066bda607cad2ba727643a54ac856a384215",
+      "bytes": 7105
+    },
+    "helper:bind_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/bind_readout.py",
+      "sha256": "12688953e813dc747e25fdd20b36132c471beb308f563d7267ce9b21b0a15edb",
+      "bytes": 5869
+    },
+    "helper:summarize_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+      "sha256": "60d6dcae257c40302d1d544a916faa43fcdfc4206a30db100673a5f38734cee7",
+      "bytes": 10625
+    },
+    "helper:readout-plan-draft.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-draft.json",
+      "sha256": "012215d7012e964f892aa8f1d5575b64fa7a28ef54bbd413b9332a8c3e27347b",
+      "bytes": 12203
+    },
+    "input:readout-input.bin": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760
+    },
+    "input:readout-masks.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    },
+    "input:readout-masks.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    "input:readout-metadata.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    "input:readout-preparation.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-preparation.json",
+      "sha256": "1e5446723ffc6b7416df0d2418ada7136671cb97919ecb205d93daa57aa15ae4",
+      "bytes": 1579
+    },
+    "input:readout-rows.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    "binary:jovovich-extract-readout": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "sha256": "0f0446624782fc175c81b20cf8ff2e2b9496595e7de4a33a46c7c80b51092a2e",
+      "bytes": 259160
+    },
+    "binary:jovovich-probe-readout": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+      "sha256": "eb0aa716aefcea7e7e5ffa72e75affb876e1282771de1e809347a358c5385f8a",
+      "bytes": 263616
+    },
+    "binary:jovovich-readout-fit": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "bytes": 33840
+    },
+    "source:Makefile": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76",
+      "bytes": 6008
+    },
+    "source:model.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/model.json",
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+      "bytes": 325
+    },
+    "source:training/train_mlp.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    "source:training/extract_readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "sha256": "6275361e2a2f714625e4819097721126455a4749528aabd37d071f373b06da86",
+      "bytes": 8103
+    },
+    "source:training/probe_readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_readout.c",
+      "sha256": "9d43da993ca6a41beb800335a83ac2fd052e3b6884ab622a237328b9b9a5de97",
+      "bytes": 6582
+    },
+    "source:training/readout_fit.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/readout_fit.c",
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "bytes": 21701
+    },
+    "source:training/prepare.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700
+    },
+    "source:training/sft_review_v4.jsonl": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    "source:src/infer.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    "source:test/readout_extract.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_extract.c",
+      "sha256": "0475238f650801df2ac059c76dc61a3bd2790cdefcf9288463244bb102b98f7f",
+      "bytes": 2061
+    },
+    "source:test/readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout.c",
+      "sha256": "359a98cbb79ce910ede40aa55504d99f4eb231ada7762c8139a8e9752ddff4eb",
+      "bytes": 8388
+    },
+    "source:test/readout_fit.test.mjs": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_fit.test.mjs",
+      "sha256": "94b5c06e3c00f5733e59497679d2973f606536a5cfb730fe4df47d83874fff68",
+      "bytes": 6188
+    },
+    "notorch:notorch.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "bytes": 486394
+    },
+    "notorch:notorch.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "bytes": 50653
+    },
+    "notorch:notorch_simd.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "bytes": 27843
+    },
+    "notorch:gguf.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "bytes": 53933
+    },
+    "notorch:gguf.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "bytes": 11406
+    },
+    "notorch:harness/runtime.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "bytes": 15583
+    },
+    "notorch:harness/runtime.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "bytes": 5513
+    },
+    "notorch:harness/arch_llama.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    "notorch:harness/arch.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "bytes": 6538
+    },
+    "notorch:harness/arch_models.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "bytes": 1879
+    },
+    "notorch:examples/bpe.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "bytes": 36729
+    },
+    "notorch:examples/bpe.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "bytes": 2388
+    },
+    "notorch:examples/unicode_numbers.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "bytes": 3449
+    },
+    "gate:0:independent-readout-audit.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-readout-audit.json",
+      "sha256": "6e35aa747fa30bfe0cee7e293d20bc49b11dc1a593cfe9b155d707c34391956b",
+      "bytes": 9595
+    },
+    "gate:1:independent_solver_audit.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_solver_audit.c",
+      "sha256": "9cac3289cbd79d69bf1cce759e80901655260e4cbe270a0b42bbcfb16c9b51b3",
+      "bytes": 3301
+    },
+    "gate:2:independent-solver-test.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-solver-test.json",
+      "sha256": "f9280ca2af430a2a89a7726fb5fc7d83c066521e0278b1568a27ab1e7bfe0cbd",
+      "bytes": 315
+    },
+    "gate:3:independent_preparation_audit.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_preparation_audit.py",
+      "sha256": "07302234e62f1ddb91b1f64b1518093e82115b0486b7230d91a40e9207bf9648",
+      "bytes": 3700
+    },
+    "gate:4:preparation-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/preparation-tests.json",
+      "sha256": "633fc27365914c37adb12b495b5f12693a52f7684097867493f35f86edadd816",
+      "bytes": 415
+    },
+    "gate:5:summary-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/summary-tests.json",
+      "sha256": "47be3a335e0e71f985310aa19375fd82e82148b7fcc13b7de0135141476eee1c",
+      "bytes": 523
+    },
+    "gate:6:runner-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/runner-tests.json",
+      "sha256": "837d6462e09ecef94533acb32a4de05ee7bf60be5ab441c96dffb9148595f94a",
+      "bytes": 475
+    },
+    "gate:7:environment.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/environment.json",
+      "sha256": "d39d93fcb4489a9793d4c43d7a9adfdfd3e826204133f6abf136b2f07efd170e",
+      "bytes": 351
+    },
+    "gate:8:tests-before.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/tests-before.txt",
+      "sha256": "5f1132d5f2b75d8fced7064a83be04748780cc422af32d14ee691040f47949f3",
+      "bytes": 8229
+    },
+    "base-model": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    "parity-sft": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-sft.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123
+    }
+  },
+  "execution": {
+    "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+    "environment": {
+      "NT_NO_I8": "1",
+      "NT_QMV_THREADS": "4",
+      "NT_ATTN_THREADS": "4",
+      "NT_SIMD_THREADS": "4"
+    },
+    "phases": [
+      {
+        "name": "parity",
+        "argv": [
+          "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+          "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-input.bin",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-sft.bin",
+          "4"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stderr.txt",
+        "creates": []
+      },
+      {
+        "name": "extract",
+        "argv": [
+          "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+          "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-input.bin",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-features.bin",
+          "4"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/extract.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/extract.stderr.txt",
+        "creates": [
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-features.bin"
+        ]
+      },
+      {
+        "name": "nuisance",
+        "argv": [
+          "python3",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+          "--out",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs",
+          "--trace",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/extract.stdout.jsonl"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance.stderr.txt",
+        "creates": [
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-nuisance.bin",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-nuisance-metadata.txt",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-nuisance.json"
+        ]
+      },
+      {
+        "name": "state",
+        "argv": [
+          "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+          "--matrix",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-features.bin",
+          "--metadata",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-metadata.txt",
+          "--masks",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.txt",
+          "--output",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/state-fits.jsonl",
+          "--normalization",
+          "centered-rms",
+          "--lambda",
+          "0.01",
+          "--interpolation-lambda",
+          "1e-8",
+          "--gradient-tolerance",
+          "1e-8",
+          "--max-iterations",
+          "100"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/state.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/state.stderr.txt",
+        "creates": [
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/state-fits.jsonl"
+        ]
+      },
+      {
+        "name": "nuisance-fit",
+        "argv": [
+          "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+          "--matrix",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-nuisance.bin",
+          "--metadata",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-nuisance-metadata.txt",
+          "--masks",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.txt",
+          "--output",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance-fit-fits.jsonl",
+          "--normalization",
+          "per-feature-rms",
+          "--lambda",
+          "0.01",
+          "--interpolation-lambda",
+          "1e-8",
+          "--gradient-tolerance",
+          "1e-8",
+          "--max-iterations",
+          "100"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance-fit.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance-fit.stderr.txt",
+        "creates": [
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance-fit-fits.jsonl"
+        ]
+      },
+      {
+        "name": "summary",
+        "argv": [
+          "python3",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+          "--z",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/state-fits.jsonl",
+          "--nuisance",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/nuisance-fit-fits.jsonl",
+          "--rows",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-rows.json",
+          "--masks-json",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.json",
+          "--output",
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-summary.json"
+        ],
+        "stdout": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/summary.stdout.jsonl",
+        "stderr": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/summary.stderr.txt",
+        "creates": [
+          "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-summary.json"
+        ]
+      }
+    ]
+  }
+}

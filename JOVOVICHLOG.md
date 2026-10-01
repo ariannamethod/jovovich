@@ -2,6 +2,99 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — The seven-feature witness took the stand.
+
+The frozen-state probe is complete. It extracts the 896-dimensional residual
+after the final attention block and before the final MLP from the unchanged
+Qwen2.5-Coder-0.5B-Instruct Q8_0 body. Inputs contain only the system and user
+messages, the native assistant header, and shared IDs `[4913, 3903, 819]`.
+The class-specific token and later gold answer never enter the extractor.
+
+The first attempt stopped in its parity gate: the new diagnostic's string
+assertion incorrectly said those three IDs spell `{"findings":`. They actually
+spell `{"findings`. The frozen failed plan, inputs, source and error are retained.
+The correction changes that literal assertion; the IDs, capture position,
+statistical design and prior training stay unchanged. This was a defect in the
+new diagnostic guard, with no feature extraction or fitting before it failed.
+
+A separately frozen second attempt passes all six numeric comparisons exactly:
+for two rows, the extracted state matches the existing full-answer trainer
+cache, survives an opposite-label future suffix, and reconstructs the original
+final-layer residual. Every comparison has maximum absolute difference zero.
+The extractor then processes all 52 prompts without truncation.
+
+The separate scalar logistic head uses native float64 Newton optimization,
+ridge `0.01`, a free intercept and training-fold-only normalization. The twenty
+held-out groups are fourteen retained pair templates plus six quartet families;
+both shapes and labels in each quartet stay together. A matched comparison uses
+seven prespecified features: native prompt length, added/removed/context lines,
+and remaining `if`, `.sort(` and source-credit counts. Ninety-nine fixed family
+bitmasks flip labels with both quartet pairs coupled. All 4,004 fits converge at
+the frozen gradient tolerance, with at most fourteen Newton iterations and no
+backtracking or curvature floors.
+
+| Family-held-out view | Correct concerns | Correct clean | Correct rows | Complete pairs | Same-full-diff pairs |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Frozen state | 16/26 | 13/26 | 29/52 | 4/26 | 2/6 |
+| Seven lexical/count features | 23/26 | 12/26 | 35/52 | 9/26 | 0/6 |
+
+The six same-full-diff pairs are a nested subset of the twenty-six. The state
+probe has some successes there but does not outperform the lexical baseline
+overall. Eight of the baseline's nine complete pairs belong to the four guard
+quartets; the ninth is port validation. This makes the available count/length
+cues a concrete corpus concern, without identifying which cues the earlier
+generative model used. The exploratory permutation tail fractions are `0.07` for
+its four complete pairs, `0.08` for the baseline's nine, and `0.89` for their difference
+of minus five. Family-label exchangeability is an assumption; these templates
+also share semantic concepts. Neither the fractions nor the six-pair subset
+establish general review competence.
+
+The weaker-ridge capacity controls fit all 52 training labels with either true
+labels or the prespecified first shuffled mask. Their mean cross entropies are
+`0.001232334656` and `0.001261000366`. Both exceed the declared `0.001` threshold:
+**both strict capacity controls fail**, despite perfect training classification
+and certified optimization. No threshold or regularizer was changed afterward.
+The stated capacity control remains unsatisfied. A stronger probe is untested.
+
+The run takes 638.03 seconds and peaks at 713,244 KiB RSS. All fifty-four frozen
+bindings remain unchanged. The full regression gate passes seven native and
+sixty-two Node tests; the corrected guard also passes its focused native test.
+The archive retains feature matrices, exact input IDs, fold normalization,
+every prediction, numerical gates and failed-attempt evidence. Fitted classifier
+coefficients and intercepts are not exported. No new generative weights, natural
+reviews or runtime promotion result from this diagnostic.
+
+The model-specific literature search also narrows the Instruct hypothesis.
+[Qwen's versioned concepts guide](https://qwen.readthedocs.io/en/v2.5/getting_started/concepts.html)
+explicitly permits downstream tuning of both Base and Instruct. The official
+[ms-swift recipe](https://qwen.readthedocs.io/en/v2.5/training/SFT/ms_swift.html)
+uses all-linear LoRA on a larger Instruct model; it is a family example, not an
+optimum for this 0.5B review task. An author's
+[exact-model diff-to-commit experiment](https://eliotbas.com/projects/commits-fine-tuning/)
+reports adaptation from Qwen2.5-Coder-0.5B-Instruct with 11,178 training examples.
+Its [pinned adapter configuration](https://huggingface.co/Elib27/qwen2.5-coder-0.5b-commit-msg-lora/blob/32a9575e25cbe749f37b292b1399e41d640a8973/adapter_config.json)
+targets q/k/v/o and gate/up/down
+without a layer restriction. At rank sixteen, the official model dimensions
+imply 8,798,208 adapter parameters, versus our final-MLP-only 276,480: about
+31.8 times as many adapter parameters. This comparison follows the configuration;
+we did not
+load its weights or independently reproduce its reported scores.
+
+These sources support treating Instruct as a viable starting point. They do not
+identify our failure's cause. Our adapter reach, separately normalized loss,
+Q8_0 body, small corpus and repeated exposure differ from those procedures.
+A Base comparison also needs explicit tokenizer, template and EOS decisions.
+The next priority is a separate corpus intervention that matches effective and
+ineffective protections and controls remaining count/length cues across new
+templates. Broader adapters, duration and checkpoint history remain subsequent
+controlled questions. This next corpus design has not been implemented or run.
+The probe neither indicts notorch nor rules out insufficient
+training, and binary decisions here are not comparable to earlier full reviews.
+
+All evidence and structured reproduction commands are in
+[`training/results/2026-10-01-frozen-readout`](training/results/2026-10-01-frozen-readout).
+SERGE requested changes to a string literal. The cigarette is still one.
+
 ## 2026-10-01 — The guard is still in the room.
 
 The approved quartet design is now a deterministic corpus builder. Six old

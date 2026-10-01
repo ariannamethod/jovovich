@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT: source and binary hashes still to bind; no extraction or fitting authorized by this file",
+  "protocol_frozen": false,
+  "question": "Does a frozen pre-final-MLP state support template-family-held-out binary concern/clean separation beyond a prespecified lexical nuisance model?",
+  "hypothesis_limit": "Accessible binary information at a supplied decision prefix is not complete review competence, natural prefix entry, or identification of a sole causal bottleneck in prior training.",
+  "model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "base_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "weights_frozen": true,
+    "native_only": "C performs model inference, feature normalization, optimization, logits and predictions. Python serializes inputs, prepares fixed lexical counts, orchestrates receipts and aggregates saved predictions into label/pair counts and permutation rank tail fractions; it performs no model arithmetic."
+  },
+  "representation": {
+    "primary": "896-dimensional post-final-attention residual z before final MLP",
+    "prompt": "Native Qwen ChatML from system and user only, followed by the assistant header and the common three-token answer prefix",
+    "common_prefix_ids": [4913, 3903, 819],
+    "capture_position_zero_based": "native_prompt_token_count + 2",
+    "capture_boundary": "The class-specific target and all later gold answer tokens are excluded. The input binary contains only system and user UTF-8; labels, IDs, target lengths and answers exist solely in sidecars.",
+    "answer_position_zero": "Excluded from this experiment; one primary state only.",
+    "invariance": "Prior LoRA touched only final MLP gate/up/down; this earlier z is the same frozen feature location, so the base GGUF suffices.",
+    "shape_assertions": "Exactly 52 rows and feature width 896; finite float32 feature values, row order matches frozen sidecar.",
+    "causal_parity_gate": "On the first two input rows, truncated causal capture versus existing full-sequence trainer capture must satisfy relative L2 error <=1e-5 AND maximum absolute error <=1e-4*(1+maximum reference absolute value). Apply the same gate to changed-future capture and original residual reconstruction; changed future flips class and appends 39 tokens. Report exact bit-match separately; do not label tolerance agreement bit-identical.",
+    "normalization": "Training-fold mean per coordinate; divide the whole centered vector by s=sqrt(sum over training rows and coordinates of squared centered values / number of training rows). This gives mean squared training-vector norm 1 when s>0. If computed sumsq is exactly zero, zero all transformed rows including heldout rows. Use float64; no fitted quantities from heldout rows."
+  },
+  "cohort": {
+    "corpus": "training/sft_review_v4.jsonl",
+    "corpus_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "reviews": 52,
+    "labels": "concern=1 iff gold findings is nonempty; clean=0 iff empty. Cross-check one of each per pair.",
+    "pairs": 26,
+    "families": 20,
+    "grouping": "Leave one of 14 retained pair families or six quartet families out. Each quartet's two shapes and both labels remain in one fold. Every row receives exactly one heldout prediction per label set.",
+    "family_order": ["scoped-python-analysis", "approved-binary-decoder", "sqlite-build-requirement", "background-service-scope", "model-parent-provenance", "scoped-design-record", "checksum-indirection", "sequence-field-width", "validated-port-conversion", "negative-offset-type", "exact-property-name", "idempotent-event-retry", "atomic-snapshot-publication", "save-status-propagation", "preserve-trie-credit", "allocation-null-guard", "zero-worker-guard", "write-permission-check", "stable-manifest-order", "allocation-product-overflow"],
+    "same_full_diff_pairs": ["scoped-python-analysis", "approved-binary-decoder", "sqlite-build-requirement", "background-service-scope", "scoped-design-record", "checksum-indirection"],
+    "exclusions": "24 voice/code rows; previous fresh-transfer and older diagnostics. Their previously viewed outcomes influenced design, so they cannot be confirmatory holdouts.",
+    "generalization_limit": "These are 20 template-family holdouts, not 20 independent semantic domains. Several templates share conceptual mechanisms."
+  },
+  "nuisance": {
+    "ordered_features": ["native prompt token count before the common prefix", "added hunk lines", "removed hunk lines", "unchanged context hunk lines", "after-side if statement count", "after-side sort call count", "after-side firwood/trie substring count"],
+    "definitions": {
+      "patch": "The single Surrounding diff section only; exclude repeated Changed lines listings and repository rules.",
+      "after_side": "Strip the first character and concatenate hunk lines beginning space or plus; exclude minus lines and the hunk header.",
+      "if_regex_python": "\\bif\\s*\\(",
+      "sort_regex_python": "\\.sort\\s*\\(",
+      "credit_literal": "firwood/trie",
+      "line_counts": "Count raw body lines by first character plus/minus/space; do not count the hunk header."
+    },
+    "normalization": "Native training-fold per-coordinate centering and population standard deviation. Exact computed zero variance means inactive coordinate mapped to zero at both train/test. Divide standardized active coordinates by sqrt(active coordinate count); all inactive means allzero. No epsilon or heldout statistics. Geometry intentionally differs from z so token-count scale cannot drown count cues.",
+    "limitations": "These seven prespecified lexical/count features do not exhaust possible shortcuts. Higher z scores show an advantage over this baseline, not proof of semantic reasoning."
+  },
+  "head": {
+    "parameterization": "One affine logit difference s=x dot w+b; equivalent logits (0,s). Predict concern iff s>0; exact ties predict clean.",
+    "objective": "Mean binary cross entropy plus lambda/2 times squared L2 norm of difference weights w; intercept b unpenalized. This is not the same numeric ridge as penalizing both symmetric two-logit heads at the same lambda.",
+    "primary_lambda": 0.01,
+    "initialization": "All weights and intercept zero for every fit; no warm starts across folds or masks.",
+    "optimizer": "Native float64 full-batch Newton using low-rank/Woodbury solve and Armijo line search; exact mean loss and gradient for convergence.",
+    "gradient_infinity_tolerance": 1e-8,
+    "maximum_newton_iterations": 100,
+    "armijo_c1": 0.0001,
+    "backtracking": "At most 60 successive halvings from unit step.",
+    "curvature_floor": 1e-12,
+    "curvature_floor_scope": "Newton direction only; original unmodified logistic objective and gradient are the certification target.",
+    "zero_variance_threshold": "Exactly zero computed sum of squared deviations; no arbitrary epsilon. Nonzero tiny variance is standardized as specified.",
+    "failure_rule": "A nonfinite value, line-search failure, failed numerical check or any unconverged primary/null/capacity fit invalidates the completed protocol run. Preserve failure artifacts and diagnose before a separately versioned rerun; never silently drop fits, retune lambda or extend iterations after reading scores. Failure of the separate capacity-success CE/accuracy criterion is a result, not an invalidation when its solver converged.",
+    "receipt": "For every fit retain objective, CE, penalty, gradient infinity norm, convergence flag, iterations, line-search backtracks, curvature-floor count, scalar coefficient norms, normalization summary and predictions. Full training-fold means/scales are reproducible from frozen feature matrices and folds. Fitted coefficients/intercepts are not exported to public artifacts; native deterministic inputs/code reproduce the calculation."
+  },
+  "permutations": {
+    "count": 99,
+    "seed": 20261001,
+    "algorithm": "SHA256 of ASCII jovovich-readout-permutation:20261001:{counter}, counter starts 0. Interpret first four digest bytes little-endian and mask to 20 bits. Reject identity zero and repeats only. Bit k flips labels for every row in family_order[k]. Global complement is eligible; do not canonicalize complements.",
+    "coupling": "One bit per family; a quartet's two pairs flip together. Every pair and training fold stay class-balanced. Identical masks/folds are used for z and nuisance.",
+    "identity": "Unpermuted labels are evaluated separately as reference, not one of the 99 masks.",
+    "scoring_labels": "Each permutation trains and scores against that same permuted label vector, including heldout rows.",
+    "primary_statistic": "Number of complete correctly classified heldout concern/clean pairs for z, denominator 26.",
+    "comparative_statistic": "Paired difference between z and nuisance complete-pair counts for each identical label mask.",
+    "tail_fraction": "For observed statistic T and 99 reference statistics Tj, report (1 + count(Tj >= T))/100. Also show all raw statistics and observed rank. Calculate separately for z, nuisance and paired difference.",
+    "interpretation": "Exploratory conditional permutation reference; smallest attainable tail fraction is .01. Family label exchangeability is an assumption, not a randomized study fact, and masks are not 99 independent semantic datasets. Do not claim confirmatory significance or universal generalization."
+  },
+  "capacity_control": {
+    "lambda": 1e-8,
+    "label_sets": "Exactly unpermuted labels and the predesignated first accepted mask (index 0).",
+    "views": "Run both label sets on both z and nuisance views. Total experiment: 2*(20*100+2)=4004 native fits, including four capacity fits.",
+    "data": "All 52 rows; native normalization fit on these same 52 rows; report this as training interpolation only.",
+    "solver": "Same solver, iteration limit and gradient certification as primary fits; weak ridge is explicit and is not unregularized fitting.",
+    "capacity_success": "All 52 training labels correct and mean CE <= 0.001, in addition to solver convergence.",
+    "limit": "896 coordinates on 52 samples can fit arbitrary labels; success on true labels alone is weak evidence. Interpolation cannot substitute for grouped holdout results."
+  },
+  "secondary_reporting": ["Individual accuracy and per-class recall", "Complete pairs and row predictions by template family", "Nested six same-full-diff/context pairs without adding them to the 26-pair denominator", "Margins and every heldout score", "Nuisance baseline's own permutation reference", "Paired z-minus-nuisance permutation reference", "Training interpolation true/shuffled labels"],
+  "acceptance_and_next_branch": [
+    "First require valid causal extraction, native numerical checks and convergence of all preregistered fits; numerical failure means optimization remains unresolved.",
+    "Describe grouped z separation beyond prespecified nuisance/permutation references as evidence of information accessible to this affine probe at the supplied common prefix; it does not locate the only cause of prior failure.",
+    "If both true/shuffled training fits succeed but grouped scores are weak or nuisance-like, prioritize a separate corpus intervention matching ineffective/effective protection counts across new template families.",
+    "If certified primary fits remain weak, this particular affine geometry and lambda reveal little; no claim that the state or model has no semantic information. A nonlinear head, alternate location or base-vs-Instruct control needs a new frozen experiment.",
+    "Prior vocabulary decisions and full reviews are descriptive context only: binary classification versus full-vocabulary selection/generation, and grouped heldout versus training scores, are different tasks and denominators."
+  ],
+  "sources": [],
+  "execution_record": "Preparation only. Replace draft status and fill exact source/binary/input bindings only after independent review and native numerical tests; freeze that final file before any model feature extraction or fitting."
+}

@@ -1,0 +1,9 @@
+{"operation":"decode","token_id":4913,"bytes":2,"hex":"7b22"}
+{"operation":"decode","token_id":3903,"bytes":4,"hex":"66696e64"}
+{"operation":"decode","token_id":819,"bytes":4,"hex":"696e6773"}
+{"operation":"decode","token_id":66582,"bytes":5,"hex":"223a5b7b22"}
+{"operation":"decode","token_id":788,"bytes":2,"hex":"223a"}
+{"operation":"encode","input_hex":"7b2266696e64696e6773223a","ids":[4913,3903,819,788]}
+{"operation":"encode","input_hex":"7b2266696e64696e6773","ids":[4913,3903,819]}
+{"operation":"encode","input_hex":"7b2266696e64696e6773223a5b5d7d","ids":[4913,3903,819,788,66277]}
+{"operation":"encode","input_hex":"7b2266696e64696e6773223a5b7b2270617468223a22746573742e63227d5d7d","ids":[4913,3903,819,66582,2343,3252,1944,520,9207,13989]}

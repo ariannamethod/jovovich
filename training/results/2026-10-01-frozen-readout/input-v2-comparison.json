@@ -1,0 +1,63 @@
+{
+  "status": "V2 preparation only; no feature extraction or fit",
+  "reason": "Correct an erroneous decoded-prefix literal in the new extractor guard; fixed3token IDs and prior training unchanged",
+  "draft": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-draft-v2.json",
+    "sha256": "24cc8b3af7b61cb6b613b5db5d033100e6a0f160eefc1af24ae34fbe07acde10",
+    "bytes": 14909
+  },
+  "files": [
+    {
+      "name": "readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-preparation.json",
+      "sha256": "1e5446723ffc6b7416df0d2418ada7136671cb97919ecb205d93daa57aa15ae4",
+      "bytes": 1579,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509,
+      "bit_identical_to_attempt1": true
+    },
+    {
+      "name": "readout-sft.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123,
+      "bit_identical_to_attempt1": true
+    }
+  ],
+  "preparer": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+    "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+    "bytes": 8735
+  },
+  "source_attempt": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/attempt1/manifest.json",
+    "sha256": "cf1126b26a53d01dffc7fcc5d71b1a7a5c3c9a7766dae48e379c154fb0912d28",
+    "bytes": 14211
+  }
+}

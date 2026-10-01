@@ -1,0 +1,15 @@
+{
+  "preparer_sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+  "existing_quartet_nuisance_count_matches": 24,
+  "synthetic_native_trace_rows": 52,
+  "serialized_matrix_shape": [
+    52,
+    7
+  ],
+  "malformed_trace_rejections": [
+    "badprefix",
+    "missingtoken",
+    "badposition"
+  ],
+  "scope": "serialization/counting test only; no model features extracted or fits executed"
+}

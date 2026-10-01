@@ -1,0 +1,94 @@
+./build/test-head
+make: Nothing to be done for 'extract-readout'.
+make: Nothing to be done for 'probe-readout'.
+make: 'build/jovovich-readout-fit' is up to date.
+DPO shared A/B finite difference:16/16 max_error=6.76047e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70228e-05; gate/up/down max_grad=0.189277/0.377374/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=2.38419e-07; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=7.82311e-08); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=2.23517e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+./build/test-joint
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.36614e-06 gradient=2.23517e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=5.96046e-08 trajectory=2.98023e-08)
+Joint selection: 7 invalid map/objective inputs rejected
+./build/test-readout-extract
+readout extraction: prompt-only parsing, malformed/gold input rejection, unique causal hook position passed
+./build/test-readout
+readout: derivatives, primal Newton, fold isolation, constants, convergence and weak ridge passed
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (26.997869ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (22.851301ms)
+✔ runner rejects unsupported Qwen MoE architecture (5.463068ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (232.543041ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (325.835535ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (329.327784ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (276.183594ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (128.348688ms)
+✔ joint scoring preserves checkpoint selection and exposes loss, gradient and prefix diagnostics (165.442646ms)
+✔ joint scoring enforces fixed coverage and independently normalized finite losses (960.691542ms)
+✔ joint online loss is measured before the update and matches the previous frozen readout (377.599589ms)
+✔ joint gradient diagnostics distinguish zero, boundary and clipped norms with declared tolerance (581.265148ms)
+✔ joint initial gradient diagnostics are explicitly null and later diagnostics are mandatory (487.603265ms)
+✔ joint runs retain the fixed stage order, objective and complete snapshot schedule (251.137096ms)
+✔ joint prefix summaries require complete mapped-row coverage and consistent aggregates (964.780403ms)
+✔ joint prefix accuracy must agree with first error and complete-row accuracy (262.296087ms)
+✔ joint scorer derives 76-row coverage, 26-pair group means and residual normalization from the corpus (100.394426ms)
+✔ expanded joint corpus rejects tampered counts, row coverage, token totals and microbatch declarations (891.101244ms)
+✔ corpus validation requires unique IDs, known task kinds and complete role-valid review pairs (56.458922ms)
+✔ supplied corpus determines non-review group sizes as well as mapped decision ranges (49.135599ms)
+✔ historical decision-only, small-step and joint scores remain exactly unchanged (148.756034ms)
+✔ joint scorer CLI requires explicit agreement for a nondefault microbatch (248.548746ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (660.408806ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (12.412479ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (7.462586ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (40.636414ms)
+✔ MLP export refuses to overwrite an existing file (4.478931ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (11.896084ms)
+✔ review pair maps retain original row indices and concern/clean direction (60.397694ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (225.192823ms)
+✔ pair maps require SFT-only packing and a distinct output (129.057064ms)
+✔ native readout applies every family mask to complete pairs, keeps held-out rows out of statistics, and exports no coefficients (15.046601ms)
+✔ native readout reports incomplete optimization as a failed gate without dropping fits (5.021261ms)
+✔ native readout rejects broken pairs, duplicated or identity masks, nonfinite and trailing matrix data (26.284339ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (2.333728ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (1.346126ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.859314ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.962716ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (13.737955ms)
+✔ GitHub context rules come from the base revision and collection detects a push (3.387818ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (2.273978ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.441055ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (3.556209ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (241.079052ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (299.679969ms)
+✔ v4 artifact exactly regenerates approved quartets while retaining every other v3 raw row (37.039813ms)
+✔ v4 builder refuses existing destinations and removes its unused reservation if audit already exists (2087.316733ms)
+✔ v4 semantics exercise unsafe inputs, retained protections, ordering and credit; lost redundant guard fails (1834.147091ms)
+✔ runner traces sampled IDs before decoding and EOS, without changing stdout (19.15304ms)
+✔ runner traces immediate stopping ID 1 with empty response stdout (8.747108ms)
+✔ runner traces immediate stopping ID 2 with empty response stdout (5.584552ms)
+✔ runner traces exactly the token limit and the complete supplied prompt IDs (9.307894ms)
+✔ runner refuses existing trace files and symlinks before inference (14.516133ms)
+✔ runner validates trace options and destination before generation (17.028931ms)
+✔ runner removes its incomplete trace when model loading fails (10.852156ms)
+✔ runner reports trace write failure and removes the incomplete file (6.457889ms)
+✔ runner reports a closed stdout reader and removes its reserved trace (17.509366ms)
+✔ runner reports buffered stdout failure in --tokens-only mode (10.774882ms)
+✔ runner reports buffered stdout failure in --token-ids mode (6.622321ms)
+✔ training summaries preserve pair direction and select by complete review pairs (51.195455ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (43.586741ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (48.97642ms)
+ℹ tests 62
+ℹ suites 0
+ℹ pass 62
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7006.674874

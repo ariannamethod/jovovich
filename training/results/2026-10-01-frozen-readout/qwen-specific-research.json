@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "research_date_utc": "2026-10-01",
+  "recorded_at_utc": "2026-10-01T09:06:24.988123+00:00",
+  "model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "method": "Targeted web search followed by primary-source retrieval. No training, inference, or torch execution.",
+  "source_date_precision": "Web sources were retrieved on the stated UTC date; exact retrieval seconds were not recorded. URLs using main are mutable.",
+  "sources": [
+    {
+      "id": "official_instruct_config",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B-Instruct/blob/main/config.json",
+      "web_refs": [
+        "turn63view0"
+      ],
+      "source_type": "official exact-model configuration",
+      "facts": {
+        "architecture": "Qwen2ForCausalLM",
+        "layers": 24,
+        "hidden_size": 896,
+        "intermediate_size": 4864,
+        "query_heads": 14,
+        "kv_heads": 2,
+        "tie_word_embeddings": true,
+        "max_position_embeddings": 32768,
+        "eos_token_id": 151645,
+        "vocab_size": 151936,
+        "rms_norm_eps": 1e-06,
+        "rope_theta": 1000000
+      },
+      "limits": "Configuration establishes architecture, not downstream training efficacy. Repository main was read; no immutable full revision was captured."
+    },
+    {
+      "id": "official_base_config",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B/blob/main/config.json",
+      "web_refs": [
+        "turn70view1",
+        "turn71view1"
+      ],
+      "source_type": "official exact-model configuration",
+      "facts": {
+        "same_architecture_dimensions_as_instruct": true,
+        "eos_token_id": 151643,
+        "bos_token_id": 151643
+      },
+      "limits": "The different configured EOS requires an explicit serialization decision in a Base checkpoint comparison. It does not prohibit training a new chat convention."
+    },
+    {
+      "id": "official_concepts_v25",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://qwen.readthedocs.io/en/v2.5/getting_started/concepts.html",
+      "web_refs": [
+        "turn74view1"
+      ],
+      "source_type": "official versioned family documentation",
+      "facts": [
+        "Both Base and Instruct are explicitly described as suitable for downstream fine-tuning.",
+        "Base may require in-context examples or further training to follow instructions.",
+        "Instruct has additional conversational instruction training.",
+        "Qwen conversational serialization uses ChatML turn boundaries and role names."
+      ],
+      "limits": "Family-level descriptions do not compare Base and Instruct on this review task."
+    },
+    {
+      "id": "official_family_blog",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://qwenlm.github.io/blog/qwen2.5-coder-family/",
+      "web_refs": [
+        "turn68view0"
+      ],
+      "source_type": "official model-family release article",
+      "facts": [
+        "Both Base and Instruct are released for each size.",
+        "Base is described as a foundation for custom fine-tuning; Instruct is the aligned chat-ready checkpoint.",
+        "The 0.5B model has approximately 0.49 billion total and 0.36 billion non-embedding parameters."
+      ],
+      "limits": "The blog is not a controlled comparison of subsequent task-specific tuning from the two checkpoints."
+    },
+    {
+      "id": "official_ms_swift_recipe",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://qwen.readthedocs.io/en/v2.5/training/SFT/ms_swift.html",
+      "web_refs": [
+        "turn64view2",
+        "turn62search1"
+      ],
+      "source_type": "official versioned family training example",
+      "facts": {
+        "example_model": "Qwen/Qwen2.5-7B-Instruct",
+        "method": "LoRA",
+        "rank": 8,
+        "alpha": 32,
+        "target_modules": "all-linear",
+        "learning_rate": 0.0001,
+        "epochs": 1,
+        "batch_size_per_device": 1,
+        "gradient_accumulation_steps": 16,
+        "warmup_ratio": 0.05,
+        "max_length": 2048,
+        "dtype": "bfloat16"
+      },
+      "limits": "Runnable family recipe, not a demonstrated optimum for Coder-0.5B or review reasoning. All-linear targets substantially more of the transformer than a final-MLP-only adapter."
+    },
+    {
+      "id": "official_llama_factory_recipe",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://qwen.readthedocs.io/en/v2.5/training/SFT/llama_factory.html",
+      "web_refs": [
+        "turn63view1",
+        "turn64view6"
+      ],
+      "source_type": "official versioned family training example",
+      "facts": {
+        "method": "LoRA",
+        "target_modules": [
+          "q_proj",
+          "v_proj"
+        ],
+        "template": "qwen",
+        "learning_rate": 5e-06,
+        "epochs": 3,
+        "batch_size_per_device": 4,
+        "gradient_accumulation_steps": 4,
+        "warmup_steps": 100,
+        "weight_decay": 0.1,
+        "scheduler": "cosine",
+        "cutoff_len": 4096
+      },
+      "limits": "Generic example; model path is user supplied. Its different hyperparameters illustrate that no single universal Qwen tuning recipe is established here. No final-layer restriction is shown."
+    },
+    {
+      "id": "official_coder_report",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://arxiv.org/html/2409.12186v3",
+      "web_refs": [
+        "turn63view2",
+        "turn64view5"
+      ],
+      "source_type": "original model-family technical report",
+      "facts": [
+        "Instruction tuning proceeds from diverse synthesized instruction data to higher-quality rejection-sampled SFT.",
+        "Standard SFT is mixed with a smaller amount of FIM instruction data.",
+        "Subsequent DPO uses execution feedback for self-contained code and model judging for other samples."
+      ],
+      "limits": "Family training description, not an independently reproducible exact-0.5B adaptation recipe. Its large data scale is not a minimum requirement for JOVOVICH."
+    },
+    {
+      "id": "commit_message_experiment",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://eliotbas.com/projects/commits-fine-tuning/",
+      "web_refs": [
+        "turn64view0",
+        "turn66view3"
+      ],
+      "source_type": "first-hand exact-model experiment",
+      "facts": {
+        "model": "Qwen2.5-Coder-0.5B-Instruct",
+        "task": "git diff to conventional commit message",
+        "train_examples": 11178,
+        "test_examples": 621,
+        "judge_examples": 200,
+        "rank": 16,
+        "alpha": 32,
+        "learning_rate": 0.0001,
+        "epochs": 3,
+        "batch_size": 16,
+        "warmup_steps": 50,
+        "max_length": 4096,
+        "conventional_format_percent_before_after": [
+          91.8,
+          100.0
+        ],
+        "judge_accuracy_out_of_5_before_after": [
+          3.035,
+          3.6
+        ]
+      },
+      "limits": "Author-reported results, partly LLM judged. Baseline and tuned system prompts differ. Source repositories contribute to the same corpus; family-held-out generalization is not established. Published adapter configuration was separately retrieved and confirms seven projection types without a layer restriction."
+    },
+    {
+      "id": "commit_message_adapter",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://huggingface.co/Elib27/qwen2.5-coder-0.5b-commit-msg-lora",
+      "web_refs": [
+        "turn71view0"
+      ],
+      "source_type": "experiment authors released adapter",
+      "facts": [
+        "The author publishes a LoRA adapter for the exact 0.5B Coder checkpoint."
+      ],
+      "limits": "Existence of an artifact does not independently validate reported evaluation results. No weights downloaded or executed."
+    },
+    {
+      "id": "shellminator_model_card",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://huggingface.co/ISB369/shellminator-qwen05b-dpo-selfplay",
+      "web_refs": [
+        "turn66view2",
+        "turn67view4"
+      ],
+      "source_type": "first-hand exact-model experiment and model card",
+      "facts": {
+        "base": "Qwen2.5-Coder-0.5B-Instruct",
+        "task": "natural language to one Bash command",
+        "sft_rows_approx": 105000,
+        "sft_epochs": 3,
+        "sft_learning_rate": 2e-05,
+        "sft_mask": "assistant-only loss",
+        "dpo_pairs": 804,
+        "dpo_epochs": 1,
+        "dpo_learning_rate": 5e-07,
+        "dpo_beta": 0.1,
+        "benchmark_prompts": 50,
+        "reported_stock_sft_dpo_accuracy_percent": [
+          44,
+          72,
+          78
+        ],
+        "second_dpo_round_accuracy_percent": 74
+      },
+      "limits": "Small author-run execution benchmark reused to identify failure classes. Reported improvement is development evidence, not an independently replicated generalization result. The training route is not our final-MLP-only native adapter."
+    },
+    {
+      "id": "shellminator_training",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://github.com/ISB333/shellminator/blob/main/docs/training.md",
+      "web_refs": [
+        "turn70view3",
+        "turn71view3"
+      ],
+      "source_type": "authors published training procedure",
+      "facts": [
+        "DPO pairs compare model-generated commands with gold commands by running both in fresh fixtures.",
+        "A gold self-consistency check removes nondeterministic or broken comparisons.",
+        "The documented self-play scripts and released datasets provide inspectable artifacts."
+      ],
+      "limits": "The published guide mainly covers the DPO ladder. The SFT stage is described rather than independently reproduced here. Execution feedback only verifies the behavior represented in those fixtures."
+    },
+    {
+      "id": "slm_sql_paper",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://arxiv.org/html/2507.22478v1",
+      "web_refs": [
+        "turn69view0",
+        "turn70view4"
+      ],
+      "source_type": "original exact-model research paper",
+      "facts": {
+        "base": "Qwen2.5-Coder-0.5B-Instruct",
+        "sql_generation_sft_rows": 916156,
+        "sft_learning_rate": 2e-05,
+        "sft_scheduler": "linear",
+        "sft_warmup_ratio": 0.1,
+        "sft_effective_batch": 1024,
+        "sft_epochs": 2,
+        "reported_0_5b_bird_dev_ex_percent": 56.87,
+        "pipeline": "SFT, GRPO, sampled SQL generation and corrective self-consistency"
+      },
+      "limits": "Headline score includes substantial test-time sampling and a corrective pipeline; it is not single-pass accuracy. The retrieved repository still lists training-code release as TODO. This supports reported tuneability, not a reproduced native training baseline."
+    },
+    {
+      "id": "slm_sql_repository",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://github.com/CycloneBoy/slm_sql",
+      "web_refs": [
+        "turn66view1",
+        "turn67view3"
+      ],
+      "source_type": "paper authors repository",
+      "facts": [
+        "Released model entries explicitly name Qwen2.5-Coder-0.5B-Instruct as their starting model.",
+        "Dataset and checkpoint links are present.",
+        "Training-code release is still listed among TODO items."
+      ],
+      "limits": "Artifact availability is partial; no end-to-end reproduction was performed."
+    },
+    {
+      "id": "unsloth_coder_analysis",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://unsloth.ai/blog/qwen-coder",
+      "web_refs": [
+        "turn74view0"
+      ],
+      "source_type": "first-hand framework maintainers model analysis",
+      "facts": [
+        "The authors report untrained ChatML boundary embeddings in Qwen2.5 Base models and warn against using them unchanged for Base inference or tuning.",
+        "They also report indefinite generation when padding and end-of-document handling interact incorrectly during fine-tuning."
+      ],
+      "limits": "The padding warning is pipeline dependent; it is not evidence of a defect in our unpadded native corpus with supervised Instruct end-of-turn tokens. These findings warrant explicit Base serialization checks rather than assuming a weight swap is controlled."
+    },
+    {
+      "id": "trl_sft_documentation",
+      "retrieved_date_utc": "2026-10-01",
+      "url": "https://huggingface.co/docs/trl/v0.28.0/en/sft_trainer",
+      "web_refs": [
+        "turn74view2"
+      ],
+      "source_type": "official framework documentation",
+      "facts": [
+        "SFT minimizes target-sequence negative log likelihood conditioned on the prompt.",
+        "Conversational data uses the model chat template; prompt-completion and assistant-only masking options are documented.",
+        "For Qwen conversational training, the documented EOS setting aligns with the end-of-turn token."
+      ],
+      "limits": "Framework documentation establishes supported objectives and serialization choices, not efficacy on our model/task. We did not execute this framework."
+    },
+    {
+      "id": "commit_message_adapter_configuration",
+      "retrieved_date_utc": "2026-10-01",
+      "retrieved_at_utc": "2026-10-01T09:07:20.177759+00:00",
+      "url": "https://huggingface.co/Elib27/qwen2.5-coder-0.5b-commit-msg-lora/resolve/main/adapter_config.json",
+      "source_type": "authors published exact-model adapter configuration; fetched using Python standard-library HTTPS",
+      "web_refs": [],
+      "sha256": "f4f57b5c0612130ca5bb57599cf60fe4fa45115bfd3ecefb01b0c18f431ec54d",
+      "local_snapshot": "commit-msg-adapter-config.json",
+      "repository_revision_header": "32a9575e25cbe749f37b292b1399e41d640a8973",
+      "facts": {
+        "base_model_name_or_path": "unsloth/Qwen2.5-Coder-0.5B-Instruct",
+        "r": 16,
+        "lora_alpha": 32,
+        "target_modules": [
+          "o_proj",
+          "q_proj",
+          "gate_proj",
+          "k_proj",
+          "up_proj",
+          "down_proj",
+          "v_proj"
+        ],
+        "layers_to_transform": null,
+        "modules_to_save": null,
+        "lora_dropout": 0,
+        "bias": "none",
+        "peft_type": "LORA",
+        "task_type": "CAUSAL_LM"
+      },
+      "limits": "Configuration confirms intended module targeting; no weight loading or inference was performed. It targets attention and MLP projections without a layer restriction, unlike the final-MLP-only native experiment."
+    }
+  ],
+  "procedure_comparison": {
+    "jovovich_reference": "Completed counterbalanced-review experiment in PR 11; local experimental details supplied by the root agent and archive summary, not inferred from external sources.",
+    "trainable_scope": {
+      "modules": [
+        "final_layer.mlp.gate_proj",
+        "final_layer.mlp.up_proj",
+        "final_layer.mlp.down_proj"
+      ],
+      "rank": 16,
+      "alpha": 32,
+      "parameter_count": 276480,
+      "formula": "3 * (896 + 4864) * 16",
+      "approx_percent_of_0_49_billion_parameters": 0.05642448979591837,
+      "denominator_limit": "0.49 billion is the official rounded model-family count. Percentage is approximate; adapter count is exact for these shapes and rank.",
+      "effect": "At the measured decision position, the adapter transforms a frozen final-attention contextual representation. It does not adapt attention weights or earlier blocks."
+    },
+    "optimization": {
+      "updates": 100,
+      "learning_rate": 0.0001,
+      "decision_targets_per_update": 52,
+      "residual_targets_per_update": 1012,
+      "target_visits": 106400,
+      "visits_per_target": 100,
+      "voice_and_code_rows": "24 rows used for readout only, not optimized",
+      "objective": "Separately normalized decision and residual cross-entropy with residual coefficient one; not identical to an ordinary uniform completion-token SFT objective."
+    },
+    "interpretation": [
+      "Official examples train attention projections or all linear layers; neither retrieved example restricts learning to the final MLP.",
+      "The known successful exact-model experiments use many distinct examples; repeated exposure to 52 review rows is not equivalent to that diversity.",
+      "One hundred visits per target means the raw update count alone cannot diagnose insufficient training. It also does not establish convergence.",
+      "LR1e-4 appears in an official family example and the exact-model commit experiment; its value alone is not evidence of a bug.",
+      "Our base is Q8_0; the reported comparison experiments use different precision and training implementations, adding another uncontrolled difference.",
+      "Adapter reach, objective normalization, dataset construction, checkpoint choice, and duration remain distinct hypotheses. No source establishes which causes our result."
+    ],
+    "commit_adapter_parameter_comparison": {
+      "published_projection_types": 7,
+      "published_layer_restriction": null,
+      "computed_parameters_at_rank16": 8798208,
+      "formula": "24 * 16 * (2*(896+896) + 2*(896+128) + 3*(896+4864))",
+      "ratio_to_final_mlp_only": 31.822222222222223,
+      "status": "Derived from official dimensions and retrieved adapter configuration; not a direct inspection of its weight tensors.",
+      "interpretation": "Same rank sixteen corresponds to approximately 31.8 times as many trainable adapter parameters when applied across these projections in all 24 layers. This demonstrates a scope difference, not causality."
+    }
+  },
+  "base_hypothesis": {
+    "status": "Plausible controlled ablation, not established cause.",
+    "support": [
+      "Official documentation offers Base for custom downstream training.",
+      "Different post-training histories can change task priors and frozen representations."
+    ],
+    "counterevidence": [
+      "Official documentation also offers Instruct for downstream tuning.",
+      "Several primary sources report successful task adaptation from the exact Instruct checkpoint."
+    ],
+    "required_controls": [
+      "Pin and inspect both checkpoint configurations and tokenizers.",
+      "Choose and document Base serialization and terminal targets; do not silently inherit Instruct assumptions.",
+      "Separate an equal-input representation comparison from a task-training comparison where serialization might need to differ.",
+      "Keep held-out families, metrics, adapter reach, and optimization exposure fixed when those are the controlled variables."
+    ],
+    "recommended_next_action": "Complete the frozen-representation readout probe. Use its outcome to choose a single subsequent intervention. A Base comparison may be informative but should not replace missing controls or be described as the cure."
+  },
+  "negative_findings": [
+    "No primary source retrieved establishes that Qwen2.5-Coder-0.5B-Instruct is intrinsically unsuitable for fine-tuning.",
+    "No source retrieved establishes final-MLP-only LoRA as sufficient for contextual code review.",
+    "No source provides a validated minimum number of examples or updates for JOVOVICH.",
+    "No external result diagnoses a notorch defect."
+  ],
+  "citation_note": "Root agent should reopen the cited primary pages before citing them to the user. Web reference identifiers are included for retrieval, not as substitutes for stable URLs."
+}

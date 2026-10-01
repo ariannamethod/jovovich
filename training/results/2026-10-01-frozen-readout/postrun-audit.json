@@ -1,0 +1,2903 @@
+{
+  "status": "PASS: independent bitset recount matches official counts and all three permutation tails",
+  "independent_method": "Unique heldout row bits accumulated independently per label mask; a pair passes iff both row bits are present. Count strictgreater/equal/less reference scores directly, with identity added once.",
+  "z": {
+    "observed": {
+      "correct": 29,
+      "complete_pairs": 4,
+      "pair_indices": [
+        1,
+        8,
+        13,
+        19
+      ],
+      "correct_concern": 16,
+      "correct_clean": 13,
+      "same_full_diff_complete_pairs": 2
+    },
+    "permutations": [
+      {
+        "correct": 30,
+        "complete_pairs": 5,
+        "pair_indices": [
+          1,
+          4,
+          5,
+          12,
+          19
+        ],
+        "correct_concern": 15,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          8
+        ],
+        "correct_concern": 13,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          22,
+          23
+        ],
+        "correct_concern": 11,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 11,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 9,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 2,
+        "pair_indices": [
+          7,
+          10
+        ],
+        "correct_concern": 8,
+        "correct_clean": 18,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          18
+        ],
+        "correct_concern": 12,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          18
+        ],
+        "correct_concern": 13,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          11,
+          19
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          10
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          19
+        ],
+        "correct_concern": 12,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 4,
+        "pair_indices": [
+          1,
+          10,
+          11,
+          18
+        ],
+        "correct_concern": 15,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          14
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          11
+        ],
+        "correct_concern": 15,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 3,
+        "pair_indices": [
+          5,
+          11,
+          19
+        ],
+        "correct_concern": 16,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          14,
+          18
+        ],
+        "correct_concern": 12,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 3,
+        "pair_indices": [
+          12,
+          13,
+          20
+        ],
+        "correct_concern": 16,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 2,
+        "pair_indices": [
+          4,
+          23
+        ],
+        "correct_concern": 12,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          11
+        ],
+        "correct_concern": 10,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          14
+        ],
+        "correct_concern": 11,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          24
+        ],
+        "correct_concern": 15,
+        "correct_clean": 8,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          6
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          12
+        ],
+        "correct_concern": 14,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          23
+        ],
+        "correct_concern": 11,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          19,
+          24
+        ],
+        "correct_concern": 17,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          24
+        ],
+        "correct_concern": 14,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 10,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          18
+        ],
+        "correct_concern": 16,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 3,
+        "pair_indices": [
+          5,
+          11,
+          25
+        ],
+        "correct_concern": 15,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          11
+        ],
+        "correct_concern": 12,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 14,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 3,
+        "pair_indices": [
+          7,
+          18,
+          24
+        ],
+        "correct_concern": 17,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          25
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          4
+        ],
+        "correct_concern": 13,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          15,
+          18
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          2
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 16,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          18
+        ],
+        "correct_concern": 11,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          10,
+          12
+        ],
+        "correct_concern": 15,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          7,
+          12
+        ],
+        "correct_concern": 12,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          7
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          14
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 14,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          23
+        ],
+        "correct_concern": 9,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          12
+        ],
+        "correct_concern": 12,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          5,
+          12
+        ],
+        "correct_concern": 14,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          13
+        ],
+        "correct_concern": 12,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 9,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          13
+        ],
+        "correct_concern": 10,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 14,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          6,
+          10
+        ],
+        "correct_concern": 11,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 3,
+        "pair_indices": [
+          1,
+          13,
+          25
+        ],
+        "correct_concern": 11,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          20
+        ],
+        "correct_concern": 15,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          7,
+          10
+        ],
+        "correct_concern": 14,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 4,
+        "pair_indices": [
+          0,
+          11,
+          12,
+          13
+        ],
+        "correct_concern": 15,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          3,
+          19
+        ],
+        "correct_concern": 16,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          4
+        ],
+        "correct_concern": 13,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          11
+        ],
+        "correct_concern": 13,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          12
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 9,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          7
+        ],
+        "correct_concern": 13,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          11,
+          13
+        ],
+        "correct_concern": 14,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          11,
+          12
+        ],
+        "correct_concern": 14,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          3
+        ],
+        "correct_concern": 11,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          12
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          25
+        ],
+        "correct_concern": 16,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          13
+        ],
+        "correct_concern": 12,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          25
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          19,
+          24
+        ],
+        "correct_concern": 15,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 2,
+        "pair_indices": [
+          17,
+          24
+        ],
+        "correct_concern": 15,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 4,
+        "pair_indices": [
+          6,
+          11,
+          12,
+          25
+        ],
+        "correct_concern": 16,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          7,
+          12
+        ],
+        "correct_concern": 14,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 3,
+        "pair_indices": [
+          4,
+          13,
+          18
+        ],
+        "correct_concern": 17,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 3,
+        "pair_indices": [
+          7,
+          9,
+          23
+        ],
+        "correct_concern": 16,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          25
+        ],
+        "correct_concern": 11,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 15,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 15,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 4,
+        "pair_indices": [
+          10,
+          14,
+          16,
+          18
+        ],
+        "correct_concern": 14,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 2,
+        "pair_indices": [
+          0,
+          19
+        ],
+        "correct_concern": 10,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          1
+        ],
+        "correct_concern": 13,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 10,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 15,
+        "correct_clean": 8,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          8
+        ],
+        "correct_concern": 11,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 10,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          12
+        ],
+        "correct_concern": 11,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          6
+        ],
+        "correct_concern": 12,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          4
+        ],
+        "correct_concern": 13,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          13
+        ],
+        "correct_concern": 14,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 2,
+        "pair_indices": [
+          18,
+          22
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 3,
+        "pair_indices": [
+          4,
+          6,
+          12
+        ],
+        "correct_concern": 12,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 1,
+        "pair_indices": [
+          19
+        ],
+        "correct_concern": 18,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 1,
+        "pair_indices": [
+          2
+        ],
+        "correct_concern": 15,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 2,
+        "pair_indices": [
+          7,
+          23
+        ],
+        "correct_concern": 17,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 2,
+        "pair_indices": [
+          5,
+          19
+        ],
+        "correct_concern": 14,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 5,
+        "pair_indices": [
+          1,
+          10,
+          11,
+          12,
+          24
+        ],
+        "correct_concern": 15,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 1
+      }
+    ],
+    "capacity": [
+      {
+        "permutation": -1,
+        "correct": 52,
+        "ce": 0.0012323346561498997,
+        "capacity_success": false,
+        "converged": true,
+        "gradient_inf": 7.392953833012309e-10
+      },
+      {
+        "permutation": 0,
+        "correct": 52,
+        "ce": 0.0012610003663753578,
+        "capacity_success": false,
+        "converged": true,
+        "gradient_inf": 7.214492673336307e-09
+      }
+    ],
+    "families": [
+      {
+        "family": "scoped-python-analysis",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "approved-binary-decoder",
+        "rows": 2,
+        "correct": 2,
+        "pairs": 1,
+        "complete_pairs": 1
+      },
+      {
+        "family": "sqlite-build-requirement",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "background-service-scope",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "model-parent-provenance",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "scoped-design-record",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "checksum-indirection",
+        "rows": 2,
+        "correct": 2,
+        "pairs": 1,
+        "complete_pairs": 1
+      },
+      {
+        "family": "sequence-field-width",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "validated-port-conversion",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "negative-offset-type",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "exact-property-name",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "idempotent-event-retry",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "atomic-snapshot-publication",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "save-status-propagation",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "preserve-trie-credit",
+        "rows": 4,
+        "correct": 1,
+        "pairs": 2,
+        "complete_pairs": 0
+      },
+      {
+        "family": "allocation-null-guard",
+        "rows": 4,
+        "correct": 2,
+        "pairs": 2,
+        "complete_pairs": 0
+      },
+      {
+        "family": "zero-worker-guard",
+        "rows": 4,
+        "correct": 3,
+        "pairs": 2,
+        "complete_pairs": 1
+      },
+      {
+        "family": "write-permission-check",
+        "rows": 4,
+        "correct": 3,
+        "pairs": 2,
+        "complete_pairs": 1
+      },
+      {
+        "family": "stable-manifest-order",
+        "rows": 4,
+        "correct": 2,
+        "pairs": 2,
+        "complete_pairs": 0
+      },
+      {
+        "family": "allocation-product-overflow",
+        "rows": 4,
+        "correct": 2,
+        "pairs": 2,
+        "complete_pairs": 0
+      }
+    ],
+    "fits": 2002,
+    "max_gradient_inf": 7.214492673336307e-09,
+    "max_iterations": 12,
+    "observed_margin_audit": {
+      "minimum_absolute_score": 0.0008021921660301458,
+      "smallest_ten": [
+        {
+          "row": 38,
+          "id": "write-permission-check-replacement-concern",
+          "family": "write-permission-check",
+          "score": 0.0008021921660301458,
+          "absolute_score": 0.0008021921660301458,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 16,
+          "id": "checksum-indirection-concern",
+          "family": "checksum-indirection",
+          "score": 0.0011426820843016346,
+          "absolute_score": 0.0011426820843016346,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 11,
+          "id": "preserve-trie-credit-replacement-clean",
+          "family": "preserve-trie-credit",
+          "score": 0.004823360094303029,
+          "absolute_score": 0.004823360094303029,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        },
+        {
+          "row": 19,
+          "id": "sequence-field-width-repaired",
+          "family": "sequence-field-width",
+          "score": -0.010045541866173048,
+          "absolute_score": 0.010045541866173048,
+          "label": 0,
+          "prediction": 0,
+          "correct": true
+        },
+        {
+          "row": 18,
+          "id": "sequence-field-width-introduced",
+          "family": "sequence-field-width",
+          "score": -0.01047778568397721,
+          "absolute_score": 0.01047778568397721,
+          "label": 1,
+          "prediction": 0,
+          "correct": false
+        },
+        {
+          "row": 29,
+          "id": "validated-port-conversion-repaired",
+          "family": "validated-port-conversion",
+          "score": -0.010705447452368408,
+          "absolute_score": 0.010705447452368408,
+          "label": 0,
+          "prediction": 0,
+          "correct": true
+        },
+        {
+          "row": 3,
+          "id": "approved-binary-decoder-clean",
+          "family": "approved-binary-decoder",
+          "score": -0.012220697143472452,
+          "absolute_score": 0.012220697143472452,
+          "label": 0,
+          "prediction": 0,
+          "correct": true
+        },
+        {
+          "row": 27,
+          "id": "zero-worker-guard-replacement-clean",
+          "family": "zero-worker-guard",
+          "score": -0.013725561521991976,
+          "absolute_score": 0.013725561521991976,
+          "label": 0,
+          "prediction": 0,
+          "correct": true
+        },
+        {
+          "row": 2,
+          "id": "approved-binary-decoder-concern",
+          "family": "approved-binary-decoder",
+          "score": 0.015226076124410064,
+          "absolute_score": 0.015226076124410064,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 26,
+          "id": "zero-worker-guard-replacement-concern",
+          "family": "zero-worker-guard",
+          "score": 0.017915480170406145,
+          "absolute_score": 0.017915480170406145,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        }
+      ],
+      "absolute_score_at_most_threshold": {
+        "0": 0,
+        "1e-08": 0,
+        "1e-06": 0,
+        "0.0001": 0,
+        "0.001": 1
+      },
+      "interpretation": "Descriptive sensitivity only; prediction threshold remains exactly0, tie remainsclean. Gradient-infinity stopping tolerance is not a calibrated bound on heldout score uncertainty."
+    },
+    "source": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state-fits.jsonl",
+      "bytes": 2354539,
+      "sha256": "4bf4391c37a201c1c66b83fc347e5c59b0147f07969443d10755e9289ed2e6d7"
+    }
+  },
+  "nuisance": {
+    "observed": {
+      "correct": 35,
+      "complete_pairs": 9,
+      "pair_indices": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        18,
+        19,
+        24,
+        25
+      ],
+      "correct_concern": 23,
+      "correct_clean": 12,
+      "same_full_diff_complete_pairs": 0
+    },
+    "permutations": [
+      {
+        "correct": 32,
+        "complete_pairs": 6,
+        "pair_indices": [
+          11,
+          13,
+          19,
+          22,
+          23,
+          25
+        ],
+        "correct_concern": 16,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          12,
+          18,
+          23,
+          24,
+          25
+        ],
+        "correct_concern": 14,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 3,
+        "correct_clean": 18,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 6,
+        "pair_indices": [
+          7,
+          13,
+          14,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 9,
+        "correct_clean": 21,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 9,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          11,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 10,
+        "correct_clean": 20,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 9,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          11,
+          13,
+          19,
+          23,
+          25
+        ],
+        "correct_concern": 13,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          24,
+          25
+        ],
+        "correct_concern": 9,
+        "correct_clean": 20,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 3,
+        "pair_indices": [
+          12,
+          13,
+          19
+        ],
+        "correct_concern": 10,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 1,
+        "pair_indices": [
+          0
+        ],
+        "correct_concern": 11,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 4,
+        "pair_indices": [
+          12,
+          18,
+          24,
+          25
+        ],
+        "correct_concern": 19,
+        "correct_clean": 8,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 19,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 10,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 34,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 19,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 4,
+        "pair_indices": [
+          10,
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 15,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          19
+        ],
+        "correct_concern": 13,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 19,
+        "complete_pairs": 1,
+        "pair_indices": [
+          23
+        ],
+        "correct_concern": 10,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 35,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 14,
+        "correct_clean": 21,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          19
+        ],
+        "correct_concern": 13,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 31,
+        "complete_pairs": 7,
+        "pair_indices": [
+          1,
+          7,
+          10,
+          12,
+          13,
+          14,
+          24
+        ],
+        "correct_concern": 19,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 2
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 5,
+        "pair_indices": [
+          12,
+          19,
+          22,
+          23,
+          24
+        ],
+        "correct_concern": 19,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 11,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          18,
+          24
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 2,
+        "pair_indices": [
+          4,
+          7
+        ],
+        "correct_concern": 14,
+        "correct_clean": 7,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 4,
+        "correct_clean": 18,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 10,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 3,
+        "pair_indices": [
+          10,
+          22,
+          23
+        ],
+        "correct_concern": 16,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 4,
+        "pair_indices": [
+          11,
+          13,
+          24,
+          25
+        ],
+        "correct_concern": 13,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          13,
+          19,
+          25
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 17,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 16,
+        "correct_clean": 5,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          14
+        ],
+        "correct_concern": 9,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 1,
+        "pair_indices": [
+          7
+        ],
+        "correct_concern": 19,
+        "correct_clean": 3,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          12,
+          14,
+          18,
+          23,
+          24
+        ],
+        "correct_concern": 12,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 9,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          19
+        ],
+        "correct_concern": 11,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          18,
+          19
+        ],
+        "correct_concern": 9,
+        "correct_clean": 20,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 2,
+        "pair_indices": [
+          14,
+          22
+        ],
+        "correct_concern": 9,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 15,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 31,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          11,
+          13,
+          19,
+          23,
+          25
+        ],
+        "correct_concern": 13,
+        "correct_clean": 18,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 33,
+        "complete_pairs": 7,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 12,
+        "correct_clean": 21,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          12,
+          18,
+          19
+        ],
+        "correct_concern": 7,
+        "correct_clean": 19,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 19,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 9,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          10,
+          12,
+          22,
+          23,
+          24
+        ],
+        "correct_concern": 19,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 12,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          19
+        ],
+        "correct_concern": 13,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 2,
+        "pair_indices": [
+          1,
+          7
+        ],
+        "correct_concern": 12,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 2
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 2,
+        "pair_indices": [
+          4,
+          7
+        ],
+        "correct_concern": 14,
+        "correct_clean": 6,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 5,
+        "pair_indices": [
+          4,
+          12,
+          18,
+          24,
+          25
+        ],
+        "correct_concern": 8,
+        "correct_clean": 19,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          19
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 4,
+        "pair_indices": [
+          11,
+          13,
+          14,
+          25
+        ],
+        "correct_concern": 12,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 35,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 18,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 15,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          12,
+          14,
+          22,
+          23,
+          24
+        ],
+        "correct_concern": 13,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 6,
+        "pair_indices": [
+          12,
+          13,
+          14,
+          18,
+          19,
+          25
+        ],
+        "correct_concern": 21,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 2,
+        "pair_indices": [
+          12,
+          24
+        ],
+        "correct_concern": 18,
+        "correct_clean": 6,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 3,
+        "pair_indices": [
+          19,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 4,
+        "correct_clean": 17,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 9,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 18,
+        "correct_clean": 4,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 32,
+        "complete_pairs": 6,
+        "pair_indices": [
+          10,
+          11,
+          13,
+          19,
+          22,
+          25
+        ],
+        "correct_concern": 18,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 11,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          13,
+          19
+        ],
+        "correct_concern": 12,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 6,
+        "pair_indices": [
+          12,
+          13,
+          14,
+          18,
+          19,
+          25
+        ],
+        "correct_concern": 9,
+        "correct_clean": 20,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          12,
+          18,
+          19
+        ],
+        "correct_concern": 7,
+        "correct_clean": 18,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 9,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          18,
+          24
+        ],
+        "correct_concern": 11,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          18,
+          19
+        ],
+        "correct_concern": 14,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 34,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 18,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 34,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 19,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 23,
+        "complete_pairs": 1,
+        "pair_indices": [
+          14
+        ],
+        "correct_concern": 14,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 27,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 1,
+        "pair_indices": [
+          22
+        ],
+        "correct_concern": 10,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 34,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 19,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 20,
+        "complete_pairs": 0,
+        "pair_indices": [],
+        "correct_concern": 4,
+        "correct_clean": 16,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 33,
+        "complete_pairs": 8,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 11,
+        "correct_clean": 22,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          22,
+          23
+        ],
+        "correct_concern": 15,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 31,
+        "complete_pairs": 7,
+        "pair_indices": [
+          2,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19
+        ],
+        "correct_concern": 10,
+        "correct_clean": 21,
+        "same_full_diff_complete_pairs": 1
+      },
+      {
+        "correct": 22,
+        "complete_pairs": 1,
+        "pair_indices": [
+          23
+        ],
+        "correct_concern": 12,
+        "correct_clean": 10,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 2,
+        "pair_indices": [
+          14,
+          23
+        ],
+        "correct_concern": 10,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 28,
+        "complete_pairs": 5,
+        "pair_indices": [
+          11,
+          12,
+          13,
+          14,
+          25
+        ],
+        "correct_concern": 8,
+        "correct_clean": 20,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          19,
+          23,
+          24
+        ],
+        "correct_concern": 11,
+        "correct_clean": 14,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 35,
+        "complete_pairs": 9,
+        "pair_indices": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          18,
+          19,
+          24,
+          25
+        ],
+        "correct_concern": 23,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          14,
+          22,
+          23
+        ],
+        "correct_concern": 13,
+        "correct_clean": 13,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 3,
+        "pair_indices": [
+          12,
+          18,
+          19
+        ],
+        "correct_concern": 18,
+        "correct_clean": 7,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 26,
+        "complete_pairs": 3,
+        "pair_indices": [
+          11,
+          13,
+          25
+        ],
+        "correct_concern": 14,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 24,
+        "complete_pairs": 1,
+        "pair_indices": [
+          13
+        ],
+        "correct_concern": 12,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 30,
+        "complete_pairs": 6,
+        "pair_indices": [
+          12,
+          13,
+          14,
+          18,
+          19,
+          25
+        ],
+        "correct_concern": 21,
+        "correct_clean": 9,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 21,
+        "complete_pairs": 1,
+        "pair_indices": [
+          23
+        ],
+        "correct_concern": 9,
+        "correct_clean": 12,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          12,
+          13,
+          18,
+          19,
+          24
+        ],
+        "correct_concern": 10,
+        "correct_clean": 19,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 29,
+        "complete_pairs": 5,
+        "pair_indices": [
+          10,
+          14,
+          19,
+          22,
+          23
+        ],
+        "correct_concern": 14,
+        "correct_clean": 15,
+        "same_full_diff_complete_pairs": 0
+      },
+      {
+        "correct": 25,
+        "complete_pairs": 2,
+        "pair_indices": [
+          10,
+          22
+        ],
+        "correct_concern": 14,
+        "correct_clean": 11,
+        "same_full_diff_complete_pairs": 0
+      }
+    ],
+    "capacity": [
+      {
+        "permutation": -1,
+        "correct": 40,
+        "ce": 0.5004284708399046,
+        "capacity_success": false,
+        "converged": true,
+        "gradient_inf": 2.8664386749616133e-09
+      },
+      {
+        "permutation": 0,
+        "correct": 37,
+        "ce": 0.5530109610328247,
+        "capacity_success": false,
+        "converged": true,
+        "gradient_inf": 3.8208772881742625e-09
+      }
+    ],
+    "families": [
+      {
+        "family": "scoped-python-analysis",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "approved-binary-decoder",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "sqlite-build-requirement",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "background-service-scope",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "model-parent-provenance",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "scoped-design-record",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "checksum-indirection",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "sequence-field-width",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "validated-port-conversion",
+        "rows": 2,
+        "correct": 2,
+        "pairs": 1,
+        "complete_pairs": 1
+      },
+      {
+        "family": "negative-offset-type",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "exact-property-name",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "idempotent-event-retry",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "atomic-snapshot-publication",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "save-status-propagation",
+        "rows": 2,
+        "correct": 1,
+        "pairs": 1,
+        "complete_pairs": 0
+      },
+      {
+        "family": "preserve-trie-credit",
+        "rows": 4,
+        "correct": 2,
+        "pairs": 2,
+        "complete_pairs": 0
+      },
+      {
+        "family": "allocation-null-guard",
+        "rows": 4,
+        "correct": 4,
+        "pairs": 2,
+        "complete_pairs": 2
+      },
+      {
+        "family": "zero-worker-guard",
+        "rows": 4,
+        "correct": 4,
+        "pairs": 2,
+        "complete_pairs": 2
+      },
+      {
+        "family": "write-permission-check",
+        "rows": 4,
+        "correct": 4,
+        "pairs": 2,
+        "complete_pairs": 2
+      },
+      {
+        "family": "stable-manifest-order",
+        "rows": 4,
+        "correct": 2,
+        "pairs": 2,
+        "complete_pairs": 0
+      },
+      {
+        "family": "allocation-product-overflow",
+        "rows": 4,
+        "correct": 4,
+        "pairs": 2,
+        "complete_pairs": 2
+      }
+    ],
+    "fits": 2002,
+    "max_gradient_inf": 3.8208772881742625e-09,
+    "max_iterations": 14,
+    "observed_margin_audit": {
+      "minimum_absolute_score": 0.14721037758222139,
+      "smallest_ten": [
+        {
+          "row": 3,
+          "id": "approved-binary-decoder-clean",
+          "family": "approved-binary-decoder",
+          "score": 0.14721037758222139,
+          "absolute_score": 0.14721037758222139,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        },
+        {
+          "row": 15,
+          "id": "scoped-design-record-clean",
+          "family": "scoped-design-record",
+          "score": 0.15798469525378836,
+          "absolute_score": 0.15798469525378836,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        },
+        {
+          "row": 2,
+          "id": "approved-binary-decoder-concern",
+          "family": "approved-binary-decoder",
+          "score": 0.1650290364410117,
+          "absolute_score": 0.1650290364410117,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 14,
+          "id": "scoped-design-record-concern",
+          "family": "scoped-design-record",
+          "score": 0.16968958059312259,
+          "absolute_score": 0.16968958059312259,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 7,
+          "id": "background-service-scope-clean",
+          "family": "background-service-scope",
+          "score": 0.2168859937241114,
+          "absolute_score": 0.2168859937241114,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        },
+        {
+          "row": 1,
+          "id": "scoped-python-analysis-clean",
+          "family": "scoped-python-analysis",
+          "score": 0.2203385930279,
+          "absolute_score": 0.2203385930279,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        },
+        {
+          "row": 6,
+          "id": "background-service-scope-concern",
+          "family": "background-service-scope",
+          "score": 0.22048442019811457,
+          "absolute_score": 0.22048442019811457,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 0,
+          "id": "scoped-python-analysis-concern",
+          "family": "scoped-python-analysis",
+          "score": 0.2308554526299365,
+          "absolute_score": 0.2308554526299365,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 4,
+          "id": "sqlite-build-requirement-concern",
+          "family": "sqlite-build-requirement",
+          "score": 0.24741501254212692,
+          "absolute_score": 0.24741501254212692,
+          "label": 1,
+          "prediction": 1,
+          "correct": true
+        },
+        {
+          "row": 5,
+          "id": "sqlite-build-requirement-clean",
+          "family": "sqlite-build-requirement",
+          "score": 0.2595884949551807,
+          "absolute_score": 0.2595884949551807,
+          "label": 0,
+          "prediction": 1,
+          "correct": false
+        }
+      ],
+      "absolute_score_at_most_threshold": {
+        "0": 0,
+        "1e-08": 0,
+        "1e-06": 0,
+        "0.0001": 0,
+        "0.001": 0
+      },
+      "interpretation": "Descriptive sensitivity only; prediction threshold remains exactly0, tie remainsclean. Gradient-infinity stopping tolerance is not a calibrated bound on heldout score uncertainty."
+    },
+    "source": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit-fits.jsonl",
+      "bytes": 1598642,
+      "sha256": "1e87daeba8a979be8d47a84be720cac383d9c8efc7aa7a37f467d24f17d2982e"
+    }
+  },
+  "rank_receipts": {
+    "z_complete_pairs": {
+      "observed": 4,
+      "reference_greater": 2,
+      "reference_equal": 4,
+      "reference_less": 93,
+      "upper_tail_numerator_with_identity": 7,
+      "denominator": 100,
+      "upper_tail_fraction": 0.07,
+      "null_min": 0,
+      "null_max": 5
+    },
+    "nuisance_complete_pairs": {
+      "observed": 9,
+      "reference_greater": 0,
+      "reference_equal": 7,
+      "reference_less": 92,
+      "upper_tail_numerator_with_identity": 8,
+      "denominator": 100,
+      "upper_tail_fraction": 0.08,
+      "null_min": 0,
+      "null_max": 9
+    },
+    "paired_z_minus_nuisance_complete_pairs": {
+      "observed": -5,
+      "reference_greater": 78,
+      "reference_equal": 10,
+      "reference_less": 11,
+      "upper_tail_numerator_with_identity": 89,
+      "denominator": 100,
+      "upper_tail_fraction": 0.89,
+      "null_min": -9,
+      "null_max": 3
+    }
+  },
+  "source_summary": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-summary.json",
+    "bytes": 152995,
+    "sha256": "304a2f1a85e109c9092bcef570b0c1e8d107c96f49786cf0bbae0178a8a4f9ee"
+  },
+  "source_run_receipt": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-run.json",
+    "bytes": 23033,
+    "sha256": "2644bb82190d98541ab4df39a4f0fabe770b0d033ddc92a1e9d3cdfdfc39fea2"
+  },
+  "auditor_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_postrun_audit.py",
+    "bytes": 10259,
+    "sha256": "80926cd3d6b29e71400f74e322d2e44e02b3fe100d71f7ec427c47e96006c6f8"
+  },
+  "boundaries": [
+    "No inference, fitting, normalizing, logits or score tuning performed by auditor.",
+    "Binary separation at supplied common prefix does not establish natural complete-review competence.",
+    "Training interpolation is not transfer; heldout families are templates rather than independent semantic domains.",
+    "Seven nuisance features do not exhaust nonsemantic shortcuts; permutation exchangeability is an exploratory assumption."
+  ]
+}

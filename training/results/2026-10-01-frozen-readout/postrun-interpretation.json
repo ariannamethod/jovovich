@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "Independent postrun interpretation; no new fitting or corpus mutation",
+  "created_at_utc": "2026-10-01T09:33:41.073701+00:00",
+  "source_audit": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/postrun-audit.json",
+    "sha256": "ce95f7ddfc22742a84c4fb54d726ca5fe9abad69d89b445fbd23229e5fb09bd9",
+    "bytes": 65347
+  },
+  "main_finding": "The specified affine readout at the supplied common prefix does not show a template-family-held-out advantage over the seven-feature nuisance baseline:4/26 versus9/26 complete pairs. The paired advantage statistic is-5, with exploratory upper-tail fraction.89.",
+  "supporting_observations": {
+    "z_rows": "29/52 =16/26concern +13/26clean",
+    "nuisance_rows": "35/52 =23/26concern +12/26clean",
+    "z_same_full_diff_subset": "2/6, a secondary nested subset; not additional pairs and not enough to overturn the primary comparison",
+    "nuisance_same_full_diff_subset": "0/6",
+    "nuisance_pair_concentration": "8 of9 completed pairs come from four guard quartets: allocation-null-guard, zero-worker-guard, write-permission-check, allocation-product-overflow. The ninth is validated-port-conversion. This makes the available count/length shortcuts a concrete data concern, without proving which cues the earlier generative model used.",
+    "numerical_validity": "All4004 fits met the preregistered gradient convergence rule. No observed score is exactlyzero; z minimum absolute score0.0008021921660301458, nuisance0.14721037758222139. There is no score-level evidence here for changing labels or requesting optional numerical refits.",
+    "capacity": "True and first-permuted z fits both classify all52 training rows correctly, but mean CE0.0012323346561498997 and0.0012610003663753578 exceed the frozen0.001 capacity criterion. Both capacity_success values remainfalse. Correct training labels alone demonstrate cohort fitting, not semantic transfer."
+  },
+  "what_this_does_not_establish": [
+    "No conclusion that Qwen lacks relevant information: only one state, affine head, normalization and lambda were tested.",
+    "No conclusion that Instruct caused earlier failure; Base-vs-Instruct remains an untested model comparison.",
+    "No conclusion that notorch is generally bug-free; this particular native extraction/solver path passed its prespecified gates.",
+    "No isolation of the previous LoRA bottleneck. This probe changes objective and readout, and its grouped predictions are not directly comparable to original training-generation scores.",
+    "No full-review competence, natural prefix generation, citation correctness or grounded explanation result.",
+    "No resolution of whether previous100-update LoRA training was sufficient.",
+    "Permutation fractions are exploratory conditional references under family label-exchangeability assumptions, not confirmatory significance."
+  ],
+  "recommended_next_step": {
+    "priority": "A separate data-only counterbalance intervention, rather than interpreting this as a reason to replace the model now.",
+    "design": "Keep cohort size and broad task contract controlled; replace harmful neutral no-op contexts with ineffective protective lookalikes that match clean after-side if/sort/credit counts. Preserve both diff shapes and pair labels per family. Audit behavior of each ineffective/effective protection, not just syntax.",
+    "controls": "Keep model, adapter placement, objective, update budget and scoring fixed for that experiment. Freeze new independent template families before training or scoring; current52 and previously seen transfercases are development data. Audit exact nuisance vector and lexical marker balance before optimization.",
+    "claim": "This would test whether shortcut availability impedes learning or assessment. It would not by itself test broader adapter placement, longer duration or Instruct status; those need separate controlled comparisons.",
+    "not_done": "No new corpus, head, optimization, adapter change or model swap was executed by this auditor."
+  },
+  "later_separate_tests": [
+    "A duration-only LoRA comparison with genuine optimizer-state resume or a deterministic fresh rerun whose initial trajectory is verified.",
+    "A broader adapter-placement comparison if data controls remain weak; repository research identifies that the present final-MLP-only scope is narrower than common whole-backbone recipes, not a proven cause.",
+    "A matched Base-vs-Instruct comparison after data/procedure controls, without silently changing template, token boundaries and evaluation."
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "status": "Immutable failed first attempt: native parity rejected shared prefix before feature extraction or fitting. Snapshot completed before corrective source edits.",
+  "plan_sha256": "1515115a0f19fb0c95868cf4dd8354c5eee2b7fee4a7c592f7a43279190823a3",
+  "run_status": "failed",
+  "phases_attempted": 1,
+  "feature_extraction_started": false,
+  "classifier_fits_started": false,
+  "omitted_reproducible_model": [
+    {
+      "binding": "base-model",
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848,
+      "reason": "Public base GGUF unchanged and checksum-bound; no 675710848-byte duplicate."
+    }
+  ],
+  "files": {
+    "reference/bind_readout.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/bind_readout.py",
+      "sha256": "12688953e813dc747e25fdd20b36132c471beb308f563d7267ce9b21b0a15edb",
+      "bytes": 5869
+    },
+    "reference/environment.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/environment.json",
+      "sha256": "d39d93fcb4489a9793d4c43d7a9adfdfd3e826204133f6abf136b2f07efd170e",
+      "bytes": 351
+    },
+    "reference/frozen-inputs/parity.stderr.txt": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stderr.txt",
+      "sha256": "20e79ac780d418bb7fdcf4e4818658fdcff9c097dd68426a0304fbadca586718",
+      "bytes": 196
+    },
+    "reference/frozen-inputs/parity.stdout.jsonl": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/parity.stdout.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "reference/frozen-inputs/readout-input.bin": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760
+    },
+    "reference/frozen-inputs/readout-masks.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    },
+    "reference/frozen-inputs/readout-masks.txt": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    "reference/frozen-inputs/readout-metadata.txt": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    "reference/frozen-inputs/readout-preparation.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-preparation.json",
+      "sha256": "1e5446723ffc6b7416df0d2418ada7136671cb97919ecb205d93daa57aa15ae4",
+      "bytes": 1579
+    },
+    "reference/frozen-inputs/readout-rows.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    "reference/frozen-inputs/readout-run.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-run.json",
+      "sha256": "9961db2628a6eb946e6964d960ce94b50fe4431cbcf16a5c201a3b9546c082c2",
+      "bytes": 2010
+    },
+    "reference/frozen-inputs/readout-sft.bin": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs/readout-sft.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123
+    },
+    "reference/independent-readout-audit.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-readout-audit.json",
+      "sha256": "6e35aa747fa30bfe0cee7e293d20bc49b11dc1a593cfe9b155d707c34391956b",
+      "bytes": 9595
+    },
+    "reference/independent-solver-test.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-solver-test.json",
+      "sha256": "f9280ca2af430a2a89a7726fb5fc7d83c066521e0278b1568a27ab1e7bfe0cbd",
+      "bytes": 315
+    },
+    "reference/independent_preparation_audit.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_preparation_audit.py",
+      "sha256": "07302234e62f1ddb91b1f64b1518093e82115b0486b7230d91a40e9207bf9648",
+      "bytes": 3700
+    },
+    "reference/independent_solver_audit.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_solver_audit.c",
+      "sha256": "9cac3289cbd79d69bf1cce759e80901655260e4cbe270a0b42bbcfb16c9b51b3",
+      "bytes": 3301
+    },
+    "reference/preparation-tests.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/preparation-tests.json",
+      "sha256": "633fc27365914c37adb12b495b5f12693a52f7684097867493f35f86edadd816",
+      "bytes": 415
+    },
+    "reference/prepare_readout.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+      "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+      "bytes": 8735
+    },
+    "reference/readout-plan-draft.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-draft.json",
+      "sha256": "012215d7012e964f892aa8f1d5575b64fa7a28ef54bbd413b9332a8c3e27347b",
+      "bytes": 12203
+    },
+    "reference/readout-plan.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan.json",
+      "sha256": "1515115a0f19fb0c95868cf4dd8354c5eee2b7fee4a7c592f7a43279190823a3",
+      "bytes": 30427
+    },
+    "reference/run_readout.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/run_readout.py",
+      "sha256": "11752f2d3201cc24e5883d8c6f77066bda607cad2ba727643a54ac856a384215",
+      "bytes": 7105
+    },
+    "reference/runner-tests.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/runner-tests.json",
+      "sha256": "837d6462e09ecef94533acb32a4de05ee7bf60be5ab441c96dffb9148595f94a",
+      "bytes": 475
+    },
+    "reference/summarize_readout.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+      "sha256": "60d6dcae257c40302d1d544a916faa43fcdfc4206a30db100673a5f38734cee7",
+      "bytes": 10625
+    },
+    "reference/summary-tests.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/summary-tests.json",
+      "sha256": "47be3a335e0e71f985310aa19375fd82e82148b7fcc13b7de0135141476eee1c",
+      "bytes": 523
+    },
+    "reference/tests-before.txt": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/readout-reference/tests-before.txt",
+      "sha256": "5f1132d5f2b75d8fced7064a83be04748780cc422af32d14ee691040f47949f3",
+      "bytes": 8229
+    },
+    "repository/Makefile": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76",
+      "bytes": 6008
+    },
+    "repository/build/jovovich-extract-readout": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "sha256": "0f0446624782fc175c81b20cf8ff2e2b9496595e7de4a33a46c7c80b51092a2e",
+      "bytes": 259160
+    },
+    "repository/build/jovovich-probe-readout": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+      "sha256": "eb0aa716aefcea7e7e5ffa72e75affb876e1282771de1e809347a358c5385f8a",
+      "bytes": 263616
+    },
+    "repository/build/jovovich-readout-fit": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "bytes": 33840
+    },
+    "repository/deps/notorch/examples/bpe.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "bytes": 36729
+    },
+    "repository/deps/notorch/examples/bpe.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "bytes": 2388
+    },
+    "repository/deps/notorch/examples/unicode_numbers.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "bytes": 3449
+    },
+    "repository/deps/notorch/gguf.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "bytes": 53933
+    },
+    "repository/deps/notorch/gguf.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "bytes": 11406
+    },
+    "repository/deps/notorch/harness/arch.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "bytes": 6538
+    },
+    "repository/deps/notorch/harness/arch_llama.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    "repository/deps/notorch/harness/arch_models.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "bytes": 1879
+    },
+    "repository/deps/notorch/harness/runtime.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "bytes": 15583
+    },
+    "repository/deps/notorch/harness/runtime.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "bytes": 5513
+    },
+    "repository/deps/notorch/notorch.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "bytes": 486394
+    },
+    "repository/deps/notorch/notorch.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "bytes": 50653
+    },
+    "repository/deps/notorch/notorch_simd.h": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "bytes": 27843
+    },
+    "repository/model.json": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/model.json",
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+      "bytes": 325
+    },
+    "repository/src/infer.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    "repository/test/readout.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout.c",
+      "sha256": "359a98cbb79ce910ede40aa55504d99f4eb231ada7762c8139a8e9752ddff4eb",
+      "bytes": 8388
+    },
+    "repository/test/readout_extract.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_extract.c",
+      "sha256": "0475238f650801df2ac059c76dc61a3bd2790cdefcf9288463244bb102b98f7f",
+      "bytes": 2061
+    },
+    "repository/test/readout_fit.test.mjs": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_fit.test.mjs",
+      "sha256": "94b5c06e3c00f5733e59497679d2973f606536a5cfb730fe4df47d83874fff68",
+      "bytes": 6188
+    },
+    "repository/training/extract_readout.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "sha256": "6275361e2a2f714625e4819097721126455a4749528aabd37d071f373b06da86",
+      "bytes": 8103
+    },
+    "repository/training/prepare.py": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700
+    },
+    "repository/training/probe_readout.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_readout.c",
+      "sha256": "9d43da993ca6a41beb800335a83ac2fd052e3b6884ab622a237328b9b9a5de97",
+      "bytes": 6582
+    },
+    "repository/training/readout_fit.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/readout_fit.c",
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "bytes": 21701
+    },
+    "repository/training/sft_review_v4.jsonl": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    "repository/training/train_mlp.c": {
+      "original_path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    }
+  }
+}

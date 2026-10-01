@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "started_at_utc": "2026-10-01T09:21:09.669480+00:00",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-v2.json",
+    "sha256": "75d2462975efcd92dccb93db6d5f677a87e556ff6842274192194a3e460346f6",
+    "bytes": 33927
+  },
+  "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+  "environment_overrides": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "phases": [
+    {
+      "name": "parity",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-input.bin",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-sft.bin",
+        "4"
+      ],
+      "elapsed_seconds": 74.61966218300222,
+      "returncode": 0,
+      "peak_rss_kib": 711676,
+      "user_cpu_seconds": 135.767442,
+      "system_cpu_seconds": 5.820535,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/parity.stdout.jsonl",
+        "sha256": "39e0859ed59badd7dbfe084b9725528b984fa112a7b27d70515e2de19fada62e",
+        "bytes": 1168
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/parity.stderr.txt",
+        "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+        "bytes": 127
+      },
+      "created_files": []
+    },
+    {
+      "name": "extract",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-input.bin",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-features.bin",
+        "4"
+      ],
+      "elapsed_seconds": 550.6296704589986,
+      "returncode": 0,
+      "peak_rss_kib": 713244,
+      "user_cpu_seconds": 1034.233547,
+      "system_cpu_seconds": 43.681259,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/extract.stdout.jsonl",
+        "sha256": "30f9f9ee5de0307e1073813de59002b657a0f4d07c8c61734e58e464f36911f8",
+        "bytes": 118632
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/extract.stderr.txt",
+        "sha256": "7ecde6c18e0511041c0c7955819de4dea18a40c30d102fd52dcc61a433e7ccc0",
+        "bytes": 2250
+      },
+      "created_files": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-features.bin",
+          "sha256": "96909fce3ed4842885bd8b8f248eb8c345f733f84d00c48172f9c0d5897cd632",
+          "bytes": 186384
+        }
+      ]
+    },
+    {
+      "name": "nuisance",
+      "argv": [
+        "python3",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+        "--out",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2",
+        "--trace",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/extract.stdout.jsonl"
+      ],
+      "elapsed_seconds": 0.07192294199921889,
+      "returncode": 0,
+      "peak_rss_kib": 13796,
+      "user_cpu_seconds": 0.052659,
+      "system_cpu_seconds": 0.016309,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance.stdout.jsonl",
+        "sha256": "8d69306f43a2e8d96c50f8bbcc847a4d3a57e7c6b65a520bfed6b4c6e0cafc18",
+        "bytes": 263
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "created_files": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-nuisance.bin",
+          "sha256": "b817eff4a66bef24ff5510068b5a6f3f343274447fcbafe1a75c188b64c6317d",
+          "bytes": 1472
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-nuisance-metadata.txt",
+          "sha256": "51209daaeeafee2b3b92f176955bd34c215e3950b7141d239c83620e769dcb1f",
+          "bytes": 511
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-nuisance.json",
+          "sha256": "22af99d72ab27be7fedb8416b48d7615e6f361a9e2efa861877a3a02961a2286",
+          "bytes": 8084
+        }
+      ]
+    },
+    {
+      "name": "state",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+        "--matrix",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-features.bin",
+        "--metadata",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-metadata.txt",
+        "--masks",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-masks.txt",
+        "--output",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state-fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "elapsed_seconds": 0.8194554719993903,
+      "returncode": 0,
+      "peak_rss_kib": 13800,
+      "user_cpu_seconds": 0.799879,
+      "system_cpu_seconds": 0.018921,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state.stdout.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "created_files": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state-fits.jsonl",
+          "sha256": "4bf4391c37a201c1c66b83fc347e5c59b0147f07969443d10755e9289ed2e6d7",
+          "bytes": 2354539
+        }
+      ]
+    },
+    {
+      "name": "nuisance-fit",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+        "--matrix",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-nuisance.bin",
+        "--metadata",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-nuisance-metadata.txt",
+        "--masks",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-masks.txt",
+        "--output",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit-fits.jsonl",
+        "--normalization",
+        "per-feature-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "elapsed_seconds": 0.24385026799791376,
+      "returncode": 0,
+      "peak_rss_kib": 13804,
+      "user_cpu_seconds": 0.242193,
+      "system_cpu_seconds": 0.00091,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit.stdout.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "created_files": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit-fits.jsonl",
+          "sha256": "1e87daeba8a979be8d47a84be720cac383d9c8efc7aa7a37f467d24f17d2982e",
+          "bytes": 1598642
+        }
+      ]
+    },
+    {
+      "name": "summary",
+      "argv": [
+        "python3",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+        "--z",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/state-fits.jsonl",
+        "--nuisance",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/nuisance-fit-fits.jsonl",
+        "--rows",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-rows.json",
+        "--masks-json",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-masks.json",
+        "--output",
+        "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-summary.json"
+      ],
+      "elapsed_seconds": 0.24236888900122722,
+      "returncode": 0,
+      "peak_rss_kib": 25428,
+      "user_cpu_seconds": 0.215976,
+      "system_cpu_seconds": 0.025442,
+      "stdout": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/summary.stdout.jsonl",
+        "sha256": "47598cb82dce1860dfdd2fc06ac316ce19d96df3737b82183a545b7087ac79c8",
+        "bytes": 194
+      },
+      "stderr": {
+        "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/summary.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "created_files": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-summary.json",
+          "sha256": "304a2f1a85e109c9092bcef570b0c1e8d107c96f49786cf0bbae0178a8a4f9ee",
+          "bytes": 152995
+        }
+      ]
+    }
+  ],
+  "model_training": false,
+  "model_weights_changed": false,
+  "all_frozen_inputs_unchanged": true,
+  "peak_rss_units": "KiB on this Linux host",
+  "peak_rss_note": "Exact child rusage from Linux wait4 for each phase.",
+  "verified_frozen_inputs": {
+    "helper:prepare_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prepare_readout.py",
+      "sha256": "ccef8c386b8e73cd087b11454b31f60d2122335b5aa6d6b3e258e7aaa867c992",
+      "bytes": 8735
+    },
+    "helper:run_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/run_readout.py",
+      "sha256": "11752f2d3201cc24e5883d8c6f77066bda607cad2ba727643a54ac856a384215",
+      "bytes": 7105
+    },
+    "helper:bind_readout_v2.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/bind_readout_v2.py",
+      "sha256": "d297afd717f0c6a4732b71b3506a1dcdb9879e4c60ef7c50b5736bf7b090b832",
+      "bytes": 5937
+    },
+    "helper:summarize_readout.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/summarize_readout.py",
+      "sha256": "60d6dcae257c40302d1d544a916faa43fcdfc4206a30db100673a5f38734cee7",
+      "bytes": 10625
+    },
+    "helper:readout-plan-draft-v2.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/readout-plan-draft-v2.json",
+      "sha256": "24cc8b3af7b61cb6b613b5db5d033100e6a0f160eefc1af24ae34fbe07acde10",
+      "bytes": 14909
+    },
+    "input:readout-input.bin": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760
+    },
+    "input:readout-masks.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    },
+    "input:readout-masks.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    "input:readout-metadata.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    "input:readout-preparation.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-preparation.json",
+      "sha256": "1e5446723ffc6b7416df0d2418ada7136671cb97919ecb205d93daa57aa15ae4",
+      "bytes": 1579
+    },
+    "input:readout-rows.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    "binary:jovovich-extract-readout": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-extract-readout",
+      "sha256": "86ebaf235c95f5e5fe50547edf245b906bedbc510ec7242122fd04ff8e6c8704",
+      "bytes": 259160
+    },
+    "binary:jovovich-probe-readout": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-readout",
+      "sha256": "6815c8f098fa884d4cbcee0c19a0fc9ed053fae66e406f970850097a746b7acd",
+      "bytes": 263616
+    },
+    "binary:jovovich-readout-fit": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-readout-fit",
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "bytes": 33840
+    },
+    "source:Makefile": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "sha256": "9a1fb075c2c0cb6f64c6d61b09336fea05ba93d28b28c3d16ee87ee53001bf76",
+      "bytes": 6008
+    },
+    "source:model.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/model.json",
+      "sha256": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+      "bytes": 325
+    },
+    "source:training/train_mlp.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    "source:training/extract_readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/extract_readout.c",
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776",
+      "bytes": 8402
+    },
+    "source:training/probe_readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_readout.c",
+      "sha256": "9d43da993ca6a41beb800335a83ac2fd052e3b6884ab622a237328b9b9a5de97",
+      "bytes": 6582
+    },
+    "source:training/readout_fit.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/readout_fit.c",
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "bytes": 21701
+    },
+    "source:training/prepare.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "sha256": "e85b8ef165cccffff423ee731f1d996079fda1bf6f3a86cc95b0a2af86fa06a5",
+      "bytes": 3700
+    },
+    "source:training/sft_review_v4.jsonl": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v4.jsonl",
+      "sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+      "bytes": 163405
+    },
+    "source:src/infer.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06",
+      "bytes": 13232
+    },
+    "source:test/readout_extract.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_extract.c",
+      "sha256": "0475238f650801df2ac059c76dc61a3bd2790cdefcf9288463244bb102b98f7f",
+      "bytes": 2061
+    },
+    "source:test/readout.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout.c",
+      "sha256": "359a98cbb79ce910ede40aa55504d99f4eb231ada7762c8139a8e9752ddff4eb",
+      "bytes": 8388
+    },
+    "source:test/readout_fit.test.mjs": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/test/readout_fit.test.mjs",
+      "sha256": "94b5c06e3c00f5733e59497679d2973f606536a5cfb730fe4df47d83874fff68",
+      "bytes": 6188
+    },
+    "notorch:notorch.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "bytes": 486394
+    },
+    "notorch:notorch.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "bytes": 50653
+    },
+    "notorch:notorch_simd.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch_simd.h",
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "bytes": 27843
+    },
+    "notorch:gguf.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "bytes": 53933
+    },
+    "notorch:gguf.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "bytes": 11406
+    },
+    "notorch:harness/runtime.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "bytes": 15583
+    },
+    "notorch:harness/runtime.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "bytes": 5513
+    },
+    "notorch:harness/arch_llama.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    "notorch:harness/arch.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "bytes": 6538
+    },
+    "notorch:harness/arch_models.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "bytes": 1879
+    },
+    "notorch:examples/bpe.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "bytes": 36729
+    },
+    "notorch:examples/bpe.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "bytes": 2388
+    },
+    "notorch:examples/unicode_numbers.h": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/unicode_numbers.h",
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "bytes": 3449
+    },
+    "gate:0:independent-readout-audit.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-readout-audit.json",
+      "sha256": "6e35aa747fa30bfe0cee7e293d20bc49b11dc1a593cfe9b155d707c34391956b",
+      "bytes": 9595
+    },
+    "gate:1:independent_solver_audit.c": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_solver_audit.c",
+      "sha256": "9cac3289cbd79d69bf1cce759e80901655260e4cbe270a0b42bbcfb16c9b51b3",
+      "bytes": 3301
+    },
+    "gate:2:independent-solver-test.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent-solver-test.json",
+      "sha256": "f9280ca2af430a2a89a7726fb5fc7d83c066521e0278b1568a27ab1e7bfe0cbd",
+      "bytes": 315
+    },
+    "gate:3:independent_preparation_audit.py": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/independent_preparation_audit.py",
+      "sha256": "07302234e62f1ddb91b1f64b1518093e82115b0486b7230d91a40e9207bf9648",
+      "bytes": 3700
+    },
+    "gate:4:preparation-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/preparation-tests.json",
+      "sha256": "633fc27365914c37adb12b495b5f12693a52f7684097867493f35f86edadd816",
+      "bytes": 415
+    },
+    "gate:5:summary-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/summary-tests.json",
+      "sha256": "47be3a335e0e71f985310aa19375fd82e82148b7fcc13b7de0135141476eee1c",
+      "bytes": 523
+    },
+    "gate:6:runner-tests.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/runner-tests.json",
+      "sha256": "837d6462e09ecef94533acb32a4de05ee7bf60be5ab441c96dffb9148595f94a",
+      "bytes": 475
+    },
+    "gate:7:environment.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/environment.json",
+      "sha256": "d39d93fcb4489a9793d4c43d7a9adfdfd3e826204133f6abf136b2f07efd170e",
+      "bytes": 351
+    },
+    "gate:8:tests-before.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/tests-before.txt",
+      "sha256": "5f1132d5f2b75d8fced7064a83be04748780cc422af32d14ee691040f47949f3",
+      "bytes": 8229
+    },
+    "gate:9:change-receipt.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/change-receipt.json",
+      "sha256": "a17a9a56a7a31f0f88ab5d59ae31b2b6453bd4dc294e2c362df1aba201674906",
+      "bytes": 4944
+    },
+    "gate:10:corrective-tests.txt": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/corrective-tests.txt",
+      "sha256": "6d1ee5e8c524f56a90aaf3b7047bee01d3124b1c8787bbe82af6c3ca82e17180",
+      "bytes": 18771
+    },
+    "gate:11:prefix-correction-audit.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/prefix-correction-audit.json",
+      "sha256": "1e91d4d40c93c4b1f0e6f5c07a3939938679ca7be73f57f6408c36044fbab707",
+      "bytes": 2986
+    },
+    "gate:12:input-v2-comparison.json": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/input-v2-comparison.json",
+      "sha256": "dd90b7eeef2bbad33a655b57818a56217367f45d8485ab3a5684c29c09b592df",
+      "bytes": 2213
+    },
+    "base-model": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    "parity-sft": {
+      "path": "/workspace/scratch/ec5ba60588d8/readout-reference/frozen-inputs-v2/readout-sft.bin",
+      "sha256": "dd6fef2d72b484edff6592e037a3af47283eb3965cffd8c5139b49daa92cba3b",
+      "bytes": 149123
+    }
+  },
+  "elapsed_seconds": 638.0341938919992,
+  "finished_at_utc": "2026-10-01T09:31:47.703669+00:00"
+}
