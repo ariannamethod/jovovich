@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "Isolated synthetic 104-phase archive preservation audit. No model run files or remote repositories accessed.",
+  "builder": {
+    "bytes": 12738,
+    "sha256": "a1f93305084357b6cd87538b16820d77ef1e41f549fadc7348480f4fe25f44bd"
+  },
+  "fixture": {
+    "bytes": 7298,
+    "sha256": "278f5f0aa27f1bb039eb926a43fe8b2affb2b1f1de1672ec6ccb7f8ff0ca12f7"
+  },
+  "cases": [
+    {
+      "case": "normal",
+      "accepted": true,
+      "error": null,
+      "members": 733,
+      "numeric_preserved": true,
+      "summary_copy_matches_archive": true
+    },
+    {
+      "case": "bound-snapshot",
+      "accepted": true,
+      "error": null,
+      "members": 733,
+      "numeric_preserved": true,
+      "summary_copy_matches_archive": true
+    },
+    {
+      "case": "model-as-data",
+      "accepted": false,
+      "error": "RuntimeError: executable or model payload in public evidence"
+    },
+    {
+      "case": "corrupt-artifact",
+      "accepted": false,
+      "error": "RuntimeError: artifact identity differs: row050.bin"
+    },
+    {
+      "case": "corrupt-remote",
+      "accepted": false,
+      "error": "RuntimeError: artifact identity differs: completion.json"
+    },
+    {
+      "case": "remote-sequence",
+      "accepted": false,
+      "error": "RuntimeError: missing or mismatched remote completion acknowledgement"
+    },
+    {
+      "case": "unplanned-data",
+      "accepted": false,
+      "error": "RuntimeError: unplanned or missing public artifact inventory"
+    },
+    {
+      "case": "snapshot-extra",
+      "accepted": false,
+      "error": "RuntimeError: unplanned or missing excluded snapshot artifact"
+    },
+    {
+      "case": "late-summary-mutation",
+      "accepted": true,
+      "error": null,
+      "members": 733,
+      "numeric_preserved": true,
+      "summary_copy_matches_archive": true
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "auditor": "independent layer_auditor agent",
+  "status": "pass",
+  "created_utc": "2026-10-02T02:18:16.460473+00:00",
+  "controller": {
+    "path": "training/results/2026-10-02-layer-readout/continue_existing.py",
+    "bytes": 7946,
+    "sha256": "f78e5802d2ebaa7d3a21fdd94b0e06565b54294ed2171f5238c0de95232853ec"
+  },
+  "preflight": {
+    "path": "training/results/2026-10-02-layer-readout/continuation-01-preflight.json",
+    "bytes": 7824,
+    "sha256": "b71ea23ea0f6fb2344d37253f4fbed57134f1da931596e58ace41231915a3d6d"
+  },
+  "frozen_plan_sha256": "1559a0373f72df70daae36921bd0547545590d75e9a74fad1c10447923fe3e1a",
+  "source_review": [
+    "Wrapper verifies the unchanged frozen launcher and archive module before importing them, then uses original validate_plan and private destination checks.",
+    "Every copied bootstrap/snapshot binding, source, binary, model and prepared input is checked; current platform/Python/compiler must equal frozen host.",
+    "All 28 intents/results must match their original plan unit, exact command argv, zero return codes and expected sequence. Every closed artifact is rehashed; complete directory inventory rejects open intents, partial outputs and additional files.",
+    "Continuation invokes the unchanged execute_plan with the original run directory and sequence 1. Existing completed results route directly through sync_result; their model callbacks are skipped.",
+    "Original row-027 result is reverified/uploaded at sequence 56 before row-028 can receive intent sequence 57. DurableArchive compares already present remote manifests and file contents, and accepts a new unit only at the next contiguous sequence."
+  ],
+  "independent_local_evidence": {
+    "closed_rows": 28,
+    "artifacts_rehashed": 196,
+    "artifact_bytes": 5052502,
+    "native_argv_and_successful_codes_checked": 28,
+    "validator_argv_and_successful_codes_checked": 28,
+    "all_ordinary_and_anchor_feature_headers_checked": true,
+    "all_feature_float32_values_finite": true,
+    "plan_sha256_matches_frozen": true
+  },
+  "wrapper_preflight": {
+    "exit_code": 0,
+    "status": "intact-closed-local-prefix-verified",
+    "closed_phase_count": 28,
+    "local_files_verified": 273,
+    "open_intents": 0,
+    "host_exact_match": true,
+    "next_phase": "row-028",
+    "next_intent_sequence": 57,
+    "remote_calls": 0
+  },
+  "read_only_route_fixture": {
+    "method": "Called the frozen run_work_units on the existing 28 closed phases with an in-memory archive double and a callback that raises if invoked. Repeated with a simulated missing acknowledgement at sequence 56.",
+    "completed_model_callbacks": 0,
+    "successful_existing_result_sync_calls": 28,
+    "next_sequence_after_acknowledged_prefix": 57,
+    "sequence_56_sync_exception_stopped_advancement": true,
+    "actual_remote_calls": 0,
+    "actual_native_model_calls": 0
+  },
+  "bound_source_or_run_artifacts_modified": false,
+  "actual_continuation_launched_by_auditor": false,
+  "open_findings": []
+}

@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "status": "intact-closed-local-prefix-verified",
+  "checked_utc": "2026-10-02T02:17:15.511492+00:00",
+  "run_id": "qwen05-layers-v5-20261002-a1",
+  "controller": {
+    "path": "continue_existing.py",
+    "bytes": 7946,
+    "sha256": "f78e5802d2ebaa7d3a21fdd94b0e06565b54294ed2171f5238c0de95232853ec"
+  },
+  "plan": {
+    "bytes": 82981,
+    "sha256": "1559a0373f72df70daae36921bd0547545590d75e9a74fad1c10447923fe3e1a"
+  },
+  "closed_phases": [
+    {
+      "id": "row-000",
+      "intent_sequence": 1,
+      "result_sequence": 2,
+      "result": {
+        "bytes": 2829,
+        "sha256": "d53990c6f1982e48fbfc3a912d74018603f3522ac38ae040c52c6961365837db"
+      }
+    },
+    {
+      "id": "row-001",
+      "intent_sequence": 3,
+      "result_sequence": 4,
+      "result": {
+        "bytes": 2829,
+        "sha256": "192e58361e8350244ac11b14a96b9e5bf310b9bb4c9797b9cfb8e616d8eb1e99"
+      }
+    },
+    {
+      "id": "row-002",
+      "intent_sequence": 5,
+      "result_sequence": 6,
+      "result": {
+        "bytes": 2791,
+        "sha256": "6d0746e8e2de43c4d2d1f6c3a1042848ceeeb4b8e98b65ec50cbf01cd6c7ab94"
+      }
+    },
+    {
+      "id": "row-003",
+      "intent_sequence": 7,
+      "result_sequence": 8,
+      "result": {
+        "bytes": 2791,
+        "sha256": "0141aa80cdc8f6aa03e8b5b274e331400f98ef41174afc2b14499a996a1ea3db"
+      }
+    },
+    {
+      "id": "row-004",
+      "intent_sequence": 9,
+      "result_sequence": 10,
+      "result": {
+        "bytes": 2792,
+        "sha256": "9afabc439f1db32d567e8e5894c2ed2b4d14f0482506d2b34a6b7c92fe8aaa94"
+      }
+    },
+    {
+      "id": "row-005",
+      "intent_sequence": 11,
+      "result_sequence": 12,
+      "result": {
+        "bytes": 2792,
+        "sha256": "4af9755fc5912531c179716fa35fe3593100f9884b55e9789c6836b4d998dcbf"
+      }
+    },
+    {
+      "id": "row-006",
+      "intent_sequence": 13,
+      "result_sequence": 14,
+      "result": {
+        "bytes": 2792,
+        "sha256": "5e73fa94e73255c23cda63118d46bbce363aed914d91505ebb1189b1e7ff2a21"
+      }
+    },
+    {
+      "id": "row-007",
+      "intent_sequence": 15,
+      "result_sequence": 16,
+      "result": {
+        "bytes": 2792,
+        "sha256": "3afbdeda81d783edd5351a28ae8694c83d327049780d81e09a7473fe5eb99845"
+      }
+    },
+    {
+      "id": "row-008",
+      "intent_sequence": 17,
+      "result_sequence": 18,
+      "result": {
+        "bytes": 2792,
+        "sha256": "29025e802cf661b4e4500e7f87602658c9da1c711f61ff91d2e9cd74b8f182b2"
+      }
+    },
+    {
+      "id": "row-009",
+      "intent_sequence": 19,
+      "result_sequence": 20,
+      "result": {
+        "bytes": 2792,
+        "sha256": "e14268f6b66cc44eed52ef22c22293a1430c7aac79e83e095b1f32c675e26e14"
+      }
+    },
+    {
+      "id": "row-010",
+      "intent_sequence": 21,
+      "result_sequence": 22,
+      "result": {
+        "bytes": 2796,
+        "sha256": "fac4c0be2dfb9d6e2ecdb18a74d32e3a40404fa2525b3822c71d4afa9b51f3e3"
+      }
+    },
+    {
+      "id": "row-011",
+      "intent_sequence": 23,
+      "result_sequence": 24,
+      "result": {
+        "bytes": 2796,
+        "sha256": "9d40d415ae037e229c02d8bc27f29a392dbe531ab32300da68ef41f791f77e87"
+      }
+    },
+    {
+      "id": "row-012",
+      "intent_sequence": 25,
+      "result_sequence": 26,
+      "result": {
+        "bytes": 2796,
+        "sha256": "5a5f34787692616264799c3f052bc425431dd44fb8d18cf41894a33c4c5d1f84"
+      }
+    },
+    {
+      "id": "row-013",
+      "intent_sequence": 27,
+      "result_sequence": 28,
+      "result": {
+        "bytes": 2796,
+        "sha256": "c69025159094260b21b49a27965279c146e55592fa0f0befb499889acdeacdf4"
+      }
+    },
+    {
+      "id": "row-014",
+      "intent_sequence": 29,
+      "result_sequence": 30,
+      "result": {
+        "bytes": 2796,
+        "sha256": "7fc9137567fb1407670953573cffc811438aeace7c6e0c81aeb1c2bc025e5a57"
+      }
+    },
+    {
+      "id": "row-015",
+      "intent_sequence": 31,
+      "result_sequence": 32,
+      "result": {
+        "bytes": 2796,
+        "sha256": "e3840385a00905301f017fa3422cb7d033271c95d0c934b7b8b1f7f250c9c19b"
+      }
+    },
+    {
+      "id": "row-016",
+      "intent_sequence": 33,
+      "result_sequence": 34,
+      "result": {
+        "bytes": 2796,
+        "sha256": "2fc2e9383c7fab332d62e1b0f1071717e4904c0cc87243c4e45d03a4fed5504f"
+      }
+    },
+    {
+      "id": "row-017",
+      "intent_sequence": 35,
+      "result_sequence": 36,
+      "result": {
+        "bytes": 2796,
+        "sha256": "5e8940f52fd193ba0010536f938efb6698301e0118a472a267f71665f8f930c6"
+      }
+    },
+    {
+      "id": "row-018",
+      "intent_sequence": 37,
+      "result_sequence": 38,
+      "result": {
+        "bytes": 2796,
+        "sha256": "426300fbe15e658b1d85df3a3c53d05520b94e45162ca1446baa994d13508da9"
+      }
+    },
+    {
+      "id": "row-019",
+      "intent_sequence": 39,
+      "result_sequence": 40,
+      "result": {
+        "bytes": 2796,
+        "sha256": "f868be4678f89ec0e489e933bb1adae9892c26083d34cbba23b10363e671098d"
+      }
+    },
+    {
+      "id": "row-020",
+      "intent_sequence": 41,
+      "result_sequence": 42,
+      "result": {
+        "bytes": 2796,
+        "sha256": "0c5056c82979c180877f577eaca3e3cb3dbc2ab6a3f9ab3621fbca6fb48b8c5b"
+      }
+    },
+    {
+      "id": "row-021",
+      "intent_sequence": 43,
+      "result_sequence": 44,
+      "result": {
+        "bytes": 2796,
+        "sha256": "dda0218e6ac91cd12c2daab97d7095500ae59ed14ad81b56f095eb6a6822a7de"
+      }
+    },
+    {
+      "id": "row-022",
+      "intent_sequence": 45,
+      "result_sequence": 46,
+      "result": {
+        "bytes": 2796,
+        "sha256": "c348d38f7f4ffaef151c4799916cb6dc4480c3fe57e357b0f56a114e68863473"
+      }
+    },
+    {
+      "id": "row-023",
+      "intent_sequence": 47,
+      "result_sequence": 48,
+      "result": {
+        "bytes": 2796,
+        "sha256": "38f8af18f0b87012a3f25878638abd99e8a8fd72e45b25b4b0f41f9a9587a768"
+      }
+    },
+    {
+      "id": "row-024",
+      "intent_sequence": 49,
+      "result_sequence": 50,
+      "result": {
+        "bytes": 2796,
+        "sha256": "37686f2b54a0de12e4bcfedaba795f766589d88ab83daa938345e1f0e0fb851f"
+      }
+    },
+    {
+      "id": "row-025",
+      "intent_sequence": 51,
+      "result_sequence": 52,
+      "result": {
+        "bytes": 2796,
+        "sha256": "91967382c4234661eeff78252591f03756686f3b67f02e065503cf0faa375f5d"
+      }
+    },
+    {
+      "id": "row-026",
+      "intent_sequence": 53,
+      "result_sequence": 54,
+      "result": {
+        "bytes": 2796,
+        "sha256": "d0f6bd0dba52d3d8b7f239b73f0888d71a4330821b958061e35e219e7b34a579"
+      }
+    },
+    {
+      "id": "row-027",
+      "intent_sequence": 55,
+      "result_sequence": 56,
+      "result": {
+        "bytes": 2796,
+        "sha256": "ef7f2fe3f71c8f4a54b095e3e1f968df9122069ef6af82b06885f34c2dc0c96f"
+      }
+    }
+  ],
+  "closed_phase_count": 28,
+  "local_files_verified": 273,
+  "open_intents": 0,
+  "next_phase": "row-028",
+  "next_intent_sequence": 57,
+  "continuation": "Process interruption with intact local files; this is not a restoration from remote storage.",
+  "execution": "Unmodified frozen execute_plan starting at sequence 1 re-verifies each closed result through DurableArchive before launching pending work.",
+  "host": {
+    "frozen": {
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+    },
+    "current": {
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "python": "3.12.14",
+      "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+    },
+    "exact_match": true
+  },
+  "remote": {
+    "repo": "ataeff/jovovich",
+    "prefix": "experiments/layer-readout",
+    "preflight_remote_calls": 0,
+    "remote_synchronization_starts_after_this_receipt": true
+  }
+}

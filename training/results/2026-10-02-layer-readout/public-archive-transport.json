@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "reason": "GitHub connector transport failed for the full 47.6 MB base64 request. Publish byte-preserving 3 MiB pieces; the private research archive is complete.",
+  "archive": {
+    "path": "raw-evidence.tar.gz",
+    "bytes": 35703965,
+    "sha256": "9fcd318c6586904f8c41a2b08c899ec5cfed1e5a42e6b2a6efcda310e7cd8518"
+  },
+  "part_bytes": 3145728,
+  "parts": [
+    {
+      "path": "raw-evidence.tar.gz.part-000",
+      "bytes": 3145728,
+      "sha256": "44c517984028643c392c647839cf7883adfb6d24159340ca4b0153c07caa043a"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-001",
+      "bytes": 3145728,
+      "sha256": "b04646cf8e22c268e08010761fb4423f36a2ac9173db31b9f260a006a9fb20fa"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-002",
+      "bytes": 3145728,
+      "sha256": "80f86e80211cd4edf9b9d219554dfdc80f8af8f37e4674d77bcbde79264d4e52"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-003",
+      "bytes": 3145728,
+      "sha256": "3c3aff39e125a7f039c7e98dab5f9c10f6ff552386a53a222e5c92a695d47f43"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-004",
+      "bytes": 3145728,
+      "sha256": "c74bcd530a2040a72b2e846a5aa10ca155d19d6a700436215e3a9213dbc21e72"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-005",
+      "bytes": 3145728,
+      "sha256": "1231dbd7e3e05ff9fc4c0f41538f21d59563e57ebd41ade1151eeaeb4a8c3c18"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-006",
+      "bytes": 3145728,
+      "sha256": "a681148e73cee73cb4324b6754e324b9737348c31bdea95eb613d2c12c3986e4"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-007",
+      "bytes": 3145728,
+      "sha256": "d1f63fe4e68c9f3f249dfe58b94de6ec0b9ccb2eb2d641613d91d9ac269145a6"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-008",
+      "bytes": 3145728,
+      "sha256": "9232ae5479876aa2193e30bd0f7495ebdcdb31ff66b3815bc0ba699940cf32ac"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-009",
+      "bytes": 3145728,
+      "sha256": "aab124f0f38023c88c760727e887c4372a019d584c6f836c92019966a035d842"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-010",
+      "bytes": 3145728,
+      "sha256": "d4e5009e1daa2860d4da5a226ed9ea21b51f7109d41276a7a3fe6bc5a211dcdd"
+    },
+    {
+      "path": "raw-evidence.tar.gz.part-011",
+      "bytes": 1100957,
+      "sha256": "5c30b56599e290bdba765a385e987fb1950d11f3be887580104215c7dfa03de8"
+    }
+  ],
+  "reassembly_verified_byte_for_byte": true,
+  "split_command": "split -b 3145728 -d -a 3 raw-evidence.tar.gz raw-evidence.tar.gz.part-",
+  "reassemble_command": "cat raw-evidence.tar.gz.part-[0-9][0-9][0-9] > raw-evidence.tar.gz && sha256sum -c raw-evidence.tar.gz.sha256"
+}

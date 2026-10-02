@@ -8,3 +8,4 @@ training/output/
 .env.*
 node_modules/
 __pycache__/
+training/results/2026-10-02-layer-readout/raw-evidence.tar.gz

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "make",
+    "test",
+    "extract-layers"
+  ],
+  "started_utc": "2026-10-02T01:34:35.962367+00:00",
+  "exit_code": 0,
+  "finished_utc": "2026-10-02T01:35:50.679378+00:00",
+  "stdout": {
+    "path": "training/results/2026-10-02-layer-readout/tests.stdout.txt",
+    "bytes": 16067,
+    "sha256": "98a225b247ec408a7356061d96d89dd46374dd07ddbbbb62b82555421c4e103a"
+  },
+  "stderr": {
+    "path": "training/results/2026-10-02-layer-readout/tests.stderr.txt",
+    "bytes": 50738,
+    "sha256": "402e9fd60262737eff96f0c68fcecdb70b23dfefee58bd058608c25c6db49c40"
+  }
+}

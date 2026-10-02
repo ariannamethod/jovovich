@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "auditor": "independent layer_auditor agent",
+  "created_utc": "2026-10-02T01:36:02.423098+00:00",
+  "status": "pass: reviewed sources, native fixtures, serialization and trace gates",
+  "parent_main": "1e74647",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "source_bindings": [
+    {
+      "path": "training/extract_layers.c",
+      "sha256": "1c2287d9c78c8ccba863b0d4b459e991d0bc1ca829b2219926dca6bb4ea4d3cd",
+      "bytes": 12498
+    },
+    {
+      "path": "test/layer_extract.c",
+      "sha256": "7b4df1a994ed5abf49a6910adb4b03773776f3f06d3789fcd05307d49ed24fc9",
+      "bytes": 5836
+    },
+    {
+      "path": "training/extract_readout.c",
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776",
+      "bytes": 8402
+    },
+    {
+      "path": "training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    {
+      "path": "training/readout_fit.c",
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "bytes": 21701
+    },
+    {
+      "path": "training/layers/prepare_layers.py",
+      "sha256": "cc64c3ba4e9e0a4a208322c111cffa852a5e0b0f02bf65eebf1f738f5d06bb16",
+      "bytes": 28588
+    },
+    {
+      "path": "training/layers/protocol_template.json",
+      "sha256": "1a94b4edc759842398fe98f727f39ac01c5ce63231c840c7dfc28f3aed189b0f",
+      "bytes": 8523
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    {
+      "path": "test/readout.c",
+      "sha256": "359a98cbb79ce910ede40aa55504d99f4eb231ada7762c8139a8e9752ddff4eb",
+      "bytes": 8388
+    }
+  ],
+  "corpus": {
+    "source": {
+      "path": "training/sft_review_v5.jsonl",
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "bytes": 163753
+    },
+    "review_rows": 52,
+    "pairs": 26,
+    "families": 20,
+    "concern_rows": 26,
+    "clean_rows": 26,
+    "retained_two_row_families": 14,
+    "four_row_deletion_replacement_families": 6,
+    "same_full_diff_pairs": 6,
+    "mask0": "01110011100010100010"
+  },
+  "input_audit": {
+    "container": "JVRO1",
+    "sha256": "168c860647f1bead45d3c31ea5cb3cd2629f3834c21041955a41a4fc5b9303f6",
+    "rows_independently_parsed": 52,
+    "strings_compared_byte_for_byte_to_v5": 104,
+    "content": "Exact system and user strings only; no assistant answer, label, pair or family sidecar enters the native input. Container ended exactly after the 104th source string.",
+    "grouping": "Compared fixed family membership and opposite-label pairs against the frozen source and current v5; all four rows of each quartet remain one held-out family."
+  },
+  "source_checks": [
+    {
+      "name": "ordinary block boundary",
+      "finding": "arch_llama.c callback follows attention residual, MLP down residual and optional down bias; it precedes the next block and final output RMS normalization. Collector reads all 24 blocks without editing model weights."
+    },
+    {
+      "name": "ChatML and positions",
+      "finding": "Collector reuses train_mlp.c mlp_role/mlp_encode and exact system/user strings, ending the assistant header at prompt_tokens-1. Fixed IDs [4913,3903,819] end at prompt_tokens+2. Runtime validates their raw tokenizer encoding."
+    },
+    {
+      "name": "causal coverage",
+      "finding": "Every capture allocates a new KV cache. Header/prefix positions are copied once for every layer; duplicate, missing, nonfinite or out-of-shape observations fail. Chunk calls retain absolute positions."
+    },
+    {
+      "name": "fresh z anchor",
+      "finding": "After ordinary captures and requested verification finish, a separate fresh-KV pass temporarily replaces only final wdown with zeros and disables final down bias. Existing helper restores original projection/bias before returning. Anchor is prefix post-final-attention/pre-final-MLP residual."
+    },
+    {
+      "name": "runtime verification design",
+      "finding": "Rows 0 and 1 require all 48 vectors to agree against independent token stepping, future append and changed future. Each vector must satisfy absolute 1e-4 and relative-L2 1e-5. Raw errors and exact input IDs are retained; failed checks yield no accepted feature unit."
+    },
+    {
+      "name": "ridge and normalization",
+      "finding": "C computes mean binary logistic loss plus lambda/2 times squared weights with free intercept. State lambda=.01, interpolation lambda=1e-8; concern is score>0. All means and RMS scales are computed from training rows only. Each family holdout excludes the entire pair/quartet."
+    },
+    {
+      "name": "control and coverage",
+      "finding": "One fixed historical family-flip mask is applied consistently to train/test labels; pairs remain opposite and quartets remain grouped. Fifty views comprise 48 post-block states, one fresh z anchor, and seven-feature lexical/count baseline. Each view has 40 family-heldout fits plus two interpolation fits."
+    },
+    {
+      "name": "validation and summary",
+      "finding": "Per-row validator checks prepared hashes/source strings, exact binary dimensions, source index, all trace fields, native token ranges/ChatML boundaries, anchor restoration and verification errors. Assembly invokes it for all 52 rows. Summary requires exact42fit/21normalization/2frame coverage per view and all2100fits converged."
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "native affine solver",
+      "command": "cc -O2 -Wall -Wextra -std=gnu11 test/readout.c -lm -o /tmp/jovovich-independent-readout-test; run binary",
+      "exit_code": 0,
+      "output": "readout: derivatives, primal Newton, fold isolation, constants, convergence and weak ridge passed"
+    },
+    {
+      "name": "native layer collector final source",
+      "command": "cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD test/layer_extract.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -lm -pthread; run isolated binary",
+      "exit_code": 0,
+      "output": "layer extraction: all layers/two positions, exact layout, fresh caches, chunk/step and future invariance, mutation and failure gates passed"
+    },
+    {
+      "name": "independent assembly layout",
+      "synthetic_rows": 52,
+      "output_views": 50,
+      "float_values_compared_to_independent_coordinate_formula": 2283372,
+      "binary_rejections": [
+        "wrong source row",
+        "nonfinite feature",
+        "missing anchor",
+        "trailing feature bytes"
+      ],
+      "updated_assembly_with_trace_validation": "All50matrices remained byte-identical to the independently checked matrices."
+    },
+    {
+      "name": "trace acceptance/rejection",
+      "valid_synthetic_traces": 52,
+      "rejected_corruptions": [
+        "missing mandatory verification",
+        "missing capture",
+        "wrong capture position",
+        "noninteger native ID",
+        "wrong prefix ID",
+        "failed native comparison",
+        "absolute error above tolerance",
+        "comparison vectors47 rather than48",
+        "anchor projection not restored"
+      ],
+      "optimization_cli_rejections": [
+        "python3 -O",
+        "PYTHONOPTIMIZE=1"
+      ]
+    }
+  ],
+  "resolved_findings": [
+    {
+      "finding": "Initial assembler trusted feature binaries without checking native trace/verification records.",
+      "resolution": "Added validate-row and called it from assembly for all52rows; runner owner was instructed to make it a mandatory post-command gate before accepting/syncing each unit."
+    },
+    {
+      "finding": "Anchor protocol initially said same forward pass while implementation used a separate capture.",
+      "resolution": "Template now explicitly specifies same prompt/input IDs and a separate fresh-KV pass with temporary zero down projection/bias restored."
+    },
+    {
+      "finding": "Initial top-level weights_modified:false was ambiguous with temporary anchor projection replacement.",
+      "resolution": "Trace now names ordinary_capture_weights_modified:false and separately records all temporary-anchor/restoration flags."
+    }
+  ],
+  "launch_requirements": [
+    "Root freezes and hashes the reviewed source, current compiled binaries, regenerated prepared protocol and execution plan before native model collection.",
+    "Root verifies the remote bootstrap snapshot before first model invocation.",
+    "Rows0/1 native numerical gates and every row validate-row command must pass; their complete bytes must be verified remotely before accepting the next collection unit."
+  ],
+  "current_model_invocations_by_auditor": 0,
+  "open_source_findings": []
+}

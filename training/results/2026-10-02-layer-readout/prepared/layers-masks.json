@@ -1,0 +1,33 @@
+{
+  "family_order": [
+    "scoped-python-analysis",
+    "approved-binary-decoder",
+    "sqlite-build-requirement",
+    "background-service-scope",
+    "model-parent-provenance",
+    "scoped-design-record",
+    "checksum-indirection",
+    "sequence-field-width",
+    "validated-port-conversion",
+    "negative-offset-type",
+    "exact-property-name",
+    "idempotent-event-retry",
+    "atomic-snapshot-publication",
+    "save-status-propagation",
+    "preserve-trie-credit",
+    "allocation-null-guard",
+    "zero-worker-guard",
+    "write-permission-check",
+    "stable-manifest-order",
+    "allocation-product-overflow"
+  ],
+  "masks": [
+    "01110011100010100010"
+  ],
+  "historical_mask_index": 0,
+  "historical_masks": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-frozen-readout/readout-masks.json",
+    "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+    "bytes": 4523
+  }
+}

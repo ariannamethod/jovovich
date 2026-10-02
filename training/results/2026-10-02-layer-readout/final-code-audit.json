@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "status": "no_remaining_actionable_findings",
+  "reviewed_utc": "2026-10-02T02:55:13.291984+00:00",
+  "requested_head": "cf56d53b44ac10275c717ef537e7b640a410c75b",
+  "observed_head": "cf56d53b44ac10275c717ef537e7b640a410c75b",
+  "comparison_base": "1e74647c2fc9a54825aaa5115d74ab947141e1cf",
+  "review_kind": "Independent targeted code reading; no model calls, remote calls, compilation, or broad test reruns.",
+  "findings": [],
+  "production_surface_changed_files": [],
+  "checks": [
+    {
+      "area": "Default runtime and reusable workflow",
+      "result": "No changes under src, bin, .github or deps. The reusable review workflow builds only make harness. The default all target remains harness."
+    },
+    {
+      "area": "Dependency boundary",
+      "result": "HF SDK import is inside optional HFTransport construction. Core archive and new deterministic tests use stdlib/injected transport. The pinned HF client is not required for make harness or make test."
+    },
+    {
+      "area": "CI and test dependencies",
+      "result": "make test adds one GGUF-free C fixture and 24 Node-wrapper archive/launcher tests. SDK contract tests inject a stub module; they make no remote calls and need no credentials."
+    },
+    {
+      "area": "Archive durability and recovery",
+      "result": "Source snapshots, exact sequence/identity, CAS parent, fresh payload verification, metadata-bound history cache, sanitized failures, and remote-only recovery flow reviewed against the current implementation."
+    },
+    {
+      "area": "Launcher and continuation",
+      "result": "Frozen plan/bootstrap and destination binding, reserved paths, stale output guards, durable intent/result sequencing, failure preservation, subprocess environment filtering, resumed closed-unit verification and final binding gate reviewed."
+    },
+    {
+      "area": "Native layer CLI",
+      "result": "Additive research target; bounded row/model dimensions, exclusive output creation, fresh KV per capture, finite all-layer/two-position observations, optional causal checks and final flush/fsync reviewed."
+    },
+    {
+      "area": "Public evidence packer",
+      "result": "Previously reproduced snapshot-omission and direct-summary-copy issues are fixed. Current builder matches the independently audited 9-scenario fixture."
+    }
+  ],
+  "existing_validation_referenced": {
+    "durability_launcher_suite": "24/24 previously passed; not rerun in this final review",
+    "project_suite": "Parent reports eight native executables and 108 Node tests already passed; not rerun here",
+    "packer_audit": "archive-builder-audit.json records nine isolated 104-phase fixture scenarios"
+  },
+  "source_bindings": [
+    {
+      "path": "Makefile",
+      "bytes": 7103,
+      "sha256": "69cd6c606da2eac4aa793e5564c34a6b1e2399c208a79d3c392814105fd2b8f6"
+    },
+    {
+      "path": ".github/workflows/review.yml",
+      "bytes": 2021,
+      "sha256": "37fe01339a2fcffdb0167fd23a084e538cf3011ebf57b3b4804a617175b434cc"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    },
+    {
+      "path": "training/extract_layers.c",
+      "bytes": 12498,
+      "sha256": "1c2287d9c78c8ccba863b0d4b459e991d0bc1ca829b2219926dca6bb4ea4d3cd"
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "bytes": 16874,
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5"
+    },
+    {
+      "path": "training/layers/freeze_layers.py",
+      "bytes": 7744,
+      "sha256": "28c4477f06b8d689fc6e12d967d54ab7b6bb3baf1b81e8ac857e513716284141"
+    },
+    {
+      "path": "training/layers/prepare_layers.py",
+      "bytes": 28588,
+      "sha256": "cc64c3ba4e9e0a4a208322c111cffa852a5e0b0f02bf65eebf1f738f5d06bb16"
+    },
+    {
+      "path": "training/layers/protocol_template.json",
+      "bytes": 8523,
+      "sha256": "1a94b4edc759842398fe98f727f39ac01c5ce63231c840c7dfc28f3aed189b0f"
+    },
+    {
+      "path": "test/durable_archive.test.mjs",
+      "bytes": 2036,
+      "sha256": "c591a4aa435f5e960cd43c66166d8eb08e5a977f2a4d4c5bf758993c54cc3c41"
+    },
+    {
+      "path": "test/durable_archive_fixture.py",
+      "bytes": 26131,
+      "sha256": "5e3e82bd7d0e7db32b108c5b3b503f89d9213d039ffa7fd71f458b1762331966"
+    },
+    {
+      "path": "test/layer_extract.c",
+      "bytes": 5836,
+      "sha256": "7b4df1a994ed5abf49a6910adb4b03773776f3f06d3789fcd05307d49ed24fc9"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout/continue_existing.py",
+      "bytes": 7946,
+      "sha256": "f78e5802d2ebaa7d3a21fdd94b0e06565b54294ed2171f5238c0de95232853ec"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout/archive_run.py",
+      "bytes": 12738,
+      "sha256": "a1f93305084357b6cd87538b16820d77ef1e41f549fadc7348480f4fe25f44bd"
+    }
+  ],
+  "running_experiment_files_modified": false
+}

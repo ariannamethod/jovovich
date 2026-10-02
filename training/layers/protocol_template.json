@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "experiment": "frozen-qwen-all-layer-boundary-survey",
+  "status": "Exploratory protocol template; the launch record binds sources, native binaries and verified remote snapshots before collection.",
+  "question": "How does family-held-out affine concern/clean readout vary across all 24 post-block residuals at the assistant header and shared answer-prefix boundaries?",
+  "model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "weights_frozen": true,
+    "layers": 24,
+    "width": 896,
+    "arithmetic": "Model inference and affine fitting execute in native C/notorch. Python serializes, validates and aggregates saved predictions."
+  },
+  "cohort": {
+    "corpus": "training/sft_review_v5.jsonl",
+    "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+    "reviews": 52,
+    "pairs": 26,
+    "families": 20,
+    "labels": "concern=1 for nonempty gold findings; clean=0 for empty findings",
+    "grouping": "Preserve the previous 14 retained pair families and six quartet families. All deletion/replacement shapes and both labels in each quartet stay in the same held-out fold.",
+    "role": "Development cohort: the complete depth-by-boundary table is exploratory.",
+    "input_contract": "The native input contains only the exact system and user strings from v5. Labels, gold answers, row identifiers and group names remain in sidecars."
+  },
+  "views": {
+    "count": 49,
+    "layer_indices_zero_based": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "boundary_order": [
+      "header",
+      "prefix"
+    ],
+    "state": "Residual after the complete transformer block, before the final output RMS normalization; capture includes both attention and MLP updates for that block.",
+    "header": "Last native token of system+user Qwen ChatML and assistant header; zero-based position prompt_tokens-1.",
+    "prefix": "Last of shared answer-prefix IDs [4913,3903,819], appended to that same token stream; zero-based position prompt_tokens+2.",
+    "common_prefix_ids": [
+      4913,
+      3903,
+      819
+    ],
+    "common_prefix_decoded_text": "{\"findings",
+    "trace": "Retain the complete native input ID list, header and prefix positions, model dimensions and per-row feature bytes.",
+    "native_row_container": "JVRL1\\0\\0\\0; little-endian uint32 rows=1,layers=24,positions=2,width=896; uint32 source_row,prompt_tokens,input_tokens,header_position,prefix_position; float32[2][24][896] in position-major order.",
+    "fit_matrix": "One JVRF1 matrix for every boundary/layer view, 52 by 896, serialized in the original development-row order.",
+    "historical_anchor": "The earlier archive used v4 prompts; the new anchor uses v5 and is collected with the 48 post-block views.",
+    "post_block_count": 48,
+    "anchor": {
+      "name": "prefix-final-mlp-z",
+      "state": "Fresh v5 post-final-attention/pre-final-MLP residual at the prefix boundary, using the same prompt/input IDs in a separate fresh-KV pass with the final down projection and bias temporarily zeroed, then restored.",
+      "purpose": "Connect the depth survey to the exact feature location used by the earlier readout."
+    }
+  },
+  "collection": {
+    "unit": "One source row, fresh KV cache, both positions and all layers.",
+    "verification_rows": [
+      0,
+      1
+    ],
+    "verification": "Native independent one-token stepping and changed/extended-future causal invariance run before accepting the row; exact gate definitions and raw errors are bound in the collector source and launch record.",
+    "remote_sync": "Publish and verify prepared protocol/source/input snapshots before the first model invocation. After each completed row, publish and verify its feature bytes and trace before starting the next row. Publish every completed native fit and failure record before proceeding. Mark completion only after the final manifest is remotely verified.",
+    "failure": "Preserve partial files and explicit failure records. A failed or interrupted attempt retains its identity; a new run uses fresh output paths."
+  },
+  "exploratory_fits": {
+    "solver": "training/readout_fit.c",
+    "normalization": "centered-rms",
+    "normalization_details": "Training-fold coordinate means; divide the entire centered vector by sqrt(sum training-centered squared coordinates / number of training rows). Exact-zero aggregate scale maps every row to zero. All fitted normalization uses training rows only.",
+    "objective": "Mean binary logistic loss + lambda/2 * squared weight norm; free intercept.",
+    "lambda": 0.01,
+    "prediction": "Concern iff affine score > 0; exact ties are clean.",
+    "gradient_tolerance": 1e-08,
+    "max_iterations": 100,
+    "mask": "Use the first predesignated historical family-flip mask, preserving paired/quartet membership; report it as one descriptive shuffled-label control.",
+    "mask_count": 1,
+    "interpolation_lambda": 1e-08,
+    "fits_per_view": 42,
+    "total_fits": 2100,
+    "composition": "49 state views and one seven-feature lexical/count baseline; each uses 20 family holdouts times observed and one fixed flipped label set, plus true/flipped interpolation on all 52 rows.",
+    "reporting": [
+      "All 48 post-block views in fixed boundary/layer order, then the fresh prefix z anchor and lexical/count baseline",
+      "Observed correct rows out of 52",
+      "Concern and clean recall counts out of 26 each",
+      "Complete concern/clean pairs out of 26",
+      "Per-family and six same-full-diff pair counts",
+      "Every held-out probability, score and prediction",
+      "One fixed shuffled-label control with the same folds",
+      "Observed/flipped interpolation counts and CE",
+      "Solver convergence, numerical diagnostics and normalization"
+    ],
+    "convergence_gate": "All 2100 fits must converge within the fixed gradient tolerance and iteration limit. Keep failed fit records and stop interpretation pending a separately versioned repair.",
+    "ranking": "Present all views. This survey does not designate a primary winning layer or modify the deployed model.",
+    "total_views": 50,
+    "baseline": {
+      "name": "nuisance",
+      "width": 7,
+      "normalization": "per-feature-rms",
+      "features": [
+        "native_prompt_token_count_without_common_prefix",
+        "added_lines",
+        "removed_lines",
+        "context_lines",
+        "after_if_statements",
+        "after_sort_calls",
+        "after_firwood_trie_occurrences"
+      ],
+      "normalization_details": "Center and population-standardize each coordinate using training rows only; zero training-constant coordinates; divide active coordinates by sqrt(active coordinate count)."
+    }
+  },
+  "next_primary_protocol": {
+    "status": "Planned separately; its data and final launch receipt will be frozen before execution.",
+    "development_selection": "Nested leave-family-out evaluation on these 20 development families. Within each outer training set, perform inner leave-family-out selection over the 48 boundary/layer views with lambda fixed at 0.01. Keep each pair/quartet together in both loops; recompute normalization inside every inner/outer training fold.",
+    "selection_statistic": "Maximum inner complete-pair count, then maximum inner correct-row count; remaining ties choose the earlier layer and then header before prefix. Freeze this tie order in the primary launch protocol.",
+    "outer_evaluation": "Refit the inner-selected view on the entire outer training set, then score that outer held-out family exactly once. Preserve which view was selected in every outer fold and all held-out predictions.",
+    "confirmation": "After the selection rule is fixed, a separate author supplies new confirmation families. Freeze their prompts, paired labels and review criteria before model outputs are produced. Fit the development-selected view on development data and evaluate confirmation once.",
+    "followup_intervention": "Use the measured depth/boundary profile to choose a separately controlled readout/training intervention. A reasoning-before-verdict arm receives its own frozen corpus, generated-explanation evaluation and matched generation budget."
+  }
+}
