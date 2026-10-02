@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-02T02:16:18.719524+00:00",
+  "run_id": "qwen05-layers-v5-20261002-a1",
+  "tool_report": "write_stdin failed: Unified exec process failed: network approval was cancelled before a decision was returned",
+  "mechanism_scope": "Tool-reported controller interruption; local filesystem remains present. No broader storage loss observed.",
+  "initial_session_id": 31911,
+  "local_completed_rows": 28,
+  "last_local_result": {
+    "path": "models/layer-readout-run/_units/row-027.result.json",
+    "bytes": 2796,
+    "sha256": "ef7f2fe3f71c8f4a54b095e3e1f968df9122069ef6af82b06885f34c2dc0c96f"
+  },
+  "last_local_intent": {
+    "path": "models/layer-readout-run/_units/row-027.intent.json",
+    "bytes": 722,
+    "sha256": "16f1364bee629e262ce06a01ed48e8a92df1c6ed4c031bdd4c803c2b0bd7fa2f"
+  },
+  "remote_revision": "70ef35607b02a77bd029ffc717c9944bbeb0dcbd",
+  "remote_closed_units": 56,
+  "remote_completed_rows": 27,
+  "remote_last_sequence": 55,
+  "remote_last_unit": "row-027.intent",
+  "remote_tail": {
+    "path": "training/results/2026-10-02-layer-readout/interruption-01-remote-tail.json",
+    "bytes": 600,
+    "sha256": "061134157498636acb1069191c9df6179cea6ef42a1796c4a89f493eb794d700"
+  },
+  "remote_tail_inventory": {
+    "size": 600,
+    "sha256": null,
+    "git_blob_sha1": "69b33cc66145c7d9fd12e2b2c437ff602e0afdb2"
+  },
+  "frozen_host": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "current_host": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "host_matches": true,
+  "next_action": "Validate intact closed local results, retry their original immutable units through unchanged execute_plan, then proceed to row-028. No completed model callback reruns."
+}
