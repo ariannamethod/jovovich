@@ -1,0 +1,47 @@
+{
+  "status": "pass_no_blocker_to_separately_authorized_alignment_execution",
+  "execution_authorized_by_audit": false,
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+    "bytes": 34035,
+    "sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604"
+  },
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+    "bytes": 16096,
+    "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+  },
+  "boundary_check": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-check.json",
+    "bytes": 2189,
+    "sha256": "727d1a6971858e4183adb616b56c8f70e037544856c0a4b314d4ded4771b847e"
+  },
+  "fixed_bindings_verified": 71,
+  "unique_plan_and_fixture_bindings_verified": 76,
+  "literal_phase_scope": {
+    "conversion": 1,
+    "independent_validation": 1,
+    "model_forward": 4,
+    "metric_comparison": 4
+  },
+  "review": {
+    "authority": "Explicit --execute and frozen plan SHA/controller binding required; fresh output directory is reserved before plan/binding access, preserving early failure receipt without touching existing output paths.",
+    "prerequisites": "Bound completed original-Q8 receipt has6 successful phases with unchanged sources; bound summary records the prespecified numerical alignment trigger. Prior native dump IDs independently match each fixed case.",
+    "conversion_gate": "Exact F32 hash/extent captured after conversion and added to dynamic bindings. Before any forward/comparison, matching completed validation receipt, exit0,291 exact finite tensor rows totaling630167424 values,26 metadata keys, sole file_type rewrite, and exact model/validator/artifact bindings are required.",
+    "dynamic_integrity": "Converted weights, validation receipt/native rows and every new dump remain hash-bound before/after subsequent phases and at finalization. Fixed source changes or missing/unhashable files retain actual records and fail closed.",
+    "commands_and_scope": "All10 literal commands checked against audited producer/validator/binaries and original fixed ID cases; nativeQ8->nativeF32 and nativeF32->referenceF32 comparisons remain separately labeled.",
+    "failure_receipts": "Child result and phase are retained before postchecks. Early read/hash failure, absent executable, nonzero partial output and actual changed posthash are preserved in existing five no-model fixtures. All created artifacts and hash errors survive outer failure.",
+    "resources_and_cleanup": "Exact os.wait4 child resource accounting; null without launched child. New process session permits interruption cleanup of validator and its child together.",
+    "completion": "Every frozen phase must complete, all four comparison files must contain both finite151936-vocabulary captures and correct decision IDs, and final model-forward/conversion counts must equal4/1. No retries or alternate inputs."
+  },
+  "pre_execution_conditions": [
+    "Root must make the separate execution decision after rechecking available memory/disk; this audit does not launch or authorize model actions.",
+    "Numerical differences after alignment remain localization evidence, not a defect verdict from arbitrary tolerances."
+  ],
+  "previous_receipt_gap": "Resolved by outer safe before/after snapshots, early owned output reservation and aggregate failure receipt; audited inner validator unchanged.",
+  "output_directory_absent_at_audit": true,
+  "conversions_by_auditor": 0,
+  "model_forwards_by_auditor": 0,
+  "builds_by_auditor": 0,
+  "new_tests_by_auditor": 0
+}

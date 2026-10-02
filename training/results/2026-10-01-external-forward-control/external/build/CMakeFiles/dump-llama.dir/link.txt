@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/dump-llama.dir/link.d "CMakeFiles/dump-llama.dir/dump_llama.cpp.o" -o dump-llama  llama.cpp/src/libllama.a llama.cpp/ggml/src/libggml.a -ldl llama.cpp/ggml/src/libggml-cpu.a llama.cpp/ggml/src/libggml-base.a -lm

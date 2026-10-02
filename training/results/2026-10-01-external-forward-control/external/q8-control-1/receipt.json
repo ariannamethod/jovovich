@@ -1,0 +1,2602 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+    "bytes": 14479,
+    "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+  },
+  "phases": [
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump"
+      ],
+      "started_utc": "2026-10-01T13:28:16.237103+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 668328,
+      "user_seconds": 41.692185,
+      "system_seconds": 0.317997,
+      "pid": 7,
+      "elapsed_seconds": 42.098401937000745,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stdout.jsonl",
+          "bytes": 97,
+          "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stderr",
+          "bytes": 127,
+          "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "concern-notorch",
+      "kind": "model_forward",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "dump_validation": {
+        "expected_ids": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        "captured_prefix_lengths": [
+          444,
+          447
+        ],
+        "embedded_ids_match_fixed_case": true
+      }
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.dump"
+      ],
+      "started_utc": "2026-10-01T13:29:00.469085+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 760412,
+      "user_seconds": 18.684608,
+      "system_seconds": 0.581666,
+      "pid": 8,
+      "elapsed_seconds": 19.31499708600313,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stdout.jsonl",
+          "bytes": 149,
+          "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stderr",
+          "bytes": 167108,
+          "sha256": "2b519172fb1490034ccd008ac7973d7a05951d7dded8a9d799955fd00236da39"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.dump",
+          "bytes": 1217308,
+          "sha256": "2d378d23d4be6d5442b7d4c67e5e1e43b2cc112f995a9260f1254d5da97385c7"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "concern-llama",
+      "kind": "model_forward",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "dump_validation": {
+        "expected_ids": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        "captured_prefix_lengths": [
+          444,
+          447
+        ],
+        "embedded_ids_match_fixed_case": true
+      }
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.dump"
+      ],
+      "started_utc": "2026-10-01T13:29:21.924271+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 28272,
+      "user_seconds": 0.049540999999999995,
+      "system_seconds": 0.004828,
+      "pid": 9,
+      "elapsed_seconds": 0.05510031800076831,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.jsonl",
+          "bytes": 2360,
+          "sha256": "d5399a77936ec19df9b64f34b493b62c0859903bf74106a7882b6bda52783371"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "concern-comparison",
+      "kind": "metric_comparison",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "metric_captures": 2
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump"
+      ],
+      "started_utc": "2026-10-01T13:29:24.514103+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 668412,
+      "user_seconds": 31.015889,
+      "system_seconds": 0.081632,
+      "pid": 10,
+      "elapsed_seconds": 31.104967993000173,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stdout.jsonl",
+          "bytes": 97,
+          "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stderr",
+          "bytes": 127,
+          "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "clean-notorch",
+      "kind": "model_forward",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "dump_validation": {
+        "expected_ids": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        "captured_prefix_lengths": [
+          444,
+          447
+        ],
+        "embedded_ids_match_fixed_case": true
+      }
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.dump"
+      ],
+      "started_utc": "2026-10-01T13:30:00.855847+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 760488,
+      "user_seconds": 31.405836,
+      "system_seconds": 0.333256,
+      "pid": 11,
+      "elapsed_seconds": 31.99093204899691,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stdout.jsonl",
+          "bytes": 149,
+          "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stderr",
+          "bytes": 167108,
+          "sha256": "3c01587839c90a0aa9352867fb323640717de6e961bd1654974a4dbf4f894e20"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.dump",
+          "bytes": 1217308,
+          "sha256": "130d5ad3c97542f2cbca2d03b50776b1a4ed5a0269db4b24ebce024ff2b56bcb"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "clean-llama",
+      "kind": "model_forward",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "dump_validation": {
+        "expected_ids": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        "captured_prefix_lengths": [
+          444,
+          447
+        ],
+        "embedded_ids_match_fixed_case": true
+      }
+    },
+    {
+      "command": [
+        "/usr/bin/nice",
+        "-n",
+        "15",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+        "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.dump"
+      ],
+      "started_utc": "2026-10-01T13:30:35.009514+00:00",
+      "status": "completed",
+      "exit_code": 0,
+      "peak_rss_kib": 28416,
+      "user_seconds": 0.053453999999999995,
+      "system_seconds": 0.007286,
+      "pid": 12,
+      "elapsed_seconds": 0.061544850999780465,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.jsonl",
+          "bytes": 2358,
+          "sha256": "a2c5e7b764bcb57f5776993493017fe4700fd00d9e038155dabc2ac29f97aa84"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "missing_outputs": [],
+      "name": "clean-comparison",
+      "kind": "metric_comparison",
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+          "bytes": 675710848,
+          "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+          "bytes": 1654,
+          "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+          "bytes": 1446,
+          "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+          "bytes": 1946,
+          "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+          "bytes": 2937,
+          "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+          "bytes": 232,
+          "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+          "bytes": 3359,
+          "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+          "bytes": 8392,
+          "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+          "bytes": 2797,
+          "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+          "bytes": 8483,
+          "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+          "bytes": 486394,
+          "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+          "bytes": 50653,
+          "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+          "bytes": 53933,
+          "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+          "bytes": 11406,
+          "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+          "bytes": 15583,
+          "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+          "bytes": 5513,
+          "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+          "bytes": 22664,
+          "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+          "bytes": 6538,
+          "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+          "bytes": 1879,
+          "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+          "bytes": 89917,
+          "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+          "bytes": 132111,
+          "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+          "bytes": 45124,
+          "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+          "bytes": 5535,
+          "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+          "bytes": 158953,
+          "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+          "bytes": 158212,
+          "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+          "bytes": 2063,
+          "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+          "bytes": 2087,
+          "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+          "bytes": 2061,
+          "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+          "bytes": 2086,
+          "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+          "bytes": 203312,
+          "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+          "bytes": 5931328,
+          "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+          "bytes": 16864,
+          "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+          "bytes": 18662,
+          "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+          "bytes": 8848,
+          "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+          "bytes": 3286,
+          "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd"
+        },
+        {
+          "path": "/usr/bin/nice",
+          "bytes": 35336,
+          "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba"
+        }
+      ],
+      "sources_unchanged": true,
+      "metric_captures": 2
+    }
+  ],
+  "model_forward_processes_started": 4,
+  "started_utc": "2026-10-01T13:28:13.757989+00:00",
+  "sources_unchanged": true,
+  "environment_overrides": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "1",
+    "NT_ATTN_THREADS": "1",
+    "NT_SIMD_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "completed_utc": "2026-10-01T13:30:37.236681+00:00",
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/00-concern-notorch-receipt.json",
+      "bytes": 16770,
+      "sha256": "fa0014c7cc01e57c5b25a71b2f5aaa6e17fd27f2d025845cbcdb482144db6f88"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/01-concern-llama-receipt.json",
+      "bytes": 16767,
+      "sha256": "f051e90c975637e70641f1b23096b1d58ca17a12ba21ef3d4631450eb783a707"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/02-concern-comparison-receipt.json",
+      "bytes": 16179,
+      "sha256": "60e624cd09e732b9eb0504bb3e1667a84d2274a254d45835922d3d651a0c6718"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/03-clean-notorch-receipt.json",
+      "bytes": 16757,
+      "sha256": "4426e272964ecd6ddc5c1c9014398e6fb30161f5b94559b3d7e64780f2e8b5c4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/04-clean-llama-receipt.json",
+      "bytes": 16754,
+      "sha256": "0ce75895b026a5ca28276869e6ebc061dec619e5ef49f5df428823a94cf39450"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/05-clean-comparison-receipt.json",
+      "bytes": 16171,
+      "sha256": "99068026543d83373e04d80b7f16dfa8108b93a9ad6bd01f976cfcc806f047d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.jsonl",
+      "bytes": 2358,
+      "sha256": "a2c5e7b764bcb57f5776993493017fe4700fd00d9e038155dabc2ac29f97aa84"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.dump",
+      "bytes": 1217308,
+      "sha256": "130d5ad3c97542f2cbca2d03b50776b1a4ed5a0269db4b24ebce024ff2b56bcb"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stderr",
+      "bytes": 167108,
+      "sha256": "3c01587839c90a0aa9352867fb323640717de6e961bd1654974a4dbf4f894e20"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.jsonl",
+      "bytes": 2360,
+      "sha256": "d5399a77936ec19df9b64f34b493b62c0859903bf74106a7882b6bda52783371"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.dump",
+      "bytes": 1217308,
+      "sha256": "2d378d23d4be6d5442b7d4c67e5e1e43b2cc112f995a9260f1254d5da97385c7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stderr",
+      "bytes": 167108,
+      "sha256": "2b519172fb1490034ccd008ac7973d7a05951d7dded8a9d799955fd00236da39"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/started.json",
+      "bytes": 308,
+      "sha256": "eeacb90d60f579ded610b28fb268bd7ed22436f2ea401805b5563d89c028c78b"
+    }
+  ]
+}

@@ -1,0 +1,1259 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "original_scientific_protocol": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+    "bytes": 18662,
+    "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+  },
+  "execution_plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+    "bytes": 34035,
+    "sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604"
+  },
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+    "bytes": 16096,
+    "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+  },
+  "authorization": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/launch-authorization.json",
+    "bytes": 2349,
+    "sha256": "f64c1c8618d2a689ce364b9c8aa56f9d100bbe1d7513164f2ba6cf9c40f2a74e"
+  },
+  "receipt": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/receipt.json",
+    "bytes": 447532,
+    "sha256": "1e0dfed992e0858a21ffcfdfa95f26564baecf13c770cc687d14f027f4265bff"
+  },
+  "summary_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/summarize_alignment.py",
+    "bytes": 8314,
+    "sha256": "a944c3b9a710c9de865e3a6bced50e7f3353deb3068523a6d7c77f22bd5817c9"
+  },
+  "original_q8_summary": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-summary.json",
+    "bytes": 13979,
+    "sha256": "c17a4591afc5f4e240dbdcb69c651d98bfbb697992ba926521e9bd7df8707e41"
+  },
+  "controller_streams": {
+    "stdout": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stdout",
+      "bytes": 1271,
+      "sha256": "c38be5cf2beef9616fa59b26ba361fb587d2320d7a45fb7cd6d96cac0c0174d4"
+    },
+    "stderr": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "conversion": {
+    "original_model": {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    "exact_f32_model": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "bytes": 2526617472,
+      "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428"
+    },
+    "validation_receipt": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation/validation.json",
+      "bytes": 61487,
+      "sha256": "04ef2ec85c49903351b212c59df1bbdf55540b78c8c29a78757ece82c83e4c7e"
+    },
+    "independently_checked_tensors": 291,
+    "independently_checked_float32_values": 630167424,
+    "every_tensor_bitwise_exact": true,
+    "all_finite": true,
+    "metadata_keys_checked": 26,
+    "metadata_changes": [
+      {
+        "key": "general.file_type",
+        "original_hex": "0400000007000000",
+        "converted_hex": "0400000000000000"
+      }
+    ],
+    "semantic_metadata_exact": true,
+    "exact_file_extent": 2526617472
+  },
+  "comparison_definitions": {
+    "native-packing": {
+      "first": "notorch original Q8_0, NT_NO_I8=1",
+      "second": "notorch exact expanded F32, NT_NO_I8=1",
+      "question": "Does native packed-weight arithmetic explain the difference?"
+    },
+    "aligned-engine": {
+      "first": "notorch exact expanded F32, NT_NO_I8=1",
+      "second": "llama.cpp same exact expanded F32",
+      "question": "How close are independent forwards with identical verified F32 tensor values?"
+    }
+  },
+  "aggregates": {
+    "native-packing": {
+      "capture_count": 4,
+      "logit_pairs_compared": 607744,
+      "maximum_absolute_difference": 3.910064697265625e-05,
+      "maximum_relative_l2": 2.0835361814695695e-06,
+      "all_argmax_agree": true,
+      "all_decision_margin_signs_agree": true,
+      "all_float32_values_bit_identical": false
+    },
+    "aligned-engine": {
+      "capture_count": 4,
+      "logit_pairs_compared": 607744,
+      "maximum_absolute_difference": 6.103515625e-05,
+      "maximum_relative_l2": 2.7186419153274513e-06,
+      "all_argmax_agree": true,
+      "all_decision_margin_signs_agree": true,
+      "all_float32_values_bit_identical": false
+    }
+  },
+  "captures": {
+    "native-packing": [
+      {
+        "case": "concern",
+        "capture": "assistant_header",
+        "metrics": {
+          "prefix_tokens": 444,
+          "vocabulary": 151936,
+          "different_float32_values": 149958,
+          "max_abs": 3.0994415283203125e-05,
+          "max_abs_token_id": 5497,
+          "reference_max_abs": 18.917158126831055,
+          "relative_l2": 2.0835361814695695e-06,
+          "rmse": 5.669759605225557e-06,
+          "mean_abs": 4.434249511234468e-06,
+          "first_argmax": 73594,
+          "second_argmax": 73594,
+          "argmax_agree": true,
+          "first_top_margin": 1.9354438781738281,
+          "second_top_margin": 1.935445785522461,
+          "first_concern_minus_clean": 4.028316557407379,
+          "second_concern_minus_clean": 4.028297424316406,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9171753
+            },
+            {
+              "id": 1294,
+              "logit": 16.9817314
+            },
+            {
+              "id": 515,
+              "logit": 16.6482735
+            },
+            {
+              "id": 58,
+              "logit": 16.3764763
+            },
+            {
+              "id": 9640,
+              "logit": 15.867054
+            },
+            {
+              "id": 13874,
+              "logit": 15.0905037
+            },
+            {
+              "id": 19536,
+              "logit": 15.0352249
+            },
+            {
+              "id": 90,
+              "logit": 14.5766659
+            },
+            {
+              "id": 4913,
+              "logit": 14.374423
+            },
+            {
+              "id": 52108,
+              "logit": 14.3026676
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9171581
+            },
+            {
+              "id": 1294,
+              "logit": 16.9817123
+            },
+            {
+              "id": 515,
+              "logit": 16.6482677
+            },
+            {
+              "id": 58,
+              "logit": 16.3764553
+            },
+            {
+              "id": 9640,
+              "logit": 15.8670273
+            },
+            {
+              "id": 13874,
+              "logit": 15.0905037
+            },
+            {
+              "id": 19536,
+              "logit": 15.0352173
+            },
+            {
+              "id": 90,
+              "logit": 14.576663
+            },
+            {
+              "id": 4913,
+              "logit": 14.3744116
+            },
+            {
+              "id": 52108,
+              "logit": 14.3026505
+            }
+          ]
+        },
+        "first_decision_margin_sign": 1,
+        "second_decision_margin_sign": 1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-native-packing-comparison.stdout.jsonl",
+          "bytes": 2364,
+          "sha256": "a55593d0d966ae73e072269b5b02e2903bc55902f69217d762d1de788384d0f9"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "dd7ccb81157f865ec874d5a9d23f30ff792423cfd174e2176e583d665aeab1a1"
+        }
+      },
+      {
+        "case": "concern",
+        "capture": "shared_prefix",
+        "metrics": {
+          "prefix_tokens": 447,
+          "vocabulary": 151936,
+          "different_float32_values": 149728,
+          "max_abs": 3.814697265625e-05,
+          "max_abs_token_id": 59611,
+          "reference_max_abs": 24.624523162841797,
+          "relative_l2": 1.914960742166135e-06,
+          "rmse": 5.363623079945574e-06,
+          "mean_abs": 4.177262257689865e-06,
+          "first_argmax": 788,
+          "second_argmax": 788,
+          "argmax_agree": true,
+          "first_top_margin": 3.2403793334960938,
+          "second_top_margin": 3.240385055541992,
+          "first_concern_minus_clean": -3.5977554321289062,
+          "second_concern_minus_clean": -3.5977611541748047,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 788,
+              "logit": 24.1755753
+            },
+            {
+              "id": 8899,
+              "logit": 20.9351959
+            },
+            {
+              "id": 66582,
+              "logit": 20.5778198
+            },
+            {
+              "id": 36799,
+              "logit": 19.1093426
+            },
+            {
+              "id": 22317,
+              "logit": 17.3153133
+            },
+            {
+              "id": 3252,
+              "logit": 17.1864319
+            },
+            {
+              "id": 1,
+              "logit": 16.7832432
+            },
+            {
+              "id": 4660,
+              "logit": 15.5627527
+            },
+            {
+              "id": 9207,
+              "logit": 14.7323837
+            },
+            {
+              "id": 51418,
+              "logit": 13.7534771
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 788,
+              "logit": 24.1755638
+            },
+            {
+              "id": 8899,
+              "logit": 20.9351788
+            },
+            {
+              "id": 66582,
+              "logit": 20.5778027
+            },
+            {
+              "id": 36799,
+              "logit": 19.1093235
+            },
+            {
+              "id": 22317,
+              "logit": 17.3153038
+            },
+            {
+              "id": 3252,
+              "logit": 17.18643
+            },
+            {
+              "id": 1,
+              "logit": 16.7832413
+            },
+            {
+              "id": 4660,
+              "logit": 15.5627499
+            },
+            {
+              "id": 9207,
+              "logit": 14.7323875
+            },
+            {
+              "id": 51418,
+              "logit": 13.7534828
+            }
+          ]
+        },
+        "first_decision_margin_sign": -1,
+        "second_decision_margin_sign": -1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-native-packing-comparison.stdout.jsonl",
+          "bytes": 2364,
+          "sha256": "a55593d0d966ae73e072269b5b02e2903bc55902f69217d762d1de788384d0f9"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "dd7ccb81157f865ec874d5a9d23f30ff792423cfd174e2176e583d665aeab1a1"
+        }
+      },
+      {
+        "case": "clean",
+        "capture": "assistant_header",
+        "metrics": {
+          "prefix_tokens": 444,
+          "vocabulary": 151936,
+          "different_float32_values": 148208,
+          "max_abs": 3.0517578125e-05,
+          "max_abs_token_id": 14374,
+          "reference_max_abs": 18.91697120666504,
+          "relative_l2": 1.7746757370479773e-06,
+          "rmse": 4.831613764547505e-06,
+          "mean_abs": 3.7556508437190174e-06,
+          "first_argmax": 73594,
+          "second_argmax": 73594,
+          "argmax_agree": true,
+          "first_top_margin": 1.923074722290039,
+          "second_top_margin": 1.9230670928955078,
+          "first_concern_minus_clean": 4.034349799156189,
+          "second_concern_minus_clean": 4.034350395202637,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9169617
+            },
+            {
+              "id": 1294,
+              "logit": 16.9938869
+            },
+            {
+              "id": 515,
+              "logit": 16.6455307
+            },
+            {
+              "id": 58,
+              "logit": 16.3656616
+            },
+            {
+              "id": 9640,
+              "logit": 15.8575649
+            },
+            {
+              "id": 13874,
+              "logit": 15.0784769
+            },
+            {
+              "id": 19536,
+              "logit": 15.0318794
+            },
+            {
+              "id": 90,
+              "logit": 14.5843353
+            },
+            {
+              "id": 4913,
+              "logit": 14.3762579
+            },
+            {
+              "id": 52108,
+              "logit": 14.3094254
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9169712
+            },
+            {
+              "id": 1294,
+              "logit": 16.9939041
+            },
+            {
+              "id": 515,
+              "logit": 16.6455383
+            },
+            {
+              "id": 58,
+              "logit": 16.3656864
+            },
+            {
+              "id": 9640,
+              "logit": 15.8575792
+            },
+            {
+              "id": 13874,
+              "logit": 15.078476
+            },
+            {
+              "id": 19536,
+              "logit": 15.0318813
+            },
+            {
+              "id": 90,
+              "logit": 14.5843248
+            },
+            {
+              "id": 4913,
+              "logit": 14.376255
+            },
+            {
+              "id": 52108,
+              "logit": 14.309412
+            }
+          ]
+        },
+        "first_decision_margin_sign": 1,
+        "second_decision_margin_sign": 1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-native-packing-comparison.stdout.jsonl",
+          "bytes": 2361,
+          "sha256": "88aa08168067254fbef167d1ba9569409a8b7f9c6b93839d03d56ab8ba85dc26"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "766aac8ccdf30e5eb73ea4c9bc65c388a8e090e34808223d669aa73f24b0ea8d"
+        }
+      },
+      {
+        "case": "clean",
+        "capture": "shared_prefix",
+        "metrics": {
+          "prefix_tokens": 447,
+          "vocabulary": 151936,
+          "different_float32_values": 150007,
+          "max_abs": 3.910064697265625e-05,
+          "max_abs_token_id": 67623,
+          "reference_max_abs": 24.639225006103516,
+          "relative_l2": 1.9986784900031447e-06,
+          "rmse": 5.6016834121982545e-06,
+          "mean_abs": 4.402066836633391e-06,
+          "first_argmax": 788,
+          "second_argmax": 788,
+          "argmax_agree": true,
+          "first_top_margin": 3.2376785278320312,
+          "second_top_margin": 3.237680435180664,
+          "first_concern_minus_clean": -3.597675323486328,
+          "second_concern_minus_clean": -3.597665786743164,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 788,
+              "logit": 24.1792068
+            },
+            {
+              "id": 8899,
+              "logit": 20.9415283
+            },
+            {
+              "id": 66582,
+              "logit": 20.5815315
+            },
+            {
+              "id": 36799,
+              "logit": 19.116375
+            },
+            {
+              "id": 22317,
+              "logit": 17.3230267
+            },
+            {
+              "id": 3252,
+              "logit": 17.1886635
+            },
+            {
+              "id": 1,
+              "logit": 16.779892
+            },
+            {
+              "id": 4660,
+              "logit": 15.5616093
+            },
+            {
+              "id": 9207,
+              "logit": 14.7387314
+            },
+            {
+              "id": 51418,
+              "logit": 13.7450695
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 788,
+              "logit": 24.1791992
+            },
+            {
+              "id": 8899,
+              "logit": 20.9415188
+            },
+            {
+              "id": 66582,
+              "logit": 20.5815334
+            },
+            {
+              "id": 36799,
+              "logit": 19.1163769
+            },
+            {
+              "id": 22317,
+              "logit": 17.3230228
+            },
+            {
+              "id": 3252,
+              "logit": 17.1886616
+            },
+            {
+              "id": 1,
+              "logit": 16.7798843
+            },
+            {
+              "id": 4660,
+              "logit": 15.5616169
+            },
+            {
+              "id": 9207,
+              "logit": 14.7387209
+            },
+            {
+              "id": 51418,
+              "logit": 13.7450829
+            }
+          ]
+        },
+        "first_decision_margin_sign": -1,
+        "second_decision_margin_sign": -1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-native-packing-comparison.stdout.jsonl",
+          "bytes": 2361,
+          "sha256": "88aa08168067254fbef167d1ba9569409a8b7f9c6b93839d03d56ab8ba85dc26"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+          "bytes": 1217308,
+          "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "766aac8ccdf30e5eb73ea4c9bc65c388a8e090e34808223d669aa73f24b0ea8d"
+        }
+      }
+    ],
+    "aligned-engine": [
+      {
+        "case": "concern",
+        "capture": "assistant_header",
+        "metrics": {
+          "prefix_tokens": 444,
+          "vocabulary": 151936,
+          "different_float32_values": 149991,
+          "max_abs": 3.62396240234375e-05,
+          "max_abs_token_id": 280,
+          "reference_max_abs": 18.917179107666016,
+          "relative_l2": 2.280099646005051e-06,
+          "rmse": 6.204652102860956e-06,
+          "mean_abs": 4.845615733265716e-06,
+          "first_argmax": 73594,
+          "second_argmax": 73594,
+          "argmax_agree": true,
+          "first_top_margin": 1.935445785522461,
+          "second_top_margin": 1.9354534149169922,
+          "first_concern_minus_clean": 4.028297424316406,
+          "second_concern_minus_clean": 4.028308808803558,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9171581
+            },
+            {
+              "id": 1294,
+              "logit": 16.9817123
+            },
+            {
+              "id": 515,
+              "logit": 16.6482677
+            },
+            {
+              "id": 58,
+              "logit": 16.3764553
+            },
+            {
+              "id": 9640,
+              "logit": 15.8670273
+            },
+            {
+              "id": 13874,
+              "logit": 15.0905037
+            },
+            {
+              "id": 19536,
+              "logit": 15.0352173
+            },
+            {
+              "id": 90,
+              "logit": 14.576663
+            },
+            {
+              "id": 4913,
+              "logit": 14.3744116
+            },
+            {
+              "id": 52108,
+              "logit": 14.3026505
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9171791
+            },
+            {
+              "id": 1294,
+              "logit": 16.9817257
+            },
+            {
+              "id": 515,
+              "logit": 16.6482811
+            },
+            {
+              "id": 58,
+              "logit": 16.3764763
+            },
+            {
+              "id": 9640,
+              "logit": 15.8670559
+            },
+            {
+              "id": 13874,
+              "logit": 15.0905094
+            },
+            {
+              "id": 19536,
+              "logit": 15.0352287
+            },
+            {
+              "id": 90,
+              "logit": 14.576664
+            },
+            {
+              "id": 4913,
+              "logit": 14.3744192
+            },
+            {
+              "id": 52108,
+              "logit": 14.3026638
+            }
+          ]
+        },
+        "first_decision_margin_sign": 1,
+        "second_decision_margin_sign": 1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-aligned-engine-comparison.stdout.jsonl",
+          "bytes": 2357,
+          "sha256": "0e966b0e3d74c003782d10381360284d8683feda09d08670ba4fbccc1a47b494"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "dd7ccb81157f865ec874d5a9d23f30ff792423cfd174e2176e583d665aeab1a1"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-llama-f32.dump",
+          "bytes": 1217308,
+          "sha256": "4008dc1b8e11592d28f467c7450b6fe4e63ebbe3e1de8e315aef1bbf27430fe4"
+        }
+      },
+      {
+        "case": "concern",
+        "capture": "shared_prefix",
+        "metrics": {
+          "prefix_tokens": 447,
+          "vocabulary": 151936,
+          "different_float32_values": 150391,
+          "max_abs": 6.103515625e-05,
+          "max_abs_token_id": 93873,
+          "reference_max_abs": 24.624488830566406,
+          "relative_l2": 2.7186419153274513e-06,
+          "rmse": 7.6146546649834484e-06,
+          "mean_abs": 5.845767001949193e-06,
+          "first_argmax": 788,
+          "second_argmax": 788,
+          "argmax_agree": true,
+          "first_top_margin": 3.240385055541992,
+          "second_top_margin": 3.2403793334960938,
+          "first_concern_minus_clean": -3.5977611541748047,
+          "second_concern_minus_clean": -3.5977611541748047,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 788,
+              "logit": 24.1755638
+            },
+            {
+              "id": 8899,
+              "logit": 20.9351788
+            },
+            {
+              "id": 66582,
+              "logit": 20.5778027
+            },
+            {
+              "id": 36799,
+              "logit": 19.1093235
+            },
+            {
+              "id": 22317,
+              "logit": 17.3153038
+            },
+            {
+              "id": 3252,
+              "logit": 17.18643
+            },
+            {
+              "id": 1,
+              "logit": 16.7832413
+            },
+            {
+              "id": 4660,
+              "logit": 15.5627499
+            },
+            {
+              "id": 9207,
+              "logit": 14.7323875
+            },
+            {
+              "id": 51418,
+              "logit": 13.7534828
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 788,
+              "logit": 24.1755714
+            },
+            {
+              "id": 8899,
+              "logit": 20.9351921
+            },
+            {
+              "id": 66582,
+              "logit": 20.5778103
+            },
+            {
+              "id": 36799,
+              "logit": 19.1093407
+            },
+            {
+              "id": 22317,
+              "logit": 17.3153076
+            },
+            {
+              "id": 3252,
+              "logit": 17.1864262
+            },
+            {
+              "id": 1,
+              "logit": 16.7832451
+            },
+            {
+              "id": 4660,
+              "logit": 15.5627565
+            },
+            {
+              "id": 9207,
+              "logit": 14.7323837
+            },
+            {
+              "id": 51418,
+              "logit": 13.7534828
+            }
+          ]
+        },
+        "first_decision_margin_sign": -1,
+        "second_decision_margin_sign": -1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-aligned-engine-comparison.stdout.jsonl",
+          "bytes": 2357,
+          "sha256": "0e966b0e3d74c003782d10381360284d8683feda09d08670ba4fbccc1a47b494"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "dd7ccb81157f865ec874d5a9d23f30ff792423cfd174e2176e583d665aeab1a1"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-llama-f32.dump",
+          "bytes": 1217308,
+          "sha256": "4008dc1b8e11592d28f467c7450b6fe4e63ebbe3e1de8e315aef1bbf27430fe4"
+        }
+      },
+      {
+        "case": "clean",
+        "capture": "assistant_header",
+        "metrics": {
+          "prefix_tokens": 444,
+          "vocabulary": 151936,
+          "different_float32_values": 149915,
+          "max_abs": 3.337860107421875e-05,
+          "max_abs_token_id": 59509,
+          "reference_max_abs": 18.91696548461914,
+          "relative_l2": 2.2146048688758785e-06,
+          "rmse": 6.029334024545492e-06,
+          "mean_abs": 4.683979689715377e-06,
+          "first_argmax": 73594,
+          "second_argmax": 73594,
+          "argmax_agree": true,
+          "first_top_margin": 1.9230670928955078,
+          "second_top_margin": 1.9230766296386719,
+          "first_concern_minus_clean": 4.034350395202637,
+          "second_concern_minus_clean": 4.034337282180786,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9169712
+            },
+            {
+              "id": 1294,
+              "logit": 16.9939041
+            },
+            {
+              "id": 515,
+              "logit": 16.6455383
+            },
+            {
+              "id": 58,
+              "logit": 16.3656864
+            },
+            {
+              "id": 9640,
+              "logit": 15.8575792
+            },
+            {
+              "id": 13874,
+              "logit": 15.078476
+            },
+            {
+              "id": 19536,
+              "logit": 15.0318813
+            },
+            {
+              "id": 90,
+              "logit": 14.5843248
+            },
+            {
+              "id": 4913,
+              "logit": 14.376255
+            },
+            {
+              "id": 52108,
+              "logit": 14.309412
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 73594,
+              "logit": 18.9169655
+            },
+            {
+              "id": 1294,
+              "logit": 16.9938889
+            },
+            {
+              "id": 515,
+              "logit": 16.645546
+            },
+            {
+              "id": 58,
+              "logit": 16.3656693
+            },
+            {
+              "id": 9640,
+              "logit": 15.8575783
+            },
+            {
+              "id": 13874,
+              "logit": 15.0784864
+            },
+            {
+              "id": 19536,
+              "logit": 15.0318871
+            },
+            {
+              "id": 90,
+              "logit": 14.5843449
+            },
+            {
+              "id": 4913,
+              "logit": 14.3762646
+            },
+            {
+              "id": 52108,
+              "logit": 14.3094263
+            }
+          ]
+        },
+        "first_decision_margin_sign": 1,
+        "second_decision_margin_sign": 1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-aligned-engine-comparison.stdout.jsonl",
+          "bytes": 2366,
+          "sha256": "eab7e38789733d2d8446e2f52e5d7f64e40e8fced990d8a14b1945c14205c5b9"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "766aac8ccdf30e5eb73ea4c9bc65c388a8e090e34808223d669aa73f24b0ea8d"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-llama-f32.dump",
+          "bytes": 1217308,
+          "sha256": "130c12a320480a674d9b3cdf6bb7accd03624dba52dc082768d21974996c0ad1"
+        }
+      },
+      {
+        "case": "clean",
+        "capture": "shared_prefix",
+        "metrics": {
+          "prefix_tokens": 447,
+          "vocabulary": 151936,
+          "different_float32_values": 150233,
+          "max_abs": 5.245208740234375e-05,
+          "max_abs_token_id": 67623,
+          "reference_max_abs": 24.63923454284668,
+          "relative_l2": 2.5336895157631154e-06,
+          "rmse": 7.101154231793589e-06,
+          "mean_abs": 5.4786805753543555e-06,
+          "first_argmax": 788,
+          "second_argmax": 788,
+          "argmax_agree": true,
+          "first_top_margin": 3.237680435180664,
+          "second_top_margin": 3.2376747131347656,
+          "first_concern_minus_clean": -3.597665786743164,
+          "second_concern_minus_clean": -3.5976696014404297,
+          "decision_ids": [
+            66582,
+            788
+          ],
+          "first_top10": [
+            {
+              "id": 788,
+              "logit": 24.1791992
+            },
+            {
+              "id": 8899,
+              "logit": 20.9415188
+            },
+            {
+              "id": 66582,
+              "logit": 20.5815334
+            },
+            {
+              "id": 36799,
+              "logit": 19.1163769
+            },
+            {
+              "id": 22317,
+              "logit": 17.3230228
+            },
+            {
+              "id": 3252,
+              "logit": 17.1886616
+            },
+            {
+              "id": 1,
+              "logit": 16.7798843
+            },
+            {
+              "id": 4660,
+              "logit": 15.5616169
+            },
+            {
+              "id": 9207,
+              "logit": 14.7387209
+            },
+            {
+              "id": 51418,
+              "logit": 13.7450829
+            }
+          ],
+          "second_top10": [
+            {
+              "id": 788,
+              "logit": 24.1792068
+            },
+            {
+              "id": 8899,
+              "logit": 20.9415321
+            },
+            {
+              "id": 66582,
+              "logit": 20.5815372
+            },
+            {
+              "id": 36799,
+              "logit": 19.1163826
+            },
+            {
+              "id": 22317,
+              "logit": 17.3230305
+            },
+            {
+              "id": 3252,
+              "logit": 17.1886692
+            },
+            {
+              "id": 1,
+              "logit": 16.7798996
+            },
+            {
+              "id": 4660,
+              "logit": 15.5616169
+            },
+            {
+              "id": 9207,
+              "logit": 14.7387342
+            },
+            {
+              "id": 51418,
+              "logit": 13.7450771
+            }
+          ]
+        },
+        "first_decision_margin_sign": -1,
+        "second_decision_margin_sign": -1,
+        "decision_margin_sign_agree": true,
+        "source_metrics": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-aligned-engine-comparison.stdout.jsonl",
+          "bytes": 2366,
+          "sha256": "eab7e38789733d2d8446e2f52e5d7f64e40e8fced990d8a14b1945c14205c5b9"
+        },
+        "first_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.dump",
+          "bytes": 1217308,
+          "sha256": "766aac8ccdf30e5eb73ea4c9bc65c388a8e090e34808223d669aa73f24b0ea8d"
+        },
+        "second_dump": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-llama-f32.dump",
+          "bytes": 1217308,
+          "sha256": "130c12a320480a674d9b3cdf6bb7accd03624dba52dc082768d21974996c0ad1"
+        }
+      }
+    ]
+  },
+  "original_q8_to_aligned_engine_comparison": {
+    "original_q8_maximum_absolute_difference": 0.29679763317108154,
+    "original_q8_maximum_relative_l2": 0.02563207277514388,
+    "ratio_of_max_absolute_differences": 4862.732421875,
+    "ratio_of_max_relative_l2": 9428.26366011376,
+    "note": "Ratios compare the two maxima across this fixed four-capture set; not a universal bound or per-token causal attribution."
+  },
+  "scope": {
+    "fixed_cases": [
+      "allocation-null-guard-deletion-concern",
+      "allocation-null-guard-deletion-clean"
+    ],
+    "captured_prefix_lengths": [
+      444,
+      447
+    ],
+    "vocabulary": 151936,
+    "new_model_forward_processes": 4,
+    "numerical_comparison_processes": 4,
+    "changed_selection_inputs": false
+  },
+  "sources_and_models_unchanged": true,
+  "resource_measurements": [
+    {
+      "name": "convert-exact-f32",
+      "kind": "conversion",
+      "exit_code": 0,
+      "elapsed_seconds": 25.374757347999548,
+      "peak_rss_kib": 239020,
+      "user_seconds": 4.0807,
+      "system_seconds": 20.077621
+    },
+    {
+      "name": "verify-exact-f32",
+      "kind": "independent_validation",
+      "exit_code": 0,
+      "elapsed_seconds": 20.717072892999568,
+      "peak_rss_kib": 3116424,
+      "user_seconds": 16.845268,
+      "system_seconds": 3.821391
+    },
+    {
+      "name": "concern-notorch-f32",
+      "kind": "model_forward",
+      "exit_code": 0,
+      "elapsed_seconds": 236.95994839700143,
+      "peak_rss_kib": 2475420,
+      "user_seconds": 235.648898,
+      "system_seconds": 0.7624489999999999
+    },
+    {
+      "name": "concern-llama-f32",
+      "kind": "model_forward",
+      "exit_code": 0,
+      "elapsed_seconds": 20.115308064996498,
+      "peak_rss_kib": 2567476,
+      "user_seconds": 18.977825,
+      "system_seconds": 1.04104
+    },
+    {
+      "name": "concern-native-packing-comparison",
+      "kind": "metric_comparison",
+      "exit_code": 0,
+      "elapsed_seconds": 0.0777325219969498,
+      "peak_rss_kib": 29068,
+      "user_seconds": 0.07522,
+      "system_seconds": 0.0
+    },
+    {
+      "name": "concern-aligned-engine-comparison",
+      "kind": "metric_comparison",
+      "exit_code": 0,
+      "elapsed_seconds": 0.0941836220008554,
+      "peak_rss_kib": 29068,
+      "user_seconds": 0.077343,
+      "system_seconds": 0.00531
+    },
+    {
+      "name": "clean-notorch-f32",
+      "kind": "model_forward",
+      "exit_code": 0,
+      "elapsed_seconds": 248.29314159299975,
+      "peak_rss_kib": 2475408,
+      "user_seconds": 246.879009,
+      "system_seconds": 0.917878
+    },
+    {
+      "name": "clean-llama-f32",
+      "kind": "model_forward",
+      "exit_code": 0,
+      "elapsed_seconds": 22.592785758999526,
+      "peak_rss_kib": 2567644,
+      "user_seconds": 21.620705,
+      "system_seconds": 0.9471219999999999
+    },
+    {
+      "name": "clean-native-packing-comparison",
+      "kind": "metric_comparison",
+      "exit_code": 0,
+      "elapsed_seconds": 0.0854598639998585,
+      "peak_rss_kib": 29208,
+      "user_seconds": 0.079556,
+      "system_seconds": 0.004556999999999999
+    },
+    {
+      "name": "clean-aligned-engine-comparison",
+      "kind": "metric_comparison",
+      "exit_code": 0,
+      "elapsed_seconds": 0.07746377100556856,
+      "peak_rss_kib": 29296,
+      "user_seconds": 0.066369,
+      "system_seconds": 0.010111
+    }
+  ],
+  "interpretation": "These measurements isolate packed-weight/native arithmetic and then compare independent F32 forwards after exact conversion proof. They cover only the two frozen prompts/two boundaries in this original base model. No arbitrary aggregate tolerance proves a defect or full-runtime correctness; ranks/margins and the complete raw vectors are retained. Timings are resource observations during concurrent training, not a performance benchmark."
+}

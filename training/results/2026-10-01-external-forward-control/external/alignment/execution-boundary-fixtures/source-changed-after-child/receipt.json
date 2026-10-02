@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "requested_plan": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child-plan.json",
+  "expected_plan_sha256": "16f1021f54b083c71050ac4bdc01eda9a61fe69dfc5bdfdef9fe8c85a4914f52",
+  "output_directory": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child",
+  "phases": [
+    {
+      "name": "mutate-synthetic-source",
+      "kind": "synthetic_fixture",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-E",
+        "-c",
+        "from pathlib import Path; Path('/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt').write_text(\"changed source bytes\\n\")"
+      ],
+      "status": "failed",
+      "exit_code": 0,
+      "input_bindings_before": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+          "bytes": 22,
+          "sha256": "75afc22e9a068d97c5142edfc652023f864467bf5cb29e6b08beb609328132a1"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+          "bytes": 16096,
+          "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+        }
+      ],
+      "started_utc": "2026-10-01T13:46:11.477498+00:00",
+      "peak_rss_kib": 12032,
+      "user_seconds": 0.039439999999999996,
+      "system_seconds": 0.015224999999999999,
+      "pid": 7,
+      "elapsed_seconds": 0.0553390980057884,
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "missing_or_unhashable_outputs": [],
+      "input_bindings_after": [
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+          "bytes": 21,
+          "sha256": "20ac0797fbda454ac858266572f76b98551608efe9c358f13b832cd2ca1c6014"
+        },
+        {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+          "bytes": 16096,
+          "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+        }
+      ],
+      "sources_unchanged": false,
+      "dynamic_bindings_after": [],
+      "dynamic_unchanged": true,
+      "postcheck_failure": "bound inputs changed after phase"
+    }
+  ],
+  "model_forward_processes_started": 0,
+  "conversion_processes_started": 0,
+  "started_utc": "2026-10-01T13:46:11.476707+00:00",
+  "sources_unchanged": false,
+  "plan_before": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child-plan.json",
+    "bytes": 1975,
+    "sha256": "16f1021f54b083c71050ac4bdc01eda9a61fe69dfc5bdfdef9fe8c85a4914f52"
+  },
+  "input_bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 22,
+      "sha256": "75afc22e9a068d97c5142edfc652023f864467bf5cb29e6b08beb609328132a1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    }
+  ],
+  "environment_overrides": {},
+  "failure_type": "ValueError",
+  "failure": "alignment phase failed; partial evidence retained",
+  "plan_after": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child-plan.json",
+    "bytes": 1975,
+    "sha256": "16f1021f54b083c71050ac4bdc01eda9a61fe69dfc5bdfdef9fe8c85a4914f52"
+  },
+  "input_bindings_after": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 21,
+      "sha256": "20ac0797fbda454ac858266572f76b98551608efe9c358f13b832cd2ca1c6014"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    }
+  ],
+  "dynamic_bindings_after": [],
+  "dynamic_unchanged": true,
+  "plan_unchanged": true,
+  "final_binding_failure": "actual before/after bindings retained",
+  "completed_utc": "2026-10-01T13:46:11.533562+00:00",
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/00-mutate-synthetic-source-receipt.json",
+      "bytes": 2342,
+      "sha256": "d48beb482d6fb2f5f64f59acf473d7572d6c2adee8a779d9ec5696a3aeea65b2"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/started.json",
+      "bytes": 344,
+      "sha256": "e6c7a6c166ca40f2ebe3a051260ee18788484a6527c1777629b59a2d3e7fbb2f"
+    }
+  ]
+}

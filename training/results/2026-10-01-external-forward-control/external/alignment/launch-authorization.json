@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "authorized_utc": "2026-10-01T13:50:01.633141+00:00",
+  "authority": "/root explicit F32 execution GO after independent audit and fresh resource check",
+  "decision": "Run exact frozen ten phases once, serial nice15/thread1. Require successful independent291-tensor equality and metadata validation before any forward. Stop and preserve evidence on any failed gate.",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+    "bytes": 34035,
+    "sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604"
+  },
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+    "bytes": 16096,
+    "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+  },
+  "independent_audit": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/f32-alignment-execution-independent-audit.json",
+    "bytes": 3676,
+    "sha256": "83ae3dfbf93b70a5c629494a1b6edfc03e7b7bb45939499b9880c2c2e5039967"
+  },
+  "root_resource_observation": {
+    "observed": "2026-10-01T13:50Z",
+    "cgroup_limit_bytes": 8589934592,
+    "anon_bytes": 947818496,
+    "file_bytes": 7104323584,
+    "inactive_file_bytes": 1197682688,
+    "reclaimable_slab_bytes": 128211528,
+    "oom": 0,
+    "disk_free_bytes": 15441108992,
+    "estimated_serial_peak_rss_bytes": 3600000000
+  },
+  "scientific_scope": "Same original Q8 tensor values, same two frozen prompts and two boundaries; no new cases/models/selection inputs; existing training and frozen protocol/controller unchanged.",
+  "launch_owner": "/root/evaluation_prep",
+  "command": [
+    "python3",
+    "-E",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+    "--plan",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+    "--plan-sha256",
+    "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604",
+    "--output-dir",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1",
+    "--execute"
+  ],
+  "streams": {
+    "stdout": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stdout",
+    "stderr": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stderr"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "requested_plan": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source-plan.json",
+  "expected_plan_sha256": "a9cae8ae21a3e38f00fb03c368571e10a715aed2df701eaa0836c966605f8ac3",
+  "output_directory": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source",
+  "phases": [],
+  "model_forward_processes_started": 0,
+  "conversion_processes_started": 0,
+  "started_utc": "2026-10-01T13:46:11.421834+00:00",
+  "sources_unchanged": false,
+  "plan_before": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source-plan.json",
+    "bytes": 1453,
+    "sha256": "a9cae8ae21a3e38f00fb03c368571e10a715aed2df701eaa0836c966605f8ac3"
+  },
+  "input_bindings_before": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 22,
+      "sha256": "75afc22e9a068d97c5142edfc652023f864467bf5cb29e6b08beb609328132a1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/absent.txt",
+      "hash_error_type": "FileNotFoundError",
+      "hash_error": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/absent.txt'"
+    }
+  ],
+  "failure_type": "ValueError",
+  "failure": "bound input changed before execution",
+  "plan_after": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source-plan.json",
+    "bytes": 1453,
+    "sha256": "a9cae8ae21a3e38f00fb03c368571e10a715aed2df701eaa0836c966605f8ac3"
+  },
+  "input_bindings_after": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 22,
+      "sha256": "75afc22e9a068d97c5142edfc652023f864467bf5cb29e6b08beb609328132a1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/absent.txt",
+      "hash_error_type": "FileNotFoundError",
+      "hash_error": "[Errno 2] No such file or directory: '/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/absent.txt'"
+    }
+  ],
+  "dynamic_bindings_after": [],
+  "dynamic_unchanged": true,
+  "plan_unchanged": true,
+  "final_binding_failure": "actual before/after bindings retained",
+  "completed_utc": "2026-10-01T13:46:11.423467+00:00",
+  "artifacts": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source/started.json",
+      "bytes": 338,
+      "sha256": "7776d1770510f499569ec26f813007714763b5ccbf59ff5fc18de252a3f61bd2"
+    }
+  ]
+}

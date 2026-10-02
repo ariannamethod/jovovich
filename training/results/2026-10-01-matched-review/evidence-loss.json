@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "kind": "post_completion_local_evidence_loss",
+  "timestamp_note": "15:42:48.076076+00:00 is the captured filesystem observation; this record was prepared afterward for publication and is not the original run receipt.",
+  "status": "matched_public_archive_incomplete",
+  "cause": "unresolved; broad file loss is observed, no mechanism established",
+  "observations": [
+    {
+      "stage": "read_only_collector",
+      "status": "completed_material_check",
+      "model_forward_calls": 0,
+      "files": 373,
+      "payload_bytes": 8248571,
+      "aliases": 375,
+      "repository_sources": 32,
+      "auxiliary_unresolved_bindings": 103,
+      "write_requested": false
+    },
+    {
+      "stage": "collector_write",
+      "exit_code": 1,
+      "error_type": "FileNotFoundError",
+      "missing_path": "/workspace/scratch/ec5ba60588d8/matched-training-run/artifacts/matched-review-selected.gguf",
+      "location": "matched_materials.py completed_weights(), selected model binding verification",
+      "archive_created": false
+    },
+    {
+      "stage": "filesystem",
+      "observed_utc": "2026-10-01T15:42:48.076076+00:00",
+      "selected_model_exists": false,
+      "artifacts_directory_exists": true,
+      "artifacts_directory_entries": 0
+    },
+    {
+      "stage": "followup_inventory",
+      "missing_payload_groups": [
+        "matched-training-run",
+        "matched-training-semantic",
+        "matched-training-audit",
+        "jovovich/training/results",
+        "jovovich/.git"
+      ],
+      "note": "Independent agents observed concurrent losses. No cleanup was reported by root, training owner, primary evaluator or independent auditor. This does not establish the writer or cause."
+    },
+    {
+      "stage": "local_hf_cache",
+      "status": "unavailable",
+      "note": "Snapshot and model blob links were dangling; their target payload was missing."
+    }
+  ],
+  "evidence_policy": {
+    "original_receipts_reconstructed": false,
+    "original_judgments_reconstructed": false,
+    "new_model_calls_after_loss": 0,
+    "historical_numbers": "Observed in successful tool outputs before loss and confirmed by the independent evaluator; not independently reproducible from this record alone.",
+    "unavailable_payloads": "Hashes below identify formerly read files. A hash is not a recovered file or a replacement for raw evidence.",
+    "later_recovery": "Recover exact original bytes if available. Otherwise label fresh evaluation as a new run; never use it to impersonate lost historical receipts."
+  },
+  "external_archive": {
+    "status": "uploaded_git_tree_verified_after_loss",
+    "tree_sha": "30470619bc523273a76998903f33c11f943f0a30",
+    "files": 158,
+    "bytes": 12232383,
+    "path": "training/results/2026-10-01-external-forward-control",
+    "verification": "All 158 paths, modes and Git blob identities match the preserved publication payload and GitHub tree."
+  },
+  "private_weight_archive": {
+    "repository": "ataeff/jovovich",
+    "private": true,
+    "revision": "c9484feec99c5df47be5702d29098297aced1389",
+    "prefix": "experiments/matched-review/",
+    "status": "all_16_pinned_downloads_verified_before_local_evidence_loss",
+    "files": 16,
+    "weight_files": 13,
+    "receipt_sha256": "bbb43d5e5e36efd734a0498ce84744c4d399efa173e9ddfc99880178092a1d09",
+    "selected_model": {
+      "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532",
+      "bytes": 714116992
+    },
+    "note": "Original verification receipt and local cache payload are unavailable after the loss. This record does not claim a second download."
+  },
+  "observed_results": {
+    "training_updates_completed": 100,
+    "selected_updates": {
+      "prior_v4": 100,
+      "new_v5": 25
+    },
+    "natural_evaluation": {
+      "cases_per_arm": 88,
+      "responses": 176,
+      "same_v5_prompts": true
+    },
+    "cohorts": [
+      {
+        "cohort": "train",
+        "cases": 52,
+        "pairs": 26,
+        "prior": {
+          "usable": 51,
+          "grounded_concerns": 1,
+          "correct_clean": 23,
+          "full_reviews": 24,
+          "full_pairs": 0
+        },
+        "new_v5": {
+          "usable": 39,
+          "grounded_concerns": 1,
+          "correct_clean": 4,
+          "full_reviews": 5,
+          "full_pairs": 0
+        }
+      },
+      {
+        "cohort": "transfer",
+        "cases": 24,
+        "pairs": 12,
+        "prior": {
+          "usable": 20,
+          "grounded_concerns": 0,
+          "correct_clean": 9,
+          "full_reviews": 9,
+          "full_pairs": 0
+        },
+        "new_v5": {
+          "usable": 16,
+          "grounded_concerns": 1,
+          "correct_clean": 0,
+          "full_reviews": 1,
+          "full_pairs": 0
+        }
+      },
+      {
+        "cohort": "diagnostics",
+        "cases": 12,
+        "pairs": 6,
+        "prior": {
+          "usable": 12,
+          "grounded_concerns": 1,
+          "correct_clean": 4,
+          "full_reviews": 5,
+          "full_pairs": 0
+        },
+        "new_v5": {
+          "usable": 7,
+          "grounded_concerns": 0,
+          "correct_clean": 0,
+          "full_reviews": 0,
+          "full_pairs": 0
+        }
+      }
+    ],
+    "sensitivity": {
+      "case_id": "holdout-v5-bounded-termination-pure-deletion-concern",
+      "accepted_reading_new_full_reviews": 6,
+      "strict_reading_new_full_reviews": 5,
+      "full_pairs_both_readings": 0
+    },
+    "independent_review": "All 88 new final outcomes agreed. Eight vacuous empty-list grounding conventions differed without affecting outcomes.",
+    "runtime_model_promoted": false
+  },
+  "previously_recorded_missing_identities": [
+    {
+      "name": "training-receipt.json",
+      "sha256": "98a54de16cb2294c6adbf1f85b44c719d1b19b3ee2659a0aa08faaca4b584d17"
+    },
+    {
+      "name": "execution-plan.json",
+      "sha256": "ebdd7a2fa7fa3962543b40d88ecac992aeefd8aa8fa9cdd43a8b05d434b7bec2",
+      "bytes": 22742
+    },
+    {
+      "name": "matched-review-metrics.jsonl",
+      "sha256": "417b9501eedc57cd2a55b4a56a4b883fb4eab133c325426425e8146b3d0e36bd",
+      "bytes": 1115831
+    },
+    {
+      "name": "actual-recovery/postprocess-receipt.json",
+      "sha256": "4ed8e72b6a9212cd5c6a3d352568181f8a9373c2077b907b20cff758a8ae368e"
+    },
+    {
+      "name": "new-v5/complete.json",
+      "sha256": "03c6189e4884b2c382608d36813aef02a8d2185f9f683141a3da71c7b812fd57",
+      "bytes": 1224
+    },
+    {
+      "name": "new-v5-manual.json",
+      "sha256": "880c3250ac40c8fda02c95379c6aa4c944720d945b1d0f8cad8c7448a1f54a4b",
+      "bytes": 105562
+    },
+    {
+      "name": "semantic-assessment.json",
+      "sha256": "3f6a560d282929bb6797b61d2014b28681ad0dcfc6e1529b411dffdf9916a85f",
+      "bytes": 572621
+    },
+    {
+      "name": "prior-v4-manual.json",
+      "sha256": "e98d854b81b90bbff2017ada475998661b96cb650b5e9cd50f87e5ec19ead597"
+    },
+    {
+      "name": "new-v5-semantic-independent-audit.json",
+      "sha256": "d57450038df9a594960b26f1a7ebd074185961a46a2a21cf8c4ccc18394f7e3c",
+      "bytes": 27741
+    },
+    {
+      "name": "new-v5/train.jsonl",
+      "sha256": "ea43713485fec31632a053f4a79bf7318e78e60ede9861eec555908bccacf551",
+      "bytes": 575474
+    },
+    {
+      "name": "new-v5/transfer.jsonl",
+      "sha256": "d1b23d2bf73be253f93ad406eafc36d2b990556159d23347957b7202bee1b89b",
+      "bytes": 277598
+    },
+    {
+      "name": "new-v5/diagnostics.jsonl",
+      "sha256": "cd936d9d2fa8b4d266fed38b693d9aed57fcdc63cb5ef587e03cc1813134cdba",
+      "bytes": 141312
+    },
+    {
+      "name": "subliteratus-probe-inspection.json",
+      "sha256": "cb4849b002906c64c0382f80c081e3bf89458721aaaa06ab4b365ce4ba3fb746"
+    }
+  ],
+  "limits": [
+    "One seed and final-MLP adapters only.",
+    "Different selected updates are part of the fixed procedure.",
+    "External forward parity covers two prompts at four positions; it does not validate training gradients.",
+    "The earlier transient selected-GGUF truncation and this broad disappearance have no established common cause."
+  ]
+}

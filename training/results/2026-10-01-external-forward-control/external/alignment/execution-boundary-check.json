@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "model_forwards": 0,
+  "model_conversions": 0,
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+    "bytes": 16096,
+    "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325"
+  },
+  "checker": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/check_execution_boundary.py",
+    "bytes": 4578,
+    "sha256": "20c2a06f6c1dffd8d54f4409787276750b9659ad8a47e5beb6a7939533e70a2b"
+  },
+  "checks": [
+    {
+      "name": "early_plan_hash_failure",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash/receipt.json",
+        "bytes": 1726,
+        "sha256": "59c4fadafe5a7bfe7297495f020bc6a2ee27f6eb4c922af77c832fdaa014b277"
+      }
+    },
+    {
+      "name": "early_missing_source",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source/receipt.json",
+        "bytes": 3377,
+        "sha256": "516df4cdc577d31115e88d9a77474c0d4cec09f96bb5ddaa3f87bc2b29472df4"
+      }
+    },
+    {
+      "name": "launch-failure",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/receipt.json",
+        "bytes": 1876,
+        "sha256": "20424355c54738a289c9cb79077d90317344ad6911ed0b12b8765a420d959c0a"
+      }
+    },
+    {
+      "name": "child-nonzero",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/receipt.json",
+        "bytes": 1390,
+        "sha256": "ca1657bb06c520865e804080afefc569a8aacce6cb7e4df376d9cfc639c83646"
+      }
+    },
+    {
+      "name": "actual_changed_posthash",
+      "receipt": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/receipt.json",
+        "bytes": 6163,
+        "sha256": "c70dfcaec14e838d47a16312e4048b62a9af41aef1875ec6e4520efa8b1aaba9"
+      }
+    }
+  ]
+}

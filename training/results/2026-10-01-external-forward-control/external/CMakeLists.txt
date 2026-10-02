@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.16)
+project(jovovich_external_parity LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 17)
+add_subdirectory(llama.cpp)
+add_executable(dump-llama dump_llama.cpp)
+target_link_libraries(dump-llama PRIVATE llama)

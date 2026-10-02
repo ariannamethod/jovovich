@@ -1,0 +1,52 @@
+{
+  "status": "pass_no_blocker_to_separately_authorized_execution",
+  "execution_authorized_by_audit": false,
+  "execution_condition": "Root must first confirm successful completed v5 generation and explicitly invoke the frozen plan with --execute; no automatic launch or F32 follow-up.",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+    "bytes": 14479,
+    "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+  },
+  "protocol": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+    "bytes": 18662,
+    "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+  },
+  "controller": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+    "bytes": 8848,
+    "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8"
+  },
+  "author_fixture_report": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2.json",
+    "bytes": 6461,
+    "sha256": "8d7eed97267a915821717ff18985797f6c453bec0481cc21cb2d3a1cf1708bf6"
+  },
+  "author_fixture_source": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts_v2.py",
+    "bytes": 2697,
+    "sha256": "e42725827df2543696709e13e6f6a3169b6ffa1d6fdca0c4169ce63fa642cf6a"
+  },
+  "unique_bindings_verified": 45,
+  "phase_count": 6,
+  "model_forward_phases": 4,
+  "comparison_phases": 2,
+  "read_only_checks": {
+    "authority": "Controller requires explicit --execute, requested plan SHA, prepared status and exact self hash before reserving outputs.",
+    "inputs_and_commands": "Exact base, engines, comparison binary, both fixed cases, all six argv and protocol environment match; every bound input is verified before each phase and actual after hashes/errors are retained.",
+    "output_exclusion": "Fresh output directory required; child stdout/stderr, native dumps and JSON receipts use exclusive creation. q8-control-1 remains absent at audit.",
+    "case_validation": "Each successful native dump must have exact 1217308 bytes, fixed JVL2 header, all447 embedded IDs matching its own case, and positions444/447. Finite checks are in the frozen dumpers/comparator previously audited.",
+    "coverage_and_exits": "Nonzero exits and missing outputs fail. The frozen plan has exactly four forwards and two comparisons; both metric processes must emit exactly the two full-vocabulary captures, and every phase must complete before completed receipt.",
+    "resources": "os.wait4(child.pid) supplies that exact child peak RSS/user/system time. No-child launch/log-open failure leaves null resources; interruption path terminates and reaps the child.",
+    "failure_retention": "Returned child result is appended before postchecks; changed/missing input hashes are recorded individually, postcheck failure changes status, phase receipt is saved, then aggregate failure receipt retains all created files. No retry or F32 branch.",
+    "fixtures": "Existing no-model receipts and artifact hashes independently checked for missing executable, partial exit7, exit0 without output and stderr-open failure; existing checker uses actual run_phase and wrong-case verify_dump rejection. No duplicate suite run.",
+    "thresholds": "Plan specifies three-way signs on unrounded stored margins. Screening interpretation remains separate from correctness."
+  },
+  "limits": [
+    "Scientific scope and selected v5 result are unchanged.",
+    "The successful-v5 prerequisite is an explicit root orchestration condition; this diagnostic controller itself does not read v5 completion."
+  ],
+  "model_forwards_by_auditor": 0,
+  "builds_by_auditor": 0,
+  "new_tests_by_auditor": 0
+}

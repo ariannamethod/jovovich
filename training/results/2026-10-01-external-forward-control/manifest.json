@@ -1,0 +1,1552 @@
+{
+  "schema_version": 1,
+  "status": "collected",
+  "created_utc": "2026-10-01T14:11:28.974381+00:00",
+  "original_workspace": "/workspace/scratch/ec5ba60588d8",
+  "bytes_preserved": true,
+  "history_rewritten": false,
+  "scope": "External original-Q8 and verified-F32 forward controls only; no training or review evaluation.",
+  "files": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99",
+      "archive_path": "repository-helpers/training/results/2026-09-29-convergence/check_convergence_export.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/auxiliary-provenance.json",
+      "bytes": 4375,
+      "sha256": "4f68c662ff82dadd2b60e926950b3cdf3a34c9e95748ecf8867fd078fce3a0ff",
+      "archive_path": "collector/auxiliary-provenance.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/collect_external.py",
+      "bytes": 23263,
+      "sha256": "2a877df40ea431f2468b0716840e556fd59262dfb6f23e1eb79d248060d8df54",
+      "archive_path": "collector/collect_external.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/collector-audit.json",
+      "bytes": 7038,
+      "sha256": "8e8964c8c9d76f5eecb2a3c6607d4b34d644d7ae25ad4220d435d844892776d8",
+      "archive_path": "collector/collector-audit.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/inventory.json",
+      "bytes": 22993,
+      "sha256": "c51d47aa7a41db3bf28bc098cbb345dba61286e8482724765670950d3c242a7c",
+      "archive_path": "collector/inventory.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/CMakeLists.txt",
+      "bytes": 232,
+      "sha256": "60a59aeb6948d15216a2968cf416cf83347a706cff1c9ad65bf3891a1f234100",
+      "archive_path": "external/CMakeLists.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-commands.json",
+      "bytes": 9084,
+      "sha256": "2efa18ce6347cbecd0501f3ac80dce6b86390e5e049e422caa8d081ea7e7ffd4",
+      "archive_path": "external/alignment/build-commands.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-comparison.stderr",
+      "bytes": 2540,
+      "sha256": "575982fada1b431233c311844b44b458065cd401d33385bb82343c004e47a6f0",
+      "archive_path": "external/alignment/build-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-comparison.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/build-comparison.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-converter.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/build-converter.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-converter.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/build-converter.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-verifier.stderr",
+      "bytes": 3530,
+      "sha256": "a8b6fc72c299d4a64cf42806ee6be2e8a6edc0e02927d824bf13f60ce1b95f42",
+      "archive_path": "external/alignment/build-verifier.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/build-verifier.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/build-verifier.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/check_execution_boundary.py",
+      "bytes": 4578,
+      "sha256": "20c2a06f6c1dffd8d54f4409787276750b9659ad8a47e5beb6a7939533e70a2b",
+      "archive_path": "external/alignment/check_execution_boundary.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare_alignment_logits.c",
+      "bytes": 2935,
+      "sha256": "8ad1353ab2b45d58efb13a9864d70627fb355d9c88f0c1fa1d53fc631554164a",
+      "archive_path": "external/alignment/compare_alignment_logits.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/controller.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/controller.stdout",
+      "bytes": 1271,
+      "sha256": "c38be5cf2beef9616fa59b26ba361fb587d2320d7a45fb7cd6d96cac0c0174d4",
+      "archive_path": "external/alignment/controller.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert_f32.cpp",
+      "bytes": 1165,
+      "sha256": "d53f5bcd8aac241608d377c55ba71fe075ba1a851d61e916a6a6aac8905ed2a3",
+      "archive_path": "external/alignment/convert_f32.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-check.json",
+      "bytes": 2189,
+      "sha256": "727d1a6971858e4183adb616b56c8f70e037544856c0a4b314d4ded4771b847e",
+      "archive_path": "external/alignment/execution-boundary-check.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/receipt.json",
+      "bytes": 1390,
+      "sha256": "ca1657bb06c520865e804080afefc569a8aacce6cb7e4df376d9cfc639c83646",
+      "archive_path": "external/alignment/execution-boundary-fixtures/child-nonzero/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/receipt.json",
+      "bytes": 1876,
+      "sha256": "20424355c54738a289c9cb79077d90317344ad6911ed0b12b8765a420d959c0a",
+      "archive_path": "external/alignment/execution-boundary-fixtures/launch-failure/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source/receipt.json",
+      "bytes": 3377,
+      "sha256": "516df4cdc577d31115e88d9a77474c0d4cec09f96bb5ddaa3f87bc2b29472df4",
+      "archive_path": "external/alignment/execution-boundary-fixtures/missing-bound-source/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/receipt.json",
+      "bytes": 6163,
+      "sha256": "c70dfcaec14e838d47a16312e4048b62a9af41aef1875ec6e4520efa8b1aaba9",
+      "archive_path": "external/alignment/execution-boundary-fixtures/source-changed-after-child/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash/receipt.json",
+      "bytes": 1726,
+      "sha256": "59c4fadafe5a7bfe7297495f020bc6a2ee27f6eb4c922af77c832fdaa014b277",
+      "archive_path": "external/alignment/execution-boundary-fixtures/wrong-plan-hash/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+      "bytes": 34035,
+      "sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604",
+      "archive_path": "external/alignment/execution-plan.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/launch-authorization.json",
+      "bytes": 2349,
+      "sha256": "f64c1c8618d2a689ce364b9c8aa56f9d100bbe1d7513164f2ba6cf9c40f2a74e",
+      "archive_path": "external/alignment/launch-authorization.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/preparation-resource-observation.json",
+      "bytes": 803,
+      "sha256": "f6441532b18fb7289fc6485a90269c8e087db6cda4eb2cfaebab3e872ae13d13",
+      "archive_path": "external/alignment/preparation-resource-observation.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_alignment_plan.py",
+      "bytes": 6886,
+      "sha256": "16166069b53598e854c43399b812c87d6a16f9f76b83bc2667eeb748b502db79",
+      "archive_path": "external/alignment/prepare_alignment_plan.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/prepare_execution.py",
+      "bytes": 9368,
+      "sha256": "0da2f2e4b9e271ea511fb6d322e1e0ae78ab7e6a6c3413827f0660f9fd240284",
+      "archive_path": "external/alignment/prepare_execution.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/proposed-plan.json",
+      "bytes": 14165,
+      "sha256": "7fda2c239d1a6eb55b7b14888d592deefbe871ffa50c480312d242ae1b8f7cf4",
+      "archive_path": "external/alignment/proposed-plan.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/00-convert-exact-f32-receipt.json",
+      "bytes": 32917,
+      "sha256": "ffe49e695cdaaff9c94a6ae1daa7a67a996b280b39434e226fa4d612be908c2d",
+      "archive_path": "external/alignment/run-1/00-convert-exact-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/01-verify-exact-f32-receipt.json",
+      "bytes": 34943,
+      "sha256": "b981213329b8654338fa71608d786a8805ef2fd1181dab2695af5017523a84fd",
+      "archive_path": "external/alignment/run-1/01-verify-exact-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/02-concern-notorch-f32-receipt.json",
+      "bytes": 36221,
+      "sha256": "fe89da1c1d8abf3225efa734f31b48320fd009bbd851cd4189c43ef1f38b9d4d",
+      "archive_path": "external/alignment/run-1/02-concern-notorch-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/03-concern-llama-f32-receipt.json",
+      "bytes": 36908,
+      "sha256": "9d8ee984532770f185523e426f759e740963dd05c4e362cb633ccc3e73f94a65",
+      "archive_path": "external/alignment/run-1/03-concern-llama-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/04-concern-native-packing-comparison-receipt.json",
+      "bytes": 37285,
+      "sha256": "35f377a06283926fb2ce5c3cca28b717c4ed9268cf3190a9cdb5aa1b92456c24",
+      "archive_path": "external/alignment/run-1/04-concern-native-packing-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/05-concern-aligned-engine-comparison-receipt.json",
+      "bytes": 37295,
+      "sha256": "09288d9e1d7ef3c0616a685778b834fc3aebb91dd00c1da3c5add7608a819e86",
+      "archive_path": "external/alignment/run-1/05-concern-aligned-engine-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/06-clean-notorch-f32-receipt.json",
+      "bytes": 37594,
+      "sha256": "b81ded4f5bbdd90c2c0de87a4fb79182e53b71524dcee3794fa84d5e583f62ab",
+      "archive_path": "external/alignment/run-1/06-clean-notorch-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/07-clean-llama-f32-receipt.json",
+      "bytes": 38295,
+      "sha256": "e1fd7e8c5bbcc7b2b5e72d29b4027574953a65e38460e390eba496ecb231b7d7",
+      "archive_path": "external/alignment/run-1/07-clean-llama-f32-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/08-clean-native-packing-comparison-receipt.json",
+      "bytes": 38675,
+      "sha256": "6bc1995872b33e6de8e3182592a61b45d652d6c283b9be246b6c6bb87464f7a7",
+      "archive_path": "external/alignment/run-1/08-clean-native-packing-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/09-clean-aligned-engine-comparison-receipt.json",
+      "bytes": 38669,
+      "sha256": "5c25bba9fd07d49a057619f47249c1c2cea6a95eabc18f552984337c28063093",
+      "archive_path": "external/alignment/run-1/09-clean-aligned-engine-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-aligned-engine-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/run-1/clean-aligned-engine-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-aligned-engine-comparison.stdout.jsonl",
+      "bytes": 2366,
+      "sha256": "eab7e38789733d2d8446e2f52e5d7f64e40e8fced990d8a14b1945c14205c5b9",
+      "archive_path": "external/alignment/run-1/clean-aligned-engine-comparison.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-llama-f32.dump",
+      "bytes": 1217308,
+      "sha256": "130c12a320480a674d9b3cdf6bb7accd03624dba52dc082768d21974996c0ad1",
+      "archive_path": "external/alignment/run-1/clean-llama-f32.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-llama-f32.stderr",
+      "bytes": 167105,
+      "sha256": "6f31fc282b06f3c9ac5d4685ff8c51b0b845f4d85b11d340ef60537ea582e944",
+      "archive_path": "external/alignment/run-1/clean-llama-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-llama-f32.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233",
+      "archive_path": "external/alignment/run-1/clean-llama-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-native-packing-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/run-1/clean-native-packing-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-native-packing-comparison.stdout.jsonl",
+      "bytes": 2361,
+      "sha256": "88aa08168067254fbef167d1ba9569409a8b7f9c6b93839d03d56ab8ba85dc26",
+      "archive_path": "external/alignment/run-1/clean-native-packing-comparison.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.dump",
+      "bytes": 1217308,
+      "sha256": "766aac8ccdf30e5eb73ea4c9bc65c388a8e090e34808223d669aa73f24b0ea8d",
+      "archive_path": "external/alignment/run-1/clean-notorch-f32.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+      "archive_path": "external/alignment/run-1/clean-notorch-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/clean-notorch-f32.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f",
+      "archive_path": "external/alignment/run-1/clean-notorch-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-aligned-engine-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/run-1/concern-aligned-engine-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-aligned-engine-comparison.stdout.jsonl",
+      "bytes": 2357,
+      "sha256": "0e966b0e3d74c003782d10381360284d8683feda09d08670ba4fbccc1a47b494",
+      "archive_path": "external/alignment/run-1/concern-aligned-engine-comparison.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-llama-f32.dump",
+      "bytes": 1217308,
+      "sha256": "4008dc1b8e11592d28f467c7450b6fe4e63ebbe3e1de8e315aef1bbf27430fe4",
+      "archive_path": "external/alignment/run-1/concern-llama-f32.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-llama-f32.stderr",
+      "bytes": 167105,
+      "sha256": "31bafc67e732c76ea7ba63efe6e38fc616b224e1d72872d6dcd4330fb1394b1b",
+      "archive_path": "external/alignment/run-1/concern-llama-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-llama-f32.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233",
+      "archive_path": "external/alignment/run-1/concern-llama-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-native-packing-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/run-1/concern-native-packing-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-native-packing-comparison.stdout.jsonl",
+      "bytes": 2364,
+      "sha256": "a55593d0d966ae73e072269b5b02e2903bc55902f69217d762d1de788384d0f9",
+      "archive_path": "external/alignment/run-1/concern-native-packing-comparison.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.dump",
+      "bytes": 1217308,
+      "sha256": "dd7ccb81157f865ec874d5a9d23f30ff792423cfd174e2176e583d665aeab1a1",
+      "archive_path": "external/alignment/run-1/concern-notorch-f32.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+      "archive_path": "external/alignment/run-1/concern-notorch-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/concern-notorch-f32.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f",
+      "archive_path": "external/alignment/run-1/concern-notorch-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/convert-exact-f32.stderr",
+      "bytes": 44425,
+      "sha256": "e37d11b51bfe0ef770fb5b233eb339a097ca69c00927d1c1f29d2561f47bb331",
+      "archive_path": "external/alignment/run-1/convert-exact-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/convert-exact-f32.stdout.jsonl",
+      "bytes": 88,
+      "sha256": "33fa776da43ae2eb5f067ceff492ad31bbd86fa8fae023ed278dc948279b9154",
+      "archive_path": "external/alignment/run-1/convert-exact-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/receipt.json",
+      "bytes": 447532,
+      "sha256": "1e0dfed992e0858a21ffcfdfa95f26564baecf13c770cc687d14f027f4265bff",
+      "archive_path": "external/alignment/run-1/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/started.json",
+      "bytes": 299,
+      "sha256": "a8461d5a3a679207c15b69543175a2dee52747f0c4e8aecd05ce4a97def22d01",
+      "archive_path": "external/alignment/run-1/started.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation/native-values.jsonl",
+      "bytes": 52517,
+      "sha256": "29dda4a9d3e70be7ad47ef1ddf9daf5480eda7b0ae7b86abf59d1f4b1adf6688",
+      "archive_path": "external/alignment/run-1/validation/native-values.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation/native-values.stderr",
+      "bytes": 84,
+      "sha256": "b5e735624476a8b0eb18355fd62b703029eefbbbbdaf03d01210a3ad5ad2eb2b",
+      "archive_path": "external/alignment/run-1/validation/native-values.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation/validation.json",
+      "bytes": 61487,
+      "sha256": "04ef2ec85c49903351b212c59df1bbdf55540b78c8c29a78757ece82c83e4c7e",
+      "archive_path": "external/alignment/run-1/validation/validation.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/verify-exact-f32.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/alignment/run-1/verify-exact-f32.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/verify-exact-f32.stdout.jsonl",
+      "bytes": 137,
+      "sha256": "fd1923702d117a9872e2b87cf7fc23fbb968c03fa52f31cef05920c0ac37beba",
+      "archive_path": "external/alignment/run-1/verify-exact-f32.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run_alignment.py",
+      "bytes": 16096,
+      "sha256": "5971a9d092ff7344ff60f256718bdf7a6043eb67c456f79415e4901193f53325",
+      "archive_path": "external/alignment/run_alignment.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/summarize_alignment.py",
+      "bytes": 8314,
+      "sha256": "a944c3b9a710c9de865e3a6bced50e7f3353deb3068523a6d7c77f22bd5817c9",
+      "archive_path": "external/alignment/summarize_alignment.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/summary.json",
+      "bytes": 37856,
+      "sha256": "9965f8e539cc3048f8819060524a513aed9481f9cd44d73fcfdf68da3db3991a",
+      "archive_path": "external/alignment/summary.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_alignment.py",
+      "bytes": 7717,
+      "sha256": "7791ed2b6c9cce0eaf28e1bff57af89657a861742f24a8e48b1c79a259abf4c6",
+      "archive_path": "external/alignment/verify_alignment.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify_tensor_values.c",
+      "bytes": 3528,
+      "sha256": "70735056ee9877c922b43d940a4bb9510cfb19fbbf1b417940cccbaaa43c3166",
+      "archive_path": "external/alignment/verify_tensor_values.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-commands.json",
+      "bytes": 2936,
+      "sha256": "4ca4d9dfc44ae27799b6c9c2f33461d41df647f611979c04933724f3c54f5f90",
+      "archive_path": "external/build-commands.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stderr",
+      "bytes": 2348,
+      "sha256": "1b141f093092646d7207e29b7cfa36765686c8061e220e9f68a56d75c075cbc1",
+      "archive_path": "external/build-compare.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-compare.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/build-compare.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/build-llama.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-llama.stdout",
+      "bytes": 6407,
+      "sha256": "e21b486d03b92fe903ab26c04479b9ad169560491b48cbb3a4f4bc2050dca6b9",
+      "archive_path": "external/build-llama.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stderr",
+      "bytes": 5436,
+      "sha256": "727bc3bc6691529bd460c75705ebe78614a99b3608bb3a5e35eb745598df406b",
+      "archive_path": "external/build-notorch.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build-notorch.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/build-notorch.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeCache.txt",
+      "bytes": 30662,
+      "sha256": "3c55812534e8f892f7d3ae6510ee8831b92e6f615938cb33d10364d825f2751f",
+      "archive_path": "external/build/CMakeCache.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/flags.make",
+      "bytes": 387,
+      "sha256": "0dba5f3bc63170854a53ac425bf84d94035dc6c4839ba9ac65b4698633594418",
+      "archive_path": "external/build/CMakeFiles/dump-llama.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/link.txt",
+      "bytes": 271,
+      "sha256": "a3b5c13fd9e820fecfc69ecaaa2a11b1fe7a216fd7eda4ffa32de79cc3ebecd9",
+      "archive_path": "external/build/CMakeFiles/dump-llama.dir/link.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make",
+      "bytes": 1245,
+      "sha256": "8e3104728a51ab4376b8b606511538e999a83c63f34a6fbeed13a8070e2ee1c2",
+      "archive_path": "external/build/llama.cpp/ggml/src/CMakeFiles/ggml-base.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make",
+      "bytes": 1439,
+      "sha256": "5f9543c8146fd5d8490ac2624aca345652d2e6c8fff59a82259ac9ecb4cbc938",
+      "archive_path": "external/build/llama.cpp/ggml/src/CMakeFiles/ggml-cpu.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make",
+      "bytes": 495,
+      "sha256": "d1a47edda08c96e9192a87ba13d39de26467786ceb8d5fcbf91fde78f5a6a559",
+      "archive_path": "external/build/llama.cpp/ggml/src/CMakeFiles/ggml.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make",
+      "bytes": 657,
+      "sha256": "c098db792357bc8fa349a6ec1a694432e9d2b88cb799c54add558392747fe6de",
+      "archive_path": "external/build/llama.cpp/src/CMakeFiles/llama.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make",
+      "bytes": 1238,
+      "sha256": "b56159e85a7f06a90c44bdcdeda5c9da58fa4ad372f5707b61f1a1e9bd502366",
+      "archive_path": "external/build/llama.cpp/vendor/hash/CMakeFiles/vendor-hash.dir/flags.make"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts.py",
+      "bytes": 2685,
+      "sha256": "07806c8dbd08302acdf6767823451cc436c606c6d4c47aa9310dd7c8d62558f1",
+      "archive_path": "external/check_execution_receipts.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_execution_receipts_v2.py",
+      "bytes": 2697,
+      "sha256": "e42725827df2543696709e13e6f6a3169b6ffa1d6fdca0c4169ce63fa642cf6a",
+      "archive_path": "external/check_execution_receipts_v2.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/check_synthetic_dumps.py",
+      "bytes": 3201,
+      "sha256": "6bb7266079eea342c28d839c6ffd43292cb0f6708f7955537276dffcf4cddb0b",
+      "archive_path": "external/check_synthetic_dumps.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.ids.txt",
+      "bytes": 2061,
+      "sha256": "13e69f7ad361420317a275f40e607cb9d30cab45f73a29527a59eb67d40ef5c3",
+      "archive_path": "external/clean.ids.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/clean.prompt.txt",
+      "bytes": 2086,
+      "sha256": "90f33e524a1deb9a59f26db1d24abffb635502458fb536a05cd51e5641ab5652",
+      "archive_path": "external/clean.prompt.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install-report.json",
+      "bytes": 8483,
+      "sha256": "a727f18921f503bf7755ef2471a5052650902c5bba109d45ac2283dc0cba29b2",
+      "archive_path": "external/cmake-install-report.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/cmake-install.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/cmake-install.stdout",
+      "bytes": 438,
+      "sha256": "fcc631de4380d44d050ed12bcad53759a08325d5ae7cdcd1173788bbef317d05",
+      "archive_path": "external/cmake-install.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare_logits.c",
+      "bytes": 2937,
+      "sha256": "e33da5bc25c46f83be28c2c1b0576dacf521ede804ebb8769943fceee7ec3f5a",
+      "archive_path": "external/compare_logits.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.ids.txt",
+      "bytes": 2063,
+      "sha256": "468b7a315071b63380823d56d0cafe281ba21e2581d4895b3494f06e2ba39bbe",
+      "archive_path": "external/concern.ids.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/concern.prompt.txt",
+      "bytes": 2087,
+      "sha256": "1bb44a8899e77a4939c8fe78e0e2345888feb90164a13a144b9ec05b570f7305",
+      "archive_path": "external/concern.prompt.txt"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stderr",
+      "bytes": 25,
+      "sha256": "561a75a0b1ff67462d4d4422c66d6f97270694ee4d28835c9689cc580f3a9855",
+      "archive_path": "external/configure-v2.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure-v2.stdout",
+      "bytes": 1268,
+      "sha256": "52f2c7a7c71d5b5c4a2b2d56f5f48f98c369654e0e77c166dbabf9ad24964f10",
+      "archive_path": "external/configure-v2.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stderr",
+      "bytes": 45,
+      "sha256": "1b3c4bbd76bb30a98c4b7de39b44a24e54bf92ad720562a92941f84505f404d8",
+      "archive_path": "external/configure.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/configure.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/configure.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2.json",
+      "bytes": 6461,
+      "sha256": "8d7eed97267a915821717ff18985797f6c453bec0481cc21cb2d3a1cf1708bf6",
+      "archive_path": "external/controller-check-v2.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check.json",
+      "bytes": 6383,
+      "sha256": "869200b426d48f1e2d95e2edc152081f3f4e1f6638a2189ac8aae4bd912783ae",
+      "archive_path": "external/controller-check.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_llama.cpp",
+      "bytes": 1946,
+      "sha256": "8fdb474d580128a3d4fe8507a9c4c07000c4dd3d1c2ea91026e456cdbde273ba",
+      "archive_path": "external/dump_llama.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump_notorch.c",
+      "bytes": 1446,
+      "sha256": "844e037b071635f09b11fede01a235563573eedddd2d9851163dac92c0900ff2",
+      "archive_path": "external/dump_notorch.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+      "bytes": 14479,
+      "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64",
+      "archive_path": "external/execution-plan-v2.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan.json",
+      "bytes": 14271,
+      "sha256": "23046a52a3d272c3142df5c85ce1f198d07a3250d3db7984ff47ece652dc71e5",
+      "archive_path": "external/execution-plan.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/fixed-inputs.json",
+      "bytes": 2797,
+      "sha256": "1689d4363344ecc603be1c70863186ea6f50d38f7e336518a64afd43567d54b6",
+      "archive_path": "external/fixed-inputs.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/logit_io.h",
+      "bytes": 1654,
+      "sha256": "d327d3390da96e2d2970ac17687796a167ea8ef7e1c2aa46b7f31d8c5f3b41f9",
+      "archive_path": "external/logit_io.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/portable-external-archive-plan.json",
+      "bytes": 3337,
+      "sha256": "a296766be1e5fbcb505832907a799af2b9cbf9af4a2d705e724cdcc4b908360e",
+      "archive_path": "external/portable-external-archive-plan.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/portable-preparation-files.json",
+      "bytes": 11897,
+      "sha256": "8a02d2a34c4da9232caa0a53e02bee6578ed3d8ffc56cc1b1ba3d0e61f16f08f",
+      "archive_path": "external/portable-preparation-files.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution.py",
+      "bytes": 3069,
+      "sha256": "f686ba91d71603027016a8816313b22a6d4987fff4ecd7c0f8e7de3250d36ba9",
+      "archive_path": "external/prepare_execution.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_execution_v2.py",
+      "bytes": 3286,
+      "sha256": "a2b429050957233ce7f9434dacfd557c2ed3bd635b6a1f166a1c74973bdbc4bd",
+      "archive_path": "external/prepare_execution_v2.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_inputs.py",
+      "bytes": 3359,
+      "sha256": "b9f7f2ce3dd70d87263e32dcb151ceab270679aa6d67a8da6f52d01643c88150",
+      "archive_path": "external/prepare_inputs.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/prepare_protocol.py",
+      "bytes": 8392,
+      "sha256": "bdac2addf7f813d6f28c572c4c2ea843b798012942122c504e287f37dc459e05",
+      "archive_path": "external/prepare_protocol.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+      "bytes": 18662,
+      "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7",
+      "archive_path": "external/protocol.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/00-concern-notorch-receipt.json",
+      "bytes": 16770,
+      "sha256": "fa0014c7cc01e57c5b25a71b2f5aaa6e17fd27f2d025845cbcdb482144db6f88",
+      "archive_path": "external/q8-control-1/00-concern-notorch-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/01-concern-llama-receipt.json",
+      "bytes": 16767,
+      "sha256": "f051e90c975637e70641f1b23096b1d58ca17a12ba21ef3d4631450eb783a707",
+      "archive_path": "external/q8-control-1/01-concern-llama-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/02-concern-comparison-receipt.json",
+      "bytes": 16179,
+      "sha256": "60e624cd09e732b9eb0504bb3e1667a84d2274a254d45835922d3d651a0c6718",
+      "archive_path": "external/q8-control-1/02-concern-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/03-clean-notorch-receipt.json",
+      "bytes": 16757,
+      "sha256": "4426e272964ecd6ddc5c1c9014398e6fb30161f5b94559b3d7e64780f2e8b5c4",
+      "archive_path": "external/q8-control-1/03-clean-notorch-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/04-clean-llama-receipt.json",
+      "bytes": 16754,
+      "sha256": "0ce75895b026a5ca28276869e6ebc061dec619e5ef49f5df428823a94cf39450",
+      "archive_path": "external/q8-control-1/04-clean-llama-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/05-clean-comparison-receipt.json",
+      "bytes": 16171,
+      "sha256": "99068026543d83373e04d80b7f16dfa8108b93a9ad6bd01f976cfcc806f047d1",
+      "archive_path": "external/q8-control-1/05-clean-comparison-receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.jsonl",
+      "bytes": 2358,
+      "sha256": "a2c5e7b764bcb57f5776993493017fe4700fd00d9e038155dabc2ac29f97aa84",
+      "archive_path": "external/q8-control-1/clean-comparison.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/q8-control-1/clean-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.dump",
+      "bytes": 1217308,
+      "sha256": "130d5ad3c97542f2cbca2d03b50776b1a4ed5a0269db4b24ebce024ff2b56bcb",
+      "archive_path": "external/q8-control-1/clean-llama.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stderr",
+      "bytes": 167108,
+      "sha256": "3c01587839c90a0aa9352867fb323640717de6e961bd1654974a4dbf4f894e20",
+      "archive_path": "external/q8-control-1/clean-llama.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-llama.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233",
+      "archive_path": "external/q8-control-1/clean-llama.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "2b44df13abf37d5ca2634e37737f70d4c1e70deba6dce660fa79fb5a4d677423",
+      "archive_path": "external/q8-control-1/clean-notorch.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+      "archive_path": "external/q8-control-1/clean-notorch.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-notorch.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f",
+      "archive_path": "external/q8-control-1/clean-notorch.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.jsonl",
+      "bytes": 2360,
+      "sha256": "d5399a77936ec19df9b64f34b493b62c0859903bf74106a7882b6bda52783371",
+      "archive_path": "external/q8-control-1/concern-comparison.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/q8-control-1/concern-comparison.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.dump",
+      "bytes": 1217308,
+      "sha256": "2d378d23d4be6d5442b7d4c67e5e1e43b2cc112f995a9260f1254d5da97385c7",
+      "archive_path": "external/q8-control-1/concern-llama.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stderr",
+      "bytes": 167108,
+      "sha256": "2b519172fb1490034ccd008ac7973d7a05951d7dded8a9d799955fd00236da39",
+      "archive_path": "external/q8-control-1/concern-llama.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-llama.stdout.jsonl",
+      "bytes": 149,
+      "sha256": "3ab97fcc8b5aa079b84d54cb8bd2d53ae35ea00d75f4ad19a235f848eab1d233",
+      "archive_path": "external/q8-control-1/concern-llama.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.dump",
+      "bytes": 1217308,
+      "sha256": "95d3983b1ad8981427e730f62c9c87321e86430727f1b2314022dbf5c78987fd",
+      "archive_path": "external/q8-control-1/concern-notorch.dump"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+      "archive_path": "external/q8-control-1/concern-notorch.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-notorch.stdout.jsonl",
+      "bytes": 97,
+      "sha256": "c424ff607cc7016fa3a5c3ac19b55ed867c9414e709461e3da8900652b8ef13f",
+      "archive_path": "external/q8-control-1/concern-notorch.stdout.jsonl"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/receipt.json",
+      "bytes": 115172,
+      "sha256": "20ce067bbd31302ad53d8bbdeb4550c15355fb81d768483016ef867d5c6cbdd7",
+      "archive_path": "external/q8-control-1/receipt.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/started.json",
+      "bytes": 308,
+      "sha256": "eeacb90d60f579ded610b28fb268bd7ed22436f2ea401805b5563d89c028c78b",
+      "archive_path": "external/q8-control-1/started.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-controller.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_path": "external/q8-controller.stderr"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-controller.stdout",
+      "bytes": 706,
+      "sha256": "581fa3ec82ca675c3dee18f15b142f0f2df0c443fbedc24bf29aea6260ce67bc",
+      "archive_path": "external/q8-controller.stdout"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-launch-authorization.json",
+      "bytes": 836,
+      "sha256": "3a43db6394ab86bb14d9aba6c2f1e9d76cf298f61d8f93a94390c37e703bae96",
+      "archive_path": "external/q8-launch-authorization.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-summary.json",
+      "bytes": 13979,
+      "sha256": "c17a4591afc5f4e240dbdcb69c651d98bfbb697992ba926521e9bd7df8707e41",
+      "archive_path": "external/q8-summary.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external.py",
+      "bytes": 8428,
+      "sha256": "34c825c3eea6209a9c112f7f7ca6c8632c5bec05bd8eb9abd86984b1da81e709",
+      "archive_path": "external/run_external.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/run_external_v2.py",
+      "bytes": 8848,
+      "sha256": "62c03ed392640ca8c600d1e14fafcd679375337ea2d45fea3038eaabc02ef8a8",
+      "archive_path": "external/run_external_v2.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check.json",
+      "bytes": 1710,
+      "sha256": "6373964c284cf97f249f932553b1af2f0b34f33e9f5e5ab6f29d5c7b7bce5a44",
+      "archive_path": "external/synthetic-check.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/audit_external_preparation.py",
+      "bytes": 8763,
+      "sha256": "57307a22195d94975bbbc22263660ad94db814701ace673a40639da7506fbd96",
+      "archive_path": "audits/audit_external_preparation.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/audit_external_results.py",
+      "bytes": 17310,
+      "sha256": "a5772249fbb009e81391e4ad5a515ee4ea6ebf96b94ee9d95996093ddb9410b9",
+      "archive_path": "audits/audit_external_results.py"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-execution-v2-independent-audit.json",
+      "bytes": 3775,
+      "sha256": "02844b2519785814096b5c4895c26d9f7d111e49a91b7b93568c4fdbe2ce2d3f",
+      "archive_path": "audits/external-execution-v2-independent-audit.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-forward-preparation-independent-audit.json",
+      "bytes": 15372,
+      "sha256": "6e4160f28bcd86c332b32c6c1b371e06c70065b8dbc4f85ea35717644fd6ca2e",
+      "archive_path": "audits/external-forward-preparation-independent-audit.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/external-forward-results-independent-audit.json",
+      "bytes": 15763,
+      "sha256": "42ff9fc2b93851205f3556fb32a4dc1e80aebd50db2fe9a7ac9a5a563640e696",
+      "archive_path": "audits/external-forward-results-independent-audit.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/f32-alignment-execution-independent-audit.json",
+      "bytes": 3676,
+      "sha256": "83ae3dfbf93b70a5c629494a1b6edfc03e7b7bb45939499b9880c2c2e5039967",
+      "archive_path": "audits/f32-alignment-execution-independent-audit.json"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-training-audit/f32-alignment-preparation-independent-audit.json",
+      "bytes": 4205,
+      "sha256": "39ce4b2c62870976a6fb98412ecee2d07636dd2ca8bd06d1c6022d5e043f1559",
+      "archive_path": "audits/f32-alignment-preparation-independent-audit.json"
+    }
+  ],
+  "references": [
+    {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "bytes": 30894944,
+      "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "kind": "omitted_host_tool",
+      "reconstruction": "Host executable recorded by frozen plan; provision an equivalent toolchain separately. Original bytes are identified by this digest, not distributed."
+    },
+    {
+      "path": "/usr/bin/nice",
+      "bytes": 35336,
+      "sha256": "9ea49d9f296d15105b0bd2becac48e7084934a108dfe6325a34b2c785fad8eba",
+      "kind": "omitted_host_tool",
+      "reconstruction": "Host executable recorded by frozen plan; provision an equivalent toolchain separately. Original bytes are identified by this digest, not distributed."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "gguf.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "gguf.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "harness/arch.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "harness/arch_llama.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "harness/arch_models.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "harness/runtime.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "harness/runtime.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "notorch.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "kind": "pinned_dependency_source",
+      "repository": "https://github.com/ariannamethod/notorch",
+      "commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+      "relative_path": "notorch.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "kind": "omitted_model_weights",
+      "reconstruction": "Match this SHA256; original model provenance is in repository README. Expanded F32 is reconstructed by archived alignment source and frozen execution plan."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-matched-protections/v5-native-v2/phase-1.stdout",
+      "bytes": 176456,
+      "sha256": "bf63cf0196b7d0979fda9031fbff739155b04b4d6cfac8cf79b319093fd4ce55",
+      "kind": "repository_reference",
+      "repository": "https://github.com/ariannamethod/jovovich",
+      "relative_path": "training/results/2026-10-01-matched-protections/v5-native-v2/phase-1.stdout",
+      "reconstruction": "Resolve at the published repository path; verify this recorded digest. Historical paths remain literal."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-01-matched-protections/v5-token-final/token-trace.jsonl",
+      "bytes": 118946,
+      "sha256": "261e6a6a3745a325f6c6fe4c1d214b0fc5034ced82e5e05db1496ca9c1607e22",
+      "kind": "repository_reference",
+      "repository": "https://github.com/ariannamethod/jovovich",
+      "relative_path": "training/results/2026-10-01-matched-protections/v5-token-final/token-trace.jsonl",
+      "reconstruction": "Resolve at the published repository path; verify this recorded digest. Historical paths remain literal."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "kind": "repository_reference",
+      "repository": "https://github.com/ariannamethod/jovovich",
+      "relative_path": "training/sft_review_v5.jsonl",
+      "reconstruction": "Resolve at the published repository path; verify this recorded digest. Historical paths remain literal."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/compare-alignment-logits",
+      "bytes": 16872,
+      "sha256": "3dbda29842d5e7ab04e449bae7342503f28de7e84ba6e85ee7d4f0ec30a9b750",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/convert-f32",
+      "bytes": 6001552,
+      "sha256": "74c887ae299e02e7333ebf98411d4e6fc7918383360b2041c48db91bba6734b4",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.gEN59N",
+      "bytes": 218890240,
+      "sha256": "db70c09d4c8a4a99b989945d8a9d11df9507a558f62c4c654c450dd7c19dc198",
+      "kind": "omitted_undeclared_non_input_auxiliary_binary",
+      "producer_provenance": "unresolved",
+      "observation": {
+        "binding": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.gEN59N",
+          "bytes": 218890240,
+          "sha256": "db70c09d4c8a4a99b989945d8a9d11df9507a558f62c4c654c450dd7c19dc198"
+        },
+        "classification": "undeclared non-input auxiliary binary",
+        "producer_provenance": "unresolved",
+        "first_streaming_observation_utc": "2026-10-01T14:02:30.118248+00:00",
+        "observed_head32_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+        "all_bytes_zero": false,
+        "exact_main_file_prefix": false,
+        "prefix_comparison_bytes": 218890240,
+        "compared_main_path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+        "stable_stat_during_first_streaming_read": true,
+        "postrun_observation_utc": "2026-10-01T14:04:55.505195+00:00",
+        "postrun_hash_matches_observation": true,
+        "named_in_any_planned_or_actual_phase_argv": false,
+        "present_in_any_actual_phase_input_bindings": false,
+        "named_in_native_tensor_validation_argv": false
+      },
+      "evidence_archive_path": "collector/auxiliary-provenance.json",
+      "reconstruction": "Not a declared phase input or required for reproduction. Preserve this historical record; origin and reconstruction recipe are unresolved. No producer or tensor-layout claim is made."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.x5HGEA",
+      "bytes": 110362624,
+      "sha256": "379056808ea8c82d3b3e955aac29d04374db633daba829f4ed95fc3368df25b7",
+      "kind": "omitted_undeclared_non_input_auxiliary_binary",
+      "producer_provenance": "unresolved",
+      "observation": {
+        "binding": {
+          "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.x5HGEA",
+          "bytes": 110362624,
+          "sha256": "379056808ea8c82d3b3e955aac29d04374db633daba829f4ed95fc3368df25b7"
+        },
+        "classification": "undeclared non-input auxiliary binary",
+        "producer_provenance": "unresolved",
+        "first_streaming_observation_utc": "2026-10-01T14:02:28.747104+00:00",
+        "observed_head32_hex": "474755460300000023010000000000001a000000000000001400000000000000",
+        "all_bytes_zero": false,
+        "exact_main_file_prefix": true,
+        "prefix_comparison_bytes": 110362624,
+        "compared_main_path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+        "stable_stat_during_first_streaming_read": true,
+        "postrun_observation_utc": "2026-10-01T14:04:54.191232+00:00",
+        "postrun_hash_matches_observation": true,
+        "named_in_any_planned_or_actual_phase_argv": false,
+        "present_in_any_actual_phase_input_bindings": false,
+        "named_in_native_tensor_validation_argv": false
+      },
+      "evidence_archive_path": "collector/auxiliary-provenance.json",
+      "reconstruction": "Not a declared phase input or required for reproduction. Preserve this historical record; origin and reconstruction recipe are unresolved. No producer or tensor-layout claim is made."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "bytes": 2526617472,
+      "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428",
+      "kind": "omitted_model_weights",
+      "reconstruction": "Match this SHA256; original model provenance is in repository README. Expanded F32 is reconstructed by archived alignment source and frozen execution plan."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+      "bytes": 48432,
+      "sha256": "94a224bb4920486c890d9a63f25143e52c7758a0f37466d20a4d0ce62cc17c38",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/dump-llama",
+      "bytes": 5931328,
+      "sha256": "4263eb236fd419c9cb8de493ee75fad0cd8369ebfea3fe38d3856debc90e133d",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-base.a",
+      "bytes": 1356830,
+      "sha256": "d3b8a4895385177dc1083999d2dade29fc501a94b6e746b1b29a692dd0d4c923",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml-cpu.a",
+      "bytes": 1815358,
+      "sha256": "33dd2c5fc69fdbf5c84060397181794d89da58f7d7b8da61d4fb95bd75c5c200",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/ggml/src/libggml.a",
+      "bytes": 65166,
+      "sha256": "21eedeca3eecf5d9bfcac9e65c9838f9278da67cc4c6819c1d819d819945ea5b",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/llama.cpp/src/libllama.a",
+      "bytes": 9522508,
+      "sha256": "fd81a8915d393fb282eda274c4932a11adcff01eb35cf71ef52de18875b0c236",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/compare-logits",
+      "bytes": 16864,
+      "sha256": "68605ef1dc51b0be16b5f2c36960363de675e5b2d9aa7a3cb9069de6cde48e75",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/dump-notorch",
+      "bytes": 203312,
+      "sha256": "4def643dbcced8a16a45ed55717b7ff3e74bc1fe560b1db470c861eb1d62f11d",
+      "kind": "omitted_compiled_artifact",
+      "reconstruction": "Rebuild using archived sources, build-commands.json, CMake/configuration receipts, and alignment/proposed-plan.json; verify recorded SHA256 if reproducing identical toolchain bytes."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/ggml-cpu.c",
+      "bytes": 132111,
+      "sha256": "8a2b58628993b9af52c53978afcd8800ec458274455605b3ecc08432b6344d5e",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "ggml/src/ggml-cpu/ggml-cpu.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/ggml/src/ggml-cpu/quants.c",
+      "bytes": 45124,
+      "sha256": "a61f1011e49d05b5f99d352b158d5b8e36cf008294bb0db309f72bdd7f1d4e35",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "ggml/src/ggml-cpu/quants.c"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/include/llama.h",
+      "bytes": 89917,
+      "sha256": "22ff1934a939e3bea6f144113889c64f62568516d02ad1395101495622de5f96",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "include/llama.h"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-context.cpp",
+      "bytes": 158212,
+      "sha256": "b73feede5ad61ff91a3e70c0d918b25acc01461fbd6ec0e3b6190bfcd1683eea",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "src/llama-context.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-model.cpp",
+      "bytes": 158953,
+      "sha256": "15acd497f5ad85fd2754e8023b0ea524fd8961e326f6d3df15244fbd69b1b88b",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "src/llama-model.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/llama-quant.cpp",
+      "bytes": 64522,
+      "sha256": "a33dea76120a10b2eac8b5d81b9425dcd401e2c8ae4bb04f59b00922f0355fdd",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "src/llama-quant.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/llama.cpp/src/models/qwen2.cpp",
+      "bytes": 5535,
+      "sha256": "0da43ff61f449be3a3da8ca2e7cc0eee119b4b8e07c8accce0041998241824e8",
+      "kind": "pinned_upstream_source",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "commit": "680a036285273a3ff56032ec5d7f3352609eba4f",
+      "relative_path": "src/models/qwen2.cpp"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 21,
+      "sha256": "20ac0797fbda454ac858266572f76b98551608efe9c358f13b832cd2ca1c6014",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/bound.txt",
+      "bytes": 22,
+      "sha256": "75afc22e9a068d97c5142edfc652023f864467bf5cb29e6b08beb609328132a1",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/partial.txt",
+      "bytes": 8,
+      "sha256": "ca67bd59cc4116ac80db5f64cbf4747f26ba929c85e8cc689a6123368d08719b",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/child-nonzero/stdout",
+      "bytes": 15,
+      "sha256": "58aa3ffd54d7f00c8d7ec6efc3df69c77084555da019a2220c55ba560f35fe50",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/launch-failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source-plan.json",
+      "bytes": 1453,
+      "sha256": "a9cae8ae21a3e38f00fb03c368571e10a715aed2df701eaa0836c966605f8ac3",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/missing-bound-source/started.json",
+      "bytes": 338,
+      "sha256": "7776d1770510f499569ec26f813007714763b5ccbf59ff5fc18de252a3f61bd2",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child-plan.json",
+      "bytes": 1975,
+      "sha256": "16f1021f54b083c71050ac4bdc01eda9a61fe69dfc5bdfdef9fe8c85a4914f52",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/00-mutate-synthetic-source-receipt.json",
+      "bytes": 2342,
+      "sha256": "d48beb482d6fb2f5f64f59acf473d7572d6c2adee8a779d9ec5696a3aeea65b2",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/child.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/source-changed-after-child/started.json",
+      "bytes": 344,
+      "sha256": "e6c7a6c166ca40f2ebe3a051260ee18788484a6527c1777629b59a2d3e7fbb2f",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash-plan.json",
+      "bytes": 1207,
+      "sha256": "79d00437bed41c59fdf36ec67aac2d0185f995e0a00afaec2c49ffbe50f06ea0",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-boundary-fixtures/wrong-plan-hash/started.json",
+      "bytes": 333,
+      "sha256": "922de2fbe509eac8d2c4f9a9e9c73834ff3d702e400dd1ce06d1e0b96bcf8676",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/launch_failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/launch_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/missing_output/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/missing_output/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/partial_failure/partial.dump",
+      "bytes": 7,
+      "sha256": "9834a14ab9bcaa0f6a8da71073617eac8f004e596a3fa11d807b84631b825d9d",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/partial_failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/partial_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check-v2/stderr_open_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/launch_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/missing_output/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/missing_output/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/partial.dump",
+      "bytes": 7,
+      "sha256": "9834a14ab9bcaa0f6a8da71073617eac8f004e596a3fa11d807b84631b825d9d",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/partial_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/controller-check/stderr_open_failure/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/different-ids.dump",
+      "bytes": 1217308,
+      "sha256": "9b60535566aa958d8db035770f8408da8a538b1292f7bcce82c822eb36fb25f1",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/metrics.jsonl",
+      "bytes": 1541,
+      "sha256": "adf4f67aca9d9f0896826838455c14c5b8017daaa567f0215eb8e49f8368a4d7",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/native.dump",
+      "bytes": 1217308,
+      "sha256": "668d1a1876884c1625c33edaf62690ef2b8d3f15d010950ee38c0f93ef164426",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/synthetic-check/reference.dump",
+      "bytes": 1217308,
+      "sha256": "4ef5fb2fd6a04c3a8bf8076abb9000c9ce58ad37962c8fd33863e17e5d7eb936",
+      "kind": "omitted_synthetic_fixture",
+      "reconstruction": "Reproduce with archived checker; recorded pre/post versions may intentionally differ or be absent."
+    }
+  ],
+  "cross_archive_resolution": "For any literal source path cited by another archive, use this manifest files[].path -> archive_path or references[].reconstruction. Do not edit archived records.",
+  "dump_counts": {
+    "q8": 4,
+    "f32": 4
+  },
+  "dump_bytes": 9738464,
+  "exclusions": [
+    "model weights (original and expanded F32)",
+    "compiled executables, object/static/shared libraries",
+    "full llama.cpp checkout and build tree except explicit compact CMake receipts",
+    "dependency venv",
+    "synthetic fixture payloads except explicitly pinned compact receipts",
+    "credentials",
+    "unrelated matched-training selection artifacts",
+    "Two exact-path/hash undeclared non-input auxiliary binaries; producer provenance unresolved, identities and observations retained in manifest"
+  ]
+}

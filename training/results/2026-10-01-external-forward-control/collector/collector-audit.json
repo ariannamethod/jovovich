@@ -1,0 +1,95 @@
+{
+  "status": "pass",
+  "review_type": "independent static source/inventory review; collector not executed",
+  "collector": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/collect_external.py",
+    "bytes": 23263,
+    "sha256": "2a877df40ea431f2468b0716840e556fd59262dfb6f23e1eb79d248060d8df54"
+  },
+  "inventory": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/inventory.json",
+    "bytes": 22993,
+    "sha256": "c51d47aa7a41db3bf28bc098cbb345dba61286e8482724765670950d3c242a7c"
+  },
+  "fixed_inventory_bindings_verified": 88,
+  "findings": [
+    {
+      "issue": "Consumed inventory and executing collector could previously differ from same-basename reviewed files.",
+      "status": "resolved",
+      "evidence": "Exact relocation-mapped locations and consumed/source bytes now match archived payloads, then independent review hashes are required before fixed/required inventory processing."
+    },
+    {
+      "issue": "Repository reconstruction incorrectly used the Hugging Face account namespace in a GitHub URL.",
+      "status": "resolved",
+      "evidence": "Repository references now name https://github.com/ariannamethod/jovovich."
+    }
+  ],
+  "verified_contract": [
+    "Default path validates only. Explicit --write alone enables copying, after all completeness/hash/path/content checks; existing output or symlink traversal is refused.",
+    "Literal historical file bytes and JSON paths remain unchanged. Manifest aliases and classified omitted-reference reconstruction supply portable resolution.",
+    "Bound6-phaseQ8 and10-phaseF32 runs must be completed with exact commands, matching standalone/aggregate receipts, successful exits, unchanged input/dynamic bindings and exact directory artifact inventories.",
+    "Exact four dumps per frozen run are required; all eight arrays have fixed JVL2 size/header/447 input IDs, positions444/447 and every151936-logit vector finite. No other .dump payload is allowed.",
+    "F32 model bytes/validation are tied to completed receipt;291 unique tensors and630167424 finite exact values,26 metadata keys and sole documented file_type change are required.",
+    "Explicit minimal sources/configuration/dependency receipts/audits and compact synthetic receipts are retained. Weights, executable/library payloads, full checkout/build/venv and synthetic fixture bodies are excluded or classified as references.",
+    "Retained structured hash bindings are checked; historical synthetic mutation/missing-file references remain explicitly historical instead of being falsely validated as current files.",
+    "Copying uses cached exact bytes and exclusive files, checks written hashes, rechecks source bindings and writes completion manifest last. Interrupted/failed collection cannot masquerade as a completed archive."
+  ],
+  "limits": [
+    "Static approval covers only the exact collector/inventory hashes above; any edit invalidates the matching review gate.",
+    "Collector, validation mode, writes, model forwards, conversions, builds and tests were not executed by this auditor.",
+    "Completed run receipts, controller streams and F32 summary remain mandatory runtime gates; this static approval is not a claim that collection has succeeded.",
+    "Root owns the separate collection/publication decision."
+  ],
+  "collector_executions": 0,
+  "model_actions": 0,
+  "builds": 0,
+  "tests": 0,
+  "renewed_review": {
+    "scope": "Single inventory addition only; removing it reconstructs the exact previously reviewed inventory SHA256. Collector unchanged.",
+    "previous_audit_sha256": "ae6d4c49ffe51475b3a6049f30b7bbc1fdcb0ccf537485944b16955cec660fed",
+    "previous_inventory_sha256": "6759c2ad4709a0af48d7a08ea9fddd8e2ce4c9cdf80d10f87822a540886575ea",
+    "added_source": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/summarize_alignment.py",
+      "bytes": 8314,
+      "sha256": "a944c3b9a710c9de865e3a6bced50e7f3353deb3068523a6d7c77f22bd5817c9"
+    },
+    "source_review": "Summarizer reads completed bound receipts and native saved metrics, preserves separate native-packing/aligned-engine groups and all fixed pair/boundary coverage, performs no model operations, and explicitly limits interpretation. This source is now retained to resolve summary provenance.",
+    "collector_executions": 0,
+    "tests": 0,
+    "model_actions": 0,
+    "builds": 0
+  },
+  "auxiliary_revision_review": {
+    "status": "pass",
+    "prior_audit_sha256": "976cd4f84a7244a1deaed755e6e69669da3613e951e5a16b47e910367e0dffbd",
+    "inventory_delta": "Exactly3 added fixed files (auxiliary observation plus independent actual-result audit/source),2 explicit excluded auxiliary identities and associated fields; prior84-file inventory reconstructed exactly.",
+    "proof": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-archive/auxiliary-provenance.json",
+      "bytes": 4375,
+      "sha256": "4f68c662ff82dadd2b60e926950b3cdf3a34c9e95748ecf8867fd078fce3a0ff"
+    },
+    "checked": "Both exact auxiliary hashes match completed aggregate receipt and current bytes; headers match observation. Neither appears in any planned/actual phase argv or prephase input binding, nor native tensor-validator argv. Intended model matches completed independent proof.",
+    "source_gate": "Only the2 explicit path/size/SHA identities are admitted as omitted aggregate auxiliaries, with completed-run proof and unresolved origin. Exact phase artifacts, every other directory entry, all8 JVL2 payloads and actual-result audit gates remain mandatory.",
+    "copy_exclusion": "Auxiliary identities are hashed and recorded as omitted_undeclared_non_input_auxiliary_binary with proof alias; their bytes are never added to copy payloads. No suffix wildcard or generic temporary-file exception.",
+    "provenance_limit": "Creator/creation mechanism remain unresolved. Header/prefix observations do not establish complete tensor layout or purpose. No producer claim is introduced.",
+    "collector_executions": 0,
+    "tests": 0,
+    "model_actions": 0,
+    "builds": 0
+  },
+  "compact_build_reference_revision": {
+    "status": "pass",
+    "previous_audit_sha256": "93720582a152cae3a5ed20e9d25d0617bbff120772f14be9e5f3dbec867dd141",
+    "added_binding": {
+      "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/build/CMakeFiles/dump-llama.dir/link.txt",
+      "bytes": 271,
+      "sha256": "a3b5c13fd9e820fecfc69ecaaa2a11b1fe7a216fd7eda4ffa32de79cc3ebecd9"
+    },
+    "scope": "Sole inventory addition; removing it exactly reconstructs prior87-file inventory. Collector code unchanged. The271-byte text is the existing linker command for the pinned dump-llama binary; no executable/library payload is added.",
+    "reason": "Root validation refused an unresolved structured build reference before writing any archive. This explicit retained link command resolves that provenance reference.",
+    "collector_executions_by_auditor": 0,
+    "tests": 0,
+    "model_actions": 0,
+    "builds": 0
+  }
+}

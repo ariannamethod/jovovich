@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "status": "completed_postrun_observation",
+  "method": "Read-only streaming byte hashing/prefix equality/header observation; no model computation, builds, tests, modifications, deletion or repacking.",
+  "plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+    "bytes": 34035,
+    "sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604"
+  },
+  "run_receipt": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/receipt.json",
+    "bytes": 447532,
+    "sha256": "1e0dfed992e0858a21ffcfdfa95f26564baecf13c770cc687d14f027f4265bff"
+  },
+  "validation_receipt": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/validation/validation.json",
+    "bytes": 61487,
+    "sha256": "04ef2ec85c49903351b212c59df1bbdf55540b78c8c29a78757ece82c83e4c7e"
+  },
+  "validated_main_model": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+    "bytes": 2526617472,
+    "sha256": "f180b314bbcbc79badb5ca515dfdbbd9e730aa307022aa8e8a464f8062731428"
+  },
+  "planned_phase_count": 10,
+  "actual_phase_count": 10,
+  "native_tensor_validation_argv": [
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/verify-tensor-values",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf"
+  ],
+  "auxiliaries": [
+    {
+      "binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.x5HGEA",
+        "bytes": 110362624,
+        "sha256": "379056808ea8c82d3b3e955aac29d04374db633daba829f4ed95fc3368df25b7"
+      },
+      "classification": "undeclared non-input auxiliary binary",
+      "producer_provenance": "unresolved",
+      "first_streaming_observation_utc": "2026-10-01T14:02:28.747104+00:00",
+      "observed_head32_hex": "474755460300000023010000000000001a000000000000001400000000000000",
+      "all_bytes_zero": false,
+      "exact_main_file_prefix": true,
+      "prefix_comparison_bytes": 110362624,
+      "compared_main_path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "stable_stat_during_first_streaming_read": true,
+      "postrun_observation_utc": "2026-10-01T14:04:54.191232+00:00",
+      "postrun_hash_matches_observation": true,
+      "named_in_any_planned_or_actual_phase_argv": false,
+      "present_in_any_actual_phase_input_bindings": false,
+      "named_in_native_tensor_validation_argv": false
+    },
+    {
+      "binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/.original-base-expanded-f32.gguf.gEN59N",
+        "bytes": 218890240,
+        "sha256": "db70c09d4c8a4a99b989945d8a9d11df9507a558f62c4c654c450dd7c19dc198"
+      },
+      "classification": "undeclared non-input auxiliary binary",
+      "producer_provenance": "unresolved",
+      "first_streaming_observation_utc": "2026-10-01T14:02:30.118248+00:00",
+      "observed_head32_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "all_bytes_zero": false,
+      "exact_main_file_prefix": false,
+      "prefix_comparison_bytes": 218890240,
+      "compared_main_path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/run-1/original-base-expanded-f32.gguf",
+      "stable_stat_during_first_streaming_read": true,
+      "postrun_observation_utc": "2026-10-01T14:04:55.505195+00:00",
+      "postrun_hash_matches_observation": true,
+      "named_in_any_planned_or_actual_phase_argv": false,
+      "present_in_any_actual_phase_input_bindings": false,
+      "named_in_native_tensor_validation_argv": false
+    }
+  ],
+  "limits": [
+    "Creator and creation mechanism remain unresolved; filenames and timing are not producer evidence.",
+    "Header/prefix observations do not establish a complete tensor layout or a purpose for the auxiliaries.",
+    "Only the declared validated main GGUF is named by model/validation argv and bound as their model input.",
+    "These exact auxiliary byte identities are retained in the historical aggregate artifact receipt but excluded from archive payloads."
+  ]
+}

@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "scientific_protocol": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/protocol.json",
+    "bytes": 18662,
+    "sha256": "de41682bc67a36aeb550491c238de864af6e93f6295accbc9af8bb9d77ed53c7"
+  },
+  "execution_plan": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/execution-plan-v2.json",
+    "bytes": 14479,
+    "sha256": "96553219489ecc96833bc1395d560151383546781149af6edd33b03d4c24ad64"
+  },
+  "authorization": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-launch-authorization.json",
+    "bytes": 836,
+    "sha256": "3a43db6394ab86bb14d9aba6c2f1e9d76cf298f61d8f93a94390c37e703bae96"
+  },
+  "receipt": {
+    "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/receipt.json",
+    "bytes": 115172,
+    "sha256": "20ce067bbd31302ad53d8bbdeb4550c15355fb81d768483016ef867d5c6cbdd7"
+  },
+  "captures": [
+    {
+      "case": "concern",
+      "capture": "assistant_header",
+      "metrics": {
+        "prefix_tokens": 444,
+        "vocabulary": 151936,
+        "different_float32_values": 151935,
+        "max_abs": 0.2601194381713867,
+        "max_abs_token_id": 44096,
+        "reference_max_abs": 18.913047790527344,
+        "relative_l2": 0.02085477501027721,
+        "rmse": 0.056424667208021265,
+        "mean_abs": 0.04625964481036376,
+        "notorch_argmax": 73594,
+        "llama_argmax": 73594,
+        "argmax_agree": true,
+        "notorch_top_margin": 1.9354438781738281,
+        "llama_top_margin": 1.8788566589355469,
+        "notorch_concern_minus_clean": 4.028316557407379,
+        "llama_concern_minus_clean": 4.142124891281128,
+        "decision_ids": [
+          66582,
+          788
+        ],
+        "notorch_top10": [
+          {
+            "id": 73594,
+            "logit": 18.9171753
+          },
+          {
+            "id": 1294,
+            "logit": 16.9817314
+          },
+          {
+            "id": 515,
+            "logit": 16.6482735
+          },
+          {
+            "id": 58,
+            "logit": 16.3764763
+          },
+          {
+            "id": 9640,
+            "logit": 15.867054
+          },
+          {
+            "id": 13874,
+            "logit": 15.0905037
+          },
+          {
+            "id": 19536,
+            "logit": 15.0352249
+          },
+          {
+            "id": 90,
+            "logit": 14.5766659
+          },
+          {
+            "id": 4913,
+            "logit": 14.374423
+          },
+          {
+            "id": 52108,
+            "logit": 14.3026676
+          }
+        ],
+        "llama_top10": [
+          {
+            "id": 73594,
+            "logit": 18.9130478
+          },
+          {
+            "id": 1294,
+            "logit": 17.0341911
+          },
+          {
+            "id": 515,
+            "logit": 16.6823292
+          },
+          {
+            "id": 58,
+            "logit": 16.3810387
+          },
+          {
+            "id": 9640,
+            "logit": 15.9308414
+          },
+          {
+            "id": 19536,
+            "logit": 15.0809469
+          },
+          {
+            "id": 13874,
+            "logit": 15.078455
+          },
+          {
+            "id": 90,
+            "logit": 14.5833836
+          },
+          {
+            "id": 52108,
+            "logit": 14.3853531
+          },
+          {
+            "id": 4913,
+            "logit": 14.3490772
+          }
+        ]
+      },
+      "screening_triggered": true,
+      "screening_reasons": [
+        "relative L2 exceeds 1e-4",
+        "maximum absolute difference exceeds scaled threshold"
+      ],
+      "absolute_screening_threshold": 0.019913047790527345,
+      "metrics_binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.jsonl",
+        "bytes": 2360,
+        "sha256": "d5399a77936ec19df9b64f34b493b62c0859903bf74106a7882b6bda52783371"
+      }
+    },
+    {
+      "case": "concern",
+      "capture": "shared_prefix",
+      "metrics": {
+        "prefix_tokens": 447,
+        "vocabulary": 151936,
+        "different_float32_values": 151936,
+        "max_abs": 0.23188257217407227,
+        "max_abs_token_id": 90737,
+        "reference_max_abs": 24.731597900390625,
+        "relative_l2": 0.014910962662420164,
+        "rmse": 0.04192052707138716,
+        "mean_abs": 0.032458910824297596,
+        "notorch_argmax": 788,
+        "llama_argmax": 788,
+        "argmax_agree": true,
+        "notorch_top_margin": 3.2403793334960938,
+        "llama_top_margin": 3.144134521484375,
+        "notorch_concern_minus_clean": -3.5977554321289062,
+        "llama_concern_minus_clean": -3.491657257080078,
+        "decision_ids": [
+          66582,
+          788
+        ],
+        "notorch_top10": [
+          {
+            "id": 788,
+            "logit": 24.1755753
+          },
+          {
+            "id": 8899,
+            "logit": 20.9351959
+          },
+          {
+            "id": 66582,
+            "logit": 20.5778198
+          },
+          {
+            "id": 36799,
+            "logit": 19.1093426
+          },
+          {
+            "id": 22317,
+            "logit": 17.3153133
+          },
+          {
+            "id": 3252,
+            "logit": 17.1864319
+          },
+          {
+            "id": 1,
+            "logit": 16.7832432
+          },
+          {
+            "id": 4660,
+            "logit": 15.5627527
+          },
+          {
+            "id": 9207,
+            "logit": 14.7323837
+          },
+          {
+            "id": 51418,
+            "logit": 13.7534771
+          }
+        ],
+        "llama_top10": [
+          {
+            "id": 788,
+            "logit": 24.1315384
+          },
+          {
+            "id": 8899,
+            "logit": 20.9874039
+          },
+          {
+            "id": 66582,
+            "logit": 20.6398811
+          },
+          {
+            "id": 36799,
+            "logit": 19.1519051
+          },
+          {
+            "id": 22317,
+            "logit": 17.2814331
+          },
+          {
+            "id": 3252,
+            "logit": 17.1058922
+          },
+          {
+            "id": 1,
+            "logit": 16.7423325
+          },
+          {
+            "id": 4660,
+            "logit": 15.4764214
+          },
+          {
+            "id": 9207,
+            "logit": 14.6579657
+          },
+          {
+            "id": 58018,
+            "logit": 13.7918472
+          }
+        ]
+      },
+      "screening_triggered": true,
+      "screening_reasons": [
+        "relative L2 exceeds 1e-4",
+        "maximum absolute difference exceeds scaled threshold"
+      ],
+      "absolute_screening_threshold": 0.025731597900390625,
+      "metrics_binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/concern-comparison.jsonl",
+        "bytes": 2360,
+        "sha256": "d5399a77936ec19df9b64f34b493b62c0859903bf74106a7882b6bda52783371"
+      }
+    },
+    {
+      "case": "clean",
+      "capture": "assistant_header",
+      "metrics": {
+        "prefix_tokens": 444,
+        "vocabulary": 151936,
+        "different_float32_values": 151936,
+        "max_abs": 0.29679763317108154,
+        "max_abs_token_id": 59757,
+        "reference_max_abs": 18.94291114807129,
+        "relative_l2": 0.02563207277514388,
+        "rmse": 0.07055885825469141,
+        "mean_abs": 0.059069141212136037,
+        "notorch_argmax": 73594,
+        "llama_argmax": 73594,
+        "argmax_agree": true,
+        "notorch_top_margin": 1.923074722290039,
+        "llama_top_margin": 1.9190025329589844,
+        "notorch_concern_minus_clean": 4.034349799156189,
+        "llama_concern_minus_clean": 4.0420308113098145,
+        "decision_ids": [
+          66582,
+          788
+        ],
+        "notorch_top10": [
+          {
+            "id": 73594,
+            "logit": 18.9169617
+          },
+          {
+            "id": 1294,
+            "logit": 16.9938869
+          },
+          {
+            "id": 515,
+            "logit": 16.6455307
+          },
+          {
+            "id": 58,
+            "logit": 16.3656616
+          },
+          {
+            "id": 9640,
+            "logit": 15.8575649
+          },
+          {
+            "id": 13874,
+            "logit": 15.0784769
+          },
+          {
+            "id": 19536,
+            "logit": 15.0318794
+          },
+          {
+            "id": 90,
+            "logit": 14.5843353
+          },
+          {
+            "id": 4913,
+            "logit": 14.3762579
+          },
+          {
+            "id": 52108,
+            "logit": 14.3094254
+          }
+        ],
+        "llama_top10": [
+          {
+            "id": 73594,
+            "logit": 18.9429111
+          },
+          {
+            "id": 1294,
+            "logit": 17.0239086
+          },
+          {
+            "id": 515,
+            "logit": 16.5402107
+          },
+          {
+            "id": 58,
+            "logit": 16.3445358
+          },
+          {
+            "id": 9640,
+            "logit": 15.7666378
+          },
+          {
+            "id": 13874,
+            "logit": 15.0757875
+          },
+          {
+            "id": 19536,
+            "logit": 15.0086603
+          },
+          {
+            "id": 90,
+            "logit": 14.538187
+          },
+          {
+            "id": 4913,
+            "logit": 14.2620735
+          },
+          {
+            "id": 52108,
+            "logit": 14.2423115
+          }
+        ]
+      },
+      "screening_triggered": true,
+      "screening_reasons": [
+        "relative L2 exceeds 1e-4",
+        "maximum absolute difference exceeds scaled threshold"
+      ],
+      "absolute_screening_threshold": 0.01994291114807129,
+      "metrics_binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.jsonl",
+        "bytes": 2358,
+        "sha256": "a2c5e7b764bcb57f5776993493017fe4700fd00d9e038155dabc2ac29f97aa84"
+      }
+    },
+    {
+      "case": "clean",
+      "capture": "shared_prefix",
+      "metrics": {
+        "prefix_tokens": 447,
+        "vocabulary": 151936,
+        "different_float32_values": 151936,
+        "max_abs": 0.24666404724121094,
+        "max_abs_token_id": 27744,
+        "reference_max_abs": 24.62097930908203,
+        "relative_l2": 0.017182450618199948,
+        "rmse": 0.048330191106555544,
+        "mean_abs": 0.038525885950353014,
+        "notorch_argmax": 788,
+        "llama_argmax": 788,
+        "argmax_agree": true,
+        "notorch_top_margin": 3.2376785278320312,
+        "llama_top_margin": 3.266010284423828,
+        "notorch_concern_minus_clean": -3.597675323486328,
+        "llama_concern_minus_clean": -3.6863555908203125,
+        "decision_ids": [
+          66582,
+          788
+        ],
+        "notorch_top10": [
+          {
+            "id": 788,
+            "logit": 24.1792068
+          },
+          {
+            "id": 8899,
+            "logit": 20.9415283
+          },
+          {
+            "id": 66582,
+            "logit": 20.5815315
+          },
+          {
+            "id": 36799,
+            "logit": 19.116375
+          },
+          {
+            "id": 22317,
+            "logit": 17.3230267
+          },
+          {
+            "id": 3252,
+            "logit": 17.1886635
+          },
+          {
+            "id": 1,
+            "logit": 16.779892
+          },
+          {
+            "id": 4660,
+            "logit": 15.5616093
+          },
+          {
+            "id": 9207,
+            "logit": 14.7387314
+          },
+          {
+            "id": 51418,
+            "logit": 13.7450695
+          }
+        ],
+        "llama_top10": [
+          {
+            "id": 788,
+            "logit": 24.2609253
+          },
+          {
+            "id": 8899,
+            "logit": 20.994915
+          },
+          {
+            "id": 66582,
+            "logit": 20.5745697
+          },
+          {
+            "id": 36799,
+            "logit": 19.1727962
+          },
+          {
+            "id": 22317,
+            "logit": 17.3445358
+          },
+          {
+            "id": 3252,
+            "logit": 17.170845
+          },
+          {
+            "id": 1,
+            "logit": 16.8070068
+          },
+          {
+            "id": 4660,
+            "logit": 15.5538292
+          },
+          {
+            "id": 9207,
+            "logit": 14.6175203
+          },
+          {
+            "id": 51418,
+            "logit": 13.7477446
+          }
+        ]
+      },
+      "screening_triggered": true,
+      "screening_reasons": [
+        "relative L2 exceeds 1e-4",
+        "maximum absolute difference exceeds scaled threshold"
+      ],
+      "absolute_screening_threshold": 0.025620979309082033,
+      "metrics_binding": {
+        "path": "/workspace/scratch/ec5ba60588d8/matched-external-parity/q8-control-1/clean-comparison.jsonl",
+        "bytes": 2358,
+        "sha256": "a2c5e7b764bcb57f5776993493017fe4700fd00d9e038155dabc2ac29f97aa84"
+      }
+    }
+  ],
+  "capture_count": 4,
+  "vocabulary": 151936,
+  "logit_pairs_compared": 607744,
+  "all_argmax_agree": true,
+  "alignment_screening_triggered": true,
+  "max_absolute_difference": 0.29679763317108154,
+  "max_relative_l2": 0.02563207277514388,
+  "sources_and_model_unchanged": true,
+  "numeric_interpretation": "Different original-Q8 engine outputs include ggml Q8 activation quantization versus native float activations. Screening requests an explicit verified-F32 alignment decision; it does not establish a notorch forward defect.",
+  "model_phases": [
+    {
+      "name": "concern-notorch",
+      "elapsed_seconds": 42.098401937000745,
+      "peak_rss_kib": 668328
+    },
+    {
+      "name": "concern-llama",
+      "elapsed_seconds": 19.31499708600313,
+      "peak_rss_kib": 760412
+    },
+    {
+      "name": "clean-notorch",
+      "elapsed_seconds": 31.104967993000173,
+      "peak_rss_kib": 668412
+    },
+    {
+      "name": "clean-llama",
+      "elapsed_seconds": 31.99093204899691,
+      "peak_rss_kib": 760488
+    }
+  ]
+}

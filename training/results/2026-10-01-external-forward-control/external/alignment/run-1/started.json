@@ -1,0 +1,7 @@
+{
+  "pid": 5,
+  "explicit_execute": true,
+  "requested_plan": "/workspace/scratch/ec5ba60588d8/matched-external-parity/alignment/execution-plan.json",
+  "expected_plan_sha256": "aa75c7a50e837d0b1aa790a0350e09f4f9e603e73ddc4706e71d725e83661604",
+  "started_utc": "2026-10-01T13:50:02.307862+00:00"
+}
