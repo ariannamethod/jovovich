@@ -16,7 +16,7 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout probe-readout fit-readout merge-head merge-mlp export-adapter test clean
+.PHONY: all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout extract-layers layer-fixture probe-readout fit-readout merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
@@ -26,6 +26,8 @@ probe-mlp: build/jovovich-probe-mlp
 probe-gradients: build/jovovich-probe-gradients
 probe-tokenization: build/jovovich-probe-tokenization
 extract-readout: build/jovovich-extract-readout
+extract-layers: build/jovovich-extract-layers
+layer-fixture: build/jovovich-layer-fixture
 probe-readout: build/jovovich-probe-readout
 fit-readout: build/jovovich-readout-fit
 merge-mlp: build/jovovich-merge-mlp
@@ -62,6 +64,14 @@ build/jovovich-probe-tokenization: training/probe_tokenization.c training/train_
 build/jovovich-extract-readout: training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_readout.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-extract-layers: training/extract_layers.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_layers.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-layer-fixture: training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(LDFLAGS) $(LDLIBS)
 
 build/jovovich-probe-readout: training/probe_readout.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build

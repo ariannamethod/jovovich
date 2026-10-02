@@ -1,0 +1,504 @@
+{
+  "schema_version": 1,
+  "label": "fixture-noplant",
+  "started_at_utc": "2026-10-02T02:19:26.621Z",
+  "finished_at_utc": "2026-10-02T02:19:27.368Z",
+  "cwd": "/Users/ataeff/arianna/jovovich",
+  "threads": "4",
+  "width": 64,
+  "depths": [
+    "l00",
+    "l01",
+    "l02",
+    "l03",
+    "postnorm"
+  ],
+  "solver": {
+    "normalization": "centered-rms",
+    "lambda": 0.01,
+    "interpolation_lambda": 1e-8,
+    "gradient_tolerance": 1e-8,
+    "max_iterations": 100,
+    "intercept_penalized": false,
+    "positive_class": "concern",
+    "permutations": 99
+  },
+  "environment": {
+    "node": "v25.9.0",
+    "platform": "darwin arm64",
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "inputs": {
+    "model": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture.gguf",
+      "sha256": "1bcd2a0632a59a9f2137806caf91c2987c42548fd6f2805ce46f46081e807f56",
+      "bytes": 45483808
+    },
+    "prompts": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-prompts.bin",
+      "sha256": "9d5ce4460f9ba598b4abef6570c9c2668d7de31bf02ab158d8ff6445383b3c54",
+      "bytes": 1562
+    },
+    "metadata": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+      "sha256": "442da8de43b5bfdd99b246d379bea95146d43ab971f5187acd81517fed29af81",
+      "bytes": 512
+    },
+    "masks": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    "masks-json": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    },
+    "rows": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    "binary:extract-layers": {
+      "path": "build/jovovich-extract-layers",
+      "sha256": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
+      "bytes": 324936
+    },
+    "binary:readout-fit": {
+      "path": "build/jovovich-readout-fit",
+      "sha256": "e043a03daefb15e5d08ce44e983bdd6cd212b367d7258c5fba20312693da5dbd",
+      "bytes": 53800
+    },
+    "helper:layer_summary.mjs": {
+      "path": "training/readout/layer_summary.mjs",
+      "sha256": "30b38b4bd39eb6042dbd525cef1b28f2ce8a19c8318de6cc9853ebffe2f182bd",
+      "bytes": 11533
+    },
+    "helper:run_layers.mjs": {
+      "path": "training/readout/run_layers.mjs",
+      "sha256": "16457c28b29ccc22ff51009509fafda67d9cbab5fe3d72e4bcc6bfb979c33e21",
+      "bytes": 7654
+    }
+  },
+  "outputs": {
+    "features:l00": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l00.bin",
+      "sha256": "36e7d2b3b7e58d2d6cbc3971081d834f5bf60ac93a7ad553bbf15f6f62095b94",
+      "bytes": 13328
+    },
+    "fits:l00": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l00.fits.jsonl",
+      "sha256": "39044148804e1f88fae04ef4cc3ed80950b48ea3c432f172ab1597a9c49ccdd1",
+      "bytes": 1268515
+    },
+    "summary:l00": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l00.json",
+      "sha256": "d15e21b3d7f4fb28c299ad28887ea5ad106d4fe3214653198123047d59f6385c",
+      "bytes": 13931
+    },
+    "features:l01": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l01.bin",
+      "sha256": "36e7d2b3b7e58d2d6cbc3971081d834f5bf60ac93a7ad553bbf15f6f62095b94",
+      "bytes": 13328
+    },
+    "fits:l01": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l01.fits.jsonl",
+      "sha256": "39044148804e1f88fae04ef4cc3ed80950b48ea3c432f172ab1597a9c49ccdd1",
+      "bytes": 1268515
+    },
+    "summary:l01": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l01.json",
+      "sha256": "2e56ccd28aa9b966029d9e847309f98732240cb678a9e81544dee234cfee2b7c",
+      "bytes": 13931
+    },
+    "features:l02": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l02.bin",
+      "sha256": "36e7d2b3b7e58d2d6cbc3971081d834f5bf60ac93a7ad553bbf15f6f62095b94",
+      "bytes": 13328
+    },
+    "fits:l02": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l02.fits.jsonl",
+      "sha256": "39044148804e1f88fae04ef4cc3ed80950b48ea3c432f172ab1597a9c49ccdd1",
+      "bytes": 1268515
+    },
+    "summary:l02": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l02.json",
+      "sha256": "ddf3b6fddb47f8377f30251d427928fef360536e2d48d34d1cf6a51c8d664e89",
+      "bytes": 13931
+    },
+    "features:l03": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l03.bin",
+      "sha256": "36e7d2b3b7e58d2d6cbc3971081d834f5bf60ac93a7ad553bbf15f6f62095b94",
+      "bytes": 13328
+    },
+    "fits:l03": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l03.fits.jsonl",
+      "sha256": "39044148804e1f88fae04ef4cc3ed80950b48ea3c432f172ab1597a9c49ccdd1",
+      "bytes": 1268515
+    },
+    "summary:l03": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l03.json",
+      "sha256": "29ca80d7253e91e64a2b6124c5f99e9f9df39b674c80e95e37b3a5a09a9299f2",
+      "bytes": 13931
+    },
+    "features:postnorm": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-postnorm.bin",
+      "sha256": "3829e88b65af81ac3824c53cd8b3557442c0af0b409921442f3875271a8f3466",
+      "bytes": 13328
+    },
+    "fits:postnorm": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/postnorm.fits.jsonl",
+      "sha256": "7920d442d7d3ee933faf0d6ed54b43ce2f6106745561f5331e177c0606a1e360",
+      "bytes": 1268872
+    },
+    "summary:postnorm": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/postnorm.json",
+      "sha256": "a7a8f152e16d088d7dc867b84701ae53a9489a5043355a3889f0a7ea5b0cefc7",
+      "bytes": 13941
+    },
+    "extract.stdout.jsonl": {
+      "path": "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/extract.stdout.jsonl",
+      "sha256": "84f14638b60454829d835abaa7f31582abc0009b5d172e608b42e919ca039b3e",
+      "bytes": 14296
+    }
+  },
+  "phases": [
+    {
+      "name": "extract",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture.gguf",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-prompts.bin",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features",
+        "4"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.208
+    },
+    {
+      "name": "fit:l00",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l00.bin",
+        "--metadata",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l00.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.014
+    },
+    {
+      "name": "summary:l00",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l00.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "64",
+        "--label",
+        "fixture-noplant:l00",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l00.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.076
+    },
+    {
+      "name": "fit:l01",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l01.bin",
+        "--metadata",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l01.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.015
+    },
+    {
+      "name": "summary:l01",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l01.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "64",
+        "--label",
+        "fixture-noplant:l01",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l01.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.078
+    },
+    {
+      "name": "fit:l02",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l02.bin",
+        "--metadata",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l02.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.015
+    },
+    {
+      "name": "summary:l02",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l02.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "64",
+        "--label",
+        "fixture-noplant:l02",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l02.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.077
+    },
+    {
+      "name": "fit:l03",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-l03.bin",
+        "--metadata",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l03.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.013
+    },
+    {
+      "name": "summary:l03",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/l03.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "64",
+        "--label",
+        "fixture-noplant:l03",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/l03.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.084
+    },
+    {
+      "name": "fit:postnorm",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/features/features-postnorm.bin",
+        "--metadata",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/fixture-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/postnorm.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.015
+    },
+    {
+      "name": "summary:postnorm",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/fits/postnorm.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "64",
+        "--label",
+        "fixture-noplant:postnorm",
+        "--output",
+        "/private/tmp/claude-501/-Users-ataeff/e5d37854-03d6-4638-ab3a-4f4e6a33a626/scratchpad/pnull/final2/summaries/postnorm.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.079
+    }
+  ],
+  "table": [
+    {
+      "body": "fixture-noplant",
+      "depth": "l00",
+      "distinct_feature_rows": 1,
+      "correct": 26,
+      "correct_concern": 0,
+      "correct_clean": 26,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 0,
+      "active_columns_minimum": 0,
+      "maximum_gradient_inf": 0,
+      "maximum_iterations": 0,
+      "capacity_correct": 26,
+      "capacity_train_ce": 0.6931471805599461
+    },
+    {
+      "body": "fixture-noplant",
+      "depth": "l01",
+      "distinct_feature_rows": 1,
+      "correct": 26,
+      "correct_concern": 0,
+      "correct_clean": 26,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 0,
+      "active_columns_minimum": 0,
+      "maximum_gradient_inf": 0,
+      "maximum_iterations": 0,
+      "capacity_correct": 26,
+      "capacity_train_ce": 0.6931471805599461
+    },
+    {
+      "body": "fixture-noplant",
+      "depth": "l02",
+      "distinct_feature_rows": 1,
+      "correct": 26,
+      "correct_concern": 0,
+      "correct_clean": 26,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 0,
+      "active_columns_minimum": 0,
+      "maximum_gradient_inf": 0,
+      "maximum_iterations": 0,
+      "capacity_correct": 26,
+      "capacity_train_ce": 0.6931471805599461
+    },
+    {
+      "body": "fixture-noplant",
+      "depth": "l03",
+      "distinct_feature_rows": 1,
+      "correct": 26,
+      "correct_concern": 0,
+      "correct_clean": 26,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 0,
+      "active_columns_minimum": 0,
+      "maximum_gradient_inf": 0,
+      "maximum_iterations": 0,
+      "capacity_correct": 26,
+      "capacity_train_ce": 0.6931471805599461
+    },
+    {
+      "body": "fixture-noplant",
+      "depth": "postnorm",
+      "distinct_feature_rows": 1,
+      "correct": 26,
+      "correct_concern": 0,
+      "correct_clean": 26,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 0,
+      "active_columns_minimum": 0,
+      "maximum_gradient_inf": 0,
+      "maximum_iterations": 0,
+      "capacity_correct": 26,
+      "capacity_train_ce": 0.6931471805599461
+    }
+  ]
+}

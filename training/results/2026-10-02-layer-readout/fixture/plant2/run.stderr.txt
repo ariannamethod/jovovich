@@ -1,0 +1,6 @@
+run-layers fixture-plant2: 5 depths, 18869 bytes of manifest
+  l00: correct 26/52 concern 0/26 clean 26/26 pairs 0/26 exceedance 1
+  l01: correct 26/52 concern 0/26 clean 26/26 pairs 0/26 exceedance 1
+  l02: correct 52/52 concern 26/26 clean 26/26 pairs 26/26 exceedance 0.01
+  l03: correct 52/52 concern 26/26 clean 26/26 pairs 26/26 exceedance 0.01
+  postnorm: correct 52/52 concern 26/26 clean 26/26 pairs 26/26 exceedance 0.01
