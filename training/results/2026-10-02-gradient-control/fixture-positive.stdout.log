@@ -1,0 +1,17 @@
+Joint finite difference: state=nonzero-AB tensor=gate.A coordinates=6 max_abs_error=3.31093473e-05 max_abs_gradient=0.0510172211
+Joint finite difference: state=nonzero-AB tensor=gate.B coordinates=8 max_abs_error=5.70448153e-05 max_abs_gradient=0.0998057649
+Joint finite difference: state=nonzero-AB tensor=up.A coordinates=6 max_abs_error=3.94028712e-05 max_abs_gradient=0.0268268809
+Joint finite difference: state=nonzero-AB tensor=up.B coordinates=8 max_abs_error=4.41570323e-05 max_abs_gradient=0.0933168605
+Joint finite difference: state=nonzero-AB tensor=down.A coordinates=8 max_abs_error=2.41077261e-05 max_abs_gradient=0.105265826
+Joint finite difference: state=nonzero-AB tensor=down.B coordinates=6 max_abs_error=1.75407837e-05 max_abs_gradient=0.083800219
+Joint finite difference: state=nonzero-AB 42/42 pass h=0.00200000009 loss=4.62083333 loss_error=1.4424324e-07 max_abs_error=5.70448153e-05 max_tolerance_fraction=0.281007171; wrong half-normalization rejected at 42/42 coordinates; zero_A=0; frozen weights unchanged
+Joint finite difference: state=zero-B tensor=gate.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=gate.B coordinates=8 max_abs_error=2.47792374e-05 max_abs_gradient=0.0893317014
+Joint finite difference: state=zero-B tensor=up.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=up.B coordinates=8 max_abs_error=6.50055313e-05 max_abs_gradient=0.0854364485
+Joint finite difference: state=zero-B tensor=down.A coordinates=8 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=down.B coordinates=6 max_abs_error=3.82407713e-05 max_abs_gradient=0.0643598065
+Joint finite difference: state=zero-B 42/42 pass h=0.00200000009 loss=4.62602723 loss_error=2.86698342e-07 max_abs_error=6.50055313e-05 max_tolerance_fraction=0.481995057; wrong half-normalization rejected at 21/42 coordinates; zero_A=20; frozen weights unchanged
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.36614e-06 gradient=2.23517e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=5.96046e-08 trajectory=2.98023e-08)
+Joint selection: 7 invalid map/objective inputs rejected

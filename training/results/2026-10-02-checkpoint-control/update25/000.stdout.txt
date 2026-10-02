@@ -1,0 +1,1 @@
+{"findings":[{"line_id":1,"reason":"Removed codec/bit_window.c:5:     if (shift > 31U) return -1;"}]}

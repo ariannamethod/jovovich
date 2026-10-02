@@ -1,0 +1,468 @@
+{
+  "schema": "jovovich.pinned-weight-recovery.v1",
+  "purpose": "New download-and-verification after workspace maintenance; not a reconstruction of historical execution receipts or metrics.",
+  "started_at": "2026-10-02T00:27:19.416990+00:00",
+  "status": "complete",
+  "files": [
+    {
+      "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+      "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+      "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+      "local_path": "models/base-qwen.gguf",
+      "expected": {
+        "bytes": 675710848,
+        "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+      },
+      "started_at": "2026-10-02T00:27:26.166094+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/base-qwen.gguf.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 675710848,
+        "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+        "git_blob_sha1": "fffa2df32ad13a344be5b98cfa21347ed227509b"
+      },
+      "finished_at": "2026-10-02T00:27:53.795082+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review-selected.gguf",
+      "local_path": "models/recovered-matched/matched-review-selected.gguf",
+      "expected": {
+        "bytes": 714116992,
+        "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+      },
+      "started_at": "2026-10-02T00:27:53.795902+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review-selected.gguf.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 714116992,
+        "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532",
+        "git_blob_sha1": "285b2697fda8134c9f4496b36fbf4de7590ea3cb"
+      },
+      "finished_at": "2026-10-02T00:28:22.713016+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.bin",
+      "local_path": "models/recovered-matched/matched-review.bin",
+      "expected": {
+        "bytes": 149471,
+        "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce"
+      },
+      "started_at": "2026-10-02T00:28:22.713905+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.bin.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 149471,
+        "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce",
+        "git_blob_sha1": "f796ff19f519c53f17e92a573f48aea3b108362e"
+      },
+      "finished_at": "2026-10-02T00:28:34.993574+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch100.down.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch100.down.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65"
+      },
+      "started_at": "2026-10-02T00:28:34.994220+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch100.down.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65",
+        "git_blob_sha1": "c1ff54abf22a5b653e894409356059d4fd7d13fb"
+      },
+      "finished_at": "2026-10-02T00:28:46.112736+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch100.gate.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch100.gate.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4"
+      },
+      "started_at": "2026-10-02T00:28:46.113568+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch100.gate.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4",
+        "git_blob_sha1": "b1702daa9aefea71130c9cc5a8f033bb3a22afe3"
+      },
+      "finished_at": "2026-10-02T00:28:57.612419+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch100.up.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch100.up.lora",
+      "expected": {
+        "bytes": 368693,
+        "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37"
+      },
+      "started_at": "2026-10-02T00:28:57.612984+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch100.up.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368693,
+        "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37",
+        "git_blob_sha1": "0161c867ca9336043bcae0e74409649d0a8e753b"
+      },
+      "finished_at": "2026-10-02T00:29:09.849997+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch25.down.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch25.down.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067"
+      },
+      "started_at": "2026-10-02T00:29:09.851273+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch25.down.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067",
+        "git_blob_sha1": "b60fdf87f623f759179ccbf219fe708e9a684e38"
+      },
+      "finished_at": "2026-10-02T00:29:21.950489+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch25.gate.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch25.gate.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e"
+      },
+      "started_at": "2026-10-02T00:29:21.951297+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch25.gate.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e",
+        "git_blob_sha1": "71b0e8a7288b0989389150d88f568218c7228c0b"
+      },
+      "finished_at": "2026-10-02T00:29:33.405922+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch25.up.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch25.up.lora",
+      "expected": {
+        "bytes": 368693,
+        "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1"
+      },
+      "started_at": "2026-10-02T00:29:33.406617+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch25.up.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368693,
+        "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1",
+        "git_blob_sha1": "5da5c1064d1b2033cc47430c04515ad15e4e211f"
+      },
+      "finished_at": "2026-10-02T00:29:46.124366+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch50.down.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch50.down.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "86db405323a97237c23434e9e1ee4bad321c2ec996a5e6e39dd5d5f2f1f02540"
+      },
+      "started_at": "2026-10-02T00:29:46.125233+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch50.down.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "86db405323a97237c23434e9e1ee4bad321c2ec996a5e6e39dd5d5f2f1f02540",
+        "git_blob_sha1": "f58f6de95f0506dc73fcbc7cb58cecdfb5261832"
+      },
+      "finished_at": "2026-10-02T00:29:58.360434+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch50.gate.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch50.gate.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "112f86593894a8fc9326c3eb2e7b0c5e0e4fa3bffe4f8a74630ef90d6adc3215"
+      },
+      "started_at": "2026-10-02T00:29:58.364203+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch50.gate.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "112f86593894a8fc9326c3eb2e7b0c5e0e4fa3bffe4f8a74630ef90d6adc3215",
+        "git_blob_sha1": "8aa755941bead974eb5d7379809f2a75fd247402"
+      },
+      "finished_at": "2026-10-02T00:30:11.123505+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch50.up.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch50.up.lora",
+      "expected": {
+        "bytes": 368693,
+        "sha256": "7cae6fd2bcdc062523d6b1c25784718fbf915df10ce48d65018fbf72424f6d81"
+      },
+      "started_at": "2026-10-02T00:30:11.125080+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch50.up.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368693,
+        "sha256": "7cae6fd2bcdc062523d6b1c25784718fbf915df10ce48d65018fbf72424f6d81",
+        "git_blob_sha1": "191270dafc47dd7eadc45d328f7d62fc05753042"
+      },
+      "finished_at": "2026-10-02T00:30:24.248445+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch75.down.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch75.down.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "47397ac160827abe08c2641925e5c9e31708ea1ef9f355f8bcfad4c5e1108253"
+      },
+      "started_at": "2026-10-02T00:30:24.336453+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch75.down.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "47397ac160827abe08c2641925e5c9e31708ea1ef9f355f8bcfad4c5e1108253",
+        "git_blob_sha1": "3c253c953ec95b7f0034f6bea7e0f2ce66752e6a"
+      },
+      "finished_at": "2026-10-02T00:30:36.349518+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch75.gate.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch75.gate.lora",
+      "expected": {
+        "bytes": 368695,
+        "sha256": "5b19fb57d454256d6b4ecda9b998a76d46a2819ad7fd950cab3a198f6f31bee3"
+      },
+      "started_at": "2026-10-02T00:30:36.350425+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch75.gate.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368695,
+        "sha256": "5b19fb57d454256d6b4ecda9b998a76d46a2819ad7fd950cab3a198f6f31bee3",
+        "git_blob_sha1": "009105769ee7395cc5d6cca906ddd9249dbf7296"
+      },
+      "finished_at": "2026-10-02T00:30:49.318898+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.epoch75.up.lora",
+      "local_path": "models/recovered-matched/matched-review.epoch75.up.lora",
+      "expected": {
+        "bytes": 368693,
+        "sha256": "c2d8138313ad964c7dce4bb11c9b4dcf2fb21ae7aa689ed358e94fb5d71e64fc"
+      },
+      "started_at": "2026-10-02T00:30:49.320695+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.epoch75.up.lora.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "us.aws.cdn.hf.co",
+        443
+      ],
+      "actual": {
+        "bytes": 368693,
+        "sha256": "c2d8138313ad964c7dce4bb11c9b4dcf2fb21ae7aa689ed358e94fb5d71e64fc",
+        "git_blob_sha1": "619a2a4a6985c9d6c252b2135285421b3c0fcbab"
+      },
+      "finished_at": "2026-10-02T00:31:01.844871+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/matched-review.pairs",
+      "local_path": "models/recovered-matched/matched-review.pairs",
+      "expected": {
+        "bytes": 224,
+        "git_blob_sha1": "3a1fd83d0a5b218fa3496b2076376f3bd4532ee6"
+      },
+      "started_at": "2026-10-02T00:31:01.845664+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/matched-review.pairs.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "huggingface.co",
+        443
+      ],
+      "actual": {
+        "bytes": 224,
+        "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+        "git_blob_sha1": "3a1fd83d0a5b218fa3496b2076376f3bd4532ee6"
+      },
+      "finished_at": "2026-10-02T00:31:08.850550+00:00",
+      "closed_file_verified": true
+    },
+    {
+      "repo": "ataeff/jovovich",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389",
+      "file": "experiments/matched-review/sft_review_v5.jsonl",
+      "local_path": "models/recovered-matched/sft_review_v5.jsonl",
+      "expected": {
+        "bytes": 163753,
+        "git_blob_sha1": "ffd043b27de4e4064573e41ae863129eed07cf05"
+      },
+      "started_at": "2026-10-02T00:31:08.853046+00:00",
+      "status": "verified-downloaded",
+      "partial_path": "models/recovered-matched/sft_review_v5.jsonl.recovery-partial",
+      "http_status": 200,
+      "final_origin": [
+        "https",
+        "huggingface.co",
+        443
+      ],
+      "actual": {
+        "bytes": 163753,
+        "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "git_blob_sha1": "ffd043b27de4e4064573e41ae863129eed07cf05"
+      },
+      "finished_at": "2026-10-02T00:31:14.343644+00:00",
+      "closed_file_verified": true
+    }
+  ],
+  "events": [],
+  "helper": {
+    "path": "training/results/2026-10-02-gradient-control/recover_weights.py",
+    "bytes": 9815,
+    "sha256": "ebaa4d4b0f5bb75b87d7aa3cf2d9e3205cbe16090755b4497a285fbaba9b5dd7",
+    "git_blob_sha1": "92dbf77a7633c6d363e3b8dd9b5734bcd3798724"
+  },
+  "private_source": {
+    "repo": "ataeff/jovovich",
+    "revision": "c9484feec99c5df47be5702d29098297aced1389",
+    "prefix": "experiments/matched-review/",
+    "private": true,
+    "metadata_sha": "c9484feec99c5df47be5702d29098297aced1389",
+    "file_count": 16
+  },
+  "credential_policy": "Credential read from supplied file; Authorization removed on every cross-origin redirect; no credentials or signed redirect URLs recorded.",
+  "finished_at": "2026-10-02T00:31:14.344309+00:00",
+  "verified_files": 17
+}

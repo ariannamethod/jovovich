@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-02T00:38:09.143154+00:00",
+  "scope": "Independent subprocess environment/interpreter observation during the native parity phase; not introspection of the controller process. The recorded controller argv contains no -O argument.",
+  "sys_flags_optimize": 0,
+  "PYTHONOPTIMIZE": null,
+  "PYTHONOPTIMIZE_present": false,
+  "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "independent_complete_validation": "Planned explicit RuntimeError checks of frozen file hashes, export audits, parity results, traces and complete cohort coverage after execution."
+}

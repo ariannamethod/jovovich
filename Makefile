@@ -16,13 +16,14 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train train-mlp probe-mlp probe-tokenization extract-readout probe-readout fit-readout merge-head merge-mlp export-adapter test clean
+.PHONY: all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout probe-readout fit-readout merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
 train: build/jovovich-train-head
 train-mlp: build/jovovich-train-mlp
 probe-mlp: build/jovovich-probe-mlp
+probe-gradients: build/jovovich-probe-gradients
 probe-tokenization: build/jovovich-probe-tokenization
 extract-readout: build/jovovich-extract-readout
 probe-readout: build/jovovich-probe-readout
@@ -49,6 +50,10 @@ build/jovovich-train-mlp: training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH
 build/jovovich-probe-mlp: training/probe_mlp.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/probe_mlp.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/jovovich-probe-gradients: training/probe_gradients.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/probe_gradients.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
 build/jovovich-probe-tokenization: training/probe_tokenization.c training/train_mlp.c src/infer.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build

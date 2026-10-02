@@ -1,0 +1,502 @@
+{
+  "schema": "jovovich.checkpoint-control.v1",
+  "frozen_at": "2026-10-02T00:36:32.054825+00:00",
+  "status": "frozen_before_any_generation",
+  "question": "Does the saved update100 checkpoint improve natural grounded reviews over the originally selected update25 checkpoint of the same v5 run?",
+  "scope": "New repeated-holdout diagnostic, not reconstruction of deleted historical responses. The 24 v5 holdout cases have previously been inspected; they are not an untouched confirmation set.",
+  "arms": [
+    "update25",
+    "update100"
+  ],
+  "case_count": 24,
+  "pair_count": 12,
+  "family_count": 6,
+  "primary": "Number of fully grounded concern/clean pairs on the same 12 pairs; retain individual, parser, and stop counts.",
+  "manual_rubric": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "adjudication": "Generator does not assign semantic judgments. Root and a separate auditor read complete response/prompt pairs; preserve explicit sensitivity decisions.",
+  "no_changes": [
+    "No retraining",
+    "No changed original checkpoint selection rule",
+    "No new runtime promotion",
+    "No forced answer prefix"
+  ],
+  "parity": {
+    "rows": [
+      0,
+      1,
+      2
+    ],
+    "both_arms": true,
+    "criteria": "Unmodified training/probe_mlp.c: all argmax agree, residual/logit relative L2 <=1e-5, batch CE delta <=1e-4."
+  },
+  "export": "Load exact recovered gate/up/down LoRA into unchanged native bank, native snapshot; merge update100 with existing merger; independent GGUF byte audit for both arms before parity/generation.",
+  "cases": {
+    "path": "training/results/2026-10-02-checkpoint-control/cases.jsonl",
+    "bytes": 88866,
+    "sha256": "49395b5962c1b1956fd3f67293bdc26b8d5587cf4d56599975de59e230a4fd8b"
+  },
+  "case_order": [
+    "holdout-v5-shift-width-pure-deletion-concern",
+    "holdout-v5-shift-width-pure-deletion-clean",
+    "holdout-v5-shift-width-replacement-noop-concern",
+    "holdout-v5-shift-width-replacement-noop-clean",
+    "holdout-v5-bounded-termination-pure-deletion-concern",
+    "holdout-v5-bounded-termination-pure-deletion-clean",
+    "holdout-v5-bounded-termination-replacement-noop-concern",
+    "holdout-v5-bounded-termination-replacement-noop-clean",
+    "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+    "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+    "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+    "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+    "holdout-v5-finite-number-pure-deletion-concern",
+    "holdout-v5-finite-number-pure-deletion-clean",
+    "holdout-v5-finite-number-replacement-noop-concern",
+    "holdout-v5-finite-number-replacement-noop-clean",
+    "holdout-v5-array-end-boundary-pure-deletion-concern",
+    "holdout-v5-array-end-boundary-pure-deletion-clean",
+    "holdout-v5-array-end-boundary-replacement-noop-concern",
+    "holdout-v5-array-end-boundary-replacement-noop-clean",
+    "holdout-v5-erase-target-pure-deletion-concern",
+    "holdout-v5-erase-target-pure-deletion-clean",
+    "holdout-v5-erase-target-replacement-noop-concern",
+    "holdout-v5-erase-target-replacement-noop-clean"
+  ],
+  "runner": {
+    "path": "models/checkpoint-control/infer",
+    "bytes": 225040,
+    "sha256": "9bc0e7a23c804cfe39ee896cf75737d413bfbad7c055043e6b41fecf0d008397"
+  },
+  "decoding": {
+    "temperature": 0,
+    "continuation_tokens": 192,
+    "context": 8192,
+    "threads": 2,
+    "NT_NO_I8": "1",
+    "mode": "natural",
+    "chat_template": "chatml"
+  },
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "scheduling": {
+    "max_parallel_workers": 2,
+    "one_worker_per_arm": true,
+    "case_order": "source order",
+    "max_emitted_tokens": 9216,
+    "environment": "Strip inherited NT_* settings before applying recorded native environment."
+  },
+  "model_inputs": {
+    "models/base-qwen.gguf": {
+      "path": "models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    "models/recovered-matched/matched-review-selected.gguf": {
+      "path": "models/recovered-matched/matched-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+    },
+    "models/recovered-matched/matched-review.bin": {
+      "path": "models/recovered-matched/matched-review.bin",
+      "bytes": 149471,
+      "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce"
+    },
+    "models/recovered-matched/matched-review.epoch100.down.lora": {
+      "path": "models/recovered-matched/matched-review.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65"
+    },
+    "models/recovered-matched/matched-review.epoch100.gate.lora": {
+      "path": "models/recovered-matched/matched-review.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4"
+    },
+    "models/recovered-matched/matched-review.epoch100.up.lora": {
+      "path": "models/recovered-matched/matched-review.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37"
+    },
+    "models/recovered-matched/matched-review.epoch25.down.lora": {
+      "path": "models/recovered-matched/matched-review.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067"
+    },
+    "models/recovered-matched/matched-review.epoch25.gate.lora": {
+      "path": "models/recovered-matched/matched-review.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e"
+    },
+    "models/recovered-matched/matched-review.epoch25.up.lora": {
+      "path": "models/recovered-matched/matched-review.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1"
+    }
+  },
+  "bindings": [
+    {
+      "path": "deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    },
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+    },
+    {
+      "path": "training/probe_mlp.c",
+      "bytes": 9303,
+      "sha256": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac"
+    },
+    {
+      "path": "training/merge_mlp.c",
+      "bytes": 8538,
+      "sha256": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67"
+    },
+    {
+      "path": "src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "path": "prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "path": "training/review_holdout_v5.jsonl",
+      "bytes": 40748,
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "path": "training/holdout_v5_design.json",
+      "bytes": 8279,
+      "sha256": "e314af96f91d4d14985ef0329b483be7becd770bfee9fd351e599c61e18dce53"
+    },
+    {
+      "path": "training/results/2026-09-29-small-step/probe_shared_prefix.mjs",
+      "bytes": 10672,
+      "sha256": "a291089cc108ea21eae33330957d6748a077dfc7a4fc5fdb9d8cd852d7b3954d"
+    },
+    {
+      "path": "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "bytes": 2197,
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1"
+    },
+    {
+      "path": "training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "path": "training/results/2026-10-01-matched-protections/protocol.json",
+      "bytes": 10483,
+      "sha256": "1e66ed198c6f4b62b2b71d09e70c7b4c7aed9e3523380719042e1037103d8992"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/weight-recovery.json",
+      "bytes": 18067,
+      "sha256": "5afb5f52914abadb6cf4ce1f8b48763c4ff0ba9ad3365c715d03b47d2f8e5684"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/export_saved_mlp.c",
+      "bytes": 1557,
+      "sha256": "697306c4a13de62964135a23256eda07c594f92aa4c9cd5577666c094c5f7deb"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/prepare_cases.mjs",
+      "bytes": 1807,
+      "sha256": "fd1da28615c05752bc258f7cb22d43717ea33478c40ed55157d1dbcb14d84947"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/evaluate_checkpoints.mjs",
+      "bytes": 6102,
+      "sha256": "cfc3034754e76e16846cc8350626a848d4cf76055cef02a7643f871142f85e6e"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/prepare_checkpoint_control.py",
+      "bytes": 6644,
+      "sha256": "7043ecba48db70341fba1a01e3bea2157d435bb06c6fe11b13404efd2f3fd9a9"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/run_checkpoint_control.py",
+      "bytes": 6720,
+      "sha256": "103528acd70a277ceef3f8f1ed46a10ae30956987dc02abd809643361a6686d9"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/cases.jsonl",
+      "bytes": 88866,
+      "sha256": "49395b5962c1b1956fd3f67293bdc26b8d5587cf4d56599975de59e230a4fd8b"
+    },
+    {
+      "path": "models/checkpoint-control/export-saved",
+      "bytes": 250752,
+      "sha256": "9aeda26d35466010827ef942478918b255b60dcda8faa65a430e391dbfc11e8d"
+    },
+    {
+      "path": "models/checkpoint-control/probe-mlp",
+      "bytes": 263256,
+      "sha256": "06d2c0c4be7b514d34242f3e43915f35efd64fb220c1ffa0fba12fb3c90e40f6"
+    },
+    {
+      "path": "models/checkpoint-control/infer",
+      "bytes": 225040,
+      "sha256": "9bc0e7a23c804cfe39ee896cf75737d413bfbad7c055043e6b41fecf0d008397"
+    },
+    {
+      "path": "models/checkpoint-control/merge-mlp",
+      "bytes": 52744,
+      "sha256": "a9b30f95ac29c10292811f15ede227b1462d02f377e238236153aa693b77a7cf"
+    },
+    {
+      "path": "models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "models/recovered-matched/matched-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.bin",
+      "bytes": 149471,
+      "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.down.lora",
+      "bytes": 368695,
+      "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.gate.lora",
+      "bytes": 368695,
+      "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.up.lora",
+      "bytes": 368693,
+      "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.down.lora",
+      "bytes": 368695,
+      "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.gate.lora",
+      "bytes": 368695,
+      "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e"
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.up.lora",
+      "bytes": 368693,
+      "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1"
+    }
+  ],
+  "build": [
+    {
+      "argv": [
+        "cc",
+        "-Ideps/notorch",
+        "-Itraining",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-DUSE_SIMD",
+        "-o",
+        "models/checkpoint-control/export-saved",
+        "training/results/2026-10-02-checkpoint-control/export_saved_mlp.c",
+        "deps/notorch/notorch.c",
+        "deps/notorch/gguf.c",
+        "deps/notorch/harness/runtime.c",
+        "deps/notorch/harness/arch_llama.c",
+        "deps/notorch/examples/bpe.c",
+        "-lm",
+        "-pthread"
+      ],
+      "started_at": "2026-10-02T00:36:07.862208+00:00",
+      "stdout": "training/results/2026-10-02-checkpoint-control/prepare-00.stdout.txt",
+      "stderr": "training/results/2026-10-02-checkpoint-control/prepare-00.stderr.txt",
+      "exit_code": 0,
+      "finished_at": "2026-10-02T00:36:14.930102+00:00"
+    },
+    {
+      "argv": [
+        "cc",
+        "-Ideps/notorch",
+        "-Itraining",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-DUSE_SIMD",
+        "-o",
+        "models/checkpoint-control/probe-mlp",
+        "training/probe_mlp.c",
+        "deps/notorch/notorch.c",
+        "deps/notorch/gguf.c",
+        "deps/notorch/harness/runtime.c",
+        "deps/notorch/harness/arch_llama.c",
+        "deps/notorch/examples/bpe.c",
+        "-lm",
+        "-pthread"
+      ],
+      "started_at": "2026-10-02T00:36:14.930437+00:00",
+      "stdout": "training/results/2026-10-02-checkpoint-control/prepare-01.stdout.txt",
+      "stderr": "training/results/2026-10-02-checkpoint-control/prepare-01.stderr.txt",
+      "exit_code": 0,
+      "finished_at": "2026-10-02T00:36:22.370894+00:00"
+    },
+    {
+      "argv": [
+        "cc",
+        "-Ideps/notorch",
+        "-Itraining",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-o",
+        "models/checkpoint-control/infer",
+        "src/infer.c",
+        "deps/notorch/notorch.c",
+        "deps/notorch/gguf.c",
+        "deps/notorch/harness/runtime.c",
+        "deps/notorch/harness/arch_llama.c",
+        "deps/notorch/examples/bpe.c",
+        "-lm",
+        "-pthread"
+      ],
+      "started_at": "2026-10-02T00:36:22.371147+00:00",
+      "stdout": "training/results/2026-10-02-checkpoint-control/prepare-02.stdout.txt",
+      "stderr": "training/results/2026-10-02-checkpoint-control/prepare-02.stderr.txt",
+      "exit_code": 0,
+      "finished_at": "2026-10-02T00:36:29.679714+00:00"
+    },
+    {
+      "argv": [
+        "cc",
+        "-Ideps/notorch",
+        "-Itraining",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-std=gnu11",
+        "-march=native",
+        "-o",
+        "models/checkpoint-control/merge-mlp",
+        "training/merge_mlp.c",
+        "deps/notorch/gguf.c",
+        "-lm",
+        "-pthread"
+      ],
+      "started_at": "2026-10-02T00:36:29.680124+00:00",
+      "stdout": "training/results/2026-10-02-checkpoint-control/prepare-03.stdout.txt",
+      "stderr": "training/results/2026-10-02-checkpoint-control/prepare-03.stderr.txt",
+      "exit_code": 0,
+      "finished_at": "2026-10-02T00:36:30.449130+00:00"
+    },
+    {
+      "argv": [
+        "node",
+        "training/results/2026-10-02-checkpoint-control/prepare_cases.mjs"
+      ],
+      "started_at": "2026-10-02T00:36:30.449388+00:00",
+      "stdout": "training/results/2026-10-02-checkpoint-control/prepare-04.stdout.txt",
+      "stderr": "training/results/2026-10-02-checkpoint-control/prepare-04.stderr.txt",
+      "exit_code": 0,
+      "finished_at": "2026-10-02T00:36:30.531038+00:00"
+    }
+  ],
+  "provenance": {
+    "git_head": "3895f760a02139226839b98fe6d00ff7d59eacb8",
+    "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+    "hf_repository": "ataeff/jovovich",
+    "hf_revision": "c9484feec99c5df47be5702d29098297aced1389",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "node": "v24.19.0"
+  },
+  "model_forward_calls_so_far": 0
+}

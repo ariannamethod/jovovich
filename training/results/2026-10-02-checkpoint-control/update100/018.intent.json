@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "arm": "update100",
+  "name": "holdout-v5-array-end-boundary-replacement-noop-concern",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "model": {
+    "path": "models/checkpoint-control/update100.gguf",
+    "bytes": 714116992,
+    "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+  },
+  "prompt_sha256": "c8529e2e8c0827d7921db2a52d8fcc6b12b2062402654309e987411d9d5c670e",
+  "runner": "models/checkpoint-control/infer",
+  "args": [
+    "--model",
+    "models/checkpoint-control/update100.gguf",
+    "--tokens",
+    "192",
+    "--context",
+    "8192",
+    "--temperature",
+    "0"
+  ],
+  "started_at": "2026-10-02T00:45:29.328Z"
+}

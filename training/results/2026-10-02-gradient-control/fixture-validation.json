@@ -1,0 +1,115 @@
+{
+  "schema": "jovovich.joint-gradient-fixture.v1",
+  "created_at": "2026-10-02T00:29:06.152958+00:00",
+  "fixture": {
+    "path": "test/joint.c",
+    "sha256": "e71a80844926670a84564914d1250b2a98135d86ee7fa073c8518ff70e0b76e1"
+  },
+  "trainer": {
+    "path": "training/train_mlp.c",
+    "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80"
+  },
+  "native_binary_sha256": "5a88d8e5a3fb37cf7a1cc3b842442f10b9322a9cf241463a04944ac6bed05af3",
+  "oracle": "Sum of one-token unweighted inference CE values, fixture-known members [1,2,4,5], decision sum/4 + residual sum/25. No backward or joint helper used for value oracle.",
+  "central_difference": {
+    "epsilon": 0.002,
+    "denominator": "actual float32 high-low coordinates",
+    "tolerance": "abs(error) <= 1e-4 + 0.02 * max(abs(analytic), abs(numerical))",
+    "coordinates_per_state": 42,
+    "states": [
+      "nonzero-AB",
+      "zero-B"
+    ],
+    "zero_B_expected_zero_A_coordinates": 20
+  },
+  "build": {
+    "argv": [
+      "make",
+      "-B",
+      "build/test-joint"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-02T00:28:49.988037+00:00",
+    "stdout": {
+      "path": "fixture-build.stdout.log",
+      "sha256": "1f4eb95b378997334e7b3b901aafef43135c67a62773b7986360c903ee244131"
+    },
+    "stderr": {
+      "path": "fixture-build.stderr.log",
+      "sha256": "f140990645461fec985c9f634c3f3c8cfc5dca58fe288b449bcc09db190a6c1b"
+    }
+  },
+  "positive": {
+    "argv": [
+      "./build/test-joint"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-02T00:28:57.576708+00:00",
+    "stdout": {
+      "path": "fixture-positive.stdout.log",
+      "sha256": "9a6ace1568de0fbcf05bf29b1e92b3c79439a1c32b6cdca37c7d4807ae72cb2d"
+    },
+    "stderr": {
+      "path": "fixture-positive.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "mutation": {
+    "target": "training/train_mlp.c",
+    "old": "nt_tape_apply_accum(1);joint_slots(b,1);",
+    "new": "nt_tape_apply_accum(2);joint_slots(b,1);",
+    "replacement_count": 1,
+    "mutated_source_sha256": "e5037651d39ff7d628d44f2bbf3d534d8b2322a623cad7d67f25dcc9dfce013e",
+    "negative_binary_sha256": "593b810869f3a5eae5ff258d46b4942a5854a0c5c2f052b938ee97d706cce19e",
+    "cleanup": "temporary source and binary removed; production source unchanged"
+  },
+  "negative_build": {
+    "argv": [
+      "cc",
+      "-Ideps/notorch",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-std=gnu11",
+      "-march=native",
+      "-DUSE_SIMD",
+      "-o",
+      "/tmp/jovovich-joint-negative-ikzbkfe0/test-joint",
+      "/tmp/jovovich-joint-negative-ikzbkfe0/joint.c",
+      "deps/notorch/notorch.c",
+      "deps/notorch/gguf.c",
+      "deps/notorch/harness/runtime.c",
+      "deps/notorch/harness/arch_llama.c",
+      "deps/notorch/examples/bpe.c",
+      "-lm",
+      "-pthread"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-02T00:28:58.314077+00:00",
+    "stdout": {
+      "path": "fixture-negative-build.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "fixture-negative-build.stderr.log",
+      "sha256": "f140990645461fec985c9f634c3f3c8cfc5dca58fe288b449bcc09db190a6c1b"
+    }
+  },
+  "negative": {
+    "argv": [
+      "/tmp/jovovich-joint-negative-ikzbkfe0/test-joint"
+    ],
+    "exit_code": -6,
+    "started_at": "2026-10-02T00:29:06.141507+00:00",
+    "stdout": {
+      "path": "fixture-negative.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "fixture-negative.stderr.log",
+      "sha256": "77d14bc0832bc0489c53ab214c8020f4aacabd1b1c637e7cefa7587542bc01d4"
+    }
+  },
+  "production_trainer_unchanged": true,
+  "scope": "Synthetic complete last-MLP joint objective and full existing joint suite; no Qwen-sized gradient or preceding-layer gradient claim."
+}

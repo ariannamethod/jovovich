@@ -1,0 +1,6 @@
+llama: E=896 H=14 KV=2 FFN=4864 V=151936 L=24 HD=64 Q=896
+  (has attention bias — qwen-style)
+  rope: neox | weights: packed
+saved models/checkpoint-control/update25.gate.f32 merge_max_abs=2.6077032e-08
+saved models/checkpoint-control/update25.up.f32 merge_max_abs=5.5879354e-08
+saved models/checkpoint-control/update25.down.f32 merge_max_abs=2.3841858e-07

@@ -1,0 +1,30 @@
+{
+  "schema": "jovovich.independent-semantic-rubric.v1",
+  "frozen_at_utc": "2026-10-02T00:44:45.681427+00:00",
+  "reviewer": "training_auditor agent, independent of primary review_judge",
+  "frozen_before_reading_current_responses": true,
+  "checkpoint_protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "scope": "All 48 natural outputs of the new repeated-holdout update25/update100 diagnostic; exact prompt, full response and production parser assessment.",
+  "production_usable": "The unchanged production parseReview accepts the full response and available changed-line citations. Parser acceptance alone does not imply semantic correctness.",
+  "concern_pass": "At least one concrete causal defect supported by the shown code and local rules, with an available causally appropriate changed-line citation. Every material claim and every finding must be supported; no unsupported extra allegations.",
+  "clean_pass": "The production parser accepts an empty findings array. A nonempty finding labeled Clean is not an empty review.",
+  "grounding": "A valid alternative wording or noncanonical changed-line citation is allowed if its causal link is supported. Merely quoting changed syntax or an abstract rule without identifying the violated mechanism is insufficient.",
+  "precision": "Awkward language can pass when the concrete causal claim is intelligible. Record accepted and stricter readings for material ambiguity; never silently shift the criterion.",
+  "sensitivity": "For every materially ambiguous response, explain the causal reading accepted or rejected and the corresponding strict outcome. Report pair counts under both readings.",
+  "pairs": "A pair passes only if its concern and clean outputs both pass completely; no substitution of first-token choice or concern presence.",
+  "independence": "Do not read primary-judgments files or messages conveying primary outcomes before completing this secondary assessment. Do not copy historical counts. Generation metadata/completeness checks are permitted.",
+  "per_case_fields": [
+    "arm",
+    "case_id",
+    "expected_concern",
+    "parser_usable",
+    "genuine_issue_detected",
+    "all_material_claims_supported",
+    "full_review_pass",
+    "strict_full_review_pass",
+    "reason",
+    "sensitivity",
+    "prompt_sha256",
+    "raw_response_sha256"
+  ]
+}

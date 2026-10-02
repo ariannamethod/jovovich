@@ -1,0 +1,18 @@
+{
+  "name": "generation-update100",
+  "argv": [
+    "node",
+    "training/results/2026-10-02-checkpoint-control/evaluate_checkpoints.mjs",
+    "update100"
+  ],
+  "started_at": "2026-10-02T00:39:42.637434+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "stdout": "training/results/2026-10-02-checkpoint-control/generation-update100.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/generation-update100.stderr.txt"
+}

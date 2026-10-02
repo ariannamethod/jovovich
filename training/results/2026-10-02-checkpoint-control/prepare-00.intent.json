@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "cc",
+    "-Ideps/notorch",
+    "-Itraining",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-std=gnu11",
+    "-march=native",
+    "-DUSE_SIMD",
+    "-o",
+    "models/checkpoint-control/export-saved",
+    "training/results/2026-10-02-checkpoint-control/export_saved_mlp.c",
+    "deps/notorch/notorch.c",
+    "deps/notorch/gguf.c",
+    "deps/notorch/harness/runtime.c",
+    "deps/notorch/harness/arch_llama.c",
+    "deps/notorch/examples/bpe.c",
+    "-lm",
+    "-pthread"
+  ],
+  "started_at": "2026-10-02T00:36:07.862208+00:00",
+  "stdout": "training/results/2026-10-02-checkpoint-control/prepare-00.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/prepare-00.stderr.txt"
+}

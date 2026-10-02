@@ -1,0 +1,34 @@
+{
+  "status": "complete",
+  "finished_at": "2026-10-02T00:49:18.807611+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "models": {
+    "update25": {
+      "path": "models/recovered-matched/matched-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+    },
+    "update100": {
+      "path": "models/checkpoint-control/update100.gguf",
+      "bytes": 714116992,
+      "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+    }
+  },
+  "cases_per_arm": 24,
+  "total_responses": 48,
+  "prompt_ids_identical_between_arms": true,
+  "frozen_inputs_unchanged": true,
+  "arm_receipts": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/update25/complete.json",
+      "bytes": 645,
+      "sha256": "8faf2f085157a7b08b038fee6e0198c1753fb77eda65ec280174fdc87832867e"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/update100/complete.json",
+      "bytes": 633,
+      "sha256": "1c4d54d89dc15ec9bedd3e6918030c55fbeed4b4932c2d6d6d9b5189754fe5c5"
+    }
+  ],
+  "semantic_judgments": "pending independent review; generation controller makes no semantic judgments"
+}

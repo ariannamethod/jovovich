@@ -1,0 +1,116 @@
+{
+  "status": "export_and_parity_passed",
+  "created_at": "2026-10-02T00:39:41.643402+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "models": {
+    "update25": {
+      "path": "models/recovered-matched/matched-review-selected.gguf",
+      "bytes": 714116992,
+      "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+    },
+    "update100": {
+      "path": "models/checkpoint-control/update100.gguf",
+      "bytes": 714116992,
+      "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+    }
+  },
+  "checks": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/export-audit-25.json",
+      "bytes": 515,
+      "sha256": "b00e2e99b9542183dbc15012859556c3965e228e978c8e702fcd884a1915fa7a"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-25.stdout.txt",
+      "bytes": 1776,
+      "sha256": "c197030aedcf958da25a3658ff022b61be2df73d0cdcf057a1fd1081c5548158"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-25.receipt.json",
+      "bytes": 1279,
+      "sha256": "7854a8b887d7c2893aa115dfa81b3a5c333306ba7791bb23e390e3bf7cdd4be5"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/export-audit-100.json",
+      "bytes": 503,
+      "sha256": "58db2946076ffd9409cd38c4dd99d6e2ff3fe7e0e8b1768c56a3faaceb705689"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-100.stdout.txt",
+      "bytes": 1663,
+      "sha256": "df4bfcae82092ba43bd01d9996c95deb59b82007510d1567b227cee9c9ba87e8"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-100.receipt.json",
+      "bytes": 1272,
+      "sha256": "aded11b06a52be840c3e6c17a95be84e3251bbc1560e0839846deafdc1e10679"
+    }
+  ],
+  "generated_weights": [
+    {
+      "path": "models/checkpoint-control/update100.down.f32",
+      "bytes": 17432576,
+      "sha256": "b951caf6064148fd3b71625092f60dc2fb44be82fd197878013495e3c3317911"
+    },
+    {
+      "path": "models/checkpoint-control/update100.down.lora",
+      "bytes": 368695,
+      "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65"
+    },
+    {
+      "path": "models/checkpoint-control/update100.gate.f32",
+      "bytes": 17432576,
+      "sha256": "4e51d577a4a01536013e6263f4442c745219446e4249d6fa6be62944adb78e5d"
+    },
+    {
+      "path": "models/checkpoint-control/update100.gate.lora",
+      "bytes": 368695,
+      "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4"
+    },
+    {
+      "path": "models/checkpoint-control/update100.gguf",
+      "bytes": 714116992,
+      "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+    },
+    {
+      "path": "models/checkpoint-control/update100.up.f32",
+      "bytes": 17432576,
+      "sha256": "0750e3c575fc4dcefd25725044b624e90a76710e284aae4c13f93c71ce7da828"
+    },
+    {
+      "path": "models/checkpoint-control/update100.up.lora",
+      "bytes": 368693,
+      "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37"
+    },
+    {
+      "path": "models/checkpoint-control/update25.down.f32",
+      "bytes": 17432576,
+      "sha256": "74a4bedfdabc42a8116de857b641d2f37631029cc7ae3e111949a099751f40e3"
+    },
+    {
+      "path": "models/checkpoint-control/update25.down.lora",
+      "bytes": 368695,
+      "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067"
+    },
+    {
+      "path": "models/checkpoint-control/update25.gate.f32",
+      "bytes": 17432576,
+      "sha256": "112499a6f9bc6f55627d063e813787737d1579e30f64adc85f8c3b44276e7238"
+    },
+    {
+      "path": "models/checkpoint-control/update25.gate.lora",
+      "bytes": 368695,
+      "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e"
+    },
+    {
+      "path": "models/checkpoint-control/update25.up.f32",
+      "bytes": 17432576,
+      "sha256": "1ee9cfd5d1294646cca10128c9929b70008cb9833d328e095795a58e673b4368"
+    },
+    {
+      "path": "models/checkpoint-control/update25.up.lora",
+      "bytes": 368693,
+      "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1"
+    }
+  ]
+}

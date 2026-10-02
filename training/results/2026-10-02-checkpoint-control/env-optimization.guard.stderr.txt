@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-02-checkpoint-control/replay_checkpoint_control.py", line 8, in <module>
+    raise RuntimeError('Checkpoint controls require Python assertions; optimization is forbidden before any work.')
+RuntimeError: Checkpoint controls require Python assertions; optimization is forbidden before any work.

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "arm": "update100",
+  "name": "holdout-v5-shift-width-pure-deletion-concern",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "model": {
+    "path": "models/checkpoint-control/update100.gguf",
+    "bytes": 714116992,
+    "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+  },
+  "prompt_sha256": "d6d2df4368723036cbc968e06e7079323789135576e8bbbca7b19e22a44462c0",
+  "runner": "models/checkpoint-control/infer",
+  "args": [
+    "--model",
+    "models/checkpoint-control/update100.gguf",
+    "--tokens",
+    "192",
+    "--context",
+    "8192",
+    "--temperature",
+    "0"
+  ],
+  "started_at": "2026-10-02T00:39:44.758Z"
+}

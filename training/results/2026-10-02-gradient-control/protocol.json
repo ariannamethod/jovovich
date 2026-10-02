@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "frozen_utc": "2026-10-02T00:38:02.736177+00:00",
+  "model_calls_before_freeze": 0,
+  "question": "Do native adapter derivatives agree with an independent smooth F64 suffix oracle on four real cached Qwen targets?",
+  "states": [
+    {
+      "name": "initial",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "initial",
+        "38",
+        "39"
+      ]
+    },
+    {
+      "name": "epoch25",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.epoch25",
+        "38",
+        "39"
+      ]
+    },
+    {
+      "name": "epoch100",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.epoch100",
+        "38",
+        "39"
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "path": "training/probe_gradients.c",
+      "sha256": "2e958db9f372a6688060a71ae1c770f5b58448299b5a42f558b979c6b59a1cf8",
+      "bytes": 15601
+    },
+    {
+      "path": "training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    {
+      "path": "Makefile",
+      "sha256": "5d444ef78151795ea8bdd3700341b94c3bb521aa9ac48997150f521ed1e2bb2f",
+      "bytes": 6376
+    },
+    {
+      "path": "deps/notorch/notorch.c",
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "bytes": 486394
+    },
+    {
+      "path": "deps/notorch/notorch.h",
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "bytes": 50653
+    },
+    {
+      "path": "deps/notorch/notorch_simd.h",
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "bytes": 27843
+    },
+    {
+      "path": "deps/notorch/gguf.c",
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "bytes": 53933
+    },
+    {
+      "path": "deps/notorch/gguf.h",
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "bytes": 11406
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    {
+      "path": "deps/notorch/harness/runtime.c",
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "bytes": 15583
+    },
+    {
+      "path": "deps/notorch/harness/runtime.h",
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "bytes": 5513
+    },
+    {
+      "path": "deps/notorch/harness/arch.h",
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "bytes": 6538
+    },
+    {
+      "path": "deps/notorch/harness/arch_models.h",
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "bytes": 1879
+    },
+    {
+      "path": "deps/notorch/examples/bpe.c",
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "bytes": 36729
+    },
+    {
+      "path": "deps/notorch/examples/bpe.h",
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "bytes": 2388
+    },
+    {
+      "path": "deps/notorch/examples/unicode_numbers.h",
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "bytes": 3449
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/run_control.py",
+      "sha256": "f889696c6f0244281765ccfdaf110be6b2c2a676e1b2cf88702f0361caaf46e8",
+      "bytes": 8598
+    },
+    {
+      "path": "build/jovovich-probe-gradients",
+      "sha256": "804323726bc407710973d84e091e2768bfd912d41ebee6b1e00c5458fbcf1614",
+      "bytes": 267752
+    },
+    {
+      "path": "models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    {
+      "path": "models/recovered-matched/matched-review.bin",
+      "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce",
+      "bytes": 149471
+    },
+    {
+      "path": "models/recovered-matched/matched-review.pairs",
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+      "bytes": 224
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.gate.lora",
+      "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.up.lora",
+      "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1",
+      "bytes": 368693
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.down.lora",
+      "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.gate.lora",
+      "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.up.lora",
+      "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37",
+      "bytes": 368693
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.down.lora",
+      "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65",
+      "bytes": 368695
+    }
+  ],
+  "sample": {
+    "dataset_rows": [
+      38,
+      39
+    ],
+    "targets": [
+      "row38 decision",
+      "row39 decision",
+      "row38 EOS",
+      "row39 first prefix token"
+    ],
+    "weights": "Original full-corpus coefficient: 1/52 decision, 1/1012 residual; no rescaling."
+  },
+  "directions": [
+    "largest-absolute-analytic-gradient coordinate per tensor",
+    "unit Rademacher vector per tensor, xorshift32 seed 20261002+tensor_index"
+  ],
+  "epsilons": [
+    0.01,
+    0.003,
+    0.001,
+    0.0003
+  ],
+  "gates": {
+    "gradient": "Every direction must agree and be stable at both smallest adjacent eps; abs<=2e-7+0.01*max(abs(analytic),abs(numeric)).",
+    "active_coverage": "Each nonzero-expected tensor needs at least one agreeing direction with analytic and numeric magnitude>=2e-5. Matching weaker directions are inconclusive.",
+    "initial_A": "All A gradients and finest two numerical derivatives must be exactly zero when B=0.",
+    "baseline_per_target": "max logit abs<=1e-3, logit relative L2<=1e-5, CE abs<=1e-4.",
+    "weighted_loss": "abs production loss minus oracle<=1e-4*sum(target coefficients)+1e-7.",
+    "unchanged": "Native parameter/cache byte guard and unchanged SHA256 input/source bindings."
+  },
+  "limits": [
+    "F64 oracle differentiates the smooth mathematical suffix using stored F32 values, not the rounded F32 program.",
+    "Four sampled contributions do not constitute the full 1064-target gradient.",
+    "Frozen attention and preceding blocks, clean EOS, and semantic reason tokens are not tested.",
+    "No optimizer update, training, checkpoint selection or runtime promotion."
+  ],
+  "environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4"
+  },
+  "host": {
+    "system": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "notorch_pin": "7e246e13f9dbbb7e61312b7341fb94ce492bff71"
+}

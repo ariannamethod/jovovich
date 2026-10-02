@@ -1,0 +1,276 @@
+{
+  "schema": "jovovich.independent-gradient-post-run.v1",
+  "created_at_utc": "2026-10-02T00:45:56.337353+00:00",
+  "reviewer": "training_auditor; independent of probe author",
+  "status": "independently_recomputed_frozen_gates_pass",
+  "auditor_model_calls": 0,
+  "protocol": {
+    "path": "training/results/2026-10-02-gradient-control/protocol.json",
+    "bytes": 8378,
+    "sha256": "5664aca22873127d9a5af539eda545e962f131b376ac9f0933e314d9eecea1d9"
+  },
+  "run_receipt": {
+    "path": "training/results/2026-10-02-gradient-control/run-receipt.json",
+    "bytes": 4602,
+    "sha256": "6706aa0769410319c49b7d8b8b456d63d8528d4e1ceffca33bd62a14559ff842"
+  },
+  "preflight_audit": {
+    "path": "training/results/2026-10-02-gradient-control/preflight-audit.json",
+    "bytes": 5389,
+    "sha256": "85c5ec30175e585e76a13195a06b7e9bed68a1c1ffc9ed92b2396910c29fde76"
+  },
+  "verified_input_bindings": [
+    {
+      "path": "training/probe_gradients.c",
+      "sha256": "2e958db9f372a6688060a71ae1c770f5b58448299b5a42f558b979c6b59a1cf8",
+      "bytes": 15601
+    },
+    {
+      "path": "training/train_mlp.c",
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "bytes": 39525
+    },
+    {
+      "path": "Makefile",
+      "sha256": "5d444ef78151795ea8bdd3700341b94c3bb521aa9ac48997150f521ed1e2bb2f",
+      "bytes": 6376
+    },
+    {
+      "path": "deps/notorch/notorch.c",
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "bytes": 486394
+    },
+    {
+      "path": "deps/notorch/notorch.h",
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "bytes": 50653
+    },
+    {
+      "path": "deps/notorch/notorch_simd.h",
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "bytes": 27843
+    },
+    {
+      "path": "deps/notorch/gguf.c",
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "bytes": 53933
+    },
+    {
+      "path": "deps/notorch/gguf.h",
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "bytes": 11406
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "bytes": 22664
+    },
+    {
+      "path": "deps/notorch/harness/runtime.c",
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "bytes": 15583
+    },
+    {
+      "path": "deps/notorch/harness/runtime.h",
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "bytes": 5513
+    },
+    {
+      "path": "deps/notorch/harness/arch.h",
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "bytes": 6538
+    },
+    {
+      "path": "deps/notorch/harness/arch_models.h",
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "bytes": 1879
+    },
+    {
+      "path": "deps/notorch/examples/bpe.c",
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "bytes": 36729
+    },
+    {
+      "path": "deps/notorch/examples/bpe.h",
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "bytes": 2388
+    },
+    {
+      "path": "deps/notorch/examples/unicode_numbers.h",
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "bytes": 3449
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/run_control.py",
+      "sha256": "f889696c6f0244281765ccfdaf110be6b2c2a676e1b2cf88702f0361caaf46e8",
+      "bytes": 8598
+    },
+    {
+      "path": "build/jovovich-probe-gradients",
+      "sha256": "804323726bc407710973d84e091e2768bfd912d41ebee6b1e00c5458fbcf1614",
+      "bytes": 267752
+    },
+    {
+      "path": "models/base-qwen.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    {
+      "path": "models/recovered-matched/matched-review.bin",
+      "sha256": "54636d0d1d2c95d1fce45243d8ae3a6d1268a560dcdb07e943cff4bd9d7eacce",
+      "bytes": 149471
+    },
+    {
+      "path": "models/recovered-matched/matched-review.pairs",
+      "sha256": "c9e42c3055f3c719531c5ec304ee8ab579a93a724d1a6e44ec814f10382cc472",
+      "bytes": 224
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.gate.lora",
+      "sha256": "a45d8ec5d9bcde5f8d84a149d1af9863d35bee18cd3cda208155a0f2afe2730e",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.up.lora",
+      "sha256": "b5b843418bae3ee89d77d1b4d01bcca341bd17d7ab9c0a01ce1027f8751fdff1",
+      "bytes": 368693
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch25.down.lora",
+      "sha256": "785fdf265fdde4fc282e6b7f7f25466c78fda350ca06f1ca4bb36c0a01cab067",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.gate.lora",
+      "sha256": "4d1578048a06c3dd84e78cf06f5d8a5b201f7ebbb65831b3c45c38924d02c6c4",
+      "bytes": 368695
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.up.lora",
+      "sha256": "bb66f96388e041e4f65b92bf908a3d86b4376f0f480e2f4d2adab98ac6831b37",
+      "bytes": 368693
+    },
+    {
+      "path": "models/recovered-matched/matched-review.epoch100.down.lora",
+      "sha256": "544b9b74977df2a6d575a228acf369ecd83d7af684d57e407a92d8155167ee65",
+      "bytes": 368695
+    }
+  ],
+  "verified_raw_bindings": [
+    {
+      "path": "training/results/2026-10-02-gradient-control/initial.jsonl",
+      "bytes": 23773,
+      "sha256": "e63db694f995da7ac4396237cab8076dae9906b6c9a84ed7a7a6e62b3f2ec068"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/initial.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/epoch25.jsonl",
+      "bytes": 25413,
+      "sha256": "707c0b8b98a86665b4ab77cdc262d92829db5b1670dab30a99bae9dde85759f3"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/epoch25.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/epoch100.jsonl",
+      "bytes": 25478,
+      "sha256": "75d0494dced24dda16b31246ff6113f6cf6994bd7342e423c8ded1bc209c5858"
+    },
+    {
+      "path": "training/results/2026-10-02-gradient-control/epoch100.stderr",
+      "bytes": 127,
+      "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131"
+    }
+  ],
+  "states": [
+    {
+      "state": "initial",
+      "records": 69,
+      "finite_differences": 48,
+      "all_scales_pass": true,
+      "active_tensors": 3,
+      "expected_zero_tensors": 3,
+      "inconclusive_directions": [],
+      "max_absolute_derivative_error": 3.273215537702434e-05,
+      "max_finest_tolerance_fraction": 0.04743399277925841,
+      "max_logit_error": 3.2703413374690626e-05,
+      "weighted_loss_difference": 1.0264868190584808e-06
+    },
+    {
+      "state": "epoch25",
+      "records": 69,
+      "finite_differences": 48,
+      "all_scales_pass": true,
+      "active_tensors": 6,
+      "expected_zero_tensors": 0,
+      "inconclusive_directions": [
+        "gate.B:rademacher_unit"
+      ],
+      "max_absolute_derivative_error": 6.068955670952836e-05,
+      "max_finest_tolerance_fraction": 0.5345382027526413,
+      "max_logit_error": 2.9650712306761307e-05,
+      "weighted_loss_difference": 2.4727610516660226e-06
+    },
+    {
+      "state": "epoch100",
+      "records": 69,
+      "finite_differences": 48,
+      "all_scales_pass": false,
+      "active_tensors": 6,
+      "expected_zero_tensors": 0,
+      "inconclusive_directions": [
+        "gate.A:rademacher_unit",
+        "up.A:rademacher_unit",
+        "down.A:rademacher_unit"
+      ],
+      "max_absolute_derivative_error": 0.00013418246783755,
+      "max_finest_tolerance_fraction": 0.009721465862006184,
+      "max_logit_error": 4.958625078899104e-05,
+      "weighted_loss_difference": 5.084642630513725e-07
+    }
+  ],
+  "checks": [
+    "All 27 frozen source, model, input, adapter and binary SHA256 and byte bindings rechecked.",
+    "All phase stdout/stderr hashes and exit codes checked.",
+    "Every central difference recomputed from recorded loss_plus, loss_minus and epsilon; reported errors, limits and per-epsilon flags verified.",
+    "Two finest epsilon agreement and stability independently recomputed for every direction.",
+    "Active, expected-zero and inconclusive coverage independently counted; all tensor coverage conditions checked.",
+    "Each baseline target ID checked at its declared completion position in the recorded native input IDs; IDs identical across all three states.",
+    "Baseline scalar/per-target predicates and final byte-unchanged/no-optimizer flags checked."
+  ],
+  "finite_difference_comparisons": 144,
+  "individual_epsilon_passes": 143,
+  "finest_direction_gates_passed": 36,
+  "coarse_exceptions": [
+    {
+      "state": "epoch100",
+      "kind": "finite_difference",
+      "tensor": "up.B",
+      "direction": "maximum_coordinate",
+      "coordinate": 66819,
+      "seed": 20261005,
+      "epsilon": 0.01,
+      "analytic": 0.012131131254136562,
+      "numerical": 0.012265313721974112,
+      "loss_plus": 0.027106891355954395,
+      "loss_minus": 0.026861585081514913,
+      "absolute_error": 0.00013418246783755,
+      "limit": 0.00012285313721974113,
+      "pass": false
+    }
+  ],
+  "interpretation": "The only failed individual epsilon comparison is a coarse h=0.01 up.B coordinate at epoch100. Its finer scales pass the preregistered gate. This is compatible with finite-step curvature; this audit does not establish the mechanism. No threshold was changed.",
+  "limitations": [
+    "The oracle differentiates a smooth F64 suffix using stored F32 inputs/parameters, not a rounded F32 program.",
+    "Four contributions do not establish the full 1064-target gradient; frozen attention/preceding layers and optimizer convergence are outside scope.",
+    "Two directions per tensor do not exhaust all coordinates.",
+    "Raw full gradient vectors and oracle full logit arrays are not retained; this audit recomputes recorded numerical differences, gates, coverage, indexing and bindings, not those complete arrays.",
+    "The local unchanged-byte guard is read from the independently inspected executable output, not a second before/after memory capture by this auditor."
+  ]
+}

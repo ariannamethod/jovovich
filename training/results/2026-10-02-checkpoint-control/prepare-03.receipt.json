@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "cc",
+    "-Ideps/notorch",
+    "-Itraining",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-std=gnu11",
+    "-march=native",
+    "-o",
+    "models/checkpoint-control/merge-mlp",
+    "training/merge_mlp.c",
+    "deps/notorch/gguf.c",
+    "-lm",
+    "-pthread"
+  ],
+  "started_at": "2026-10-02T00:36:29.680124+00:00",
+  "stdout": "training/results/2026-10-02-checkpoint-control/prepare-03.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/prepare-03.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:36:30.449130+00:00"
+}

@@ -1,0 +1,1 @@
+{"findings":[{"line_id":1,"reason":"Removed the memset(secret, 0, 4); line in keys/erase_snapshot.c"}]}

@@ -97,6 +97,84 @@ static double token_oracle(mlp_bank *b,mlp_example *rows,float *gradient) {
 static float max_difference(const float *a,const float *b,int n) {
     float maximum=0;for(int i=0;i<n;i++){assert(isfinite(a[i])&&isfinite(b[i]));maximum=fmaxf(maximum,fabsf(a[i]-b[i]));}return maximum;
 }
+/* This value oracle never calls backward, joint_loss, joint_coefficient, or
+ * joint_order. Membership comes from the fixture, and each inference call is
+ * one unweighted token. Accumulate the two CE sums in double before dividing. */
+static double objective_value(mlp_bank *b,mlp_example *rows) {
+    const int members[]={1,2,4,5};double decision_sum=0,residual_sum=0;int nd=0,nr=0;
+    for(unsigned m=0;m<sizeof(members)/sizeof(*members);m++) {
+        int row=members[m];
+        for(int pos=0;pos<lengths[row];pos++) {
+            token_row one={row,pos};mlp_batch s=gather(b,rows,&one,1);assert(!s.weights);
+            nt_tape_start();int ce=mlp_forward(b,&s,0,NULL,NULL,NULL);
+            double value=nt_tape_get()->entries[ce].output->data[0];assert(isfinite(value));
+            assert(nt_tape_get()->n_params==0);
+            if(pos==positions[row]){decision_sum+=value;nd++;}else{residual_sum+=value;nr++;}
+            nt_tape_clear();batch_free(&s);
+        }
+    }
+    assert(nd==DECISIONS&&nr==RESIDUAL);
+    return decision_sum/DECISIONS+residual_sum/RESIDUAL;
+}
+static double derivative_tolerance(double analytic,double numerical) {
+    /* CE outputs and inference arithmetic are float32. The absolute allowance
+     * covers cancellation around h=.002; the relative allowance bounds larger
+     * derivatives. Both constants are fixed for every tensor and both states. */
+    return 1e-4+.02*fmax(fabs(analytic),fabs(numerical));
+}
+static int derivative_matches(double analytic,double numerical) {
+    return isfinite(analytic)&&isfinite(numerical)&&fabs(analytic-numerical)<=derivative_tolerance(analytic,numerical);
+}
+static void finite_difference_tests(mlp_bank *b,mlp_example *rows,token_row *order) {
+    const char *names[]={"gate.A","gate.B","up.A","up.B","down.A","down.B"};
+    const float epsilon=.002f;float initial[ELEMENTS];int p=0;
+    nt_tensor *frozen[]={b->wg,b->wu,b->wd,b->head,b->norm,b->ffn_norm,b->bias},*saved[7];
+    for(int j=0;j<7;j++)saved[j]=nt_tensor_clone(frozen[j]);
+    for(int j=0;j<PARAMS;j++)for(int k=0;k<parameter(b,j)->len;k++)initial[p++]=parameter(b,j)->data[k];
+    assert(p==ELEMENTS);
+    for(int zero_b=0;zero_b<2;zero_b++) {
+        reset_optimizer(b);p=0;
+        for(int j=0;j<PARAMS;j++)for(int k=0;k<parameter(b,j)->len;k++,p++)
+            parameter(b,j)->data[k]=(zero_b&&j%2)?0:initial[p];
+        float before[3*ELEMENTS],after[3*ELEMENTS],analytic[ELEMENTS];double numerical[ELEMENTS];
+        read_state(b,0,before);double expected_loss=objective_value(b,rows),actual_loss;
+        joint_accumulate(b,rows,order,TOTAL,7,DECISIONS,RESIDUAL,&actual_loss);
+        read_gradient(b,analytic);read_state(b,0,after);assert(!memcmp(before,after,sizeof(before)));
+        assert(fabs(actual_loss-expected_loss)<2e-6);nt_tape_clear();
+        double max_error=0,max_fraction=0,max_a=0;int zero_a=0,wrong_normalization_rejected=0;p=0;
+        for(int j=0;j<PARAMS;j++) {
+            nt_tensor *param=parameter(b,j);double tensor_error=0,tensor_gradient=0;
+            for(int k=0;k<param->len;k++,p++) {
+                float old=param->data[k],hi=old+epsilon,lo=old-epsilon;assert(hi>old&&lo<old);
+                param->data[k]=hi;double positive=objective_value(b,rows);
+                param->data[k]=lo;double negative=objective_value(b,rows);param->data[k]=old;
+                numerical[p]=(positive-negative)/((double)hi-lo);
+                double error=fabs(analytic[p]-numerical[p]),tolerance=derivative_tolerance(analytic[p],numerical[p]);
+                if(!derivative_matches(analytic[p],numerical[p]))
+                    fprintf(stderr,"Joint finite difference failed: zero_B=%d %s[%d] analytic=%.9g numerical=%.9g error=%.9g tolerance=%.9g\n",zero_b,names[j],k,analytic[p],numerical[p],error,tolerance);
+                assert(derivative_matches(analytic[p],numerical[p]));
+                max_error=fmax(max_error,error);max_fraction=fmax(max_fraction,error/tolerance);
+                tensor_error=fmax(tensor_error,error);tensor_gradient=fmax(tensor_gradient,fabs(analytic[p]));
+                /* Averaging the two already-normalized partitions again is a
+                 * plausible wrong objective. The same derivative gate must
+                 * reject its half-sized gradients, without mutating code. */
+                wrong_normalization_rejected+=!derivative_matches(.5*analytic[p],numerical[p]);
+                if(zero_b&&j%2==0){assert(analytic[p]==0&&numerical[p]==0);zero_a++;}
+                if(j%2==0)max_a=fmax(max_a,fabs(analytic[p]));
+            }
+            if(!zero_b||j%2)assert(tensor_gradient>1e-5);
+            printf("Joint finite difference: state=%s tensor=%s coordinates=%d max_abs_error=%.9g max_abs_gradient=%.9g\n",zero_b?"zero-B":"nonzero-AB",names[j],param->len,tensor_error,tensor_gradient);
+        }
+        assert(p==ELEMENTS&&wrong_normalization_rejected>0);
+        assert(!zero_b||(zero_a==20&&max_a==0));
+        read_state(b,0,after);assert(!memcmp(before,after,sizeof(before)));
+        for(int j=0;j<7;j++)assert(!memcmp(frozen[j]->data,saved[j]->data,(size_t)frozen[j]->len*sizeof(float)));
+        printf("Joint finite difference: state=%s 42/42 pass h=%.9g loss=%.9g loss_error=%.9g max_abs_error=%.9g max_tolerance_fraction=%.9g; wrong half-normalization rejected at %d/42 coordinates; zero_A=%d; frozen weights unchanged\n",zero_b?"zero-B":"nonzero-AB",epsilon,expected_loss,fabs(actual_loss-expected_loss),max_error,max_fraction,wrong_normalization_rejected,zero_a);
+    }
+    reset_optimizer(b);p=0;
+    for(int j=0;j<PARAMS;j++)for(int k=0;k<parameter(b,j)->len;k++)parameter(b,j)->data[k]=initial[p++];
+    for(int j=0;j<7;j++)nt_tensor_free(saved[j]);
+}
 static void diagnostics(mlp_bank *b,mlp_example *rows) {
     token_row all[ALL],decisions[DECISIONS];int p=0,q=0;
     for(int i=0;i<ROWS;i++)for(int j=0;j<lengths[i];j++){all[p++]=(token_row){i,j};if(j==positions[i])decisions[q++]=(token_row){i,j};}
@@ -232,6 +310,6 @@ static void rejection_tests(mlp_bank *b,mlp_example *rows,token_row *order) {
 int main(void) {
     mlp_bank b;mlp_example rows[ROWS];fixture_init(&b,rows);
     int nd,nr;token_row *order=joint_order(rows,ROWS,&nd,&nr);assert(nd==DECISIONS&&nr==RESIDUAL);
-    objective_tests(&b,rows,order);optimizer_tests(&b,rows,order);rejection_tests(&b,rows,order);
+    finite_difference_tests(&b,rows,order);objective_tests(&b,rows,order);optimizer_tests(&b,rows,order);rejection_tests(&b,rows,order);
     free(order);fixture_free(&b,rows);return 0;
 }

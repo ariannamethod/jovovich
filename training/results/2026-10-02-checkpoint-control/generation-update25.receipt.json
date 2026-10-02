@@ -1,0 +1,33 @@
+{
+  "name": "generation-update25",
+  "argv": [
+    "node",
+    "training/results/2026-10-02-checkpoint-control/evaluate_checkpoints.mjs",
+    "update25"
+  ],
+  "started_at": "2026-10-02T00:39:42.636464+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "stdout": "training/results/2026-10-02-checkpoint-control/generation-update25.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/generation-update25.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:49:14.737606+00:00",
+  "elapsed_seconds": 572.0984874490096,
+  "logs": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/generation-update25.stdout.txt",
+      "bytes": 2735,
+      "sha256": "6d3d620bcc13f0e46e0c0efeafe8fc16be33eda3d00d60a16b973ac45e158c08"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/generation-update25.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"findings":[{"line_id":3,"reason":"Removing the only check before the actual check allows for the division by zero."}]}

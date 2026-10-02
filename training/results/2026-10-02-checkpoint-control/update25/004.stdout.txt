@@ -1,0 +1,1 @@
+{"findings":[{"line_id":1,"reason":"Removed text/record_end.c:5:     buf[n - 1] = 0;","line_number":1,"reason":"Removed the final byte buf[n - 1] must be zero before the function returns."}]}
