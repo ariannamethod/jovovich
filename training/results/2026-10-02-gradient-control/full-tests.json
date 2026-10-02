@@ -1,0 +1,19 @@
+{
+  "command": [
+    "make",
+    "test"
+  ],
+  "started_at": "2026-10-02T00:49:47.971831+00:00",
+  "exit_code": 0,
+  "ended_at": "2026-10-02T00:50:53.266004+00:00",
+  "stdout": {
+    "path": "training/results/2026-10-02-gradient-control/full-tests.stdout.txt",
+    "bytes": 14356,
+    "sha256": "0be3ebb10562a6b2c1fb36565f350a9c143eac791eebcd2a3db2cfc2ad7edef5"
+  },
+  "stderr": {
+    "path": "training/results/2026-10-02-gradient-control/full-tests.stderr.txt",
+    "bytes": 44796,
+    "sha256": "590ba804ff9b104db3dd702bfc82685ff50b757f3d773317834b79c7385302ab"
+  }
+}

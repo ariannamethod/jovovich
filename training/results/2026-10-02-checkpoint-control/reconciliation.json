@@ -1,0 +1,55 @@
+{
+  "schema": "jovovich.independent-judgment-reconciliation.v1",
+  "created_at": "2026-10-02T00:52:20.584732+00:00",
+  "inputs": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/primary-judgments.json",
+      "bytes": 106407,
+      "sha256": "41a6b53a1b4fe30d339853c4b225cb68ec5e6c470e35b4315978b4bf81781fb0"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/secondary-judgments.json",
+      "bytes": 65735,
+      "sha256": "8f7aff4f494996effbdbe895940796346fc0f668ab5fbfc239c41cb5c14c2f03"
+    }
+  ],
+  "paired_judgments": 48,
+  "compared_fields": [
+    "expected_concern",
+    "parser_usable",
+    "genuine_issue_detected",
+    "strict_genuine_issue_detected",
+    "full_review_pass",
+    "strict_full_review_pass",
+    "prompt_sha256",
+    "model_sha256",
+    "stop_reason",
+    "response_sha256/raw_response_sha256"
+  ],
+  "differences": [],
+  "summary": {
+    "update25": {
+      "cases": 24,
+      "parser_usable": 16,
+      "grounded_concerns": 1,
+      "strict_grounded_concerns": 0,
+      "correct_clean": 0,
+      "full_reviews": 1,
+      "strict_full_reviews": 0,
+      "complete_pairs": 0,
+      "strict_complete_pairs": 0
+    },
+    "update100": {
+      "cases": 24,
+      "parser_usable": 20,
+      "grounded_concerns": 0,
+      "strict_grounded_concerns": 0,
+      "correct_clean": 10,
+      "full_reviews": 10,
+      "strict_full_reviews": 10,
+      "complete_pairs": 0,
+      "strict_complete_pairs": 0
+    }
+  },
+  "note": "Both first-pass files were locked independently before reconciliation. Original rationales are retained. This comparison does not make a third manual semantic judgment."
+}

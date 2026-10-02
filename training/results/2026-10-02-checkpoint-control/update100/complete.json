@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "arm": "update100",
+  "cases": 24,
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "verified_models_sha256": "a6392b5c5fe323f7adf4311fec5a471ae81973594e0a4e12d30616b982353dfd",
+  "model": {
+    "path": "models/checkpoint-control/update100.gguf",
+    "bytes": 714116992,
+    "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e"
+  },
+  "responses_sha256": "3228d795667d2c2aefc840427ed928d26930753742240759ffbbaaaf1b5b27ec",
+  "frozen_sources_unchanged": true,
+  "model_sha256_unchanged": true,
+  "finished_at": "2026-10-02T00:47:28.558Z"
+}

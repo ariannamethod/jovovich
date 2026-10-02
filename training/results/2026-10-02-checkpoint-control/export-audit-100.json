@@ -1,0 +1,18 @@
+{
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "model": {
+    "path": "models/checkpoint-control/update100.gguf",
+    "sha256": "6af759bd8feccda40128e7ca74e9ca4cd3af59f286623bcaa7a153208e84773e",
+    "bytes": 714116992
+  },
+  "prefix": "models/checkpoint-control/update100",
+  "metadata_equal": true,
+  "expected_extent": 714116992,
+  "unchanged": 288,
+  "adapted": 3,
+  "valid": true
+}

@@ -2,6 +2,153 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## Run preservation rule
+
+Before another training or representation-collection run starts, its launcher
+must demonstrate incremental off-workspace persistence. Publish the frozen
+protocol, source/input bindings and destination first. Transfer each closed
+checkpoint, measurement segment and case result as it becomes available;
+build the manifest incrementally. Verify remote byte count and SHA256 before
+marking an artifact durable. Keep weights in the private Hugging Face repository;
+publish reviewable code and evidence through a Git branch. A local flush or
+upload request alone is not remote verification.
+
+An unavailable or mismatching destination blocks advancement to the next
+work unit; resume from the last remotely verified unit without overwriting its
+evidence. Mark completion only after the complete required manifest is remotely
+verified. An interrupted or incomplete run still exists as failure evidence;
+it must not be reported as a complete archived run. Record the last verified
+unit so the remaining exposure is explicit. Test interrupted uploads and
+recovery before trusting the launcher. A paragraph cannot eliminate a failure
+window by decree.
+
+This rule follows the lost matched-run archive. The historical launchers below
+do not implement continuous remote sync; preserving their executed bytes is
+not an exemption for future runs. A launcher with demonstrated remote receipts
+is a prerequisite for the next training or layer-collection experiment.
+
+## 2026-10-02 — The selector arrived before the review did.
+
+A newly frozen diagnostic compares the recovered v5 update 25 with update 100
+on the same 24 transfer prompts: twelve concern/clean pairs across six families.
+Both use the natural production prompt, exact Qwen ChatML, no supplied answer
+prefix, temperature zero and a 192-token cap. These cases have already been
+inspected; this is repeated diagnostic evidence, not untouched confirmation.
+Training and the historical checkpoint selector are unchanged.
+
+Both exported models pass independent metadata and byte-payload checks across
+all 291 tensors, with exactly three adapted projections and 288 unchanged
+tensors. Cached/full-model parity matches 92/92 completion-token argmax choices
+in each arm. All 48 new responses, native prompt/generated IDs, stop reasons
+and process records are preserved. They do not recreate the lost 176-response
+historical archive.
+
+Two judges independently read every complete prompt and response before
+comparing their locked results. All 48 primary and strict outcomes agree.
+
+| Repeated transfer diagnostic | Update 25 | Update 100 |
+| --- | ---: | ---: |
+| Production-usable responses | 16/24 | 20/24 |
+| Grounded concern reviews | 1/12 | 0/12 |
+| Correct empty clean reviews | 0/12 | 10/12 |
+| Full individual reviews | 1/24 | 10/24 |
+| Complete concern/clean pairs | 0/12 | 0/12 |
+| EOS / token-limit stops | 16 / 8 | 23 / 1 |
+
+The sole accepted update-25 concern awkwardly connects removed final-byte
+zeroing with the required termination property. A strict rule-echo reading
+reduces its concern and full-review counts to zero; pair results stay zero.
+All twenty usable update-100 responses are empty, including ten missed defects.
+The remaining four finite-number responses invent a division mechanism, lose
+valid citations or repeat until truncation. Better formatting and more correct
+clean answers therefore do not establish better discrimination.
+
+The earlier-update tie-break materially affects the visible failure pattern.
+This comparison does not prove why the model fails, that longer training will
+solve it, or that the matched corpus itself caused the earlier regression.
+Neither checkpoint earns runtime promotion. The final-position information
+claim remains a hypothesis to test separately.
+
+An audit caught Python `assert` gates in the already launched frozen helpers.
+Those executed bytes are retained. A separate validator repeats the actual
+291-tensor payload checks, parity thresholds and every response/trace binding
+using explicit exceptions; it passes under `python -O`, verifying 45 frozen
+bindings. The replay wrapper refuses optimized Python before invoking the
+historical helpers. This is a documented post-run validation, not a claim that
+the original helper design was robust to optimization. Production parsing is
+also independently repeated on all 48 saved responses.
+
+Complete new evidence, both rubrics and judgments, their reconciliation and
+the guarded replay entry point are in
+[`training/results/2026-10-02-checkpoint-control`](training/results/2026-10-02-checkpoint-control).
+The final `make test` gate passes seven native executables and 84 Node tests.
+Copilot's PR #14 request for the partial-stderr-open regression was already
+fixed before merge and remains covered. SERGE has one cigarette. The selector
+does not get a second one for selecting a shorter answer.
+
+## 2026-10-02 — The derivative has an alibi. A limited one.
+
+The public Q8 base and all sixteen private matched-run files are recovered from
+their pinned revisions and pass fresh SHA256 and byte-count checks. These are
+new recovery receipts, not the missing original training trace. A subsequent
+platform notice identifies automated scratch maintenance as the cause of the
+broad workspace loss. That updates the earlier unresolved incident; it does
+not establish the cause of the separate transient GGUF-prefix anomaly.
+
+An independent value-only oracle now checks the synthetic joint objective's
+gradient. All 84 coordinate differences pass across nonzero-adapter and zero-B
+states. At zero B, all twenty A derivatives are exactly zero while all three B
+tensors receive a signal. Deliberately dividing the accumulated production
+gradient by two fails the new test. The mutation is removed; the trainer is
+unchanged. This is a test that can object, not just applaud.
+
+The new native `probe-gradients` checks actual Qwen dimensions and recovered
+adapters at initialization, update 25 and update 100. It compares production
+backward with an independently written, double-precision value-only suffix:
+LoRA, SwiGLU, residual, final normalization and the full vocabulary loss. Four
+fixed targets from two training rows retain their original coefficients,
+`1/52` for a decision and `1/1012` for a residual target. Each of the six A/B
+tensors gets a maximum-gradient coordinate and a seeded unit random direction.
+
+All 36 directions satisfy the frozen agreement and stability gates at the two
+finest step sizes. Initial A gradients correctly vanish; all expected active
+tensors have resolved coordinate coverage. Four random directions have too
+little signal for active coverage and remain explicitly inconclusive. Of all
+144 individual step-size comparisons, 143 pass: update 100's `up.B` coordinate
+66819 fails at the coarsest step, 0.01, while its finer steps pass. The failed
+coarse comparison is retained. The largest baseline full-logit discrepancy is
+0.0000495863. No optimizer step occurs, and all input and parameter guards pass.
+
+An independent auditor recomputes slopes, tolerances, stability, target indexing
+and all 27 file bindings from the raw records. The saved records contain scalar
+derivatives and discrepancy summaries, not complete gradient or logit arrays.
+This supports the sampled derivatives of the cached final-MLP suffix. It does
+not validate every one of the 1,064 targets, earlier layers, optimizer dynamics,
+or the claim that semantic signal disappears at the final position.
+
+The frozen protocol, native output, synthetic negative control and audits live
+in [`training/results/2026-10-02-gradient-control`](training/results/2026-10-02-gradient-control).
+The native trainer and notorch pin remain unchanged. SERGE examined the
+derivative. The cigarette remains singular.
+
+The next procedural diagnostic separates decision, concern-residual and
+clean-residual gradients at fixed checkpoints. The 26 concern rows contribute
+882 residual targets; the 26 clean rows contribute 130. Under the current
+pooled residual mean, their combined decision-plus-residual coefficient masses
+are 1.37154 and 0.62846. Those are coefficients, not measured gradient norms or
+proof of conflicting updates. A class-balanced residual objective would be a
+separate intervention, with total residual weight held constant.
+
+Fable's layer/position hypothesis needs its own collector: ordinary post-block
+residuals at the assistant-header and shared-prefix boundaries, with the old
+pre-final-MLP state retained as a distinct anchor. Layer selection belongs
+inside family-grouped evaluation, followed by previously unseen confirmation
+families. The existing 24 transfer cases have already been inspected. Reading
+information from an earlier layer would establish accessibility under that
+probe, not its use in generation. Rationale-first generation is a separate
+test; supplied gold rationales would leak the answer. These are planned
+experiments, not additional results of the derivative control.
+
 ## 2026-10-01 — The archive lost its floor.
 
 During final publication, local files disappeared across multiple working

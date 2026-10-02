@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "cc",
+    "-Ideps/notorch",
+    "-Itraining",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-std=gnu11",
+    "-march=native",
+    "-o",
+    "models/checkpoint-control/infer",
+    "src/infer.c",
+    "deps/notorch/notorch.c",
+    "deps/notorch/gguf.c",
+    "deps/notorch/harness/runtime.c",
+    "deps/notorch/harness/arch_llama.c",
+    "deps/notorch/examples/bpe.c",
+    "-lm",
+    "-pthread"
+  ],
+  "started_at": "2026-10-02T00:36:22.371147+00:00",
+  "stdout": "training/results/2026-10-02-checkpoint-control/prepare-02.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/prepare-02.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:36:29.679714+00:00"
+}

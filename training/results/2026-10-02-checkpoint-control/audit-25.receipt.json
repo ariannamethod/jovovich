@@ -1,0 +1,36 @@
+{
+  "name": "audit-25",
+  "argv": [
+    "python3",
+    "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+    "models/base-qwen.gguf",
+    "models/recovered-matched/matched-review-selected.gguf",
+    "models/checkpoint-control/update25",
+    "training/results/2026-10-02-checkpoint-control/export-audit-25.json"
+  ],
+  "started_at": "2026-10-02T00:36:55.352075+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "stdout": "training/results/2026-10-02-checkpoint-control/audit-25.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/audit-25.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:36:57.630202+00:00",
+  "elapsed_seconds": 2.2780951189924963,
+  "logs": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/audit-25.stdout.txt",
+      "bytes": 465,
+      "sha256": "cd117ee5ce8d12d59626cb16703d09314d605a8a058d760a9190a5cc9e4271a6"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/audit-25.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

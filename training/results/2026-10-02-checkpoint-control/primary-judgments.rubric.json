@@ -1,0 +1,25 @@
+{
+  "schema": "jovovich.checkpoint-control.primary-rubric.v1",
+  "frozen_at": "2026-10-02T00:41:30.140685+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "judge": "primary independent manual semantic judge",
+  "frozen_before_reading_any_generated_response": true,
+  "rules": {
+    "method": "Read each complete response against its exact prompt, visible code and repository rules. Preserve response/model/prompt hashes and case-specific reasoning.",
+    "production_usable": "Unchanged production parseReview accepts the complete response and available changed-line citations.",
+    "genuine_issue_detected": "At least one supported concrete mechanism with an available causally appropriate citation, even if unsupported extras spoil the complete review.",
+    "full_review_pass": "Concern: production accepted, real cited issue, every material claim/finding supported, no unsupported extra findings. Clean: production accepted empty findings.",
+    "pairs": "Both concern and clean must pass fully; separately report mere presence and token decisions.",
+    "alternatives": "Gold wording and canonical citation are not mandatory; any changed line with a valid causal connection is allowed, including either side of harmful no-op replacements.",
+    "precision": "Awkward but meaningful explanations can pass. Separate detected real issues from inaccurate elaborations; retain explicitly reasoned sensitivity judgments if a claim is ambiguous."
+  },
+  "explicit_boundaries": [
+    "Production parser acceptance is necessary for full review pass; preserve all raw output, including duplicate keys; parsed last JSON key wins as in production JavaScript.",
+    "Concern detection requires a concrete supported causal connection and valid changed-line citation, not merely quoting a rule or removed line.",
+    "Clean requires accepted empty findings. A confidence value Clean or prose saying clean in a nonempty finding does not satisfy this.",
+    "Gold wording and canonical citations are not mandatory. Awkward meaningful causal relations may pass, with strict alternatives retained when meaning is ambiguous.",
+    "Read every full prompt and full raw response separately before assigning judgments. Do not consult another judge before all 48 own judgments.",
+    "The 24 repeated holdout examples are diagnostic, not untouched confirmation data. Do not reconstruct or assume missing previous raw outputs."
+  ],
+  "pair_rule": "Both members of a concern/clean pair must individually pass fully; report pair results only after both are read."
+}

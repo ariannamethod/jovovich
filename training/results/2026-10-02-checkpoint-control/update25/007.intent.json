@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "arm": "update25",
+  "name": "holdout-v5-bounded-termination-replacement-noop-clean",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "model": {
+    "path": "models/recovered-matched/matched-review-selected.gguf",
+    "bytes": 714116992,
+    "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+  },
+  "prompt_sha256": "38410b1d07e53e73c371e4acb0c746a69c08cda43f8ca50492e0e164be1017e5",
+  "runner": "models/checkpoint-control/infer",
+  "args": [
+    "--model",
+    "models/recovered-matched/matched-review-selected.gguf",
+    "--tokens",
+    "192",
+    "--context",
+    "8192",
+    "--temperature",
+    "0"
+  ],
+  "started_at": "2026-10-02T00:42:21.333Z"
+}

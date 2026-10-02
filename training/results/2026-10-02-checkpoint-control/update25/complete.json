@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "arm": "update25",
+  "cases": 24,
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "verified_models_sha256": "a6392b5c5fe323f7adf4311fec5a471ae81973594e0a4e12d30616b982353dfd",
+  "model": {
+    "path": "models/recovered-matched/matched-review-selected.gguf",
+    "bytes": 714116992,
+    "sha256": "277b20bc0367584c9b442c4eb1c9093d66098fd6898c7e9f2620e2ef7349f532"
+  },
+  "responses_sha256": "7d06ff06522225c8a22faf0bd1d65df03d90913b429a20f10154c6df0eb9c8bd",
+  "frozen_sources_unchanged": true,
+  "model_sha256_unchanged": true,
+  "finished_at": "2026-10-02T00:49:14.716Z"
+}

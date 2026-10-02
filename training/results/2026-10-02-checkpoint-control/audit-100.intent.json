@@ -1,0 +1,21 @@
+{
+  "name": "audit-100",
+  "argv": [
+    "python3",
+    "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+    "models/base-qwen.gguf",
+    "models/checkpoint-control/update100.gguf",
+    "models/checkpoint-control/update100",
+    "training/results/2026-10-02-checkpoint-control/export-audit-100.json"
+  ],
+  "started_at": "2026-10-02T00:38:20.377279+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "stdout": "training/results/2026-10-02-checkpoint-control/audit-100.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/audit-100.stderr.txt"
+}

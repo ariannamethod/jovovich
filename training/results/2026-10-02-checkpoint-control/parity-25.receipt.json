@@ -1,0 +1,38 @@
+{
+  "name": "parity-25",
+  "argv": [
+    "models/checkpoint-control/probe-mlp",
+    "models/base-qwen.gguf",
+    "models/recovered-matched/matched-review-selected.gguf",
+    "models/recovered-matched/matched-review.bin",
+    "models/recovered-matched/matched-review.epoch25",
+    "0",
+    "1",
+    "2"
+  ],
+  "started_at": "2026-10-02T00:36:57.631457+00:00",
+  "protocol_sha256": "fb4339ca4c501a7e3c0bb2ebb6610b2a45715c553b2cfd16bce927989ee1889d",
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "stdout": "training/results/2026-10-02-checkpoint-control/parity-25.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/parity-25.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:38:20.226678+00:00",
+  "elapsed_seconds": 82.59529191700858,
+  "logs": [
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-25.stdout.txt",
+      "bytes": 1776,
+      "sha256": "c197030aedcf958da25a3658ff022b61be2df73d0cdcf057a1fd1081c5548158"
+    },
+    {
+      "path": "training/results/2026-10-02-checkpoint-control/parity-25.stderr.txt",
+      "bytes": 254,
+      "sha256": "577d71f7b8125ecd8b25855b4d2557465733abcb052fe63b883db4ac39b76050"
+    }
+  ]
+}

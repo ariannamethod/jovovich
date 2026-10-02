@@ -1,0 +1,5 @@
+llama: E=896 H=14 KV=2 FFN=4864 V=151936 L=24 HD=64 Q=896
+  (has attention bias — qwen-style)
+  rope: neox | weights: packed
+jovovich: prompt=456 reserve=192 context=8192; ChatML=151644/151645 EOS=151645
+jovovich: prefill 14354 ms, generated 34 tokens in 2251 ms, stop=eos

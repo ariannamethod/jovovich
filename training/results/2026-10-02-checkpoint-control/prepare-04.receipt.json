@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "node",
+    "training/results/2026-10-02-checkpoint-control/prepare_cases.mjs"
+  ],
+  "started_at": "2026-10-02T00:36:30.449388+00:00",
+  "stdout": "training/results/2026-10-02-checkpoint-control/prepare-04.stdout.txt",
+  "stderr": "training/results/2026-10-02-checkpoint-control/prepare-04.stderr.txt",
+  "exit_code": 0,
+  "finished_at": "2026-10-02T00:36:30.531038+00:00"
+}

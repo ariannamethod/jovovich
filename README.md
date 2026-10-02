@@ -668,6 +668,47 @@ audit are in
 [`training/results/2026-10-01-external-forward-control`](training/results/2026-10-01-external-forward-control).
 llama.cpp remains a diagnostic reference. SERGE has one cigarette and two engines.
 
+A separate native derivative control now passes at initialization and saved
+updates 25 and 100. Production backward agrees with an independent F64 suffix
+oracle on four fixed Qwen targets, using the original joint coefficients.
+All 36 directions pass the prespecified two-finest-step agreement and stability
+gates. Four weak random directions remain inconclusive for active coverage;
+every expected active tensor has resolved coordinate coverage. One of 144
+individual step-size comparisons fails at the coarsest step and stays in the
+record. The synthetic joint test also checks 84 coordinates and rejects an
+intentionally halved production gradient.
+
+This supports sampled last-MLP derivatives, not the complete training process
+or a theory of where semantic information disappears. The unchanged trainer,
+raw results, independent audits and new receipts recovering all seventeen
+public/private input files are documented in
+[`training/results/2026-10-02-gradient-control`](training/results/2026-10-02-gradient-control).
+The original lost matched-run receipts remain unavailable.
+
+A new diagnostic holds the v5 corpus and prompts fixed while comparing its
+saved updates 25 and 100 on the same 24 previously inspected transfer cases.
+Two independent judges agree on every primary and strict outcome:
+
+| Repeated transfer diagnostic | Update 25 | Update 100 |
+| --- | ---: | ---: |
+| Production-usable responses | 16/24 | 20/24 |
+| Grounded concerns | 1/12 | 0/12 |
+| Correct clean reviews | 0/12 | 10/12 |
+| Complete concern/clean pairs | 0/12 | 0/12 |
+
+The one update-25 concern fails under the retained stricter reading. All twenty
+usable update-100 answers are empty. The later checkpoint improves formatting
+and clean-case accuracy while missing the defects. This confirms that selected
+update matters to the observed failure pattern; it does not establish successful
+review, validate the final-position hypothesis or justify runtime promotion.
+
+Both exports pass all-tensor byte audits and 92/92 cached/full token-argmax
+comparisons. New raw responses, complete native token traces, judgments and
+an explicit validator passing under optimized Python are preserved in
+[`training/results/2026-10-02-checkpoint-control`](training/results/2026-10-02-checkpoint-control).
+These are newly generated diagnostic results, not recovered historical traces
+or untouched confirmation data. No training or historical selection rule changes.
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh
