@@ -1,0 +1,2 @@
+Joint finite difference failed: zero_B=0 gate.A[0] analytic=0.00114039797 numerical=0.0022476866 error=0.00110728863 tolerance=0.000144953732
+test-joint: /tmp/jovovich-joint-negative-ikzbkfe0/joint.c:155: finite_difference_tests: Assertion `derivative_matches(analytic[p],numerical[p])' failed.

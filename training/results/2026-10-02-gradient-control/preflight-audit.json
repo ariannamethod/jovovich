@@ -1,0 +1,79 @@
+{
+  "schema": "jovovich.independent-gradient-preflight.v1",
+  "created_at_utc": "2026-10-02T00:38:09.155963+00:00",
+  "reviewer": "independent training_auditor agent; not the probe author",
+  "status": "no_remaining_blocker_for_declared_local_control",
+  "review_type": "static source and protocol-design review before diagnostic execution; not a measured gradient result",
+  "auditor_model_calls": 0,
+  "auditor_optimizer_steps": 0,
+  "bindings": [
+    {
+      "path": "training/probe_gradients.c",
+      "bytes": 15601,
+      "sha256": "2e958db9f372a6688060a71ae1c770f5b58448299b5a42f558b979c6b59a1cf8"
+    },
+    {
+      "path": "test/joint.c",
+      "bytes": 22138,
+      "sha256": "e71a80844926670a84564914d1250b2a98135d86ee7fa073c8518ff70e0b76e1"
+    }
+  ],
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "fixed_findings": [
+    {
+      "severity": "blocking",
+      "issue": "Original direction coverage required both analytic and numerical derivatives above the active-signal floor before checking summary success. A one-sided missing derivative could be omitted as inconclusive while another direction supplied tensor coverage.",
+      "resolution": "Every direction now must pass agreement and adjacent-scale stability at the two smallest epsilons before the signal floor classifies coverage. Disagreement remains a failure even when one or both derivatives are small.",
+      "verified_in": "training/probe_gradients.c direction summary"
+    },
+    {
+      "severity": "guard",
+      "issue": "Gradient tensor length was not checked before copying into allocated parameter-sized arrays.",
+      "resolution": "Gradient length must equal parameter length."
+    },
+    {
+      "severity": "guard",
+      "issue": "Tokenized sequence length lacked the trainer model-context bound.",
+      "resolution": "Every sequence is rejected if n_ids exceeds gf->ctx_len before capture."
+    },
+    {
+      "severity": "measurement",
+      "issue": "Reported native joint scalar and independent oracle scalar had no acceptance gate.",
+      "resolution": "Scalar loss agreement is now required within 1e-4 times the sum of probe coefficients plus 1e-7."
+    },
+    {
+      "severity": "measurement",
+      "issue": "Direction norms were implicit.",
+      "resolution": "Unit norm is checked to 1e-10 in squared norm and reported."
+    },
+    {
+      "severity": "format",
+      "issue": "Initial epsilon-grid JSON used invalid leading decimal points.",
+      "resolution": "The emitted JSON grid uses 0.01, 0.003, 0.001, 0.0003."
+    }
+  ],
+  "verified_design": [
+    "Production analytic gradient uses the current joint_loss and autograd implementation on four real cached Qwen targets.",
+    "The independent value oracle uses native C double arithmetic, direct LoRA matrix composition, stable sigmoid, RMS normalization with the production float epsilon promoted to double, and full-vocabulary log-sum-exp; it never calls backward.",
+    "Oracle perturbations affect double copies only; original parameters and cached/frozen float tensors have a before/after byte-change guard.",
+    "Native and oracle full logits and CE are compared separately for each of four targets, in addition to the joint scalar.",
+    "Each of six gate/up/down A/B tensors receives a maximum-gradient coordinate direction and a fixed-seed unit Rademacher direction at four epsilon values.",
+    "Two smallest epsilon values must agree with the analytic derivative and with each other; coarse-scale results remain visible.",
+    "Zero-B initialization expects exactly zero A derivatives; noninitial states require resolved derivative coverage for all six tensors.",
+    "No optimizer step is performed.",
+    "The toy joint fixture now performs loss-only central finite differences at zero-B and nonzero-AB states, including all fixture parameters and a wrong-half-normalization rejection control."
+  ],
+  "limitations": [
+    "The F64 oracle differentiates the intended smooth suffix function, not the piecewise-rounded F32 program.",
+    "Cached z, normalized input and base gate/up values are fixed inputs shared with production. This does not independently validate how attention or preceding layers produced those activations.",
+    "Only four globally weighted target contributions are tested: concern decision, clean decision, concern EOS and clean opening token. The full 1064-target gradient is not evaluated by this control.",
+    "Two directions per tensor do not exhaust all individual parameter derivatives.",
+    "A local derivative pass does not establish optimization convergence, full-network backward correctness, checkpoint selection quality, natural review quality or a mechanism for absent semantic transfer.",
+    "The toy fixture value oracle shares production forward CE and uses a single epsilon; its independence concerns backward/normalization checks, not a second full forward implementation.",
+    "No measurement outcome is asserted in this preflight audit."
+  ],
+  "interpretation_constraints": [
+    "Weak held-out affine readout does not prove that semantic information never reaches the final token or that earlier layers alone would fix the task.",
+    "The saved update100 checkpoint merits a separately labeled repeated-holdout diagnostic because the original tie-break selected update25; do not replace the frozen original selection retrospectively."
+  ]
+}
