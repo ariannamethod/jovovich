@@ -1,0 +1,3371 @@
+{
+  "schema_version": 1,
+  "run_id": "qwen05-layers-v5-20261002-a1",
+  "frozen_utc": "2026-10-02T01:43:31.501052+00:00",
+  "model_forward_calls_before_freeze": 0,
+  "repository_commit": "4bb43bce7c585757d4f0536102443cbaacaf09cf",
+  "notorch_commit": "7e246e13f9dbbb7e61312b7341fb94ce492bff71",
+  "host": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "remote": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "prefix": "experiments/layer-readout",
+    "hub_client_version": "0.35.3",
+    "unit_order": "bootstrap, then intent/result per phase, then completion"
+  },
+  "bindings": [
+    {
+      "path": "Makefile",
+      "bytes": 7103,
+      "sha256": "69cd6c606da2eac4aa793e5564c34a6b1e2399c208a79d3c392814105fd2b8f6",
+      "snapshot": "snapshot/Makefile"
+    },
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 39525,
+      "sha256": "6a9aa8e0c8f0dea3d98446909c92f16eb6e3d2f0b30b3643fa6b104072f17f80",
+      "snapshot": "snapshot/training/train_mlp.c"
+    },
+    {
+      "path": "training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776",
+      "snapshot": "snapshot/training/extract_readout.c"
+    },
+    {
+      "path": "training/extract_layers.c",
+      "bytes": 12498,
+      "sha256": "1c2287d9c78c8ccba863b0d4b459e991d0bc1ca829b2219926dca6bb4ea4d3cd",
+      "snapshot": "snapshot/training/extract_layers.c"
+    },
+    {
+      "path": "training/readout_fit.c",
+      "bytes": 21701,
+      "sha256": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+      "snapshot": "snapshot/training/readout_fit.c"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a",
+      "snapshot": "snapshot/training/durable_archive.py"
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "bytes": 16874,
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5",
+      "snapshot": "snapshot/training/layers/run_layers.py"
+    },
+    {
+      "path": "training/layers/freeze_layers.py",
+      "bytes": 7744,
+      "sha256": "28c4477f06b8d689fc6e12d967d54ab7b6bb3baf1b81e8ac857e513716284141",
+      "snapshot": "snapshot/training/layers/freeze_layers.py"
+    },
+    {
+      "path": "training/layers/prepare_layers.py",
+      "bytes": 28588,
+      "sha256": "cc64c3ba4e9e0a4a208322c111cffa852a5e0b0f02bf65eebf1f738f5d06bb16",
+      "snapshot": "snapshot/training/layers/prepare_layers.py"
+    },
+    {
+      "path": "training/layers/protocol_template.json",
+      "bytes": 8523,
+      "sha256": "1a94b4edc759842398fe98f727f39ac01c5ce63231c840c7dfc28f3aed189b0f",
+      "snapshot": "snapshot/training/layers/protocol_template.json"
+    },
+    {
+      "path": "training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "snapshot": "snapshot/training/sft_review_v5.jsonl"
+    },
+    {
+      "path": "test/durable_archive.test.mjs",
+      "bytes": 2036,
+      "sha256": "c591a4aa435f5e960cd43c66166d8eb08e5a977f2a4d4c5bf758993c54cc3c41",
+      "snapshot": "snapshot/test/durable_archive.test.mjs"
+    },
+    {
+      "path": "test/durable_archive_fixture.py",
+      "bytes": 26131,
+      "sha256": "5e3e82bd7d0e7db32b108c5b3b503f89d9213d039ffa7fd71f458b1762331966",
+      "snapshot": "snapshot/test/durable_archive_fixture.py"
+    },
+    {
+      "path": "test/layer_extract.c",
+      "bytes": 5836,
+      "sha256": "7b4df1a994ed5abf49a6910adb4b03773776f3f06d3789fcd05307d49ed24fc9",
+      "snapshot": "snapshot/test/layer_extract.c"
+    },
+    {
+      "path": "build/jovovich-extract-layers",
+      "bytes": 263744,
+      "sha256": "323cb9980159583d05139c444f1390bc0274177e7fe0e6dbe471e7e6d69d9d56",
+      "snapshot": "snapshot/build/jovovich-extract-layers"
+    },
+    {
+      "path": "build/jovovich-readout-fit",
+      "bytes": 33840,
+      "sha256": "7e070b6ad34218c0702f4aecfea390e16bd026e962329f56f7933ecb77f358f5",
+      "snapshot": "snapshot/build/jovovich-readout-fit"
+    },
+    {
+      "path": "deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+      "snapshot": "snapshot/deps/notorch/notorch.c"
+    },
+    {
+      "path": "deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+      "snapshot": "snapshot/deps/notorch/notorch.h"
+    },
+    {
+      "path": "deps/notorch/notorch_simd.h",
+      "bytes": 27843,
+      "sha256": "b7bfca04398301680377be293165fa0203653166b774aa7784f7dd21f5f3a7ca",
+      "snapshot": "snapshot/deps/notorch/notorch_simd.h"
+    },
+    {
+      "path": "deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+      "snapshot": "snapshot/deps/notorch/gguf.c"
+    },
+    {
+      "path": "deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589",
+      "snapshot": "snapshot/deps/notorch/gguf.h"
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+      "snapshot": "snapshot/deps/notorch/harness/arch_llama.c"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+      "snapshot": "snapshot/deps/notorch/harness/runtime.c"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba",
+      "snapshot": "snapshot/deps/notorch/harness/runtime.h"
+    },
+    {
+      "path": "deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978",
+      "snapshot": "snapshot/deps/notorch/harness/arch.h"
+    },
+    {
+      "path": "deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0",
+      "snapshot": "snapshot/deps/notorch/harness/arch_models.h"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5",
+      "snapshot": "snapshot/deps/notorch/examples/bpe.c"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f",
+      "snapshot": "snapshot/deps/notorch/examples/bpe.h"
+    },
+    {
+      "path": "deps/notorch/examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c",
+      "snapshot": "snapshot/deps/notorch/examples/unicode_numbers.h"
+    },
+    {
+      "path": "models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    }
+  ],
+  "bootstrap": [
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-input.bin",
+      "path": "layers-input.bin",
+      "sha256": "168c860647f1bead45d3c31ea5cb3cd2629f3834c21041955a41a4fc5b9303f6",
+      "bytes": 108108
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-masks.json",
+      "path": "layers-masks.json",
+      "sha256": "c1f1d094cae2cd587a4dedf4345970fa19a1b72fcbf5652de7ac85a04cc93a41",
+      "bytes": 949
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-masks.txt",
+      "path": "layers-masks.txt",
+      "sha256": "130ff089d24264b9e213425354a2e233a27a658c783cfbc152456bae01d30108",
+      "bytes": 44
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-metadata.txt",
+      "path": "layers-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-protocol.json",
+      "path": "layers-protocol.json",
+      "sha256": "1a77939843a563b6cd7fb00998ffe8ccb341d2bfa67efbb424b3f7ced9e0c1d9",
+      "bytes": 11998
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/layers-rows.json",
+      "path": "layers-rows.json",
+      "sha256": "cc3a15d7de6fe926a0ac247b50385c7c75004ddc69cfddb0658ee177a7d48629",
+      "bytes": 36509
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/prepared/nuisance-metadata.txt",
+      "path": "nuisance-metadata.txt",
+      "sha256": "51209daaeeafee2b3b92f176955bd34c215e3950b7141d239c83620e769dcb1f",
+      "bytes": 511
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/preflight-audit.json",
+      "path": "evidence/preflight-audit.json",
+      "sha256": "529b95619085acb0889207d9c901d8337e20e83824913864c998e39873703933",
+      "bytes": 8835
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/binder-audit.json",
+      "path": "evidence/binder-audit.json",
+      "sha256": "b051f31bbce6d0e45eadf36f30b5407cfab38adf8a35f6ec277d01e891a7adc7",
+      "bytes": 3357
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/tests.json",
+      "path": "evidence/tests.json",
+      "sha256": "1906cd47fe0c3884949aeeaa04d19c66a0866846429ff29126d6d6b4b8f0e39b",
+      "bytes": 578
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/tests.stdout.txt",
+      "path": "evidence/tests.stdout.txt",
+      "sha256": "98a225b247ec408a7356061d96d89dd46374dd07ddbbbb62b82555421c4e103a",
+      "bytes": 16067
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/tests.stderr.txt",
+      "path": "evidence/tests.stderr.txt",
+      "sha256": "402e9fd60262737eff96f0c68fcecdb70b23dfefee58bd058608c25c6db49c40",
+      "bytes": 50738
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/helper-validation.json",
+      "path": "evidence/helper-validation.json",
+      "sha256": "ae343bed99c5274aba315b8c33b6a6940c40ded690caa7398a76632fe1fc7e2b",
+      "bytes": 1149
+    },
+    {
+      "source": "training/results/2026-10-02-layer-readout/check_layer_helpers.executed.py",
+      "path": "evidence/check_layer_helpers.executed.py",
+      "sha256": "9be93a7ca128d7128a4692c6771273ea0c7ecd7d1f99014c31b1ce7e8d322917",
+      "bytes": 5480
+    },
+    {
+      "source": "training/results/2026-10-02-durable-sync/live_smoke.py",
+      "path": "evidence/live_smoke.py",
+      "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847",
+      "bytes": 10808
+    },
+    {
+      "source": "training/results/2026-10-02-durable-sync/live-smoke-protocol.json",
+      "path": "evidence/live-smoke-protocol.json",
+      "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc",
+      "bytes": 1326
+    },
+    {
+      "source": "training/results/2026-10-02-durable-sync/live-smoke-receipt.json",
+      "path": "evidence/live-smoke-receipt.json",
+      "sha256": "d2f3c785ff11f5ac5c7718df4a9368d640d96b8a3c0219a5fec2815788b273b9",
+      "bytes": 9958
+    },
+    {
+      "source": "training/results/2026-10-02-durable-sync/tests-final.stdout.txt",
+      "path": "evidence/tests-final.stdout.txt",
+      "sha256": "201afd72686ecc95dea6915dcefbd07e6bbdbb64c780230c0c7cee544645d559",
+      "bytes": 1377
+    },
+    {
+      "source": "training/results/2026-10-02-durable-sync/tests-final.stderr.txt",
+      "path": "evidence/tests-final.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "phases": [
+    {
+      "id": "row-000",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-000.bin",
+        "0",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-000.z.bin",
+        "--verify"
+      ],
+      "stdout": "rows/row-000.trace.jsonl",
+      "outputs": [
+        "rows/row-000.bin",
+        "rows/row-000.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "0",
+        "--trace",
+        "@RUN@/rows/row-000.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-001",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-001.bin",
+        "1",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-001.z.bin",
+        "--verify"
+      ],
+      "stdout": "rows/row-001.trace.jsonl",
+      "outputs": [
+        "rows/row-001.bin",
+        "rows/row-001.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "1",
+        "--trace",
+        "@RUN@/rows/row-001.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-002",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-002.bin",
+        "2",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-002.z.bin"
+      ],
+      "stdout": "rows/row-002.trace.jsonl",
+      "outputs": [
+        "rows/row-002.bin",
+        "rows/row-002.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "2",
+        "--trace",
+        "@RUN@/rows/row-002.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-003",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-003.bin",
+        "3",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-003.z.bin"
+      ],
+      "stdout": "rows/row-003.trace.jsonl",
+      "outputs": [
+        "rows/row-003.bin",
+        "rows/row-003.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "3",
+        "--trace",
+        "@RUN@/rows/row-003.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-004",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-004.bin",
+        "4",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-004.z.bin"
+      ],
+      "stdout": "rows/row-004.trace.jsonl",
+      "outputs": [
+        "rows/row-004.bin",
+        "rows/row-004.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "4",
+        "--trace",
+        "@RUN@/rows/row-004.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-005",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-005.bin",
+        "5",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-005.z.bin"
+      ],
+      "stdout": "rows/row-005.trace.jsonl",
+      "outputs": [
+        "rows/row-005.bin",
+        "rows/row-005.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "5",
+        "--trace",
+        "@RUN@/rows/row-005.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-006",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-006.bin",
+        "6",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-006.z.bin"
+      ],
+      "stdout": "rows/row-006.trace.jsonl",
+      "outputs": [
+        "rows/row-006.bin",
+        "rows/row-006.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "6",
+        "--trace",
+        "@RUN@/rows/row-006.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-007",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-007.bin",
+        "7",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-007.z.bin"
+      ],
+      "stdout": "rows/row-007.trace.jsonl",
+      "outputs": [
+        "rows/row-007.bin",
+        "rows/row-007.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "7",
+        "--trace",
+        "@RUN@/rows/row-007.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-008",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-008.bin",
+        "8",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-008.z.bin"
+      ],
+      "stdout": "rows/row-008.trace.jsonl",
+      "outputs": [
+        "rows/row-008.bin",
+        "rows/row-008.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "8",
+        "--trace",
+        "@RUN@/rows/row-008.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-009",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-009.bin",
+        "9",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-009.z.bin"
+      ],
+      "stdout": "rows/row-009.trace.jsonl",
+      "outputs": [
+        "rows/row-009.bin",
+        "rows/row-009.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "9",
+        "--trace",
+        "@RUN@/rows/row-009.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-010",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-010.bin",
+        "10",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-010.z.bin"
+      ],
+      "stdout": "rows/row-010.trace.jsonl",
+      "outputs": [
+        "rows/row-010.bin",
+        "rows/row-010.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "10",
+        "--trace",
+        "@RUN@/rows/row-010.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-011",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-011.bin",
+        "11",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-011.z.bin"
+      ],
+      "stdout": "rows/row-011.trace.jsonl",
+      "outputs": [
+        "rows/row-011.bin",
+        "rows/row-011.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "11",
+        "--trace",
+        "@RUN@/rows/row-011.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-012",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-012.bin",
+        "12",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-012.z.bin"
+      ],
+      "stdout": "rows/row-012.trace.jsonl",
+      "outputs": [
+        "rows/row-012.bin",
+        "rows/row-012.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "12",
+        "--trace",
+        "@RUN@/rows/row-012.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-013",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-013.bin",
+        "13",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-013.z.bin"
+      ],
+      "stdout": "rows/row-013.trace.jsonl",
+      "outputs": [
+        "rows/row-013.bin",
+        "rows/row-013.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "13",
+        "--trace",
+        "@RUN@/rows/row-013.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-014",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-014.bin",
+        "14",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-014.z.bin"
+      ],
+      "stdout": "rows/row-014.trace.jsonl",
+      "outputs": [
+        "rows/row-014.bin",
+        "rows/row-014.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "14",
+        "--trace",
+        "@RUN@/rows/row-014.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-015",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-015.bin",
+        "15",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-015.z.bin"
+      ],
+      "stdout": "rows/row-015.trace.jsonl",
+      "outputs": [
+        "rows/row-015.bin",
+        "rows/row-015.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "15",
+        "--trace",
+        "@RUN@/rows/row-015.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-016",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-016.bin",
+        "16",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-016.z.bin"
+      ],
+      "stdout": "rows/row-016.trace.jsonl",
+      "outputs": [
+        "rows/row-016.bin",
+        "rows/row-016.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "16",
+        "--trace",
+        "@RUN@/rows/row-016.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-017",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-017.bin",
+        "17",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-017.z.bin"
+      ],
+      "stdout": "rows/row-017.trace.jsonl",
+      "outputs": [
+        "rows/row-017.bin",
+        "rows/row-017.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "17",
+        "--trace",
+        "@RUN@/rows/row-017.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-018",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-018.bin",
+        "18",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-018.z.bin"
+      ],
+      "stdout": "rows/row-018.trace.jsonl",
+      "outputs": [
+        "rows/row-018.bin",
+        "rows/row-018.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "18",
+        "--trace",
+        "@RUN@/rows/row-018.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-019",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-019.bin",
+        "19",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-019.z.bin"
+      ],
+      "stdout": "rows/row-019.trace.jsonl",
+      "outputs": [
+        "rows/row-019.bin",
+        "rows/row-019.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "19",
+        "--trace",
+        "@RUN@/rows/row-019.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-020",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-020.bin",
+        "20",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-020.z.bin"
+      ],
+      "stdout": "rows/row-020.trace.jsonl",
+      "outputs": [
+        "rows/row-020.bin",
+        "rows/row-020.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "20",
+        "--trace",
+        "@RUN@/rows/row-020.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-021",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-021.bin",
+        "21",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-021.z.bin"
+      ],
+      "stdout": "rows/row-021.trace.jsonl",
+      "outputs": [
+        "rows/row-021.bin",
+        "rows/row-021.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "21",
+        "--trace",
+        "@RUN@/rows/row-021.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-022",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-022.bin",
+        "22",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-022.z.bin"
+      ],
+      "stdout": "rows/row-022.trace.jsonl",
+      "outputs": [
+        "rows/row-022.bin",
+        "rows/row-022.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "22",
+        "--trace",
+        "@RUN@/rows/row-022.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-023",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-023.bin",
+        "23",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-023.z.bin"
+      ],
+      "stdout": "rows/row-023.trace.jsonl",
+      "outputs": [
+        "rows/row-023.bin",
+        "rows/row-023.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "23",
+        "--trace",
+        "@RUN@/rows/row-023.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-024",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-024.bin",
+        "24",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-024.z.bin"
+      ],
+      "stdout": "rows/row-024.trace.jsonl",
+      "outputs": [
+        "rows/row-024.bin",
+        "rows/row-024.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "24",
+        "--trace",
+        "@RUN@/rows/row-024.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-025",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-025.bin",
+        "25",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-025.z.bin"
+      ],
+      "stdout": "rows/row-025.trace.jsonl",
+      "outputs": [
+        "rows/row-025.bin",
+        "rows/row-025.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "25",
+        "--trace",
+        "@RUN@/rows/row-025.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-026",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-026.bin",
+        "26",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-026.z.bin"
+      ],
+      "stdout": "rows/row-026.trace.jsonl",
+      "outputs": [
+        "rows/row-026.bin",
+        "rows/row-026.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "26",
+        "--trace",
+        "@RUN@/rows/row-026.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-027",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-027.bin",
+        "27",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-027.z.bin"
+      ],
+      "stdout": "rows/row-027.trace.jsonl",
+      "outputs": [
+        "rows/row-027.bin",
+        "rows/row-027.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "27",
+        "--trace",
+        "@RUN@/rows/row-027.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-028",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-028.bin",
+        "28",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-028.z.bin"
+      ],
+      "stdout": "rows/row-028.trace.jsonl",
+      "outputs": [
+        "rows/row-028.bin",
+        "rows/row-028.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "28",
+        "--trace",
+        "@RUN@/rows/row-028.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-029",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-029.bin",
+        "29",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-029.z.bin"
+      ],
+      "stdout": "rows/row-029.trace.jsonl",
+      "outputs": [
+        "rows/row-029.bin",
+        "rows/row-029.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "29",
+        "--trace",
+        "@RUN@/rows/row-029.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-030",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-030.bin",
+        "30",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-030.z.bin"
+      ],
+      "stdout": "rows/row-030.trace.jsonl",
+      "outputs": [
+        "rows/row-030.bin",
+        "rows/row-030.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "30",
+        "--trace",
+        "@RUN@/rows/row-030.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-031",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-031.bin",
+        "31",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-031.z.bin"
+      ],
+      "stdout": "rows/row-031.trace.jsonl",
+      "outputs": [
+        "rows/row-031.bin",
+        "rows/row-031.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "31",
+        "--trace",
+        "@RUN@/rows/row-031.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-032",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-032.bin",
+        "32",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-032.z.bin"
+      ],
+      "stdout": "rows/row-032.trace.jsonl",
+      "outputs": [
+        "rows/row-032.bin",
+        "rows/row-032.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "32",
+        "--trace",
+        "@RUN@/rows/row-032.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-033",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-033.bin",
+        "33",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-033.z.bin"
+      ],
+      "stdout": "rows/row-033.trace.jsonl",
+      "outputs": [
+        "rows/row-033.bin",
+        "rows/row-033.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "33",
+        "--trace",
+        "@RUN@/rows/row-033.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-034",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-034.bin",
+        "34",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-034.z.bin"
+      ],
+      "stdout": "rows/row-034.trace.jsonl",
+      "outputs": [
+        "rows/row-034.bin",
+        "rows/row-034.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "34",
+        "--trace",
+        "@RUN@/rows/row-034.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-035",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-035.bin",
+        "35",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-035.z.bin"
+      ],
+      "stdout": "rows/row-035.trace.jsonl",
+      "outputs": [
+        "rows/row-035.bin",
+        "rows/row-035.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "35",
+        "--trace",
+        "@RUN@/rows/row-035.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-036",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-036.bin",
+        "36",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-036.z.bin"
+      ],
+      "stdout": "rows/row-036.trace.jsonl",
+      "outputs": [
+        "rows/row-036.bin",
+        "rows/row-036.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "36",
+        "--trace",
+        "@RUN@/rows/row-036.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-037",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-037.bin",
+        "37",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-037.z.bin"
+      ],
+      "stdout": "rows/row-037.trace.jsonl",
+      "outputs": [
+        "rows/row-037.bin",
+        "rows/row-037.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "37",
+        "--trace",
+        "@RUN@/rows/row-037.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-038",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-038.bin",
+        "38",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-038.z.bin"
+      ],
+      "stdout": "rows/row-038.trace.jsonl",
+      "outputs": [
+        "rows/row-038.bin",
+        "rows/row-038.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "38",
+        "--trace",
+        "@RUN@/rows/row-038.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-039",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-039.bin",
+        "39",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-039.z.bin"
+      ],
+      "stdout": "rows/row-039.trace.jsonl",
+      "outputs": [
+        "rows/row-039.bin",
+        "rows/row-039.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "39",
+        "--trace",
+        "@RUN@/rows/row-039.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-040",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-040.bin",
+        "40",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-040.z.bin"
+      ],
+      "stdout": "rows/row-040.trace.jsonl",
+      "outputs": [
+        "rows/row-040.bin",
+        "rows/row-040.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "40",
+        "--trace",
+        "@RUN@/rows/row-040.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-041",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-041.bin",
+        "41",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-041.z.bin"
+      ],
+      "stdout": "rows/row-041.trace.jsonl",
+      "outputs": [
+        "rows/row-041.bin",
+        "rows/row-041.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "41",
+        "--trace",
+        "@RUN@/rows/row-041.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-042",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-042.bin",
+        "42",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-042.z.bin"
+      ],
+      "stdout": "rows/row-042.trace.jsonl",
+      "outputs": [
+        "rows/row-042.bin",
+        "rows/row-042.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "42",
+        "--trace",
+        "@RUN@/rows/row-042.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-043",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-043.bin",
+        "43",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-043.z.bin"
+      ],
+      "stdout": "rows/row-043.trace.jsonl",
+      "outputs": [
+        "rows/row-043.bin",
+        "rows/row-043.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "43",
+        "--trace",
+        "@RUN@/rows/row-043.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-044",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-044.bin",
+        "44",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-044.z.bin"
+      ],
+      "stdout": "rows/row-044.trace.jsonl",
+      "outputs": [
+        "rows/row-044.bin",
+        "rows/row-044.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "44",
+        "--trace",
+        "@RUN@/rows/row-044.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-045",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-045.bin",
+        "45",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-045.z.bin"
+      ],
+      "stdout": "rows/row-045.trace.jsonl",
+      "outputs": [
+        "rows/row-045.bin",
+        "rows/row-045.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "45",
+        "--trace",
+        "@RUN@/rows/row-045.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-046",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-046.bin",
+        "46",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-046.z.bin"
+      ],
+      "stdout": "rows/row-046.trace.jsonl",
+      "outputs": [
+        "rows/row-046.bin",
+        "rows/row-046.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "46",
+        "--trace",
+        "@RUN@/rows/row-046.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-047",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-047.bin",
+        "47",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-047.z.bin"
+      ],
+      "stdout": "rows/row-047.trace.jsonl",
+      "outputs": [
+        "rows/row-047.bin",
+        "rows/row-047.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "47",
+        "--trace",
+        "@RUN@/rows/row-047.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-048",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-048.bin",
+        "48",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-048.z.bin"
+      ],
+      "stdout": "rows/row-048.trace.jsonl",
+      "outputs": [
+        "rows/row-048.bin",
+        "rows/row-048.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "48",
+        "--trace",
+        "@RUN@/rows/row-048.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-049",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-049.bin",
+        "49",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-049.z.bin"
+      ],
+      "stdout": "rows/row-049.trace.jsonl",
+      "outputs": [
+        "rows/row-049.bin",
+        "rows/row-049.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "49",
+        "--trace",
+        "@RUN@/rows/row-049.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-050",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-050.bin",
+        "50",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-050.z.bin"
+      ],
+      "stdout": "rows/row-050.trace.jsonl",
+      "outputs": [
+        "rows/row-050.bin",
+        "rows/row-050.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "50",
+        "--trace",
+        "@RUN@/rows/row-050.trace.jsonl"
+      ]
+    },
+    {
+      "id": "row-051",
+      "argv": [
+        "build/jovovich-extract-layers",
+        "models/base-qwen.gguf",
+        "@RUN@/layers-input.bin",
+        "@RUN@/rows/row-051.bin",
+        "51",
+        "4",
+        "--anchor",
+        "@RUN@/rows/row-051.z.bin"
+      ],
+      "stdout": "rows/row-051.trace.jsonl",
+      "outputs": [
+        "rows/row-051.bin",
+        "rows/row-051.z.bin"
+      ],
+      "check_argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "validate-row",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows",
+        "--index",
+        "51",
+        "--trace",
+        "@RUN@/rows/row-051.trace.jsonl"
+      ]
+    },
+    {
+      "id": "assemble",
+      "argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "assemble",
+        "--out",
+        "@RUN@",
+        "--row-dir",
+        "@RUN@/rows"
+      ],
+      "outputs": [
+        "header-layer-00.bin",
+        "header-layer-01.bin",
+        "header-layer-02.bin",
+        "header-layer-03.bin",
+        "header-layer-04.bin",
+        "header-layer-05.bin",
+        "header-layer-06.bin",
+        "header-layer-07.bin",
+        "header-layer-08.bin",
+        "header-layer-09.bin",
+        "header-layer-10.bin",
+        "header-layer-11.bin",
+        "header-layer-12.bin",
+        "header-layer-13.bin",
+        "header-layer-14.bin",
+        "header-layer-15.bin",
+        "header-layer-16.bin",
+        "header-layer-17.bin",
+        "header-layer-18.bin",
+        "header-layer-19.bin",
+        "header-layer-20.bin",
+        "header-layer-21.bin",
+        "header-layer-22.bin",
+        "header-layer-23.bin",
+        "prefix-layer-00.bin",
+        "prefix-layer-01.bin",
+        "prefix-layer-02.bin",
+        "prefix-layer-03.bin",
+        "prefix-layer-04.bin",
+        "prefix-layer-05.bin",
+        "prefix-layer-06.bin",
+        "prefix-layer-07.bin",
+        "prefix-layer-08.bin",
+        "prefix-layer-09.bin",
+        "prefix-layer-10.bin",
+        "prefix-layer-11.bin",
+        "prefix-layer-12.bin",
+        "prefix-layer-13.bin",
+        "prefix-layer-14.bin",
+        "prefix-layer-15.bin",
+        "prefix-layer-16.bin",
+        "prefix-layer-17.bin",
+        "prefix-layer-18.bin",
+        "prefix-layer-19.bin",
+        "prefix-layer-20.bin",
+        "prefix-layer-21.bin",
+        "prefix-layer-22.bin",
+        "prefix-layer-23.bin",
+        "prefix-final-mlp-z.bin",
+        "nuisance.bin",
+        "layers-assembly.json"
+      ]
+    },
+    {
+      "id": "fit-header-layer-00",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-00.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-00.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-00.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-01",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-01.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-01.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-01.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-02",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-02.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-02.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-02.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-03",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-03.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-03.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-03.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-04",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-04.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-04.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-04.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-05",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-05.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-05.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-05.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-06",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-06.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-06.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-06.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-07",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-07.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-07.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-07.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-08",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-08.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-08.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-08.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-09",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-09.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-09.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-09.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-10",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-10.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-10.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-10.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-11",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-11.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-11.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-11.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-12",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-12.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-12.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-12.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-13",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-13.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-13.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-13.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-14",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-14.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-14.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-14.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-15",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-15.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-15.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-15.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-16",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-16.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-16.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-16.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-17",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-17.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-17.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-17.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-18",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-18.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-18.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-18.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-19",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-19.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-19.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-19.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-20",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-20.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-20.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-20.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-21",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-21.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-21.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-21.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-22",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-22.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-22.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-22.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-header-layer-23",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/header-layer-23.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/header-layer-23.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/header-layer-23.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-00",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-00.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-00.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-00.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-01",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-01.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-01.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-01.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-02",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-02.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-02.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-02.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-03",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-03.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-03.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-03.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-04",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-04.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-04.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-04.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-05",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-05.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-05.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-05.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-06",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-06.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-06.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-06.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-07",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-07.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-07.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-07.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-08",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-08.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-08.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-08.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-09",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-09.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-09.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-09.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-10",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-10.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-10.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-10.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-11",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-11.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-11.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-11.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-12",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-12.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-12.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-12.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-13",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-13.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-13.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-13.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-14",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-14.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-14.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-14.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-15",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-15.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-15.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-15.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-16",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-16.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-16.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-16.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-17",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-17.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-17.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-17.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-18",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-18.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-18.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-18.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-19",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-19.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-19.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-19.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-20",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-20.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-20.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-20.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-21",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-21.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-21.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-21.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-22",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-22.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-22.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-22.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-layer-23",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-layer-23.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-layer-23.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-layer-23.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-prefix-final-mlp-z",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/prefix-final-mlp-z.bin",
+        "--metadata",
+        "@RUN@/layers-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/prefix-final-mlp-z.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/prefix-final-mlp-z.fits.jsonl"
+      ]
+    },
+    {
+      "id": "fit-nuisance",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "@RUN@/nuisance.bin",
+        "--metadata",
+        "@RUN@/nuisance-metadata.txt",
+        "--masks",
+        "@RUN@/layers-masks.txt",
+        "--output",
+        "@RUN@/fits/nuisance.fits.jsonl",
+        "--normalization",
+        "per-feature-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "outputs": [
+        "fits/nuisance.fits.jsonl"
+      ]
+    },
+    {
+      "id": "summarize",
+      "argv": [
+        "python3",
+        "training/layers/prepare_layers.py",
+        "summarize",
+        "--out",
+        "@RUN@",
+        "--fit-dir",
+        "@RUN@/fits"
+      ],
+      "outputs": [
+        "layers-summary.json",
+        "layers-table.tsv"
+      ]
+    }
+  ]
+}

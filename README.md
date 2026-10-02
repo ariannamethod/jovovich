@@ -726,6 +726,30 @@ boundaries, plus an optional separate pre-final-MLP anchor. Exact Qwen ChatML
 IDs, capture positions and numerical checks travel with the row. The durable
 launcher and frozen preparation recipe live in [`training/layers`](training/layers).
 
+To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
+and a separate Python environment containing `huggingface_hub==0.35.3`.
+Choose fresh paths and a unique run ID; the frozen plan records the current
+sources, compiled binaries, input hashes and private archive destination.
+
+```sh
+make extract-layers fit-readout
+python3 training/layers/prepare_layers.py prepare --repo . --out models/layer-prepared-repeat
+python3 training/layers/freeze_layers.py --prepared models/layer-prepared-repeat \
+  --output models/layer-plan-repeat.json --run-id layer-repeat-UNIQUE
+python3 training/layers/run_layers.py preflight --plan models/layer-plan-repeat.json
+path/to/archive-venv/bin/python training/layers/run_layers.py run \
+  --plan models/layer-plan-repeat.json --run-dir models/layer-run-repeat \
+  --hf-repo ataeff/jovovich --remote-prefix experiments/layer-readout \
+  --token-file /path/to/private-token
+```
+
+`resume` restores the archived plan and files into a fresh `--run-dir` using
+`--run-id` in place of `--plan`, with the same private destination. The exact
+bound base, sources and native binaries must also be present. Completed units
+are verified and skipped; an intent without a completed result is preserved as
+an interrupted attempt and stops the sequence. The final JSON receipt confirms
+remote verification of the completion marker.
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

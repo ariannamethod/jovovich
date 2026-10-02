@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "auditor": "independent layer_auditor agent",
+  "created_utc": "2026-10-02T01:52:04.765360+00:00",
+  "status": "pass",
+  "run_id": "qwen05-layers-v5-20261002-a1",
+  "plan": {
+    "path": "models/layer-readout-run/plan.json",
+    "bytes": 82981,
+    "sha256": "1559a0373f72df70daae36921bd0547545590d75e9a74fad1c10447923fe3e1a"
+  },
+  "method": "Read only the closed native feature binaries, traces and unit receipts. Parsed binary headers and all float32 coordinates independently; checked raw errors against declared tolerances and artifact hashes against each closed result receipt.",
+  "rows": [
+    {
+      "row": 0,
+      "prompt_tokens": 415,
+      "input_tokens": 418,
+      "positions": [
+        414,
+        417
+      ],
+      "ordinary_vectors": 48,
+      "ordinary_finite_values": 43008,
+      "anchor_finite_values": 896,
+      "ordinary_max_abs_coordinate": 65.60649108886719,
+      "anchor_max_abs_coordinate": 63.53481674194336,
+      "capture_counts_exactly_once": true,
+      "native_chatml_and_shared_prefix": "pass",
+      "verification": {
+        "absolute_tolerance": 0.0001,
+        "relative_l2_tolerance": 1e-05,
+        "future_suffixes": [
+          [
+            4913,
+            3903
+          ],
+          [
+            819,
+            3903
+          ]
+        ],
+        "comparisons": [
+          {
+            "name": "token_step",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          },
+          {
+            "name": "future_append",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          },
+          {
+            "name": "future_change",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          }
+        ]
+      },
+      "native_return_code": 0,
+      "validator_return_code": 0,
+      "sources": [
+        {
+          "path": "models/layer-readout-run/rows/row-000.bin",
+          "bytes": 172076,
+          "sha256": "34cdaa9dce9ef09628da41fcc0265bae6c6f2f6c3f65242f8affe26604e24f12"
+        },
+        {
+          "path": "models/layer-readout-run/rows/row-000.z.bin",
+          "bytes": 3600,
+          "sha256": "6ac4683dc976aaabdf4a6e4caed63607ad256a4696f2e2bcc5d1ed023629a26c"
+        },
+        {
+          "path": "models/layer-readout-run/rows/row-000.trace.jsonl",
+          "bytes": 3195,
+          "sha256": "6ef23bc5d0699cc031d625b4e8fae7b893288f4f5712bedb875c72f9f01970cf"
+        },
+        {
+          "path": "models/layer-readout-run/_units/row-000.result.json",
+          "bytes": 2829,
+          "sha256": "d53990c6f1982e48fbfc3a912d74018603f3522ac38ae040c52c6961365837db"
+        }
+      ]
+    },
+    {
+      "row": 1,
+      "prompt_tokens": 418,
+      "input_tokens": 421,
+      "positions": [
+        417,
+        420
+      ],
+      "ordinary_vectors": 48,
+      "ordinary_finite_values": 43008,
+      "anchor_finite_values": 896,
+      "ordinary_max_abs_coordinate": 65.54254913330078,
+      "anchor_max_abs_coordinate": 63.928260803222656,
+      "capture_counts_exactly_once": true,
+      "native_chatml_and_shared_prefix": "pass",
+      "verification": {
+        "absolute_tolerance": 0.0001,
+        "relative_l2_tolerance": 1e-05,
+        "future_suffixes": [
+          [
+            4913,
+            3903
+          ],
+          [
+            819,
+            3903
+          ]
+        ],
+        "comparisons": [
+          {
+            "name": "token_step",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          },
+          {
+            "name": "future_append",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          },
+          {
+            "name": "future_change",
+            "vectors": 48,
+            "max_abs": 0,
+            "max_relative_l2": 0,
+            "pass": true
+          }
+        ]
+      },
+      "native_return_code": 0,
+      "validator_return_code": 0,
+      "sources": [
+        {
+          "path": "models/layer-readout-run/rows/row-001.bin",
+          "bytes": 172076,
+          "sha256": "79e18eef4715f0a27ad2811ae91dbd2b7f4844e7d8761c65a80fad75b1ff8a0f"
+        },
+        {
+          "path": "models/layer-readout-run/rows/row-001.z.bin",
+          "bytes": 3600,
+          "sha256": "a5503815768bc3637397987fbd6e6399b92d88c52e1f58b63d4cb2fd2e3a5a3e"
+        },
+        {
+          "path": "models/layer-readout-run/rows/row-001.trace.jsonl",
+          "bytes": 3206,
+          "sha256": "bf5d5d0c34034d50b565970b032eda9fbe2334f057d38f29ed2e4083cb895c47"
+        },
+        {
+          "path": "models/layer-readout-run/_units/row-001.result.json",
+          "bytes": 2829,
+          "sha256": "192e58361e8350244ac11b14a96b9e5bf310b9bb4c9797b9cfb8e616d8eb1e99"
+        }
+      ]
+    }
+  ],
+  "additional_model_calls": 0,
+  "bound_files_modified": false
+}
