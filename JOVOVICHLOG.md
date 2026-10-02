@@ -27,6 +27,19 @@ do not implement continuous remote sync; preserving their executed bytes is
 not an exemption for future runs. A launcher with demonstrated remote receipts
 is a prerequisite for the next training or layer-collection experiment.
 
+## 2026-10-02 — Where does the judgment live?
+
+Frozen before any state extraction: the per-layer affine readout protocol
+(training/results/2026-10-02-layer-readout/PROTOCOL.md). The published
+final-position diagnostic said the tail barely separates concern from clean —
+29/52 correct, 4/26 complete pairs, against 35/52 and 9/26 for seven surface
+nuisance features — so the probe asks whether any decoder depth carries what
+the tail loses, on the model.json-pinned coder base, on its plain-instruct
+twin, and on its abliterated coder twin. One affine fit per layer per body,
+the published procedure verbatim, nothing adopted and nothing gated by the
+result. The Run preservation rule above governs this probe's own receipts;
+no separate sync clause is written for it.
+
 ## 2026-10-02 — The selector arrived before the review did.
 
 A newly frozen diagnostic compares the recovered v5 update 25 with update 100
