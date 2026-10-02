@@ -1,0 +1,32 @@
+✔ durable archive: normal (58.133007ms)
+✔ durable archive: lost-ack (55.474527ms)
+✔ durable archive: corrupt-remote (54.454428ms)
+✔ durable archive: missing-remote (56.771415ms)
+✔ durable archive: corrupt-readback (53.493699ms)
+✔ durable archive: local-loss (60.031053ms)
+✔ durable archive: parent-conflict (55.731697ms)
+✔ durable archive: unsafe-paths (54.835483ms)
+✔ durable archive: source-mutation (55.126571ms)
+✔ durable archive: privacy (56.933961ms)
+✔ durable archive: auth-redaction (54.931618ms)
+✔ durable archive: sequence-gate (54.22854ms)
+✔ durable archive: verification-barrier (55.825116ms)
+✔ durable archive: hf-transport-contract (57.840352ms)
+✔ durable archive: runner-barrier (64.846599ms)
+✔ durable archive: runner-lost-ack (69.575973ms)
+✔ durable archive: runner-interrupted (69.162396ms)
+✔ durable archive: runner-preflight (59.78602ms)
+✔ durable archive: runner-stale-output (68.629384ms)
+✔ durable archive: runner-symlink (64.910393ms)
+✔ durable archive: runner-failed-work (66.474375ms)
+✔ durable archive: runner-validation-failure (109.981409ms)
+✔ durable archive: verification survives python -O (1574.98823ms)
+✔ durable archive: verification survives PYTHONOPTIMIZE=1 (1558.877157ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4646.889716

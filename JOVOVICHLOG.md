@@ -22,10 +22,35 @@ unit so the remaining exposure is explicit. Test interrupted uploads and
 recovery before trusting the launcher. A paragraph cannot eliminate a failure
 window by decree.
 
-This rule follows the lost matched-run archive. The historical launchers below
-do not implement continuous remote sync; preserving their executed bytes is
-not an exemption for future runs. A launcher with demonstrated remote receipts
-is a prerequisite for the next training or layer-collection experiment.
+`training/durable_archive.py` implements the remote receipts, and
+`training/layers/run_layers.py` uses them before every native work unit.
+Historical launchers retain their executed bytes. New collection runs use the
+verified launcher described below.
+
+## 2026-10-02 — The next question waits for the receipt.
+
+The maintained research archive writes immutable, content-addressed objects
+and an ordered manifest chain into the private `ataeff/jovovich` repository.
+Each unit commits against an exact parent revision, downloads its new payloads
+again and checks their SHA256 and byte counts. The layer launcher first saves
+the protocol, bound sources and prepared inputs, then a durable intent before
+each process and a verified result before starting the next. Failed validators
+leave their output and stop the sequence. Recovery reconstructs logical files
+from remote manifests into a fresh directory and preserves interrupted units.
+
+The real HF smoke saves a bootstrap, commits a synthetic payload and deliberately
+drops the acknowledgement after the server accepted it. The identical retry
+finds the existing commit and verifies its bytes without another commit. After
+deleting the owned local test directory, a fresh archive instance restores all
+four logical files with exact SHA256 matches. The completion marker is verified
+at `c7b46235c3e3be02f803602120579a5911c96125`. The protocol, source, individual
+receipts and independent failure tests are in
+[`training/results/2026-10-02-durable-sync`](training/results/2026-10-02-durable-sync).
+
+The optional research transport uses pinned `huggingface_hub==0.35.3`. All
+model arithmetic and fitting remain native C/notorch. The normal review runtime
+keeps its existing dependencies. SERGE can lose the lighter. The result gets
+a remote receipt before he reaches for the next one.
 
 ## 2026-10-02 — The selector arrived before the review did.
 

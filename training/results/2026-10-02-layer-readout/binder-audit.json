@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "auditor": "independent layer_auditor agent",
+  "created_utc": "2026-10-02T01:41:32.263092+00:00",
+  "status": "pass: source review and generated-plan inventory validation completed before freeze",
+  "source_bindings": [
+    {
+      "path": "training/layers/freeze_layers.py",
+      "bytes": 7744,
+      "sha256": "28c4477f06b8d689fc6e12d967d54ab7b6bb3baf1b81e8ac857e513716284141"
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "bytes": 16874,
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5"
+    },
+    {
+      "path": "training/layers/prepare_layers.py",
+      "bytes": 28588,
+      "sha256": "cc64c3ba4e9e0a4a208322c111cffa852a5e0b0f02bf65eebf1f738f5d06bb16"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    }
+  ],
+  "prepared_protocol": {
+    "path": "training/results/2026-10-02-layer-readout/prepared/layers-protocol.json",
+    "bytes": 11998,
+    "sha256": "1a77939843a563b6cd7fb00998ffe8ccb341d2bfa67efbb424b3f7ced9e0c1d9"
+  },
+  "checks": {
+    "rows": 52,
+    "verified_rows": [
+      0,
+      1
+    ],
+    "row_validation": "Every row has mandatory validate-row check_argv before result acceptance.",
+    "assembly": "All 50 matrices plus assembly manifest; header/prefix layer order, then fresh z anchor, then nuisance.",
+    "fit_commands": "49 centered-rms state views use layers-metadata; nuisance uses seven columns, per-feature-rms and nuisance metadata. Fixed lambda .01, interpolation 1e-8, tolerance 1e-8, max iterations 100 and the same mask0.",
+    "summary": "Runs after 50 native fit processes; summarizer requires all 2100 fits to converge.",
+    "phases": 104,
+    "remote_units_if_complete": 210,
+    "source_snapshot": "Bound native sources and all their local quoted includes, compiled binaries, experiment scripts, test evidence and prepared inputs. Exact public base GGUF SHA is bound; its 675 MB payload is not duplicated in bootstrap.",
+    "execution_order": "Bootstrap verified before first model process; intent verified before each process; process plus validator result verified before the next phase.",
+    "remote_destination": "Matching private ataeff/jovovich with prefix experiments/layer-readout accepted; wrong repo, wrong prefix and private=false rejected by independent pure validation."
+  },
+  "resolved_findings": [
+    {
+      "finding": "Tests receipt bootstrap lacked referenced raw test logs.",
+      "resolution": "Binder includes raw logs, helperfixture/report, binder audit, nativefixture/sync test source and live smoke evidence before launch."
+    }
+  ],
+  "current_model_invocations_by_auditor": 0,
+  "open_source_findings": [],
+  "completed_utc": "2026-10-02T01:42:11.012259+00:00",
+  "generated_plan_check": {
+    "method": "Executed binder main through its actual validate_plan call, then intercepted before output writing or any execution. Inspected every generated phase and option.",
+    "phase_count": 104,
+    "remote_units": 210,
+    "row_phases": 52,
+    "rows_verified": [
+      0,
+      1
+    ],
+    "native_fits": 2100,
+    "bound_paths": 30,
+    "bootstrap_paths": 19,
+    "destination_uniqueness": "passed actual validate_plan",
+    "model_calls": 0,
+    "plan_files_created": 0
+  }
+}

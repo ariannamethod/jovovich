@@ -1,0 +1,252 @@
+{
+  "bootstrap": {
+    "files": [
+      {
+        "git_blob_sha1": "07e8e0eaa86aada92f6e68f33540695ce6a0467c",
+        "name": "inputs/live-smoke-protocol.json",
+        "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc",
+        "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc",
+        "size": 1326
+      },
+      {
+        "git_blob_sha1": "a41452945b47548726ccd636c18d43a57377176f",
+        "name": "source/durable_archive.py",
+        "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a",
+        "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a",
+        "size": 23730
+      },
+      {
+        "git_blob_sha1": "32d12a103b1c0719dc924505530fd14771de5fe9",
+        "name": "source/live_smoke.py",
+        "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847",
+        "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847",
+        "size": 10808
+      }
+    ],
+    "manifest_sha256": "a4d9eea6a0c39d5c93361104221052edc1c5cb0c528fb62ec1bbc1cf99194de8",
+    "prefix": "experiments/durable-layer-readout/durability-smoke-20261002-v1",
+    "reused": false,
+    "revision": "6c6e47723ec2bd64500c3aad747372833f8a7acb",
+    "run_id": "durability-smoke-20261002-v1",
+    "schema": "jovovich.durable-receipt.v1",
+    "sequence": 0,
+    "unit_id": "bootstrap",
+    "verified_remote_bytes": true
+  },
+  "completion": {
+    "files": [
+      {
+        "git_blob_sha1": "342d4acc152237193aab971f64958e25454f57aa",
+        "name": "completion.json",
+        "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/2fe3aacbbb8d4e621f23830a1f9c091799ec1611589a7e3c064e4077010238e4",
+        "sha256": "2fe3aacbbb8d4e621f23830a1f9c091799ec1611589a7e3c064e4077010238e4",
+        "size": 947
+      }
+    ],
+    "manifest_sha256": "dc812c8abc5ae30674384b4cb4f3b8fc1983dd8b7e2973a92d47dd1be41b0a87",
+    "prefix": "experiments/durable-layer-readout/durability-smoke-20261002-v1",
+    "reused": false,
+    "revision": "c7b46235c3e3be02f803602120579a5911c96125",
+    "run_id": "durability-smoke-20261002-v1",
+    "schema": "jovovich.durable-receipt.v1",
+    "sequence": 2,
+    "unit_id": "completion",
+    "verified_remote_bytes": true
+  },
+  "events": [
+    {
+      "at": "2026-10-02T01:34:46.111739+00:00",
+      "kind": "private_remote_checked",
+      "revision": "c9484feec99c5df47be5702d29098297aced1389"
+    },
+    {
+      "at": "2026-10-02T01:34:49.219487+00:00",
+      "kind": "actual_commit_accepted",
+      "operations": 4,
+      "parent": "c9484feec99c5df47be5702d29098297aced1389",
+      "revision": "6c6e47723ec2bd64500c3aad747372833f8a7acb"
+    },
+    {
+      "at": "2026-10-02T01:34:50.980762+00:00",
+      "kind": "bootstrap_verified",
+      "revision": "6c6e47723ec2bd64500c3aad747372833f8a7acb"
+    },
+    {
+      "at": "2026-10-02T01:34:53.991680+00:00",
+      "kind": "actual_commit_accepted",
+      "operations": 2,
+      "parent": "6c6e47723ec2bd64500c3aad747372833f8a7acb",
+      "revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149"
+    },
+    {
+      "at": "2026-10-02T01:34:53.992270+00:00",
+      "kind": "injected_ack_loss",
+      "revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149"
+    },
+    {
+      "at": "2026-10-02T01:34:53.993090+00:00",
+      "kind": "caller_observed_lost_ack"
+    },
+    {
+      "accepted_revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149",
+      "additional_commits": 0,
+      "at": "2026-10-02T01:34:55.717577+00:00",
+      "kind": "identical_retry_verified",
+      "verified_revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149"
+    },
+    {
+      "at": "2026-10-02T01:34:55.718566+00:00",
+      "kind": "owned_local_directory_deleted",
+      "logical_files": 4
+    },
+    {
+      "at": "2026-10-02T01:34:58.730021+00:00",
+      "kind": "remote_only_recovery_verified",
+      "logical_files": 4,
+      "revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149"
+    },
+    {
+      "at": "2026-10-02T01:35:01.383603+00:00",
+      "kind": "actual_commit_accepted",
+      "operations": 2,
+      "parent": "ed36e5ec195d8e2d196f060dfb4d80c80d256149",
+      "revision": "c7b46235c3e3be02f803602120579a5911c96125"
+    },
+    {
+      "at": "2026-10-02T01:35:02.289380+00:00",
+      "kind": "completion_marker_verified",
+      "revision": "c7b46235c3e3be02f803602120579a5911c96125"
+    }
+  ],
+  "finished_at": "2026-10-02T01:35:02.292637+00:00",
+  "hub_client_version": "0.35.3",
+  "lost_ack_retry": {
+    "files": [
+      {
+        "git_blob_sha1": "bd29517652bb2855d71fd80ba54fa852331cf231",
+        "name": "data/closed-payload.bin",
+        "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9",
+        "sha256": "0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9",
+        "size": 1075
+      }
+    ],
+    "manifest_sha256": "6eaab35293be7c5b7a722ddc64860b31eb85660bae5ea3824983812e0fe0a789",
+    "prefix": "experiments/durable-layer-readout/durability-smoke-20261002-v1",
+    "reused": true,
+    "revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149",
+    "run_id": "durability-smoke-20261002-v1",
+    "schema": "jovovich.durable-receipt.v1",
+    "sequence": 1,
+    "unit_id": "closed-payload",
+    "verified_remote_bytes": true
+  },
+  "prefix": "experiments/durable-layer-readout",
+  "recovered_file_bindings": {
+    "data/closed-payload.bin": {
+      "bytes": 1075,
+      "sha256": "0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9"
+    },
+    "inputs/live-smoke-protocol.json": {
+      "bytes": 1326,
+      "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc"
+    },
+    "source/durable_archive.py": {
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    },
+    "source/live_smoke.py": {
+      "bytes": 10808,
+      "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847"
+    }
+  },
+  "recovery": {
+    "next_sequence": 2,
+    "prefix": "experiments/durable-layer-readout/durability-smoke-20261002-v1",
+    "revision": "ed36e5ec195d8e2d196f060dfb4d80c80d256149",
+    "run_id": "durability-smoke-20261002-v1",
+    "schema": "jovovich.durable-recovery.v1",
+    "units": [
+      {
+        "files": [
+          {
+            "git_blob_sha1": "07e8e0eaa86aada92f6e68f33540695ce6a0467c",
+            "name": "inputs/live-smoke-protocol.json",
+            "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc",
+            "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc",
+            "size": 1326
+          },
+          {
+            "git_blob_sha1": "a41452945b47548726ccd636c18d43a57377176f",
+            "name": "source/durable_archive.py",
+            "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a",
+            "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a",
+            "size": 23730
+          },
+          {
+            "git_blob_sha1": "32d12a103b1c0719dc924505530fd14771de5fe9",
+            "name": "source/live_smoke.py",
+            "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847",
+            "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847",
+            "size": 10808
+          }
+        ],
+        "manifest_sha256": "a4d9eea6a0c39d5c93361104221052edc1c5cb0c528fb62ec1bbc1cf99194de8",
+        "sequence": 0,
+        "unit_id": "bootstrap"
+      },
+      {
+        "files": [
+          {
+            "git_blob_sha1": "bd29517652bb2855d71fd80ba54fa852331cf231",
+            "name": "data/closed-payload.bin",
+            "object": "experiments/durable-layer-readout/durability-smoke-20261002-v1/objects/0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9",
+            "sha256": "0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9",
+            "size": 1075
+          }
+        ],
+        "manifest_sha256": "6eaab35293be7c5b7a722ddc64860b31eb85660bae5ea3824983812e0fe0a789",
+        "sequence": 1,
+        "unit_id": "closed-payload"
+      }
+    ],
+    "verified_remote_bytes": true
+  },
+  "remote_commits": [
+    "6c6e47723ec2bd64500c3aad747372833f8a7acb",
+    "ed36e5ec195d8e2d196f060dfb4d80c80d256149",
+    "c7b46235c3e3be02f803602120579a5911c96125"
+  ],
+  "repo_id": "ataeff/jovovich",
+  "run_id": "durability-smoke-20261002-v1",
+  "schema": "jovovich.live-durability-smoke-result.v1",
+  "source_bindings_after": {
+    "live-smoke-protocol.json": {
+      "bytes": 1326,
+      "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc"
+    },
+    "live_smoke.py": {
+      "bytes": 10808,
+      "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847"
+    },
+    "training/durable_archive.py": {
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    }
+  },
+  "source_bindings_before": {
+    "live-smoke-protocol.json": {
+      "bytes": 1326,
+      "sha256": "7bf81c19867957d0b6bb6bc15090c4a0371251f44380bef023fa1fa9c5647bfc"
+    },
+    "live_smoke.py": {
+      "bytes": 10808,
+      "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847"
+    },
+    "training/durable_archive.py": {
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    }
+  },
+  "started_at": "2026-10-02T01:34:37.279703+00:00",
+  "status": "passed"
+}

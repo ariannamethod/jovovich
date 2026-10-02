@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-10-02T01:34:29.570378+00:00",
+  "gates": [
+    "private repository on every transport operation",
+    "fresh downloaded bytes at pinned revisions",
+    "same retry returns reused=true with unchanged commit count",
+    "every recovered logical file matches original SHA256 and size",
+    "source/protocol hashes unchanged across run"
+  ],
+  "hub_client_version": "0.35.3",
+  "payload": {
+    "bytes": 1075,
+    "sha256": "0c983d1a76f2bf81c129009acb07b326b808d8c8f9290e934f53514deb125cf9"
+  },
+  "prefix": "experiments/durable-layer-readout",
+  "repo_id": "ataeff/jovovich",
+  "run_id": "durability-smoke-20261002-v1",
+  "schema": "jovovich.live-durability-smoke.v1",
+  "scope": "Synthetic archive/transport smoke. No model calls or weights.",
+  "sequence": [
+    "bootstrap source and protocol",
+    "closed synthetic payload; suppress successful commit ACK",
+    "identical retry, no second commit",
+    "delete owned local directory and recover remote-only",
+    "verified completion marker"
+  ],
+  "sources": {
+    "live_smoke.py": {
+      "bytes": 10808,
+      "sha256": "58e051943e049a1fd88a4d4f31c6bbd7be9820eb5426dd8e3a65e7f1d197c847"
+    },
+    "training/durable_archive.py": {
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    }
+  }
+}

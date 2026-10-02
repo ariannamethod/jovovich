@@ -709,6 +709,23 @@ an explicit validator passing under optimized Python are preserved in
 These are newly generated diagnostic results, not recovered historical traces
 or untouched confirmation data. No training or historical selection rule changes.
 
+Research runs now have a synchronous archive gate. The layer launcher saves a
+frozen protocol and source/input snapshots to private Hugging Face storage,
+then records an intent and verified result for each native process. Every new
+payload is downloaded from its pinned commit and checked before the next
+process starts. Interrupted uploads and lost acknowledgements have tested
+recovery paths; completed units retain their identities after local file loss.
+The optional research transport pins `huggingface_hub==0.35.3` in a separate
+environment. Its implementation and real remote recovery receipts are in
+[`training/durable_archive.py`](training/durable_archive.py) and
+[`training/results/2026-10-02-durable-sync`](training/results/2026-10-02-durable-sync).
+
+`make extract-layers` builds the native depth collector. Each invocation saves
+one prompt's 24 post-block residuals at the assistant-header and common-prefix
+boundaries, plus an optional separate pre-final-MLP anchor. Exact Qwen ChatML
+IDs, capture positions and numerical checks travel with the row. The durable
+launcher and frozen preparation recipe live in [`training/layers`](training/layers).
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

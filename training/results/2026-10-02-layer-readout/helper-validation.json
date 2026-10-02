@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "fixture_scope": "Synthetic fixed features/native trace fixtures and replay of archived C fit outputs; no model invocation.",
+  "scratch": "/workspace/scratch/ec5ba60588d8/layers-final-helper-check-8bv9bks8",
+  "distinct_row_position_layer_slices_checked": 2496,
+  "anchor_rows_checked": 52,
+  "native_trace_rows_validated": 52,
+  "negative_fixtures_rejected": [
+    "missing_verification",
+    "wrong_boundary_id",
+    "missing_layer_capture",
+    "unrestored_projection",
+    "failed_numeric_error",
+    "changed_prompt_bytes"
+  ],
+  "historical_fit_subset_per_view": 42,
+  "summary_views_checked": 50,
+  "historical_observed_correct_preserved": 29,
+  "optimized_runner_rejected": true,
+  "helper": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/layers/prepare_layers.py",
+    "sha256": "cc64c3ba4e9e0a4a208322c111cffa852a5e0b0f02bf65eebf1f738f5d06bb16",
+    "bytes": 28588
+  },
+  "protocol_template": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/layers/protocol_template.json",
+    "sha256": "1a94b4edc759842398fe98f727f39ac01c5ce63231c840c7dfc28f3aed189b0f",
+    "bytes": 8523
+  }
+}
