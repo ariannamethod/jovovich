@@ -27,6 +27,53 @@ do not implement continuous remote sync; preserving their executed bytes is
 not an exemption for future runs. A launcher with demonstrated remote receipts
 is a prerequisite for the next training or layer-collection experiment.
 
+## 2026-10-02 — No depth was hiding it.
+
+The per-layer readout ran on all three bodies: 25 depths each, 2002 native fits
+per depth, 150150 fits in total, every one converged, maximum gradient infinity
+norm 1.0e-08 against the declared 1e-08 tolerance. The table is in
+training/results/2026-10-02-layer-readout/combined-table.md with no depth and no
+body left out, and the receipts are beside it.
+
+Twelve of the seventy-five body-depth cells clear the declared floor of 29/52
+correct and 4/26 complete pairs: l00, l03 and l22 on the coder base, l00, l01,
+l10, l11 and l17 on the plain-instruct twin, l00, l06, l16 and l23 on the
+abliterated coder twin. Zero of the seventy-five reach the published
+seven-feature lexical baseline of 35/52 and 9/26. The strongest cell anywhere is
+the plain-instruct twin at block 0 with 32/52 and 8/26, exceedance 0.02; the
+coder base peaks at 31/52 and 7/26 at the same block 0 and at block 3; the
+abliterated twin's best complete-pair counts sit at blocks 0, 6, 16 and 23 at
+5 to 7 pairs.
+
+Block 0 is the only cell that clears on all three bodies, and that is the
+reading. One decoder block above the embedding, at a decision position whose own
+token is identical in all 52 rows, is where surface information lives — and the
+seven token-count and diff-shape features read that same surface better than any
+depth of any body reads it. The final post-norm z is the weakest row on the
+coder base at 24/52 and 0/26. Depth did not hide the judgment. The judgment is
+not in these states in a form this probe can read, and nothing in the profile
+says "unfreeze here" to the next training run.
+
+What this does not say. The declared reading was fixed per depth and carries no
+multiplicity rule; applied to seventy-five cells, an exceedance near 0.01 is
+expected to turn up about once by chance, so the scattered cells that clear the
+floor are not twelve findings. A negative at every depth does not prove the
+information is absent: it bounds what an affine probe at lambda 0.01, on 52 rows
+with 20 template-family folds, can read at a supplied prefix. A nonlinear head,
+another position, or another corpus is a different experiment and needs its own
+frozen protocol.
+
+The instruments were proved before the bodies were read. The audit reproduces
+the published 2026-10-01 z summary from the published fits on all 27 compared
+fields, including all 99 reference statistics and all 52 scores to seventeen
+digits. A direction planted in one block of a hand-built four-block body is read
+at that block and above and not below it, the boundary moves when the plant
+moves, and with the plant removed every depth reads 26/52 and 0/26 — the probe
+invents nothing. All three bodies produce a token trace byte-identical to the
+published extraction's, so the decision positions are the published ones and the
+three tokenizers agree. The three extractions took 2436, 2166 and 1808 seconds
+on neo.
+
 ## 2026-10-02 — The trainers take the Method's own step.
 
 The notorch submodule moves from 7e246e13f9dbbb7e61312b7341fb94ce492bff71 to

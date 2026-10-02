@@ -709,6 +709,45 @@ an explicit validator passing under optimized Python are preserved in
 These are newly generated diagnostic results, not recovered historical traces
 or untouched confirmation data. No training or historical selection rule changes.
 
+A per-layer diagnostic then asks where the judgment lives. One forward pass per
+sequence keeps the residual state at the decision position after every decoder
+block, plus the final post-norm state, for three Q8_0 bodies: the pinned coder
+base, the official plain-instruct twin, and an abliterated coder twin. Every one
+of the 75 body-depth cells gets the published frozen-readout fit unchanged — the
+same 52 rows, the same twenty template-family folds, centered-rms, lambda 0.01,
+99 coupled label permutations. All 150,150 fits converge.
+
+| Per-layer readout | Depths | Cells clearing 29/52 and 4/26 | Best cell | Cells above 35/52 and 9/26 |
+| --- | ---: | --- | --- | ---: |
+| Qwen2.5-Coder-0.5B-Instruct | 25 | l00, l03, l22 | l00 at 31/52, 7/26 | 0 |
+| Qwen2.5-0.5B-Instruct | 25 | l00, l01, l10, l11, l17 | l00 at 32/52, 8/26 | 0 |
+| Abliterated coder twin | 25 | l00, l06, l16, l23 | l16 at 31/52, 5/26 | 0 |
+
+Block 0 is the only depth that clears on all three bodies. One block above the
+embedding, at a decision position whose own token is identical in all 52 rows,
+is where surface information lives — and the seven lexical/count features read
+that same surface better than any depth of any body reads it. The final
+post-norm state is the weakest row on the coder base at 24/52 and 0/26. No depth
+was hiding what the tail loses, so no depth earns an instruction to the next
+training run.
+
+The declared reading was fixed per depth before any state was extracted and
+carries no multiplicity rule; across 75 cells an exceedance near 0.01 is
+expected about once by chance, so twelve cells above the floor are not twelve
+findings. A negative at every depth bounds this affine probe at this lambda on
+52 rows and twenty folds; it does not prove the states are empty.
+
+The instruments were proved before the bodies were read. The audit reproduces
+the published z summary from the published fits on all 27 compared fields,
+including all 99 reference statistics and all 52 scores to seventeen digits. A
+direction planted in one block of a hand-built four-block body is read at that
+block and above, never below it; the boundary moves when the plant moves; with
+the plant removed every depth reads 26/52 and 0/26. All three bodies produce a
+token trace byte-identical to the published extraction's. The protocol, the plan
+frozen before extraction, the fixture, the manifests, the per-depth summaries
+and the full 75-row table live in
+[`training/results/2026-10-02-layer-readout`](training/results/2026-10-02-layer-readout).
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

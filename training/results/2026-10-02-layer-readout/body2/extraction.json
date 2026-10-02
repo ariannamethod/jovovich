@@ -1,0 +1,24 @@
+{
+  "note": "the extraction phase as the first run of this runner recorded it; the reported manifest reuses those matrices by hash",
+  "started_at_utc": "2026-10-02T03:05:18.745Z",
+  "threads": "4",
+  "extract_phase": {
+    "argv": [
+      "build/jovovich-extract-layers",
+      "models/qwen2.5-0.5b-instruct-q8_0.gguf",
+      "training/results/2026-10-01-frozen-readout/readout-input.bin",
+      "<scratch>/body2/features",
+      "4"
+    ],
+    "rc": 0,
+    "elapsed_seconds": 2166.374
+  },
+  "environment": {
+    "node": "v25.9.0",
+    "platform": "darwin arm64",
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  }
+}

@@ -14,6 +14,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import path from 'node:path';
 
 const argv = process.argv.slice(2);
 const opts = {};
@@ -26,9 +27,11 @@ for (const key of ['fits', 'rows', 'masks-json', 'width', 'label']) if (!opts[ke
 function fail(message) { process.stderr.write(`layer-summary: ${message}\n`); process.exit(1); }
 function require_(condition, message) { if (!condition) fail(message); }
 function digest(path) { return createHash('sha256').update(readFileSync(path)).digest('hex'); }
-function source(path) {
-  const raw = readFileSync(path);
-  return { path, sha256: createHash('sha256').update(raw).digest('hex'), bytes: raw.length };
+/* Paths are recorded relative to the working directory: a receipt in a public
+ * repository names files, not whose machine they sat on. */
+function source(file) {
+  const raw = readFileSync(file);
+  return { path: path.relative(process.cwd(), file), sha256: createHash('sha256').update(raw).digest('hex'), bytes: raw.length };
 }
 
 const width = Number(opts.width);

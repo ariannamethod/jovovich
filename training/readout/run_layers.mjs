@@ -26,9 +26,11 @@ for (const key of ['model', 'prompts', 'metadata', 'masks', 'masks-json', 'rows'
 const threads = opts.threads || '4';
 
 function fail(message) { process.stderr.write(`run-layers: ${message}\n`); process.exit(1); }
+/* Paths are recorded relative to the working directory: a receipt in a public
+ * repository names files, not whose machine they sat on. */
 function receipt(file) {
   const raw = readFileSync(file);
-  return { path: file, sha256: createHash('sha256').update(raw).digest('hex'), bytes: raw.length };
+  return { path: path.relative(process.cwd(), file), sha256: createHash('sha256').update(raw).digest('hex'), bytes: raw.length };
 }
 function phase(name, command, args, { stdout, stderr, env }) {
   const started = Date.now();
@@ -57,13 +59,30 @@ const inputs = {
   'helper:run_layers.mjs': receipt('training/readout/run_layers.mjs')
 };
 
+/* --reuse-extraction points at a features directory this runner already wrote.
+ * The matrices are content-addressed in the manifest either way, so a reader
+ * verifies them by hash rather than by trusting which process produced them;
+ * what this buys is a second pass over an extraction that cost an hour. */
 const phases = [];
-phases.push(phase('extract', 'build/jovovich-extract-layers',
-  [opts.model, opts.prompts, path.join(opts.out, 'features'), threads], {
-    stdout: path.join(opts.out, 'extract.stdout.jsonl'),
-    stderr: path.join(opts.out, 'extract.stderr.txt'),
-    env: { NT_NO_I8: '1', NT_QMV_THREADS: threads, NT_ATTN_THREADS: threads, NT_SIMD_THREADS: threads }
-  }));
+if (opts['reuse-extraction']) {
+  const from = opts['reuse-extraction'];
+  for (const file of readdirSync(from)) {
+    if (!file.endsWith('.bin')) continue;
+    writeFileSync(path.join(opts.out, 'features', file), readFileSync(path.join(from, file)), { flag: 'wx' });
+  }
+  for (const side of ['extract.stdout.jsonl', 'extract.stderr.txt'])
+    writeFileSync(path.join(opts.out, side), readFileSync(path.join(path.dirname(from), side)), { flag: 'wx' });
+  phases.push({ name: 'extract', reused_from_an_earlier_run_of_this_runner: true,
+                argv: ['build/jovovich-extract-layers', opts.model, opts.prompts, '<features>', threads],
+                rc: 0, elapsed_seconds: null });
+} else {
+  phases.push(phase('extract', 'build/jovovich-extract-layers',
+    [opts.model, opts.prompts, path.join(opts.out, 'features'), threads], {
+      stdout: path.join(opts.out, 'extract.stdout.jsonl'),
+      stderr: path.join(opts.out, 'extract.stderr.txt'),
+      env: { NT_NO_I8: '1', NT_QMV_THREADS: threads, NT_ATTN_THREADS: threads, NT_SIMD_THREADS: threads }
+    }));
+}
 
 const depths = readdirSync(path.join(opts.out, 'features')).filter(f => f.endsWith('.bin')).sort()
   .map(f => f.replace(/^features-/, '').replace(/\.bin$/, ''));
@@ -116,7 +135,7 @@ outputs['extract.stdout.jsonl'] = receipt(path.join(opts.out, 'extract.stdout.js
 
 const manifest = {
   schema_version: 1, label: opts.label, started_at_utc: started, finished_at_utc: new Date().toISOString(),
-  cwd: process.cwd(), threads, width: Number(opts.width), depths,
+  repository: path.basename(process.cwd()), threads, width: Number(opts.width), depths,
   solver: {
     normalization: 'centered-rms', lambda: 0.01, interpolation_lambda: 1e-8,
     gradient_tolerance: 1e-8, max_iterations: 100, intercept_penalized: false,

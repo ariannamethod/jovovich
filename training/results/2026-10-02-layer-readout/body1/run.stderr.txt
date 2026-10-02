@@ -1,0 +1,26 @@
+run-layers coder-base: 25 depths, 69669 bytes of manifest
+  l00: correct 31/52 concern 14/26 clean 17/26 pairs 7/26 exceedance 0.09
+  l01: correct 26/52 concern 12/26 clean 14/26 pairs 3/26 exceedance 0.54
+  l02: correct 29/52 concern 16/26 clean 13/26 pairs 5/26 exceedance 0.31
+  l03: correct 31/52 concern 17/26 clean 14/26 pairs 7/26 exceedance 0.16
+  l04: correct 28/52 concern 13/26 clean 15/26 pairs 2/26 exceedance 0.53
+  l05: correct 29/52 concern 14/26 clean 15/26 pairs 3/26 exceedance 0.25
+  l06: correct 29/52 concern 14/26 clean 15/26 pairs 3/26 exceedance 0.25
+  l07: correct 27/52 concern 13/26 clean 14/26 pairs 2/26 exceedance 0.44
+  l08: correct 26/52 concern 14/26 clean 12/26 pairs 2/26 exceedance 0.41
+  l09: correct 28/52 concern 15/26 clean 13/26 pairs 3/26 exceedance 0.2
+  l10: correct 27/52 concern 14/26 clean 13/26 pairs 3/26 exceedance 0.23
+  l11: correct 28/52 concern 15/26 clean 13/26 pairs 2/26 exceedance 0.39
+  l12: correct 29/52 concern 16/26 clean 13/26 pairs 3/26 exceedance 0.29
+  l13: correct 28/52 concern 14/26 clean 14/26 pairs 3/26 exceedance 0.31
+  l14: correct 28/52 concern 13/26 clean 15/26 pairs 2/26 exceedance 0.44
+  l15: correct 29/52 concern 14/26 clean 15/26 pairs 4/26 exceedance 0.07
+  l16: correct 27/52 concern 14/26 clean 13/26 pairs 1/26 exceedance 0.72
+  l17: correct 24/52 concern 12/26 clean 12/26 pairs 1/26 exceedance 0.72
+  l18: correct 26/52 concern 14/26 clean 12/26 pairs 1/26 exceedance 0.72
+  l19: correct 28/52 concern 15/26 clean 13/26 pairs 3/26 exceedance 0.21
+  l20: correct 28/52 concern 16/26 clean 12/26 pairs 4/26 exceedance 0.08
+  l21: correct 30/52 concern 16/26 clean 14/26 pairs 4/26 exceedance 0.09
+  l22: correct 30/52 concern 17/26 clean 13/26 pairs 5/26 exceedance 0.02
+  l23: correct 27/52 concern 16/26 clean 11/26 pairs 2/26 exceedance 0.55
+  postnorm: correct 24/52 concern 14/26 clean 10/26 pairs 0/26 exceedance 1
