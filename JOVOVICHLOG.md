@@ -2,6 +2,23 @@
 
 One log. SERGE may smoke here; he may not create `FINAL_FINAL_LOG_2.md`.
 
+## 2026-10-01 — Even a process that never started leaves evidence.
+
+Copilot's PR #13 finding was reproducible: `Popen` could fail before the phase
+entered the receipt. The maintained readout runner now registers the phase
+before launching and records its streams and declared outputs in `finally`.
+An unlaunched child has a recorded exception and null exit/resource fields.
+Regressions exercise denied execute permission and failure to open stderr
+after stdout was created, under both `python -O` and `PYTHONOPTIMIZE=1`.
+All fifteen workflow tests pass. The initial full gate passed seven native
+and eighty-two Node tests; the two additional log-opening regressions were
+then checked in the focused workflow suite.
+
+A separate auditor also exercised a missing executable and failure to open
+the second log after the first was created. The auditor owns neither the fix
+nor the experiment orchestration, and checks source bindings, raw responses
+and the interpretation at each stage.
+
 ## 2026-10-01 — SERGE counted the returns.
 
 Copilot reviewed PR #12 and found three defects in the experiment helpers:

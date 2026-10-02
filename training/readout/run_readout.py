@@ -113,28 +113,42 @@ def main():
             stdout_path = resolve(phase['stdout'], cwd)
             stderr_path = resolve(phase['stderr'], cwd)
             phase_start = time.monotonic()
-            # Linux wait4 obtains this exact child\'s rusage, rather than the
-            # process-global RUSAGE_CHILDREN peak inherited from earlier phases.
-            with stdout_path.open('xb') as stdout, stderr_path.open('xb') as stderr:
-                child = subprocess.Popen(phase['argv'], cwd=cwd, env={**os.environ, **environment}, stdout=stdout, stderr=stderr)
-                _, status, usage = os.wait4(child.pid, 0)
-                code = os.waitstatus_to_exitcode(status)
-                child.returncode = code
-            row = {'name': phase['name'], 'argv': phase['argv'], 'elapsed_seconds': time.monotonic() - phase_start,
-                   'returncode': code, 'peak_rss_kib': usage.ru_maxrss,
-                   'user_cpu_seconds': usage.ru_utime, 'system_cpu_seconds': usage.ru_stime,
-                   'stdout': file_record(stdout_path), 'stderr': file_record(stderr_path),
+            row = {'name': phase['name'], 'argv': phase['argv'], 'elapsed_seconds': None,
+                   'returncode': None, 'peak_rss_kib': None,
+                   'user_cpu_seconds': None, 'system_cpu_seconds': None,
+                   'stdout': None, 'stderr': None, 'missing_log_files': [],
                    'created_files': [], 'missing_created_files': []}
             receipt['phases'].append(row)
-            # Partial output is evidence too: record every existing declared
-            # artifact before a nonzero exit can terminate the protocol.
-            for value in phase.get('creates', []):
-                path = resolve(value, cwd)
-                if path.is_file():
-                    row['created_files'].append(file_record(path))
-                else:
-                    row['missing_created_files'].append(str(path))
-            require(code == 0, 'native/procedure phase failed: ' + phase['name'])
+            try:
+                # Linux wait4 obtains this exact child's rusage, rather than the
+                # process-global RUSAGE_CHILDREN peak inherited from earlier phases.
+                with stdout_path.open('xb') as stdout, stderr_path.open('xb') as stderr:
+                    child = subprocess.Popen(phase['argv'], cwd=cwd, env={**os.environ, **environment}, stdout=stdout, stderr=stderr)
+                    _, status, usage = os.wait4(child.pid, 0)
+                    code = os.waitstatus_to_exitcode(status)
+                    child.returncode = code
+                    row.update(returncode=code, peak_rss_kib=usage.ru_maxrss,
+                               user_cpu_seconds=usage.ru_utime, system_cpu_seconds=usage.ru_stime)
+            except BaseException as exc:
+                row['failure_type'] = type(exc).__name__
+                row['failure'] = str(exc)
+                raise
+            finally:
+                row['elapsed_seconds'] = time.monotonic() - phase_start
+                # A launch failure can still create logs. Preserve those and
+                # every declared artifact before propagating any phase failure.
+                for field, path in [('stdout', stdout_path), ('stderr', stderr_path)]:
+                    if path.is_file():
+                        row[field] = file_record(path)
+                    else:
+                        row['missing_log_files'].append(str(path))
+                for value in phase.get('creates', []):
+                    path = resolve(value, cwd)
+                    if path.is_file():
+                        row['created_files'].append(file_record(path))
+                    else:
+                        row['missing_created_files'].append(str(path))
+            require(row['returncode'] == 0, 'native/procedure phase failed: ' + phase['name'])
             require(not row['missing_created_files'],
                     'phase did not create declared files: ' + ', '.join(row['missing_created_files']))
             verify(bindings, cwd)

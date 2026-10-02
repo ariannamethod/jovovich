@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, copyFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, copyFileSync, chmodSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -227,5 +227,99 @@ for (const mode of modes) {
       if (scenario.code === 7) assert.match(receipt.failure, /phase failed/);
       if (scenario.name === 'successful-process-missing-output') assert.match(receipt.failure, /did not create declared files/);
     }
+  });
+
+  test(`${mode.name}: runner retains phase evidence when executable permission prevents launch`, t => {
+    const run = temporary(t);
+    const executable = path.join(run, 'not-executable');
+    writeFileSync(executable, '#!/usr/bin/env python3\nraise RuntimeError("must not run")\n');
+    chmodSync(executable, 0o644);
+    const runner = path.join(helpers, 'run_readout.py');
+    const bytes = readFileSync(runner);
+    const output = path.join(run, 'declared-output.jsonl');
+    const stdout = path.join(run, 'stdout');
+    const stderr = path.join(run, 'stderr');
+    const plan = path.join(run, 'plan.json');
+    writeFileSync(plan, JSON.stringify({
+      protocol_frozen: true,
+      frozen_inputs: { runner: { path: runner, sha256: sha(bytes), bytes: bytes.length } },
+      execution: { cwd: repo, phases: [{ name: 'cannot-launch', argv: [executable],
+        stdout, stderr, creates: [output] }] },
+    }));
+    const result = python(mode, [runner, '--plan', plan, '--output-dir', run]);
+    rejected(result, /PermissionError:/);
+    const receipt = readJSON(path.join(run, 'readout-run.json'));
+    assert.equal(receipt.status, 'failed');
+    assert.equal(receipt.failure_type, 'PermissionError');
+    assert.equal(receipt.phases.length, 1);
+    const phase = receipt.phases[0];
+    assert.equal(phase.name, 'cannot-launch');
+    assert.deepEqual(phase.argv, [executable]);
+    assert.equal(phase.failure_type, 'PermissionError');
+    assert.equal(phase.failure, receipt.failure);
+    assert.match(phase.failure, /Permission denied/);
+    assert.ok(phase.elapsed_seconds >= 0);
+    for (const key of ['returncode', 'peak_rss_kib', 'user_cpu_seconds', 'system_cpu_seconds']) {
+      assert.equal(phase[key], null, `${key}: no child was launched`);
+    }
+    for (const [field, filename] of [['stdout', stdout], ['stderr', stderr]]) {
+      assert.deepEqual(phase[field], { path: filename, sha256: sha(''), bytes: 0 });
+      assert.equal(readFileSync(filename).length, 0);
+    }
+    assert.deepEqual(phase.missing_log_files, []);
+    assert.deepEqual(phase.created_files, []);
+    assert.deepEqual(phase.missing_created_files, [output]);
+    assert.equal(existsSync(output), false);
+  });
+
+  test(`${mode.name}: runner retains stdout when opening stderr fails before launch`, t => {
+    const run = temporary(t);
+    const runner = path.join(helpers, 'run_readout.py');
+    const bytes = readFileSync(runner);
+    const output = path.join(run, 'declared-output.jsonl');
+    const childRan = path.join(run, 'child-ran');
+    const stdout = path.join(run, 'stdout');
+    const stderr = path.join(run, 'stderr');
+    const argv = ['python3', '-c',
+      'import pathlib,sys; pathlib.Path(sys.argv[1]).write_text("ran"); pathlib.Path(sys.argv[2]).write_text("output")',
+      childRan, output];
+    const plan = path.join(run, 'plan.json');
+    writeFileSync(plan, JSON.stringify({
+      protocol_frozen: true,
+      frozen_inputs: { runner: { path: runner, sha256: sha(bytes), bytes: bytes.length } },
+      execution: { cwd: repo, phases: [
+        // Create the obstruction after initial output-path validation, using
+        // a real preceding phase rather than mocking the runner's file API.
+        { name: 'create-stderr-directory', argv: ['python3', '-c',
+          'import pathlib,sys; pathlib.Path(sys.argv[1]).mkdir()', stderr],
+          stdout: path.join(run, 'setup.stdout'), stderr: path.join(run, 'setup.stderr'), creates: [] },
+        { name: 'stderr-open-fails', argv, stdout, stderr, creates: [output] },
+      ] },
+    }));
+    const result = python(mode, [runner, '--plan', plan, '--output-dir', run]);
+    rejected(result, /FileExistsError:/);
+    const receipt = readJSON(path.join(run, 'readout-run.json'));
+    assert.equal(receipt.status, 'failed');
+    assert.equal(receipt.failure_type, 'FileExistsError');
+    assert.equal(receipt.phases.length, 2);
+    assert.equal(receipt.phases[0].returncode, 0);
+    const phase = receipt.phases[1];
+    assert.equal(phase.name, 'stderr-open-fails');
+    assert.deepEqual(phase.argv, argv);
+    assert.equal(phase.failure_type, 'FileExistsError');
+    assert.equal(phase.failure, receipt.failure);
+    assert.match(phase.failure, /File exists/);
+    assert.ok(phase.elapsed_seconds >= 0);
+    for (const key of ['returncode', 'peak_rss_kib', 'user_cpu_seconds', 'system_cpu_seconds']) {
+      assert.equal(phase[key], null, `${key}: no child was launched`);
+    }
+    assert.deepEqual(phase.stdout, { path: stdout, sha256: sha(''), bytes: 0 });
+    assert.equal(readFileSync(stdout).length, 0);
+    assert.equal(phase.stderr, null);
+    assert.deepEqual(phase.missing_log_files, [stderr]);
+    assert.deepEqual(phase.created_files, []);
+    assert.deepEqual(phase.missing_created_files, [output]);
+    assert.equal(existsSync(output), false);
+    assert.equal(existsSync(childRan), false);
   });
 }
