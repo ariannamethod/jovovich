@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "started_utc": "2026-10-02T00:38:36.792697+00:00",
+  "status": "passed",
+  "protocol": {
+    "path": "training/results/2026-10-02-gradient-control/protocol.json",
+    "sha256": "5664aca22873127d9a5af539eda545e962f131b376ac9f0933e314d9eecea1d9",
+    "bytes": 8378
+  },
+  "phases": [
+    {
+      "name": "initial",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "initial",
+        "38",
+        "39"
+      ],
+      "started_utc": "2026-10-02T00:38:37.408883+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "training/results/2026-10-02-gradient-control/initial.jsonl",
+        "sha256": "e63db694f995da7ac4396237cab8076dae9906b6c9a84ed7a7a6e62b3f2ec068",
+        "bytes": 23773
+      },
+      "stderr": {
+        "path": "training/results/2026-10-02-gradient-control/initial.stderr",
+        "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+        "bytes": 127
+      },
+      "pid": 8,
+      "elapsed_seconds": 59.614761340999394,
+      "ended_utc": "2026-10-02T00:39:37.024036+00:00",
+      "summary": {
+        "kind": "summary",
+        "pass": true,
+        "active_tensors": 3,
+        "expected_zero_tensors": 3,
+        "inconclusive_directions": 0,
+        "parameters_and_frozen_bytes_unchanged": true,
+        "optimizer_steps": 0
+      }
+    },
+    {
+      "name": "epoch25",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.epoch25",
+        "38",
+        "39"
+      ],
+      "started_utc": "2026-10-02T00:39:37.027724+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "training/results/2026-10-02-gradient-control/epoch25.jsonl",
+        "sha256": "707c0b8b98a86665b4ab77cdc262d92829db5b1670dab30a99bae9dde85759f3",
+        "bytes": 25413
+      },
+      "stderr": {
+        "path": "training/results/2026-10-02-gradient-control/epoch25.stderr",
+        "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+        "bytes": 127
+      },
+      "pid": 18727,
+      "elapsed_seconds": 62.472438712007715,
+      "ended_utc": "2026-10-02T00:40:39.501096+00:00",
+      "summary": {
+        "kind": "summary",
+        "pass": true,
+        "active_tensors": 6,
+        "expected_zero_tensors": 0,
+        "inconclusive_directions": 1,
+        "parameters_and_frozen_bytes_unchanged": true,
+        "optimizer_steps": 0
+      }
+    },
+    {
+      "name": "epoch100",
+      "argv": [
+        "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-gradients",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.bin",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.pairs",
+        "/workspace/scratch/ec5ba60588d8/jovovich/models/recovered-matched/matched-review.epoch100",
+        "38",
+        "39"
+      ],
+      "started_utc": "2026-10-02T00:40:39.506300+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "training/results/2026-10-02-gradient-control/epoch100.jsonl",
+        "sha256": "75d0494dced24dda16b31246ff6113f6cf6994bd7342e423c8ded1bc209c5858",
+        "bytes": 25478
+      },
+      "stderr": {
+        "path": "training/results/2026-10-02-gradient-control/epoch100.stderr",
+        "sha256": "c850a2348223e5dd631587d52e6dcac8043a98f92b5308a609ff1329e53f3131",
+        "bytes": 127
+      },
+      "pid": 37446,
+      "elapsed_seconds": 68.7888287090027,
+      "ended_utc": "2026-10-02T00:41:48.295666+00:00",
+      "summary": {
+        "kind": "summary",
+        "pass": true,
+        "active_tensors": 6,
+        "expected_zero_tensors": 0,
+        "inconclusive_directions": 3,
+        "parameters_and_frozen_bytes_unchanged": true,
+        "optimizer_steps": 0
+      }
+    }
+  ],
+  "bindings_unchanged": true,
+  "ended_utc": "2026-10-02T00:41:48.999343+00:00"
+}
