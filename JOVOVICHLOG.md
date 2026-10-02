@@ -27,6 +27,41 @@ do not implement continuous remote sync; preserving their executed bytes is
 not an exemption for future runs. A launcher with demonstrated remote receipts
 is a prerequisite for the next training or layer-collection experiment.
 
+## 2026-10-02 — The trainers take the Method's own step.
+
+The notorch submodule moves from 7e246e13f9dbbb7e61312b7341fb94ce492bff71 to
+014403faa76b795aefe18a4781980f5b140e0ed3, an ancestor-to-descendant bump, and
+both native trainers now call `nt_tape_chuck_step(lr, loss_val)` where they
+called the diagonal baseline: train_head.c:200 for the per-example SFT step
+with that example's cross-entropy, train_head.c:227 for the per-pair DPO step
+with the pair loss rather than the weighted surrogate whose value is not a
+loss, train_mlp.c:534 for the one accumulated step per epoch on the joint
+objective with that epoch's online joint loss, and train_mlp.c:538 for the
+per-microbatch step with that microbatch's loss. The contract was read before
+the swap (notorch.h:255, notorch.c:2523): the step takes its gradients from
+the same tape entries as the previous call, and `loss_val` enters only the
+Chuck controller — the loss EMA, a sixteen-slot window, a quartile trend with
+brake and push at two percent, stagnation noise after eight flat steps, and a
+macro patience that scales the rate every thousand steps. One call is one step
+for every one of those counters, which is what makes the accumulated joint
+step well defined. `reset_optimizer` clears the Chuck state with the moments,
+since `nt_tape_destroy` zeroes the whole tape.
+
+Receipts in training/results/2026-10-02-optimizer-law/: build rc 0 with zero
+error lines after `make clean`, and `make test` run at the same pin on both
+sides of the swap — seven C binaries pass with byte-identical assertion lines,
+Node reports 84 tests, 77 pass, 7 fail, the same seven names before and after.
+Those seven are pre-existing and environmental: test/readout_workflow.test.mjs
+compares a recorded temporary path against the macOS /private/var realpath of
+the same directory, and that file references no build artifact at all.
+
+What this is not. The suite does not execute the four swapped lines — the C
+tests include the trainers with `main` renamed and drive their own update
+loops against their own diagonal oracle — so identical output shows the swap
+broke nothing those tests check, and nothing more. No equivalence of training
+outcomes is claimed, in either direction: nothing was trained here. Whether
+the Chuck controller helps this corpus is an experiment that has not been run.
+
 ## 2026-10-02 — Where does the judgment live?
 
 Frozen before any state extraction: the per-layer affine readout protocol
