@@ -124,6 +124,8 @@ def plot(table, out_prefix):
     fig.savefig(paths['svg'], facecolor='white', metadata={'Date': None,
                 'Title': 'JOVOVICH frozen Qwen layer survey',
                 'Description': 'Development family-held-out counts at all 24 post-block residuals and two token boundaries.'})
+    paths['svg'].write_text('\n'.join(line.rstrip() for line in
+                                    paths['svg'].read_text().splitlines()) + '\n')
     fig.savefig(paths['png'], facecolor='white', dpi=180,
                 metadata={'Title': 'JOVOVICH frozen Qwen layer survey'})
     plt.close(fig)

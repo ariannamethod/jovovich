@@ -27,6 +27,91 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-02 — Twenty-four floors. No secret penthouse.
+
+The frozen Qwen2.5-Coder-0.5B-Instruct Q8_0 depth survey completed with all
+2,100 native fits converged: maximum gradient infinity norm
+`9.634049100148978e-9`, maximum 17 iterations under the frozen limit of 100.
+The model and native trainer bytes were unchanged. We collected all 24
+post-block residuals at two exact native positions for every one of the 52 v5
+reviews: the assistant-header end and the end of shared prefix IDs
+`[4913,3903,819]`, decoded as `{"findings`. A separate fresh-KV pass collected
+the pre-final-MLP prefix anchor. Labels and gold answers stayed outside the
+model input.
+
+Each state view received an affine readout with fixed ridge 0.01, training-fold
+normalization, leave-one-family-out evaluation over all 20 families, and the
+same predesignated family-flip control. Pairs and quartets stayed together.
+The table reports the observed-label results; blocks are numbered 1–24 here.
+
+| View | Correct / 52 | Complete pairs / 26 | Same-full-diff pairs / 6 |
+| --- | ---: | ---: | ---: |
+| Header block 8, maximum within its boundary | 30 | 4 | 2 |
+| Prefix block 4, maximum within its boundary | 29 | 3 | 3 |
+| Header block 24 | 26 | 1 | 1 |
+| Prefix block 24 | 27 | 1 | 1 |
+| Fresh pre-final-MLP prefix anchor | 27 | 1 | 1 |
+| Seven-feature lexical/count baseline | 26 | 1 | 0 |
+
+Header views span 25–30 correct reviews and 0–4 complete pairs; prefix views
+span 25–29 and 0–3. The complete profile does not exhibit a strong early
+readout followed by its disappearance at the tail. Moving to the shared JSON
+prefix also does not provide a general improvement. Across the 49 state views,
+observed labels beat the single fixed flipped-label control on row accuracy
+in 21 views, tie in 10, and trail in 18. This is one descriptive control, not
+a permutation significance estimate.
+
+All 49 state views interpolate 52/52 observed and 52/52 flipped labels at
+ridge `1e-8`. Their capacity to fit the development rows is therefore present;
+transfer to held-out families is the measured weakness. The same-full-diff
+subset reaches 3/6 complete pairs at header block 7 and prefix block 4, and
+1/6 at either final boundary. The full 50-view table remains exploratory,
+with no selected runtime layer. The fresh v5
+anchor is the within-run comparator; the older v4 anchor used different
+prompts and is not a depth-only comparison.
+
+Independent verification parsed 2,283,008 finite float32 coordinates and tied
+all 49 state matrices to their 2,548 source vectors byte for byte. The auditor
+derived all 20 families and the six same-diff pairs directly from the corpus
+and independently recomputed all 364 lexical/count values. Two separate
+postrun scripts agree on all 2,100 fits, 1,050 normalization memberships and
+10,400 predictions. The first two collection rows passed token-step and both
+future-token invariance checks with zero measured discrepancy.
+
+The completion marker is remotely verified at private HF revision
+`c2c592f77a0548d8f50077af35654950ca591ef3`, sequence 209: all 210 archive units,
+including bootstrap and completion, have receipts. The real interruption and
+successful continuation are recorded below. The public deterministic archive
+contains all 748 raw evidence files, 35,703,965 compressed bytes, SHA256
+`9fcd318c6586904f8c41a2b08c899ec5cfed1e5a42e6b2a6efcda310e7cd8518`.
+It retains every row, matrix, native fit, trace, process log and phase receipt;
+the bound source/binary snapshots remain in the private archive. Readback
+checked every tar member against its size and digest before publication.
+GitHub transport rejected the full-size request, so the same archive is
+published as twelve 3 MiB-or-smaller pieces. Their manifest records individual
+hashes and the reassembly command; byte-for-byte reassembly was checked against
+the original archive. The assembled file is a reproducible ignored artifact.
+
+Code and evidence are in
+[`training/results/2026-10-02-layer-readout`](training/results/2026-10-02-layer-readout).
+Validation also includes eight native test executables, 108 Node tests,
+24 focused archive/launcher cases and nine independent packer scenarios.
+Final source review found no remaining actionable issue. The normal review
+runtime, reusable workflow, notorch pin and production trainer remain unchanged.
+
+The next useful intervention is a controlled explanation-before-verdict arm,
+with matched data and generation budgets. Its prerequisite is concrete:
+`train_mlp.c` currently takes the first different answer token as the paired
+decision position. Different explanations would send the extra joint weight
+to an explanation token. `prepare.py`, the native pair loader and
+`score_decisions.py` need a versioned per-row verdict-boundary contract, tested
+with unequal explanation lengths and early explanation differences. The cache
+already supports longer answers. Generated explanations must be produced by
+the model during evaluation; the data/eval change alone is insufficient for
+the current joint objective.
+
+SERGE has one cigarette. This run has 210 remote acknowledgements.
+
 ## 2026-10-02 — The next question waits for the receipt.
 
 The maintained research archive writes immutable, content-addressed objects
@@ -51,6 +136,18 @@ The optional research transport uses pinned `huggingface_hub==0.35.3`. All
 model arithmetic and fitting remain native C/notorch. The normal review runtime
 keeps its existing dependencies. SERGE can lose the lighter. The result gets
 a remote receipt before he reaches for the next one.
+
+The first layer collection also encountered a real controller interruption:
+the execution service reported that network approval was cancelled. At the
+recorded private revision, 27 row results were durable and the next row's
+intent was saved. That row had already completed locally, including its
+validator. An independent check verified all 273 local files, 28 closed phases,
+their exact commands and artifact hashes, and the unchanged host and bindings.
+The continuation controller uses the original frozen launcher: it re-verifies
+the existing remote units, publishes the original pending result, then advances.
+It reached `row-028` at 02:27:09 UTC without rerunning the 28 completed model
+callbacks. The interruption, remote tail, continuation source and independent
+audit are preserved in the layer-study directory.
 
 ## 2026-10-02 — The selector arrived before the review did.
 

@@ -726,6 +726,53 @@ boundaries, plus an optional separate pre-final-MLP anchor. Exact Qwen ChatML
 IDs, capture positions and numerical checks travel with the row. The durable
 launcher and frozen preparation recipe live in [`training/layers`](training/layers).
 
+The completed survey covers 52 v5 reviews, 26 matched pairs and 20 held-out
+families. All 2,100 native fits converged. The two boundaries produced a narrow
+depth profile: 25–30 correct reviews at the assistant header and 25–29 after
+the shared JSON prefix. A complete pair requires both the concern and its clean
+counterpart to be correct.
+
+| Frozen readout on v5 | Correct reviews | Complete pairs | Same-diff complete pairs |
+| --- | ---: | ---: | ---: |
+| Header block 8, exploratory maximum | 30/52 | 4/26 | 2/6 |
+| Prefix block 4, exploratory maximum | 29/52 | 3/26 | 3/6 |
+| Header block 24 | 26/52 | 1/26 | 1/6 |
+| Prefix block 24 | 27/52 | 1/26 | 1/6 |
+| Fresh pre-final-MLP prefix anchor | 27/52 | 1/26 | 1/6 |
+| Lexical/count baseline | 26/52 | 1/26 | 0/6 |
+
+Block numbers above are 1–24; native file indices are 0–23. The full profile
+does not show a strong early readout that disappears at the final layer.
+All 49 state views can fit all 52 development labels at weak ridge, including
+the fixed flipped labels, while family-held-out results remain weak. This
+locates the measured difficulty in transfer across families under this readout,
+rather than in its ability to fit these rows. The two exploratory maxima are
+reported with the complete table; neither selects a deployment layer.
+
+![Complete depth and boundary profile](training/results/2026-10-02-layer-readout/layer-profile.svg)
+
+Two independent recounts agree on all 10,400 saved predictions. The
+[evidence directory](training/results/2026-10-02-layer-readout) includes the
+50-view table, plot, frozen launch plan, audits, remote completion receipt and
+a byte-verified archive of all 748 raw evidence files. The archive includes
+vectors and native fit records; weights remain private. All 210 remote units
+were acknowledged, including recovery from a real controller interruption.
+
+For GitHub transport, the raw archive is stored as twelve lossless pieces with
+individual hashes in `public-archive-transport.json`. Reassemble and verify it
+inside the evidence directory:
+
+```sh
+cat raw-evidence.tar.gz.part-[0-9][0-9][0-9] > raw-evidence.tar.gz
+sha256sum -c raw-evidence.tar.gz.sha256
+```
+
+The next controlled explanation-before-verdict experiment must explicitly bind
+each answer's verdict position. The current joint trainer weights the first
+different token in paired answers; adding different explanations would move
+that target into the explanation. That selector and its evaluator need a
+versioned position contract before changing the training corpus.
+
 To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
 and a separate Python environment containing `huggingface_hub==0.35.3`.
 Choose fresh paths and a unique run ID; the frozen plan records the current
