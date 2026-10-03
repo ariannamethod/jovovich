@@ -3,7 +3,6 @@
   "status": "prepared_not_deployed",
   "checked_utc": "2026-10-03T19:59:12.813965+00:00",
   "organism": "JOVOVICH",
-  "merged_source": "b0c23f87dfa78ddd961eee0c476e20d64d18d426",
   "training": {
     "arms": [
       "before",
@@ -55,5 +54,17 @@
     "https://docs.runpod.io/api-reference-v2/catalog/list-cpu-types",
     "https://docs.runpod.io/pods/pricing",
     "https://docs.runpod.io/api-reference-v2/pods/create-a-pod"
-  ]
+  ],
+  "starting_main_commit": "b0c23f87dfa78ddd961eee0c476e20d64d18d426",
+  "deployment_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "source_resolution": {
+    "resolved_utc": "2026-10-03T20:30:13.194213+00:00",
+    "note": "starting_main_commit is provenance only. Provisioning uses deployment_source_commit as the explicit launcher argument. The private archived host manifest independently confirms that SHA.",
+    "evidence": [
+      "source-publication.json",
+      "pod-request-cpu3g.json",
+      "remote-host-manifest.json",
+      "archive-verified.json"
+    ]
+  }
 }
