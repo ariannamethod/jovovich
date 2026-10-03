@@ -1,0 +1,10 @@
+{
+  "schema": "jovovich.archive-access.v1",
+  "checked_utc": "2026-10-03T17:26:06.034898+00:00",
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "base_commit": "6f62ad2ae793590a259bc52448038f1c4777c5b0",
+  "purpose": "Matched explanation-order training; initial private upload and pinned remote readback before model forward",
+  "credential_source": "user authorized attachment; contents excluded",
+  "huggingface_hub": "0.35.3"
+}

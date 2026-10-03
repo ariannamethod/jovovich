@@ -1,0 +1,14 @@
+{
+  "recorded_utc": "2026-10-03T18:02:02.322073+00:00",
+  "status": "before_running_continuation_waiting",
+  "before_run": "models/order-20261003-01-before",
+  "before_last_verified_unit": "update-014",
+  "continuation_state": "models/order-20261003-01-supervisor",
+  "continuation_plan_sha256": "28f79b2db3457f0af6aebe26bc9e13311bd485a257ce24bc9a518c3f229ff9f1",
+  "after_run": "models/order-20261003-01-after",
+  "evaluation_run": "models/order-20261003-01-eval",
+  "training_updates_per_arm": 100,
+  "planned_generation_calls": 228,
+  "estimated_seconds_per_update_from_first_two_inter_ack_intervals": 62,
+  "continuation_policy": "Verified before parent exit, then after and native evaluation sequentially; no restart after failure."
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "jovovich.explanation-order.continuation.v1",
+  "run_id": "order-20261003-01-chain",
+  "created_utc": "2026-10-03T18:01:15.376894+00:00",
+  "before_run": "models/order-20261003-01-before",
+  "after_run": "models/order-20261003-01-after",
+  "after_template": "training/results/2026-10-03-explanation-order-run/launches/after.template.json",
+  "evaluation_run": "models/order-20261003-01-eval",
+  "evaluation_plan": "training/explanations/evaluation_plan.json",
+  "evaluation_run_id": "order-20261003-01-eval",
+  "before_process": {
+    "pid": 698755,
+    "start_ticks": 892066,
+    "cmdline_sha256": "bb1e95381d84e1470cdbbecae496613331c3a8c3303036e97f96918e0dc9c3ee"
+  },
+  "poll_seconds": 5,
+  "wait_timeout_seconds": 86400,
+  "bindings": [
+    {
+      "path": "models/order-20261003-01-before/plan.json",
+      "bytes": 9397,
+      "sha256": "60f13bba578ca3bc65cf46c76e450b4ef9b99ea6fa84e861e8945a4632297423"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/launches/after.template.json",
+      "bytes": 9420,
+      "sha256": "8af57dc5a8487b5e7c60b7b433280aae8d81b119723366151ddf8d8a5abc3ef7"
+    },
+    {
+      "path": "training/explanations/evaluation_plan.json",
+      "bytes": 27718,
+      "sha256": "1a53f74ad110e3e6639016a0af63cd716790ac1d283ebdca8684276ff6c62c68"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "bytes": 16874,
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5"
+    },
+    {
+      "path": "training/explanations/continue_experiment.py",
+      "bytes": 15673,
+      "sha256": "8139c4548de87e9494b8181424d31573644e9eaeb9dea16da89b994b3f6201dc"
+    },
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 8294,
+      "sha256": "3bea3fa998fd7d7e9bc7ed38a8a390cbf1ac4cedd84994da4559a26079ed2355"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 17416,
+      "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+    },
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "bytes": 26096,
+      "sha256": "05a4075af038b511f71f577b40fc5615be4a6c517ea6a93d4bf3ef3b39407a25"
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "bytes": 20881,
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "bytes": 19862,
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+    }
+  ],
+  "python": "/workspace/scratch/ec5ba60588d8/jovovich-hf-env/bin/python",
+  "remote": {
+    "repo": "ataeff/jovovich",
+    "prefix": "experiments/explanation-order"
+  },
+  "credentials": "Provided only to phase archive parents through an unrecorded token-file argument."
+}

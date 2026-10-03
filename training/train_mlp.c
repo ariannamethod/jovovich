@@ -644,14 +644,10 @@ static double archive_clock(void) {
     struct timespec ts;if(clock_gettime(CLOCK_MONOTONIC,&ts))mlp_die("archive clock failed");
     return ts.tv_sec*1000.0+ts.tv_nsec/1000000.0;
 }
-static void archive_checkpoint(int enabled,int timeout_ms,int update,int saved) {
-    if(!enabled)return;
-    if(fflush(stderr)||fflush(stdout))mlp_die("archive stream flush failed");
-    printf("{\"stage\":\"archive_ready\",\"update\":%d,\"snapshot_saved\":%s}\n",update,saved?"true":"false");
-    if(fflush(stdout))mlp_die("archive event flush failed");
-    char expected[48];int length=snprintf(expected,sizeof(expected),"ACK %d\n",update);
+static void archive_ack(const char *expected,int timeout_ms) {
+    size_t length=strlen(expected);
     double deadline=archive_clock()+timeout_ms;
-    for(int i=0;i<length;i++) {
+    for(size_t i=0;i<length;i++) {
         for(;;) {
             double remaining=deadline-archive_clock();if(remaining<=0)mlp_die("archive ACK timeout");
             struct pollfd fd={.fd=STDIN_FILENO,.events=POLLIN};
@@ -665,7 +661,21 @@ static void archive_checkpoint(int enabled,int timeout_ms,int update,int saved) 
         }
     }
 }
+static void archive_checkpoint(int enabled,int timeout_ms,int update,int saved) {
+    if(!enabled)return;
+    if(fflush(stderr)||fflush(stdout))mlp_die("archive stream flush failed");
+    printf("{\"stage\":\"archive_ready\",\"update\":%d,\"snapshot_saved\":%s}\n",update,saved?"true":"false");
+    if(fflush(stdout))mlp_die("archive event flush failed");
+    char expected[48];snprintf(expected,sizeof(expected),"ACK %d\n",update);
+    archive_ack(expected,timeout_ms);
+}
 int main(int argc,char **argv) {
+    /* Capability inspection never opens a dataset or GGUF. Old binaries reject
+     * this two-argument invocation before their ordinary training entrypoint. */
+    if(argc==2&&!strcmp(argv[1],"--archive-protocol")) {
+        puts("{\"schema\":\"jovovich.archive-ack.v1\",\"startup_ack\":true,\"initial_snapshot\":true,\"per_update_ack\":true}");
+        return fflush(stdout)?1:0;
+    }
     if(argc<4||argc>10){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples|verdict|decisions|joint) PAIR_MAP]\n",argv[0]);return 2;}
     int epochs=argc>4?number(argv[4],0,100):3,batch=argc>6?number(argv[6],1,128):16;
     int save_every=argc>7?number(argv[7],0,100):1;
@@ -678,6 +688,11 @@ int main(int argc,char **argv) {
     if((!strcmp(objective,"verdict")||decisions||joint)&&argc<10)mlp_die("verdict, decisions and joint objectives require a pair map");
     char *end=NULL;float lr=argc>5?strtof(argv[5],&end):0.00005f;if(!(lr>0)||!isfinite(lr)||(end&&(*end||end==argv[5])))mlp_die("invalid learning rate");
     uint16_t endian=1;if(*(unsigned char*)&endian!=1)mlp_die("raw F32 export requires a little-endian host");
+    if(archive_enabled) {
+        puts("{\"stage\":\"archive_hello\",\"schema\":\"jovovich.archive-ack.v1\"}");
+        if(fflush(stdout))mlp_die("archive startup flush failed");
+        archive_ack("START\n",archive_timeout);
+    }
     /* The tape differentiates the fixed dequantized matrices, not activation rounding. */
     if(setenv("NT_NO_I8","1",1))mlp_die("cannot set floating activation mode");
     int count;mlp_example *rows=mlp_data(argv[2],&count);gguf_file *gf=gguf_open(argv[1]);if(!gf)mlp_die("cannot open GGUF");

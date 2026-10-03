@@ -1,0 +1,51 @@
+{
+  "schema": "jovovich.evaluation-executor-audit.v1",
+  "status": "pass",
+  "checked_utc": "2026-10-03T17:52:00.254176+00:00",
+  "implementation_tests": {
+    "command": [
+      "node",
+      "--test",
+      "test/explanation_execution.test.mjs"
+    ],
+    "passed": 9,
+    "reported_by": "explanation_eval"
+  },
+  "independent_rerun": {
+    "command": [
+      "node",
+      "test/explanation_execution.test.mjs"
+    ],
+    "passed": 9,
+    "reported_by": "explanation_auditor"
+  },
+  "checks": [
+    "six synthetic collector jobs cover228 records",
+    "actual arm-local packed input bindings",
+    "swapped and duplicate training arms rejected",
+    "frozen scientific configuration enforced",
+    "checkpoint and result remote receipts checked",
+    "source, copied plan and generation mutation rejected",
+    "cross-model prompt mismatch rejected",
+    "credential environment isolation",
+    "epoch100 fixed export with separate teacher-forced diagnostics"
+  ],
+  "blocking_findings": [],
+  "sources": [
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "bytes": 26096,
+      "sha256": "05a4075af038b511f71f577b40fc5615be4a6c517ea6a93d4bf3ef3b39407a25"
+    },
+    {
+      "path": "test/explanation_execution.test.mjs",
+      "bytes": 14905,
+      "sha256": "60c294b26ce7fce4a0514367ef7020c0d4dbcb4b5f17b2aefdda2a2d91b591c9"
+    },
+    {
+      "path": "training/explanations/evaluation_plan.json",
+      "bytes": 27718,
+      "sha256": "1a53f74ad110e3e6639016a0af63cd716790ac1d283ebdca8684276ff6c62c68"
+    }
+  ]
+}

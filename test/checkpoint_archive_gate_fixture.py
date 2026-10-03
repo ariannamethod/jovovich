@@ -10,7 +10,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'training'))
 sys.path.insert(0, str(ROOT / 'test'))
-from explanations.run_training import TrainingError, run_training, digest
+from explanations.run_training import ARCHIVE_CAPABILITY, ARCHIVE_HELLO, TrainingError, run_training, validate_plan, digest
 from durable_archive import DurableArchive
 from durable_archive_fixture import FakeTransport
 
@@ -67,6 +67,48 @@ def main():
                          '@RUN@/adapter', '8', '.003', '8', '2', 'joint', str(pairs.relative_to(ROOT))],
                 'bindings': [{'path': str(p.relative_to(ROOT)), 'bytes': p.stat().st_size, 'sha256': digest(p)} for p in names],
                 'environment': {'NT_NO_I8': '1', 'NT_QMV_THREADS': '1', 'NT_ATTN_THREADS': '1', 'NT_SIMD_THREADS': '1'}}
+        capability = subprocess.run([str(binary), '--archive-protocol'], capture_output=True, timeout=5)
+        check(capability.returncode == 0 and not capability.stderr and
+              json.loads(capability.stdout) == ARCHIVE_CAPABILITY, 'native capability query failed')
+        # A pre-protocol executable rejects the two-argument query. Its normal
+        # training entrypoint must never be invoked, even if its hash is bound.
+        stale = directory / 'stale-trainer'
+        entered = directory / 'stale-model-work'
+        stale.write_text('#!/usr/bin/env python3\nimport sys,pathlib\n'
+                         'if len(sys.argv)<4: sys.exit(2)\n'
+                         'pathlib.Path(' + repr(str(entered)) + ').write_text("model work entered")\n')
+        stale.chmod(0o755)
+        stale_plan = json.loads(json.dumps(plan))
+        stale_plan['argv'][0] = str(stale.relative_to(ROOT))
+        stale_plan['bindings'][0] = {'path': str(stale.relative_to(ROOT)),
+                                    'bytes': stale.stat().st_size, 'sha256': digest(stale)}
+        transport = FakeTransport()
+        for check_launch in (lambda: validate_plan(stale_plan),
+                             lambda: run_training(DurableArchive(transport, 'stale'), stale_plan, directory / 'stale-run')):
+            try:
+                check_launch()
+            except TrainingError:
+                pass
+            else:
+                raise RuntimeError('stale trainer capability accepted')
+        check(not entered.exists() and transport.commits == 0 and not (directory / 'stale-run').exists(),
+              'stale executable reached model work or remote launch')
+        # A capability response is tied to the same on-disk executable bytes.
+        changed = directory / 'changing-trainer'
+        changed.write_text('#!/usr/bin/env python3\nimport pathlib,sys\n'
+                           'print(' + repr(json.dumps(ARCHIVE_CAPABILITY)) + ')\n'
+                           'with pathlib.Path(sys.argv[0]).open("a") as f: f.write("# changed\\n")\n')
+        changed.chmod(0o755)
+        changed_plan = json.loads(json.dumps(stale_plan))
+        changed_plan['argv'][0] = str(changed.relative_to(ROOT))
+        changed_plan['bindings'][0] = {'path': str(changed.relative_to(ROOT)),
+                                      'bytes': changed.stat().st_size, 'sha256': digest(changed)}
+        try:
+            validate_plan(changed_plan)
+        except RuntimeError:
+            pass
+        else:
+            raise RuntimeError('trainer mutation during capability query accepted')
         argv = [str(binary), str(model), str(dataset), str(directory / 'plain'), '8', '.003', '8', '2', 'joint', str(pairs)]
         plain = subprocess.run(argv, capture_output=True, timeout=30)
         check(plain.returncode == 0, plain.stderr.decode())
@@ -102,8 +144,9 @@ def main():
                 check((output / ('adapter.epoch00.' + name)).is_file(), 'initial snapshot missing')
         raw = [json.loads(line) for line in (output / 'stdout.jsonl').read_text().splitlines()]
         metrics = [json.loads(line) for line in (output / 'metrics.jsonl').read_text().splitlines()]
-        check(metrics == [row for row in raw if row['stage'] != 'archive_ready'], 'control filtering changed native metrics')
+        check(metrics == [row for row in raw if row['stage'] not in ('archive_ready', 'archive_hello')], 'control filtering changed native metrics')
         check(sum(row['stage'] == 'archive_ready' for row in raw) == 9, 'raw control evidence missing')
+        check(raw[0] == ARCHIVE_HELLO, 'startup control missing from raw evidence')
         matched_plan = json.loads(json.dumps(plan))
         matched_plan['expected_initial_lora_sha256'] = result['initial_lora_sha256']
         matched_plan['argv'][4] = '0'
@@ -196,6 +239,9 @@ def main():
                                        {'stage': 'archive_ready', 'update': False, 'snapshot_saved': True})):
             stub = directory / ('stub-%d' % index)
             stub.write_text('#!/usr/bin/env python3\nimport json,sys,pathlib\n'
+                            'if sys.argv[1:] == ["--archive-protocol"]:\n print(' + repr(json.dumps(ARCHIVE_CAPABILITY)) + ');sys.exit(0)\n'
+                            'print(' + repr(json.dumps(ARCHIVE_HELLO)) + ',flush=True)\n'
+                            'if sys.stdin.readline() != "START\\n": sys.exit(1)\n'
                             'print(' + repr(json.dumps(event)) + ',flush=True)\n'
                             'ack=sys.stdin.readline()\n'
                             'if ack: pathlib.Path(sys.argv[3]+".advanced").write_text(ack)\n')
@@ -212,8 +258,28 @@ def main():
             else:
                 raise RuntimeError('invalid native event accepted')
             check(not (destination / 'adapter.advanced').exists(), 'invalid control record received ACK')
+        for scenario in ('missing-startup', 'silent-startup'):
+            stub = directory / scenario
+            body = '' if scenario == 'silent-startup' else 'print("{}",flush=True)\n'
+            stub.write_text('#!/usr/bin/env python3\nimport sys,pathlib\n'
+                            'if sys.argv[1:] == ["--archive-protocol"]:\n print(' + repr(json.dumps(ARCHIVE_CAPABILITY)) + ');sys.exit(0)\n'
+                            + body + 'ack=sys.stdin.readline()\n'
+                            'if ack: pathlib.Path(sys.argv[3]+".advanced").write_text(ack)\n')
+            stub.chmod(0o755)
+            bad_plan = json.loads(json.dumps(plan))
+            bad_plan['argv'][0] = str(stub.relative_to(ROOT))
+            bad_plan['bindings'][0] = {'path': str(stub.relative_to(ROOT)),
+                                      'bytes': stub.stat().st_size, 'sha256': digest(stub)}
+            destination = directory / (scenario + '-run')
+            try:
+                run_training(DurableArchive(FakeTransport(), scenario), bad_plan, destination)
+            except TrainingError:
+                pass
+            else:
+                raise RuntimeError('missing native startup accepted')
+            check(not (destination / 'adapter.advanced').exists(), 'missing startup received START')
         env = dict(os.environ, JOVOVICH_ARCHIVE_ACK='1', JOVOVICH_ARCHIVE_ACK_TIMEOUT_MS='30')
-        for index, data in enumerate((b'', b'ACK 1\n', b'ACK 0 \n', b'ACK 0\r\n')):
+        for index, data in enumerate((b'START\n', b'START\nACK 1\n', b'START\nACK 0 \n', b'START\nACK 0\r\n')):
             malformed = argv.copy()
             malformed[3] = str(directory / ('bad-%d' % index))
             run = subprocess.run(malformed, input=data, env=env, capture_output=True, timeout=20)
@@ -222,14 +288,21 @@ def main():
         timed[3] = str(directory / 'timed')
         with (directory / 'timed.stdout').open('wb') as out, (directory / 'timed.stderr').open('wb') as err:
             proc = subprocess.Popen(timed, stdin=subprocess.PIPE, stdout=out, stderr=err, env=env)
-            proc.stdin.write(b'ACK ')
+            proc.stdin.write(b'STA')
             proc.stdin.flush()
             check(proc.wait(timeout=20) != 0, 'partial ACK did not time out')
             proc.stdin.close()
         check(b'archive ACK timeout' in (directory / 'timed.stderr').read_bytes(), 'wrong partial ACK failure')
         check(not calls(directory / 'timed.stderr'), 'timed out ACK advanced optimizer')
+        check(b'cache ' not in (directory / 'timed.stderr').read_bytes(), 'native model work preceded START')
+        missing_inputs = argv.copy()
+        missing_inputs[1:4] = ['missing-model.gguf', 'missing-dataset.bin', str(directory / 'no-start')]
+        no_start = subprocess.run(missing_inputs, input=b'', env=env, capture_output=True, timeout=5)
+        check(no_start.returncode != 0 and json.loads(no_start.stdout) == ARCHIVE_HELLO and
+              b'missing or invalid archive ACK' in no_start.stderr and b'dataset' not in no_start.stderr,
+              'native opened inputs before START')
         print(json.dumps({'passed': True, 'native_updates': 8, 'bitwise_trajectory_match': True,
-                          'verified_units': 11, 'fault_scenarios': 17,
+                          'verified_units': 11, 'fault_scenarios': 22,
                           'initial_adapter_match': True, 'scorer_metrics_preserved': True}))
 
 

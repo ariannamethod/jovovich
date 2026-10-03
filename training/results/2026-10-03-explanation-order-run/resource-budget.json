@@ -1,0 +1,19 @@
+{
+  "checked_utc": "2026-10-03T17:27:52.451656+00:00",
+  "disk_free_bytes": 4637757440,
+  "model_dimensions": {
+    "embed": 896,
+    "ffn": 4864,
+    "rank": 16
+  },
+  "snapshot_float32_matrix_bytes": 52297728,
+  "snapshot_lora_payload_bytes": 1105920,
+  "two_arms_five_snapshots_and_final_payload_bytes": 640843776,
+  "two_merged_models_upper_budget_bytes": 1600000000,
+  "native_process_policy": "One model training/export parity/generation process at a time",
+  "generation_reserved_tokens": 512,
+  "training_source_change_policy": "Freeze all scientific sources and executable hashes before before arm; same bindings for after arm",
+  "archive_ack_timeout_ms": 900000,
+  "archive_checkpoint_transfer_minimum_bytes": 106807296,
+  "archive_timeout_rationale": "A saved checkpoint has about53.4MB of matrix/adapter payload; upload plus fresh pinned readback moves at least106.8MB. Both arms receive the same15minute acknowledgement deadline; transport failures terminate immediately. No training mathematics or update schedule changes."
+}

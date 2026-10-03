@@ -1,0 +1,83 @@
+{
+  "schema": "jovovich.durable-receipt.v1",
+  "run_id": "order-20261003-01-before",
+  "prefix": "experiments/explanation-order/order-20261003-01-before",
+  "revision": "ac6583ef7a09527d4493414d4f0c58698fd7cb0c",
+  "sequence": 1,
+  "unit_id": "update-000",
+  "manifest_sha256": "8e17cc7f78219c6feb191292e3dc61e7149d570aec600f53dd657c39429be23c",
+  "files": [
+    {
+      "name": "_units/initialization.json",
+      "size": 312,
+      "sha256": "c37cf585a9b0ea9c27bba4a96fc70bcd6f577e905e80ba9fa00d8a6651e4ac39",
+      "git_blob_sha1": "ef1ec8c056e463025a4e412557ab2b39484a20c3",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/c37cf585a9b0ea9c27bba4a96fc70bcd6f577e905e80ba9fa00d8a6651e4ac39"
+    },
+    {
+      "name": "_units/update-000.metrics.jsonl",
+      "size": 42594,
+      "sha256": "4591a42b21ea3267d6287190006d15fb4dea729be35df7dd319a5e44bf2ccf99",
+      "git_blob_sha1": "a7d706f9d6d3000519e6e7711e00cf5bb00441d0",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/4591a42b21ea3267d6287190006d15fb4dea729be35df7dd319a5e44bf2ccf99"
+    },
+    {
+      "name": "_units/update-000.raw.jsonl",
+      "size": 42714,
+      "sha256": "caf4318114d9016e55cad73e761fe80643c908b74f141be2bdc336fd361524c0",
+      "git_blob_sha1": "ae49f7b3d2975f526b14c43876ddf39368177e9e",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/caf4318114d9016e55cad73e761fe80643c908b74f141be2bdc336fd361524c0"
+    },
+    {
+      "name": "_units/update-000.stderr",
+      "size": 3427,
+      "sha256": "96e0da35c2f1983529042e903ed7d55ecaa31cbdf02e61986667b51d9142c527",
+      "git_blob_sha1": "070131dde3270f64e9b1ad41de2e79c6c1ed75fc",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/96e0da35c2f1983529042e903ed7d55ecaa31cbdf02e61986667b51d9142c527"
+    },
+    {
+      "name": "adapter.epoch00.down.f32",
+      "size": 17432576,
+      "sha256": "92cda3081ba2e03dca8624288c6c18e2fec2da9ac6b914f7d869a77c7cf5e9a5",
+      "git_blob_sha1": "2d042bb5d9e0012951454a1b5691213a658a19cc",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/92cda3081ba2e03dca8624288c6c18e2fec2da9ac6b914f7d869a77c7cf5e9a5"
+    },
+    {
+      "name": "adapter.epoch00.down.lora",
+      "size": 368695,
+      "sha256": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a",
+      "git_blob_sha1": "483be5ff42369ca639cafb8c81b995713a282fd6",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    },
+    {
+      "name": "adapter.epoch00.gate.f32",
+      "size": 17432576,
+      "sha256": "284757c3491d72c443b569b61c4f3cbc3a4ad3e50640230b1cf3b630d9fcb557",
+      "git_blob_sha1": "fd5cf89af5eaefd44875189fb3129c84bf325aa5",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/284757c3491d72c443b569b61c4f3cbc3a4ad3e50640230b1cf3b630d9fcb557"
+    },
+    {
+      "name": "adapter.epoch00.gate.lora",
+      "size": 368695,
+      "sha256": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "git_blob_sha1": "3ed18d1a5df6b950506b6473e8f2c9381980674c",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236"
+    },
+    {
+      "name": "adapter.epoch00.up.f32",
+      "size": 17432576,
+      "sha256": "6d399179dbd2a3c4d4645188ce02326ef595e1afce198e3f6e06d08ea2f47661",
+      "git_blob_sha1": "fce582e1a5dc59b38f4331d8cb0bb9b769a375b7",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/6d399179dbd2a3c4d4645188ce02326ef595e1afce198e3f6e06d08ea2f47661"
+    },
+    {
+      "name": "adapter.epoch00.up.lora",
+      "size": 368693,
+      "sha256": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "git_blob_sha1": "63b14e96392a2c8817e9f90b05e755e5ce8a052a",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e"
+    }
+  ],
+  "verified_remote_bytes": true,
+  "reused": false
+}

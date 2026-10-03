@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "test/continuation.test.mjs"
+  ],
+  "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+  "return_code": 0,
+  "tool_chunk_id": "c4d3bd",
+  "output_file": "test.combined.log",
+  "output_sha256": "1842e5af57ef2f5ae685ccf49e442fa7dfe5c6422d0d2c2f3e2ed6adaea9ef7e",
+  "named_test_cases": 9,
+  "evidence_origin": "Previously completed exec_command combined tool output, preserved without another run; stdout and stderr were not separated by the tool.",
+  "preserved_utc": "2026-10-03T18:00:19.234085+00:00",
+  "source_bindings_after_tests": [
+    {
+      "path": "training/explanations/continue_experiment.py",
+      "bytes": 15673,
+      "sha256": "8139c4548de87e9494b8181424d31573644e9eaeb9dea16da89b994b3f6201dc"
+    },
+    {
+      "path": "test/continuation.test.mjs",
+      "bytes": 9558,
+      "sha256": "9ae9bd2447ebd8acaed7238c740047093753a65c8eed2ee6171c23834f34e997"
+    }
+  ],
+  "real_training_runs": 0,
+  "token_access": false
+}

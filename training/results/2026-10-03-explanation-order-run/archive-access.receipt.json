@@ -1,0 +1,20 @@
+{
+  "schema": "jovovich.durable-receipt.v1",
+  "run_id": "order-20261003-launch-access",
+  "prefix": "experiments/explanation-order/order-20261003-launch-access",
+  "revision": "4ef9ab7f82003c2f6b0affdd0329d8df6b3dd48f",
+  "sequence": 0,
+  "unit_id": "access",
+  "manifest_sha256": "6d7c56e655ef982bc634c998c64208191adc12388fe531962847b630ef79ad6b",
+  "files": [
+    {
+      "name": "archive-access.json",
+      "size": 433,
+      "sha256": "fd6cdc76f4ad181b254cec9982bc690f8044c9523d969534f960a8b2551f7c0b",
+      "git_blob_sha1": "49625b6f42a1e0c8a607a902356ad15d9e8444f6",
+      "object": "experiments/explanation-order/order-20261003-launch-access/objects/fd6cdc76f4ad181b254cec9982bc690f8044c9523d969534f960a8b2551f7c0b"
+    }
+  ],
+  "verified_remote_bytes": true,
+  "reused": false
+}

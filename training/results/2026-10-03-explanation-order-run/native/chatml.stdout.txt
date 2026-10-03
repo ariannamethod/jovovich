@@ -1,0 +1,2 @@
+{"file_index":0,"pass":true,"rows":76,"comparisons":152,"trainer_ids_compared":66028,"failures":0}
+{"file_index":1,"pass":true,"rows":76,"comparisons":152,"trainer_ids_compared":66028,"failures":0}
