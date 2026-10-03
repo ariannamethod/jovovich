@@ -27,6 +27,33 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — Copy the law before you judge it.
+
+A third arm is registered before it exists. It keeps every byte of the
+explanation-first corpus except one: each analysis opens with
+`Rule: ` and the applicable rule copied verbatim from the prompt. The
+per-layer readout left judgment no room inside the frozen stack, and a 0.5B
+model copies reliably; the question is whether a copy of the protective
+property placed in front of the reasoning helps the reasoning land. In 6 of 26
+pairs the copied rules themselves differ, because the nearest scope differs.
+In the other 20 the copy is shared and the distinction still has to come from
+the explanation.
+
+The corpus is built by a rule, not written: the builder reproduces the
+explanation-first file byte for byte without the transform, and with it
+changes exactly the 52 analyses. The native preflight keeps every prompt
+token count and verdict token of the explanation-first arm; decisions move
+from positions 40–58 to 55–88, and the copies add 1001 residual tokens.
+
+Training and evaluation are the running experiment's, unchanged. The decision
+rule is fixed now: on the 12 held-out pairs, two more fully grounded pairs for
+quote-only than for before-only, with the copy present in at least 20 of 24
+held-out generations, supports the idea; two the other way counts against it;
+anything else is unresolved at this size. At this freeze the running experiment
+had archived 36 training updates and no evaluation.
+
+Registration: [`training/quote/PREREGISTRATION.md`](training/quote/PREREGISTRATION.md).
+
 ## 2026-10-03 — Same number, different line.
 
 The explanation corpora went through acceptance against criteria fixed before
