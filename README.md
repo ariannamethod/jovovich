@@ -816,15 +816,18 @@ analysis, field order and exact citation IDs have separate scores.
 The [prepared evidence](training/results/2026-10-03-explanation-order) includes
 the original BPE mismatch, normalized preflight and independent audit.
 
-Prepare fresh launch plans after building the native trainer. The first plan
+Prepare fresh launch plans after building the native trainer and checking the
+current source with the native tokenizer. The first plan
 is executable; the second remains a template until the first arm's remotely
 verified initial adapter hashes are supplied:
 
 ```sh
 make train-mlp
+python3 training/explanations/verify_native.py \
+  --base models/base-qwen.gguf --out models/order-native-UNIQUE
 python3 training/explanations/prepare_launches.py prepare \
   --base models/base-qwen.gguf \
-  --preflight training/results/2026-10-03-explanation-order/native-normalized \
+  --preflight models/order-native-UNIQUE \
   --out models/order-launch-UNIQUE --run-prefix order-UNIQUE
 python3 training/explanations/run_training.py preflight \
   --plan models/order-launch-UNIQUE/before.launch.json
@@ -838,10 +841,19 @@ python3 training/explanations/prepare_launches.py bind-after \
 ```
 
 Use `huggingface_hub==0.35.3` in the archive environment. Run the bound after
-plan with its own fresh output directory. The plan records export and
-generation commands; both collectors also expose `--help`. Full-model
-training for this comparison awaits authenticated access to the private
-archive.
+plan with its own fresh output directory. The exact trainer must answer
+`--archive-protocol`; its live process waits for a startup acknowledgement
+before loading the model. Rebuild a stale trainer before preparing its plan.
+The plan records export and generation commands; both collectors expose
+`--help`.
+
+The first real explanation-order run is active after a verified private upload
+and readback. Its [launch bindings and startup audit](training/results/2026-10-03-explanation-order-run)
+include the fixed [evaluation contract](training/explanations/evaluation_plan.json),
+export/parity executables and their sources. That contract fixes epoch 100,
+five native parity rows per arm and all 228 natural responses before training.
+The evaluator records teacher-forced diagnostics separately from complete
+responses and leaves semantic judgments for the independent reviewers.
 
 To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
 and a separate Python environment containing `huggingface_hub==0.35.3`.

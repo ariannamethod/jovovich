@@ -1,0 +1,299 @@
+{
+  "schema": "jovovich.explanation-order.startup-audit.v1",
+  "auditor": "independent explanation_auditor agent",
+  "audited_at_utc": "2026-10-03T17:34:32.624786+00:00",
+  "status": "pass",
+  "scope": "Prelaunch archive handshake, updated native preflight bindings, fixed scientific endpoint and evaluation readiness; actual training and generation outcomes are outside this audit.",
+  "blocking_findings": [],
+  "resolved_finding": {
+    "id": "stale-native-archive-protocol",
+    "result": "fixed",
+    "checks": [
+      "Capability query executes the exact checksum-bound trainer before passing any model or dataset arguments; return JSON, exit status and stderr are validated.",
+      "Executable checksum and identity are checked before and after the capability query; the query is repeated after verified remote intent and immediately before the training child.",
+      "ACK-mode native startup emits archive_hello before data/model loading and blocks on exact START newline. Parent accepts only the exact first record and rechecks immutable plan and bindings before START.",
+      "Parent startup read has a five-second deadline and 4096-byte cap. Missing, silent or malformed hello fails closed.",
+      "Existing initial snapshot and per-update readback ACK barriers remain active; startup and archive control records are retained raw but excluded from scorer metrics.",
+      "Native child environment is restricted to PATH/LANG/LC_ALL/TMPDIR plus frozen NT values."
+    ]
+  },
+  "independent_test": {
+    "command": [
+      "python3",
+      "test/checkpoint_archive_gate_fixture.py"
+    ],
+    "exit_code": 0,
+    "result": {
+      "passed": true,
+      "native_updates": 8,
+      "bitwise_trajectory_match": true,
+      "verified_units": 11,
+      "fault_scenarios": 22,
+      "initial_adapter_match": true,
+      "scorer_metrics_preserved": true
+    },
+    "coverage": [
+      "stale checksum-bound executable rejected before model args or remote intent",
+      "capability-query executable mutation rejected",
+      "silent or missing hello receives no START",
+      "real native missing model/data with no START stops at ACK before file access",
+      "missing, partial and malformed ACK",
+      "initial adapter hash mismatch",
+      "mid-run frozen plan mutation",
+      "checkpoint and completion sync/readback failures"
+    ]
+  },
+  "native_preflight": {
+    "status": "pass",
+    "arms": {
+      "before": {
+        "review_rows": 52,
+        "pairs": 26,
+        "decision_tokens": 52,
+        "residual_tokens": 3411,
+        "max_prompt_tokens": 570,
+        "max_answer_tokens_including_eos": 99,
+        "verdict_position_min": 40,
+        "verdict_position_max": 58
+      },
+      "after": {
+        "review_rows": 52,
+        "pairs": 26,
+        "decision_tokens": 52,
+        "residual_tokens": 3411,
+        "max_prompt_tokens": 570,
+        "max_answer_tokens_including_eos": 99,
+        "verdict_position_min": 3,
+        "verdict_position_max": 3
+      }
+    },
+    "identical_prompt_and_content_rows": 52,
+    "unchanged_nonreview_rows": 24,
+    "native_chatml_comparisons": 304,
+    "inference_calls": 0,
+    "training_updates": 0
+  },
+  "native_binding_recheck": {
+    "all_recorded_source_model_and_binary_bytes_match": true,
+    "target_ids": [
+      66582,
+      8899
+    ],
+    "all_52_arm_answer_lengths_match": true
+  },
+  "archive_timeout": {
+    "agreed_frozen_milliseconds_both_arms": 900000,
+    "checkpoint_payload_bytes_approximately": 53403648,
+    "upload_plus_readback_bytes_approximately": 106807296,
+    "reason": "F32 and LoRA snapshots require roughly 107 MB of transfer per verified unit. Fifteen minutes allows network latency without changing optimizer behavior; parent archive errors terminate the child immediately.",
+    "launch_plan_values_owner": "Root freezes and validates both launch plans before activation."
+  },
+  "evaluation_readiness": {
+    "fixed_update": 100,
+    "score_selected_update_is_diagnostic_only": true,
+    "final_and_epoch100_checks": "All six files compared byte-for-byte and bound to verified remote manifests.",
+    "export_audit": "Every tensor checked by byte-export audit; numeric parity uses the same five fixed rows for both arms.",
+    "parity_rows": [
+      0,
+      1,
+      2,
+      3,
+      51
+    ],
+    "natural_generation_rows": 228,
+    "generation_jobs": 6,
+    "budgets": "512 new tokens, context 8192, temperature zero, four threads, serial jobs for all models.",
+    "primary": "Grounded complete concern/clean pairs, separately for 26 training and 12 heldout pairs.",
+    "teacher_forced_gold_prefix": "Diagnostic only, separated from natural generation with an empty assistant completion.",
+    "semantic_review": "Two independent reviewers under opaque model labels; root operates and adjudicates unblinded.",
+    "runtime_prompt_check": "Collector archives standalone native token IDs before each generation and requires exact prompt trace equality."
+  },
+  "provenance": "The earlier independent audit contains the complete 52-row rationale and heldout-separation review. This supplement binds the new startup fix and preflight; it does not replace historical evidence.",
+  "bindings": [
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 50514,
+      "sha256": "ccdbf2bfa72b7177f49ff45778958c63c234b0f076397c21af60edf3f3db95f5"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 17416,
+      "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+    },
+    {
+      "path": "test/checkpoint_archive_gate_fixture.py",
+      "bytes": 20040,
+      "sha256": "6915c9095fa8a00d7e55b11d6baa56be0871e8413e22bdd4846789407d622427"
+    },
+    {
+      "path": "test/explanation_launches.test.mjs",
+      "bytes": 4083,
+      "sha256": "ab49360eb9abd325c40fb6f11f1ce3dd36d1eb7f3f704400bfad102e211c2541"
+    },
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 8294,
+      "sha256": "3bea3fa998fd7d7e9bc7ed38a8a390cbf1ac4cedd84994da4559a26079ed2355"
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "bytes": 20881,
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "bytes": 19862,
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+    },
+    {
+      "path": "training/explanations/plan.json",
+      "bytes": 32754,
+      "sha256": "70ccfe238d7fb3115f021a58ba856fd0200d9e011a84a5a0c563c213cb8746cc"
+    },
+    {
+      "path": "training/explanations/evaluation_plan.json",
+      "bytes": 27718,
+      "sha256": "1a53f74ad110e3e6639016a0af63cd716790ac1d283ebdca8684276ff6c62c68"
+    },
+    {
+      "path": "build/jovovich-train-mlp",
+      "bytes": 263472,
+      "sha256": "3ab3a3709a289b0aa99b6432b662003e218f10c6f3487775cc3c391a7720e135"
+    },
+    {
+      "path": "build/jovovich-merge-mlp",
+      "bytes": 52784,
+      "sha256": "4218482a0e2730c7984fb364ab799658282ef4b39a08d13bd9e2eca2f505d572"
+    },
+    {
+      "path": "build/jovovich-probe-mlp",
+      "bytes": 267840,
+      "sha256": "49e21b2f114d28f125a82aecefb200267e61f4a9a1dec114bc37166d417d98df"
+    },
+    {
+      "path": "build/jovovich-infer",
+      "bytes": 229136,
+      "sha256": "adaec885eab0e7964f7252b146bbcc038688bd40ae93e55d0c86815063f5303c"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order/independent-audit.json",
+      "bytes": 43366,
+      "sha256": "451b5ee6c8f486577ff5b4233b485717a9bd37ebb5950286c8b423b46176c9c8"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.bin",
+      "bytes": 166165,
+      "sha256": "9ea529c924e0f137cba5d4f6d7cf485a4cc76f7f0d4fd5bfaae5f76ab8d5e919"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.intent.json",
+      "bytes": 453,
+      "sha256": "b91b67c6f51c7963a87e21c3c200682692e1bcd7dfa0ea3a2ebdd8775490c311"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.pairs.bin",
+      "bytes": 952,
+      "sha256": "19d40cb8c8cce0be3eb365b7a1f73bc910055ae5975a118cdbf3c508871c9f86"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.receipt.json",
+      "bytes": 1023,
+      "sha256": "6b9f63cfc08306c73a2e4773b0f4aa008c38845492ec0d3d89e1e566453b35df"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/after.stdout.txt",
+      "bytes": 28932,
+      "sha256": "3ce5c8879099eae6a54f2a38d7332d69ea568fe4edc64c0fe50940b4c87e777a"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.bin",
+      "bytes": 166165,
+      "sha256": "a97b8dbb9bc62cd1ce955d7f4a01b36ef98d2a68fba3073958f0ee45609cd920"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.intent.json",
+      "bytes": 455,
+      "sha256": "05c1549adb14d8229c68c0eeddfd9bb409bca251c013403e353a1cc2f332778f"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.pairs.bin",
+      "bytes": 12706,
+      "sha256": "85e618125832c05ea32a9b871eca2eae9fade73509f6d0c7a7adf227c3326fb1"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.receipt.json",
+      "bytes": 1027,
+      "sha256": "4b7793d91471812cb2783d4f8871d8b795f6242ddcafb34a46a334fd05d3f4a9"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/before.stdout.txt",
+      "bytes": 41258,
+      "sha256": "b33c3c4fb77f9f8d978e04fb2132ddb22d04db1c656a797709cbc5b9cfa9f177"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/binary-bindings.json",
+      "bytes": 435,
+      "sha256": "608ee4a3afb5e0142ca384e3c49652a91ffe9801edbb27d1ac7b5757524b3008"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/bindings.json",
+      "bytes": 4339,
+      "sha256": "d6065b5ab2eb1efad435355b755f410b812c9ffebed5c4cae0d575674642fe12"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/build.intent.json",
+      "bytes": 140,
+      "sha256": "e855186bb89fe28bcbda54ad50de88b4e24407bcd000c8c07fca2438276fd2e9"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/build.receipt.json",
+      "bytes": 712,
+      "sha256": "2d209d560e94ee3c9a5f213074292e891637bfc9891faee0065bb857d54bce80"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/build.stderr.txt",
+      "bytes": 11884,
+      "sha256": "83ef2edfb6e7e8123b01b46e83ab105a7111297c1c3630945c5a2c5a89809f14"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/build.stdout.txt",
+      "bytes": 564,
+      "sha256": "375aafee9a507dc63b10dfeb1a505cd064a098982303e594f8a27813f0ab0e89"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/chatml.intent.json",
+      "bytes": 455,
+      "sha256": "2f428909020dae3aec3921cb2699d3f38b29ce78f5b7cc13ba329ff40f7533d1"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/chatml.receipt.json",
+      "bytes": 1025,
+      "sha256": "373e4b81783ec284c2412c0d9cd2fd816fe25e2a2ba35bc164917ce9407a4993"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/chatml.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/chatml.stdout.txt",
+      "bytes": 198,
+      "sha256": "fc6d74aa246be612ab35a21d9b5a837289453dadc074305fa85d8d23127d99ef"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order-run/native/verification.json",
+      "bytes": 14205,
+      "sha256": "4847605f168b148c77bcac89a4ba92b77363ec1361747f39b3d4ce4fd1b1b350"
+    }
+  ]
+}

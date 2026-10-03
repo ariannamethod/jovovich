@@ -3,18 +3,25 @@
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import os
 from pathlib import Path
 import re
+import select
 import shutil
 import subprocess
 import sys
+import time
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / 'training'))
 from durable_archive import DurableArchive, HFTransport
 from layers.run_layers import check_binding, digest, identity, now, relative, save
+
+ARCHIVE_CAPABILITY = {'schema': 'jovovich.archive-ack.v1', 'startup_ack': True,
+                      'initial_snapshot': True, 'per_update_ack': True}
+ARCHIVE_HELLO = {'stage': 'archive_hello', 'schema': ARCHIVE_CAPABILITY['schema']}
 
 
 class TrainingError(RuntimeError):
@@ -24,6 +31,47 @@ class TrainingError(RuntimeError):
 def need(condition, message):
     if not condition:
         raise TrainingError(message)
+
+
+def native_environment(plan):
+    env = {k: os.environ[k] for k in ('PATH', 'LANG', 'LC_ALL', 'TMPDIR') if k in os.environ}
+    env.update(plan.get('environment', {}))
+    return env
+
+
+def check_archive_capability(plan, repo=REPO):
+    """Ask the exact bound executable without passing any model/data paths."""
+    binding = next(b for b in plan['bindings'] if b['path'] == plan['argv'][0])
+    binary = Path(repo) / binding['path']
+    before = check_binding(binary, binding)
+    try:
+        result = subprocess.run([str(binary), '--archive-protocol'], cwd=repo,
+                                env=native_environment(plan), stdin=subprocess.DEVNULL,
+                                capture_output=True, timeout=5)
+        capability = json.loads(result.stdout)
+    except (OSError, subprocess.TimeoutExpired, ValueError, UnicodeError):
+        raise TrainingError('bound trainer does not support the required archive protocol') from None
+    need(result.returncode == 0 and capability == ARCHIVE_CAPABILITY and not result.stderr,
+         'bound trainer does not support the required archive protocol')
+    need(all(type(capability.get(k)) is bool for k in ('startup_ack', 'initial_snapshot', 'per_update_ack')),
+         'invalid native archive capability types')
+    need(check_binding(binary, binding) == before, 'trainer changed during capability check')
+    return {'binary_sha256': binding['sha256'], 'capability': capability}
+
+
+def startup_line(child):
+    """Read the first small control line with a deadline, before model work."""
+    deadline, raw = time.monotonic() + 5, bytearray()
+    while len(raw) < 4096:
+        remaining = deadline - time.monotonic()
+        need(remaining > 0 and select.select([child.stdout], [], [], remaining)[0],
+             'native archive startup timed out')
+        byte = os.read(child.stdout.fileno(), 1)
+        need(bool(byte), 'native trainer ended before archive startup')
+        raw.extend(byte)
+        if byte == b'\n':
+            return bytes(raw)
+    raise TrainingError('oversized native archive startup record')
 
 
 def validate_plan(plan, repo=REPO):
@@ -67,6 +115,7 @@ def validate_plan(plan, repo=REPO):
     need(initial is None or (isinstance(initial, dict) and set(initial) == {'gate', 'up', 'down'} and
          all(isinstance(v, str) and re.fullmatch(r'[0-9a-f]{64}', v) for v in initial.values())),
          'invalid expected initial adapter hashes')
+    check_archive_capability(plan, repo)
     return plan
 
 
@@ -113,7 +162,8 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
     bound = {repo / b['path']: b for b in plan['bindings']}
     signatures = {p: check_binding(p, b) for p, b in bound.items()}
     intent = {'status': 'intent', 'started_utc': now(), 'argv': plan['argv'],
-              'environment': plan.get('environment', {}), 'bindings': plan['bindings']}
+              'environment': plan.get('environment', {}), 'bindings': plan['bindings'],
+              'archive_capability': ARCHIVE_CAPABILITY}
     save(units / 'intent.json', intent)
     files = {'plan.json': run_dir / 'plan.json', '_units/intent.json': units / 'intent.json'}
     # Snapshot every bound input except the large base: its exact public/pinned
@@ -132,21 +182,22 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
         need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed during intent verification')
         for p, b in bound.items():
             check_binding(p, b)
+        check_archive_capability(plan, repo)
         argv = [str(repo / a) if i in (0, 1, 2, 9) else a.replace('@RUN@', str(run_dir))
                 for i, a in enumerate(plan['argv'])]
         Path(argv[3]).parent.mkdir(parents=True, exist_ok=True)
         # Native work receives no credentials or inherited NT_* tuning.
-        env = {k: os.environ[k] for k in ('PATH', 'LANG', 'LC_ALL', 'TMPDIR') if k in os.environ}
-        env.update(plan.get('environment', {}))
+        env = native_environment(plan)
         env.update(JOVOVICH_ARCHIVE_ACK='1',
                    JOVOVICH_ARCHIVE_ACK_TIMEOUT_MS=str(plan.get('ack_timeout_ms', 300000)))
         expected, sequence, error_offset, segment, metric_segment = 0, 1, 0, [], []
         initial_lora_sha256 = {}
+        startup_verified = False
         epochs, every = int(argv[4]), int(argv[7])
         with (run_dir / 'stderr.log').open('xb') as err, (run_dir / 'stdout.jsonl').open('xb') as out, (run_dir / 'metrics.jsonl').open('xb') as metric_out:
             child = subprocess.Popen(argv, cwd=repo, env=env, stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=err)
-            for raw in child.stdout:
+            for raw in itertools.chain([startup_line(child)], child.stdout):
                 out.write(raw)
                 segment.append(raw)
                 need(len(raw) <= 16 * 1024 * 1024, 'oversized trainer record')
@@ -155,6 +206,15 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
                 except (ValueError, UnicodeError):
                     raise TrainingError('invalid trainer JSON record') from None
                 need(isinstance(event, dict), 'invalid trainer record')
+                if not startup_verified:
+                    need(event == ARCHIVE_HELLO, 'native trainer did not open the archive startup handshake')
+                    need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed before startup')
+                    for p, before in signatures.items():
+                        need(identity(p) == before, 'bound file changed before native startup')
+                    child.stdin.write(b'START\n')
+                    child.stdin.flush()
+                    startup_verified = True
+                    continue
                 if event.get('stage') != 'archive_ready':
                     need(event.get('stage') in ('sft_initial', 'sft', 'decision_train'), 'unknown trainer metric stage')
                     metric_out.write(raw)
@@ -216,7 +276,8 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
             os.fsync(out.fileno())
             os.fsync(err.fileno())
             os.fsync(metric_out.fileno())
-        need(code == 0 and expected == epochs + 1, 'native training ended before complete acknowledged trajectory')
+        need(code == 0 and startup_verified and expected == epochs + 1,
+             'native training ended before complete acknowledged trajectory')
         for p, b in bound.items():
             check_binding(p, b)
         need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed during native training')

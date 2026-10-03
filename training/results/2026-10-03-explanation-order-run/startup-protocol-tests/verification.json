@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "native_updates": 8,
+  "bitwise_trajectory_match": true,
+  "verified_units": 11,
+  "fault_scenarios": 22,
+  "initial_adapter_match": true,
+  "scorer_metrics_preserved": true,
+  "evidence": "The Node gate fixture asserts these values from the actual private compiled native-main fixture output. Both named tool invocations returned exit code zero.",
+  "bindings_preserved_after_tests": [
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 50514,
+      "sha256": "ccdbf2bfa72b7177f49ff45778958c63c234b0f076397c21af60edf3f3db95f5"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 17416,
+      "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+    },
+    {
+      "path": "test/checkpoint_archive_gate.test.mjs",
+      "bytes": 957,
+      "sha256": "ad4a785c012b821e14b1d6208202ff54628d097f1fc536e283ec02d41219831f"
+    },
+    {
+      "path": "test/checkpoint_archive_gate_fixture.py",
+      "bytes": 20040,
+      "sha256": "6915c9095fa8a00d7e55b11d6baa56be0871e8413e22bdd4846789407d622427"
+    },
+    {
+      "path": "test/explanation_launches.test.mjs",
+      "bytes": 4083,
+      "sha256": "ab49360eb9abd325c40fb6f11f1ce3dd36d1eb7f3f704400bfad102e211c2541"
+    }
+  ],
+  "real_model_training_invocations": 0
+}

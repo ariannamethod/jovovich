@@ -1,0 +1,13 @@
+{
+  "checked_utc": "2026-10-03T17:31:21.012438+00:00",
+  "binary": "build/jovovich-train-mlp",
+  "binary_sha256": "3ab3a3709a289b0aa99b6432b662003e218f10c6f3487775cc3c391a7720e135",
+  "return_code": 0,
+  "stdout": {
+    "schema": "jovovich.archive-ack.v1",
+    "startup_ack": true,
+    "initial_snapshot": true,
+    "per_update_ack": true
+  },
+  "stderr": ""
+}

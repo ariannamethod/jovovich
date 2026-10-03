@@ -11,6 +11,7 @@ work=tempfile.TemporaryDirectory();repo=Path(work.name);before=repo/'before';(be
 def dump(p,v):p.write_text(json.dumps(v))
 def bind(p):return {'path':str(p.relative_to(repo)),'bytes':p.stat().st_size,'sha256':h.sha(p)}
 for name in ('trainer','model','before-data','before-pairs','after-data','after-pairs','source'):(repo/name).write_text(name)
+(repo/'trainer').write_text('#!/usr/bin/env python3\\nimport json\\nprint(json.dumps({\"schema\":\"jovovich.archive-ack.v1\",\"startup_ack\":True,\"initial_snapshot\":True,\"per_update_ack\":True}))\\n');(repo/'trainer').chmod(0o755)
 common=[bind(repo/name) for name in ('trainer','model','source')]
 p={'schema_version':1,'arm':'before','run_id':'fixture-before','argv':['trainer','model','before-data','@RUN@/adapter','100','0.0001','40','25','joint','before-pairs'],'environment':{'NT_NO_I8':'1'},'bindings':common+[bind(repo/'before-data'),bind(repo/'before-pairs')],'scientific_plan_sha256':'f'*64}
 a=copy.deepcopy(p);a.update(schema_version='awaiting-before-initialization',arm='after',run_id='fixture-after');a['argv'][2]='after-data';a['argv'][9]='after-pairs';a['bindings']=common+[bind(repo/'after-data'),bind(repo/'after-pairs')]

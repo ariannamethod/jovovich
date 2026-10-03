@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "make",
+    "-j2",
+    "train-mlp",
+    "probe-mlp",
+    "merge-mlp",
+    "harness"
+  ],
+  "started_utc": "2026-10-03T17:27:59.716243+00:00",
+  "finished_utc": "2026-10-03T17:28:05.508690+00:00",
+  "return_code": 0
+}

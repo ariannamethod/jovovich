@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "test/checkpoint_archive_gate.test.mjs"
+  ],
+  "cwd": "/workspace/scratch/ec5ba60588d8/jovovich",
+  "return_code": 0,
+  "tool_session_id": "32754",
+  "tool_chunk_id": "cb6bbd",
+  "output_file": "checkpoint-archive-gate.combined.log",
+  "output_sha256": "26775383ff22ba74d364fa90590d3dd35ae2f795a534d377389e5ffadcc83c1d",
+  "evidence_origin": "Previously completed exec_command/write_stdin combined tool output, preserved without rerunning tests. Tool output did not separate stdout and stderr.",
+  "preserved_utc": "2026-10-03T17:31:03.089263+00:00"
+}

@@ -1,0 +1,32 @@
+{
+  "status": "pass",
+  "auditor": "independent explanation_auditor",
+  "command": [
+    "node",
+    "test/continuation.test.mjs"
+  ],
+  "tests_passed": 9,
+  "before_process_identity": {
+    "pid": 698755,
+    "start_ticks": 892066,
+    "cmdline_sha256": "bb1e95381d84e1470cdbbecae496613331c3a8c3303036e97f96918e0dc9c3ee"
+  },
+  "checks": [
+    "waits for verified before completion and original parent exit before any HF write",
+    "one HF writer per phase",
+    "copied plan and source hashes guarded",
+    "derived after plan guarded before child execution",
+    "failure stops without restart and archives closed evidence when possible",
+    "semantic audit remains pending after native completion"
+  ],
+  "sources": [
+    {
+      "path": "training/explanations/continue_experiment.py",
+      "sha256": "8139c4548de87e9494b8181424d31573644e9eaeb9dea16da89b994b3f6201dc"
+    },
+    {
+      "path": "test/continuation.test.mjs",
+      "sha256": "9ae9bd2447ebd8acaed7238c740047093753a65c8eed2ee6171c23834f34e997"
+    }
+  ]
+}

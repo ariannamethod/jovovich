@@ -27,6 +27,47 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The binary must answer before the woman does.
+
+PR #20 review found a concrete startup gap: the launcher could bind a stale
+trainer's checksum without checking whether that executable supported archive
+acknowledgements. The exact binary now answers `--archive-protocol` before it
+receives any model or dataset arguments. Its live process then requires an
+`archive_hello` / `START` handshake before opening either input. Missing or
+silent startup is bounded; the capability and binary identity are checked
+again after the remote intent barrier.
+
+Independent native tests pass all 22 failure scenarios. Eight Chuck updates
+with the gate remain bitwise identical to the control, with the same initial
+adapters and scorer metrics. A fresh native preflight passes all 304 ChatML
+comparisons and preserves the matched 52 decision / 3411 residual targets.
+
+The supplied credential verified private `ataeff/jovovich`; a fresh upload and
+pinned-commit download matched byte for byte. Both launch plans freeze the
+same 15-minute archive ACK deadline, allowing transfer and fresh readback of
+each roughly 53.4 MB checkpoint. The before arm has started after its verified
+remote intent, with 100 updates and its evaluation contract fixed in advance.
+That contract selects epoch 100, checks every exported tensor byte, checks
+native parity on five fixed representative rows, then collects 228 responses.
+
+The initial checkpoint's ten archived payloads total 53,492,858 bytes; their
+local bytes match its remote receipt. The saved progress snapshot covers
+updates 0 through 8. Inter-acknowledgement intervals for the first two updates
+are about 62 seconds on this CPU. The run remains active.
+
+`execute_evaluation.py` implements the fixed export, diagnostic, generation
+and prompt-comparison sequence. `continue_experiment.py` waits for verified
+before completion and the original archive parent to exit, then runs the
+matched after arm and evaluation. It binds PID/start-time identity, source
+hashes and plans, with one HF writer at a time. Each helper passes nine
+focused tests and a separate independent rerun. The continuation process is
+running; its immutable plan and current activation record are included below.
+Native evaluation ends with semantic review pending for the independent
+reviewers.
+
+Startup evidence and launch bindings:
+`training/results/2026-10-03-explanation-order-run/`.
+
 ## 2026-10-03 — SERGE moved the comma. The tokenizer noticed.
 
 All 52 v5 reviews now have a short explanation tied to the supplied rule,

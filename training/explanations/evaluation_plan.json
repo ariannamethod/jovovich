@@ -1,0 +1,618 @@
+{
+  "schema": "jovovich.explanation-order.evaluation.v1",
+  "status": "frozen_execution_contract_pending_training_endpoints",
+  "scientific_plan": "training/explanations/plan.json",
+  "resolution": {
+    "BEFORE_RUN": "Completed before training attempt directory with its verified remote receipts; must be inside the repository.",
+    "AFTER_RUN": "Completed after training attempt directory with its verified remote receipts; must be inside the repository.",
+    "EVALUATION_RUN": "New repository-local directory, never reuse an interrupted evaluation destination.",
+    "EVALUATION_RUN_ID": "Unique safe run ID; use at most 50 characters to leave room for each collector suffix.",
+    "INFER_SHA256": "Frozen inference executable SHA256 from pretraining launch bindings.",
+    "SHARED_BASE_UPDATE0_SHA256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "BEFORE_UPDATE100_SHA256": "Actual full export SHA256 from passing before byte-export audit, bound to epoch100 checkpoint receipt.",
+    "AFTER_UPDATE100_SHA256": "Actual full export SHA256 from passing after byte-export audit, bound to epoch100 checkpoint receipt."
+  },
+  "binding_policy": "Resolve paths, run IDs and derived epoch100 model hashes only; archive the fully resolved execution manifest and exact source/binary bindings before the first native evaluation call. The fixed row set, cases, checkpoint, budgets, order and thresholds below remain unchanged.",
+  "required_pretraining_launch_bindings": [
+    "training/explanations/evaluation_plan.json",
+    "training/merge_mlp.c",
+    "training/probe_mlp.c",
+    "training/train_mlp.c",
+    "build/jovovich-merge-mlp",
+    "build/jovovich-probe-mlp",
+    "build/jovovich-infer",
+    "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+    "training/results/2026-09-29-convergence/check_convergence_export.py",
+    "training/explanations/collect_generation.py",
+    "training/explanations/score_generation.py",
+    "training/explanations/build_corpora.py",
+    "training/durable_archive.py",
+    "training/layers/run_layers.py",
+    "bin/jovovich.mjs",
+    "prompts/identity.txt",
+    "training/sft_review_v6_before.jsonl",
+    "training/sft_review_v6_after.jsonl",
+    "training/review_holdout_v5.jsonl",
+    "training/results/2026-10-03-explanation-order-run/native/before.bin",
+    "training/results/2026-10-03-explanation-order-run/native/before.pairs.bin",
+    "training/results/2026-10-03-explanation-order-run/native/after.bin",
+    "training/results/2026-10-03-explanation-order-run/native/after.pairs.bin"
+  ],
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "native_environment_policy": "Use a minimal native environment with only PATH/LANG/LC_ALL/TMPDIR plus the four frozen NT_* values. Credentials stay in the archive parent.",
+  "execution_order": [
+    "verify_completed_training_receipts",
+    "before_endpoint_binding",
+    "before_merge_and_byte_audit",
+    "before_native_parity",
+    "after_endpoint_binding",
+    "after_merge_and_byte_audit",
+    "after_native_parity",
+    "six_collectors_in_listed_order",
+    "production_parse_and_blinded_manual_adjudication",
+    "bound_aggregation_and_final_archive"
+  ],
+  "exports": [
+    {
+      "arm": "before",
+      "required_completed_update": 100,
+      "checkpoint_prefix": "@BEFORE_RUN@/adapter.epoch100",
+      "model": "@EVALUATION_RUN@/exports/before/jovovich.gguf",
+      "steps": [
+        {
+          "id": "before-endpoint-binding",
+          "argv": [
+            "python3",
+            "-c",
+            "import hashlib,json,sys\nfrom pathlib import Path\nrun=Path(sys.argv[1]); output=Path(sys.argv[2]); values=[]\nack=json.loads((run/'_units/completion.ack.json').read_text())\nassert ack['status']=='completed' and ack['archive_status']=='verified' and ack['acknowledged_updates']==100\nassert ack['remote_verification']['verified_remote_bytes'] is True\nsaved=json.loads((run/'_units/update-100.ack.json').read_text())\nassert saved['verified_remote_bytes'] is True and saved['unit_id']=='update-100'\nfinal_entries={r['name']:r for r in ack['remote_verification']['files']}\nsaved_entries={r['name']:r for r in saved['files']}\nfor part in ('gate','up','down'):\n for ext in ('f32','lora'):\n  final=f'adapter.{part}.{ext}'; epoch=f'adapter.epoch100.{part}.{ext}'\n  a=(run/final).read_bytes(); b=(run/epoch).read_bytes(); h=hashlib.sha256(a).hexdigest()\n  assert a==b and final_entries[final]['sha256']==h and saved_entries[epoch]['sha256']==h\n  assert final_entries[final]['size']==len(a) and saved_entries[epoch]['size']==len(a)\n  values.append(dict(final=final,epoch100=epoch,bytes=len(a),sha256=h))\nwith output.open('x') as f:json.dump(dict(update=100,status='pass',files=values,completion_revision=ack['remote_verification']['revision'],checkpoint_revision=saved['revision']),f,indent=2);f.write('\\n')\n",
+            "@BEFORE_RUN@",
+            "@EVALUATION_RUN@/exports/before/endpoint-binding.json"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/before/endpoint-binding.json"
+          ]
+        },
+        {
+          "id": "before-merge",
+          "argv": [
+            "build/jovovich-merge-mlp",
+            "models/base-qwen.gguf",
+            "@BEFORE_RUN@/adapter.epoch100",
+            "@EVALUATION_RUN@/exports/before/jovovich.gguf"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/before/jovovich.gguf"
+          ]
+        },
+        {
+          "id": "before-byte-export-audit",
+          "argv": [
+            "python3",
+            "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+            "models/base-qwen.gguf",
+            "@EVALUATION_RUN@/exports/before/jovovich.gguf",
+            "@BEFORE_RUN@/adapter.epoch100",
+            "@EVALUATION_RUN@/exports/before/export-audit.json"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/before/export-audit.json"
+          ]
+        },
+        {
+          "id": "before-native-export-parity",
+          "argv": [
+            "build/jovovich-probe-mlp",
+            "models/base-qwen.gguf",
+            "@EVALUATION_RUN@/exports/before/jovovich.gguf",
+            "training/results/2026-10-03-explanation-order-run/native/before.bin",
+            "@BEFORE_RUN@/adapter.epoch100",
+            "0",
+            "1",
+            "2",
+            "3",
+            "51"
+          ],
+          "stdout": "@EVALUATION_RUN@/exports/before/parity.jsonl",
+          "stderr": "@EVALUATION_RUN@/exports/before/parity.stderr",
+          "check_argv": [
+            "python3",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nrows=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]\nassert [row['row'] for row in rows]==[0,1,2,3,51]\nassert all(row['pass'] is True and row['argmax_agree']==row['completion_tokens'] and row['logits_relative_l2']<=1e-5 and row['residual_relative_l2']<=1e-5 and row['max_batch_ce_diff']<=1e-4 for row in rows)\nprint(json.dumps(dict(status='pass',rows=[row['row'] for row in rows],completion_tokens=sum(row['completion_tokens'] for row in rows))))\n",
+            "@EVALUATION_RUN@/exports/before/parity.jsonl"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/before/parity.jsonl",
+            "@EVALUATION_RUN@/exports/before/parity.stderr"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "after",
+      "required_completed_update": 100,
+      "checkpoint_prefix": "@AFTER_RUN@/adapter.epoch100",
+      "model": "@EVALUATION_RUN@/exports/after/jovovich.gguf",
+      "steps": [
+        {
+          "id": "after-endpoint-binding",
+          "argv": [
+            "python3",
+            "-c",
+            "import hashlib,json,sys\nfrom pathlib import Path\nrun=Path(sys.argv[1]); output=Path(sys.argv[2]); values=[]\nack=json.loads((run/'_units/completion.ack.json').read_text())\nassert ack['status']=='completed' and ack['archive_status']=='verified' and ack['acknowledged_updates']==100\nassert ack['remote_verification']['verified_remote_bytes'] is True\nsaved=json.loads((run/'_units/update-100.ack.json').read_text())\nassert saved['verified_remote_bytes'] is True and saved['unit_id']=='update-100'\nfinal_entries={r['name']:r for r in ack['remote_verification']['files']}\nsaved_entries={r['name']:r for r in saved['files']}\nfor part in ('gate','up','down'):\n for ext in ('f32','lora'):\n  final=f'adapter.{part}.{ext}'; epoch=f'adapter.epoch100.{part}.{ext}'\n  a=(run/final).read_bytes(); b=(run/epoch).read_bytes(); h=hashlib.sha256(a).hexdigest()\n  assert a==b and final_entries[final]['sha256']==h and saved_entries[epoch]['sha256']==h\n  assert final_entries[final]['size']==len(a) and saved_entries[epoch]['size']==len(a)\n  values.append(dict(final=final,epoch100=epoch,bytes=len(a),sha256=h))\nwith output.open('x') as f:json.dump(dict(update=100,status='pass',files=values,completion_revision=ack['remote_verification']['revision'],checkpoint_revision=saved['revision']),f,indent=2);f.write('\\n')\n",
+            "@AFTER_RUN@",
+            "@EVALUATION_RUN@/exports/after/endpoint-binding.json"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/after/endpoint-binding.json"
+          ]
+        },
+        {
+          "id": "after-merge",
+          "argv": [
+            "build/jovovich-merge-mlp",
+            "models/base-qwen.gguf",
+            "@AFTER_RUN@/adapter.epoch100",
+            "@EVALUATION_RUN@/exports/after/jovovich.gguf"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/after/jovovich.gguf"
+          ]
+        },
+        {
+          "id": "after-byte-export-audit",
+          "argv": [
+            "python3",
+            "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+            "models/base-qwen.gguf",
+            "@EVALUATION_RUN@/exports/after/jovovich.gguf",
+            "@AFTER_RUN@/adapter.epoch100",
+            "@EVALUATION_RUN@/exports/after/export-audit.json"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/after/export-audit.json"
+          ]
+        },
+        {
+          "id": "after-native-export-parity",
+          "argv": [
+            "build/jovovich-probe-mlp",
+            "models/base-qwen.gguf",
+            "@EVALUATION_RUN@/exports/after/jovovich.gguf",
+            "training/results/2026-10-03-explanation-order-run/native/after.bin",
+            "@AFTER_RUN@/adapter.epoch100",
+            "0",
+            "1",
+            "2",
+            "3",
+            "51"
+          ],
+          "stdout": "@EVALUATION_RUN@/exports/after/parity.jsonl",
+          "stderr": "@EVALUATION_RUN@/exports/after/parity.stderr",
+          "check_argv": [
+            "python3",
+            "-c",
+            "import json,sys\nfrom pathlib import Path\nrows=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]\nassert [row['row'] for row in rows]==[0,1,2,3,51]\nassert all(row['pass'] is True and row['argmax_agree']==row['completion_tokens'] and row['logits_relative_l2']<=1e-5 and row['residual_relative_l2']<=1e-5 and row['max_batch_ce_diff']<=1e-4 for row in rows)\nprint(json.dumps(dict(status='pass',rows=[row['row'] for row in rows],completion_tokens=sum(row['completion_tokens'] for row in rows))))\n",
+            "@EVALUATION_RUN@/exports/after/parity.jsonl"
+          ],
+          "outputs": [
+            "@EVALUATION_RUN@/exports/after/parity.jsonl",
+            "@EVALUATION_RUN@/exports/after/parity.stderr"
+          ]
+        }
+      ]
+    }
+  ],
+  "parity": {
+    "rows": [
+      {
+        "index": 0,
+        "case_id": "scoped-python-analysis-concern",
+        "kind": "review"
+      },
+      {
+        "index": 1,
+        "case_id": "scoped-python-analysis-clean",
+        "kind": "review"
+      },
+      {
+        "index": 2,
+        "case_id": "voice-01",
+        "kind": "voice"
+      },
+      {
+        "index": 3,
+        "case_id": "code-01",
+        "kind": "code"
+      },
+      {
+        "index": 51,
+        "case_id": "validated-port-conversion-repaired",
+        "kind": "review"
+      }
+    ],
+    "rationale": "Rows 0/1 cover concern/clean; rows 2/3 cover unchanged voice/code; row 51 covers the maximal 58-token delayed verdict. Every tensor is separately checked by the byte-export audit.",
+    "expected_calls_per_arm": 5,
+    "acceptance": {
+      "all_completion_argmax_identical": true,
+      "maximum_logit_relative_l2": 1e-05,
+      "maximum_residual_relative_l2": 1e-05,
+      "maximum_batch_ce_difference": 0.0001
+    },
+    "probe_jsonl_rule": "Require exactly one complete JSONL result for each fixed row in the same order; every native pass must be true."
+  },
+  "checkpoint_rules": [
+    "The source prefix is adapter.epoch100. No score-based checkpoint selection is performed.",
+    "Compare all six final files byte-for-byte with their epoch100 counterparts and bind each hash to the corresponding verified checkpoint/final remote manifest entry.",
+    "Require the training completion receipt for 100 acknowledged updates before export. The gate0 before/after LoRA equality is checked by the training launcher.",
+    "Byte audit verifies unchanged metadata, every unchanged tensor payload, and exact replacement payloads for all three last-block MLP matrices.",
+    "Archive merge intent before execution; archive the completed export, byte audit and numeric parity evidence before admitting that model to a collector."
+  ],
+  "collector_jobs": [
+    {
+      "id": "shared_base_update0-train",
+      "model": "shared_base_update0",
+      "split": "train",
+      "source": "training/sft_review_v6_before.jsonl",
+      "rows": 52,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--model",
+        "models/base-qwen.gguf",
+        "--model-sha256",
+        "@SHARED_BASE_UPDATE0_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/shared_base_update0-train",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-shared_base_update0-train",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/shared_base_update0-train/generations.jsonl",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/shared_base_update0-train/structural-score.json"
+      ]
+    },
+    {
+      "id": "shared_base_update0-holdout",
+      "model": "shared_base_update0",
+      "split": "holdout",
+      "source": "training/review_holdout_v5.jsonl",
+      "rows": 24,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--model",
+        "models/base-qwen.gguf",
+        "--model-sha256",
+        "@SHARED_BASE_UPDATE0_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/shared_base_update0-holdout",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-shared_base_update0-holdout",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/shared_base_update0-holdout/generations.jsonl",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/shared_base_update0-holdout/structural-score.json"
+      ]
+    },
+    {
+      "id": "before_update100-train",
+      "model": "before_update100",
+      "split": "train",
+      "source": "training/sft_review_v6_before.jsonl",
+      "rows": 52,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--model",
+        "@EVALUATION_RUN@/exports/before/jovovich.gguf",
+        "--model-sha256",
+        "@BEFORE_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/before_update100-train",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-before_update100-train",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/before_update100-train/generations.jsonl",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/before_update100-train/structural-score.json"
+      ]
+    },
+    {
+      "id": "before_update100-holdout",
+      "model": "before_update100",
+      "split": "holdout",
+      "source": "training/review_holdout_v5.jsonl",
+      "rows": 24,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--model",
+        "@EVALUATION_RUN@/exports/before/jovovich.gguf",
+        "--model-sha256",
+        "@BEFORE_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/before_update100-holdout",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-before_update100-holdout",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/before_update100-holdout/generations.jsonl",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/before_update100-holdout/structural-score.json"
+      ]
+    },
+    {
+      "id": "after_update100-train",
+      "model": "after_update100",
+      "split": "train",
+      "source": "training/sft_review_v6_after.jsonl",
+      "rows": 52,
+      "expected_order": "after",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/sft_review_v6_after.jsonl",
+        "--split",
+        "train",
+        "--model",
+        "@EVALUATION_RUN@/exports/after/jovovich.gguf",
+        "--model-sha256",
+        "@AFTER_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/after_update100-train",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-after_update100-train",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/after_update100-train/generations.jsonl",
+        "--sft",
+        "training/sft_review_v6_after.jsonl",
+        "--split",
+        "train",
+        "--order",
+        "after",
+        "--output",
+        "@EVALUATION_RUN@/generation/after_update100-train/structural-score.json"
+      ]
+    },
+    {
+      "id": "after_update100-holdout",
+      "model": "after_update100",
+      "split": "holdout",
+      "source": "training/review_holdout_v5.jsonl",
+      "rows": 24,
+      "expected_order": "after",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--model",
+        "@EVALUATION_RUN@/exports/after/jovovich.gguf",
+        "--model-sha256",
+        "@AFTER_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/after_update100-holdout",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-after_update100-holdout",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/after_update100-holdout/generations.jsonl",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--order",
+        "after",
+        "--output",
+        "@EVALUATION_RUN@/generation/after_update100-holdout/structural-score.json"
+      ]
+    }
+  ],
+  "generation": {
+    "jobs": 6,
+    "rows": 228,
+    "pairs_per_model": {
+      "train": 26,
+      "holdout": 12
+    },
+    "max_new_tokens": 512,
+    "context": 8192,
+    "temperature": 0,
+    "parallel_processes": 1,
+    "expected_verified_archive_units": 696,
+    "archive_units_explanation": "Each collector writes input+completion units and three units per case: intent, standalone tokenizer result and native result. Six collectors sum to 696 verified units.",
+    "cross_model_prompt_identity": "For each split, require the same case IDs, exact prompt bytes, prompt SHA256 and native prompt_token_ids across base/before/after. Compare each response with the prompt bytes and standalone tokenizer output archived by its collector before generation.",
+    "stop_rule": "Generation errors stop the active collector after archiving its closed evidence. Missing rows retain the full planned denominator. An interrupted attempt is never silently overwritten."
+  },
+  "semantic_audit": {
+    "primary": "Fully grounded complete concern/clean pairs per split, assessed from complete response content and exact prompt.",
+    "packet_fields": [
+      "opaque_model_slot",
+      "split",
+      "case_id",
+      "pair",
+      "exact_prompt",
+      "prompt_sha256",
+      "raw_response",
+      "raw_response_sha256",
+      "raw_record_file_sha256",
+      "raw_record_line_sha256",
+      "finish_reason",
+      "actual_production_parse_result",
+      "changed_line_table",
+      "expected_concern",
+      "canonical_gold_findings",
+      "candidate_line_ids"
+    ],
+    "blinding": "A packet preparer assigns an opaque random model permutation, archives its mapping separately, and withholds that mapping from both independent reviewers until their row judgments and adjudication are archived. Retain source hashes without exposing model-path labels inside reviewer packets. Root remains an unblinded operator and adjudicator.",
+    "production_parser": "Use the unchanged bin/jovovich.mjs parseReview on each complete actual response and the source changed-line chunk. Preserve parser errors and parsed findings; this is separate from the stricter explanation JSON scorer.",
+    "judgment_fields": [
+      "production_acceptance",
+      "presence_correct",
+      "genuine_issue_detected",
+      "all_findings_grounded",
+      "citation_causally_appropriate",
+      "analysis_present",
+      "analysis_nonempty",
+      "all_analysis_claims_supported",
+      "all_material_claims_supported",
+      "supported_fragments",
+      "unsupported_claims",
+      "full_review_pass",
+      "note"
+    ],
+    "rubric": "Apply primary_evaluation.full_review_rubric from the scientific plan. Missing analysis is recorded separately; it is not automatic failure of an otherwise complete grounded findings-only review. Accept causally appropriate alternate changed lines. Findings classification, exact gold line IDs and field order scores remain structural diagnostics.",
+    "agreement": "Two independent reviewers assess all 228 rows under opaque model labels. Root, who operates the collector and knows the mapping, adjudicates disagreements against exact prompts and complete responses. Archive both independent readings and row-level adjudication before revealing the mapping to the reviewers.",
+    "aggregation": "Report all 3 models separately by split; full review rows and full review pairs, findings classification pairs, production acceptance, analysis presence/support, order frequencies, EOS/budget counts. For before update 100 versus after update 100 report before-only/after-only/both/neither paired outcomes at fixed 26 train and 12 heldout denominators."
+  },
+  "evidence_policy": [
+    "Use DurableArchive with verified pinned remote byte readback before the next work unit. Preserve source and binary bytes, command arrays, exact native environment, timestamps, stdout/stderr and derived reports.",
+    "Each merged GGUF is archived with its model manifest before generation; base is identified by its existing pinned public SHA256.",
+    "Do not put credentials into commands, plans, child environments, or archives. Use the existing authorized archive parent only.",
+    "Store per-job structural scores and production parsing results as new immutable files and archive before interpretation.",
+    "Final manifest binds source checksums, both training completions,10 numeric parity row results,228 generation results,6 structural reports, production parser results and all semantic judgments."
+  ],
+  "runtime_estimate": {
+    "evidence": [
+      "training/results/2026-10-01-counterbalanced-review/control-train-natural.jsonl",
+      "training/results/2026-10-01-counterbalanced-review/counterbalanced-train-natural.jsonl",
+      "training/results/2026-10-01-counterbalanced-review/control-transfer-natural.jsonl",
+      "training/results/2026-10-01-counterbalanced-review/counterbalanced-transfer-natural.jsonl"
+    ],
+    "historical_cases": 152,
+    "historical_summed_wall_seconds": 2286.478,
+    "historical_mean_seconds_per_case": 15.042618421052632,
+    "projected_228_calls_at_historical_short_output_minutes": 57.161950000000004,
+    "new_100_token_outputs_estimated_native_minutes": [
+      75,
+      85
+    ],
+    "all_512_token_outputs_estimated_native_minutes": [
+      150,
+      195
+    ],
+    "archive_overhead": "Additional to native estimates; 696 verified units include network readback and depend on observed remote throughput.",
+    "numeric_parity_estimated_minutes": [
+      3,
+      5
+    ],
+    "estimate_basis": "Historical runs used 2 threads, 454.5 mean train prompt tokens, 557.9 mean heldout prompt tokens, 5–21 mean output tokens and 14.8–18.2 decode tokens/s. Current generation fixes 4 threads and 512 maximum output tokens; these estimates project the historical timings."
+  },
+  "execution_setup": "Create one new evaluation directory and exports/before and exports/after subdirectories before executing the listed exclusive-output commands. Execute command arrays from the repository root."
+}
