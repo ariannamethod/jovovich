@@ -27,6 +27,36 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — Same number, different line.
+
+The explanation corpora went through acceptance against criteria fixed before
+the checker ran. `training/acceptance/v6_check.mjs` binds both arms, the
+reasons file and v5 by hash, then checks rows, bytes, verdicts, key order,
+sentence counts, pair parallelism and a fixed list of forbidden shape
+justifications. Verdicts, findings and the compact JVPR2 markers match v5 in
+all 52 rows of both arms; the 24 nonreview rows keep their bytes; every
+analysis has two sentences; the forbidden list finds nothing.
+
+Two results did not match the letter of the brief. Every review prompt carries
+one shared suffix asking for the analysis, 104 of 104 rows. The production
+renderer does not append it, so an explanation-first winner must ship the
+suffix with its weights. Pair parallelism as first declared also failed, 24 of
+26: both failures are introduced/repaired pairs, where the members review
+mirrored diffs and `[4]` names `atoi` on one side and the validated cast on the
+other. The measure compared coordinates the two diffs do not share. That count
+stays in the record. The replacement, declared after the defect, keeps
+number-set equality for the 18 same-diff pairs and compares cited diff sides
+for the 8 mirrored ones: 26 of 26. No explanation was edited.
+
+The checker was also made to fail. Ten targeted mutations each fail their
+check; one early mutation changed nothing and was rerun, the record keeps both.
+The native JVPR2 path reproduces the preflight evidence byte for byte on both
+arms. A reader with no session context judged sixteen rows from eight seeded
+pairs: their own verdicts matched v5 on all sixteen before any analysis was
+shown, and all sixty premises of the analyses were found in the prompts.
+
+Evidence: [`training/results/2026-10-03-v6-acceptance`](training/results/2026-10-03-v6-acceptance).
+
 ## 2026-10-03 — The witness brought an unlisted colleague.
 
 PR #21 review found that `score_decisions.py` imports `summarize` from
