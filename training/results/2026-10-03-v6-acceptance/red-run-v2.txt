@@ -1,0 +1,11 @@
+M1_H5_flip_findings        rc=1 H5=FAIL targeted=true
+M2_H4suffix_system_byte    rc=1 H4_suffix=FAIL targeted=true
+M3_H8_extra_sentence       rc=1 H8v2=FAIL targeted=true
+M4_H9_line_count           rc=1 H9=FAIL targeted=true
+M5_H6_key_order            rc=1 H6=FAIL targeted=true
+M6_H2_drop_row             rc=1 H2=FAIL targeted=true
+M7_H3_nonreview_byte       rc=1 H3=FAIL targeted=true
+M8_H4suffix_other_delta    rc=1 H4_suffix=FAIL targeted=true
+M9_H8v2_mirrored_side      rc=1 H8v2=FAIL targeted=true
+M10_H8v2_missing_line      rc=1 H8v2=FAIL targeted=true
+red-run v2 10/10

@@ -52,9 +52,9 @@ the paired clean rows argue the type equality symmetrically.
 
 Each mutated copy must fail its target check with rc 1. First pass 7/8: the
 system-byte mutation replaced a substring absent from review system prompts and
-changed nothing; the corrected mutation fails as intended (`red-run-v1.log`).
+changed nothing; the corrected mutation fails as intended (`red-run-v1.txt`).
 After H8v2, ten mutations including a REMOVED-side citation and a nonexistent
-line id: 10/10 (`red-run-v2.log`). H9 adjudication: `content` passes, `shape`
+line id: 10/10 (`red-run-v2.txt`). H9 adjudication: `content` passes, `shape`
 and a stale key fail.
 
 **Evidence correction, 2026-10-03:** neither referenced original red-run log
