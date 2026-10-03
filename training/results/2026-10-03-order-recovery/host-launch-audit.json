@@ -1,0 +1,82 @@
+{
+  "schema": "jovovich.persistent-host-launch.audit.v1",
+  "recorded_utc": "2026-10-03T19:28:01.678643+00:00",
+  "status": "static-and-fail-closed-checks-passed",
+  "script": "training/results/2026-10-03-order-recovery/persistent-host-launch.sh",
+  "script_sha256": "a29c0099a8c7c5c8360cb1ed899423462982e699ff04a6e56a6c66ab8afd9665",
+  "source_commit": "7b03bc7216619660fc5fb3b02e89ee1513b625e2",
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "checks": [
+    {
+      "name": "bash-syntax",
+      "return_code": 0,
+      "expected_return_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "missing-arguments",
+      "return_code": 2,
+      "expected_return_code": 2,
+      "stdout": "",
+      "stderr": "usage: bash persistent-host-launch.sh TOKEN_FILE FRESH_RUN_PREFIX\n"
+    },
+    {
+      "name": "invalid-fresh-prefix",
+      "return_code": 1,
+      "expected_return_code": 1,
+      "stdout": "",
+      "stderr": "jovovich host launch: invalid fresh run prefix (1..40 safe characters)\n"
+    },
+    {
+      "name": "wrong-source-commit-rejected-before-output-or-network",
+      "return_code": 1,
+      "expected_return_code": 1,
+      "stdout": "",
+      "stderr": "jovovich host launch: checkout must be pinned to 7b03bc7216619660fc5fb3b02e89ee1513b625e2\n"
+    }
+  ],
+  "inspected_contract": {
+    "host": "Existing persistent Linux checkout; execute in tmux/nohup/systemd while host remains running. No provisioning or rental API.",
+    "interpreter": "Python >=3.11; repository-local venv with huggingface_hub==0.35.3",
+    "native_dependencies": [
+      "Git",
+      "Make",
+      "C compiler",
+      "Node >=22",
+      "flock"
+    ],
+    "base": "Checksum-pinned model.json fetched to models/base-qwen.gguf",
+    "preflight": "Build trainer/export/parity/inference first, run all-row native tokenizer checks, prepare both plans plus generated evaluation contract, then capability preflight.",
+    "sequence": [
+      "before 100 updates, 2 threads",
+      "verified before completion and initial-adapter binding",
+      "after 100 updates, 2 threads",
+      "generated-contract native evaluation, existing 4-thread contract",
+      "semantic audit pending"
+    ],
+    "ack_timeout_ms_both_arms": 900000,
+    "learning_rate": 0.0001,
+    "microbatch_tokens": 40,
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "optimizer": "Chuck in one continuous native process per arm",
+    "failure": "set -e stops sequence; fresh run paths required; no restart/resume",
+    "credentials": "Readable token-file path argument only; file contents are read by existing authorized HF archive parents, never printed by launcher.",
+    "provenance": "Exact launcher copy and host manifest are checksum-bound in both launch plans before training.",
+    "concurrency": "Foreground phases plus repository-local nonblocking flock; one HF writer for this job.",
+    "distribution": "Run this supplied script from an existing checkout pinned to source_commit. Keep the script outside the pinned tracked source tree or as an untracked supplied artifact."
+  },
+  "execution_limits": {
+    "training_updates_executed_by_audit": 0,
+    "model_inference_calls": 0,
+    "network_calls": 0,
+    "infrastructure_actions": 0,
+    "real_credential_access": false,
+    "dummy_token_fixture": "Used only for file-path validation in abort-path tests; not read by any HF client."
+  }
+}

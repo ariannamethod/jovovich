@@ -1,0 +1,5 @@
+packed 26 review pairs into /workspace/scratch/ec5ba60588d8/jovovich/models/order-recovery-preflight/before.pairs.bin
+packed 76 examples into /workspace/scratch/ec5ba60588d8/jovovich/models/order-recovery-preflight/before.bin
+packed 26 review pairs into /workspace/scratch/ec5ba60588d8/jovovich/models/order-recovery-preflight/after.pairs.bin
+packed 76 examples into /workspace/scratch/ec5ba60588d8/jovovich/models/order-recovery-preflight/after.bin
+{"status": "pass", "arms": {"before": {"review_rows": 52, "pairs": 26, "decision_tokens": 52, "residual_tokens": 3411, "max_prompt_tokens": 570, "max_answer_tokens_including_eos": 99, "verdict_position_min": 40, "verdict_position_max": 58}, "after": {"review_rows": 52, "pairs": 26, "decision_tokens": 52, "residual_tokens": 3411, "max_prompt_tokens": 570, "max_answer_tokens_including_eos": 99, "verdict_position_min": 3, "verdict_position_max": 3}}, "identical_prompt_and_content_rows": 52, "unchanged_nonreview_rows": 24, "native_chatml_comparisons": 304, "inference_calls": 0, "training_updates": 0}

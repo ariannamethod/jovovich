@@ -1,0 +1,19 @@
+{
+  "observed_utc": "2026-10-03T19:17:02.461385+00:00",
+  "repo": "ataeff/jovovich",
+  "private_verified": true,
+  "revision": "a8013d35d46c5ccfe2fd4d1a95ecf8a6f5f9c825",
+  "runs": {
+    "order-20261003-01-before": {
+      "closed_units": 60,
+      "latest_unit_manifest": "experiments/explanation-order/order-20261003-01-before/units/000059-update-058.json",
+      "completion_manifests": []
+    },
+    "order-20261003-launch-access": {
+      "closed_units": 1,
+      "latest_unit_manifest": "experiments/explanation-order/order-20261003-launch-access/units/000000-access.json",
+      "completion_manifests": []
+    }
+  },
+  "inventory_entries": 254
+}

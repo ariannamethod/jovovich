@@ -1,0 +1,153 @@
+{
+  "schema": "jovovich.independent-order-recovery-audit.v1",
+  "status": "passed",
+  "audited_utc": "2026-10-03T19:32:31.927613+00:00",
+  "audit_kind": "Independent read-only local byte/hash/schema/aggregation audit. No credentials, network calls, native model execution or existing-file changes.",
+  "recovery_manifest": {
+    "path": "models/recovered-order-20261003-01-before/_durable-recovery.json",
+    "bytes": 89292,
+    "sha256": "575079ea90c18e2bf57e0ecfd084976d52a5982b2a6671b95e161fd318b6f338"
+  },
+  "evidence": [
+    {
+      "path": "training/results/2026-10-03-order-recovery/verified-recovery-manifest.json",
+      "bytes": 89292,
+      "sha256": "575079ea90c18e2bf57e0ecfd084976d52a5982b2a6671b95e161fd318b6f338"
+    },
+    {
+      "path": "training/results/2026-10-03-order-recovery/partial-metrics.jsonl",
+      "bytes": 677871,
+      "sha256": "24d9b35c9b00c9c501565a979a40ff8d61acf48ba680c238ea87a14eb1d33594"
+    },
+    {
+      "path": "training/results/2026-10-03-order-recovery/partial-trajectory.json",
+      "bytes": 16904,
+      "sha256": "3944f7b90d8273c1df6f516677cf34c156b269b5717007203bbc9360e359ecc7"
+    },
+    {
+      "path": "training/results/2026-10-03-order-recovery/recovery-status.json",
+      "bytes": 320,
+      "sha256": "661921e00f274a9ec659b80016c2d7722dd6a5c1945365045c36dffe6fb0360f"
+    }
+  ],
+  "recorded_remote_inventory": {
+    "path": "models/recovery-support/remote-inventory.json",
+    "bytes": 59519,
+    "sha256": "6feb15569cbe22e55f6c0c26e96eaa412aab0ff767189e5c110445efb87eee6e"
+  },
+  "revision": "a8013d35d46c5ccfe2fd4d1a95ecf8a6f5f9c825",
+  "run_id": "order-20261003-01-before",
+  "closed_units": 60,
+  "closed_update_prefix": [
+    0,
+    58
+  ],
+  "decision_measurements": 59,
+  "logical_files_verified": 247,
+  "unique_payloads_verified": 192,
+  "logical_bytes_verified": 164281543,
+  "all_restored_names_manifested": true,
+  "size_sha256_and_git_blob_sha1_match": true,
+  "recorded_remote_metadata_matches": true,
+  "checkpoint_updates": [
+    0,
+    25,
+    50
+  ],
+  "checkpoint_files": 18,
+  "lora_checks": [
+    {
+      "name": "adapter.epoch00.down.lora",
+      "target": "blk.23.ffn_down.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch00.gate.lora",
+      "target": "blk.23.ffn_gate.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch00.up.lora",
+      "target": "blk.23.ffn_up.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch25.down.lora",
+      "target": "blk.23.ffn_down.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch25.gate.lora",
+      "target": "blk.23.ffn_gate.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch25.up.lora",
+      "target": "blk.23.ffn_up.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch50.down.lora",
+      "target": "blk.23.ffn_down.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch50.gate.lora",
+      "target": "blk.23.ffn_gate.weight",
+      "only_A_B_payload": true
+    },
+    {
+      "name": "adapter.epoch50.up.lora",
+      "target": "blk.23.ffn_up.weight",
+      "only_A_B_payload": true
+    }
+  ],
+  "optimizer_state_present": false,
+  "optimizer_detail": "Actual native joint path calls nt_tape_chuck_step. LoRA v1 files contain exactly A/B weights; Chuck controller and optimizer moments/counters are absent.",
+  "completion_present": false,
+  "raw_native_closure_markers_checked": 59,
+  "metrics_concat_exact": true,
+  "metric_record_count": 62,
+  "direct_native_trajectory_matches": true,
+  "per_update_hits_and_pairs_recomputed": true,
+  "restored_launch_inputs_verified": 49,
+  "external_base_binding_not_among_recovered_payloads": [
+    {
+      "path": "models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    }
+  ],
+  "last_native_measurement": {
+    "update": 58,
+    "epoch": 58,
+    "mean_decision_ce": 0.64633644,
+    "mean_residual_ce": 2.23654186,
+    "mean_joint_ce": 2.88287829,
+    "decision_correct": 32,
+    "decision_positions": 52,
+    "decision_pairs_exact": 7,
+    "decision_pairs": 26
+  },
+  "host_launcher_review": {
+    "source": {
+      "path": "training/results/2026-10-03-order-recovery/persistent-host-launch.sh",
+      "bytes": 5983,
+      "sha256": "a29c0099a8c7c5c8360cb1ed899423462982e699ff04a6e56a6c66ab8afd9665"
+    },
+    "bash_syntax": "passed",
+    "blocking_findings": [],
+    "observations": [
+      "Exact source and notorch commits required; dirty tracked trees rejected.",
+      "Fixed 100 updates, learning rate 0.0001, microbatch 40, save cadence 25, joint objective and two training threads checked before launch.",
+      "flock serializes launcher instances; before, matched after and evaluation archive writers execute sequentially.",
+      "Launcher must be invoked from an external copy while the repository remains pinned to its earlier source commit, as documented.",
+      "This script was read and syntax checked; it was not executed."
+    ]
+  },
+  "limits": [
+    "Local bytes were checked against the recovery manifest and recorded remote metadata. No new remote fetch or independent re-download of the full unit-manifest chain was performed.",
+    "Only the incomplete before arm is recovered. No update100 completion, matched-arm conclusion or natural-generation conclusion is available.",
+    "Exact continuation from the restored weights is unsupported without the missing optimizer/controller state."
+  ]
+}
