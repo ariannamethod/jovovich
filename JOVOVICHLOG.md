@@ -27,6 +27,20 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The copy is measured before anyone writes it.
+
+The quote-first arm's manipulation check now exists as code, frozen before a
+single generation of that arm. `training/quote/manipulation.mjs` reads a
+collector run directory, binds each prompt to its record by hash, and asks
+whether the generated analysis opens with `Rule: ` followed by at least 40
+characters copied verbatim from one of the prompt's AGENTS.md sections. A
+copied preamble, a header line or a README passage does not count: those are
+not rules. On the gold answers it reads the quote corpus at 52 of 52, each
+copy inside the decisive rule and complete, and the explanation-first corpus
+at 0 of 52. Breaking the header exclusion or moving the threshold to 39
+fails the matching test. The definition is appended to the registration
+with its time; the original text stays as it was.
+
 ## 2026-10-03 — Copy the law before you judge it.
 
 A third arm is registered before it exists. It keeps every byte of the

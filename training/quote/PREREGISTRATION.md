@@ -129,3 +129,31 @@ position and generated length per response.
    runtime; the native preflight compares both.
 6. Script: `training/train_mlp.c` through the archived launcher. The
    three-arm launcher change must be pushed before launch.
+
+## Addendum, 2026-10-03 19:34 UTC: the manipulation check as an instrument
+
+This addendum was added before any generation of this arm exists, and the
+text above is unchanged. It turns "a verbatim substring of its own prompt's
+rules block" into code:
+`training/quote/manipulation.mjs` (`daa52932…`), tested by
+`test/quote_manipulation.test.mjs` (`8411c780…`).
+
+- **Rules.** The rules are the texts of the `…AGENTS.md:` sections of the
+  user message, between the "AGENTS.md rules below are ordered…" line and
+  "Surrounding diff:". Header lines, that preamble and the
+  `README.md (repository-wide context):` section are excluded, because a
+  README is context, not a rule.
+- **The copied span.** It is the longest prefix of the analysis after
+  `Rule: ` that occurs verbatim in at least one section. It passes at 40
+  characters or more.
+- **Failures.** A null or unparsable response, a non-string analysis, or a
+  missing exact `Rule: ` prefix fails the check and stays in the denominator.
+- **Decisive scope (train).** The span lies inside `evidence.rule`. Copying
+  the whole rule is counted separately.
+- **Binding.** Each prompt is bound to its record by `metadata.prompt_sha256`;
+  a mismatch stops scoring. The collector's `holdout` split is scored with
+  `--split heldout`.
+
+On the gold corpora the instrument reads v7 at 52/52 passing, 52/52 decisive
+and 52/52 whole-rule copies, and v6_before at 0/52. Removing the header
+exclusion or lowering the threshold to 39 each fails its own test.
