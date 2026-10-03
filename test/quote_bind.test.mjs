@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -178,5 +178,47 @@ for (const [variant, message] of rejected) {
     assert.equal(r.status, 1, r.stderr);
     assert.equal(r.stderr.trim(), 'bind_quote: ' + message);
     assert.ok(!existsSync(f.out));
+  });
+}
+
+test('recover restores an archived run at its pinned revision', t => {
+  const dir = mkdtempSync(join(realpathSync(tmpdir()), 'quote-recover-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const r = spawnSync('python3', ['-c', String.raw`
+import json,sys
+from pathlib import Path
+sys.path[:0]=['training/quote','test']
+import bind_quote
+from durable_archive import DurableArchive
+from durable_archive_fixture import FakeTransport
+root=Path(sys.argv[1]);transport=FakeTransport();archive=DurableArchive(transport,'fixture-before',prefix='experiments/explanation-order')
+run=root/'run';run.mkdir();(run/'plan.json').write_text('{"arm":"before"}');(run/'completion.json').write_text('{"done":true}')
+archive.sync_unit('intent',{'plan.json':run/'plan.json'},sequence=0)
+archive.sync_unit('completion',{'completion.json':run/'completion.json'},sequence=1)
+pinned=transport.current;calls=[]
+def connect():calls.append(1);return transport
+archive.sync_unit('later',{'later.json':run/'completion.json'},sequence=2)
+bind_quote.recover('fixture-before',pinned,root/'recovered','experiments/explanation-order',connect)
+out=root/'recovered';receipt=json.loads((out/'_durable-recovery.json').read_text())
+assert calls==[1] and receipt['revision']==pinned and [u['unit_id'] for u in receipt['units']]==['intent','completion']
+assert (out/'plan.json').read_bytes()==(run/'plan.json').read_bytes() and not (out/'later.json').exists()
+`, dir], { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /"status": "recovered"/);
+});
+
+for (const [name, revision, existing, message] of [
+  ['revision form', 'A'.repeat(40), false, 'recovery revision must be a full lowercase commit SHA'],
+  ['existing destination', 'a'.repeat(40), true, 'recovery destination already exists']]) {
+  test(`recover rejects ${name} before reading the credential`, t => {
+    const dir = mkdtempSync(join(realpathSync(tmpdir()), 'quote-recover-'));
+    t.after(() => rmSync(dir, { recursive: true, force: true }));
+    if (existing) mkdirSync(join(dir, 'out'));
+    // The token path does not exist: reading it first would fail with another error.
+    const r = spawnSync('python3', ['training/quote/bind_quote.py', 'recover', '--run-id', 'fixture-before',
+      '--revision', revision, '--out', join(dir, 'out'), '--token-file', join(dir, 'missing-token')],
+    { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
+    assert.equal(r.status, 1, r.stderr);
+    assert.equal(r.stderr.trim(), 'bind_quote: ' + message);
   });
 }

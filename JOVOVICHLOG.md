@@ -27,6 +27,35 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-04 — The third arm gets its own door, and the same key.
+
+The quote-first arm now has a launch and evaluation path of its own, built
+beside the running experiment without changing it. Its training plan is bound
+to the archived before run, recovered from the private archive at one pinned
+revision. That run must have completed its 100 updates, and every source it was
+trained from must match this checkout byte for byte, including the rebuilt
+trainer binary. The quote arm starts from the before arm's initial adapter
+hashes and changes nothing else but its corpus. On the pinned base the native
+preflight reads the two arms as frozen: decisions at 40–58 and 55–88, 3411 and
+4412 residual tokens, 304 ChatML comparisons without a miss.
+
+Evaluation follows the before arm's own contract. The quote contract is derived
+from it by a recorded substitution list that renames the run, its exports and
+its model and nothing else, so the quote answers are scored with the same
+prompts, answer order and held-out cases. Inverting the list returns the
+before branch exactly. After the export, 52 train and 24 held-out generations
+are compared with the archived before collectors prompt for prompt and token
+for token, and the manipulation check reads both splits.
+
+`training/quote/host_launch.sh` runs it all once in a fresh checkout pinned to
+the quote source, on a host built like the one that trained the before arm. It
+refuses to start until a committed `training/quote/launch_inputs.json` names the
+before run, its evaluation, the archive revision and the expected initial
+hashes, so that file can only exist after the running experiment has finished.
+A failed attempt is not resumed: a new attempt needs a new prefix. The machine
+that builds the binaries is recorded, because a different compiler or CPU will
+stop the binding rather than slip a different trainer in.
+
 ## 2026-10-03 — Twenty-four copies of one witness are still one witness.
 
 Deployment update, 20:25 UTC: the fresh `order-rp-20261003-01-before` attempt

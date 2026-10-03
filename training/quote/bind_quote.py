@@ -15,6 +15,7 @@ from prepare import prepare, review_pairs, review_prefixes
 from verify_native import binding, save, command, require
 from run_training import validate_plan
 from evaluate_quote import SCHEMA as QUOTE_SCHEMA, TEMPLATE, check_contract
+from durable_archive import DurableArchive, HFTransport
 
 ARMS = {'before': 'training/sft_review_v6_before.jsonl', 'quote': 'training/sft_review_v7_quote.jsonl'}
 
@@ -215,6 +216,15 @@ def bind(recovered, native_dir, prefix, output, repo, contract):
                       'bindings': len(carried), 'before_artifacts': len(artifacts)}))
 
 
+def recover(run_id, revision, out, prefix, connect):
+    """Restore one archived run at a pinned revision; connect() is called only after local checks."""
+    require(re.fullmatch(r'[0-9a-f]{40}', revision), 'recovery revision must be a full lowercase commit SHA')
+    require(not out.exists() and not out.is_symlink(), 'recovery destination already exists')
+    result = DurableArchive(connect(), run_id, prefix).recover(out, revision)
+    print(json.dumps({'status': 'recovered', 'run_id': run_id, 'revision': result['revision'],
+                      'units': len(result['units']), 'out': str(out)}))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='mode', required=True)
@@ -228,10 +238,20 @@ def main():
     bnd.add_argument('--out', type=Path, required=True)
     bnd.add_argument('--repo', type=Path, default=ROOT)
     bnd.add_argument('--evaluation-contract', type=Path, required=True)
+    rec = sub.add_parser('recover')
+    rec.add_argument('--run-id', required=True)
+    rec.add_argument('--revision', required=True)
+    rec.add_argument('--out', type=Path, required=True)
+    rec.add_argument('--token-file', type=Path, required=True)
+    rec.add_argument('--prefix', default='experiments/explanation-order')
     args = parser.parse_args()
     try:
         if args.mode == 'native':
             native(args.base, args.out)
+        elif args.mode == 'recover':
+            # The credential is read by this process only, after the local checks.
+            recover(args.run_id, args.revision, args.out, args.prefix,
+                    lambda: HFTransport('ataeff/jovovich', args.token_file.read_text().strip()))
         else:
             bind(args.before_recovered, args.native, args.run_prefix, args.out, args.repo, args.evaluation_contract)
     except (RuntimeError, ValueError) as error:
