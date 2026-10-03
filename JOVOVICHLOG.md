@@ -27,6 +27,77 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The copy is measured before anyone writes it.
+
+The quote-first arm's manipulation check now exists as code, frozen before a
+single generation of that arm. `training/quote/manipulation.mjs` reads a
+collector run directory, binds each prompt to its record by hash, and asks
+whether the generated analysis opens with `Rule: ` followed by at least 40
+characters copied verbatim from one of the prompt's AGENTS.md sections. A
+copied preamble, a header line or a README passage does not count: those are
+not rules. On the gold answers it reads the quote corpus at 52 of 52, each
+copy inside the decisive rule and complete, and the explanation-first corpus
+at 0 of 52. Breaking the header exclusion or moving the threshold to 39
+fails the matching test. The definition is appended to the registration
+with its time; the original text stays as it was.
+
+## 2026-10-03 — Copy the law before you judge it.
+
+A third arm is registered before it exists. It keeps every byte of the
+explanation-first corpus except one: each analysis opens with
+`Rule: ` and the applicable rule copied verbatim from the prompt. The
+per-layer readout left judgment no room inside the frozen stack, and a 0.5B
+model copies reliably; the question is whether a copy of the protective
+property placed in front of the reasoning helps the reasoning land. In 6 of 26
+pairs the copied rules themselves differ, because the nearest scope differs.
+In the other 20 the copy is shared and the distinction still has to come from
+the explanation.
+
+The corpus is built by a rule, not written: the builder reproduces the
+explanation-first file byte for byte without the transform, and with it
+changes exactly the 52 analyses. The native preflight keeps every prompt
+token count and verdict token of the explanation-first arm; decisions move
+from positions 40–58 to 55–88, and the copies add 1001 residual tokens.
+
+Training and evaluation are the running experiment's, unchanged. The decision
+rule is fixed now: on the 12 held-out pairs, two more fully grounded pairs for
+quote-only than for before-only, with the copy present in at least 20 of 24
+held-out generations, supports the idea; two the other way counts against it;
+anything else is unresolved at this size. At this freeze the running experiment
+had archived 36 training updates and no evaluation.
+
+Registration: [`training/quote/PREREGISTRATION.md`](training/quote/PREREGISTRATION.md).
+
+## 2026-10-03 — Same number, different line.
+
+The explanation corpora went through acceptance against criteria fixed before
+the checker ran. `training/acceptance/v6_check.mjs` binds both arms, the
+reasons file and v5 by hash, then checks rows, bytes, verdicts, key order,
+sentence counts, pair parallelism and a fixed list of forbidden shape
+justifications. Verdicts, findings and the compact JVPR2 markers match v5 in
+all 52 rows of both arms; the 24 nonreview rows keep their bytes; every
+analysis has two sentences; the forbidden list finds nothing.
+
+Two results did not match the letter of the brief. Every review prompt carries
+one shared suffix asking for the analysis, 104 of 104 rows. The production
+renderer does not append it, so an explanation-first winner must ship the
+suffix with its weights. Pair parallelism as first declared also failed, 24 of
+26: both failures are introduced/repaired pairs, where the members review
+mirrored diffs and `[4]` names `atoi` on one side and the validated cast on the
+other. The measure compared coordinates the two diffs do not share. That count
+stays in the record. The replacement, declared after the defect, keeps
+number-set equality for the 18 same-diff pairs and compares cited diff sides
+for the 8 mirrored ones: 26 of 26. No explanation was edited.
+
+The checker was also made to fail. Ten targeted mutations each fail their
+check; one early mutation changed nothing and was rerun, the record keeps both.
+The native JVPR2 path reproduces the preflight evidence byte for byte on both
+arms. A reader with no session context judged sixteen rows from eight seeded
+pairs: their own verdicts matched v5 on all sixteen before any analysis was
+shown, and all sixty premises of the analyses were found in the prompts.
+
+Evidence: [`training/results/2026-10-03-v6-acceptance`](training/results/2026-10-03-v6-acceptance).
+
 ## 2026-10-03 — The workspace vanished. The receipts did not.
 
 The next session reported automated workspace maintenance. The local repository,

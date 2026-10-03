@@ -1,0 +1,98 @@
+[
+  {
+    "label": "R01",
+    "id": "idempotent-event-retry-introduced",
+    "pair": "idempotent-event-retry",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R02",
+    "id": "idempotent-event-retry-repaired",
+    "pair": "idempotent-event-retry",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R03",
+    "id": "sequence-field-width-introduced",
+    "pair": "sequence-field-width",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R04",
+    "id": "zero-worker-guard-replacement-clean",
+    "pair": "zero-worker-guard-replacement",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R05",
+    "id": "model-parent-provenance-introduced",
+    "pair": "model-parent-provenance",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R06",
+    "id": "allocation-product-overflow-replacement-concern",
+    "pair": "allocation-product-overflow-replacement",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R07",
+    "id": "allocation-product-overflow-replacement-clean",
+    "pair": "allocation-product-overflow-replacement",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R08",
+    "id": "save-status-propagation-repaired",
+    "pair": "save-status-propagation",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R09",
+    "id": "sequence-field-width-repaired",
+    "pair": "sequence-field-width",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R10",
+    "id": "model-parent-provenance-repaired",
+    "pair": "model-parent-provenance",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R11",
+    "id": "write-permission-check-replacement-clean",
+    "pair": "write-permission-check-replacement",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R12",
+    "id": "stable-manifest-order-deletion-clean",
+    "pair": "stable-manifest-order-deletion",
+    "v5_class": "clean"
+  },
+  {
+    "label": "R13",
+    "id": "write-permission-check-replacement-concern",
+    "pair": "write-permission-check-replacement",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R14",
+    "id": "stable-manifest-order-deletion-concern",
+    "pair": "stable-manifest-order-deletion",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R15",
+    "id": "save-status-propagation-introduced",
+    "pair": "save-status-propagation",
+    "v5_class": "concern"
+  },
+  {
+    "label": "R16",
+    "id": "zero-worker-guard-replacement-concern",
+    "pair": "zero-worker-guard-replacement",
+    "v5_class": "concern"
+  }
+]

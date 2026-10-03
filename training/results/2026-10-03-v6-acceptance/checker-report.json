@@ -1,0 +1,2772 @@
+{
+  "schema_version": 1,
+  "generated_by": "training/acceptance/v6_check.mjs",
+  "inputs": {
+    "v5": {
+      "path": "training/sft_review_v5.jsonl",
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+      "bytes": 163753
+    },
+    "before": {
+      "path": "training/sft_review_v6_before.jsonl",
+      "sha256": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+      "bytes": 180759
+    },
+    "after": {
+      "path": "training/sft_review_v6_after.jsonl",
+      "sha256": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+      "bytes": 180759
+    },
+    "reasons": {
+      "path": "training/explanations/reasons.json",
+      "sha256": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45",
+      "bytes": 45384
+    }
+  },
+  "checks": [
+    {
+      "id": "H1",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "reasons_source_sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H2",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "rows 76/76/76 review 52 reasons 52",
+        "rows": {
+          "v5": 76,
+          "before": 76,
+          "after": 76
+        },
+        "review_rows": 52,
+        "reasons_rows": 52
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H3",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "nonreview 24",
+        "nonreview_rows": 24
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H4_strict",
+      "hard": false,
+      "status": "DEVIATION",
+      "detail": {
+        "summary": "review rows 52 x 2 arms",
+        "review_rows": 52
+      },
+      "failure_count": 104,
+      "failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "scoped-python-analysis-clean",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "scoped-python-analysis-clean",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "approved-binary-decoder-concern",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "approved-binary-decoder-concern",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "approved-binary-decoder-clean",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "approved-binary-decoder-clean",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "sqlite-build-requirement-concern",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "sqlite-build-requirement-concern",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "sqlite-build-requirement-clean",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "sqlite-build-requirement-clean",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "background-service-scope-concern",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "background-service-scope-concern",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "background-service-scope-clean",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "background-service-scope-clean",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "preserve-trie-credit-deletion-concern",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "preserve-trie-credit-deletion-concern",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "preserve-trie-credit-deletion-clean",
+          "arm": "before",
+          "system_identical": true,
+          "user_identical": false
+        },
+        {
+          "id": "preserve-trie-credit-deletion-clean",
+          "arm": "after",
+          "system_identical": true,
+          "user_identical": false
+        }
+      ]
+    },
+    {
+      "id": "H4_suffix",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104",
+        "deltas": [
+          {
+            "delta": " Include a concise analysis string connecting the relevant rule, changed line and consequence.",
+            "count": 104
+          }
+        ]
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H5",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "pairs 26",
+        "pairs": 26
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H6",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "review rows 52"
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H7",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "sentence counts {\"2\":52}",
+        "sentence_counts": {
+          "2": 52
+        }
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H8",
+      "hard": false,
+      "superseded_by": "H8v2",
+      "note": "measure defect: mirrored introduced/repaired pairs index different diffs, so equal [n] numbers do not mean equal lines",
+      "status": "FAIL",
+      "detail": {
+        "summary": "sentences 26/26 citations 24/26",
+        "pairs": [
+          {
+            "pair": "scoped-python-analysis",
+            "concern": {
+              "id": "scoped-python-analysis-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "scoped-python-analysis-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "approved-binary-decoder",
+            "concern": {
+              "id": "approved-binary-decoder-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "approved-binary-decoder-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "sqlite-build-requirement",
+            "concern": {
+              "id": "sqlite-build-requirement-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "sqlite-build-requirement-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "background-service-scope",
+            "concern": {
+              "id": "background-service-scope-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "background-service-scope-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "preserve-trie-credit-deletion",
+            "concern": {
+              "id": "preserve-trie-credit-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "preserve-trie-credit-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "preserve-trie-credit-replacement",
+            "concern": {
+              "id": "preserve-trie-credit-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "preserve-trie-credit-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "model-parent-provenance",
+            "concern": {
+              "id": "model-parent-provenance-introduced",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "model-parent-provenance-repaired",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "scoped-design-record",
+            "concern": {
+              "id": "scoped-design-record-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "scoped-design-record-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "checksum-indirection",
+            "concern": {
+              "id": "checksum-indirection-concern",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "checksum-indirection-clean",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "sequence-field-width",
+            "concern": {
+              "id": "sequence-field-width-introduced",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "sequence-field-width-repaired",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "allocation-null-guard-deletion",
+            "concern": {
+              "id": "allocation-null-guard-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "allocation-null-guard-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "allocation-null-guard-replacement",
+            "concern": {
+              "id": "allocation-null-guard-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "allocation-null-guard-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "zero-worker-guard-deletion",
+            "concern": {
+              "id": "zero-worker-guard-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "zero-worker-guard-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "zero-worker-guard-replacement",
+            "concern": {
+              "id": "zero-worker-guard-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "zero-worker-guard-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "validated-port-conversion",
+            "concern": {
+              "id": "validated-port-conversion-introduced",
+              "sentences": 2,
+              "citations": [
+                "4"
+              ]
+            },
+            "clean": {
+              "id": "validated-port-conversion-repaired",
+              "sentences": 2,
+              "citations": [
+                "3",
+                "4"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": false
+          },
+          {
+            "pair": "negative-offset-type",
+            "concern": {
+              "id": "negative-offset-type-introduced",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "negative-offset-type-repaired",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "exact-property-name",
+            "concern": {
+              "id": "exact-property-name-introduced",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "exact-property-name-repaired",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "idempotent-event-retry",
+            "concern": {
+              "id": "idempotent-event-retry-introduced",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "idempotent-event-retry-repaired",
+              "sentences": 2,
+              "citations": [
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "write-permission-check-deletion",
+            "concern": {
+              "id": "write-permission-check-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "write-permission-check-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "write-permission-check-replacement",
+            "concern": {
+              "id": "write-permission-check-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "write-permission-check-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "stable-manifest-order-deletion",
+            "concern": {
+              "id": "stable-manifest-order-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "stable-manifest-order-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "stable-manifest-order-replacement",
+            "concern": {
+              "id": "stable-manifest-order-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "stable-manifest-order-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "atomic-snapshot-publication",
+            "concern": {
+              "id": "atomic-snapshot-publication-introduced",
+              "sentences": 2,
+              "citations": [
+                "3"
+              ]
+            },
+            "clean": {
+              "id": "atomic-snapshot-publication-repaired",
+              "sentences": 2,
+              "citations": [
+                "2",
+                "3"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": false
+          },
+          {
+            "pair": "save-status-propagation",
+            "concern": {
+              "id": "save-status-propagation-introduced",
+              "sentences": 2,
+              "citations": [
+                "3"
+              ]
+            },
+            "clean": {
+              "id": "save-status-propagation-repaired",
+              "sentences": 2,
+              "citations": [
+                "3"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "allocation-product-overflow-deletion",
+            "concern": {
+              "id": "allocation-product-overflow-deletion-concern",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "clean": {
+              "id": "allocation-product-overflow-deletion-clean",
+              "sentences": 2,
+              "citations": [
+                "1"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          },
+          {
+            "pair": "allocation-product-overflow-replacement",
+            "concern": {
+              "id": "allocation-product-overflow-replacement-concern",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "clean": {
+              "id": "allocation-product-overflow-replacement-clean",
+              "sentences": 2,
+              "citations": [
+                "1",
+                "2"
+              ]
+            },
+            "equal_sentences": true,
+            "equal_citations": true
+          }
+        ]
+      },
+      "failure_count": 2,
+      "failures": [
+        {
+          "pair": "validated-port-conversion",
+          "concern": {
+            "id": "validated-port-conversion-introduced",
+            "sentences": 2,
+            "citations": [
+              "4"
+            ]
+          },
+          "clean": {
+            "id": "validated-port-conversion-repaired",
+            "sentences": 2,
+            "citations": [
+              "3",
+              "4"
+            ]
+          },
+          "equal_sentences": true,
+          "equal_citations": false
+        },
+        {
+          "pair": "atomic-snapshot-publication",
+          "concern": {
+            "id": "atomic-snapshot-publication-introduced",
+            "sentences": 2,
+            "citations": [
+              "3"
+            ]
+          },
+          "clean": {
+            "id": "atomic-snapshot-publication-repaired",
+            "sentences": 2,
+            "citations": [
+              "2",
+              "3"
+            ]
+          },
+          "equal_sentences": true,
+          "equal_citations": false
+        }
+      ]
+    },
+    {
+      "id": "H8v2",
+      "hard": true,
+      "declared": "post-factum after H8 measure defect, auditor ruling 2026-10-03",
+      "status": "PASS",
+      "detail": {
+        "summary": "same_diff 18/18 mirrored 8/8 sentences 26/26",
+        "pairs": [
+          {
+            "pair": "scoped-python-analysis",
+            "type": "same_diff",
+            "concern": {
+              "id": "scoped-python-analysis-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "scoped-python-analysis-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "approved-binary-decoder",
+            "type": "same_diff",
+            "concern": {
+              "id": "approved-binary-decoder-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "approved-binary-decoder-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "sqlite-build-requirement",
+            "type": "same_diff",
+            "concern": {
+              "id": "sqlite-build-requirement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "sqlite-build-requirement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "background-service-scope",
+            "type": "same_diff",
+            "concern": {
+              "id": "background-service-scope-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "background-service-scope-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "preserve-trie-credit-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "preserve-trie-credit-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "preserve-trie-credit-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "preserve-trie-credit-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "preserve-trie-credit-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "preserve-trie-credit-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "model-parent-provenance",
+            "type": "mirrored",
+            "concern": {
+              "id": "model-parent-provenance-introduced",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "model-parent-provenance-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "scoped-design-record",
+            "type": "same_diff",
+            "concern": {
+              "id": "scoped-design-record-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "scoped-design-record-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "checksum-indirection",
+            "type": "same_diff",
+            "concern": {
+              "id": "checksum-indirection-concern",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "checksum-indirection-clean",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "sequence-field-width",
+            "type": "mirrored",
+            "concern": {
+              "id": "sequence-field-width-introduced",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "sequence-field-width-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "allocation-null-guard-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "allocation-null-guard-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "allocation-null-guard-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "allocation-null-guard-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "allocation-null-guard-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "allocation-null-guard-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "zero-worker-guard-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "zero-worker-guard-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "zero-worker-guard-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "zero-worker-guard-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "zero-worker-guard-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "zero-worker-guard-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "validated-port-conversion",
+            "type": "mirrored",
+            "concern": {
+              "id": "validated-port-conversion-introduced",
+              "citations": [
+                {
+                  "id": "4",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "validated-port-conversion-repaired",
+              "citations": [
+                {
+                  "id": "3",
+                  "side": "ADDED"
+                },
+                {
+                  "id": "4",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "negative-offset-type",
+            "type": "mirrored",
+            "concern": {
+              "id": "negative-offset-type-introduced",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "negative-offset-type-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "exact-property-name",
+            "type": "mirrored",
+            "concern": {
+              "id": "exact-property-name-introduced",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "exact-property-name-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "idempotent-event-retry",
+            "type": "mirrored",
+            "concern": {
+              "id": "idempotent-event-retry-introduced",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "idempotent-event-retry-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "write-permission-check-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "write-permission-check-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "write-permission-check-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "write-permission-check-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "write-permission-check-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "write-permission-check-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "stable-manifest-order-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "stable-manifest-order-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "stable-manifest-order-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "stable-manifest-order-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "stable-manifest-order-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "stable-manifest-order-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "atomic-snapshot-publication",
+            "type": "mirrored",
+            "concern": {
+              "id": "atomic-snapshot-publication-introduced",
+              "citations": [
+                {
+                  "id": "3",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "atomic-snapshot-publication-repaired",
+              "citations": [
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                },
+                {
+                  "id": "3",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "save-status-propagation",
+            "type": "mirrored",
+            "concern": {
+              "id": "save-status-propagation-introduced",
+              "citations": [
+                {
+                  "id": "3",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "save-status-propagation-repaired",
+              "citations": [
+                {
+                  "id": "3",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED"
+              ],
+              "clean": [
+                "ADDED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "sides_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "allocation-product-overflow-deletion",
+            "type": "same_diff",
+            "concern": {
+              "id": "allocation-product-overflow-deletion-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "allocation-product-overflow-deletion-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "REMOVED"
+              ],
+              "clean": [
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          },
+          {
+            "pair": "allocation-product-overflow-replacement",
+            "type": "same_diff",
+            "concern": {
+              "id": "allocation-product-overflow-replacement-concern",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "clean": {
+              "id": "allocation-product-overflow-replacement-clean",
+              "citations": [
+                {
+                  "id": "1",
+                  "side": "REMOVED"
+                },
+                {
+                  "id": "2",
+                  "side": "ADDED"
+                }
+              ]
+            },
+            "cited_sides": {
+              "concern": [
+                "ADDED",
+                "REMOVED"
+              ],
+              "clean": [
+                "ADDED",
+                "REMOVED"
+              ]
+            },
+            "sentences_equal": true,
+            "citations_exist": true,
+            "citations_equal": true,
+            "pass": true
+          }
+        ]
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "id": "H9",
+      "hard": true,
+      "status": "PASS",
+      "detail": {
+        "summary": "hits 0 content 0 stale 0",
+        "hits": 0,
+        "content": 0,
+        "stale": []
+      },
+      "failure_count": 0,
+      "failures": []
+    }
+  ],
+  "rows": [
+    {
+      "id": "scoped-python-analysis-concern",
+      "pair": "scoped-python-analysis",
+      "class": "concern",
+      "sentences": [
+        "The nearest analysis/ rule requires Lua even though the root permits Python tools.",
+        "Adding import statistics at [1] puts Python code in that directory; being an offline script does not supply an exception."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "scoped-python-analysis-clean",
+      "pair": "scoped-python-analysis",
+      "class": "clean",
+      "sentences": [
+        "The analysis/ rule explicitly permits offline Python scripts and standard-library modules.",
+        "Import statistics at [1] serves the stated saved-measurement analysis, so the directory exception covers this addition."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "approved-binary-decoder-concern",
+      "pair": "approved-binary-decoder",
+      "class": "concern",
+      "sentences": [
+        "The viewer must use built-in decoders and acquire no third-party runtime packages.",
+        "The dependencies entry at [1] installs cbor-x at runtime; pinning its version still adds the forbidden package."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "approved-binary-decoder-clean",
+      "pair": "approved-binary-decoder",
+      "class": "clean",
+      "sentences": [
+        "The rule names cbor-x 1.6.0 as the approved runtime decoder.",
+        "The dependencies entry at [1] installs precisely that package and version for the stated CBOR feature."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "sqlite-build-requirement-concern",
+      "pair": "sqlite-build-requirement",
+      "class": "concern",
+      "sentences": [
+        "Persistence is allowed only as an opt-in extension to the compiler-only default build.",
+        "The unconditional find_package(SQLite3 REQUIRED) at [1] makes every configuration depend on SQLite3, including the default."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "sqlite-build-requirement-clean",
+      "pair": "sqlite-build-requirement",
+      "class": "clean",
+      "sentences": [
+        "Every supported build is required to have SQLite3.",
+        "The unconditional REQUIRED lookup at [1] enforces that requirement during top-level configuration, exactly where the rule places it."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "background-service-scope-concern",
+      "pair": "background-service-scope",
+      "class": "concern",
+      "sentences": [
+        "This release permits help-text corrections and excludes new service targets.",
+        "ExecStart at [1] belongs to a newly installed continuous watcher, so the patch introduces both installation work and runtime behavior beyond that scope."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "background-service-scope-clean",
+      "pair": "background-service-scope",
+      "class": "clean",
+      "sentences": [
+        "The release explicitly includes one systemd unit for observer --watch.",
+        "ExecStart at [1] starts that command in the new unit; the installation and continuous watcher belong to the approved feature."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "preserve-trie-credit-deletion-concern",
+      "pair": "preserve-trie-credit-deletion",
+      "class": "concern",
+      "sentences": [
+        "The adapted implementation remains, so its source attribution must remain too.",
+        "Deleting the implementation credit at [1] leaves only a documentation credit to firwood/trie, which does not identify the retained code's origin."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "preserve-trie-credit-deletion-clean",
+      "pair": "preserve-trie-credit-deletion",
+      "class": "clean",
+      "sentences": [
+        "The rule preserves attribution for the retained implementation.",
+        "Deleting [1] leaves the explicit 'Trie implementation derived from firwood/trie (MIT).' credit in place, removing a redundant attribution rather than the code's origin."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "preserve-trie-credit-replacement-concern",
+      "pair": "preserve-trie-credit-replacement",
+      "class": "concern",
+      "sentences": [
+        "The retained trie implementation needs its upstream credit.",
+        "Replacing [1] with the generic notice at [2] leaves only a documentation attribution; neither surviving text credits the implementation to firwood/trie."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "preserve-trie-credit-replacement-clean",
+      "pair": "preserve-trie-credit-replacement",
+      "class": "clean",
+      "sentences": [
+        "The remaining implementation credit still names firwood/trie and MIT.",
+        "Replacing the duplicate design credit at [1] with the generic text at [2] therefore preserves the required attribution for the retained code."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "model-parent-provenance-introduced",
+      "pair": "model-parent-provenance",
+      "class": "concern",
+      "sentences": [
+        "The supplied history identifies an adapter merge over Qwen2.5-Coder-0.5B-Instruct.",
+        "The new base_model value at [2] claims a scratch origin, replacing the actual parent that the manifest rule requires."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "model-parent-provenance-repaired",
+      "pair": "model-parent-provenance",
+      "class": "clean",
+      "sentences": [
+        "These weights were merged over Qwen2.5-Coder-0.5B-Instruct.",
+        "The base_model entry at [2] restores that exact parent, bringing the manifest back into agreement with the supplied history and provenance rule."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "scoped-design-record-concern",
+      "pair": "scoped-design-record",
+      "class": "concern",
+      "sentences": [
+        "The repository keeps architectural decisions in README.md and forbids separate decision files.",
+        "The heading at [1] creates just such a file for the journal format, moving the decision outside its required home."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "scoped-design-record-clean",
+      "pair": "scoped-design-record",
+      "class": "clean",
+      "sentences": [
+        "The nearest docs/decisions/ rule requires a numbered record for this persistent format.",
+        "The Decision 004 heading at [1] supplies that record for the current journal change, using the explicit exception to the README rule."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "checksum-indirection-concern",
+      "pair": "checksum-indirection",
+      "class": "concern",
+      "sentences": [
+        "A dispatch registry requires a second implemented checksum, while this scope contains only CRC32.",
+        "The registry call at [2] replaces the direct function without satisfying that prerequisite; availability of the registry alone is insufficient."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "checksum-indirection-clean",
+      "pair": "checksum-indirection",
+      "class": "clean",
+      "sentences": [
+        "The rule supplies both CRC32 and Adler32 and requires dispatch by kind.",
+        "The registry call at [2] uses the available implementation to select between those two algorithms, extending the former CRC32-only call as requested."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "sequence-field-width-introduced",
+      "pair": "sequence-field-width",
+      "class": "concern",
+      "sentences": [
+        "The wire contract keeps sequence at 64 bits, and supplied values can exceed UINT32_MAX.",
+        "Changing the member to uint32_t at [2] narrows its range and loses sequence values that the unchanged format permits."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "sequence-field-width-repaired",
+      "pair": "sequence-field-width",
+      "class": "clean",
+      "sentences": [
+        "The unchanged wire format requires the full 64-bit sequence value.",
+        "The uint64_t member at [2] restores that range, including values above UINT32_MAX that the previous declaration could not retain."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "pair": "allocation-null-guard-deletion",
+      "class": "concern",
+      "sentences": [
+        "Allocation failure must be checked before n->value is written.",
+        "Removing the pointer-value check at [1] leaves only a test of &n, the local variable's address; calloc can return NULL and still reach the dereference."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "pair": "allocation-null-guard-deletion",
+      "class": "clean",
+      "sentences": [
+        "A newly allocated pointer must be checked before dereference.",
+        "Removing [1] leaves the identical n == NULL guard immediately before n->value, so allocation failure still returns before the write."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "allocation-null-guard-replacement-concern",
+      "pair": "allocation-null-guard-replacement",
+      "class": "concern",
+      "sentences": [
+        "Replacing the guard at [1] with the no-op at [2] removes the test of calloc's result.",
+        "The surviving &n comparison tests the local variable's address and lets a NULL result reach n->value, violating the required failure check."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "allocation-null-guard-replacement-clean",
+      "pair": "allocation-null-guard-replacement",
+      "class": "clean",
+      "sentences": [
+        "The no-op at [2] replaces the first null guard at [1], while another n == NULL guard remains before n->value.",
+        "That surviving check returns on allocation failure, preserving the required order of validation and dereference."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "zero-worker-guard-deletion-concern",
+      "pair": "zero-worker-guard-deletion",
+      "class": "concern",
+      "sentences": [
+        "The caller may supply zero workers, which must be rejected before arithmetic.",
+        "Deleting [1] leaves workers < 0, a condition that does not reject zero, so total / workers can still divide by zero."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "zero-worker-guard-deletion-clean",
+      "pair": "zero-worker-guard-deletion",
+      "class": "clean",
+      "sentences": [
+        "Invalid worker counts must be rejected before division.",
+        "After removing [1], the next workers == 0 check still returns EINVAL before total / workers; the deleted guard was a duplicate."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "zero-worker-guard-replacement-concern",
+      "pair": "zero-worker-guard-replacement",
+      "class": "concern",
+      "sentences": [
+        "The guard removed at [1] rejected a caller-supplied zero input before division.",
+        "Its no-op replacement at [2] and the remaining workers < 0 test both let zero reach total / workers, breaking the required validation."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "zero-worker-guard-replacement-clean",
+      "pair": "zero-worker-guard-replacement",
+      "class": "clean",
+      "sentences": [
+        "The replacement at [2] does no work, but deleting [1] leaves another workers == 0 guard.",
+        "That guard still returns EINVAL before division, retaining the required handling of a zero count."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "validated-port-conversion-introduced",
+      "pair": "validated-port-conversion",
+      "class": "concern",
+      "sentences": [
+        "Ports must reject invalid decimal text and values outside 1 through 65535.",
+        "The atoi conversion at [4] removes the supplied validating parser and immediately narrows to uint16_t, allowing invalid or out-of-range input through."
+      ],
+      "citations": [
+        "4"
+      ]
+    },
+    {
+      "id": "validated-port-conversion-repaired",
+      "pair": "validated-port-conversion",
+      "class": "clean",
+      "sentences": [
+        "The supplied parse_decimal_range rejects non-decimal and out-of-range input.",
+        "The check at [3] applies the required 1 through 65535 bounds and returns EINVAL before the cast at [4], so accepted values fit the port type."
+      ],
+      "citations": [
+        "3",
+        "4"
+      ]
+    },
+    {
+      "id": "negative-offset-type-introduced",
+      "pair": "negative-offset-type",
+      "class": "concern",
+      "sentences": [
+        "The direction check must recognize backward movement.",
+        "The unsigned delta at [2] converts a negative requested - current result to an unsigned value, making the retained delta < 0 branch unreachable for backward requests."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "negative-offset-type-repaired",
+      "pair": "negative-offset-type",
+      "class": "clean",
+      "sentences": [
+        "Requested and current are bounded signed values, so their difference fits int.",
+        "The signed delta at [2] preserves negative differences for the existing delta < 0 check, restoring backward movement detection."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "exact-property-name-introduced",
+      "pair": "exact-property-name",
+      "class": "concern",
+      "sentences": [
+        "Property dispatch must match complete names, including the distinction between size and size_hint.",
+        "The four-byte strncmp at [2] accepts both prefixes as SIZE_FIELD, diverting an unknown longer name from UNKNOWN_FIELD."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "exact-property-name-repaired",
+      "pair": "exact-property-name",
+      "class": "clean",
+      "sentences": [
+        "The rule requires complete-name matching for valid NUL-terminated keys.",
+        "The strcmp at [2] compares the whole key with size, so size_hint falls through to UNKNOWN_FIELD while the exact name still selects SIZE_FIELD."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "idempotent-event-retry-introduced",
+      "pair": "idempotent-event-retry",
+      "class": "concern",
+      "sentences": [
+        "The event already exists, and retries must preserve that operation's journal entry.",
+        "Calling append_event at [2] allocates another event ID on an unacknowledged delivery, duplicating the event instead of resending it."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "idempotent-event-retry-repaired",
+      "pair": "idempotent-event-retry",
+      "class": "clean",
+      "sentences": [
+        "The supplied retry_delivery resends an existing event ID.",
+        "The call at [2] uses the already appended event for another delivery attempt, preserving the rule that a retry must not create another journal entry."
+      ],
+      "citations": [
+        "2"
+      ]
+    },
+    {
+      "id": "write-permission-check-deletion-concern",
+      "pair": "write-permission-check-deletion",
+      "class": "concern",
+      "sentences": [
+        "Read-only sessions must be stopped before replace_record writes.",
+        "Removing [1] leaves a comparison with the address of can_write, which does not test permission; a false permission value can now reach the unchecked replacement."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "write-permission-check-deletion-clean",
+      "pair": "write-permission-check-deletion",
+      "class": "clean",
+      "sentences": [
+        "Write permission must be checked before replacement.",
+        "Deleting [1] leaves session.can_write == false returning DENIED, so read-only sessions are still stopped before the unchecked replace_record call."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "write-permission-check-replacement-concern",
+      "pair": "write-permission-check-replacement",
+      "class": "concern",
+      "sentences": [
+        "Replacing the permission test at [1] with the no-op at [2] leaves only a comparison of &session.can_write to NULL.",
+        "That address test does not reject a read-only session, allowing it to reach the write contrary to the rule."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "write-permission-check-replacement-clean",
+      "pair": "write-permission-check-replacement",
+      "class": "clean",
+      "sentences": [
+        "The guard removed at [1] is replaced by a no-op at [2], but session.can_write == false still returns DENIED before replacement.",
+        "The remaining value check preserves the required protection for read-only sessions."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "stable-manifest-order-deletion-concern",
+      "pair": "stable-manifest-order-deletion",
+      "class": "concern",
+      "sentences": [
+        "Manifest bytes must be independent of insertion order.",
+        "Removing names.sort() at [1] leaves only output.sort() before entries are appended; it does not order names, so the loop can emit equivalent mappings in different orders."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "stable-manifest-order-deletion-clean",
+      "pair": "stable-manifest-order-deletion",
+      "class": "clean",
+      "sentences": [
+        "The manifest requires a stable ordering of ASCII keys.",
+        "Deleting [1] leaves another names.sort() before the output loop, so the same mapping still yields the same key order and manifest bytes."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "stable-manifest-order-replacement-concern",
+      "pair": "stable-manifest-order-replacement",
+      "class": "concern",
+      "sentences": [
+        "Replacing names.sort() at [1] with the no-op at [2] leaves the key list unsorted.",
+        "The remaining output.sort() runs before the loop appends entries and cannot stop insertion order from changing the required stable manifest."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "stable-manifest-order-replacement-clean",
+      "pair": "stable-manifest-order-replacement",
+      "class": "clean",
+      "sentences": [
+        "The no-op at [2] replaces one sort at [1], while the second names.sort() remains before the loop.",
+        "ASCII keys are still sorted before emission, preserving identical manifest bytes across insertion orders."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "atomic-snapshot-publication-introduced",
+      "pair": "atomic-snapshot-publication",
+      "class": "concern",
+      "sentences": [
+        "Concurrent readers must see a complete old or new snapshot.",
+        "The direct write to snapshotPath at [3] overwrites the live file while readers can open it, exposing truncation or partial contents after removing atomic rename publication."
+      ],
+      "citations": [
+        "3"
+      ]
+    },
+    {
+      "id": "atomic-snapshot-publication-repaired",
+      "pair": "atomic-snapshot-publication",
+      "class": "clean",
+      "sentences": [
+        "The write at [2] completes at a unique temporary path before the rename at [3] publishes it in the same directory.",
+        "With propagated errors, this preserves the required old-or-new complete snapshot for concurrent readers."
+      ],
+      "citations": [
+        "2",
+        "3"
+      ]
+    },
+    {
+      "id": "save-status-propagation-introduced",
+      "pair": "save-status-propagation",
+      "class": "concern",
+      "sentences": [
+        "Callers require the actual persistence status.",
+        "The unconditional return 0 at [3] follows a save whose result is discarded, reporting success even when save_settings returns a failure code."
+      ],
+      "citations": [
+        "3"
+      ]
+    },
+    {
+      "id": "save-status-propagation-repaired",
+      "pair": "save-status-propagation",
+      "class": "clean",
+      "sentences": [
+        "The wrapper must pass persistence failures to its caller.",
+        "Returning save_settings directly at [3] preserves both its zero success value and nonzero errors, replacing the previous unconditional success response."
+      ],
+      "citations": [
+        "3"
+      ]
+    },
+    {
+      "id": "allocation-product-overflow-deletion-concern",
+      "pair": "allocation-product-overflow-deletion",
+      "class": "concern",
+      "sentences": [
+        "Allocation size must be checked against the actual uint64_t element width.",
+        "Removing [1] leaves a uint32_t-based limit, which permits counts whose larger count * sizeof(*items) product wraps and underallocates the buffer the caller fills."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "allocation-product-overflow-deletion-clean",
+      "pair": "allocation-product-overflow-deletion",
+      "class": "clean",
+      "sentences": [
+        "Items are uint64_t, so the retained SIZE_MAX / sizeof(uint64_t) limit checks the same product as the removed guard at [1].",
+        "Oversized counts still return before multiplication, preserving the required allocation-overflow protection."
+      ],
+      "citations": [
+        "1"
+      ]
+    },
+    {
+      "id": "allocation-product-overflow-replacement-concern",
+      "pair": "allocation-product-overflow-replacement",
+      "class": "concern",
+      "sentences": [
+        "The no-op at [2] replaces the element-width guard at [1].",
+        "The surviving uint32_t limit allows larger counts than uint64_t elements can safely occupy, letting the size product wrap before allocation despite the overflow rule."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "id": "allocation-product-overflow-replacement-clean",
+      "pair": "allocation-product-overflow-replacement",
+      "class": "clean",
+      "sentences": [
+        "Replacing [1] with the no-op at [2] leaves the uint64_t-based count limit in place.",
+        "Since items points to uint64_t, that remaining guard still rejects overflowing products before bytes is calculated and allocated."
+      ],
+      "citations": [
+        "1",
+        "2"
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "scoped-python-analysis",
+      "ids": [
+        "scoped-python-analysis-concern",
+        "scoped-python-analysis-clean"
+      ],
+      "chars": [
+        204,
+        210
+      ],
+      "char_ratio": 0.9714285714285714,
+      "word_jaccard": 0.2727272727272727
+    },
+    {
+      "pair": "approved-binary-decoder",
+      "ids": [
+        "approved-binary-decoder-concern",
+        "approved-binary-decoder-clean"
+      ],
+      "chars": [
+        194,
+        163
+      ],
+      "char_ratio": 0.8402061855670103,
+      "word_jaccard": 0.3
+    },
+    {
+      "pair": "sqlite-build-requirement",
+      "ids": [
+        "sqlite-build-requirement-concern",
+        "sqlite-build-requirement-clean"
+      ],
+      "chars": [
+        210,
+        183
+      ],
+      "char_ratio": 0.8714285714285714,
+      "word_jaccard": 0.275
+    },
+    {
+      "pair": "background-service-scope",
+      "ids": [
+        "background-service-scope-concern",
+        "background-service-scope-clean"
+      ],
+      "chars": [
+        229,
+        196
+      ],
+      "char_ratio": 0.8558951965065502,
+      "word_jaccard": 0.2553191489361702
+    },
+    {
+      "pair": "preserve-trie-credit-deletion",
+      "ids": [
+        "preserve-trie-credit-deletion-concern",
+        "preserve-trie-credit-deletion-clean"
+      ],
+      "chars": [
+        224,
+        232
+      ],
+      "char_ratio": 0.9655172413793104,
+      "word_jaccard": 0.32558139534883723
+    },
+    {
+      "pair": "preserve-trie-credit-replacement",
+      "ids": [
+        "preserve-trie-credit-replacement-concern",
+        "preserve-trie-credit-replacement-clean"
+      ],
+      "chars": [
+        212,
+        211
+      ],
+      "char_ratio": 0.9952830188679245,
+      "word_jaccard": 0.3684210526315789
+    },
+    {
+      "pair": "model-parent-provenance",
+      "ids": [
+        "model-parent-provenance-introduced",
+        "model-parent-provenance-repaired"
+      ],
+      "chars": [
+        200,
+        204
+      ],
+      "char_ratio": 0.9803921568627451,
+      "word_jaccard": 0.38636363636363635
+    },
+    {
+      "pair": "scoped-design-record",
+      "ids": [
+        "scoped-design-record-concern",
+        "scoped-design-record-clean"
+      ],
+      "chars": [
+        209,
+        221
+      ],
+      "char_ratio": 0.9457013574660633,
+      "word_jaccard": 0.2391304347826087
+    },
+    {
+      "pair": "checksum-indirection",
+      "ids": [
+        "checksum-indirection-concern",
+        "checksum-indirection-clean"
+      ],
+      "chars": [
+        241,
+        221
+      ],
+      "char_ratio": 0.91701244813278,
+      "word_jaccard": 0.1836734693877551
+    },
+    {
+      "pair": "sequence-field-width",
+      "ids": [
+        "sequence-field-width-introduced",
+        "sequence-field-width-repaired"
+      ],
+      "chars": [
+        205,
+        196
+      ],
+      "char_ratio": 0.9560975609756097,
+      "word_jaccard": 0.325
+    },
+    {
+      "pair": "allocation-null-guard-deletion",
+      "ids": [
+        "allocation-null-guard-deletion-concern",
+        "allocation-null-guard-deletion-clean"
+      ],
+      "chars": [
+        214,
+        194
+      ],
+      "char_ratio": 0.9065420560747663,
+      "word_jaccard": 0.4146341463414634
+    },
+    {
+      "pair": "allocation-null-guard-replacement",
+      "ids": [
+        "allocation-null-guard-replacement-concern",
+        "allocation-null-guard-replacement-clean"
+      ],
+      "chars": [
+        225,
+        222
+      ],
+      "char_ratio": 0.9866666666666667,
+      "word_jaccard": 0.34782608695652173
+    },
+    {
+      "pair": "zero-worker-guard-deletion",
+      "ids": [
+        "zero-worker-guard-deletion-concern",
+        "zero-worker-guard-deletion-clean"
+      ],
+      "chars": [
+        194,
+        183
+      ],
+      "char_ratio": 0.9432989690721649,
+      "word_jaccard": 0.2619047619047619
+    },
+    {
+      "pair": "zero-worker-guard-replacement",
+      "ids": [
+        "zero-worker-guard-replacement-concern",
+        "zero-worker-guard-replacement-clean"
+      ],
+      "chars": [
+        214,
+        186
+      ],
+      "char_ratio": 0.8691588785046729,
+      "word_jaccard": 0.3181818181818182
+    },
+    {
+      "pair": "validated-port-conversion",
+      "ids": [
+        "validated-port-conversion-introduced",
+        "validated-port-conversion-repaired"
+      ],
+      "chars": [
+        225,
+        218
+      ],
+      "char_ratio": 0.9688888888888889,
+      "word_jaccard": 0.2916666666666667
+    },
+    {
+      "pair": "negative-offset-type",
+      "ids": [
+        "negative-offset-type-introduced",
+        "negative-offset-type-repaired"
+      ],
+      "chars": [
+        220,
+        206
+      ],
+      "char_ratio": 0.9363636363636364,
+      "word_jaccard": 0.2857142857142857
+    },
+    {
+      "pair": "exact-property-name",
+      "ids": [
+        "exact-property-name-introduced",
+        "exact-property-name-repaired"
+      ],
+      "chars": [
+        217,
+        214
+      ],
+      "char_ratio": 0.9861751152073732,
+      "word_jaccard": 0.17647058823529413
+    },
+    {
+      "pair": "idempotent-event-retry",
+      "ids": [
+        "idempotent-event-retry-introduced",
+        "idempotent-event-retry-repaired"
+      ],
+      "chars": [
+        216,
+        207
+      ],
+      "char_ratio": 0.9583333333333334,
+      "word_jaccard": 0.29545454545454547
+    },
+    {
+      "pair": "write-permission-check-deletion",
+      "ids": [
+        "write-permission-check-deletion-concern",
+        "write-permission-check-deletion-clean"
+      ],
+      "chars": [
+        226,
+        199
+      ],
+      "char_ratio": 0.8805309734513275,
+      "word_jaccard": 0.3902439024390244
+    },
+    {
+      "pair": "write-permission-check-replacement",
+      "ids": [
+        "write-permission-check-replacement-concern",
+        "write-permission-check-replacement-clean"
+      ],
+      "chars": [
+        222,
+        211
+      ],
+      "char_ratio": 0.9504504504504504,
+      "word_jaccard": 0.21568627450980393
+    },
+    {
+      "pair": "stable-manifest-order-deletion",
+      "ids": [
+        "stable-manifest-order-deletion-concern",
+        "stable-manifest-order-deletion-clean"
+      ],
+      "chars": [
+        225,
+        191
+      ],
+      "char_ratio": 0.8488888888888889,
+      "word_jaccard": 0.2765957446808511
+    },
+    {
+      "pair": "stable-manifest-order-replacement",
+      "ids": [
+        "stable-manifest-order-replacement-concern",
+        "stable-manifest-order-replacement-clean"
+      ],
+      "chars": [
+        222,
+        203
+      ],
+      "char_ratio": 0.9144144144144144,
+      "word_jaccard": 0.2553191489361702
+    },
+    {
+      "pair": "atomic-snapshot-publication",
+      "ids": [
+        "atomic-snapshot-publication-introduced",
+        "atomic-snapshot-publication-repaired"
+      ],
+      "chars": [
+        233,
+        219
+      ],
+      "char_ratio": 0.9399141630901288,
+      "word_jaccard": 0.28
+    },
+    {
+      "pair": "save-status-propagation",
+      "ids": [
+        "save-status-propagation-introduced",
+        "save-status-propagation-repaired"
+      ],
+      "chars": [
+        188,
+        210
+      ],
+      "char_ratio": 0.8952380952380953,
+      "word_jaccard": 0.15555555555555556
+    },
+    {
+      "pair": "allocation-product-overflow-deletion",
+      "ids": [
+        "allocation-product-overflow-deletion-concern",
+        "allocation-product-overflow-deletion-clean"
+      ],
+      "chars": [
+        237,
+        231
+      ],
+      "char_ratio": 0.9746835443037974,
+      "word_jaccard": 0.17307692307692307
+    },
+    {
+      "pair": "allocation-product-overflow-replacement",
+      "ids": [
+        "allocation-product-overflow-replacement-concern",
+        "allocation-product-overflow-replacement-clean"
+      ],
+      "chars": [
+        224,
+        213
+      ],
+      "char_ratio": 0.9508928571428571,
+      "word_jaccard": 0.18867924528301888
+    }
+  ],
+  "h9_hits": [],
+  "exit_code": 0
+}

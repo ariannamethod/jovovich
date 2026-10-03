@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "base": {
+    "path": "models/jovovich.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "pinned_by": "model.json"
+  },
+  "commands": [
+    "make probe-pairs",
+    "python3 training/prepare.py OUT/ARM.bin --sft training/sft_review_v6_ARM.jsonl --sft-only --review-pairs OUT/ARM.pairs --pair-format 2",
+    "build/jovovich-probe-pairs models/jovovich.gguf OUT/ARM.bin OUT/ARM.pairs"
+  ],
+  "arms": {
+    "before": {
+      "probe_stdout_sha256": "b33c3c4fb77f9f8d978e04fb2132ddb22d04db1c656a797709cbc5b9cfa9f177",
+      "pairs_sha256": "85e618125832c05ea32a9b871eca2eae9fade73509f6d0c7a7adf227c3326fb1",
+      "bin_sha256": "a97b8dbb9bc62cd1ce955d7f4a01b36ef98d2a68fba3073958f0ee45609cd920",
+      "identical_to": {
+        "stdout": "training/results/2026-10-03-explanation-order/native-normalized/before.stdout.txt",
+        "pairs": "training/results/2026-10-03-explanation-order/native-normalized/before.pairs.bin"
+      },
+      "completion": {
+        "stage": "pair_completion",
+        "pass": true,
+        "review_rows": 52
+      },
+      "decision_position_range": [
+        40,
+        58
+      ],
+      "examples": [
+        {
+          "row": 0,
+          "pair_index": 0,
+          "decision_position": 45,
+          "decision_target_id": 66582,
+          "decision_alternative_id": 8899,
+          "decision_prefix": "{\"analysis\":\"The nearest analysis/ rule requires Lua even though the root permits Python tools. Adding import statistics at [1] puts Python code in that directory; being an offline script does not supply an exception.\"\n,\"findings"
+        },
+        {
+          "row": 1,
+          "pair_index": 0,
+          "decision_position": 42,
+          "decision_target_id": 8899,
+          "decision_alternative_id": 66582,
+          "decision_prefix": "{\"analysis\":\"The analysis/ rule explicitly permits offline Python scripts and standard-library modules. Import statistics at [1] serves the stated saved-measurement analysis, so the directory exception covers this addition.\"\n,\"findings"
+        }
+      ]
+    },
+    "after": {
+      "probe_stdout_sha256": "3ce5c8879099eae6a54f2a38d7332d69ea568fe4edc64c0fe50940b4c87e777a",
+      "pairs_sha256": "19d40cb8c8cce0be3eb365b7a1f73bc910055ae5975a118cdbf3c508871c9f86",
+      "bin_sha256": "9ea529c924e0f137cba5d4f6d7cf485a4cc76f7f0d4fd5bfaae5f76ab8d5e919",
+      "identical_to": {
+        "stdout": "training/results/2026-10-03-explanation-order/native-normalized/after.stdout.txt",
+        "pairs": "training/results/2026-10-03-explanation-order/native-normalized/after.pairs.bin"
+      },
+      "completion": {
+        "stage": "pair_completion",
+        "pass": true,
+        "review_rows": 52
+      },
+      "decision_position_range": [
+        3,
+        3
+      ],
+      "examples": [
+        {
+          "row": 0,
+          "pair_index": 0,
+          "decision_position": 3,
+          "decision_target_id": 66582,
+          "decision_alternative_id": 8899,
+          "decision_prefix": "{\"findings"
+        },
+        {
+          "row": 1,
+          "pair_index": 0,
+          "decision_position": 3,
+          "decision_target_id": 8899,
+          "decision_alternative_id": 66582,
+          "decision_prefix": "{\"findings"
+        }
+      ]
+    }
+  }
+}

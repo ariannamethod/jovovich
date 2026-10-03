@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "corpus": {
+    "path": "training/sft_review_v7_quote.jsonl",
+    "sha256": "43d85910640550abc48685347f11644a9c3e086dbb083de1e16f1fbbd59d60f7"
+  },
+  "base": {
+    "path": "models/jovovich.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "commands": [
+    "python3 training/prepare.py OUT/quote.bin --sft training/sft_review_v7_quote.jsonl --sft-only --review-pairs OUT/quote.pairs --pair-format 2",
+    "build/jovovich-probe-pairs models/jovovich.gguf OUT/quote.bin OUT/quote.pairs"
+  ],
+  "probe_stdout_sha256": "3345f336606d8e930efce590757ba76e9d181812be6f7270a1fa7a5e3a87ee95",
+  "pairs_sha256": "de5407edccef16d7a6594cf28e4313d03fb7fbbce4bd941f056e5d2f944c0fa9",
+  "bin_sha256": "45f9474f9cdc82563692057fd34d285de8838ac2d56060c8d9f59d9e92f910bb",
+  "completion": {
+    "stage": "pair_completion",
+    "pass": true,
+    "review_rows": 52
+  },
+  "review_rows": 52,
+  "decision_position_range": [
+    55,
+    88
+  ],
+  "before_decision_position_range": [
+    40,
+    58
+  ],
+  "review_answer_tokens": 4464,
+  "decision_tokens": 52,
+  "residual_tokens": 4412,
+  "before_residual_tokens": 3411,
+  "max_answer_tokens_including_eos": 123,
+  "max_total_tokens": 693,
+  "prompt_token_counts_equal_before": true,
+  "verdict_target_and_alternative_equal_before": true,
+  "examples": [
+    {
+      "row": 0,
+      "pair_index": 0,
+      "decision_position": 62,
+      "decision_target_id": 66582,
+      "decision_alternative_id": 8899,
+      "decision_prefix": "{\"analysis\":\"Rule: This directory must contain only Lua scripts. Do not add Python files here. The nearest analysis/ rule requires Lua even though the root permits Python tools. Adding import statistics at [1] puts Python code in that directory; being an offline script does not supply an exception.\"\n,\"findings"
+    },
+    {
+      "row": 1,
+      "pair_index": 0,
+      "decision_position": 58,
+      "decision_target_id": 8899,
+      "decision_alternative_id": 66582,
+      "decision_prefix": "{\"analysis\":\"Rule: Offline analysis scripts in this directory may use Python and its standard library. The analysis/ rule explicitly permits offline Python scripts and standard-library modules. Import statistics at [1] serves the stated saved-measurement analysis, so the directory exception covers this addition.\"\n,\"findings"
+    }
+  ]
+}
