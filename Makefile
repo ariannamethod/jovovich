@@ -16,7 +16,7 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout extract-layers layer-fixture probe-readout fit-readout merge-head merge-mlp export-adapter test clean
+.PHONY: extract-layers-bodies layer-fixture all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout extract-layers probe-readout fit-readout merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
@@ -27,7 +27,6 @@ probe-gradients: build/jovovich-probe-gradients
 probe-tokenization: build/jovovich-probe-tokenization
 extract-readout: build/jovovich-extract-readout
 extract-layers: build/jovovich-extract-layers
-layer-fixture: build/jovovich-layer-fixture
 probe-readout: build/jovovich-probe-readout
 fit-readout: build/jovovich-readout-fit
 merge-mlp: build/jovovich-merge-mlp
@@ -69,9 +68,19 @@ build/jovovich-extract-layers: training/extract_layers.c training/extract_readou
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_layers.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
+extract-layers-bodies: build/jovovich-extract-layers-bodies
+build/jovovich-extract-layers-bodies: training/extract_layers_bodies.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_layers_bodies.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+layer-fixture: build/jovovich-layer-fixture
 build/jovovich-layer-fixture: training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(HEADERS) Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(LDFLAGS) $(LDLIBS)
+
+build/test-layer-extract: test/layer_extract.c training/extract_layers.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/layer_extract.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
 build/jovovich-probe-readout: training/probe_readout.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build
@@ -117,13 +126,14 @@ build/test-joint: test/joint.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NO
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/joint.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
 
-test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting build/test-joint build/test-readout-extract build/test-readout build/jovovich-readout-fit
+test: harness merge-mlp build/test-head build/test-mlp build/test-optimizer build/test-weighting build/test-joint build/test-readout-extract build/test-layer-extract build/test-readout build/jovovich-readout-fit
 	./build/test-head
 	./build/test-mlp
 	./build/test-optimizer
 	./build/test-weighting
 	./build/test-joint
 	./build/test-readout-extract
+	./build/test-layer-extract
 	./build/test-readout
 	node --test test/*.test.mjs
 

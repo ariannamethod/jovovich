@@ -83,7 +83,7 @@
       "bytes": 36509
     },
     "binary:extract-layers": {
-      "path": "build/jovovich-extract-layers",
+      "path": "build/jovovich-extract-layers-bodies",
       "sha256": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
       "bytes": 324936
     },
@@ -490,7 +490,7 @@
       "name": "extract",
       "reused_from_an_earlier_run_of_this_runner": true,
       "argv": [
-        "build/jovovich-extract-layers",
+        "build/jovovich-extract-layers-bodies",
         "models/amos-x-qwen-2.5-0.5b-before-subliteration.gguf",
         "training/results/2026-10-01-frozen-readout/readout-input.bin",
         "<features>",

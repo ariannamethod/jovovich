@@ -98,7 +98,7 @@
     "readout-rows.json": { "path": "training/results/2026-10-01-frozen-readout/readout-rows.json", "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554" }
   },
   "instruments": {
-    "source:training/extract_layers.c": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847",
+    "source:training/extract_layers_bodies.c": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847",
     "source:training/extract_readout.c": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776",
     "source:training/train_mlp.c": "e872d32759f3cbf5e3334d9cf5bf2196ea9d690981040c47eec9e348911cda2d",
     "source:training/readout_fit.c": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
@@ -108,7 +108,7 @@
     "source:training/readout/build_layer_fixture.c": "6c364275767d1d021c0a0011852a7a9f672897019a9679212f86fd6d0282a04b",
     "source:Makefile": "e6a87e84ffa8435be67de999383789b1162553c75812b09192e741f960633493",
     "source:model.json": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
-    "binary:build/jovovich-extract-layers": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
+    "binary:build/jovovich-extract-layers-bodies": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
     "binary:build/jovovich-readout-fit": "e043a03daefb15e5d08ce44e983bdd6cd212b367d7258c5fba20312693da5dbd",
     "binary:build/jovovich-layer-fixture": "ff737d2ecd3deadb177e3678aa32b73331f59ca77c6736dd37acb083121d9911",
     "notorch_pin": "014403faa76b795aefe18a4781980f5b140e0ed3"

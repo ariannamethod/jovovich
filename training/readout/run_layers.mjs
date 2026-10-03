@@ -53,7 +53,7 @@ const started = new Date().toISOString();
 const inputs = {
   model: receipt(opts.model), prompts: receipt(opts.prompts), metadata: receipt(opts.metadata),
   masks: receipt(opts.masks), 'masks-json': receipt(opts['masks-json']), rows: receipt(opts.rows),
-  'binary:extract-layers': receipt('build/jovovich-extract-layers'),
+  'binary:extract-layers': receipt('build/jovovich-extract-layers-bodies'),
   'binary:readout-fit': receipt('build/jovovich-readout-fit'),
   'helper:layer_summary.mjs': receipt('training/readout/layer_summary.mjs'),
   'helper:run_layers.mjs': receipt('training/readout/run_layers.mjs')
@@ -73,10 +73,10 @@ if (opts['reuse-extraction']) {
   for (const side of ['extract.stdout.jsonl', 'extract.stderr.txt'])
     writeFileSync(path.join(opts.out, side), readFileSync(path.join(path.dirname(from), side)), { flag: 'wx' });
   phases.push({ name: 'extract', reused_from_an_earlier_run_of_this_runner: true,
-                argv: ['build/jovovich-extract-layers', opts.model, opts.prompts, '<features>', threads],
+                argv: ['build/jovovich-extract-layers-bodies', opts.model, opts.prompts, '<features>', threads],
                 rc: 0, elapsed_seconds: null });
 } else {
-  phases.push(phase('extract', 'build/jovovich-extract-layers',
+  phases.push(phase('extract', 'build/jovovich-extract-layers-bodies',
     [opts.model, opts.prompts, path.join(opts.out, 'features'), threads], {
       stdout: path.join(opts.out, 'extract.stdout.jsonl'),
       stderr: path.join(opts.out, 'extract.stderr.txt'),

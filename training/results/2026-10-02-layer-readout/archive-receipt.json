@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "status": "packed-and-byte-verified",
+  "run_id": "qwen05-layers-v5-20261002-a1",
+  "builder": {
+    "path": "archive_run.py",
+    "bytes": 12738,
+    "sha256": "a1f93305084357b6cd87538b16820d77ef1e41f549fadc7348480f4fe25f44bd"
+  },
+  "source_remote_receipt": {
+    "path": "remote-completion-receipt.json",
+    "bytes": 11742,
+    "sha256": "6522fff87fd4a73a4a42f666451576ca302c3a7e783beae5ec2e7db95b6a290f"
+  },
+  "remote_verification_source": "Launcher completion acknowledgement; this offline packer performs no remote calls.",
+  "archive": {
+    "path": "raw-evidence.tar.gz",
+    "bytes": 35703965,
+    "sha256": "9fcd318c6586904f8c41a2b08c899ec5cfed1e5a42e6b2a6efcda310e7cd8518"
+  },
+  "entries_verified": 748,
+  "manifest": {
+    "path": "raw-evidence-manifest.json",
+    "bytes": 126524,
+    "sha256": "e312ddb4974b8f1ee9453f7ad868fa741f80b8329127581edbb4901812a3cc39"
+  },
+  "direct_copies": [
+    {
+      "path": "layers-summary.json",
+      "bytes": 1970560,
+      "sha256": "1a5ca8ffdf58cd3f07b0de478e62c2027192b02ac5eee2903e8fc8862fccd807"
+    },
+    {
+      "path": "layers-table.tsv",
+      "bytes": 1695,
+      "sha256": "9f3e62f2ececac7c6e3e3d89f002be0dcc044a61955b2a679c93a9b92b2a084f"
+    },
+    {
+      "path": "process-summary.json",
+      "bytes": 57306,
+      "sha256": "3c7dbd23ea3d9ad2411a3a24fd12f4f40f1f91a3ada1d7c829dc0f182cea322a"
+    }
+  ],
+  "weights_and_executables_included": false
+}

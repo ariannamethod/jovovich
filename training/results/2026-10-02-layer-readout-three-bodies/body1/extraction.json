@@ -4,7 +4,7 @@
   "threads": "4",
   "extract_phase": {
     "argv": [
-      "build/jovovich-extract-layers",
+      "build/jovovich-extract-layers-bodies",
       "models/jovovich.gguf",
       "training/results/2026-10-01-frozen-readout/readout-input.bin",
       "<scratch>/body1/features",

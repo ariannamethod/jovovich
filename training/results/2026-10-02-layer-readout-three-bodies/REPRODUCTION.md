@@ -9,7 +9,7 @@ hashes rather than against a description.
 
 ```sh
 git submodule update --init --recursive        # deps/notorch at 014403faa76b795aefe18a4781980f5b140e0ed3
-make build/jovovich-extract-layers build/jovovich-readout-fit build/jovovich-layer-fixture
+make build/jovovich-extract-layers-bodies build/jovovich-readout-fit build/jovovich-layer-fixture
 ```
 
 ## 2. The bodies

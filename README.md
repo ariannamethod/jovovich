@@ -709,6 +709,94 @@ an explicit validator passing under optimized Python are preserved in
 These are newly generated diagnostic results, not recovered historical traces
 or untouched confirmation data. No training or historical selection rule changes.
 
+Research runs now have a synchronous archive gate. The layer launcher saves a
+frozen protocol and source/input snapshots to private Hugging Face storage,
+then records an intent and verified result for each native process. Every new
+payload is downloaded from its pinned commit and checked before the next
+process starts. Interrupted uploads and lost acknowledgements have tested
+recovery paths; completed units retain their identities after local file loss.
+The optional research transport pins `huggingface_hub==0.35.3` in a separate
+environment. Its implementation and real remote recovery receipts are in
+[`training/durable_archive.py`](training/durable_archive.py) and
+[`training/results/2026-10-02-durable-sync`](training/results/2026-10-02-durable-sync).
+
+`make extract-layers` builds the native depth collector. Each invocation saves
+one prompt's 24 post-block residuals at the assistant-header and common-prefix
+boundaries, plus an optional separate pre-final-MLP anchor. Exact Qwen ChatML
+IDs, capture positions and numerical checks travel with the row. The durable
+launcher and frozen preparation recipe live in [`training/layers`](training/layers).
+
+The completed survey covers 52 v5 reviews, 26 matched pairs and 20 held-out
+families. All 2,100 native fits converged. The two boundaries produced a narrow
+depth profile: 25–30 correct reviews at the assistant header and 25–29 after
+the shared JSON prefix. A complete pair requires both the concern and its clean
+counterpart to be correct.
+
+| Frozen readout on v5 | Correct reviews | Complete pairs | Same-diff complete pairs |
+| --- | ---: | ---: | ---: |
+| Header block 8, exploratory maximum | 30/52 | 4/26 | 2/6 |
+| Prefix block 4, exploratory maximum | 29/52 | 3/26 | 3/6 |
+| Header block 24 | 26/52 | 1/26 | 1/6 |
+| Prefix block 24 | 27/52 | 1/26 | 1/6 |
+| Fresh pre-final-MLP prefix anchor | 27/52 | 1/26 | 1/6 |
+| Lexical/count baseline | 26/52 | 1/26 | 0/6 |
+
+Block numbers above are 1–24; native file indices are 0–23. The full profile
+does not show a strong early readout that disappears at the final layer.
+All 49 state views can fit all 52 development labels at weak ridge, including
+the fixed flipped labels, while family-held-out results remain weak. This
+locates the measured difficulty in transfer across families under this readout,
+rather than in its ability to fit these rows. The two exploratory maxima are
+reported with the complete table; neither selects a deployment layer.
+
+![Complete depth and boundary profile](training/results/2026-10-02-layer-readout/layer-profile.svg)
+
+Two independent recounts agree on all 10,400 saved predictions. The
+[evidence directory](training/results/2026-10-02-layer-readout) includes the
+50-view table, plot, frozen launch plan, audits, remote completion receipt and
+a byte-verified archive of all 748 raw evidence files. The archive includes
+vectors and native fit records; weights remain private. All 210 remote units
+were acknowledged, including recovery from a real controller interruption.
+
+For GitHub transport, the raw archive is stored as twelve lossless pieces with
+individual hashes in `public-archive-transport.json`. Reassemble and verify it
+inside the evidence directory:
+
+```sh
+cat raw-evidence.tar.gz.part-[0-9][0-9][0-9] > raw-evidence.tar.gz
+sha256sum -c raw-evidence.tar.gz.sha256
+```
+
+The next controlled explanation-before-verdict experiment must explicitly bind
+each answer's verdict position. The current joint trainer weights the first
+different token in paired answers; adding different explanations would move
+that target into the explanation. That selector and its evaluator need a
+versioned position contract before changing the training corpus.
+
+To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
+and a separate Python environment containing `huggingface_hub==0.35.3`.
+Choose fresh paths and a unique run ID; the frozen plan records the current
+sources, compiled binaries, input hashes and private archive destination.
+
+```sh
+make extract-layers fit-readout
+python3 training/layers/prepare_layers.py prepare --repo . --out models/layer-prepared-repeat
+python3 training/layers/freeze_layers.py --prepared models/layer-prepared-repeat \
+  --output models/layer-plan-repeat.json --run-id layer-repeat-UNIQUE
+python3 training/layers/run_layers.py preflight --plan models/layer-plan-repeat.json
+path/to/archive-venv/bin/python training/layers/run_layers.py run \
+  --plan models/layer-plan-repeat.json --run-dir models/layer-run-repeat \
+  --hf-repo ataeff/jovovich --remote-prefix experiments/layer-readout \
+  --token-file /path/to/private-token
+```
+
+`resume` restores the archived plan and files into a fresh `--run-dir` using
+`--run-id` in place of `--plan`, with the same private destination. The exact
+bound base, sources and native binaries must also be present. Completed units
+are verified and skipped; an intent without a completed result is preserved as
+an interrupted attempt and stops the sequence. The final JSON receipt confirms
+remote verification of the completion marker.
+
 A per-layer diagnostic then asks where the judgment lives. One forward pass per
 sequence keeps the residual state at the decision position after every decoder
 block, plus the final post-norm state, for three Q8_0 bodies: the pinned coder
