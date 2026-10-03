@@ -16,7 +16,7 @@ HEADERS = $(NOTORCH)/notorch.h $(NOTORCH)/gguf.h \
           $(NOTORCH)/harness/runtime.h $(NOTORCH)/examples/bpe.h \
           $(NOTORCH)/examples/unicode_numbers.h
 
-.PHONY: all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout extract-layers probe-readout fit-readout merge-head merge-mlp export-adapter test clean
+.PHONY: extract-layers-bodies layer-fixture all harness train train-mlp probe-mlp probe-gradients probe-tokenization extract-readout extract-layers probe-readout fit-readout merge-head merge-mlp export-adapter test clean
 all: harness
 harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
@@ -67,6 +67,16 @@ build/jovovich-extract-readout: training/extract_readout.c training/train_mlp.c 
 build/jovovich-extract-layers: training/extract_layers.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_layers.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+extract-layers-bodies: build/jovovich-extract-layers-bodies
+build/jovovich-extract-layers-bodies: training/extract_layers_bodies.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/extract_layers_bodies.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+layer-fixture: build/jovovich-layer-fixture
+build/jovovich-layer-fixture: training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ training/readout/build_layer_fixture.c $(NOTORCH)/gguf.c $(NOTORCH)/examples/bpe.c $(NOTORCH)/notorch.c $(LDFLAGS) $(LDLIBS)
 
 build/test-layer-extract: test/layer_extract.c training/extract_layers.c training/extract_readout.c training/train_mlp.c $(SUBSTRATE) $(HEADERS) $(NOTORCH)/notorch_simd.h Makefile
 	@mkdir -p build

@@ -197,7 +197,7 @@ int main(int argc,char **argv) {
             nt_tape_start();int ai=nt_tape_param(adapter.A),bi=nt_tape_param(adapter.B);
             int ce=loss(&ex->c,&adapter,ai,bi,m->vocab);float v=value(ce);
             if(!isfinite(v))die("nonfinite SFT loss");
-            nt_tape_backward(ce);nt_tape_clip_grads(1.0f);nt_tape_adam_step(lr);nt_tape_clear();total+=v;n++;
+            nt_tape_backward(ce);nt_tape_clip_grads(1.0f);nt_tape_chuck_step(lr,v);nt_tape_clear();total+=v;n++;
         }
         printf("{\"stage\":\"sft\",\"epoch\":%d,\"online_mean_ce\":%.8f}\n",ep+1,n?total/n:0);fflush(stdout);
     }
@@ -224,7 +224,7 @@ int main(int argc,char **argv) {
             float coeff=BETA/(1+expf(fmaxf(-80,fminf(80,z))));
             int weighted=nt_add(nt_scale(ci,coeff*ex->c.n),nt_scale(ri,-coeff*ex->r.n));
             if(!isfinite(dpo))die("nonfinite DPO loss");
-            nt_tape_backward(weighted);nt_tape_clip_grads(1.0f);nt_tape_adam_step(lr*0.25f);nt_tape_clear();
+            nt_tape_backward(weighted);nt_tape_clip_grads(1.0f);nt_tape_chuck_step(lr*0.25f,dpo);nt_tape_clear();
             total+=dpo;margin_sum+=margin;n++;
         }
         printf("{\"stage\":\"dpo\",\"epoch\":%d,\"online_mean_loss\":%.8f,\"online_mean_margin\":%.8f}\n",ep+1,n?total/n:0,n?margin_sum/n:0);fflush(stdout);

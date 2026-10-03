@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "gate": "per-layer audit reproduces the published frozen-readout z summary",
+  "mine": "training/results/2026-10-02-layer-readout-three-bodies/parity/published-z-summary.json",
+  "published": "training/results/2026-10-01-frozen-readout/readout-summary.json",
+  "compared_fields": 27,
+  "unequal_fields": 0,
+  "all_equal": true,
+  "unequal": [],
+  "checks": [
+    {
+      "field": "observed.rows",
+      "equal": true
+    },
+    {
+      "field": "observed.correct",
+      "equal": true
+    },
+    {
+      "field": "observed.concern_rows",
+      "equal": true
+    },
+    {
+      "field": "observed.correct_concern",
+      "equal": true
+    },
+    {
+      "field": "observed.clean_rows",
+      "equal": true
+    },
+    {
+      "field": "observed.correct_clean",
+      "equal": true
+    },
+    {
+      "field": "observed.pairs",
+      "equal": true
+    },
+    {
+      "field": "observed.complete_pairs",
+      "equal": true
+    },
+    {
+      "field": "observed.complete_pair_indices",
+      "equal": true
+    },
+    {
+      "field": "observed.same_full_diff_pairs",
+      "equal": true
+    },
+    {
+      "field": "observed.same_full_diff_complete_pairs",
+      "equal": true
+    },
+    {
+      "field": "observed.exact_zero_score_rows",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.observed",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.reference_count",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.reference_at_least_observed",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.plus_one_upper_tail_fraction",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.reference_minimum",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.reference_maximum",
+      "equal": true
+    },
+    {
+      "field": "permutation_reference.reference_statistics",
+      "equal": true
+    },
+    {
+      "field": "convergence.fits",
+      "equal": true
+    },
+    {
+      "field": "convergence.maximum_gradient_inf",
+      "equal": true
+    },
+    {
+      "field": "convergence.maximum_iterations",
+      "equal": true
+    },
+    {
+      "field": "convergence.total_curvature_floors",
+      "equal": true
+    },
+    {
+      "field": "convergence.total_line_search_backtracks",
+      "equal": true
+    },
+    {
+      "field": "observed_predictions",
+      "equal": true
+    },
+    {
+      "field": "family_breakdown",
+      "equal": true
+    },
+    {
+      "field": "capacity",
+      "equal": true
+    }
+  ]
+}

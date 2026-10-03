@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "machine": "neo",
+  "hardware": "MacBook, Apple A18 Pro, 6 cores, 8589934592 bytes of memory, arm64",
+  "uname": "Darwin neo 25.4.0 Darwin Kernel Version 25.4.0: Thu Mar 19 19:33:33 PDT 2026; root:xnu-12377.101.15~1/RELEASE_ARM64_T8140 arm64",
+  "macos": "26.4.1",
+  "cc": "Apple clang version 21.0.0 (clang-2100.0.123.102), target arm64-apple-darwin25.4.0",
+  "cflags": "-O2 -Wall -Wextra -std=gnu11 -march=native, with -DUSE_SIMD absent on arm64 (the shim gates on __AVX2__)",
+  "cppflags_from_shell": "-I/opt/homebrew/opt/openblas/include",
+  "ldflags_from_shell": "-L/opt/homebrew/opt/openblas/lib",
+  "blas_note": "the openblas paths come from the shell environment, not the Makefile; no BLAS symbol is linked into these binaries",
+  "node": "v25.9.0",
+  "python3": "3.14.4 — used nowhere in this experiment; extraction and fitting are C, the audit and the runner are JavaScript",
+  "notorch_pin": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "native_environment": { "NT_NO_I8": "1", "NT_QMV_THREADS": "4", "NT_ATTN_THREADS": "4", "NT_SIMD_THREADS": "4" },
+  "thread_count_and_arithmetic": "notorch parallelizes a matvec over output rows and attention over heads, so no reduction is split across threads and the thread count does not change a single bit of the result. It changes only wall clock.",
+  "determinism": "the fit is float64 over float32 inputs with no random component; the extraction is quantized Q8_0 arithmetic through notorch's kernels. Same binary, same inputs, same bytes. Another architecture may differ in the last bits of a feature.",
+  "git": {
+    "branch": "fable/probe-and-laws",
+    "plan_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+    "code_and_fixture_commit": "9f168af48182be2e4c62f15050b5fb8675c40d4b",
+    "optimizer_law_commit": "65ee906398dc95fa0e68df18de4d7459808168ea",
+    "laws_commit": "fd3bd4ac02766be46a5ec7a2811e50736d1de0bd",
+    "base": "1e74647c2fc9a54825aaa5115d74ab947141e1cf"
+  }
+}

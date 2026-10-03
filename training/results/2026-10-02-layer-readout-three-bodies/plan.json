@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN before any state extraction with the three real bodies",
+  "protocol": "training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md",
+  "protocol_sha256": "d49bd06dda9d8d54e142538268e18330127d6793c3df58d74f9e0e923176620d",
+  "question": "At which decoder depth, if any, do frozen states at the decision position linearly separate concern/clean — and how does that profile differ across three 0.5B bodies: the coder base, its plain-instruct twin, and its abliterated coder twin?",
+  "declared_reading": {
+    "statement": "signal lives at depth L means correct strictly above 29/52 AND complete pairs strictly above 4/26 at L, with the permutation exceedance printed beside it",
+    "floor_correct": 29,
+    "floor_complete_pairs": 4,
+    "floor_source": "training/results/2026-10-01-frozen-readout/readout-summary.json, the published final-position z result",
+    "fixed_before": "any extraction with a real body; the protocol fixed it on 2026-10-02 before this plan"
+  },
+  "bodies": [
+    {
+      "index": 1, "label": "coder-base",
+      "name": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+      "path": "models/jovovich.gguf",
+      "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+      "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+      "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848,
+      "provenance": "model.json pin, verified by node bin/jovovich.mjs fetch-model; identical to the base-model of the published 2026-10-01 frozen readout",
+      "tensors": 291, "has_output_weight": true
+    },
+    {
+      "index": 2, "label": "plain-instruct",
+      "name": "Qwen2.5-0.5B-Instruct Q8_0",
+      "path": "models/qwen2.5-0.5b-instruct-q8_0.gguf",
+      "repo": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+      "file": "qwen2.5-0.5b-instruct-q8_0.gguf",
+      "sha256": "ca59ca7f13d0e15a8cfa77bd17e65d24f6844b554a7b6c12e07a5f89ff76844e",
+      "bytes": 675710816,
+      "provenance": "official Qwen GGUF release; the revision is the repository commit reported by the Hugging Face model API and the sha256 is the LFS oid that API publishes for this file, confirmed against the downloaded bytes",
+      "tensors": 291, "has_output_weight": true
+    },
+    {
+      "index": 3, "label": "abliterated-coder",
+      "name": "amos-x-qwen-2.5-0.5b-before-subliteration",
+      "path": "models/amos-x-qwen-2.5-0.5b-before-subliteration.gguf",
+      "sha256": "5ed368b693aae7b9f0d1838baeff048b7ba91cec9da435dd3c6a6653f677ae07",
+      "bytes": 531068704,
+      "provenance": "transferred from metal:~/arianna/jovovich/models/ by scp on 2026-10-02; sha256 taken at transfer. No upstream revision exists for it here.",
+      "gguf_general_name": "Qwen2.5 Coder 0.5B Instruct Abliterated",
+      "tensors": 290, "has_output_weight": false,
+      "structural_note": "the only tensor-level difference from body 1 is the absent output.weight, so this body ties its embeddings; every other tensor name, shape and dtype is identical. The probe computes no logits, so the difference cannot touch the captured states.",
+      "scope": "read-only representation probe, no generation; additionally the BEFORE-subliteration geometry snapshot for the future subliteration arc (Oleg's word 2026-10-02: no ethical bar for a read-only probe)"
+    }
+  ],
+  "common_architecture": {
+    "arch": "qwen2", "blocks": 24, "embedding_length": 896, "feed_forward_length": 4864,
+    "head_count": 14, "head_count_kv": 2, "context_length": 32768,
+    "rope_freq_base": 1000000.0, "rms_epsilon": 9.999999974752427e-07,
+    "tokenizer": "gpt2 byte-level BPE, qwen2 pre-tokenizer", "file_type": "Q8_0",
+    "verified": "read from each file's own metadata before extraction"
+  },
+  "representation": {
+    "captured": "the residual state at the decision position after every decoder block, 24 per sequence, plus the final post-norm z computed with output_norm and the model's RMS epsilon",
+    "depths_per_body": 25,
+    "one_pass": "the post-layer residual callback already visits every block, so one forward pass per sequence yields all 25 depths; no weight is modified and nothing is zeroed",
+    "difference_from_the_published_feature": "the published 2026-10-01 feature is the pre-final-MLP state, captured with the final block's down projection zeroed. That is a modified forward and cannot come from this unmodified pass. Depth l23 here is the residual after the complete final block, so it is NOT the published row; the published numbers enter this probe only as the declared floor.",
+    "prompt": "the frozen readout-input.bin verbatim: native Qwen ChatML from system and user, the assistant header, and the common three-token answer prefix [4913, 3903, 819]",
+    "decision_position": "native_prompt_token_count + 2, the last prefix token, exactly as the frozen extractor computes it",
+    "boundary": "the class-specific target token and every later gold answer token stay outside the capture"
+  },
+  "corpus_and_folds": {
+    "corpus": "training/sft_review_v4.jsonl",
+    "corpus_sha256": "20afaa5692e88625d7152c7634c68e665a7bb165bfdc6dba15fec8c9e01edc1e",
+    "rows": 52, "pairs": 26, "families": 20,
+    "grouping": "leave one template family out, the published 20 folds, unchanged",
+    "labels": "concern=1 iff gold findings is nonempty"
+  },
+  "solver": {
+    "program": "build/jovovich-readout-fit from training/readout_fit.c, unchanged",
+    "normalization": "centered-rms",
+    "lambda": 0.01,
+    "interpolation_lambda": 1e-8,
+    "gradient_tolerance": 1e-8,
+    "max_iterations": 100,
+    "intercept_penalized": false,
+    "positive_class": "concern",
+    "tie_class": "clean",
+    "armijo_c1": 0.0001,
+    "maximum_halvings": 60,
+    "direction_curvature_floor": 1e-12,
+    "permutations": 99,
+    "fits_per_depth": 2002,
+    "fits_planned": 150150,
+    "failure_rule": "an unconverged fit, a nonfinite value or a failed numerical check fails that depth's run; the evidence is preserved and diagnosed, never silently dropped, and lambda is not retuned after reading any score"
+  },
+  "frozen_inputs": {
+    "readout-input.bin": { "path": "training/results/2026-10-01-frozen-readout/readout-input.bin", "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63" },
+    "readout-metadata.txt": { "path": "training/results/2026-10-01-frozen-readout/readout-metadata.txt", "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08" },
+    "readout-masks.txt": { "path": "training/results/2026-10-01-frozen-readout/readout-masks.txt", "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd" },
+    "readout-masks.json": { "path": "training/results/2026-10-01-frozen-readout/readout-masks.json", "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4" },
+    "readout-rows.json": { "path": "training/results/2026-10-01-frozen-readout/readout-rows.json", "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554" }
+  },
+  "instruments": {
+    "source:training/extract_layers_bodies.c": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847",
+    "source:training/extract_readout.c": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776",
+    "source:training/train_mlp.c": "e872d32759f3cbf5e3334d9cf5bf2196ea9d690981040c47eec9e348911cda2d",
+    "source:training/readout_fit.c": "744bd272b297aaeea3c20f0a70b1f2031f80494e6a445c67942af1bb859b1519",
+    "source:training/readout/layer_summary.mjs": "30b38b4bd39eb6042dbd525cef1b28f2ce8a19c8318de6cc9853ebffe2f182bd",
+    "source:training/readout/run_layers.mjs": "16457c28b29ccc22ff51009509fafda67d9cbab5fe3d72e4bcc6bfb979c33e21",
+    "source:training/readout/compare_published.mjs": "740cda03f4cf75af63a1239ff63c389ac2113495c5b032a811de6b9121c7a462",
+    "source:training/readout/build_layer_fixture.c": "6c364275767d1d021c0a0011852a7a9f672897019a9679212f86fd6d0282a04b",
+    "source:Makefile": "e6a87e84ffa8435be67de999383789b1162553c75812b09192e741f960633493",
+    "source:model.json": "b5291e0d7e044d36234767a658b4f8b1bcab245535e88d3853f6fd9f18772457",
+    "binary:build/jovovich-extract-layers-bodies": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
+    "binary:build/jovovich-readout-fit": "e043a03daefb15e5d08ce44e983bdd6cd212b367d7258c5fba20312693da5dbd",
+    "binary:build/jovovich-layer-fixture": "ff737d2ecd3deadb177e3678aa32b73331f59ca77c6736dd37acb083121d9911",
+    "notorch_pin": "014403faa76b795aefe18a4781980f5b140e0ed3"
+  },
+  "gates_passed_before_this_plan": {
+    "commit": "9f168af48182be2e4c62f15050b5fb8675c40d4b",
+    "parity": "the per-layer audit reproduces the published frozen-readout z summary on the published state-fits.jsonl, 27 of 27 fields equal (parity/parity-gate.json)",
+    "fixture_positive": "a direction planted at block 1 is read at l01 and above and not at l00; moved to block 2 the onset moves with it (fixture/fixture-gate.json)",
+    "fixture_negative": "with the plant removed every depth reads 26/52, 0/26 and exceedance 1.00"
+  },
+  "reporting": {
+    "table": "one combined table, body by depth, 3 x 25 = 75 rows, no depth and no body excluded",
+    "columns": ["body", "depth", "correct/52", "correct_concern/26", "correct_clean/26", "complete_pairs/26", "permutation exceedance"],
+    "also_recorded": "distinct feature rows, minimum active columns, maximum gradient infinity norm, maximum Newton iterations, the capacity fit, the 99 reference statistics and all 52 observed scores per depth",
+    "nuisance": "the seven-feature lexical baseline is layer-independent and is cited from the published record at 35/52 and 9/26; it is not refitted here",
+    "cross_body": "descriptive only"
+  },
+  "limits": [
+    "This is a diagnostic. It adopts nothing, gates nothing, and promotes no checkpoint.",
+    "A negative result at every depth of every body does not prove the information is absent. It bounds what an affine probe at this lambda, on this geometry, at this supplied prefix, with 52 rows and 20 template-family folds, can read.",
+    "Template-family holdouts are not independent semantic domains, and the 99 masks are not 99 datasets; family label exchangeability is an assumption, not a randomized fact.",
+    "The lowest attainable exceedance is 0.01 and nothing here is confirmatory significance.",
+    "Binary separation at a supplied decision prefix is not review competence, natural prefix entry, or a located cause of any earlier training failure."
+  ],
+  "execution": {
+    "command_per_body": "node training/readout/run_layers.mjs --model BODY.gguf --prompts training/results/2026-10-01-frozen-readout/readout-input.bin --metadata training/results/2026-10-01-frozen-readout/readout-metadata.txt --masks training/results/2026-10-01-frozen-readout/readout-masks.txt --masks-json training/results/2026-10-01-frozen-readout/readout-masks.json --rows training/results/2026-10-01-frozen-readout/readout-rows.json --width 896 --out OUTDIR --label LABEL --threads 4",
+    "environment": { "NT_NO_I8": "1", "NT_QMV_THREADS": "4", "NT_ATTN_THREADS": "4", "NT_SIMD_THREADS": "4" },
+    "machine": "neo, MacBook A18 Pro, 8 GB, Darwin 25.4.0 arm64, Apple clang 21.0.0, Node v25.9.0",
+    "state_binaries": "feature matrices and fit files stay out of Git and are content-addressed in each body's manifest; the three model files are covered by .gitignore line 2 (models/), verified with git check-ignore"
+  },
+  "frozen_at_utc": "2026-10-02T02:23:34Z",
+  "parent_commit": "9f168af48182be2e4c62f15050b5fb8675c40d4b"
+}

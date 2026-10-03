@@ -1,0 +1,56 @@
+llama: E=896 H=14 KV=2 FFN=4864 V=151936 L=24 HD=64 Q=896
+  (has attention bias — qwen-style)
+  rope: neox | weights: packed
+layers=24 depths=25 width=896 rows=52
+layer-readout 1/52 input_tokens=418 width=896 depths=25
+layer-readout 2/52 input_tokens=421 width=896 depths=25
+layer-readout 3/52 input_tokens=434 width=896 depths=25
+layer-readout 4/52 input_tokens=440 width=896 depths=25
+layer-readout 5/52 input_tokens=417 width=896 depths=25
+layer-readout 6/52 input_tokens=414 width=896 depths=25
+layer-readout 7/52 input_tokens=421 width=896 depths=25
+layer-readout 8/52 input_tokens=422 width=896 depths=25
+layer-readout 9/52 input_tokens=415 width=896 depths=25
+layer-readout 10/52 input_tokens=423 width=896 depths=25
+layer-readout 11/52 input_tokens=432 width=896 depths=25
+layer-readout 12/52 input_tokens=440 width=896 depths=25
+layer-readout 13/52 input_tokens=485 width=896 depths=25
+layer-readout 14/52 input_tokens=485 width=896 depths=25
+layer-readout 15/52 input_tokens=427 width=896 depths=25
+layer-readout 16/52 input_tokens=470 width=896 depths=25
+layer-readout 17/52 input_tokens=460 width=896 depths=25
+layer-readout 18/52 input_tokens=461 width=896 depths=25
+layer-readout 19/52 input_tokens=452 width=896 depths=25
+layer-readout 20/52 input_tokens=452 width=896 depths=25
+layer-readout 21/52 input_tokens=443 width=896 depths=25
+layer-readout 22/52 input_tokens=447 width=896 depths=25
+layer-readout 23/52 input_tokens=469 width=896 depths=25
+layer-readout 24/52 input_tokens=473 width=896 depths=25
+layer-readout 25/52 input_tokens=439 width=896 depths=25
+layer-readout 26/52 input_tokens=444 width=896 depths=25
+layer-readout 27/52 input_tokens=465 width=896 depths=25
+layer-readout 28/52 input_tokens=470 width=896 depths=25
+layer-readout 29/52 input_tokens=558 width=896 depths=25
+layer-readout 30/52 input_tokens=556 width=896 depths=25
+layer-readout 31/52 input_tokens=466 width=896 depths=25
+layer-readout 32/52 input_tokens=466 width=896 depths=25
+layer-readout 33/52 input_tokens=489 width=896 depths=25
+layer-readout 34/52 input_tokens=489 width=896 depths=25
+layer-readout 35/52 input_tokens=465 width=896 depths=25
+layer-readout 36/52 input_tokens=465 width=896 depths=25
+layer-readout 37/52 input_tokens=431 width=896 depths=25
+layer-readout 38/52 input_tokens=436 width=896 depths=25
+layer-readout 39/52 input_tokens=457 width=896 depths=25
+layer-readout 40/52 input_tokens=462 width=896 depths=25
+layer-readout 41/52 input_tokens=441 width=896 depths=25
+layer-readout 42/52 input_tokens=440 width=896 depths=25
+layer-readout 43/52 input_tokens=464 width=896 depths=25
+layer-readout 44/52 input_tokens=463 width=896 depths=25
+layer-readout 45/52 input_tokens=490 width=896 depths=25
+layer-readout 46/52 input_tokens=490 width=896 depths=25
+layer-readout 47/52 input_tokens=460 width=896 depths=25
+layer-readout 48/52 input_tokens=461 width=896 depths=25
+layer-readout 49/52 input_tokens=458 width=896 depths=25
+layer-readout 50/52 input_tokens=467 width=896 depths=25
+layer-readout 51/52 input_tokens=484 width=896 depths=25
+layer-readout 52/52 input_tokens=493 width=896 depths=25
