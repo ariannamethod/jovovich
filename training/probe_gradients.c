@@ -122,7 +122,7 @@ int main(int argc,char **argv) {
         if(rows[i].n_ids>gf->ctx_len)mlp_die("gradient example exceeds model context");
         all+=rows[i].cache.n;
     }
-    b.average_tokens=(double)all/count;load_pairs(&b,rows,count,argv[3]);int nd,nr;
+    b.average_tokens=(double)all/count;load_pairs_tokenized(&b,rows,count,argv[3],tok);int nd,nr;
     token_row *whole=joint_order(rows,count,&nd,&nr);free(whole);
     int a=number(argv[5],0,count-1),c=number(argv[6],0,count-1);
     if(a==c||!rows[a].decision_pair||rows[a].decision_pair!=rows[c].decision_pair||rows[c].decision_position<1)

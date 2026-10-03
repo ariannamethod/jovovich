@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "make",
+    "-j2",
+    "test",
+    "train-mlp",
+    "probe-gradients"
+  ],
+  "started_utc": "2026-10-03T15:51:20.597464+00:00",
+  "source_sha256": {
+    "training/train_mlp.c": "ba33b6f578cdd79398f112b533d4ed5361e91e14a84e7dcc399f444a4dbd155e",
+    "training/prepare.py": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd",
+    "training/score_decisions.py": "58442cd95f4721999c8e3a43105f7e1b3d08466929a895a6c829e4091b32187c",
+    "training/probe_pairs.c": "3817517f309e048b05141ad7f08bc5418aa109fbad93167995da6e761cd19552",
+    "training/probe_gradients.c": "00e7dff31823112e18b48cc9a4d55b60b9114772d056fdd908d6ee0992419d36",
+    "test/verdict_positions.c": "009fda14f6918de0cfc44aa089833f12b41c5dd160b7c7c12ac10a03b7248145",
+    "test/prepare_pairs.test.mjs": "1d79a7fb8945ee0fd7000299d4a2cc94b2dfbb0571bcc598348ef886e0f9f386",
+    "test/decision_score.test.mjs": "888dfa80913fc73f5ad913560c8e737ee9d524dcb003d899272e014752da786a",
+    "Makefile": "146f5756fa3ee31deca743e1181a80ac0e96d6e6677dceb1478740edbe0ab355"
+  },
+  "execution": "outside sandbox after isolated EOF reproduction"
+}

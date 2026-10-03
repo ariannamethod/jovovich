@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "make",
+    "probe-pairs",
+    "probe-tokenization"
+  ],
+  "started_utc": "2026-10-03T15:45:16.307264+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T15:45:22.959936+00:00",
+  "build.stdout.txt": {
+    "bytes": 333,
+    "sha256": "3e14a4a3bea926c100c04f718a31a0094e319afe8d8b2ab8d5d486b4a3878312"
+  },
+  "build.stderr.txt": {
+    "bytes": 5942,
+    "sha256": "f140990645461fec985c9f634c3f3c8cfc5dca58fe288b449bcc09db190a6c1b"
+  }
+}

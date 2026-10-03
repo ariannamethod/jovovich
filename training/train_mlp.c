@@ -24,11 +24,11 @@
 typedef struct { nt_tensor *z, *xn, *gate, *up, *targets, *bias, *weights; int n; } mlp_batch;
 typedef struct {
     char *system, *prompt, *answer; mlp_batch cache; int *ids, n_ids, start;
-    int decision_pair, decision_position, decision_alternative_id, decision_correct, decision_predicted_id, prefix_correct;
+    int decision_pair, decision_position, decision_prefix_bytes, decision_alternative_id, decision_correct, decision_predicted_id, prefix_correct;
     float decision_margin;
 } mlp_example;
 typedef struct {
-    int E, F, V, layer, example_weighting, verdict_weighting, pair_count;
+    int E, F, V, layer, example_weighting, verdict_weighting, pair_count, pair_map_version;
     double average_tokens, verdict_weight;
     nt_tensor *wg, *wu, *wd, *head, *norm, *ffn_norm, *bias;
     nt_lora_pair adapters[3];
@@ -86,32 +86,179 @@ static void tokenize(mlp_example *e,bpe_tokenizer *tok) {
     e->cache.targets=tensor(e->cache.n,1);
     for(int t=0;t<e->cache.n;t++)e->cache.targets->data[t]=(float)e->ids[prompt+t];
 }
-static void load_pairs(mlp_bank *b,mlp_example *rows,int count,const char *path) {
+static const char *verdict_space(const char *p) {
+    while(*p==' '||*p=='\t'||*p=='\n'||*p=='\r')p++;
+    return p;
+}
+static int verdict_hex(char c) {
+    return (c>='0'&&c<='9')||(c>='a'&&c<='f')||(c>='A'&&c<='F');
+}
+/* Walk strings structurally: an escaped quote or a nested "findings" is not
+ * the top-level key. Top-level keys are required to use their literal spelling,
+ * matching the JVPR2 packer; string values and nested keys may use escapes. */
+static const char *verdict_string(const char *p,int *escaped) {
+    if(*p!='"')mlp_die("invalid verdict JSON string");
+    p++;if(escaped)*escaped=0;
+    while(*p&&*p!='"') {
+        if((unsigned char)*p<0x20)mlp_die("control byte in verdict JSON string");
+        if(*p++!='\\')continue;
+        if(escaped)*escaped=1;
+        if(*p=='u') {
+            p++;
+            for(int i=0;i<4;i++){if(!verdict_hex(*p))mlp_die("invalid verdict JSON escape");p++;}
+        } else {
+            if(!*p||!strchr("\"\\/bfnrt",*p))mlp_die("invalid verdict JSON escape");
+            p++;
+        }
+    }
+    if(*p!='"')mlp_die("unterminated verdict JSON string");
+    return p+1;
+}
+static const char *verdict_value(const char *p,int depth) {
+    if(depth>128)mlp_die("verdict JSON nesting exceeds 128");
+    p=verdict_space(p);
+    if(*p=='"')return verdict_string(p,NULL);
+    if(*p=='{'||*p=='[') {
+        int object=*p=='{';char close=object?'}':']';p=verdict_space(p+1);
+        if(*p==close)return p+1;
+        for(;;) {
+            if(object) {
+                p=verdict_space(verdict_string(p,NULL));
+                if(*p!=':')mlp_die("missing verdict JSON colon");
+                p++;
+            }
+            p=verdict_space(verdict_value(p,depth+1));
+            if(*p==close)return p+1;
+            if(*p!=',')mlp_die("invalid verdict JSON container");
+            p=verdict_space(p+1);
+        }
+    }
+    if(!strncmp(p,"true",4))return p+4;
+    if(!strncmp(p,"false",5))return p+5;
+    if(!strncmp(p,"null",4))return p+4;
+    if(*p=='-')p++;
+    if(*p=='0')p++;
+    else {
+        if(*p<'1'||*p>'9')mlp_die("invalid verdict JSON value");
+        do p++;while(*p>='0'&&*p<='9');
+    }
+    if(*p=='.') {
+        p++;if(*p<'0'||*p>'9')mlp_die("invalid verdict JSON fraction");
+        do p++;while(*p>='0'&&*p<='9');
+    }
+    if(*p=='e'||*p=='E') {
+        p++;if(*p=='+'||*p=='-')p++;
+        if(*p<'0'||*p>'9')mlp_die("invalid verdict JSON exponent");
+        do p++;while(*p>='0'&&*p<='9');
+    }
+    return p;
+}
+static size_t verdict_boundary(const char *answer) {
+    const char *p=verdict_space(answer);size_t boundary=0;
+    if(*p!='{')mlp_die("JVPR2 answer must be a JSON object");
+    p=verdict_space(p+1);
+    if(*p=='}')mlp_die("JVPR2 answer has no top-level findings key");
+    for(;;) {
+        const char *key=p;int escaped;
+        p=verdict_string(p,&escaped);
+        if(escaped)mlp_die("escaped top-level verdict JSON key");
+        int findings=p-key==10&&!memcmp(key,"\"findings\"",10);
+        if(findings) {
+            if(boundary)mlp_die("duplicate top-level findings key");
+            boundary=(size_t)(p-1-answer);
+        }
+        p=verdict_space(p);if(*p!=':')mlp_die("missing top-level verdict JSON colon");
+        p=verdict_space(p+1);
+        if(findings&&*p!='[')mlp_die("top-level findings must be an array");
+        p=verdict_space(verdict_value(p,1));
+        if(*p=='}') {p=verdict_space(p+1);break;}
+        if(*p!=',')mlp_die("invalid top-level verdict JSON object");
+        p=verdict_space(p+1);
+    }
+    if(*p)mlp_die("trailing verdict JSON text");
+    if(!boundary)mlp_die("JVPR2 answer has no top-level findings key");
+    return boundary;
+}
+static int verdict_position(mlp_example *e,bpe_tokenizer *tok,const char *prefix,int concern) {
+    size_t bytes=strlen(prefix),answer_bytes=strlen(e->answer);
+    if(!bytes||bytes>=answer_bytes||memcmp(prefix,e->answer,bytes))mlp_die("stale JVPR2 answer prefix");
+    if(bytes!=verdict_boundary(e->answer))mlp_die("JVPR2 prefix is not the top-level findings boundary");
+    const char *branch=concern?"\":[{":"\":[]";
+    if(answer_bytes-bytes<4||memcmp(e->answer+bytes,branch,4))
+        mlp_die("JVPR2 requires the compact concern/clean findings branch for its declared role");
+    int ids[MLP_MAX_TOKENS];int n=bpe_encode_raw(tok,prefix,ids,MLP_MAX_TOKENS);
+    /* bpe_encode_raw reports the written count when its buffer fills. Reaching
+     * capacity is therefore an error, never a silently truncated prefix. */
+    if(n<=0||n>=MLP_MAX_TOKENS-2)mlp_die("verdict prefix exceeds token capacity; no truncation");
+    if(!e->cache.targets||n>=e->cache.n-1)mlp_die("JVPR2 has no non-EOS verdict target");
+    for(int p=0;p<n;p++)if(e->cache.targets->data[p]!=(float)ids[p])
+        mlp_die("JVPR2 BPE merge crosses verdict prefix boundary");
+    float target=e->cache.targets->data[n];
+    if(!isfinite(target)||target<0||target>=bpe_n_vocab(tok)||(float)(int)target!=target||
+       (int)target==bpe_token_id(tok,"<|im_end|>")||bpe_is_eog(tok,(int)target))
+        mlp_die("JVPR2 verdict target is invalid or EOS");
+    e->decision_prefix_bytes=(int)bytes;return n;
+}
+static void verdict_alternative(const mlp_example *row,const mlp_example *other,bpe_tokenizer *tok) {
+    /* Tokenize the opposite findings suffix after this row's OWN rationale.
+     * Qwen's clean target can be just `":` while its concern token includes
+     * `:[{`. Their decoded widths differ; the native counterfactual identifies
+     * the alternative at the correct local boundary without a width assumption. */
+    size_t bytes=(size_t)row->decision_prefix_bytes;
+    const char *suffix=other->answer+other->decision_prefix_bytes;size_t remaining=strlen(suffix);
+    if(bytes>1<<20||remaining>1<<20)mlp_die("JVPR2 counterfactual text exceeds capacity");
+    char *text=malloc(bytes+remaining+1);if(!text)mlp_die("counterfactual allocation failed");
+    memcpy(text,row->answer,bytes);memcpy(text+bytes,suffix,remaining+1);
+    int ids[MLP_MAX_TOKENS];int n=bpe_encode_raw(tok,text,ids,MLP_MAX_TOKENS);free(text);
+    if(n<=0||n>=MLP_MAX_TOKENS-2)mlp_die("verdict counterfactual exceeds token capacity; no truncation");
+    if(n<=row->decision_position)mlp_die("JVPR2 counterfactual has no verdict target");
+    for(int p=0;p<row->decision_position;p++)if(row->cache.targets->data[p]!=(float)ids[p])
+        mlp_die("JVPR2 counterfactual BPE merge crosses verdict prefix boundary");
+    if(ids[row->decision_position]!=(int)other->cache.targets->data[other->decision_position])
+        mlp_die("JVPR2 counterfactual verdict does not match reciprocal alternative");
+}
+static void load_pairs_tokenized(mlp_bank *b,mlp_example *rows,int count,const char *path,bpe_tokenizer *tok) {
     FILE *f=fopen(path,"rb");unsigned char magic[8];
-    if(!f||fread(magic,1,8,f)!=8||memcmp(magic,"JVPR\1\0\0\0",8))mlp_die("invalid JVPR pair map");
+    if(!f||fread(magic,1,8,f)!=8||memcmp(magic,"JVPR",4)||magic[5]||magic[6]||magic[7]||
+       (magic[4]!=1&&magic[4]!=2))mlp_die("invalid JVPR pair map");
+    int version=magic[4];if(version==2&&!tok)mlp_die("JVPR2 requires the actual tokenizer");
     if(mlp_u32(f)!=(uint32_t)count)mlp_die("pair map dataset row count disagrees");
     uint32_t pairs=mlp_u32(f);if(!pairs||pairs>(uint32_t)count/2)mlp_die("invalid pair count");
-    for(int i=0;i<count;i++)rows[i].decision_pair=0;
+    for(int i=0;i<count;i++){rows[i].decision_pair=0;rows[i].decision_prefix_bytes=0;}
     double mass=0;
     for(uint32_t i=0;i<pairs;i++) {
         uint32_t a=mlp_u32(f),c=mlp_u32(f);
         if(a>=(uint32_t)count||c>=(uint32_t)count||a==c)mlp_die("invalid pair row indices");
         mlp_example *left=&rows[a],*right=&rows[c];
         if(left->decision_pair||right->decision_pair)mlp_die("duplicate pair row");
-        int limit=left->cache.n<right->cache.n?left->cache.n:right->cache.n,p=0;
-        /* Terminal EOS is not a verdict. Reject identical or prefix-only
-         * completions instead of manufacturing a decision at their ending. */
-        limit--;
-        while(p<limit&&left->cache.targets->data[p]==right->cache.targets->data[p])p++;
-        if(p>=limit)mlp_die("pair completions are identical or prefix-only");
+        int lp=0,rp=0;
+        if(version==1) {
+            int limit=left->cache.n<right->cache.n?left->cache.n:right->cache.n;
+            /* Historical JVPR1 semantics: first differing token, excluding EOS. */
+            limit--;
+            while(lp<limit&&left->cache.targets->data[lp]==right->cache.targets->data[lp])lp++;
+            if(lp>=limit)mlp_die("pair completions are identical or prefix-only");
+            rp=lp;
+        } else {
+            char *prefix=mlp_text(f);lp=verdict_position(left,tok,prefix,1);free(prefix);
+            prefix=mlp_text(f);rp=verdict_position(right,tok,prefix,0);free(prefix);
+            if(left->cache.targets->data[lp]==right->cache.targets->data[rp])
+                mlp_die("JVPR2 verdict target IDs must differ");
+        }
         left->decision_pair=right->decision_pair=(int)i+1;
-        left->decision_position=right->decision_position=p;
-        left->decision_alternative_id=(int)right->cache.targets->data[p];
-        right->decision_alternative_id=(int)left->cache.targets->data[p];
+        left->decision_position=lp;right->decision_position=rp;
+        left->decision_alternative_id=(int)right->cache.targets->data[rp];
+        right->decision_alternative_id=(int)left->cache.targets->data[lp];
+        if(version==2){verdict_alternative(left,right,tok);verdict_alternative(right,left,tok);}
         mass+=b->average_tokens/left->cache.n+b->average_tokens/right->cache.n;
     }
     if(fgetc(f)!=EOF||ferror(f))mlp_die("trailing or unreadable pair map bytes");
-    fclose(f);b->pair_count=(int)pairs;b->verdict_weight=mass/(2*pairs);
+    fclose(f);b->pair_count=(int)pairs;b->pair_map_version=version;b->verdict_weight=mass/(2*pairs);
+}
+/* Older native fixtures and archived probes deliberately retain JVPR1's
+ * first-divergence contract; JVPR2 callers must supply their real tokenizer. */
+static inline void load_pairs(mlp_bank *b,mlp_example *rows,int count,const char *path) {
+    load_pairs_tokenized(b,rows,count,path,NULL);
 }
 static token_row *decision_order(mlp_example *rows,int count,int batch) {
     int n=0;for(int i=0;i<count;i++)if(rows[i].decision_pair)n++;
@@ -451,6 +598,16 @@ static double mean_ce(mlp_bank *b,mlp_example *rows,token_row *order,int total,i
     for(int i=0;i<count;i++)if(row_correct[i]==rows[i].cache.n)(*exact_examples)++;
     return sum/total;
 }
+static void print_json_span(const char *text,size_t bytes) {
+    putchar('"');
+    for(size_t i=0;i<bytes;i++) {
+        unsigned char c=(unsigned char)text[i];
+        if(c=='"'||c=='\\'){putchar('\\');putchar(c);}
+        else if(c<0x20)printf("\\u%04x",c);
+        else putchar(c);
+    }
+    putchar('"');
+}
 static void print_row_scores(const mlp_example *rows,int count,const int *correct,const int *first_error,int initial,int joint) {
     if(joint) {
         int positions=0,hits=0,exact=0,examples=0;
@@ -466,6 +623,10 @@ static void print_row_scores(const mlp_example *rows,int count,const int *correc
         if(rows[i].decision_pair) {
             printf(",\"decision_position\":%d,\"decision_correct\":%s,\"decision_margin\":%.9g,\"decision_predicted_id\":%d",rows[i].decision_position,rows[i].decision_correct?"true":"false",rows[i].decision_margin,rows[i].decision_predicted_id);
             if(initial)printf(",\"decision_target_id\":%d,\"decision_alternative_id\":%d",(int)rows[i].cache.targets->data[rows[i].decision_position],rows[i].decision_alternative_id);
+            if(initial&&rows[i].decision_prefix_bytes) {
+                printf(",\"decision_prefix_bytes\":%d,\"decision_prefix\":",rows[i].decision_prefix_bytes);
+                print_json_span(rows[i].answer,(size_t)rows[i].decision_prefix_bytes);
+            }
             if(joint)printf(",\"prefix_tokens\":%d,\"prefix_correct\":%d,\"prefix_exact\":%s",rows[i].decision_position,rows[i].prefix_correct,rows[i].prefix_correct==rows[i].decision_position?"true":"false");
         }
         printf("}");
@@ -495,7 +656,7 @@ int main(int argc,char **argv) {
     nt_seed(MLP_SEED);srand(MLP_SEED);mlp_bank bank={0};bank_init(&bank,m);
     int total=0;for(int i=0;i<count;i++){tokenize(&rows[i],tok);if(rows[i].n_ids>gf->ctx_len)mlp_die("example exceeds model context");if(total>INT_MAX-rows[i].cache.n)mlp_die("too many tokens");total+=rows[i].cache.n;}
     bank.example_weighting=!strcmp(objective,"examples")||!strcmp(objective,"verdict");bank.average_tokens=(double)total/count;
-    bank.verdict_weighting=!strcmp(objective,"verdict");if(argc>9)load_pairs(&bank,rows,count,argv[9]);
+    bank.verdict_weighting=!strcmp(objective,"verdict");if(argc>9)load_pairs_tokenized(&bank,rows,count,argv[9],tok);
     /* Validate the full decision batch before capturing any model activations. */
     int joint_decisions=0,joint_residuals=0;
     token_row *joint_targets=joint?joint_order(rows,count,&joint_decisions,&joint_residuals):NULL;
@@ -519,7 +680,7 @@ int main(int argc,char **argv) {
     int correct_tokens,exact_examples,*row_correct=calloc((size_t)count,sizeof(int)),*first_error=malloc((size_t)count*sizeof(int));if(!row_correct||!first_error)mlp_die("score allocation failed");
     double initial=mean_ce(&bank,rows,order,total,batch,count,&correct_tokens,&exact_examples,row_correct,first_error);
     printf("{\"stage\":\"sft_initial\",\"objective\":\"%s\",\"mean_token_ce\":%.8f,\"examples\":%d,\"tokens\":%d,\"rank\":16,\"alpha\":32,\"layer\":%d,\"trainable_parameters\":%ld,\"seed\":%d,\"teacher_forced_correct_tokens\":%d,\"teacher_forced_exact_examples\":%d",objective,initial,count,total,last,params,MLP_SEED,correct_tokens,exact_examples);
-    if(bank.pair_count)printf(",\"decision_pairs\":%d,\"verdict_weight\":%.9g",bank.pair_count,bank.verdict_weight);
+    if(bank.pair_count)printf(",\"decision_pairs\":%d,\"pair_map_version\":%d,\"verdict_weight\":%.9g",bank.pair_count,bank.pair_map_version,bank.verdict_weight);
     if(joint)printf(",\"decision_positions\":%d,\"residual_positions\":%d,\"joint_positions\":%d,\"residual_lambda\":1,\"clip_limit\":1,\"microbatch_tokens\":%d",joint_decisions,joint_residuals,train_total,batch);
     print_row_scores(rows,count,row_correct,first_error,1,joint);puts("}");fflush(stdout);
     if(decisions)print_decision_scores(&bank,rows,train_order,train_total,0,0);

@@ -314,7 +314,7 @@ python3 training/score_training.py models/verdict-metrics.jsonl \
   --checkpoint-every 4 --output models/verdict-scores.json
 ```
 
-The `JVPR` pair map records original dataset row indices. The native tokenizer
+The default `JVPR1` pair map records original dataset row indices. The native tokenizer
 locates the first divergent non-EOS completion token for each pair. `verdict`
 starts from example weights and replaces only those coefficients with their
 pooled mean. On this corpus, 40 coefficients become `3.596684821`; the other
@@ -767,11 +767,39 @@ cat raw-evidence.tar.gz.part-[0-9][0-9][0-9] > raw-evidence.tar.gz
 sha256sum -c raw-evidence.tar.gz.sha256
 ```
 
-The next controlled explanation-before-verdict experiment must explicitly bind
-each answer's verdict position. The current joint trainer weights the first
-different token in paired answers; adding different explanations would move
-that target into the explanation. That selector and its evaluator need a
-versioned position contract before changing the training corpus.
+`JVPR2` now gives explanation-before-verdict answers independent positions.
+An answer can be `{"analysis":"The local rule permits this dependency.","findings":[]}`.
+The packer locates the actual top-level findings key and stores each answer's
+exact prefix through `"findings`, excluding that key's closing quote. Native
+tokenization checks the prefix against the full answer and selects its next
+token. It also substitutes the paired findings suffix after the same prefix
+and verifies the reciprocal alternative token.
+
+V2 requires compact `"findings":[{` for concern and `"findings":[]` for clean.
+This matters: an independent audit reproduced whitespace variants that selected
+a quote or an opening-array token before the intended contrast. Both preparation
+and native loading now reject those variants. The scorer binds the exact native
+prefix text, its UTF-8 byte length and each row's independent token position.
+The default V1 format retains its first-divergence behavior.
+
+```sh
+make probe-pairs
+python3 training/prepare.py models/explicit-review.bin \
+  --sft training/sft_review_v5.jsonl --sft-only \
+  --review-pairs models/explicit-review.pairs --pair-format 2
+build/jovovich-probe-pairs models/base-qwen.gguf \
+  models/explicit-review.bin models/explicit-review.pairs
+```
+
+On the pinned Qwen tokenizer, all 52 existing review targets match V1 exactly.
+Three unequal-explanation pairs select positions 18/21, 35/10 and 34/35;
+V1 selected explanation differences at positions 4, 4 and 3 respectively.
+All 164 trainer/runtime ChatML comparisons pass. The
+[contract evidence](training/results/2026-10-03-verdict-positions) includes
+raw token IDs, the whitespace regression, independent audit and a runnable
+verification recipe. The next experiment supplies the complete paired
+explanation corpus and evaluates model-generated explanations with a matched
+generation budget.
 
 To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
 and a separate Python environment containing `huggingface_hub==0.35.3`.
