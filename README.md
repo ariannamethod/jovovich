@@ -746,7 +746,7 @@ the plant removed every depth reads 26/52 and 0/26. All three bodies produce a
 token trace byte-identical to the published extraction's. The protocol, the plan
 frozen before extraction, the fixture, the manifests, the per-depth summaries
 and the full 75-row table live in
-[`training/results/2026-10-02-layer-readout`](training/results/2026-10-02-layer-readout).
+[`training/results/2026-10-02-layer-readout-three-bodies`](training/results/2026-10-02-layer-readout-three-bodies).
 
 The review evaluator uses the actual host prompt and native inference path:
 

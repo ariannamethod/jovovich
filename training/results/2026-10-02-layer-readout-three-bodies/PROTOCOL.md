@@ -62,7 +62,7 @@ Fixture before the real run: a tiny synthetic model with a planted
 separable direction at one known layer — the probe must find it at that
 layer and not at others; both receipts committed. rc taken directly,
 never through a pipe. Results, environment, manifests and reproduction
-instructions under training/results/2026-10-02-layer-readout/ following
+instructions under training/results/2026-10-02-layer-readout-three-bodies/ following
 the frozen-readout receipt conventions. Model files stay out of git.
 
 ## Hands

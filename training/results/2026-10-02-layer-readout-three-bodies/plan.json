@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "FROZEN before any state extraction with the three real bodies",
-  "protocol": "training/results/2026-10-02-layer-readout/PROTOCOL.md",
+  "protocol": "training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md",
   "protocol_sha256": "d49bd06dda9d8d54e142538268e18330127d6793c3df58d74f9e0e923176620d",
   "question": "At which decoder depth, if any, do frozen states at the decision position linearly separate concern/clean — and how does that profile differ across three 0.5B bodies: the coder base, its plain-instruct twin, and its abliterated coder twin?",
   "declared_reading": {

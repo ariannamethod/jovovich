@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "gate": "per-layer audit reproduces the published frozen-readout z summary",
-  "mine": "training/results/2026-10-02-layer-readout/parity/published-z-summary.json",
+  "mine": "training/results/2026-10-02-layer-readout-three-bodies/parity/published-z-summary.json",
   "published": "training/results/2026-10-01-frozen-readout/readout-summary.json",
   "compared_fields": 27,
   "unequal_fields": 0,

@@ -88,7 +88,7 @@ diff body1/extract.stdout.jsonl training/results/2026-10-01-frozen-readout/extra
 ## 6. The combined table
 
 ```sh
-node training/readout/layer_table.mjs --plan training/results/2026-10-02-layer-readout/plan.json \
+node training/readout/layer_table.mjs --plan training/results/2026-10-02-layer-readout-three-bodies/plan.json \
   --table coder-base=/tmp/jovovich/table.json \
   --table plain-instruct=/tmp/qwen2.5-0.5b-instruct-q8_0/table.json \
   --table abliterated-coder=/tmp/amos-x-qwen-2.5-0.5b-before-subliteration/table.json \

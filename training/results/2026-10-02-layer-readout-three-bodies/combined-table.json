@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "plan": "training/results/2026-10-02-layer-readout/plan.json",
+  "plan": "training/results/2026-10-02-layer-readout-three-bodies/plan.json",
   "plan_sha256_note": "hashed in the run manifests; this file is derived from the per-body tables only",
   "declared_reading": "signal lives at depth L means correct strictly above 29/52 AND complete pairs strictly above 4/26 at L, with the permutation exceedance printed beside it",
   "floor": {

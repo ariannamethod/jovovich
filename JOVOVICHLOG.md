@@ -32,7 +32,7 @@ is a prerequisite for the next training or layer-collection experiment.
 The per-layer readout ran on all three bodies: 25 depths each, 2002 native fits
 per depth, 150150 fits in total, every one converged, maximum gradient infinity
 norm 1.0e-08 against the declared 1e-08 tolerance. The table is in
-training/results/2026-10-02-layer-readout/combined-table.md with no depth and no
+training/results/2026-10-02-layer-readout-three-bodies/combined-table.md with no depth and no
 body left out, and the receipts are beside it.
 
 Twelve of the seventy-five body-depth cells clear the declared floor of 29/52
@@ -112,7 +112,7 @@ the Chuck controller helps this corpus is an experiment that has not been run.
 ## 2026-10-02 — Where does the judgment live?
 
 Frozen before any state extraction: the per-layer affine readout protocol
-(training/results/2026-10-02-layer-readout/PROTOCOL.md). The published
+(training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md). The published
 final-position diagnostic said the tail barely separates concern from clean —
 29/52 correct, 4/26 complete pairs, against 35/52 and 9/26 for seven surface
 nuisance features — so the probe asks whether any decoder depth carries what
