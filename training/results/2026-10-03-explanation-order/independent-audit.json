@@ -1,0 +1,1065 @@
+{
+  "schema": "jovovich.explanation-order.independent-audit.v1",
+  "created_at_utc": "2026-10-03T17:06:44.061058+00:00",
+  "auditor": "independent explanation_auditor agent",
+  "status": "passed_preparation_and_executable_fixture_audit",
+  "reviewed_revision": "17894f16d6983786c5a0a280c1f980c007522931",
+  "scope": "Independent reading of all 52 rationales against original v5 prompts; byte/content/holdout checks; native Qwen token-trace recount; protocol and archive source review; independent reruns of actual tiny-Qwen Chuck archive fixture and generation fault tests.",
+  "corpus": {
+    "source_rows": 76,
+    "review_rows": 52,
+    "review_pairs": 26,
+    "families": 20,
+    "unchanged_raw_nonreview_rows": 24,
+    "same_system_user_prompts_across_arms": 52,
+    "preserved_original_findings": 52,
+    "distinct_supported_rationales": 52,
+    "shared_prompt_extension": " Include a concise analysis string connecting the relevant rule, changed line and consequence.",
+    "serialization": "Both top-level values end with a newline; the comma starts the next field. The sole arm intervention is the order of analysis/findings fields.",
+    "analysis_words": {
+      "concern": {
+        "min": 28,
+        "max": 38,
+        "mean": 32.69230769230769
+      },
+      "clean": {
+        "min": 26,
+        "max": 35,
+        "mean": 30.653846153846153
+      }
+    },
+    "metadata_leak_check": "No literal class/format metadata tokens or source IDs appear in the 52 analyses; each explanation describes its supplied mechanism.",
+    "heldout": {
+      "source": {
+        "path": "training/review_holdout_v5.jsonl",
+        "bytes": 40748,
+        "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+      },
+      "unchanged_from_head": true,
+      "rationale_id_overlap": 0,
+      "authoring_input_manifest": [
+        "training/sft_review_v5.jsonl"
+      ],
+      "role": "24 historically evaluated cases excluded from the training corpora; metadata sentinel test leaves all 24 generated prompts unchanged."
+    }
+  },
+  "manual_rows": [
+    {
+      "row": 0,
+      "id": "scoped-python-analysis-concern",
+      "pair": "scoped-python-analysis",
+      "family": "scoped-python-analysis",
+      "expected_concern": true,
+      "analysis_sha256": "4ab1716eba10a803135c5b1b04e6019c8b3fa0140cdab40541174b79837f8fa6",
+      "analysis_words": 33,
+      "assessment": "The nearest Lua-only directory rule excludes the added Python import.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 1,
+      "id": "scoped-python-analysis-clean",
+      "pair": "scoped-python-analysis",
+      "family": "scoped-python-analysis",
+      "expected_concern": false,
+      "analysis_sha256": "50e84c6aa690430f043b355b35db02e132e579576f8484111d99733690b4355f",
+      "analysis_words": 27,
+      "assessment": "The nearest directory exception explicitly permits offline Python and its standard library.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 4,
+      "id": "approved-binary-decoder-concern",
+      "pair": "approved-binary-decoder",
+      "family": "approved-binary-decoder",
+      "expected_concern": true,
+      "analysis_sha256": "6e504cb1d0d45989f469b05ec0eec49a2eac02b542728842c5168a6b9211a54c",
+      "analysis_words": 29,
+      "assessment": "The dependency installs a third-party runtime package under a built-in-only rule.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 5,
+      "id": "approved-binary-decoder-clean",
+      "pair": "approved-binary-decoder",
+      "family": "approved-binary-decoder",
+      "expected_concern": false,
+      "analysis_sha256": "6a006e9b81bcebecbbcf023736a7de30212deda8e68f668c28b5a0f9c6042739",
+      "analysis_words": 26,
+      "assessment": "The manifest pins the exact cbor-x version approved in the supplied rule.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 8,
+      "id": "sqlite-build-requirement-concern",
+      "pair": "sqlite-build-requirement",
+      "family": "sqlite-build-requirement",
+      "expected_concern": true,
+      "analysis_sha256": "86dd070d0646523c777305237fa2fcbd793aa3a487a408d14737b03641df383d",
+      "analysis_words": 28,
+      "assessment": "The unconditional REQUIRED lookup adds SQLite to the compiler-only default.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 9,
+      "id": "sqlite-build-requirement-clean",
+      "pair": "sqlite-build-requirement",
+      "family": "sqlite-build-requirement",
+      "expected_concern": false,
+      "analysis_sha256": "4117ed357229029d54cfb94e4c4edd0c316e4ac263efcf4bb38a35146267d8ca",
+      "analysis_words": 26,
+      "assessment": "The top-level lookup implements the explicitly required SQLite dependency.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 12,
+      "id": "background-service-scope-concern",
+      "pair": "background-service-scope",
+      "family": "background-service-scope",
+      "expected_concern": true,
+      "analysis_sha256": "45206fa4cd81c37ab62ec345be40b765741ef04076ac786f208b9f99ca0467b1",
+      "analysis_words": 33,
+      "assessment": "A newly installed continuously running watcher exceeds the help-text-only release.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 13,
+      "id": "background-service-scope-clean",
+      "pair": "background-service-scope",
+      "family": "background-service-scope",
+      "expected_concern": false,
+      "analysis_sha256": "f70a76f2e8df6c0248723ba6ea2ffdc60a5c8f3dd0952659d9e7f32a94792a12",
+      "analysis_words": 30,
+      "assessment": "The installed watcher is the explicitly approved systemd release feature.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 16,
+      "id": "preserve-trie-credit-deletion-concern",
+      "pair": "preserve-trie-credit-deletion",
+      "family": "preserve-trie-credit",
+      "expected_concern": true,
+      "analysis_sha256": "5e1aff4bbc568b23c711e6a404503686c6092041df3df6d30f71e3ee76090720",
+      "analysis_words": 32,
+      "assessment": "Only documentation attribution survives; the retained implementation loses its source attribution.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 17,
+      "id": "preserve-trie-credit-deletion-clean",
+      "pair": "preserve-trie-credit-deletion",
+      "family": "preserve-trie-credit",
+      "expected_concern": false,
+      "analysis_sha256": "f0359118fdf08fbfb4f533caf24938d1aea0419a425cc387071452908882dcee",
+      "analysis_words": 31,
+      "assessment": "An explicit implementation attribution remains after the redundant design credit is removed.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 18,
+      "id": "preserve-trie-credit-replacement-concern",
+      "pair": "preserve-trie-credit-replacement",
+      "family": "preserve-trie-credit",
+      "expected_concern": true,
+      "analysis_sha256": "8cee6fdedec4fb114e85447103a7e716c523f406501db31e14de0c429503d174",
+      "analysis_words": 29,
+      "assessment": "Only documentation attribution survives; the retained implementation loses its source attribution.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 19,
+      "id": "preserve-trie-credit-replacement-clean",
+      "pair": "preserve-trie-credit-replacement",
+      "family": "preserve-trie-credit",
+      "expected_concern": false,
+      "analysis_sha256": "b695c1bca52be81c70569746ecb4d88ff2f34496339557ef6d30145c23fd2091",
+      "analysis_words": 31,
+      "assessment": "An explicit implementation attribution remains after the redundant design credit is removed.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 22,
+      "id": "model-parent-provenance-introduced",
+      "pair": "model-parent-provenance",
+      "family": "model-parent-provenance",
+      "expected_concern": true,
+      "analysis_sha256": "600789f3c7fb883521eb23acce9a2e7d1519b3bad8c597f222dec549079d18d1",
+      "analysis_words": 28,
+      "assessment": "Claimed scratch origin contradicts the supplied adapter-merge history.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 23,
+      "id": "model-parent-provenance-repaired",
+      "pair": "model-parent-provenance",
+      "family": "model-parent-provenance",
+      "expected_concern": false,
+      "analysis_sha256": "04a81a2334acb96515d94c466fcc25018520cd78a0ef5bba4bd3d6d911cb3b96",
+      "analysis_words": 28,
+      "assessment": "The manifest restores the actual supplied Qwen parent checkpoint.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 26,
+      "id": "scoped-design-record-concern",
+      "pair": "scoped-design-record",
+      "family": "scoped-design-record",
+      "expected_concern": true,
+      "analysis_sha256": "56899d8db6ccd74f1a898c75c096e715ca9eec3b5afd0f71176a87ee5f0e8708",
+      "analysis_words": 32,
+      "assessment": "A separate Markdown decision conflicts with the README-only rule.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 27,
+      "id": "scoped-design-record-clean",
+      "pair": "scoped-design-record",
+      "family": "scoped-design-record",
+      "expected_concern": false,
+      "analysis_sha256": "3505cbf00e88f3837976ccadd7003022e0455e83250c8fa23ce16388dabbbe94",
+      "analysis_words": 34,
+      "assessment": "The nearest decisions-directory rule requires this numbered persistent-format record.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 30,
+      "id": "checksum-indirection-concern",
+      "pair": "checksum-indirection",
+      "family": "checksum-indirection",
+      "expected_concern": true,
+      "analysis_sha256": "8cb362d273365e3d10512f14c52ee20b7d7bccfebfd52220f913861236ce8ef5",
+      "analysis_words": 34,
+      "assessment": "The registry prerequisite of a second implemented checksum is unmet.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 31,
+      "id": "checksum-indirection-clean",
+      "pair": "checksum-indirection",
+      "family": "checksum-indirection",
+      "expected_concern": false,
+      "analysis_sha256": "e6ec815b6136f5bb47c164478752e1de2425de0ca33581fe1ef7d2c1089ab8ec",
+      "analysis_words": 34,
+      "assessment": "Both implementations exist and the rule requires dispatch by kind.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 34,
+      "id": "sequence-field-width-introduced",
+      "pair": "sequence-field-width",
+      "family": "sequence-field-width",
+      "expected_concern": true,
+      "analysis_sha256": "d19b1b3f129769cc8be114839ba0b5251e03929897d2ef66e3e3a231fe35f197",
+      "analysis_words": 33,
+      "assessment": "The uint32 member loses values above UINT32_MAX required by the unchanged wire format.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 35,
+      "id": "sequence-field-width-repaired",
+      "pair": "sequence-field-width",
+      "family": "sequence-field-width",
+      "expected_concern": false,
+      "analysis_sha256": "2bf6f4de355a6bd1f0c8d6e3284db645ffd097325a13262bf4c9cf97343fc03f",
+      "analysis_words": 29,
+      "assessment": "The uint64 member restores the required value range.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 38,
+      "id": "allocation-null-guard-deletion-concern",
+      "pair": "allocation-null-guard-deletion",
+      "family": "allocation-null-guard",
+      "expected_concern": true,
+      "analysis_sha256": "5f89161d4525797d498e583bfbfa06b013166e315c2e91b30fc148cb5268ae6e",
+      "analysis_words": 34,
+      "assessment": "The surviving address-of-local check does not inspect the calloc result before dereference.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 39,
+      "id": "allocation-null-guard-deletion-clean",
+      "pair": "allocation-null-guard-deletion",
+      "family": "allocation-null-guard",
+      "expected_concern": false,
+      "analysis_sha256": "be99999793347db5475c50ded4f387163645c41efea52f2672162aa3315d5a70",
+      "analysis_words": 29,
+      "assessment": "A surviving n == NULL guard rejects allocation failure before dereference.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 40,
+      "id": "allocation-null-guard-replacement-concern",
+      "pair": "allocation-null-guard-replacement",
+      "family": "allocation-null-guard",
+      "expected_concern": true,
+      "analysis_sha256": "724aaf02ce2d99f7548037352a15ae951a08b993b97ff8c74d20ffad89056519",
+      "analysis_words": 37,
+      "assessment": "The surviving address-of-local check does not inspect the calloc result before dereference.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 41,
+      "id": "allocation-null-guard-replacement-clean",
+      "pair": "allocation-null-guard-replacement",
+      "family": "allocation-null-guard",
+      "expected_concern": false,
+      "analysis_sha256": "eb7c77e51b227610ef1c0062aeb53a28adcd8a7f47dbf1281fbb7527993935e7",
+      "analysis_words": 35,
+      "assessment": "A surviving n == NULL guard rejects allocation failure before dereference.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 44,
+      "id": "zero-worker-guard-deletion-concern",
+      "pair": "zero-worker-guard-deletion",
+      "family": "zero-worker-guard",
+      "expected_concern": true,
+      "analysis_sha256": "cede5866b55778e0fd1efa18f9e8c9e6923ad27a7543e00bd25dc55645d02999",
+      "analysis_words": 34,
+      "assessment": "The surviving workers < 0 test does not reject caller-supplied zero before division.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 45,
+      "id": "zero-worker-guard-deletion-clean",
+      "pair": "zero-worker-guard-deletion",
+      "family": "zero-worker-guard",
+      "expected_concern": false,
+      "analysis_sha256": "66616c166e9a2764064c0b658fd8df2054903207b2716a546ff28f58f85470f7",
+      "analysis_words": 30,
+      "assessment": "The surviving workers == 0 test returns before division.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 46,
+      "id": "zero-worker-guard-replacement-concern",
+      "pair": "zero-worker-guard-replacement",
+      "family": "zero-worker-guard",
+      "expected_concern": true,
+      "analysis_sha256": "ff594402f30eb9647f0c0edd8a41654436c6ca290bb89de0acd23e667cd50728",
+      "analysis_words": 35,
+      "assessment": "The surviving workers < 0 test does not reject caller-supplied zero before division.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 47,
+      "id": "zero-worker-guard-replacement-clean",
+      "pair": "zero-worker-guard-replacement",
+      "family": "zero-worker-guard",
+      "expected_concern": false,
+      "analysis_sha256": "3a1c9d8d102a3a097b5291bc96e9baa667ccd5d66d56113bb0d56936141e266c",
+      "analysis_words": 31,
+      "assessment": "The surviving workers == 0 test returns before division.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 50,
+      "id": "validated-port-conversion-introduced",
+      "pair": "validated-port-conversion",
+      "family": "validated-port-conversion",
+      "expected_concern": true,
+      "analysis_sha256": "229cc13f9d3068a291330ee77948f4f31674df3f42ef9be029ec684646e455d6",
+      "analysis_words": 33,
+      "assessment": "atoi plus narrowing removes the required decimal syntax and range validation.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        4
+      ]
+    },
+    {
+      "row": 51,
+      "id": "validated-port-conversion-repaired",
+      "pair": "validated-port-conversion",
+      "family": "validated-port-conversion",
+      "expected_concern": false,
+      "analysis_sha256": "430c8c9184673d5c3363f5c517b8cff8614aae24d49388dfe96dc813674ca00c",
+      "analysis_words": 34,
+      "assessment": "The supplied validating parser enforces 1..65535 and returns EINVAL before narrowing.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        3,
+        4
+      ]
+    },
+    {
+      "row": 54,
+      "id": "negative-offset-type-introduced",
+      "pair": "negative-offset-type",
+      "family": "negative-offset-type",
+      "expected_concern": true,
+      "analysis_sha256": "4992764171e131fa276681e182e25f887fcd3e46f431d725f558dadae1830bc9",
+      "analysis_words": 34,
+      "assessment": "Unsigned conversion prevents the retained negative-direction comparison from succeeding.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 55,
+      "id": "negative-offset-type-repaired",
+      "pair": "negative-offset-type",
+      "family": "negative-offset-type",
+      "expected_concern": false,
+      "analysis_sha256": "7c5c718095737d8296639228acb86db2b94c6dd1895bdfbc9c396ae2aac66484",
+      "analysis_words": 31,
+      "assessment": "Bounded signed subtraction preserves negative offsets for the direction branch.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 56,
+      "id": "exact-property-name-introduced",
+      "pair": "exact-property-name",
+      "family": "exact-property-name",
+      "expected_concern": true,
+      "analysis_sha256": "288595819960dfb740a7b2be23d02e5572825f280f5e283d86d4f9b37b278dc2",
+      "analysis_words": 30,
+      "assessment": "Four-byte prefix comparison conflates size_hint with size.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 57,
+      "id": "exact-property-name-repaired",
+      "pair": "exact-property-name",
+      "family": "exact-property-name",
+      "expected_concern": false,
+      "analysis_sha256": "d076e9dac84f531d79ce3313c455a53134e8369cfbe8af75bd2461f815b2f33e",
+      "analysis_words": 32,
+      "assessment": "Whole-string comparison preserves exact size dispatch and the unknown-name fallback.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 58,
+      "id": "idempotent-event-retry-introduced",
+      "pair": "idempotent-event-retry",
+      "family": "idempotent-event-retry",
+      "expected_concern": true,
+      "analysis_sha256": "482355378d14a397e3e577fc43118581040030871c9af83ef441b08a20146edc",
+      "analysis_words": 31,
+      "assessment": "append_event creates a second stored event after a lost acknowledgement.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 59,
+      "id": "idempotent-event-retry-repaired",
+      "pair": "idempotent-event-retry",
+      "family": "idempotent-event-retry",
+      "expected_concern": false,
+      "analysis_sha256": "f299348a76ea1e3e2b63adbf54d3cbad7868ba776cc23d20b9f87b6fa537b377",
+      "analysis_words": 33,
+      "assessment": "retry_delivery reuses the already appended event ID.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2
+      ]
+    },
+    {
+      "row": 60,
+      "id": "write-permission-check-deletion-concern",
+      "pair": "write-permission-check-deletion",
+      "family": "write-permission-check",
+      "expected_concern": true,
+      "analysis_sha256": "846670bab7249ff33ed6c16fccf49853ae8ea25aca49cedaed53faa33f6e5b0b",
+      "analysis_words": 33,
+      "assessment": "The address-of-member comparison does not reject a false write-permission value.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 61,
+      "id": "write-permission-check-deletion-clean",
+      "pair": "write-permission-check-deletion",
+      "family": "write-permission-check",
+      "expected_concern": false,
+      "analysis_sha256": "4a40818519c8e11b71124ac8a024a37775e695a05ab51ef724f27fd73228ef3a",
+      "analysis_words": 26,
+      "assessment": "A surviving value check rejects read-only sessions before replacement.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 62,
+      "id": "write-permission-check-replacement-concern",
+      "pair": "write-permission-check-replacement",
+      "family": "write-permission-check",
+      "expected_concern": true,
+      "analysis_sha256": "2987684b90a71c24d7b4aa4e463e5d3c5fb10f4c2bddb13760178d2a146e0489",
+      "analysis_words": 38,
+      "assessment": "The address-of-member comparison does not reject a false write-permission value.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 63,
+      "id": "write-permission-check-replacement-clean",
+      "pair": "write-permission-check-replacement",
+      "family": "write-permission-check",
+      "expected_concern": false,
+      "analysis_sha256": "e03a063e2380e56065bf99a674acebc9c15bf2bde38ab897c7a012fa3c88508c",
+      "analysis_words": 32,
+      "assessment": "A surviving value check rejects read-only sessions before replacement.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 64,
+      "id": "stable-manifest-order-deletion-concern",
+      "pair": "stable-manifest-order-deletion",
+      "family": "stable-manifest-order",
+      "expected_concern": true,
+      "analysis_sha256": "0219d7f3490f118318541c6c0c734983edd532b023d6eb471c4b8bb6a5ead946",
+      "analysis_words": 34,
+      "assessment": "Sorting output before append does not sort the names used by the loop.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 65,
+      "id": "stable-manifest-order-deletion-clean",
+      "pair": "stable-manifest-order-deletion",
+      "family": "stable-manifest-order",
+      "expected_concern": false,
+      "analysis_sha256": "cff2c26a87fd2437b04655645b329f172a5a15ef6c5ad930cb7321eeca9e364d",
+      "analysis_words": 31,
+      "assessment": "A surviving names.sort runs before emission and preserves stable ASCII key order.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 66,
+      "id": "stable-manifest-order-replacement-concern",
+      "pair": "stable-manifest-order-replacement",
+      "family": "stable-manifest-order",
+      "expected_concern": true,
+      "analysis_sha256": "2b92a2efab028937ccdd36119c5f3a9fa2ce4fbf294faf88a652c243a144ae3d",
+      "analysis_words": 34,
+      "assessment": "Sorting output before append does not sort the names used by the loop.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 67,
+      "id": "stable-manifest-order-replacement-clean",
+      "pair": "stable-manifest-order-replacement",
+      "family": "stable-manifest-order",
+      "expected_concern": false,
+      "analysis_sha256": "3f1479e46ee96e1640ce3534e13ab2bd9283961d023beb7b2349989fefbda101",
+      "analysis_words": 31,
+      "assessment": "A surviving names.sort runs before emission and preserves stable ASCII key order.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 68,
+      "id": "atomic-snapshot-publication-introduced",
+      "pair": "atomic-snapshot-publication",
+      "family": "atomic-snapshot-publication",
+      "expected_concern": true,
+      "analysis_sha256": "870c9e243104d106d778ebf0595dfd38bf2a673d479241aea35129c46c46cd0b",
+      "analysis_words": 36,
+      "assessment": "Writing the live file exposes partial content to concurrent readers.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        3
+      ]
+    },
+    {
+      "row": 69,
+      "id": "atomic-snapshot-publication-repaired",
+      "pair": "atomic-snapshot-publication",
+      "family": "atomic-snapshot-publication",
+      "expected_concern": false,
+      "analysis_sha256": "a2006d1266de1c9968b6c73f675f157b83c874f293f7db2cec1aac85ea3618b1",
+      "analysis_words": 34,
+      "assessment": "Complete temporary-file write followed by same-directory rename preserves old-or-new publication.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        2,
+        3
+      ]
+    },
+    {
+      "row": 70,
+      "id": "save-status-propagation-introduced",
+      "pair": "save-status-propagation",
+      "family": "save-status-propagation",
+      "expected_concern": true,
+      "analysis_sha256": "b78780e4340067e1bd4d0d0219be8d8585c1094686e669b1a878c1573080ad5a",
+      "analysis_words": 28,
+      "assessment": "Discarding save status and returning zero hides persistence failures.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        3
+      ]
+    },
+    {
+      "row": 71,
+      "id": "save-status-propagation-repaired",
+      "pair": "save-status-propagation",
+      "family": "save-status-propagation",
+      "expected_concern": false,
+      "analysis_sha256": "52ed07dca77dd4b61754f66dde1bf37dd6c3a7912c9e0cc72d99e9b2114e863c",
+      "analysis_words": 29,
+      "assessment": "Returning save_settings propagates both success and failure.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        3
+      ]
+    },
+    {
+      "row": 72,
+      "id": "allocation-product-overflow-deletion-concern",
+      "pair": "allocation-product-overflow-deletion",
+      "family": "allocation-product-overflow",
+      "expected_concern": true,
+      "analysis_sha256": "cec46a2b9eadef3912ac23ddfc981f464df37868f3b10e90b0b77f586b84cef3",
+      "analysis_words": 34,
+      "assessment": "A uint32-based bound admits counts whose uint64 element-size product overflows.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 73,
+      "id": "allocation-product-overflow-deletion-clean",
+      "pair": "allocation-product-overflow-deletion",
+      "family": "allocation-product-overflow",
+      "expected_concern": false,
+      "analysis_sha256": "27d6975c1828432f8e37fa830a9f7dd1f8d3ccb7122b70aeacd96810f743a32c",
+      "analysis_words": 31,
+      "assessment": "The surviving uint64-based bound checks the actual element-width product before allocation.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1
+      ]
+    },
+    {
+      "row": 74,
+      "id": "allocation-product-overflow-replacement-concern",
+      "pair": "allocation-product-overflow-replacement",
+      "family": "allocation-product-overflow",
+      "expected_concern": true,
+      "analysis_sha256": "691d60a3cf7dca7579b23c6ea5afbe629a9571fb2840b33bf8c1b83b6235c418",
+      "analysis_words": 34,
+      "assessment": "A uint32-based bound admits counts whose uint64 element-size product overflows.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "row": 75,
+      "id": "allocation-product-overflow-replacement-clean",
+      "pair": "allocation-product-overflow-replacement",
+      "family": "allocation-product-overflow",
+      "expected_concern": false,
+      "analysis_sha256": "7f2050e154eba01ce2e024ed3d6f85e361988215e330e620fad156e50f095a88",
+      "analysis_words": 32,
+      "assessment": "The surviving uint64-based bound checks the actual element-width product before allocation.",
+      "rule_context_and_changed_line_support": "pass",
+      "changed_line_ids": [
+        1,
+        2
+      ]
+    }
+  ],
+  "native": {
+    "verification": {
+      "path": "training/results/2026-10-03-explanation-order/native-normalized/verification.json",
+      "bytes": 14205,
+      "sha256": "4847605f168b148c77bcac89a4ba92b77363ec1361747f39b3d4ce4fd1b1b350"
+    },
+    "arms": {
+      "before": {
+        "review_rows": 52,
+        "pairs": 26,
+        "decision_tokens": 52,
+        "residual_tokens": 3411,
+        "max_prompt_tokens": 570,
+        "max_answer_tokens_including_eos": 99,
+        "verdict_position_min": 40,
+        "verdict_position_max": 58
+      },
+      "after": {
+        "review_rows": 52,
+        "pairs": 26,
+        "decision_tokens": 52,
+        "residual_tokens": 3411,
+        "max_prompt_tokens": 570,
+        "max_answer_tokens_including_eos": 99,
+        "verdict_position_min": 3,
+        "verdict_position_max": 3
+      }
+    },
+    "prompt_and_content_matches": 52,
+    "cross_arm_verdict_target_and_alternative_matches": 52,
+    "concern_target_id": 66582,
+    "clean_target_id": 8899,
+    "native_chatml_comparisons": 304,
+    "chatml_failures": 0,
+    "source_input_bindings_rechecked": 21,
+    "binary_bindings_rechecked": 2,
+    "experimental_qwen_inference_calls": 0,
+    "experimental_qwen_training_updates": 0
+  },
+  "protocol": {
+    "training_comparison": "Same pinned Qwen base, source/binary, seed, rank, alpha, objective and 100 full-corpus updates; fixed update100 is the primary checkpoint in both arms.",
+    "partitions_per_arm": {
+      "decision": 52,
+      "residual": 3411,
+      "residual_lambda": 1
+    },
+    "nonreview_role": "24 unchanged voice/code rows are readouts; joint training updates mapped review rows.",
+    "teacher_forced": "The before boundary includes its class-specific gold analysis. These metrics are reported separately from free generation.",
+    "free_generation": "All three models receive identical system/user prompts ending at the empty assistant header. The common budget is 512 tokens; the largest gold completion is 99 tokens including EOS.",
+    "primary_scoring": "Grounded complete review pairs, with generated analysis and findings checked against each exact prompt. Missing analysis and serialization order are separate manipulation checks. Causally valid changed-line alternatives are accepted by manual adjudication.",
+    "strict_scorer": "Classification from known-key JSON with valid findings is separate from analysis/order/exact-gold-line checks. production_acceptance and semantic_assessment remain null until their separate evaluations.",
+    "generation_environment": "Four native worker threads for all generation models; training uses two threads in both arms. Native subprocesses receive an explicit environment allowlist."
+  },
+  "resolved_findings": [
+    {
+      "id": "zero-input-wording",
+      "observed": "One explanation called zero an allowed input although the source requires rejecting it.",
+      "resolution": "Changed to caller-supplied zero input; all 52 explanations reviewed after correction."
+    },
+    {
+      "id": "field-order-bpe-boundary",
+      "observed": "Initial compact serialization produced clean target788 before and8899 after; the native cross-arm gate rejected this preparation.",
+      "resolution": "Newline after each top-level value gives concern66582/clean8899 in both arms and identical 52+3411 token partitions. Failed attempt and exact pre-normalization sources remain archived."
+    },
+    {
+      "id": "missing-analysis-classification",
+      "observed": "Initial strict scorer made a findings-only response lose its classification score.",
+      "resolution": "Findings diagnostics now survive missing or mistyped analysis. Independent 52-row findings-only fixture retains52 classifications and26 pairs, with zero strict-schema/order passes."
+    },
+    {
+      "id": "canonical-citation-scope",
+      "observed": "An exact canonical line-ID match was initially named location_correct while the semantic rubric allows alternative causal changed lines.",
+      "resolution": "Renamed exact_gold_line_ids and retained manual semantic assessment separately."
+    },
+    {
+      "id": "collector-environment-and-token-binding",
+      "observed": "Initial collector retained inherited NT settings and lacked its declared standalone prompt-token comparison.",
+      "resolution": "Explicit allowlist, native --token-ids with remotely verified tokenizer unit before generation, and exact trace/preflight ID equality."
+    },
+    {
+      "id": "final-archive-status",
+      "observed": "Both launchers initially wrote completed status before final remote readback.",
+      "resolution": "Local completion candidate states native_completed/requires_verified_receipt; completed/verified is returned only after final readback. Final transport/readback failure tests retain the candidate and produce no verified completion."
+    },
+    {
+      "id": "after-handoff-receipt-wrapper",
+      "observed": "The initial bind_after helper expected raw receipt fields at the top level, while the trainer now saves a completed/verified wrapper containing remote_verification.",
+      "resolution": "The helper checks wrapper status then validates the nested completion receipt and its exact completion.json hash/size. Independent successful handoff and receipt-mismatch fixtures passed."
+    },
+    {
+      "id": "after-handoff-matched-plan",
+      "observed": "The initial helper compared only the intersection of arm bindings and did not tie the local before plan to its archived completion or compare optimizer arguments.",
+      "resolution": "The trainer binds the exact plan SHA256 and rechecks it before every ACK and completion. The helper requires that hash plus archived bindings, exact shared bindings after excluding intended dataset/pair-map differences, matching trainer/base/optimizer argv and environment, and valid initial LoRA hashes. Independent altered-plan/settings/bindings fixtures passed."
+    }
+  ],
+  "archive_review": {
+    "intent_before_forward": "run_training synchronously verifies intent plus bound binary/data/pairs/source snapshots before subprocess.Popen; the base is bound by exact hash/size.",
+    "native_barriers": "Gate0 snapshots/readouts and each update wait for an exact ACK. Closed logs and saved six-file checkpoints are remotely verified before ACK. Chuck stays in one process.",
+    "initialization": "Optional exact gate/up/down initial LoRA hashes are checked before gate0 ACK; plan requires after-arm hashes from the verified before initial snapshot.",
+    "final_barrier": "After the final ACK the native process writes its final six files and exits; parent remotely verifies final weights/logs/source integrity before returning completed.",
+    "native_failure": "Missing, malformed, partial or wrong ACKs stop without optimizer advancement. Timeout bounds a silent controller.",
+    "capture_policy": "Intent is remote before capture. RAM caches are transient; capture logs and initial snapshot become a verified unit at gate0.",
+    "failure_lifecycle": "A failed native process is preserved as an interrupted attempt. A new attempt starts a new complete trajectory; adapter-only snapshots are not passed off as restored Chuck state.",
+    "plan_integrity": "Exact saved plan SHA256 is rechecked after intent and at every archive barrier; its hash is retained in the remotely bound completion. Changing local plan bytes after an update archive stops before the next ACK.",
+    "paired_handoff": "prepare_launches.py leaves after.template.json non-runnable until bind-after verifies the nested before completion receipt, fixed100 updates, exact archived plan and matched configuration; it then supplies the three verified initial adapter hashes."
+  },
+  "independent_executions": [
+    {
+      "command": "python3 test/checkpoint_archive_gate_fixture.py",
+      "exit_code": 0,
+      "result": {
+        "passed": true,
+        "reference_trajectory_updates": 8,
+        "bitwise_trajectory_match": true,
+        "verified_units": 11,
+        "fault_scenarios": 17,
+        "initial_adapter_match": true,
+        "scorer_metrics_preserved": true
+      },
+      "fixture": "Actual deterministic tiny-Qwen native trainer and native Chuck, with a simulated private remote transport exercising DurableArchive commits/readback."
+    },
+    {
+      "command": "node test/explanation_generation.test.mjs",
+      "exit_code": 0,
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "fixture": "Synthetic native subprocess contract, real DurableArchive against injected remote faults, and actual production heldout prompt rendering."
+    },
+    {
+      "command": "Independent Python recount of final native-normalized outputs and current source/binary bindings",
+      "exit_code": 0,
+      "result": "All 52 rows in both arms; exact semantic prefix, mapped token, role-specific target, cross-arm IDs, equal partition counts and all23 binding records passed."
+    },
+    {
+      "command": "Independent findings-only 52-row scorer regression",
+      "exit_code": 0,
+      "classification_correct": 52,
+      "complete_classification_pairs": 26,
+      "strict_output_pass": 0,
+      "production_acceptance": null,
+      "semantic_assessment": null
+    },
+    {
+      "command": "node test/explanation_launches.test.mjs",
+      "exit_code": 0,
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "fixture": "Nested verified receipt succeeds; raw completion mutation, local plan mutation, invalid initial hashes, changed learning rate/environment, missing shared binding and unresolved template are rejected."
+    }
+  ],
+  "launch_state": {
+    "full_explanation_order_experiment_started": false,
+    "next_required": "Freeze exact executable launch plans; verify authorized private HF archive with pinned readback; bind after-arm initial hashes from before gate0.",
+    "current_scope_complete": true
+  },
+  "open_code_blockers": [],
+  "bindings": [
+    {
+      "path": "training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "training/explanations/reasons.json",
+      "bytes": 45384,
+      "sha256": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+    },
+    {
+      "path": "training/explanations/build_corpora.py",
+      "bytes": 11538,
+      "sha256": "1c8c2427571aad38176dae000272546af24bc07d8ab75e4ac122f36d8bd0c2bc"
+    },
+    {
+      "path": "training/sft_review_v6_before.jsonl",
+      "bytes": 180759,
+      "sha256": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250"
+    },
+    {
+      "path": "training/sft_review_v6_after.jsonl",
+      "bytes": 180759,
+      "sha256": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218"
+    },
+    {
+      "path": "training/review_holdout_v5.jsonl",
+      "bytes": 40748,
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "path": "training/explanations/plan.json",
+      "bytes": 32754,
+      "sha256": "70ccfe238d7fb3115f021a58ba856fd0200d9e011a84a5a0c563c213cb8746cc"
+    },
+    {
+      "path": "training/explanations/verify_native.py",
+      "bytes": 8408,
+      "sha256": "2b0566780b78cd192810bdbb040fc7b1c26c819adc8e5b249df5f0b0e37729ae"
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "bytes": 19862,
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "bytes": 20881,
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 14343,
+      "sha256": "8315fc106febcdc0c2cb83b94938df9313fa7a67439fdd5f47c0aa7f274aea7d"
+    },
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 49761,
+      "sha256": "d9b44dc9d9ff0ae9a8490b9f2a1b1f67e311618c5bf26a15e147d5ff145a2eba"
+    },
+    {
+      "path": "training/probe_pairs.c",
+      "bytes": 2251,
+      "sha256": "6b8ceb6ac81786c1a91743097a01bde93cb1eea2108b507e3df793bae76dc0c7"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    },
+    {
+      "path": "test/explanation_corpus.test.mjs",
+      "bytes": 11533,
+      "sha256": "4c3c8f6d5807bf5c68d569b19d3dc7b47c77976ad67e7588b06e680ab8b62c5b"
+    },
+    {
+      "path": "test/explanation_score.test.mjs",
+      "bytes": 12170,
+      "sha256": "76926290a1be80b278b6982498342e104be36fa7c95777dff2a67177c930ad2d"
+    },
+    {
+      "path": "test/explanation_generation.test.mjs",
+      "bytes": 12049,
+      "sha256": "65706e187bc4f3f0da520a2c9095ac77a4ee394445ee83e75925f772545c5b69"
+    },
+    {
+      "path": "test/checkpoint_archive_gate_fixture.py",
+      "bytes": 15069,
+      "sha256": "9dcaa900b9d12bdf14d8a4694440dba8ff5fbb30f0190c60aba41ab758b3524e"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order/native-normalized/verification.json",
+      "bytes": 14205,
+      "sha256": "4847605f168b148c77bcac89a4ba92b77363ec1361747f39b3d4ce4fd1b1b350"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order/native-normalized/bindings.json",
+      "bytes": 4339,
+      "sha256": "f055e19d73acc68fae890353c0948396360f1965db538540681bcdae3c5c7538"
+    },
+    {
+      "path": "training/results/2026-10-03-explanation-order/native-normalized/binary-bindings.json",
+      "bytes": 435,
+      "sha256": "2e6ad6dcc468ee8152d945f3baccfa6c9c3b6abceb6ba09971b39c2da95eec39"
+    },
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 8294,
+      "sha256": "3bea3fa998fd7d7e9bc7ed38a8a390cbf1ac4cedd84994da4559a26079ed2355"
+    },
+    {
+      "path": "test/explanation_launches.test.mjs",
+      "bytes": 3849,
+      "sha256": "4394a670b6d69764cf7ba8c6f775c381c0211ff3c7f425eca1b8fda33739e5fb"
+    }
+  ]
+}

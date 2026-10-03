@@ -1,0 +1,540 @@
+{
+  "schema": "jovovich.explanation-order.plan.v1",
+  "status": "runnable_prepared_requires_private_archive",
+  "question": "With the same review prompts, rationale text and findings, does generating analysis before findings improve grounded complete reviews over generating the same analysis after findings?",
+  "hypothesis": "A short generated account of the applicable rule and visible code can supply useful context at the explicit verdict boundary.",
+  "current_phase": "Both normalized corpora passed actual-Qwen tokenization and ChatML preflight. Finalize exact runner/source/binary launch bindings, verify the private archive and run the two fixed training arms.",
+  "arms": [
+    {
+      "id": "before",
+      "corpus": "training/sft_review_v6_before.jsonl",
+      "review_key_order": [
+        "analysis",
+        "findings"
+      ]
+    },
+    {
+      "id": "after",
+      "corpus": "training/sft_review_v6_after.jsonl",
+      "review_key_order": [
+        "findings",
+        "analysis"
+      ]
+    }
+  ],
+  "corpus": {
+    "source": "training/sft_review_v5.jsonl",
+    "rationales": "training/explanations/reasons.json",
+    "total_rows": 76,
+    "review_rows": 52,
+    "review_pairs": 26,
+    "concern_rows": 26,
+    "clean_rows": 26,
+    "voice_rows": 12,
+    "code_rows": 12,
+    "row_order": "Preserve all v5 row IDs, task kinds and pair identities in source order.",
+    "review_content": "Each pair of arm rows has byte-identical system/user messages, identical decoded analysis strings and identical findings objects; only the two top-level answer keys change order.",
+    "prompts": "Use the same order-neutral request for analysis and findings in both arms; preserve source repository/code/rule context. The exact common extension and resulting prompts are frozen with the corpus.",
+    "nonreview_rows": "Keep all 24 voice/code rows unchanged. The joint objective updates the 52 mapped reviews; the other 24 rows receive teacher-forced diagnostic readouts.",
+    "rationale_contract": "One short explanation of the rule, relevant code and its consequence, including the surviving protection for clean cases. Every assertion is supported by the visible prompt. No case ID or gold label is injected into the model input.",
+    "pair_format": "JVPR2 for both arms; top-level findings boundary verified by the native tokenizer for each row separately.",
+    "token_accounting": "Measure completion, decision and residual token counts separately per arm. Require every matched source row to have the same native verdict target ID and alternative ID across arms, in addition to each arm passing its own exact-prefix and reciprocal-counterfactual checks. Preserve actual completion/residual counts and normalize each arm using its measured counts.",
+    "serialization": "Serialize both review answers with a newline after every top-level value and each following comma at the start of the next line. Use the same rule for analysis and findings in both arms. Field contents and the compact findings value remain identical; the order changes alone.",
+    "native_verdict_preflight_history": {
+      "evidence": "training/results/2026-10-03-explanation-order/native/{before,after}.stdout.txt",
+      "before": {
+        "concern_target_id": 66582,
+        "clean_target_id": 788,
+        "rows_per_role": 26
+      },
+      "after": {
+        "concern_target_id": 66582,
+        "clean_target_id": 8899,
+        "rows_per_role": 26
+      },
+      "interpretation": "The initial compact serializer produced clean target788 when findings ended the object and target8899 when analysis followed it. The source findings content was equal but the predicted clean token differed. Preserve this preflight evidence and replace the serializer before training.",
+      "status": "compact_serialization_rejected_before_training",
+      "resolution": "Put a newline after every top-level value with commas starting the next line. The delimiter probe and final normalized native verification both pass. All52 review rows have matching target/alternative IDs and equal completion lengths across arms: concern66582 and clean8899.",
+      "normalized_expected_targets": {
+        "concern": 66582,
+        "clean": 8899
+      },
+      "normalized_preflight": "training/results/2026-10-03-explanation-order/native-normalized",
+      "delimiter_probe": {
+        "path": "training/results/2026-10-03-explanation-order/delimiter-probe/result.json",
+        "sha256": "156b5b0d985652169a2b3c20062b9c8d9d6c1ff2658c8665529b5f0fc6db7475",
+        "bytes": 1380,
+        "status": "pass",
+        "review_rows_per_arm": 52,
+        "target_alternative_id_sets": [
+          [
+            8899,
+            66582
+          ],
+          [
+            66582,
+            8899
+          ]
+        ]
+      }
+    },
+    "normalized_native_verification": {
+      "path": "training/results/2026-10-03-explanation-order/native-normalized/verification.json",
+      "bytes": 14205,
+      "sha256": "4847605f168b148c77bcac89a4ba92b77363ec1361747f39b3d4ce4fd1b1b350",
+      "status": "pass",
+      "arms": {
+        "before": {
+          "review_rows": 52,
+          "pairs": 26,
+          "decision_tokens": 52,
+          "residual_tokens": 3411,
+          "max_prompt_tokens": 570,
+          "max_answer_tokens_including_eos": 99,
+          "verdict_position_min": 40,
+          "verdict_position_max": 58
+        },
+        "after": {
+          "review_rows": 52,
+          "pairs": 26,
+          "decision_tokens": 52,
+          "residual_tokens": 3411,
+          "max_prompt_tokens": 570,
+          "max_answer_tokens_including_eos": 99,
+          "verdict_position_min": 3,
+          "verdict_position_max": 3
+        }
+      },
+      "identical_prompt_and_content_rows": 52,
+      "unchanged_nonreview_rows": 24,
+      "native_chatml_comparisons": 304,
+      "inference_calls": 0,
+      "training_updates": 0
+    }
+  },
+  "training": {
+    "base_model": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "base_filename": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "base_expected_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "trainer": "training/train_mlp.c",
+    "runtime": "notorch C",
+    "optimizer": "nt_tape_chuck_step",
+    "source_policy": "Both arms use the same frozen trainer binary, notorch revision, compiler flags and native environment after the acknowledgement hook is audited. Record all exact hashes at freeze.",
+    "initialization": "Separate fresh processes from the same base with identical seed, rank, alpha and adapter ordering. Archive gate0 six initial files for before, recover and verify its gate/up/down LoRA hashes from that pinned remote unit, then place those hashes in the after launch plan. The after trainer gate0 must match all three initial LoRA hashes before ACK permits its first update.",
+    "seed": 20260929,
+    "rank": 16,
+    "alpha": 32,
+    "trainable_parameters": 276480,
+    "adapter_targets": [
+      "final decoder MLP gate projection",
+      "final decoder MLP up projection",
+      "final decoder MLP down projection"
+    ],
+    "optimizer_updates": 100,
+    "learning_rate": 0.0001,
+    "gradient_clip": 1,
+    "microbatch_tokens": 40,
+    "objective": "joint",
+    "decision_positions_per_update": 52,
+    "residual_lambda": 1,
+    "normalization": "Mean CE over 52 explicit decision positions plus mean CE over all other mapped review completion tokens, including im_end; accumulate all microbatches before the single update.",
+    "saved_updates": [
+      25,
+      50,
+      75,
+      100
+    ],
+    "primary_checkpoint": 100,
+    "checkpoint_rule": "Evaluate update 100 from each complete arm. Updates 25/50/75 are fixed teacher-forced trajectory diagnostics. Endpoint selection does not depend on their scores.",
+    "optimizer_state": "Keep the full 100-update Chuck trajectory inside one live process per arm. Archive acknowledgements pause this process without reinitializing the tape, momentum or Chuck state.",
+    "execution_order": [
+      "before",
+      "after"
+    ],
+    "max_parallel_training_processes": 1,
+    "native_environment": {
+      "NT_NO_I8": "1",
+      "NT_QMV_THREADS": "2",
+      "NT_ATTN_THREADS": "2",
+      "NT_SIMD_THREADS": "2"
+    },
+    "environment_policy": "Strip inherited NT_* settings, then apply the frozen values. Keep authentication in the archive parent and out of native child environments.",
+    "argv_template": [
+      "build/jovovich-train-mlp",
+      "@BASE@",
+      "@ARM_DATASET@",
+      "@ARM_PREFIX@",
+      "100",
+      "0.0001",
+      "40",
+      "25",
+      "joint",
+      "@ARM_PAIR_MAP@"
+    ],
+    "initial_snapshot_update": 0,
+    "initial_snapshot_files": 6,
+    "residual_positions_per_update": 3411,
+    "joint_positions_per_update": 3463,
+    "microbatches_per_update": 87,
+    "final_microbatch_positions": 23,
+    "initialization_status": "Native model cache capture and actual initial snapshots have not run; these checks execute at gate0 after private archive verification."
+  },
+  "primary_evaluation": {
+    "models": [
+      "shared_base_update0",
+      "before_update100",
+      "after_update100"
+    ],
+    "generation_mode": "Free generation from the exact common system/user ChatML prompt ending immediately after the empty assistant header.",
+    "assistant_input": "",
+    "decoding": {
+      "temperature": 0,
+      "continuation_tokens": 512,
+      "context": 8192,
+      "samples_per_model_case": 1
+    },
+    "same_prompt_check": "Compare exact prompt bytes and prompt token IDs across all three models. No gold analysis, answer prefix, expected label or findings content is supplied to the generator.",
+    "splits": [
+      {
+        "id": "train",
+        "source": "training/sft_review_v5.jsonl",
+        "rows": 52,
+        "pairs": 26,
+        "selection": "All kind=review rows, using the common v6 prompt extension. This reports learned training reviews."
+      },
+      {
+        "id": "heldout_v5",
+        "source": "training/review_holdout_v5.jsonl",
+        "rows": 24,
+        "pairs": 12,
+        "families": 6,
+        "selection": "All source rows in source order, using the same common extension. These cases are excluded from optimizer updates and have existing historical evaluations."
+      }
+    ],
+    "review_generation_calls": 228,
+    "maximum_requested_review_tokens": 116736,
+    "execution_order": "Run the six fixed collector jobs below in listed order, one process at a time; each collector traverses its complete source-order split and archives each closed response before generating the next case.",
+    "max_parallel_generation_processes": 1,
+    "primary_endpoint": "Fully grounded complete concern/clean pairs per split: both rows pass the complete-review rubric. Report all three models, paired before-minus-after differences, and before-only/after-only/both/neither pair counts.",
+    "full_review_rubric": {
+      "structure": "The unchanged production parseReview accepts the full response and all changed-line citations.",
+      "concern": "At least one supported concrete issue is identified with a causally appropriate available changed-line citation. Every material finding and every material assertion in generated analysis is supported by the exact prompt.",
+      "clean": "The accepted findings list is empty and every material assertion in generated analysis is supported by the exact prompt.",
+      "analysis_presence": "An absent analysis is recorded separately and the review is still assessed on its complete actual content. An empty/missing analysis does not satisfy the generated-analysis manipulation check.",
+      "citation": "Accept any available changed line with a valid causal connection, including either side of a harmful no-op replacement; gold wording and one canonical line are not required.",
+      "generation_failure": "Parse errors, truncated incomplete JSON, empty output, inference failures and unsupported additional claims remain in the fixed denominator."
+    },
+    "separate_counts": [
+      "full review passes /52 train and /24 heldout",
+      "full concern/clean pairs /26 train and /12 heldout",
+      "concern presence and clean empty-list correctness",
+      "supported changed-line location",
+      "real issue detected despite an unsupported extra claim",
+      "production parser acceptance",
+      "analysis present, nonempty and semantically supported",
+      "actual top-level key order and analysis-before-findings frequency",
+      "stop token versus budget exhaustion",
+      "generated tokens, elapsed time and failure phase"
+    ],
+    "judgment": "Root and an independent auditor read exact prompts and complete responses under opaque model labels; adjudicate differences and archive row-level reasons before revealing the mapping.",
+    "analysis_audit": "Inspect the analysis field as well as findings. The current production parser returns findings and discards extra top-level fields, so its acceptance alone does not assess analysis content.",
+    "artifacts_per_response": [
+      "exact prompt",
+      "pre-generation intent",
+      "tokenizer output",
+      "raw stdout",
+      "raw stderr",
+      "native trace with sampled and stop token IDs",
+      "process return code and timestamps",
+      "structural findings",
+      "blinded semantic judgment"
+    ],
+    "token_trace": "Use src/infer.c --trace-tokens and require its prompt IDs to match the standalone tokenizer output. Derive stop/budget status from that exact native trace.",
+    "scoring_separation": {
+      "findings_quality": "Report concern/clean classification, causal citation support, findings-only semantic quality and their complete pair counts independently of analysis presence and key order.",
+      "complete_review_quality": "The primary semantic endpoint assesses every generated material assertion, including analysis. Missing analysis is reported separately without automatically failing an otherwise grounded findings-only review.",
+      "strict_output_contract": "Separately report valid JSON, both requested keys, nonempty analysis, intended key order, and exact-gold-line structural matches. Strict serialization and exact-gold-line success have their own row/pair counters.",
+      "semantic_citations": "The manual full-review endpoint accepts any available causally appropriate changed-line citation. Exact-gold-line metrics remain structural diagnostics.",
+      "reference_models": "The shared unchanged base is evaluated under the same common v6 prompts as a current reference. Historical v5 models and original-prompt outputs are diagnostics only; the trained causal comparison is before_update100 versus after_update100."
+    },
+    "heldout_routing": {
+      "source": "training/review_holdout_v5.jsonl",
+      "prompt_construction": "Use production chunksFor and promptFor with prompts/identity.txt, require one chunk, and append build_corpora.SUFFIX to the user task before its closing im_end. End the final prompt at the empty assistant header.",
+      "metadata": "Keep id, pair, expected_concern, gold findings and allowed changed-line IDs in the evaluation record only. The collector consumes the exact prompt bytes separately from scoring metadata; corpus_sha256 identifies the original heldout source bytes.",
+      "binding": "Freeze the heldout source, identity, common suffix, host source and every rendered prompt hash together with the generation runner.",
+      "counts": {
+        "rows": 24,
+        "pairs": 12,
+        "families": 6
+      },
+      "gold_analysis": "No authored gold analysis is required for free-generation heldout evaluation. Semantic judgments inspect the generated analysis against the visible prompt.",
+      "collector_split": "holdout",
+      "implementation": "collect_generation.py reads the original holdout source with --split holdout and imports the exact SUFFIX from build_corpora.py. Its bootstrap archives the host, identity, builder and every rendered prompt."
+    },
+    "native_environment": {
+      "NT_NO_I8": "1",
+      "NT_QMV_THREADS": "4",
+      "NT_ATTN_THREADS": "4",
+      "NT_SIMD_THREADS": "4"
+    },
+    "collector": "training/explanations/collect_generation.py",
+    "collector_jobs": [
+      {
+        "model": "shared_base_update0",
+        "split": "train",
+        "source": "training/sft_review_v6_before.jsonl",
+        "rows": 52
+      },
+      {
+        "model": "shared_base_update0",
+        "split": "holdout",
+        "source": "training/review_holdout_v5.jsonl",
+        "rows": 24
+      },
+      {
+        "model": "before_update100",
+        "split": "train",
+        "source": "training/sft_review_v6_before.jsonl",
+        "rows": 52
+      },
+      {
+        "model": "before_update100",
+        "split": "holdout",
+        "source": "training/review_holdout_v5.jsonl",
+        "rows": 24
+      },
+      {
+        "model": "after_update100",
+        "split": "train",
+        "source": "training/sft_review_v6_after.jsonl",
+        "rows": 52
+      },
+      {
+        "model": "after_update100",
+        "split": "holdout",
+        "source": "training/review_holdout_v5.jsonl",
+        "rows": 24
+      }
+    ],
+    "collector_argv_template": [
+      "python3",
+      "training/explanations/collect_generation.py",
+      "--sft",
+      "@JOB_SOURCE@",
+      "--split",
+      "@JOB_SPLIT@",
+      "--model",
+      "@JOB_MODEL@",
+      "--model-sha256",
+      "@JOB_MODEL_SHA256@",
+      "--infer",
+      "build/jovovich-infer",
+      "--infer-sha256",
+      "@INFER_SHA256@",
+      "--output",
+      "@NEW_OUTPUT_DIRECTORY@",
+      "--run-id",
+      "@UNIQUE_JOB_RUN_ID@",
+      "--hf-repo",
+      "ataeff/jovovich",
+      "--remote-prefix",
+      "experiments/explanation-order"
+    ],
+    "train_source_policy": "Use v6_before as the train prompt/case source for the shared base and before arm, and v6_after for the after arm. Require all52 paired prompt bytes/IDs to be identical across the two source files. This preserves scorer corpus/order bindings while exposing identical model inputs. Report actual key order for the shared base as a diagnostic.",
+    "scorer": "training/explanations/score_generation.py",
+    "scorer_routing": "Use --split train with the corresponding v6 source and --order before|after for trained arms. Use --split holdout with original review_holdout_v5.jsonl and --order for the assessed arm; heldout gold findings provide canonical structural IDs, while expected_line_ids alternatives support separate causal citation assessment. No heldout gold analysis is authored."
+  },
+  "teacher_forced_diagnostics": {
+    "schedule": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "source": "Native metrics for each arm against its own complete gold answers.",
+    "measurements": [
+      "full-vocabulary explicit verdict target hits /52",
+      "both correct verdict targets /26 pairs",
+      "target-versus-alternative margin",
+      "prefix token hits and exact prefixes",
+      "residual and joint CE",
+      "whole-completion token and exact-example counts",
+      "24 untouched voice/code row readouts",
+      "pre-update gradient norm and clip scale"
+    ],
+    "prefix_condition": "Gold answer-prefix tokens are present only in these teacher-forced measurements, including gold analysis in the before arm.",
+    "scorer": "training/score_decisions.py validates the complete 0..100 update stream and full readouts at 25/50/75/100. Retain its legacy selected_update as a diagnostic field; bind export and free-generation jobs explicitly to update 100.",
+    "evaluation_separation": "Teacher-forced fields and free-generation pair scores have separate tables and denominators.",
+    "target_identity": "Use source-bound native row metadata and require the normalized serializer to produce identical target/alternative IDs across arms. Positions may differ because analysis moves before or after findings."
+  },
+  "preflight_gates": [
+    {
+      "id": "corpus_content",
+      "required": "Validate 76 unique rows, 26 complete review pairs, preserved v5 findings and nonreview rows, identical prompts/content across arms, intended key order and rationale support against every exact prompt."
+    },
+    {
+      "id": "native_pairs",
+      "required": "Run build/jovovich-probe-pairs on both normalized JVDS/JVPR2 datasets with the actual Qwen GGUF. Require each exact-prefix/reciprocal-counterfactual check, and require matched rows to have equal target and alternative IDs across arms. Preserve all52 row positions and IDs per arm."
+    },
+    {
+      "id": "chatml",
+      "required": "Compare native full prompt/answer IDs to the production tokenizer for all 76 rows in both arms. Compare common evaluation prompt IDs across arms."
+    },
+    {
+      "id": "lengths",
+      "required": "Reject any sequence exceeding the trainer token capacity 4096 or the model context. Reject any evaluation prompt+512 tokens exceeding 8192. Preserve all measured lengths; perform no truncation."
+    },
+    {
+      "id": "generation_budget",
+      "required": "Verify every gold review completion in both arms fits the fixed 512-token budget before freezing. If a completion does not fit, revise and re-freeze the common budget before training."
+    },
+    {
+      "id": "gradient_regression",
+      "required": "Pass the unequal-verdict native fixture and the relevant preparation/scorer regressions after any trainer hook change; show acknowledgements preserve a controlled Chuck trajectory byte for byte."
+    },
+    {
+      "id": "resources",
+      "required": "Use actual per-arm token counts to record persistent cache memory and peak process memory budget. Verify space for both sets of saved matrices, LoRA files, logs and final GGUF exports."
+    },
+    {
+      "id": "durability",
+      "required": "Verify authenticated access to private ataeff/jovovich, archive the frozen inputs and launch intent, download them from the returned pinned commit and compare hashes before the first model-forward call."
+    },
+    {
+      "id": "freeze",
+      "required": "Publish immutable protocol, corpus, binary, source and environment bindings before starting either arm. Current plan remains draft until every required gate has a stored result."
+    }
+  ],
+  "runtime_support": {
+    "trainer_capacity": "MLP_MAX_TOKENS=4096; mlp_encode rejects capacity overflow without truncation and main also checks the model context limit.",
+    "generation_capacity": "src/infer.c rejects tokenized prompts longer than context-output reserve; context 8192 and reserve 512 are explicit.",
+    "cache": "The trainer captures every complete row separately, then retains per-completion-token z/xn and gate/up caches for all 76 rows. KV memory is per current sequence. Use measured E,F,N and native allocation behavior for budgeting.",
+    "cache_float_payload_formula": "4 * total_completion_tokens_all_rows * (2*embed_dim + 2*ffn_dim + 1) bytes for z,xn,gate,up,targets; add tensor/ID/model/head/tape/KV allocations separately.",
+    "host_schema": "parseReview accepts the findings field with the current citation/length checks even when an analysis field is present. It emits only findings to downstream review rendering.",
+    "scorer_schedule": "Current score_decisions.py expects exactly 100 updates and full snapshots25/50/75/100; the proposed schedule fits this validation contract.",
+    "archive_launcher": "The native acknowledgement hook and explanation runner archive closed log units at gate0 and each completed update. At gate0 and saved checkpoints, the same unit includes six closed snapshot files. Existing run_layers phase-level archiving remains suitable for short preparation/export/generation units.",
+    "checkpoint_serialization": "Current train_mlp snapshots contain three LoRA files and three merged F32 matrices. It has no command-line restore of the complete Chuck optimizer trajectory."
+  },
+  "durability": {
+    "transport": "training/durable_archive.py DurableArchive with private HFTransport and pinned remote readback verification.",
+    "destination": {
+      "repo": "ataeff/jovovich",
+      "private": true,
+      "prefix": "experiments/explanation-order"
+    },
+    "intent": "Archive source bindings, datasets, pair maps, prompt manifests, initialization hashes, exact commands and environment before execution.",
+    "native_acknowledgements": "Pause the live trainer at gate0 after initial capture/readout/snapshot and after each completed update. The parent closes an immutable metric/log unit and sends ACK only after remote readback hash verification; no optimizer advancement occurs while waiting. After ACK100 the native process writes its six final duplicate files and exits; the parent verifies/archives that final output before returning success or permitting the next arm.",
+    "capture_progress": "Cached tensors are transient computation memory and are not exported. Archive the capture and initial-readout logs together with the six initial snapshot files at gate0, before update1. The launch intent was already verified remotely before capture starts.",
+    "checkpoint_unit": "At 25/50/75/100 include all three closed LoRA files, all three F32 matrices, the update metrics and closed log segment; sync these before ACK allows advancement. Updates without a saved checkpoint archive their closed metric/log segment.",
+    "failure": "On upload/readback/acknowledgement failure, stop advancement and retain the attempt journal. Continue only after the pending immutable unit is verified.",
+    "recovery": "A lost native process is an interrupted arm. Start a fresh identically configured 100-update process under a new attempt ID; preserve the prior attempt and its remotely verified checkpoints. Use exact optimizer restore only after a separately verified implementation is frozen.",
+    "export": "Archive each checked update 100 GGUF and its export/parity receipts before any free generation.",
+    "generation": "Each exact prompt, response, token trace, stderr and process receipt forms a closed remote unit before the next invocation.",
+    "completion": "Declare an arm/experiment complete only after all required units and the final source-integrity/output manifest have verified remote receipts. A locally written completion candidate awaits its final archive barrier; the verified acknowledgement and successful runner return establish completion.",
+    "initial_snapshot": "Gate0 archives three initial LoRA files and three merged F32 matrices. Derive expected_initial_lora_sha256 for after exclusively from the before arm remotely verified gate0 snapshot. The after runner rejects any gate/up/down LoRA mismatch before archive/ACK0, so a mismatch performs zero optimizer updates."
+  },
+  "launch_readiness": {
+    "status": "runnable_prepared_requires_private_archive",
+    "required_remaining": [
+      "Finalize exact executable launch plans and source/binary/input hashes after the gate and generation implementations settle.",
+      "Supply an authorized HF credential and verify private ataeff/jovovich with pinned commit readback before model-forward work.",
+      "After the before gate0 unit is remotely verified, bind its three initial LoRA hashes into the after launch plan and archive that resolved plan before launching after."
+    ],
+    "credentials_observation": "HF_TOKEN and HUGGING_FACE_HUB_TOKEN are absent from the process environment; root found no authorized token in current uploads or the targeted Library attachment search.",
+    "local_allowed_work": "Corpus construction, code inspection, tokenizer-only checks, deterministic fixtures, executable-plan preparation and binding checks can complete before the training launch.",
+    "model_forward_calls_by_this_protocol_task": 0,
+    "training_updates_by_this_protocol_task": 0,
+    "completed_native_preflight": "Actual Qwen tokenizer:52 equal-content/equal-prompt review rows with matching targets across arms,24 unchanged nonreview rows,304 ChatML comparisons; each arm52 decision+3411 residual positions. Before verdict positions40..58; after position3. Maximum prompt570 and answer99 tokens including EOS.",
+    "completed_native_preflight_status": "pass"
+  },
+  "executable_launch_plan": {
+    "status": "schema_specified_root_finalizes_exact_bindings",
+    "scientific_plan": "training/explanations/plan.json",
+    "schema": {
+      "schema_version": 1,
+      "run_id": "unique safe identifier per arm and attempt",
+      "argv": [
+        "build/jovovich-train-mlp",
+        "models/base-qwen.gguf",
+        "@BOUND_ARM_JVDS_PATH@",
+        "@RUN@/adapter",
+        "100",
+        "0.0001",
+        "40",
+        "25",
+        "joint",
+        "@BOUND_ARM_JVPR2_PATH@"
+      ],
+      "bindings": "Array of {path,bytes,sha256}; repo-relative paths covering every exact executable/input/source used by the run. argv0,1,2,9 must refer to bound repo-relative files.",
+      "environment": {
+        "NT_NO_I8": "1",
+        "NT_QMV_THREADS": "2",
+        "NT_ATTN_THREADS": "2",
+        "NT_SIMD_THREADS": "2"
+      },
+      "ack_timeout_ms": 300000,
+      "remote": {
+        "repo": "ataeff/jovovich",
+        "prefix": "experiments/explanation-order",
+        "private": true
+      },
+      "expected_initial_lora_sha256": {
+        "gate": "after only: verified before gate0 gate.lora SHA256",
+        "up": "after only: verified before gate0 up.lora SHA256",
+        "down": "after only: verified before gate0 down.lora SHA256"
+      }
+    },
+    "required_bindings": [
+      "scientific plan",
+      "trainer and native dependency sources",
+      "trainer binary and build flags",
+      "inference source and binary",
+      "corpus builder and rationale map",
+      "both v6 JSONL corpora",
+      "both JVDS datasets and JVPR2 maps",
+      "native preflight results",
+      "heldout source and rendered prompt manifest",
+      "generation collector and scorer",
+      "durable archive and runner sources",
+      "base model digest and source revision"
+    ],
+    "required_execution_units": [
+      "remote verified launch intent",
+      "before native trainer with initial/update/checkpoint gates",
+      "after native trainer with initial/update/checkpoint gates",
+      "fixed update100 export and parity checks",
+      "228 closed natural-generation units",
+      "bound structural and independent semantic scoring",
+      "final source-integrity and archive-completion manifests"
+    ],
+    "checkpoint_binding": "Generation job model hashes and export prefixes must resolve to update100 for each completed arm; no selected_update field determines the source.",
+    "generation_binding": "The same frozen prompt and requested_limit512 are reused for each case across shared_base_update0, before_update100 and after_update100.",
+    "runner": "training/explanations/run_training.py",
+    "per_arm_plan_paths": {
+      "before": "training/explanations/prepared/before.launch.json",
+      "after": "training/explanations/prepared/after.launch.json"
+    },
+    "preflight_argv_template": [
+      "python3",
+      "training/explanations/run_training.py",
+      "preflight",
+      "--plan",
+      "@ARM_LAUNCH_PLAN@"
+    ],
+    "run_argv_template": [
+      "python3",
+      "training/explanations/run_training.py",
+      "run",
+      "--plan",
+      "@ARM_LAUNCH_PLAN@",
+      "--run-dir",
+      "@NEW_ATTEMPT_DIRECTORY@"
+    ],
+    "credential_input": "Supply a credential through an authorized token file or environment accepted by the transport. Keep credential contents outside all frozen plans, native environments and archived records.",
+    "binding_transport": "The runner copies and archives every bound file except the base GGUF before native launch; the base remains identified by its exact bound bytes/hash and pinned public source. Archive gate0 snapshots and every subsequent closed update unit before ACK.",
+    "completion": "The runner archives six final weight files, complete raw stdout/stderr, scorer-compatible metrics and final source-hash verification. Its attempt lifecycle is fresh-run only.",
+    "derived_after_binding": "Freeze both scientific arm definitions and launch templates before the before arm starts. After expected_initial_lora_sha256 is the only deferred arm-specific initialization assertion: populate it exclusively from the pinned remotely verified before gate0 receipt, then freeze/archive the resolved after plan before its Popen. Hyperparameters, corpus, source and binary bindings remain fixed.",
+    "initialization_gate": "The first arm starts from the fixed native seed. The paired experiment requires all three expected_initial_lora_sha256 entries for after even though the generic runner schema makes this field optional; after must not run with that paired-experiment requirement absent."
+  }
+}

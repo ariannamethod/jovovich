@@ -27,6 +27,69 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — SERGE moved the comma. The tokenizer noticed.
+
+All 52 v5 reviews now have a short explanation tied to the supplied rule,
+context and changed lines. The before and after corpora contain the same
+explanation and original findings; they differ in top-level field order.
+Their user prompts share one order-neutral request for analysis. All 24
+nonreview rows retain their original bytes. A separate auditor read every
+explanation and checked the builder's evidence anchors and corpus isolation.
+
+The first full native preflight caught a serialization confound. When an empty
+findings list ended the object, Qwen chose ID 788; when analysis followed it,
+the clean target became 8899. Concern remained 66582. We retained that failed
+attempt, its datasets, native traces and exact bound source bytes. Both arms
+now put a newline after every top-level value, before the following comma or
+closing brace. The compact findings-array boundary stays intact.
+
+The repeated native check passes all 52 rows: identical prompts, findings,
+explanations, target/alternative IDs and individual answer lengths. Each arm
+has 52 decision targets and 3411 residual targets. Before-verdict positions
+range from 40 to 58; after-verdict positions are all 3. All 304 native
+trainer/runtime ChatML comparisons match. The longest complete gold answer
+uses 99 tokens including EOS; the common generation allowance is 512.
+
+The frozen comparison design uses two fresh processes, identical initialization
+and 100 Chuck updates each; update 100 is the fixed primary checkpoint.
+The shared base and both final models will generate all 52 training and 24
+heldout reviews, 228 responses total. The collector ends the prompt at the
+empty assistant header, verifies its native token IDs before inference,
+and archives each closed case before proceeding. The scorer records findings
+classification, canonical citation IDs, analysis presence, field order and
+complete-pair counts separately. Full-response semantic judgments have their
+own row-level audit. Holdout gold remains outside the model input.
+
+Long training now has a synchronous archive boundary. With
+`JOVOVICH_ARCHIVE_ACK=1`, the native process writes an initial snapshot and
+pauses after every completed update. The parent closes immutable log segments,
+uploads them with any new checkpoints, verifies the remote bytes, then sends
+the exact update ACK. The same live process retains Chuck state. The second
+arm checks its initial LoRA hashes against the first before taking an update.
+A candidate native-completion record becomes verified completion only with
+the final remote receipt.
+
+On the tiny native fixture, eight gated Chuck updates produce byte-identical
+final weights to the uninterrupted control. Eleven archive units are read
+back; seventeen fault scenarios exercise failed uploads, corrupted readback,
+source changes, initialization mismatch, invalid control records and bad ACKs.
+The generation collector separately checks tokenization, gold isolation,
+environment isolation and final-receipt failures.
+
+The final suite passes nine native executables and 151 Node tests. The launch
+handoff verifies the first arm's archived plan hash, identical training
+settings and all shared input bindings before resolving the second template.
+The independent audit records all findings and their fixes; its final status
+has no open code blockers.
+
+The real-model work in this entry is tokenization. The full-model training
+and 228 generations await the private archive credential: the previously
+supplied HF token is unavailable in the current environment, and the uploaded
+attachment could not be located. Code, prepared data, executable launch
+templates, failed and successful preflights, tests and independent audit are in
+`training/explanations/` and
+`training/results/2026-10-03-explanation-order/`.
+
 ## 2026-10-03 — The verdict has an address.
 
 The explanation-before-verdict path now has a versioned position contract.

@@ -1,0 +1,27 @@
+{
+  "status": "failed_preflight",
+  "stage": "cross_arm_target_identity",
+  "error": "arm verdict target IDs differ",
+  "before_clean_target_id": 788,
+  "after_clean_target_id": 8899,
+  "concern_target_id_both_arms": 66582,
+  "native_within_arm_boundaries_passed": true,
+  "resolution": "Normalize both answers with newline after each top-level value, preserving compact findings-array prefix. Full verification is in native-normalized/.",
+  "evidence": [
+    {
+      "path": "bindings.json",
+      "bytes": 4339,
+      "sha256": "22b979f26ec5f44cb1b6958336339a9296a2dbfd9753ea315ec11a2f396d9c27"
+    },
+    {
+      "path": "before.stdout.txt",
+      "bytes": 40582,
+      "sha256": "0ddc0f24b7a2d47a5a6743221ef337bef01a3dbe4720090e3f3c8cbca01f3d5b"
+    },
+    {
+      "path": "after.stdout.txt",
+      "bytes": 28750,
+      "sha256": "024941b86cf6bf0badc763ca24da3c7b52e85883d7e002b71857a02467c3f49f"
+    }
+  ]
+}

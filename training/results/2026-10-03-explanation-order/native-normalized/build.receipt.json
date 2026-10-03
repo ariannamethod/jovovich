@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "make",
+    "-j2",
+    "probe-pairs",
+    "probe-tokenization"
+  ],
+  "started_utc": "2026-10-03T16:53:00.859658+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:53:00.862070+00:00",
+  "stdout": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/build.stdout.txt",
+    "bytes": 95,
+    "sha256": "93716c1c109f2ac89fdc125073941e76c7e542e1c2222b728efb4b228bb03474"
+  },
+  "stderr": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/build.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

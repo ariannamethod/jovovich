@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-tokenization",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/before.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/after.bin"
+  ],
+  "started_utc": "2026-10-03T16:53:01.367507+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:53:01.905996+00:00",
+  "stdout": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/chatml.stdout.txt",
+    "bytes": 198,
+    "sha256": "fc6d74aa246be612ab35a21d9b5a837289453dadc074305fa85d8d23127d99ef"
+  },
+  "stderr": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/chatml.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
