@@ -27,6 +27,49 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The witness brought an unlisted colleague.
+
+PR #21 review found that `score_decisions.py` imports `summarize` from
+`score_training.py`, but the latter was absent from the frozen file lists.
+Changing that imported file could alter the teacher-forced diagnostic reports
+without triggering the evaluator's source guard. The independent import audit
+confirmed this omission; the other repository imports in the inspected
+training, continuation, export and generation paths were already covered.
+
+New launch preparation binds the complete diagnostic trio: `score_decisions.py`,
+`score_training.py` and `prepare.py`. The evaluation contract requires those
+files, and continuation freezes them too. The documented fresh-run recipe also
+needs the export/parity/inference executables and their supporting sources;
+launch preparation now includes the evaluation contract's required files and
+resolves its packed-input paths before freezing either arm. Historical launch
+plans and their evidence retain the bytes actually executed.
+
+The live `order-20261003-01` chain remains on its original frozen checkout.
+At the recorded observation, before update 36 had a verified HF receipt and
+there was no training failure. The omitted scorer is 7,249 bytes with SHA256
+`5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33`,
+identical to its prelaunch Git version. This observation does not retrospectively
+add it to either frozen plan.
+
+Treat this run's teacher-forced diagnostic reports as provisional until they
+are reproduced from the archived metrics and corpora using an explicitly bound
+copy of that scorer and its companion scripts. Compare every scientific field
+and both input hashes; document only the literal `metrics` and `sft` path
+substitutions if archive recovery changes those paths. The fixed update 100
+training/export choice and the natural-generation sequence do not use
+`score_training.summarize`. The ongoing run continues without source changes.
+
+The 22 focused launch, evaluation and continuation tests pass, including an
+independent rerun. The new fixture
+prepares a fresh contract at custom packed-input paths, binds the second arm,
+admits both completed endpoints, then rejects a same-size edit to the imported
+scorer before diagnostics or uploads. It also rejects internally consistent
+historical receipts that omit the scorer binding.
+
+Evidence: `training/results/2026-10-03-diagnostic-binding/`.
+
+SERGE requests that imported witnesses sign the attendance sheet.
+
 ## 2026-10-03 — The binary must answer before the woman does.
 
 PR #20 review found a concrete startup gap: the launcher could bind a stale

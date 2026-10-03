@@ -117,7 +117,9 @@ def freeze(args):
     scripts = ['continue_experiment.py', 'prepare_launches.py', 'run_training.py',
                'execute_evaluation.py', 'collect_generation.py', 'score_generation.py']
     sources = [before / 'plan.json', template, contract,
-               ROOT / 'training/durable_archive.py', ROOT / 'training/layers/run_layers.py']
+               ROOT / 'training/durable_archive.py', ROOT / 'training/layers/run_layers.py',
+               ROOT / 'training/score_decisions.py', ROOT / 'training/score_training.py',
+               ROOT / 'training/prepare.py']
     sources += [ROOT / 'training/explanations' / p for p in scripts]
     bound = [{'path': str(p.relative_to(ROOT)), 'bytes': p.stat().st_size, 'sha256': digest(p)}
              for p in dict.fromkeys(sources)]

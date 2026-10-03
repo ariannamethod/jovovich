@@ -822,7 +822,7 @@ is executable; the second remains a template until the first arm's remotely
 verified initial adapter hashes are supplied:
 
 ```sh
-make train-mlp
+make train-mlp probe-mlp merge-mlp harness
 python3 training/explanations/verify_native.py \
   --base models/base-qwen.gguf --out models/order-native-UNIQUE
 python3 training/explanations/prepare_launches.py prepare \
@@ -838,10 +838,23 @@ python3 training/explanations/prepare_launches.py bind-after \
   --template models/order-launch-UNIQUE/after.template.json \
   --before-run models/order-before-UNIQUE \
   --output models/order-launch-UNIQUE/after.launch.json
+path/to/archive-venv/bin/python training/explanations/run_training.py run \
+  --plan models/order-launch-UNIQUE/after.launch.json \
+  --run-dir models/order-after-UNIQUE --token-file /private/path/hf-token
+path/to/archive-venv/bin/python training/explanations/execute_evaluation.py run \
+  --plan models/order-launch-UNIQUE/evaluation-plan.json \
+  --before models/order-before-UNIQUE --after models/order-after-UNIQUE \
+  --output models/order-evaluation-UNIQUE --run-id order-evaluation-UNIQUE \
+  --token-file /private/path/hf-token
 ```
 
-Use `huggingface_hub==0.35.3` in the archive environment. Run the bound after
-plan with its own fresh output directory. The exact trainer must answer
+Use `huggingface_hub==0.35.3` in the archive environment. Preparation freezes
+an evaluation contract with the selected preflight's packed-data paths and
+binds every required export, inference and scoring source, including the
+diagnostic scorer's `prepare.py` and `score_training.py` imports. Pass that
+generated contract to the evaluator. Existing archived launches retain their
+original source bindings; a repeat starts with fresh plans.
+The exact trainer must answer
 `--archive-protocol`; its live process waits for a startup acknowledgement
 before loading the model. Rebuild a stale trainer before preparing its plan.
 The plan records export and generation commands; both collectors expose

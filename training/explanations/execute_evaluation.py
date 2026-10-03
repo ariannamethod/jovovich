@@ -190,6 +190,8 @@ def prepare(plan_path, before, after, output, run_id):
     need(training['before']['directory'] != training['after']['directory'] and
          training['before']['run_id'] != training['after']['run_id'], 'training attempts must be distinct')
     need(frozen_arms['before'] == frozen_arms['after'], 'shared training source bindings disagree')
+    need({'training/score_decisions.py', 'training/score_training.py', 'training/prepare.py'} <= set(bindings),
+         'diagnostic scorer and its imports must be frozen in the training launches')
     need(set(contract['required_pretraining_launch_bindings']) <= set(bindings),
          'evaluation source was not frozen across the paired training launches')
     need(training['before']['initial_lora_sha256'] == training['after']['initial_lora_sha256'],

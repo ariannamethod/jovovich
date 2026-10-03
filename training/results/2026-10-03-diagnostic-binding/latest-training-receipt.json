@@ -1,0 +1,34 @@
+{
+  "schema": "jovovich.durable-receipt.v1",
+  "run_id": "order-20261003-01-before",
+  "prefix": "experiments/explanation-order/order-20261003-01-before",
+  "revision": "ad488dcd110084ea9b3c1ba8bb6f7ca11f046181",
+  "sequence": 37,
+  "unit_id": "update-036",
+  "manifest_sha256": "ed40e9b4d9a098afac68334c1b50d8759ad90b9e50a6e4b152f0b69a56b444bc",
+  "files": [
+    {
+      "name": "_units/update-036.metrics.jsonl",
+      "size": 10495,
+      "sha256": "3d6cc068f5c3d3b3771637e44abaf1f30d68588865144bf8e6f5d5f389d45b96",
+      "git_blob_sha1": "b97420bd663bef922d638714ab19852275abef90",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/3d6cc068f5c3d3b3771637e44abaf1f30d68588865144bf8e6f5d5f389d45b96"
+    },
+    {
+      "name": "_units/update-036.raw.jsonl",
+      "size": 10556,
+      "sha256": "dfbc8f1c8300ce606931d7bcc7a35cc40d25b643877b4e9aca6c403cb53527c9",
+      "git_blob_sha1": "f0e9b477ad9d3014e370ba1b24def1608d0b2775",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/dfbc8f1c8300ce606931d7bcc7a35cc40d25b643877b4e9aca6c403cb53527c9"
+    },
+    {
+      "name": "_units/update-036.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "object": "experiments/explanation-order/order-20261003-01-before/objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "verified_remote_bytes": true,
+  "reused": false
+}
