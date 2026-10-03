@@ -1,0 +1,2105 @@
+{
+  "schema_version": 1,
+  "label": "coder-base",
+  "started_at_utc": "2026-10-02T04:19:00.588Z",
+  "finished_at_utc": "2026-10-02T04:19:14.812Z",
+  "repository": "jovovich",
+  "threads": "4",
+  "width": 896,
+  "depths": [
+    "l00",
+    "l01",
+    "l02",
+    "l03",
+    "l04",
+    "l05",
+    "l06",
+    "l07",
+    "l08",
+    "l09",
+    "l10",
+    "l11",
+    "l12",
+    "l13",
+    "l14",
+    "l15",
+    "l16",
+    "l17",
+    "l18",
+    "l19",
+    "l20",
+    "l21",
+    "l22",
+    "l23",
+    "postnorm"
+  ],
+  "solver": {
+    "normalization": "centered-rms",
+    "lambda": 0.01,
+    "interpolation_lambda": 1e-8,
+    "gradient_tolerance": 1e-8,
+    "max_iterations": 100,
+    "intercept_penalized": false,
+    "positive_class": "concern",
+    "permutations": 99
+  },
+  "environment": {
+    "node": "v25.9.0",
+    "platform": "darwin arm64",
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "inputs": {
+    "model": {
+      "path": "models/jovovich.gguf",
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+      "bytes": 675710848
+    },
+    "prompts": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-input.bin",
+      "sha256": "a19ba7d37c4eb591fb1b25a4093c6f8832fe26b0bed5d3340d3f9a816ce0af63",
+      "bytes": 107760
+    },
+    "metadata": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+      "sha256": "a81172935496fedb0176d06459d56125a004639e8d11facac925285a6c9b2e08",
+      "bytes": 513
+    },
+    "masks": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+      "sha256": "8ebb0326678efa4c64eb60476dc9757202cd31337c89407c4c234ee9caab33cd",
+      "bytes": 2103
+    },
+    "masks-json": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-masks.json",
+      "sha256": "17529d60971dfeb74d2eac890998ecf3affd5ced5d143b5bbc2194c5fe9f9ae4",
+      "bytes": 4523
+    },
+    "rows": {
+      "path": "training/results/2026-10-01-frozen-readout/readout-rows.json",
+      "sha256": "b7dfd345e00f095aa985033c497dab5afb5e78056702d3dd7a33686a71a99554",
+      "bytes": 36509
+    },
+    "binary:extract-layers": {
+      "path": "build/jovovich-extract-layers-bodies",
+      "sha256": "af0fdb5b7b632cd3045776b2c31df69ca091e728246516d8b5bb080579c8207e",
+      "bytes": 324936
+    },
+    "binary:readout-fit": {
+      "path": "build/jovovich-readout-fit",
+      "sha256": "e043a03daefb15e5d08ce44e983bdd6cd212b367d7258c5fba20312693da5dbd",
+      "bytes": 53800
+    },
+    "helper:layer_summary.mjs": {
+      "path": "training/readout/layer_summary.mjs",
+      "sha256": "4f20a639f3815cda0e4fc6cc92265d3e95e4a6afd4f3fe0948643353be85e31b",
+      "bytes": 11739
+    },
+    "helper:run_layers.mjs": {
+      "path": "training/readout/run_layers.mjs",
+      "sha256": "d44c0889a0fa9f356a2e133b84a044d7877dc8f6055b9675f5e756f1cbac9b33",
+      "bytes": 8872
+    }
+  },
+  "outputs": {
+    "features:l00": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l00.bin",
+      "sha256": "78386a04b4f1e5276a54d596b4cc6a399419b56710659d393d190182638ca0ed",
+      "bytes": 186384
+    },
+    "fits:l00": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l00.fits.jsonl",
+      "sha256": "ad2d47ada5be49d1465bcb57dbb91e4ba8e080f64523eaacb586c1c4261d177d",
+      "bytes": 2409714
+    },
+    "summary:l00": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l00.json",
+      "sha256": "fd4444907e62892522b85f3c79b7e59e397d5f3ae86c17f80d3bd4fb3b750f9a",
+      "bytes": 15819
+    },
+    "features:l01": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l01.bin",
+      "sha256": "eb1d67824cb9caaa85c574484c13372a24ed51ca71857ded0586ad1bfcdb0d41",
+      "bytes": 186384
+    },
+    "fits:l01": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l01.fits.jsonl",
+      "sha256": "c967ebad1335f10ccd9d5c63a3ee79f55a70c9535f3f8e275ffbe81575007b0a",
+      "bytes": 2402175
+    },
+    "summary:l01": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l01.json",
+      "sha256": "6aebb6be280233a9e21da6927808ea6ba2d7e10e733cb9cb8c9a2ce5f2d8f228",
+      "bytes": 15807
+    },
+    "features:l02": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l02.bin",
+      "sha256": "4174c3236a0d5e44b361121428f3c79becc7be68294a4dffd6384920c1866a98",
+      "bytes": 186384
+    },
+    "fits:l02": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l02.fits.jsonl",
+      "sha256": "0535ebb43c2f1c30c5c1daa1c33f5fe742933b1d718a64516a1e852ba2bede24",
+      "bytes": 2396537
+    },
+    "summary:l02": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l02.json",
+      "sha256": "b522e5b37abb3f4db0d3e83026968b7fa4e21289d05c36a0490bf7fd2bd26ce3",
+      "bytes": 15793
+    },
+    "features:l03": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l03.bin",
+      "sha256": "b307a59dde54e508e500dfe408c793a9ad4eb82d6e7b8edd6ff74a5b5a43496e",
+      "bytes": 186384
+    },
+    "fits:l03": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l03.fits.jsonl",
+      "sha256": "e457545eafb69c0422438df939646a8511f498e19f8f3843e95001ce6f2ecb6b",
+      "bytes": 2387737
+    },
+    "summary:l03": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l03.json",
+      "sha256": "51e0e5f535493d7d90da15562278cd3dbb3c8284ed419390d1c094ee947a35a0",
+      "bytes": 15812
+    },
+    "features:l04": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l04.bin",
+      "sha256": "c277ececab0cd76e3ac0180299d7e65d21de0e7cee1ca2d1bd761259772a1b8f",
+      "bytes": 186384
+    },
+    "fits:l04": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l04.fits.jsonl",
+      "sha256": "ccacff15a2a99f3aae2458846354019cc46018bf7963cbd4a4d5002c2608195d",
+      "bytes": 2384091
+    },
+    "summary:l04": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l04.json",
+      "sha256": "2efd97d58fd0c2cdccbb84dcf0d0112f4b8173f784713930a4489120eac04bf5",
+      "bytes": 15805
+    },
+    "features:l05": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l05.bin",
+      "sha256": "83ae2e14554164adee78e8b983f8dcf6843c702719d7bdd8d65a142709d89270",
+      "bytes": 186384
+    },
+    "fits:l05": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l05.fits.jsonl",
+      "sha256": "8d9fbda1052593391ba5534481e6813f1facd31a418c9881205bbf141342ec98",
+      "bytes": 2385606
+    },
+    "summary:l05": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l05.json",
+      "sha256": "e0fb278f78d644a8b780815d92a5cbd49e24a2951f156e8a803da18bebc48f12",
+      "bytes": 15809
+    },
+    "features:l06": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l06.bin",
+      "sha256": "ae5f9a1cda839baf5b2624595d0780e61efd468bf98d54f2fb5dc25e3060df04",
+      "bytes": 186384
+    },
+    "fits:l06": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l06.fits.jsonl",
+      "sha256": "b42dfc2a01fe7a3dee255a9c9104c2e96cb0aafdb7145d160abb118960765ac0",
+      "bytes": 2384089
+    },
+    "summary:l06": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l06.json",
+      "sha256": "add8856e1dbd3e1dd228d9d1873516ed92a1904eed265a606c126f4d4306c3d0",
+      "bytes": 15806
+    },
+    "features:l07": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l07.bin",
+      "sha256": "a6edd66ee0ea6f0160477cac221d0aa883c84f7163b9f582a90c48be99c233cf",
+      "bytes": 186384
+    },
+    "fits:l07": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l07.fits.jsonl",
+      "sha256": "de6362f77d7b41eafa3285689adb269b9d3789751b1f538c34b9f8db73f633d8",
+      "bytes": 2383823
+    },
+    "summary:l07": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l07.json",
+      "sha256": "3c40e27235f4a7dd674adf5bdd2482284ff839e62ee2c76f795eb967b22119c5",
+      "bytes": 15809
+    },
+    "features:l08": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l08.bin",
+      "sha256": "6756688b49cc1e2039a0fd6bb620aa1264de2437ae666192db47f703b926feca",
+      "bytes": 186384
+    },
+    "fits:l08": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l08.fits.jsonl",
+      "sha256": "b2921dc42e48f707e560603fc4b059d27193cf1174396456e9c30ec59f7810e1",
+      "bytes": 2383609
+    },
+    "summary:l08": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l08.json",
+      "sha256": "5c4b3c46f2b055252bf924bf31be018a7aef7037129630bc4dccca6ae2560433",
+      "bytes": 15791
+    },
+    "features:l09": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l09.bin",
+      "sha256": "e315ffe986b216b274d32e744919033b2687cb36ac3fa83ea0352df305d8f3f9",
+      "bytes": 186384
+    },
+    "fits:l09": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l09.fits.jsonl",
+      "sha256": "924f9c36a18da62fbed0537a0ff6076ef5534c57a335708e0c5cc107e837c319",
+      "bytes": 2380952
+    },
+    "summary:l09": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l09.json",
+      "sha256": "5627f0ed4cd0db2e418eac719a3f941f35a3860662bbc789d83214da355ed4a0",
+      "bytes": 15809
+    },
+    "features:l10": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l10.bin",
+      "sha256": "a28c7ef62eaf495d237f02560f24b4cbb89bdf44177f3fb177aafe5fdfb8e494",
+      "bytes": 186384
+    },
+    "fits:l10": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l10.fits.jsonl",
+      "sha256": "ea100de6cc1612115d9a5f5d26f613287f00fbdd425b6245e21a6d2668151cb8",
+      "bytes": 2380548
+    },
+    "summary:l10": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l10.json",
+      "sha256": "dcc954280dd1f60638682d9fa2325a5bd551125851b70f501f7c19948399323d",
+      "bytes": 15809
+    },
+    "features:l11": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l11.bin",
+      "sha256": "fe816e942c3ba39e4b278b556335a9f2cbeabbb14fff6828939d51434d834a34",
+      "bytes": 186384
+    },
+    "fits:l11": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l11.fits.jsonl",
+      "sha256": "6b5925c52e800261d66fcdda331414a0fbc9a484161f7f1352ed82b2e4bdb8b1",
+      "bytes": 2380651
+    },
+    "summary:l11": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l11.json",
+      "sha256": "1e2d410346978407d67feb311c4ef8bb928a2b89b959aa6e5906947f81c87e01",
+      "bytes": 15793
+    },
+    "features:l12": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l12.bin",
+      "sha256": "6ab49e98be0876406dd4b2cdb79ca288a619b55d8626a104f80718c659c75ecc",
+      "bytes": 186384
+    },
+    "fits:l12": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l12.fits.jsonl",
+      "sha256": "390cbd2733cd303ab567e539dc07cde04b7b2e45ef4a38c47dcd8a434602749a",
+      "bytes": 2380737
+    },
+    "summary:l12": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l12.json",
+      "sha256": "74168df21055b88fa0be8308898e0814e3ca212ca8acdc2e151c48a7d0551773",
+      "bytes": 15799
+    },
+    "features:l13": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l13.bin",
+      "sha256": "90a22434e7726202f9b9652a7d25ab553666b6153ab023d9de1e1601479c9e43",
+      "bytes": 186384
+    },
+    "fits:l13": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l13.fits.jsonl",
+      "sha256": "45e386d086b29b9f7c433a543161b149d4016c720c730e4adc71b5a7ebb1b10f",
+      "bytes": 2379650
+    },
+    "summary:l13": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l13.json",
+      "sha256": "a42a8374345e6e2d1b11c2aad63fd4a1cfe1cdd7730646dc38d23169014dd3f2",
+      "bytes": 15810
+    },
+    "features:l14": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l14.bin",
+      "sha256": "887e59cc812d3f2637d65b4e8c5dc14c83db56b0c8f86427050435908a4e3fa2",
+      "bytes": 186384
+    },
+    "fits:l14": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l14.fits.jsonl",
+      "sha256": "08dbc3ecdff20de4a72dc3022b19e479cdba6cedc04475ef42b063311c475490",
+      "bytes": 2379794
+    },
+    "summary:l14": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l14.json",
+      "sha256": "9f2b55c6324403f3d06b6eb54973f345b426a580bdfe39f5feca3e31fc6e397f",
+      "bytes": 15803
+    },
+    "features:l15": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l15.bin",
+      "sha256": "d6b4acb9f225c7892f5b8e0dc67b12ad31e7a1e57e7c9c9820745d072753e271",
+      "bytes": 186384
+    },
+    "fits:l15": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l15.fits.jsonl",
+      "sha256": "4996019da9253870d83ec805d3c52c72e17efffb06aa3bc32ef1078b0bd51b3c",
+      "bytes": 2379595
+    },
+    "summary:l15": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l15.json",
+      "sha256": "c297c1195a74e288b4a4b403d9544f83c2435bbeee33dcab6cbb001f46a37f79",
+      "bytes": 15822
+    },
+    "features:l16": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l16.bin",
+      "sha256": "1fa59a2f96b574b3773d4521f916d3f5bf0883f8cda53f5ae08c21d4a3242cac",
+      "bytes": 186384
+    },
+    "fits:l16": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l16.fits.jsonl",
+      "sha256": "db34c35940f0e72c4135fa73d6d773a219d3f1dd645387355cf99960f076f037",
+      "bytes": 2376902
+    },
+    "summary:l16": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l16.json",
+      "sha256": "67ec4d1972f96b6ea7944396ca73af67879eabb936095a861d442770f293d906",
+      "bytes": 15804
+    },
+    "features:l17": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l17.bin",
+      "sha256": "ea3f90a70ce63e61ac0dc08af6e9b29dd90fe45b1a63fc80271d0cae84aaefd1",
+      "bytes": 186384
+    },
+    "fits:l17": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l17.fits.jsonl",
+      "sha256": "4193922a7015182fee88164f135fca380d14828853f4ab229265d29df95bfb6b",
+      "bytes": 2373562
+    },
+    "summary:l17": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l17.json",
+      "sha256": "c19ae77571de4ae3e2b62ee016bca5cec2631cdea1d2d441f83db0f84bdb4ce0",
+      "bytes": 15806
+    },
+    "features:l18": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l18.bin",
+      "sha256": "4959a1f0bea641ed2b69e4ddba6cfb7dbdfca3ab4d3b54c0d235c5970c9f11e3",
+      "bytes": 186384
+    },
+    "fits:l18": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l18.fits.jsonl",
+      "sha256": "05f0fa6ddfb81d6394d6604016cb4adc3eaf93237613fbef1cf9ae985650783d",
+      "bytes": 2370937
+    },
+    "summary:l18": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l18.json",
+      "sha256": "64d05350a552759ff8aa2efddc4e91241bd6fb7485998bc8cb25c07e1c310ed9",
+      "bytes": 15810
+    },
+    "features:l19": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l19.bin",
+      "sha256": "1995b7775a963724806515f176c9789d49fd7ffb5b00530f433731d559ff4c26",
+      "bytes": 186384
+    },
+    "fits:l19": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l19.fits.jsonl",
+      "sha256": "cdef86777e7b71cc61f303bd2213216a1dcbecc606bd46f44263a14571b96d51",
+      "bytes": 2368531
+    },
+    "summary:l19": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l19.json",
+      "sha256": "5346f4cdc611a803aa04a71157f851fb19125ae6508ad77ebe35769372149a06",
+      "bytes": 15813
+    },
+    "features:l20": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l20.bin",
+      "sha256": "9727c2092d1b3c47e2340349bb65755ca9ad90413b9f557ab30e0ef3e11f86e5",
+      "bytes": 186384
+    },
+    "fits:l20": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l20.fits.jsonl",
+      "sha256": "2589e91af075bfe5e9c92fa78e85eeded160c9d6606cea64a33fdac3980dbaa3",
+      "bytes": 2361754
+    },
+    "summary:l20": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l20.json",
+      "sha256": "04391f605135fd668b4a22c0988a24d051fcd629f8f2b489d94068503807e8df",
+      "bytes": 15816
+    },
+    "features:l21": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l21.bin",
+      "sha256": "87e22660a4be5afd04ca7fe2eeb5ae331eefd715acca7ba77800f40d685ea413",
+      "bytes": 186384
+    },
+    "fits:l21": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l21.fits.jsonl",
+      "sha256": "932d0e0093c2fd23c5af6dc120c602fc1ba6a46ecb369870805c130458d20a6f",
+      "bytes": 2356862
+    },
+    "summary:l21": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l21.json",
+      "sha256": "b20fef5291c75370ac395a6d478f5c9082bd0f3a5823f37386eb58c8eb6cf2db",
+      "bytes": 15821
+    },
+    "features:l22": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l22.bin",
+      "sha256": "4d01271023855afb76ebba38b76bad2aa1e64205e8e745559d4432f73d7e1d38",
+      "bytes": 186384
+    },
+    "fits:l22": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l22.fits.jsonl",
+      "sha256": "48ab5be71a8d85d7d029335279f69036000d183ac172115a2a92e37fdb8fcafb",
+      "bytes": 2354285
+    },
+    "summary:l22": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l22.json",
+      "sha256": "52b42e27eeaf884c4bcaa1992350359de580e106982ba356c63e53c2c60591e9",
+      "bytes": 15812
+    },
+    "features:l23": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-l23.bin",
+      "sha256": "febf4d131b0dca483d316c774816766ccaf76429721c122babc73ea2027174d7",
+      "bytes": 186384
+    },
+    "fits:l23": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/l23.fits.jsonl",
+      "sha256": "54d0bfacc52e2136856bdded7316270453e3d349ca38dc291dcac2043a3f6124",
+      "bytes": 2353595
+    },
+    "summary:l23": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/l23.json",
+      "sha256": "c879c072a222d25c6aaf6aa1116eac482ce48a0639c32ab88c702427693c0d3b",
+      "bytes": 15815
+    },
+    "features:postnorm": {
+      "path": "training/cache/layer-readout/reported/coder-base/features/features-postnorm.bin",
+      "sha256": "1d8ef9dd6e9ec11229fdcd248ede88ce99ae4a4c391f1bfd4113198c226c5b37",
+      "bytes": 186384
+    },
+    "fits:postnorm": {
+      "path": "training/cache/layer-readout/reported/coder-base/fits/postnorm.fits.jsonl",
+      "sha256": "99cd2ac86b165f04369e401501086a6b2b8b162a748c3b23ee0a8007188d939d",
+      "bytes": 2346400
+    },
+    "summary:postnorm": {
+      "path": "training/cache/layer-readout/reported/coder-base/summaries/postnorm.json",
+      "sha256": "cab3128b816c64ec0985d517377d502c4b75d28bd8a440e1c26252b32885b69a",
+      "bytes": 15812
+    },
+    "extract.stdout.jsonl": {
+      "path": "training/cache/layer-readout/reported/coder-base/extract.stdout.jsonl",
+      "sha256": "30f9f9ee5de0307e1073813de59002b657a0f4d07c8c61734e58e464f36911f8",
+      "bytes": 118632
+    }
+  },
+  "phases": [
+    {
+      "name": "extract",
+      "reused_from_an_earlier_run_of_this_runner": true,
+      "argv": [
+        "build/jovovich-extract-layers-bodies",
+        "models/jovovich.gguf",
+        "training/results/2026-10-01-frozen-readout/readout-input.bin",
+        "<features>",
+        "4"
+      ],
+      "rc": 0,
+      "elapsed_seconds": null
+    },
+    {
+      "name": "fit:l00",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l00.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l00.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.49
+    },
+    {
+      "name": "summary:l00",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l00.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l00",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l00.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.102
+    },
+    {
+      "name": "fit:l01",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l01.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l01.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.651
+    },
+    {
+      "name": "summary:l01",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l01.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l01",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l01.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.085
+    },
+    {
+      "name": "fit:l02",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l02.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l02.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.542
+    },
+    {
+      "name": "summary:l02",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l02.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l02",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l02.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.081
+    },
+    {
+      "name": "fit:l03",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l03.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l03.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.502
+    },
+    {
+      "name": "summary:l03",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l03.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l03",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l03.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.082
+    },
+    {
+      "name": "fit:l04",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l04.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l04.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.406
+    },
+    {
+      "name": "summary:l04",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l04.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l04",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l04.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.087
+    },
+    {
+      "name": "fit:l05",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l05.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l05.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.402
+    },
+    {
+      "name": "summary:l05",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l05.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l05",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l05.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.083
+    },
+    {
+      "name": "fit:l06",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l06.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l06.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.413
+    },
+    {
+      "name": "summary:l06",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l06.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l06",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l06.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.085
+    },
+    {
+      "name": "fit:l07",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l07.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l07.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.416
+    },
+    {
+      "name": "summary:l07",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l07.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l07",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l07.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.091
+    },
+    {
+      "name": "fit:l08",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l08.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l08.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.417
+    },
+    {
+      "name": "summary:l08",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l08.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l08",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l08.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.089
+    },
+    {
+      "name": "fit:l09",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l09.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l09.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.444
+    },
+    {
+      "name": "summary:l09",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l09.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l09",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l09.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.107
+    },
+    {
+      "name": "fit:l10",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l10.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l10.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.437
+    },
+    {
+      "name": "summary:l10",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l10.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l10",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l10.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.089
+    },
+    {
+      "name": "fit:l11",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l11.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l11.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.422
+    },
+    {
+      "name": "summary:l11",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l11.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l11",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l11.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.086
+    },
+    {
+      "name": "fit:l12",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l12.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l12.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.425
+    },
+    {
+      "name": "summary:l12",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l12.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l12",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l12.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.083
+    },
+    {
+      "name": "fit:l13",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l13.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l13.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.418
+    },
+    {
+      "name": "summary:l13",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l13.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l13",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l13.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.083
+    },
+    {
+      "name": "fit:l14",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l14.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l14.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.419
+    },
+    {
+      "name": "summary:l14",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l14.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l14",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l14.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.088
+    },
+    {
+      "name": "fit:l15",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l15.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l15.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.418
+    },
+    {
+      "name": "summary:l15",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l15.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l15",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l15.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.086
+    },
+    {
+      "name": "fit:l16",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l16.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l16.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.423
+    },
+    {
+      "name": "summary:l16",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l16.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l16",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l16.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.087
+    },
+    {
+      "name": "fit:l17",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l17.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l17.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.42
+    },
+    {
+      "name": "summary:l17",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l17.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l17",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l17.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.097
+    },
+    {
+      "name": "fit:l18",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l18.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l18.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.434
+    },
+    {
+      "name": "summary:l18",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l18.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l18",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l18.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.089
+    },
+    {
+      "name": "fit:l19",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l19.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l19.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.43
+    },
+    {
+      "name": "summary:l19",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l19.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l19",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l19.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.086
+    },
+    {
+      "name": "fit:l20",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l20.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l20.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.428
+    },
+    {
+      "name": "summary:l20",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l20.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l20",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l20.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.099
+    },
+    {
+      "name": "fit:l21",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l21.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l21.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.428
+    },
+    {
+      "name": "summary:l21",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l21.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l21",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l21.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.088
+    },
+    {
+      "name": "fit:l22",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l22.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l22.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.427
+    },
+    {
+      "name": "summary:l22",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l22.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l22",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l22.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.085
+    },
+    {
+      "name": "fit:l23",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-l23.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/l23.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.425
+    },
+    {
+      "name": "summary:l23",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/l23.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:l23",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/l23.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.092
+    },
+    {
+      "name": "fit:postnorm",
+      "argv": [
+        "build/jovovich-readout-fit",
+        "--matrix",
+        "training/cache/layer-readout/reported/coder-base/features/features-postnorm.bin",
+        "--metadata",
+        "training/results/2026-10-01-frozen-readout/readout-metadata.txt",
+        "--masks",
+        "training/results/2026-10-01-frozen-readout/readout-masks.txt",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/fits/postnorm.fits.jsonl",
+        "--normalization",
+        "centered-rms",
+        "--lambda",
+        "0.01",
+        "--interpolation-lambda",
+        "1e-8",
+        "--gradient-tolerance",
+        "1e-8",
+        "--max-iterations",
+        "100"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.425
+    },
+    {
+      "name": "summary:postnorm",
+      "argv": [
+        "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+        "training/readout/layer_summary.mjs",
+        "--fits",
+        "training/cache/layer-readout/reported/coder-base/fits/postnorm.fits.jsonl",
+        "--rows",
+        "training/results/2026-10-01-frozen-readout/readout-rows.json",
+        "--masks-json",
+        "training/results/2026-10-01-frozen-readout/readout-masks.json",
+        "--width",
+        "896",
+        "--label",
+        "coder-base:postnorm",
+        "--output",
+        "training/cache/layer-readout/reported/coder-base/summaries/postnorm.json"
+      ],
+      "rc": 0,
+      "elapsed_seconds": 0.083
+    }
+  ],
+  "table": [
+    {
+      "body": "coder-base",
+      "depth": "l00",
+      "distinct_feature_rows": 52,
+      "correct": 31,
+      "correct_concern": 14,
+      "correct_clean": 17,
+      "complete_pairs": 7,
+      "permutation_reference_at_least_observed": 8,
+      "permutation_exceedance": 0.09,
+      "permutation_reference_maximum": 9,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.991191797509291e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0002819180400922504
+    },
+    {
+      "body": "coder-base",
+      "depth": "l01",
+      "distinct_feature_rows": 52,
+      "correct": 26,
+      "correct_concern": 12,
+      "correct_clean": 14,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 53,
+      "permutation_exceedance": 0.54,
+      "permutation_reference_maximum": 7,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.891435210837574e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0003840648044149886
+    },
+    {
+      "body": "coder-base",
+      "depth": "l02",
+      "distinct_feature_rows": 52,
+      "correct": 29,
+      "correct_concern": 16,
+      "correct_clean": 13,
+      "complete_pairs": 5,
+      "permutation_reference_at_least_observed": 30,
+      "permutation_exceedance": 0.31,
+      "permutation_reference_maximum": 10,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.928223297303584e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0005076369559584122
+    },
+    {
+      "body": "coder-base",
+      "depth": "l03",
+      "distinct_feature_rows": 52,
+      "correct": 31,
+      "correct_concern": 17,
+      "correct_clean": 14,
+      "complete_pairs": 7,
+      "permutation_reference_at_least_observed": 15,
+      "permutation_exceedance": 0.16,
+      "permutation_reference_maximum": 11,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.974054672456933e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0006599542050589727
+    },
+    {
+      "body": "coder-base",
+      "depth": "l04",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 13,
+      "correct_clean": 15,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 52,
+      "permutation_exceedance": 0.53,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.778651593322918e-9,
+      "maximum_iterations": 15,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0009175769151172006
+    },
+    {
+      "body": "coder-base",
+      "depth": "l05",
+      "distinct_feature_rows": 52,
+      "correct": 29,
+      "correct_concern": 14,
+      "correct_clean": 15,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 24,
+      "permutation_exceedance": 0.25,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.834291500934733e-9,
+      "maximum_iterations": 12,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0008052396371775888
+    },
+    {
+      "body": "coder-base",
+      "depth": "l06",
+      "distinct_feature_rows": 52,
+      "correct": 29,
+      "correct_concern": 14,
+      "correct_clean": 15,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 24,
+      "permutation_exceedance": 0.25,
+      "permutation_reference_maximum": 8,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.995588664060695e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0008996440036084
+    },
+    {
+      "body": "coder-base",
+      "depth": "l07",
+      "distinct_feature_rows": 52,
+      "correct": 27,
+      "correct_concern": 13,
+      "correct_clean": 14,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 43,
+      "permutation_exceedance": 0.44,
+      "permutation_reference_maximum": 7,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.999500378762849e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0010231609145574393
+    },
+    {
+      "body": "coder-base",
+      "depth": "l08",
+      "distinct_feature_rows": 52,
+      "correct": 26,
+      "correct_concern": 14,
+      "correct_clean": 12,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 40,
+      "permutation_exceedance": 0.41,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.816342469784467e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0010978898141900363
+    },
+    {
+      "body": "coder-base",
+      "depth": "l09",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 15,
+      "correct_clean": 13,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 19,
+      "permutation_exceedance": 0.2,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.445657528843243e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.001033776876844157
+    },
+    {
+      "body": "coder-base",
+      "depth": "l10",
+      "distinct_feature_rows": 52,
+      "correct": 27,
+      "correct_concern": 14,
+      "correct_clean": 13,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 22,
+      "permutation_exceedance": 0.23,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.417259819177737e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0010316875970379313
+    },
+    {
+      "body": "coder-base",
+      "depth": "l11",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 15,
+      "correct_clean": 13,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 38,
+      "permutation_exceedance": 0.39,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.749951849352678e-9,
+      "maximum_iterations": 15,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.00111597027250513
+    },
+    {
+      "body": "coder-base",
+      "depth": "l12",
+      "distinct_feature_rows": 52,
+      "correct": 29,
+      "correct_concern": 16,
+      "correct_clean": 13,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 28,
+      "permutation_exceedance": 0.29,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.70404050518181e-9,
+      "maximum_iterations": 12,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.001172858780697305
+    },
+    {
+      "body": "coder-base",
+      "depth": "l13",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 14,
+      "correct_clean": 14,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 30,
+      "permutation_exceedance": 0.31,
+      "permutation_reference_maximum": 7,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.884867311835133e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.001208310916949238
+    },
+    {
+      "body": "coder-base",
+      "depth": "l14",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 13,
+      "correct_clean": 15,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 43,
+      "permutation_exceedance": 0.44,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 6.501545633461059e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012389554668563152
+    },
+    {
+      "body": "coder-base",
+      "depth": "l15",
+      "distinct_feature_rows": 52,
+      "correct": 29,
+      "correct_concern": 14,
+      "correct_clean": 15,
+      "complete_pairs": 4,
+      "permutation_reference_at_least_observed": 6,
+      "permutation_exceedance": 0.07,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 3.153379919222389e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.001128850247222353
+    },
+    {
+      "body": "coder-base",
+      "depth": "l16",
+      "distinct_feature_rows": 52,
+      "correct": 27,
+      "correct_concern": 14,
+      "correct_clean": 13,
+      "complete_pairs": 1,
+      "permutation_reference_at_least_observed": 71,
+      "permutation_exceedance": 0.72,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 9.376387393941754e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012416916631023205
+    },
+    {
+      "body": "coder-base",
+      "depth": "l17",
+      "distinct_feature_rows": 52,
+      "correct": 24,
+      "correct_concern": 12,
+      "correct_clean": 12,
+      "complete_pairs": 1,
+      "permutation_reference_at_least_observed": 71,
+      "permutation_exceedance": 0.72,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 4.137962011235841e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0011743615267087986
+    },
+    {
+      "body": "coder-base",
+      "depth": "l18",
+      "distinct_feature_rows": 52,
+      "correct": 26,
+      "correct_concern": 14,
+      "correct_clean": 12,
+      "complete_pairs": 1,
+      "permutation_reference_at_least_observed": 71,
+      "permutation_exceedance": 0.72,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 4.434162865010749e-9,
+      "maximum_iterations": 15,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012417855550970632
+    },
+    {
+      "body": "coder-base",
+      "depth": "l19",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 15,
+      "correct_clean": 13,
+      "complete_pairs": 3,
+      "permutation_reference_at_least_observed": 20,
+      "permutation_exceedance": 0.21,
+      "permutation_reference_maximum": 4,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 3.6742909841025486e-9,
+      "maximum_iterations": 15,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012693152880701333
+    },
+    {
+      "body": "coder-base",
+      "depth": "l20",
+      "distinct_feature_rows": 52,
+      "correct": 28,
+      "correct_concern": 16,
+      "correct_clean": 12,
+      "complete_pairs": 4,
+      "permutation_reference_at_least_observed": 7,
+      "permutation_exceedance": 0.08,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 2.3324115503570164e-9,
+      "maximum_iterations": 14,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0013128565573842306
+    },
+    {
+      "body": "coder-base",
+      "depth": "l21",
+      "distinct_feature_rows": 52,
+      "correct": 30,
+      "correct_concern": 16,
+      "correct_clean": 14,
+      "complete_pairs": 4,
+      "permutation_reference_at_least_observed": 8,
+      "permutation_exceedance": 0.09,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 1.5478156690368339e-9,
+      "maximum_iterations": 13,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012690948037696495
+    },
+    {
+      "body": "coder-base",
+      "depth": "l22",
+      "distinct_feature_rows": 52,
+      "correct": 30,
+      "correct_concern": 17,
+      "correct_clean": 13,
+      "complete_pairs": 5,
+      "permutation_reference_at_least_observed": 1,
+      "permutation_exceedance": 0.02,
+      "permutation_reference_maximum": 7,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 3.0578729902633456e-9,
+      "maximum_iterations": 12,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012404717596910927
+    },
+    {
+      "body": "coder-base",
+      "depth": "l23",
+      "distinct_feature_rows": 52,
+      "correct": 27,
+      "correct_concern": 16,
+      "correct_clean": 11,
+      "complete_pairs": 2,
+      "permutation_reference_at_least_observed": 54,
+      "permutation_exceedance": 0.55,
+      "permutation_reference_maximum": 6,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 3.0621851391382515e-9,
+      "maximum_iterations": 15,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0013013339976049826
+    },
+    {
+      "body": "coder-base",
+      "depth": "postnorm",
+      "distinct_feature_rows": 52,
+      "correct": 24,
+      "correct_concern": 14,
+      "correct_clean": 10,
+      "complete_pairs": 0,
+      "permutation_reference_at_least_observed": 99,
+      "permutation_exceedance": 1,
+      "permutation_reference_maximum": 5,
+      "active_columns_minimum": 896,
+      "maximum_gradient_inf": 2.5568128838969004e-9,
+      "maximum_iterations": 12,
+      "capacity_correct": 52,
+      "capacity_train_ce": 0.0012774196657581642
+    }
+  ]
+}

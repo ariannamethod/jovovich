@@ -1,0 +1,49 @@
+llama: E=8 H=1 KV=1 FFN=12 V=262 L=1 HD=8 Q=8
+  rope: neox | weights: packed
+head LoRA rank=8 alpha=16 trainable=2160; frozen Qwen2 E=8 V=262
+cache 1/2 completion_tokens=2 elapsed=0.0s
+cache 2/2 completion_tokens=6 elapsed=0.0s
+CHUCK_AUDIT {"call":1,"step_before":0,"step_after":1,"resets":0,"slots":2,"frozen_slots":0,"loss":6.24267006,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.542113229399547}
+CHUCK_AUDIT {"call":2,"step_before":1,"step_after":2,"resets":0,"slots":2,"frozen_slots":0,"loss":6.14574051,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5376744226086885}
+CHUCK_AUDIT {"call":3,"step_before":2,"step_after":3,"resets":0,"slots":2,"frozen_slots":0,"loss":6.04626846,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5452315984293818}
+CHUCK_AUDIT {"call":4,"step_before":3,"step_after":4,"resets":0,"slots":2,"frozen_slots":0,"loss":5.94381142,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5461468631401658}
+CHUCK_AUDIT {"call":5,"step_before":4,"step_after":5,"resets":0,"slots":2,"frozen_slots":0,"loss":5.83822441,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5451721558347344}
+CHUCK_AUDIT {"call":6,"step_before":5,"step_after":6,"resets":0,"slots":2,"frozen_slots":0,"loss":5.72940445,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.54347806237638}
+CHUCK_AUDIT {"call":7,"step_before":6,"step_after":7,"resets":0,"slots":2,"frozen_slots":0,"loss":5.61726665,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5414035152643919}
+CHUCK_AUDIT {"call":8,"step_before":7,"step_after":8,"resets":0,"slots":2,"frozen_slots":0,"loss":5.5017395,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5389243327081203}
+CHUCK_AUDIT {"call":9,"step_before":8,"step_after":9,"resets":0,"slots":2,"frozen_slots":0,"loss":5.38235855,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.536275640130043}
+CHUCK_AUDIT {"call":10,"step_before":9,"step_after":10,"resets":0,"slots":2,"frozen_slots":0,"loss":5.25889206,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.53347690962255}
+CHUCK_AUDIT {"call":11,"step_before":10,"step_after":11,"resets":0,"slots":2,"frozen_slots":0,"loss":5.13111019,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5305191949009895}
+CHUCK_AUDIT {"call":12,"step_before":11,"step_after":12,"resets":0,"slots":2,"frozen_slots":0,"loss":4.99878454,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5273940674960613}
+CHUCK_AUDIT {"call":13,"step_before":12,"step_after":13,"resets":0,"slots":2,"frozen_slots":0,"loss":4.86169338,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5240939855575562}
+CHUCK_AUDIT {"call":14,"step_before":13,"step_after":14,"resets":0,"slots":2,"frozen_slots":0,"loss":4.71962595,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5206045135855675}
+CHUCK_AUDIT {"call":15,"step_before":14,"step_after":15,"resets":0,"slots":2,"frozen_slots":0,"loss":4.57238483,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5169179029762745}
+CHUCK_AUDIT {"call":16,"step_before":15,"step_after":16,"resets":0,"slots":2,"frozen_slots":0,"loss":4.41980171,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5130201303400099}
+CHUCK_AUDIT {"call":17,"step_before":16,"step_after":17,"resets":0,"slots":2,"frozen_slots":0,"loss":4.26173973,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":1.5089015481062233}
+CHUCK_AUDIT {"call":18,"step_before":17,"step_after":18,"resets":0,"slots":2,"frozen_slots":0,"loss":4.09811306,"lr":0.00300000003,"dampen":1.02996993,"noise":0,"parameter_sum_delta":1.5496365879662335}
+CHUCK_AUDIT {"call":19,"step_before":18,"step_after":19,"resets":0,"slots":2,"frozen_slots":0,"loss":3.9237752,"lr":0.00300000003,"dampen":1.06080806,"noise":0,"parameter_sum_delta":1.59111865516752}
+CHUCK_AUDIT {"call":20,"step_before":19,"step_after":20,"resets":0,"slots":2,"frozen_slots":0,"loss":3.73821092,"lr":0.00300000003,"dampen":1.09253967,"noise":0,"parameter_sum_delta":1.6332966140471399}
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head.sft.lora
+CHUCK_AUDIT {"call":21,"step_before":0,"step_after":1,"resets":1,"slots":2,"frozen_slots":0,"loss":0.693147182,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.070052639581263065}
+CHUCK_AUDIT {"call":22,"step_before":1,"step_after":2,"resets":1,"slots":2,"frozen_slots":0,"loss":0.690401256,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.066580885089933872}
+CHUCK_AUDIT {"call":23,"step_before":2,"step_after":3,"resets":1,"slots":2,"frozen_slots":0,"loss":0.68764925,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.064193099737167358}
+CHUCK_AUDIT {"call":24,"step_before":3,"step_after":4,"resets":1,"slots":2,"frozen_slots":0,"loss":0.684891284,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.06175747886300087}
+CHUCK_AUDIT {"call":25,"step_before":4,"step_after":5,"resets":1,"slots":2,"frozen_slots":0,"loss":0.682127237,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.059131910093128681}
+CHUCK_AUDIT {"call":26,"step_before":5,"step_after":6,"resets":1,"slots":2,"frozen_slots":0,"loss":0.67935735,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.056434536352753639}
+CHUCK_AUDIT {"call":27,"step_before":6,"step_after":7,"resets":1,"slots":2,"frozen_slots":0,"loss":0.676581442,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.053733387961983681}
+CHUCK_AUDIT {"call":28,"step_before":7,"step_after":8,"resets":1,"slots":2,"frozen_slots":0,"loss":0.673799634,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.051069258246570826}
+CHUCK_AUDIT {"call":29,"step_before":8,"step_after":9,"resets":1,"slots":2,"frozen_slots":0,"loss":0.670998335,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.048417568206787109}
+CHUCK_AUDIT {"call":30,"step_before":9,"step_after":10,"resets":1,"slots":2,"frozen_slots":0,"loss":0.668176472,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.045737634878605604}
+CHUCK_AUDIT {"call":31,"step_before":10,"step_after":11,"resets":1,"slots":2,"frozen_slots":0,"loss":0.665332973,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.043020104058086872}
+CHUCK_AUDIT {"call":32,"step_before":11,"step_after":12,"resets":1,"slots":2,"frozen_slots":0,"loss":0.662466884,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.040283196605741978}
+CHUCK_AUDIT {"call":33,"step_before":12,"step_after":13,"resets":1,"slots":2,"frozen_slots":0,"loss":0.659577191,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.037555199582129717}
+CHUCK_AUDIT {"call":34,"step_before":13,"step_after":14,"resets":1,"slots":2,"frozen_slots":0,"loss":0.656662583,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.034864642657339573}
+CHUCK_AUDIT {"call":35,"step_before":14,"step_after":15,"resets":1,"slots":2,"frozen_slots":0,"loss":0.653721631,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.032237034407444298}
+CHUCK_AUDIT {"call":36,"step_before":15,"step_after":16,"resets":1,"slots":2,"frozen_slots":0,"loss":0.650753319,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.029693661141209304}
+CHUCK_AUDIT {"call":37,"step_before":16,"step_after":17,"resets":1,"slots":2,"frozen_slots":0,"loss":0.647756219,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.027249250095337629}
+CHUCK_AUDIT {"call":38,"step_before":17,"step_after":18,"resets":1,"slots":2,"frozen_slots":0,"loss":0.644728661,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.024911502609029412}
+CHUCK_AUDIT {"call":39,"step_before":18,"step_after":19,"resets":1,"slots":2,"frozen_slots":0,"loss":0.641669393,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.0226820376701653}
+CHUCK_AUDIT {"call":40,"step_before":19,"step_after":20,"resets":1,"slots":2,"frozen_slots":0,"loss":0.638576806,"lr":0.000750000007,"dampen":1,"noise":0,"parameter_sum_delta":-0.020559238619171083}
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head.lora
+merged-head probe max_logit_error=4.7683716e-07
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head.head.f32 (2096 floats)

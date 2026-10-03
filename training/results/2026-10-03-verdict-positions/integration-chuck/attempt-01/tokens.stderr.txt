@@ -1,0 +1,34 @@
+llama: E=8 H=1 KV=1 FFN=12 V=262 L=1 HD=8 Q=8
+  rope: neox | weights: packed
+cache 1/2 tokens=57 elapsed=0.0s
+cache 2/2 tokens=31 elapsed=0.0s
+zero-adapter probe rows=4 residual_max_abs=2.9802322e-08 residual_scale=0.32352847 logits_max_abs=2.3841858e-07 logits_scale=1.1328752 argmax_equal=1
+CHUCK_AUDIT {"call":1,"step_before":0,"step_after":1,"resets":0,"slots":6,"frozen_slots":0,"loss":5.82279062,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.060002518119290471}
+CHUCK_AUDIT {"call":2,"step_before":1,"step_after":2,"resets":0,"slots":6,"frozen_slots":0,"loss":5.80451679,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.051319599238922819}
+CHUCK_AUDIT {"call":3,"step_before":2,"step_after":3,"resets":0,"slots":6,"frozen_slots":0,"loss":5.77722788,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.050882639014162123}
+CHUCK_AUDIT {"call":4,"step_before":3,"step_after":4,"resets":0,"slots":6,"frozen_slots":0,"loss":5.73896599,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.040807244367897511}
+CHUCK_AUDIT {"call":5,"step_before":4,"step_after":5,"resets":0,"slots":6,"frozen_slots":0,"loss":5.69181108,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.037373160477727652}
+CHUCK_AUDIT {"call":6,"step_before":5,"step_after":6,"resets":0,"slots":6,"frozen_slots":0,"loss":5.64259768,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.025852857506833971}
+CHUCK_AUDIT {"call":7,"step_before":6,"step_after":7,"resets":0,"slots":6,"frozen_slots":0,"loss":5.59865665,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.021273321937769651}
+CHUCK_AUDIT {"call":8,"step_before":7,"step_after":8,"resets":0,"slots":6,"frozen_slots":0,"loss":5.56284523,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.032347333966754377}
+CHUCK_AUDIT {"call":9,"step_before":8,"step_after":9,"resets":0,"slots":6,"frozen_slots":0,"loss":5.53381014,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.044008569326251745}
+CHUCK_AUDIT {"call":10,"step_before":9,"step_after":10,"resets":0,"slots":6,"frozen_slots":0,"loss":5.50997734,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.051599244063254446}
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch10.gate.f32 merge_max_abs=7.4505806e-09
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch10.up.f32 merge_max_abs=8.4401108e-09
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch10.down.f32 merge_max_abs=3.7252903e-09
+CHUCK_AUDIT {"call":11,"step_before":10,"step_after":11,"resets":0,"slots":6,"frozen_slots":0,"loss":5.4883399,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.057396782736759633}
+CHUCK_AUDIT {"call":12,"step_before":11,"step_after":12,"resets":0,"slots":6,"frozen_slots":0,"loss":5.46670389,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.061516571091488004}
+CHUCK_AUDIT {"call":13,"step_before":12,"step_after":13,"resets":0,"slots":6,"frozen_slots":0,"loss":5.44474649,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.062796454003546387}
+CHUCK_AUDIT {"call":14,"step_before":13,"step_after":14,"resets":0,"slots":6,"frozen_slots":0,"loss":5.4240346,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.059668548463378102}
+CHUCK_AUDIT {"call":15,"step_before":14,"step_after":15,"resets":0,"slots":6,"frozen_slots":0,"loss":5.41044235,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.051940624951384962}
+CHUCK_AUDIT {"call":16,"step_before":15,"step_after":16,"resets":0,"slots":6,"frozen_slots":0,"loss":5.40453577,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.04473668709397316}
+CHUCK_AUDIT {"call":17,"step_before":16,"step_after":17,"resets":0,"slots":6,"frozen_slots":0,"loss":5.40250111,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.03625719080446288}
+CHUCK_AUDIT {"call":18,"step_before":17,"step_after":18,"resets":0,"slots":6,"frozen_slots":0,"loss":5.40219831,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.023697534401435405}
+CHUCK_AUDIT {"call":19,"step_before":18,"step_after":19,"resets":0,"slots":6,"frozen_slots":0,"loss":5.40164614,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.01215248042717576}
+CHUCK_AUDIT {"call":20,"step_before":19,"step_after":20,"resets":0,"slots":6,"frozen_slots":0,"loss":5.39986467,"lr":0.00300000003,"dampen":1,"noise":0,"parameter_sum_delta":0.0033746889384929091}
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch20.gate.f32 merge_max_abs=1.4901161e-08
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch20.up.f32 merge_max_abs=7.4505806e-09
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.epoch20.down.f32 merge_max_abs=1.4901161e-08
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.gate.f32 merge_max_abs=1.4901161e-08
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.up.f32 merge_max_abs=7.4505806e-09
+saved /workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tokens.down.f32 merge_max_abs=1.4901161e-08

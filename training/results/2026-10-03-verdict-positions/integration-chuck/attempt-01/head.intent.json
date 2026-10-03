@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/tmp/jovovich-chuck-main-terh6h05/head",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tiny.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head",
+    "20",
+    "20",
+    ".003"
+  ],
+  "started_utc": "2026-10-03T16:23:45.663510+00:00"
+}

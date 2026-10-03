@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "stdout_sha256": "e0f7069a64920154265bafc8d775db2d4780d45904787336259ce4275083b6d8",
+  "native_executables": [
+    "./build/test-head",
+    "./build/test-mlp",
+    "./build/test-optimizer",
+    "./build/test-weighting",
+    "./build/test-joint",
+    "./build/test-verdict-positions",
+    "./build/test-readout-extract",
+    "./build/test-layer-extract",
+    "./build/test-readout"
+  ],
+  "node_spec_summary": {
+    "tests": 119,
+    "pass": 119,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "note": "Node emitted its spec reporter. The initial wrapper expected TAP markers and therefore recorded tap_complete=false; this validation checks the actual reporter output without rerunning or rewriting the receipt. The earlier build-test receipt is retained as a build-only observation because its captured log lacks test assertions."
+}

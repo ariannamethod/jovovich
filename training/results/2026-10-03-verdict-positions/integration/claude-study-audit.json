@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "auditor": "independent claude_probe_audit agent",
+  "audited_at_utc": "2026-10-03T16:25:27.483791+00:00",
+  "reviewed_merge_commit": "d21670b0fcf3293d73103aa2715bfa7b56dca735",
+  "scope": {
+    "operation": "Read committed sources and receipts; recompute statistics from stored predictions; resolve historical source hashes.",
+    "model_forward_runs": 0,
+    "native_fit_reruns": 0,
+    "summary_count_recomputed": 75,
+    "raw_fit_files_inspected": 0,
+    "raw_feature_files_inspected": 0,
+    "raw_files_named_in_manifests_but_absent_from_this_checkout": 150,
+    "raw_files_scope": "75 feature matrices and 75 fit files. Their content hashes are published; their contents and a durable retrieval locator are not in the reviewed repository evidence.",
+    "convergence_check": "Validated all 75 summary convergence fields and summed their reported fit counts, not raw solver iterates."
+  },
+  "verified_results": {
+    "body_results": [
+      {
+        "body": "coder-base",
+        "depths": 25,
+        "best_depth_by_accuracy_then_pairs": "l00",
+        "best_correct": 31,
+        "best_complete_pairs": 7,
+        "maximum_complete_pairs": 7,
+        "cleared_depths": [
+          "l00",
+          "l03",
+          "l22"
+        ],
+        "token_trace_equals_published": true,
+        "manifest_summary_hashes_match": true,
+        "manifest_extraction_reused": true
+      },
+      {
+        "body": "plain-instruct",
+        "depths": 25,
+        "best_depth_by_accuracy_then_pairs": "l00",
+        "best_correct": 32,
+        "best_complete_pairs": 8,
+        "maximum_complete_pairs": 8,
+        "cleared_depths": [
+          "l00",
+          "l01",
+          "l10",
+          "l11",
+          "l17"
+        ],
+        "token_trace_equals_published": true,
+        "manifest_summary_hashes_match": true,
+        "manifest_extraction_reused": true
+      },
+      {
+        "body": "abliterated-coder",
+        "depths": 25,
+        "best_depth_by_accuracy_then_pairs": "l16",
+        "best_correct": 31,
+        "best_complete_pairs": 5,
+        "maximum_complete_pairs": 7,
+        "cleared_depths": [
+          "l00",
+          "l06",
+          "l16",
+          "l23"
+        ],
+        "token_trace_equals_published": true,
+        "manifest_summary_hashes_match": true,
+        "manifest_extraction_reused": true
+      }
+    ],
+    "body_depth_cells": 75,
+    "cleared_declared_floor_cells": 12,
+    "cells_above_lexical_baseline": 0,
+    "lexical_baseline": {
+      "correct": 35,
+      "complete_pairs": 9
+    },
+    "reported_fit_count": 150150,
+    "largest_reported_gradient_inf": 9.999999422277694e-09,
+    "summary_hashes_matching_manifests": 75,
+    "recomputed_table_mismatches": 0,
+    "published_summary_parity": {
+      "fields_compared": 27,
+      "equal_fields": 27,
+      "observed_predictions_and_99_reference_statistics_compared": true
+    },
+    "fixture_tables": {
+      "tables_checked": 3,
+      "depth_cells_checked": 15,
+      "plant1_and_plant2_onsets_match": true,
+      "no_plant_all_depths_correct": 26,
+      "no_plant_all_depths_complete_pairs": 0,
+      "scope": "Checked stored tables and fixture source; did not re-execute the fixture."
+    }
+  },
+  "findings": [
+    {
+      "id": "unbound_extraction_reuse",
+      "source": "training/readout/run_layers.mjs:65-78",
+      "finding": "Reuse copies supplied matrices and traces without verifying their original extraction manifest, model, prompt, or binary hashes, then records current input hashes and extraction rc 0. All three reported body manifests used reuse.",
+      "impact": "The reusable runner permits false model/input attribution; this audit found no demonstrated mixup in the published summaries.",
+      "next_run_action": "Use the durable launcher with input-bound receipts; do not reuse this historical runner as the next experiment launcher."
+    },
+    {
+      "id": "local_raw_evidence",
+      "source": "training/readout/run_layers.mjs:35-44,136-151; plan.json:140",
+      "finding": "Child output is collected at phase completion and the manifest is written after every depth; raw fits/features are referenced by local cache paths and hashes without a committed remote retrieval receipt.",
+      "impact": "Independent raw-fit and feature verification requires obtaining those exact files from their custodian.",
+      "next_run_action": "The next run uses verified incremental off-machine archives."
+    },
+    {
+      "id": "historical_hash_mapping",
+      "source": "plan.json:5 and instruments",
+      "finding": "The frozen protocol, helpers and Makefile hashes identify earlier source revisions. The mappings below were verified directly against Git object bytes.",
+      "impact": "Keep historical hashes intact and use explicit commit/path mappings rather than treating them as hashes of every current source file."
+    },
+    {
+      "id": "surface_interpretation",
+      "source": "README.md at reviewed merge, lines 813-819",
+      "finding": "The table establishes relative readout accuracy. It does not identify the exact features responsible for layer-0 successes; the statement locating surface information is an interpretation.",
+      "next_run_action": "State the measured scores and leave feature attribution for a separate control."
+    }
+  ],
+  "historical_plan_hash_matches": [
+    {
+      "frozen_field": "protocol_sha256",
+      "frozen_sha256": "d49bd06dda9d8d54e142538268e18330127d6793c3df58d74f9e0e923176620d",
+      "verified_historical_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+      "verified_historical_path": "training/results/2026-10-02-layer-readout/PROTOCOL.md",
+      "historical_bytes_match": true,
+      "merged_path": "training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md",
+      "merged_sha256": "6a3f97655a2facd784c8d316dc1a690b3187c307336e8536221e75577b40401a",
+      "merged_bytes_match_frozen": false
+    },
+    {
+      "frozen_field": "source:training/readout/layer_summary.mjs",
+      "frozen_sha256": "30b38b4bd39eb6042dbd525cef1b28f2ce8a19c8318de6cc9853ebffe2f182bd",
+      "verified_historical_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+      "verified_historical_path": "training/readout/layer_summary.mjs",
+      "historical_bytes_match": true,
+      "merged_path": "training/readout/layer_summary.mjs",
+      "merged_sha256": "4f20a639f3815cda0e4fc6cc92265d3e95e4a6afd4f3fe0948643353be85e31b",
+      "merged_bytes_match_frozen": false
+    },
+    {
+      "frozen_field": "source:training/readout/run_layers.mjs",
+      "frozen_sha256": "16457c28b29ccc22ff51009509fafda67d9cbab5fe3d72e4bcc6bfb979c33e21",
+      "verified_historical_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+      "verified_historical_path": "training/readout/run_layers.mjs",
+      "historical_bytes_match": true,
+      "merged_path": "training/readout/run_layers.mjs",
+      "merged_sha256": "6b33086f96dec177edde9e36229b7357f698764cb43903f29f8d181de71062a2",
+      "merged_bytes_match_frozen": false
+    },
+    {
+      "frozen_field": "source:Makefile",
+      "frozen_sha256": "e6a87e84ffa8435be67de999383789b1162553c75812b09192e741f960633493",
+      "verified_historical_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+      "verified_historical_path": "Makefile",
+      "historical_bytes_match": true,
+      "merged_path": "Makefile",
+      "merged_sha256": "f6c02b3a5ef6e8279b884364a3c55cf7dad1d4923b15a3231c512955a935bd2d",
+      "merged_bytes_match_frozen": false
+    },
+    {
+      "frozen_field": "source:training/extract_layers_bodies.c",
+      "frozen_sha256": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847",
+      "verified_historical_commit": "a4b085e98de13e0b634b09e193be3c0a3911c84e",
+      "verified_historical_path": "training/extract_layers.c",
+      "historical_bytes_match": true,
+      "merged_path": "training/extract_layers_bodies.c",
+      "merged_sha256": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847",
+      "merged_bytes_match_frozen": true
+    }
+  ],
+  "reported_manifest_helper_hash_matches": [
+    {
+      "field": "helper:layer_summary.mjs",
+      "sha256": "4f20a639f3815cda0e4fc6cc92265d3e95e4a6afd4f3fe0948643353be85e31b",
+      "verified_historical_commit": "ac9a76e1a51bc536855e6438b032674e6af0669a",
+      "path": "training/readout/layer_summary.mjs",
+      "historical_bytes_match": true
+    },
+    {
+      "field": "helper:run_layers.mjs",
+      "sha256": "d44c0889a0fa9f356a2e133b84a044d7877dc8f6055b9675f5e756f1cbac9b33",
+      "verified_historical_commit": "ac9a76e1a51bc536855e6438b032674e6af0669a",
+      "path": "training/readout/run_layers.mjs",
+      "historical_bytes_match": true
+    }
+  ],
+  "methodological_reading": {
+    "representation_difference": "The old published 29/52 baseline is a pre-final-MLP state captured with final down projection zeroed. The three-body 24/52 coder postnorm row is the complete final residual plus output norm; plan.json explicitly distinguishes them.",
+    "next_experiment": "No compelling single depth is selected by these tables. Continue the matched rationale-before-verdict comparison with explicit verdict positions and generated-answer evaluation.",
+    "jvpr2_integration_blocker": false
+  },
+  "source_receipts": [
+    {
+      "path": "training/extract_layers_bodies.c",
+      "bytes": 5525,
+      "sha256": "9efa44399af2490d22428ae98a086462d790c7a4d104a15b8a46c95238122847"
+    },
+    {
+      "path": "training/extract_readout.c",
+      "bytes": 8402,
+      "sha256": "40265ab648c3271e85d98af099f25e4425e3cfd6f66438f2bddbb4d3c76af776"
+    },
+    {
+      "path": "training/readout/run_layers.mjs",
+      "bytes": 8893,
+      "sha256": "6b33086f96dec177edde9e36229b7357f698764cb43903f29f8d181de71062a2"
+    },
+    {
+      "path": "training/readout/layer_summary.mjs",
+      "bytes": 11739,
+      "sha256": "4f20a639f3815cda0e4fc6cc92265d3e95e4a6afd4f3fe0948643353be85e31b"
+    },
+    {
+      "path": "training/readout/layer_table.mjs",
+      "bytes": 5476,
+      "sha256": "629f9a600c02a47ce61e81f66a36562eefb6c1426af433c8ff0c82f1631ee27d"
+    },
+    {
+      "path": "training/readout/compare_published.mjs",
+      "bytes": 3314,
+      "sha256": "740cda03f4cf75af63a1239ff63c389ac2113495c5b032a811de6b9121c7a462"
+    },
+    {
+      "path": "training/readout/build_layer_fixture.c",
+      "bytes": 15216,
+      "sha256": "6c364275767d1d021c0a0011852a7a9f672897019a9679212f86fd6d0282a04b"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/plan.json",
+      "bytes": 11661,
+      "sha256": "6db9162caf8bc6a9ea3131d62b3507a20acac38d22d26ac3dcde9aff852c05d4"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md",
+      "bytes": 3552,
+      "sha256": "6a3f97655a2facd784c8d316dc1a690b3187c307336e8536221e75577b40401a"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/combined-table.json",
+      "bytes": 47686,
+      "sha256": "c2d922f12e12b281e7ee96d77f387e164c460a40f9a571365a6529b2db86a7a3"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/parity/parity-gate.json",
+      "bytes": 2556,
+      "sha256": "9565f0729758c89cbe2797596e4a075d7a248ecd08736d77aebdf3b7ba38ec30"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/fixture/fixture-gate.json",
+      "bytes": 6925,
+      "sha256": "da691ae7e93976c7abf2448ed18e14fb6fc81ecefc56fd081f585958d07f9cef"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/body1/manifest.json",
+      "bytes": 69683,
+      "sha256": "0fb42851db1ad659a85d75f34d74b945dc760db04878dee0f104626a4899867b"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/body2/manifest.json",
+      "bytes": 70618,
+      "sha256": "6d02762d70b8e7edd086f4d19ddcee40107cf233b5dff14722e82dd5ac2ee228"
+    },
+    {
+      "path": "training/results/2026-10-02-layer-readout-three-bodies/body3/manifest.json",
+      "bytes": 71333,
+      "sha256": "989f8ead635aa2d9b742ffd82d058b16dbe9aa68a2b460a0ff2f1fc88acc83f1"
+    }
+  ]
+}

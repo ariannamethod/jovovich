@@ -825,6 +825,52 @@ are verified and skipped; an intent without a completed result is preserved as
 an interrupted attempt and stops the sequence. The final JSON receipt confirms
 remote verification of the completion marker.
 
+A per-layer diagnostic then asks where the judgment lives. One forward pass per
+sequence keeps the residual state at the decision position after every decoder
+block, plus the final post-norm state, for three Q8_0 bodies: the pinned coder
+base, the official plain-instruct twin, and an abliterated coder twin. Every one
+of the 75 body-depth cells gets the published frozen-readout fit unchanged — the
+same 52 rows, the same twenty template-family folds, centered-rms, lambda 0.01,
+99 coupled label permutations. All 150,150 fits converge.
+
+| Per-layer readout | Depths | Cells clearing 29/52 and 4/26 | Best cell | Cells above 35/52 and 9/26 |
+| --- | ---: | --- | --- | ---: |
+| Qwen2.5-Coder-0.5B-Instruct | 25 | l00, l03, l22 | l00 at 31/52, 7/26 | 0 |
+| Qwen2.5-0.5B-Instruct | 25 | l00, l01, l10, l11, l17 | l00 at 32/52, 8/26 | 0 |
+| Abliterated coder twin | 25 | l00, l06, l16, l23 | l16 at 31/52, 5/26 | 0 |
+
+Block 0 is the only depth that clears on all three bodies, at a decision
+position whose own token is identical in all 52 rows. The seven lexical/count
+features outperform every tested body-depth cell. The final post-norm state
+is the weakest row on the coder base at 24/52 and 0/26. This profile supplies
+no compelling depth for the next trainable readout; it does not identify which
+features account for block 0's successes.
+
+The declared reading was fixed per depth before any state was extracted and
+carries no multiplicity rule; across 75 cells an exceedance near 0.01 is
+expected about once by chance, so twelve cells above the floor are not twelve
+findings. A negative at every depth bounds this affine probe at this lambda on
+52 rows and twenty folds; it does not prove the states are empty.
+
+The instruments were proved before the bodies were read. The audit reproduces
+the published z summary from the published fits on all 27 compared fields,
+including all 99 reference statistics and all 52 scores to seventeen digits. A
+direction planted in one block of a hand-built four-block body is read at that
+block and above, never below it; the boundary moves when the plant moves; with
+the plant removed every depth reads 26/52 and 0/26. All three bodies produce a
+token trace byte-identical to the published extraction's. The protocol, the plan
+frozen before extraction, the fixture, the manifests, the per-depth summaries
+and the full 75-row table live in
+[`training/results/2026-10-02-layer-readout-three-bodies`](training/results/2026-10-02-layer-readout-three-bodies).
+
+The three-body study's historical runner, `training/readout/run_layers.mjs`,
+has no incremental remote archive and does not bind `--reuse-extraction` to
+the original input receipts. Its committed summaries and token traces were
+independently checked; the raw matrices and fits are named by hash but have no
+committed remote archive receipt. New collection uses the verified durable
+launcher, `training/layers/run_layers.py`, described above. The integration
+audit is under `training/results/2026-10-03-verdict-positions/integration/`.
+
 The review evaluator uses the actual host prompt and native inference path:
 
 ```sh

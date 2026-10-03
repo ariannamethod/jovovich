@@ -1,0 +1,16 @@
+{
+  "source_sha256": {
+    "training/train_mlp.c": "3c801e2d0d37ed800ab7366f84c6ec4f8c9c5aec9cb8afbf37a0a31fdbdf7274",
+    "training/train_head.c": "db5e1daecac4fa730a1c67309f64a3915a05fc6d3ca8ff4812fb2d496de9133b",
+    "training/prepare.py": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd",
+    "deps/notorch/notorch.c": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4",
+    "deps/notorch/notorch.h": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302",
+    "deps/notorch/notorch_simd.h": "eea8e74cd943325db32647eda7e1ebae458dbad41d1486937adf8df0fca1633c",
+    "deps/notorch/gguf.c": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9",
+    "deps/notorch/harness/runtime.c": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a",
+    "deps/notorch/harness/arch_llama.c": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5",
+    "deps/notorch/examples/bpe.c": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+  },
+  "audit_header_sha256": "df34a5b7f52f1dcb20ad81e28df13c5c6ab08b032db0ae0e925c3895c3dbeec2",
+  "notorch_pin": "014403faa76b795aefe18a4781980f5b140e0ed3"
+}

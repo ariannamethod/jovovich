@@ -1,0 +1,380 @@
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -o build/jovovich-infer src/infer.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -o build/jovovich-merge-mlp training/merge_mlp.c deps/notorch/gguf.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-head test/head.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-mlp test/mlp.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-optimizer test/optimizer.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-weighting test/weighting.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-joint test/joint.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -I/opt/homebrew/opt/openblas/include -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native  -o build/test-readout-extract test/readout_extract.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c -L/opt/homebrew/opt/openblas/lib -lm -pthread
+deps/notorch/notorch.c:7606:91: warning: missing field 'fnn' initializer [-Wmissing-field-initializers]
+ 7606 |         jobs[t] = (nt_qjob_i8){ fn, out, NULL, qa, da, asum, r0, r1, k, slices, rows_each };
+      |                                                                                           ^
+deps/notorch/notorch.c:5190:21: warning: unused function 'nt_q4k_acc' [-Wunused-function]
+ 5190 | static inline float nt_q4k_acc(float acc, float da, float d, float ls, int32_t dot,
+      |                     ^~~~~~~~~~
+2 warnings generated.
+cc -O2 -Wall -Wextra -std=gnu11 -o build/test-readout test/readout.c -L/opt/homebrew/opt/openblas/lib -lm
+cc -O2 -Wall -Wextra -std=gnu11 -o build/jovovich-readout-fit training/readout_fit.c -L/opt/homebrew/opt/openblas/lib -lm
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.08712e-06 max_gradient=0.0411154; merged head logits max_error=1.49012e-08
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=8.70079e-05; gate/up/down max_grad=0.189277/0.377375/0.336615; merged residual/logits max_error=2.38419e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=8.9407e-08; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=1.78814e-07); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=2.23517e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+./build/test-joint
+Joint finite difference: state=nonzero-AB tensor=gate.A coordinates=6 max_abs_error=3.84746855e-05 max_abs_gradient=0.0510172173
+Joint finite difference: state=nonzero-AB tensor=gate.B coordinates=8 max_abs_error=3.49911412e-05 max_abs_gradient=0.0998057425
+Joint finite difference: state=nonzero-AB tensor=up.A coordinates=6 max_abs_error=2.51015108e-05 max_abs_gradient=0.0268268939
+Joint finite difference: state=nonzero-AB tensor=up.B coordinates=8 max_abs_error=5.88931575e-05 max_abs_gradient=0.0933168605
+Joint finite difference: state=nonzero-AB tensor=down.A coordinates=8 max_abs_error=2.62707965e-05 max_abs_gradient=0.105265811
+Joint finite difference: state=nonzero-AB tensor=down.B coordinates=6 max_abs_error=2.88698297e-05 max_abs_gradient=0.0838002041
+Joint finite difference: state=nonzero-AB 42/42 pass h=0.00200000009 loss=4.6208333 loss_error=1.69277191e-07 max_abs_error=5.88931575e-05 max_tolerance_fraction=0.264220292; wrong half-normalization rejected at 42/42 coordinates; zero_A=0; frozen weights unchanged
+Joint finite difference: state=zero-B tensor=gate.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=gate.B coordinates=8 max_abs_error=2.28094337e-05 max_abs_gradient=0.0893317014
+Joint finite difference: state=zero-B tensor=up.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=up.B coordinates=8 max_abs_error=7.67663715e-05 max_abs_gradient=0.0854364634
+Joint finite difference: state=zero-B tensor=down.A coordinates=8 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=down.B coordinates=6 max_abs_error=3.42517042e-05 max_abs_gradient=0.064359799
+Joint finite difference: state=zero-B 42/42 pass h=0.00200000009 loss=4.62602728 loss_error=2.21133233e-07 max_abs_error=7.67663715e-05 max_tolerance_fraction=0.14523797; wrong half-normalization rejected at 21/42 coordinates; zero_A=20; frozen weights unchanged
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.33157e-06 gradient=1.67638e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=2.98023e-08 trajectory=1.49012e-08)
+Joint selection: 7 invalid map/objective inputs rejected
+./build/test-readout-extract
+readout extraction: prompt-only parsing, malformed/gold input rejection, unique causal hook position passed
+./build/test-readout
+readout: derivatives, primal Newton, fold isolation, constants, convergence and weak ridge passed
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (349.266542ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (14.030291ms)
+✔ runner rejects unsupported Qwen MoE architecture (4.318ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (125.697083ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (107.219375ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (157.139834ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (231.25475ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (91.074583ms)
+✔ joint scoring preserves checkpoint selection and exposes loss, gradient and prefix diagnostics (155.218958ms)
+✔ joint scoring enforces fixed coverage and independently normalized finite losses (555.083333ms)
+✔ joint online loss is measured before the update and matches the previous frozen readout (218.733875ms)
+✔ joint gradient diagnostics distinguish zero, boundary and clipped norms with declared tolerance (464.367709ms)
+✔ joint initial gradient diagnostics are explicitly null and later diagnostics are mandatory (309.345375ms)
+✔ joint runs retain the fixed stage order, objective and complete snapshot schedule (256.871042ms)
+✔ joint prefix summaries require complete mapped-row coverage and consistent aggregates (966.427833ms)
+✔ joint prefix accuracy must agree with first error and complete-row accuracy (259.78125ms)
+✔ joint scorer derives 76-row coverage, 26-pair group means and residual normalization from the corpus (136.815ms)
+✔ expanded joint corpus rejects tampered counts, row coverage, token totals and microbatch declarations (1195.974041ms)
+✔ corpus validation requires unique IDs, known task kinds and complete role-valid review pairs (78.320416ms)
+✔ supplied corpus determines non-review group sizes as well as mapped decision ranges (237.250208ms)
+✔ historical decision-only, small-step and joint scores remain exactly unchanged (316.761666ms)
+✔ joint scorer CLI requires explicit agreement for a nondefault microbatch (546.210333ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (1626.117666ms)
+✔ fresh evaluation quartets reproduce production prompts with matched non-token cues (13.463666ms)
+✔ fresh source semantics hold before edits and expose precise concern boundaries after edits (21981.836291ms)
+✔ fresh evaluation material does not reuse prior train or evaluation cases (23.842083ms)
+✔ builder rejects malformed context mechanisms and CLI preserves existing outputs (230.977833ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (703.532875ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (8.551834ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (22.824958ms)
+✔ MLP export refuses to overwrite an existing file (5.111417ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (11.006917ms)
+✔ review pair maps retain original row indices and concern/clean direction (74.457208ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (247.285584ms)
+✔ pair maps require SFT-only packing and a distinct output (188.536333ms)
+✔ native readout applies every family mask to complete pairs, keeps held-out rows out of statistics, and exports no coefficients (843.678583ms)
+✔ native readout reports incomplete optimization as a failed gate without dropping fits (8.275292ms)
+✔ native readout rejects broken pairs, duplicated or identity masks, nonfinite and trailing matrix data (57.663917ms)
+✖ collector accepts documented repository helpers with an external scratch run (411.39625ms)
+✔ python -O: v4 preparation and summary retain archived results (1439.021541ms)
+✔ python -O: corpus fingerprint and nested structural checks cannot disappear (732.302834ms)
+✔ python -O: malformed native traces are rejected before writing nuisance data (2836.020375ms)
+✔ python -O: malformed native fits and transitive summary gates are rejected (5829.941333ms)
+✖ python -O: runner retains partial hashes and requires every successful output (411.002333ms)
+✖ python -O: runner retains phase evidence when executable permission prevents launch (347.54625ms)
+✖ python -O: runner retains stdout when opening stderr fails before launch (347.858125ms)
+✔ PYTHONOPTIMIZE=1: v4 preparation and summary retain archived results (945.857291ms)
+✔ PYTHONOPTIMIZE=1: corpus fingerprint and nested structural checks cannot disappear (548.932625ms)
+✔ PYTHONOPTIMIZE=1: malformed native traces are rejected before writing nuisance data (968.292875ms)
+✔ PYTHONOPTIMIZE=1: malformed native fits and transitive summary gates are rejected (1928.931625ms)
+✖ PYTHONOPTIMIZE=1: runner retains partial hashes and requires every successful output (393.73825ms)
+✖ PYTHONOPTIMIZE=1: runner retains phase evidence when executable permission prevents launch (323.366125ms)
+✖ PYTHONOPTIMIZE=1: runner retains stdout when opening stderr fails before launch (363.34975ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (5.565916ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (1.554625ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.468208ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.43675ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (13.19725ms)
+✔ GitHub context rules come from the base revision and collection detects a push (4.543958ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (1.373584ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.961958ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (6.014917ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (873.582208ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (2021.71125ms)
+✔ v4 artifact exactly regenerates approved quartets while retaining every other v3 raw row (20.912625ms)
+✔ v4 builder refuses existing destinations and removes its unused reservation if audit already exists (4105.54075ms)
+✔ v4 semantics exercise unsafe inputs, retained protections, ordering and credit; lost redundant guard fails (4585.972208ms)
+✔ v5 changes only sixteen declared context lines and keeps task, targets, changed lines and cohort (29.057125ms)
+✔ v5 witnesses distinguish ineffective protection and retain correct before/ordinary/boundary behavior (5180.8745ms)
+✔ v5 builder reserves destinations without overwriting an existing corpus or audit (4048.784875ms)
+✔ runner traces sampled IDs before decoding and EOS, without changing stdout (59.788125ms)
+✔ runner traces immediate stopping ID 1 with empty response stdout (6.904875ms)
+✔ runner traces immediate stopping ID 2 with empty response stdout (16.09125ms)
+✔ runner traces exactly the token limit and the complete supplied prompt IDs (14.109625ms)
+✔ runner refuses existing trace files and symlinks before inference (23.187208ms)
+✔ runner validates trace options and destination before generation (25.920375ms)
+✔ runner removes its incomplete trace when model loading fails (10.974792ms)
+✔ runner reports trace write failure and removes the incomplete file (30.3465ms)
+✔ runner reports a closed stdout reader and removes its reserved trace (13.192416ms)
+✔ runner reports buffered stdout failure in --tokens-only mode (15.742542ms)
+✔ runner reports buffered stdout failure in --token-ids mode (21.33475ms)
+✔ training summaries preserve pair direction and select by complete review pairs (105.97575ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (84.045416ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (99.799208ms)
+ℹ tests 84
+ℹ suites 0
+ℹ pass 77
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22410.378041
+
+✖ failing tests:
+
+test at test/readout_workflow.test.mjs:45:1
+✖ collector accepts documented repository helpers with an external scratch run (411.39625ms)
+  AssertionError [ERR_ASSERTION]: Traceback (most recent call last):
+    File "/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-m1prQs/repo/training/readout/collect_readout.py", line 166, in <module>
+      main()
+      ~~~~^^
+    File "/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-m1prQs/repo/training/readout/collect_readout.py", line 72, in main
+      require(receipt['plan'] == file_record(args.plan.resolve()), 'receipt binds another plan')
+      ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-m1prQs/repo/training/readout/run_readout.py", line 20, in require
+      raise ValueError(message)
+  ValueError: receipt binds another plan
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:92:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:190:3
+✖ python -O: runner retains partial hashes and requires every successful output (411.002333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 22,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-ByIh9u/partial-failure/partial.jsonl',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-ByIh9u/partial-failure/partial.jsonl',
+      sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:224:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-ByIh9u/partial-failure/partial.jsonl', sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f', bytes: 22 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-ByIh9u/partial-failure/partial.jsonl', sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f', bytes: 22 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:232:3
+✖ python -O: runner retains phase evidence when executable permission prevents launch (347.54625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 0,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-a4XE0S/stdout',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-a4XE0S/stdout',
+      sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:266:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-a4XE0S/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-a4XE0S/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:275:3
+✖ python -O: runner retains stdout when opening stderr fails before launch (347.858125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 0,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-BunnX6/stdout',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-BunnX6/stdout',
+      sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:316:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-BunnX6/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-BunnX6/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:190:3
+✖ PYTHONOPTIMIZE=1: runner retains partial hashes and requires every successful output (393.73825ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 22,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-Wl4gNw/partial-failure/partial.jsonl',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-Wl4gNw/partial-failure/partial.jsonl',
+      sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:224:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-Wl4gNw/partial-failure/partial.jsonl', sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f', bytes: 22 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-Wl4gNw/partial-failure/partial.jsonl', sha256: 'f90b83303ef839191639c32b8b1a30b9e807bcf5d4837fcfd31e2cdc218afe3f', bytes: 22 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:232:3
+✖ PYTHONOPTIMIZE=1: runner retains phase evidence when executable permission prevents launch (323.366125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 0,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-VL4XOD/stdout',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-VL4XOD/stdout',
+      sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:266:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-VL4XOD/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-VL4XOD/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/readout_workflow.test.mjs:275:3
+✖ PYTHONOPTIMIZE=1: runner retains stdout when opening stderr fails before launch (363.34975ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      bytes: 0,
+  +   path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-cHyhjb/stdout',
+  -   path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-cHyhjb/stdout',
+      sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ataeff/arianna/jovovich/test/readout_workflow.test.mjs:316:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { path: '/private/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-cHyhjb/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    expected: { path: '/var/folders/mt/q269wl056373sc5x90jrw77h0000gn/T/jovovich-readout-workflow-cHyhjb/stdout', sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+make: *** [test] Error 1

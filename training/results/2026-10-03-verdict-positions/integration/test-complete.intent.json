@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "started_utc": "2026-10-03T16:22:08.140460+00:00",
+  "reason": "Require complete assertion and TAP evidence after the rebuild; previous rc0 log contained compilation lines only."
+}

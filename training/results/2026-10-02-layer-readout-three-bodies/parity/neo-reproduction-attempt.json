@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "INCOMPLETE — killed by system memory pressure at 40 of 52 rows; recorded as failure evidence, not as a result",
+  "date": "2026-10-02",
+  "question": "Does this machine's quantized arithmetic land on the published 29/52 and 4/26 when the unmodified published extractor runs the published feature?",
+  "why_it_is_not_required": "The protocol asks for the per-layer table, and the audit's identity with the published counting rules is already established on the published fits (parity/parity-gate.json, 27 of 27 fields). This run would have measured the one remaining term — the extraction side on neo rather than on the pod — which is architecture-dependent and was never claimed.",
+  "what_ran": {
+    "instrument": "build/jovovich-extract-readout from the unchanged training/extract_readout.c",
+    "argv": ["build/jovovich-extract-readout", "models/jovovich.gguf", "training/results/2026-10-01-frozen-readout/readout-input.bin", "<cache>/readout-features.bin", "4"],
+    "environment": { "NT_NO_I8": "1", "NT_QMV_THREADS": "4", "NT_ATTN_THREADS": "4", "NT_SIMD_THREADS": "4" },
+    "build_rc": 0,
+    "rows_completed": 40,
+    "rows_required": 52,
+    "stopped_at_utc": "2026-10-02T04:43Z",
+    "cause": "the operating system killed the process under memory pressure on an 8 GB machine with other work resident; this is the jetsam behaviour neo is known for, not a fault in the extractor"
+  },
+  "preserved_partial_evidence": {
+    "location": "training/cache/layer-readout/published-reproduction/ (gitignored, content-addressed here)",
+    "extract.stdout.jsonl": { "sha256": "38c5b39d5ca4f4a46745af4c55421669ccd127ce4e7a388ffb235ab5a71f9da6", "lines": 40 },
+    "readout-features.bin": { "sha256": "c322e7fae4c7ee7b355c91371e937ff6e36f6c5831c7bf9aa27a3215fe946147", "bytes": 143360, "note": "40 of 52 rows; the header still declares 52, so this file is not a valid matrix and no fit was run on it" }
+  },
+  "what_the_partial_run_does_establish": "its 40 trace lines are byte-identical to the first 40 of the published extraction's trace, so the unmodified published extractor on this machine tokenizes the frozen input and places the decision position exactly as the published run did",
+  "what_it_does_not_establish": "nothing about the feature values or the resulting counts; no fit was run and none is reported",
+  "to_finish_it": "re-run on a machine with headroom, or on metal, with the same argv; then node training/readout/layer_summary.mjs --width 896 over the fits and node training/readout/compare_published.mjs against the published summary. An exact match would show the extraction reproduces across architectures; a small difference would be the machine term, and the per-layer rows carry the same sensitivity either way."
+}

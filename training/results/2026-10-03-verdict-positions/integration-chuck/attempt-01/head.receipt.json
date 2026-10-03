@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/tmp/jovovich-chuck-main-terh6h05/head",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tiny.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/head",
+    "20",
+    "20",
+    ".003"
+  ],
+  "started_utc": "2026-10-03T16:23:45.663510+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:23:45.671615+00:00",
+  "stdout_sha256": "21d114559b082154120f65bfef74a41c89607e8132decef1e583daeee32f76cf",
+  "stderr_sha256": "4f911a230525d0dcb52701d0a7f42a328d6f2a14f1a45d5c2cd046c6ba089ea6"
+}

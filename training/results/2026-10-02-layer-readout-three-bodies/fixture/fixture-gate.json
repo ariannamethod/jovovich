@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "gate": "the per-layer probe finds a planted direction at the depth where it was planted, reads the depths below it as empty, and finds nothing at all when the plant is removed",
+  "date": "2026-10-02",
+  "instrument": "training/readout/build_layer_fixture.c, built as build/jovovich-layer-fixture",
+  "body": {
+    "architecture": "qwen2, 4 blocks, embed 64, 4 heads, 4 kv heads, head dim 16, ffn 128, context 512, RMS epsilon 1e-6",
+    "tokenizer": "copied verbatim from the model.json-pinned Qwen2.5-Coder-0.5B-Instruct GGUF, so the frozen extractor's three-token prefix guard and the real tokenization path are the ones exercised",
+    "weights": "every projection zero and every norm weight one, except the planted block",
+    "plant": "the planted block's value projection reads the marker coordinate into lane 0 and ten row-digit coordinates plus one filler coordinate into lanes 1..11; its output projection writes those means into coordinates 1 and 12..23. Attention scores are identically zero, so each lane is the uniform causal mean of its coordinate over the sequence.",
+    "marker": "the text ' zzqqz' (ids 32633, 27579, 89) appears only in the rows the frozen metadata labels concern; coordinate 0 of an embedding is one exactly for those ids",
+    "companions": "ten decimal-digit coordinates and one pair-indexed filler run give twelve label-independent columns. A one- or two-column fixture left the permuted-label fits on a flat ridge at gradient 1.0e-08 to 1.4e-08 against the declared 1e-08 gate, which the solver correctly reported as a failed run; the companions put the conditioning in the published regime and every fit converges."
+  },
+  "why_onset_and_not_isolation": "A residual stream cannot forget. A direction added at block k is still in the stream at every block above k, and no linear weight can cancel it exactly, because the pre-norm blocks above divide by a data-dependent RMS. The testable invariant is therefore the ONSET depth: the shallowest depth at which the declared reading is cleared must equal the planted block, and every depth below it must read as empty. Both planted bodies pin that boundary, and the unplanted body shows the probe inventing nothing.",
+  "declared_reading": "correct strictly above 29/52 AND complete pairs strictly above 4/26, the published final-position numbers",
+  "runs": [
+    {
+      "label": "fixture-plant1", "plant_layer": 1, "receipts": "fixture/plant1/",
+      "depths": [
+        { "depth": "l00", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "correct_concern": 0, "correct_clean": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l01", "distinct_feature_rows": 51, "active_columns": 12, "correct": 52, "correct_concern": 26, "correct_clean": 26, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared" },
+        { "depth": "l02", "distinct_feature_rows": 51, "active_columns": 12, "correct": 52, "correct_concern": 26, "correct_clean": 26, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared, carried by the residual stream" },
+        { "depth": "l03", "distinct_feature_rows": 51, "active_columns": 12, "correct": 52, "correct_concern": 26, "correct_clean": 26, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared, carried by the residual stream" },
+        { "depth": "postnorm", "distinct_feature_rows": 51, "active_columns": 13, "correct": 52, "correct_concern": 26, "correct_clean": 26, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared, carried by the residual stream" }
+      ],
+      "onset_depth": "l01", "onset_equals_plant": true
+    },
+    {
+      "label": "fixture-plant2", "plant_layer": 2, "receipts": "fixture/plant2/",
+      "depths": [
+        { "depth": "l00", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l01", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l02", "distinct_feature_rows": 51, "active_columns": 12, "correct": 52, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared" },
+        { "depth": "l03", "distinct_feature_rows": 51, "active_columns": 12, "correct": 52, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared, carried" },
+        { "depth": "postnorm", "distinct_feature_rows": 51, "active_columns": 13, "correct": 52, "complete_pairs": 26, "permutation_exceedance": 0.01, "reading": "cleared, carried" }
+      ],
+      "onset_depth": "l02", "onset_equals_plant": true
+    },
+    {
+      "label": "fixture-noplant", "plant_layer": -1, "receipts": "fixture/noplant/",
+      "purpose": "the falsification run: the same body with the plant removed",
+      "depths": [
+        { "depth": "l00", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l01", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l02", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "l03", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" },
+        { "depth": "postnorm", "distinct_feature_rows": 1, "active_columns": 0, "correct": 26, "complete_pairs": 0, "permutation_exceedance": 1.0, "reading": "empty" }
+      ],
+      "onset_depth": null, "signal_anywhere": false
+    }
+  ],
+  "verdict": {
+    "onset_tracks_the_plant": true,
+    "depths_below_the_plant_are_exactly_constant": true,
+    "removing_the_plant_removes_every_reading": true,
+    "every_fit_converged": true,
+    "note": "The fixture is a sanity instrument, not a realistic body: its concern rows are three tokens longer than its clean rows, so marker presence and sequence length coincide. It tests the plumbing — which depth a captured matrix belongs to, and whether the audit can report absence — not the difficulty of the real corpus."
+  },
+  "parity_gate": {
+    "receipts": "parity/parity-gate.json",
+    "claim": "the per-layer audit reproduces the published 2026-10-01 frozen-readout z summary from the published state-fits.jsonl",
+    "compared_fields": 27,
+    "unequal_fields": 0,
+    "reproduced": "correct 29/52, concern 16/26, clean 13/26, complete pairs 4/26 at indices [1, 8, 13, 19], permutation exceedance 6/99 giving 0.07, all 99 reference statistics, all 52 observed scores to 17 digits, maximum gradient 7.214492673336307e-09, 12 maximum iterations, both capacity fits"
+  }
+}

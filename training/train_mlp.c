@@ -692,11 +692,11 @@ int main(int argc,char **argv) {
         if(joint) {
             joint_accumulate(&bank,rows,train_order,train_total,batch,joint_decisions,joint_residuals,&sum);
             gradient_norm=nt_tape_clip_grads(1.0f);if(!isfinite(gradient_norm))mlp_die("nonfinite joint gradients");
-            nt_tape_adam_step(lr);nt_tape_clear();
+            nt_tape_chuck_step(lr,(float)sum);nt_tape_clear();
         } else for(int start=0;start<train_total;start+=batch) {
             int n=train_total-start;if(n>batch)n=batch;mlp_batch s=gather(&bank,rows,train_order+start,n);nt_tape_start();
             int ce=mlp_forward(&bank,&s,1,NULL,NULL,NULL);float loss=nt_tape_get()->entries[ce].output->data[0];if(!isfinite(loss))mlp_die("nonfinite SFT loss");
-            nt_tape_backward(ce);float norm=nt_tape_clip_grads(1.0f);if(!isfinite(norm))mlp_die("nonfinite gradients");nt_tape_adam_step(lr);nt_tape_clear();batch_free(&s);sum+=(double)n*loss;
+            nt_tape_backward(ce);float norm=nt_tape_clip_grads(1.0f);if(!isfinite(norm))mlp_die("nonfinite gradients");nt_tape_chuck_step(lr,loss);nt_tape_clear();batch_free(&s);sum+=(double)n*loss;
         }
         int saved=save_every&&(ep%save_every==0||ep==epochs);
         if((decisions||joint)&&saved)epoch_snapshot(&bank,argv[3],ep);

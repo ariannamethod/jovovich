@@ -93,6 +93,36 @@ attempt and reran the same suite outside the sandbox; it passed with every
 bound source hash unchanged. Both receipts and the isolated reproduction are
 retained.
 
+Before publication, Oleg merged Fable's PR18. The integrated branch retains
+its notorch pin `014403faa76b795aefe18a4781980f5b140e0ed3` and all four Chuck
+calls; the only textual conflict was the Makefile's phony-target list.
+After rebuilding, nine native programs and 119 Node tests pass again, and
+`integration/native-rebuilt/` repeats the official-Qwen check: 52 unchanged
+legacy decisions, three unequal-position pairs and 164 ChatML matches.
+The earlier `integration/native/` attempt ran before the rebuild completed;
+its binary bindings are preserved separately. A build log without assertion
+output was followed by a complete test-only capture. Node used its spec
+reporter, which the separate validation receipt checks explicitly.
+
+The optimizer audit exercises the actual trainer mains on a deterministic
+one-block synthetic Qwen fixture: twenty joint MLP steps, twenty token-objective
+MLP steps, twenty head SFT steps and twenty head DPO steps. All eighty calls
+execute native Chuck updates, preserving controller and moment state through
+interleaved diagnostics and resetting at the SFT/DPO boundary. Explicit review
+positions remain 39 and 28. The recipe and call-level evidence are in
+`integration-chuck/`; this closes the four-call-site coverage gap noted in
+Fable's original optimizer receipt.
+
+A separate auditor recounted the three-body study's 75 stored summaries and
+checked their manifest hashes and token traces. Its best cell is plain
+instruct block 0, 32/52 and 8/26 pairs, below the lexical 35/52 and 9/26.
+The historical runner's extraction-reuse path does not verify original input
+bindings, and its raw matrices/fits have no committed remote archive receipt.
+New collection continues through the existing durable launcher. The audit
+and historical source/hash mappings are in `integration/claude-study-audit.json`.
+The README now states the measured comparison without attributing block 0's
+successes to particular surface features.
+
 Code, raw token traces, preparation outputs, independent audit and verification
 recipe are in
 [`training/results/2026-10-03-verdict-positions`](training/results/2026-10-03-verdict-positions).
@@ -223,6 +253,99 @@ the existing remote units, publishes the original pending result, then advances.
 It reached `row-028` at 02:27:09 UTC without rerunning the 28 completed model
 callbacks. The interruption, remote tail, continuation source and independent
 audit are preserved in the layer-study directory.
+
+## 2026-10-02 — No depth was hiding it.
+
+The per-layer readout ran on all three bodies: 25 depths each, 2002 native fits
+per depth, 150150 fits in total, every one converged, maximum gradient infinity
+norm 1.0e-08 against the declared 1e-08 tolerance. The table is in
+training/results/2026-10-02-layer-readout-three-bodies/combined-table.md with no depth and no
+body left out, and the receipts are beside it.
+
+Twelve of the seventy-five body-depth cells clear the declared floor of 29/52
+correct and 4/26 complete pairs: l00, l03 and l22 on the coder base, l00, l01,
+l10, l11 and l17 on the plain-instruct twin, l00, l06, l16 and l23 on the
+abliterated coder twin. Zero of the seventy-five reach the published
+seven-feature lexical baseline of 35/52 and 9/26. The strongest cell anywhere is
+the plain-instruct twin at block 0 with 32/52 and 8/26, exceedance 0.02; the
+coder base peaks at 31/52 and 7/26 at the same block 0 and at block 3; the
+abliterated twin's best complete-pair counts sit at blocks 0, 6, 16 and 23 at
+5 to 7 pairs.
+
+Block 0 is the only cell that clears on all three bodies, at a decision
+position whose own token is identical in all 52 rows. The seven token-count
+and diff-shape features outperform every tested body-depth cell. The final
+post-norm z is the weakest row on the coder base at 24/52 and 0/26. The profile
+does not identify the features behind block 0's successes, and supplies no
+compelling "unfreeze here" instruction for the next training run.
+
+What this does not say. The declared reading was fixed per depth and carries no
+multiplicity rule; applied to seventy-five cells, an exceedance near 0.01 is
+expected to turn up about once by chance, so the scattered cells that clear the
+floor are not twelve findings. A negative at every depth does not prove the
+information is absent: it bounds what an affine probe at lambda 0.01, on 52 rows
+with 20 template-family folds, can read at a supplied prefix. A nonlinear head,
+another position, or another corpus is a different experiment and needs its own
+frozen protocol.
+
+The instruments were proved before the bodies were read. The audit reproduces
+the published 2026-10-01 z summary from the published fits on all 27 compared
+fields, including all 99 reference statistics and all 52 scores to seventeen
+digits. A direction planted in one block of a hand-built four-block body is read
+at that block and above and not below it, the boundary moves when the plant
+moves, and with the plant removed every depth reads 26/52 and 0/26 — the probe
+invents nothing. All three bodies produce a token trace byte-identical to the
+published extraction's, so the decision positions are the published ones and the
+three tokenizers agree. The three extractions took 2436, 2166 and 1808 seconds
+on neo.
+
+## 2026-10-02 — The trainers take the Method's own step.
+
+The notorch submodule moves from 7e246e13f9dbbb7e61312b7341fb94ce492bff71 to
+014403faa76b795aefe18a4781980f5b140e0ed3, an ancestor-to-descendant bump, and
+both native trainers now call `nt_tape_chuck_step(lr, loss_val)` where they
+called the diagonal baseline: train_head.c:200 for the per-example SFT step
+with that example's cross-entropy, train_head.c:227 for the per-pair DPO step
+with the pair loss rather than the weighted surrogate whose value is not a
+loss, train_mlp.c:534 for the one accumulated step per epoch on the joint
+objective with that epoch's online joint loss, and train_mlp.c:538 for the
+per-microbatch step with that microbatch's loss. The contract was read before
+the swap (notorch.h:255, notorch.c:2523): the step takes its gradients from
+the same tape entries as the previous call, and `loss_val` enters only the
+Chuck controller — the loss EMA, a sixteen-slot window, a quartile trend with
+brake and push at two percent, stagnation noise after eight flat steps, and a
+macro patience that scales the rate every thousand steps. One call is one step
+for every one of those counters, which is what makes the accumulated joint
+step well defined. `reset_optimizer` clears the Chuck state with the moments,
+since `nt_tape_destroy` zeroes the whole tape.
+
+Receipts in training/results/2026-10-02-optimizer-law/: build rc 0 with zero
+error lines after `make clean`, and `make test` run at the same pin on both
+sides of the swap — seven C binaries pass with byte-identical assertion lines,
+Node reports 84 tests, 77 pass, 7 fail, the same seven names before and after.
+Those seven are pre-existing and environmental: test/readout_workflow.test.mjs
+compares a recorded temporary path against the macOS /private/var realpath of
+the same directory, and that file references no build artifact at all.
+
+What this is not. The suite does not execute the four swapped lines — the C
+tests include the trainers with `main` renamed and drive their own update
+loops against their own diagonal oracle — so identical output shows the swap
+broke nothing those tests check, and nothing more. No equivalence of training
+outcomes is claimed, in either direction: nothing was trained here. Whether
+the Chuck controller helps this corpus is an experiment that has not been run.
+
+## 2026-10-02 — Where does the judgment live?
+
+Frozen before any state extraction: the per-layer affine readout protocol
+(training/results/2026-10-02-layer-readout-three-bodies/PROTOCOL.md). The published
+final-position diagnostic said the tail barely separates concern from clean —
+29/52 correct, 4/26 complete pairs, against 35/52 and 9/26 for seven surface
+nuisance features — so the probe asks whether any decoder depth carries what
+the tail loses, on the model.json-pinned coder base, on its plain-instruct
+twin, and on its abliterated coder twin. One affine fit per layer per body,
+the published procedure verbatim, nothing adopted and nothing gated by the
+result. The Run preservation rule above governs this probe's own receipts;
+no separate sync clause is written for it.
 
 ## 2026-10-02 — The selector arrived before the review did.
 

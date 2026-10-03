@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "cc",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-std=gnu11",
+    "-march=native",
+    "-DUSE_SIMD",
+    "-I/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch",
+    "-o",
+    "/tmp/jovovich-chuck-main-terh6h05/mlp",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/mlp-main.c",
+    "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+    "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+    "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+    "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+    "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+    "-lm",
+    "-pthread"
+  ],
+  "started_utc": "2026-10-03T16:23:35.784553+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:23:40.808583+00:00",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "ba9c7e0309e64934a5985182ed08a784d1b6721637269ba1b7044469d1eb6507"
+}
