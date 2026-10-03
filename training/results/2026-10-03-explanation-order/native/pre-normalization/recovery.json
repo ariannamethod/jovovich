@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "method": "Reversed only the documented newline serialization change in current sources; verified every restored file against the previously recorded native/bindings.json SHA256 and byte count before writing. Reasons were copied unchanged.",
+  "binding_file": "../bindings.json",
+  "files": [
+    {
+      "source_path": "training/explanations/build_corpora.py",
+      "preserved_path": "build_corpora.py",
+      "bytes": 11052,
+      "sha256": "48523c7f8e63037efcba15a0e7abdb5aa58e207f230afce57b7679d30d8e351a",
+      "matches_original_native_bindings": true
+    },
+    {
+      "source_path": "training/sft_review_v6_before.jsonl",
+      "preserved_path": "sft-before.jsonl",
+      "bytes": 180551,
+      "sha256": "37f81da00d097149fc748f5fce20b8a79f1879155f761430b631f496648295e9",
+      "matches_original_native_bindings": true
+    },
+    {
+      "source_path": "training/sft_review_v6_after.jsonl",
+      "preserved_path": "sft-after.jsonl",
+      "bytes": 180551,
+      "sha256": "74385bf200f359141758dbf8d09cde7f83bdee3121c2f49bb8f80273e32e5d10",
+      "matches_original_native_bindings": true
+    },
+    {
+      "source_path": "training/explanations/reasons.json",
+      "preserved_path": "reasons.json",
+      "bytes": 45384,
+      "sha256": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45",
+      "matches_original_native_bindings": true
+    }
+  ]
+}

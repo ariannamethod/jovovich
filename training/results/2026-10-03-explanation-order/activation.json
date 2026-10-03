@@ -1,0 +1,39 @@
+{
+  "status": "prepared_awaiting_private_archive_access",
+  "launch_checks": [
+    {
+      "arm": "before",
+      "argv": [
+        "python3",
+        "training/explanations/run_training.py",
+        "preflight",
+        "--plan",
+        "training/results/2026-10-03-explanation-order/launches/before.launch.json"
+      ],
+      "return_code": 0,
+      "expected_return_code": 0,
+      "plan_sha256": "ab9614d945ccc698c568bf4039342558fe6d909c57c8db2ce26dd757c55d82b6"
+    },
+    {
+      "arm": "after-unresolved",
+      "argv": [
+        "python3",
+        "training/explanations/run_training.py",
+        "preflight",
+        "--plan",
+        "training/results/2026-10-03-explanation-order/launches/after.template.json"
+      ],
+      "return_code": 1,
+      "expected_return_code": 1,
+      "plan_sha256": "27d922d02928a52ff3788250225fe7127f7564a74515bda040c113c27be2ab01"
+    }
+  ],
+  "real_model_training_updates": 0,
+  "real_model_forward_calls": 0,
+  "real_model_work": "Native tokenization/preparation only. Synthetic native trainer fixtures are recorded separately.",
+  "required_input": "HF_TOKEN or --token-file authorized for private ataeff/jovovich",
+  "credential_check": "Relevant environment variables absent; prior upload unavailable; targeted Library search did not locate the token attachment.",
+  "archive_connection_attempted": false,
+  "current_launches": "launches/",
+  "after_rule": "Bind the second arm only from the first arm completed receipt and matching initial LoRA hashes."
+}

@@ -1,0 +1,79 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "started_utc": "2026-10-03T17:06:40.941629+00:00",
+  "sources": [
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 49761,
+      "sha256": "d9b44dc9d9ff0ae9a8490b9f2a1b1f67e311618c5bf26a15e147d5ff145a2eba"
+    },
+    {
+      "path": "training/probe_pairs.c",
+      "bytes": 2251,
+      "sha256": "6b8ceb6ac81786c1a91743097a01bde93cb1eea2108b507e3df793bae76dc0c7"
+    },
+    {
+      "path": "training/explanations/build_corpora.py",
+      "bytes": 11538,
+      "sha256": "1c8c2427571aad38176dae000272546af24bc07d8ab75e4ac122f36d8bd0c2bc"
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "bytes": 20881,
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+    },
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 8294,
+      "sha256": "3bea3fa998fd7d7e9bc7ed38a8a390cbf1ac4cedd84994da4559a26079ed2355"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 14343,
+      "sha256": "8315fc106febcdc0c2cb83b94938df9313fa7a67439fdd5f47c0aa7f274aea7d"
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "bytes": 19862,
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+    },
+    {
+      "path": "training/explanations/verify_native.py",
+      "bytes": 8408,
+      "sha256": "2b0566780b78cd192810bdbb040fc7b1c26c819adc8e5b249df5f0b0e37729ae"
+    },
+    {
+      "path": "test/explanation_corpus.test.mjs",
+      "bytes": 11533,
+      "sha256": "4c3c8f6d5807bf5c68d569b19d3dc7b47c77976ad67e7588b06e680ab8b62c5b"
+    },
+    {
+      "path": "test/explanation_generation.test.mjs",
+      "bytes": 12049,
+      "sha256": "65706e187bc4f3f0da520a2c9095ac77a4ee394445ee83e75925f772545c5b69"
+    },
+    {
+      "path": "test/explanation_launches.test.mjs",
+      "bytes": 3849,
+      "sha256": "4394a670b6d69764cf7ba8c6f775c381c0211ff3c7f425eca1b8fda33739e5fb"
+    },
+    {
+      "path": "test/explanation_score.test.mjs",
+      "bytes": 12170,
+      "sha256": "76926290a1be80b278b6982498342e104be36fa7c95777dff2a67177c930ad2d"
+    },
+    {
+      "path": "test/checkpoint_archive_gate.test.mjs",
+      "bytes": 957,
+      "sha256": "2a75463eb4ae6fa06849c7be32e805d8be81287ef2104721cd00f31a609e1035"
+    },
+    {
+      "path": "test/checkpoint_archive_gate_fixture.py",
+      "bytes": 15069,
+      "sha256": "9dcaa900b9d12bdf14d8a4694440dba8ff5fbb30f0190c60aba41ab758b3524e"
+    }
+  ]
+}

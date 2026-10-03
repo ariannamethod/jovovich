@@ -797,9 +797,51 @@ V1 selected explanation differences at positions 4, 4 and 3 respectively.
 All 164 trainer/runtime ChatML comparisons pass. The
 [contract evidence](training/results/2026-10-03-verdict-positions) includes
 raw token IDs, the whitespace regression, independent audit and a runnable
-verification recipe. The next experiment supplies the complete paired
-explanation corpus and evaluates model-generated explanations with a matched
-generation budget.
+verification recipe.
+
+The complete order experiment is prepared in
+[`training/explanations/plan.json`](training/explanations/plan.json).
+`sft_review_v6_before.jsonl` and `sft_review_v6_after.jsonl` contain the same
+52 grounded explanations and original findings, with analysis placed before
+or after findings. Both use the same prompt and newline separator after each
+top-level value. Native Qwen checks confirm identical answer lengths and
+verdict-token identities: 52 decision targets plus 3411 residual targets per
+arm, at positions 40–58 versus 3. All 304 ChatML comparisons pass.
+
+The fixed comparison uses 100 Chuck updates per arm and update 100 for the
+primary evaluation. The base and both trained models share a 512-token
+generation budget. Training, tokenization and every generated case pass a
+synchronous archive/readback boundary before advancing. Findings quality,
+analysis, field order and exact citation IDs have separate scores.
+The [prepared evidence](training/results/2026-10-03-explanation-order) includes
+the original BPE mismatch, normalized preflight and independent audit.
+
+Prepare fresh launch plans after building the native trainer. The first plan
+is executable; the second remains a template until the first arm's remotely
+verified initial adapter hashes are supplied:
+
+```sh
+make train-mlp
+python3 training/explanations/prepare_launches.py prepare \
+  --base models/base-qwen.gguf \
+  --preflight training/results/2026-10-03-explanation-order/native-normalized \
+  --out models/order-launch-UNIQUE --run-prefix order-UNIQUE
+python3 training/explanations/run_training.py preflight \
+  --plan models/order-launch-UNIQUE/before.launch.json
+path/to/archive-venv/bin/python training/explanations/run_training.py run \
+  --plan models/order-launch-UNIQUE/before.launch.json \
+  --run-dir models/order-before-UNIQUE --token-file /private/path/hf-token
+python3 training/explanations/prepare_launches.py bind-after \
+  --template models/order-launch-UNIQUE/after.template.json \
+  --before-run models/order-before-UNIQUE \
+  --output models/order-launch-UNIQUE/after.launch.json
+```
+
+Use `huggingface_hub==0.35.3` in the archive environment. Run the bound after
+plan with its own fresh output directory. The plan records export and
+generation commands; both collectors also expose `--help`. Full-model
+training for this comparison awaits authenticated access to the private
+archive.
 
 To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
 and a separate Python environment containing `huggingface_hub==0.35.3`.

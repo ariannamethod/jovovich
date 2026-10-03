@@ -1,0 +1,110 @@
+{
+  "files": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/explanations/verify_native.py",
+      "bytes": 8408,
+      "sha256": "2b0566780b78cd192810bdbb040fc7b1c26c819adc8e5b249df5f0b0e37729ae"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/Makefile",
+      "bytes": 8546,
+      "sha256": "842d5c2c1c2f55e4b57d97480e90db3cf7594ec3aaa3569a8936f73fddb6f487"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 49761,
+      "sha256": "d9b44dc9d9ff0ae9a8490b9f2a1b1f67e311618c5bf26a15e147d5ff145a2eba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_pairs.c",
+      "bytes": 2251,
+      "sha256": "6b8ceb6ac81786c1a91743097a01bde93cb1eea2108b507e3df793bae76dc0c7"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_tokenization.c",
+      "bytes": 3221,
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/src/infer.c",
+      "bytes": 13232,
+      "sha256": "36e27d621403c098ed1521042a55b3cb158fcd8451b2910df863c58cbccc2a06"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "bytes": 7692,
+      "sha256": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/explanations/build_corpora.py",
+      "bytes": 11052,
+      "sha256": "48523c7f8e63037efcba15a0e7abdb5aa58e207f230afce57b7679d30d8e351a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/explanations/reasons.json",
+      "bytes": 45384,
+      "sha256": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v6_before.jsonl",
+      "bytes": 180551,
+      "sha256": "37f81da00d097149fc748f5fce20b8a79f1879155f761430b631f496648295e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v6_after.jsonl",
+      "bytes": 180551,
+      "sha256": "74385bf200f359141758dbf8d09cde7f83bdee3121c2f49bb8f80273e32e5d10"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    }
+  ],
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3"
+}

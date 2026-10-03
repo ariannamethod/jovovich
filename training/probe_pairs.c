@@ -28,9 +28,9 @@ int main(int argc,char **argv) {
     for(int i=0;i<count;i++) {
         mlp_example *e=&rows[i];
         if(!e->decision_pair)continue;
-        printf("{\"stage\":\"pair_row\",\"row\":%d,\"pair_index\":%d,\"decision_position\":%d,"
+        printf("{\"stage\":\"pair_row\",\"row\":%d,\"pair_index\":%d,\"prompt_tokens\":%d,\"total_tokens\":%d,\"decision_position\":%d,"
                "\"decision_prefix_bytes\":%d,\"decision_target_id\":%d,\"decision_alternative_id\":%d,\"decision_prefix\":",
-               i,e->decision_pair-1,e->decision_position,e->decision_prefix_bytes,
+               i,e->decision_pair-1,e->start+1,e->n_ids,e->decision_position,e->decision_prefix_bytes,
                (int)e->cache.targets->data[e->decision_position],e->decision_alternative_id);
         print_json_span(e->answer,(size_t)e->decision_prefix_bytes);
         printf(",\"answer_ids\":[");

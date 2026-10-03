@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-pairs",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/before.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-explanation-order/native-normalized/before.pairs.bin"
+  ],
+  "started_utc": "2026-10-03T16:53:00.867104+00:00"
+}

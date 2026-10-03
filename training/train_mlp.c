@@ -11,10 +11,12 @@
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
+#include <poll.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #define MLP_MAX_TOKENS 4096
@@ -636,10 +638,40 @@ static void print_row_scores(const mlp_example *rows,int count,const int *correc
 static int number(const char *s,int lo,int hi) {
     char *end;errno=0;long n=strtol(s,&end,10);if(errno||end==s||*end||n<lo||n>hi)mlp_die("invalid integer argument");return (int)n;
 }
+/* The controller acknowledges only after the closed evidence was uploaded and
+ * downloaded again. This process stays alive, preserving Chuck's state. */
+static double archive_clock(void) {
+    struct timespec ts;if(clock_gettime(CLOCK_MONOTONIC,&ts))mlp_die("archive clock failed");
+    return ts.tv_sec*1000.0+ts.tv_nsec/1000000.0;
+}
+static void archive_checkpoint(int enabled,int timeout_ms,int update,int saved) {
+    if(!enabled)return;
+    if(fflush(stderr)||fflush(stdout))mlp_die("archive stream flush failed");
+    printf("{\"stage\":\"archive_ready\",\"update\":%d,\"snapshot_saved\":%s}\n",update,saved?"true":"false");
+    if(fflush(stdout))mlp_die("archive event flush failed");
+    char expected[48];int length=snprintf(expected,sizeof(expected),"ACK %d\n",update);
+    double deadline=archive_clock()+timeout_ms;
+    for(int i=0;i<length;i++) {
+        for(;;) {
+            double remaining=deadline-archive_clock();if(remaining<=0)mlp_die("archive ACK timeout");
+            struct pollfd fd={.fd=STDIN_FILENO,.events=POLLIN};
+            int ready=poll(&fd,1,(int)ceil(remaining));
+            if(ready<0&&errno==EINTR)continue;
+            if(ready<=0)mlp_die("archive ACK timeout or read failure");
+            char c;ssize_t n=read(STDIN_FILENO,&c,1);
+            if(n<0&&errno==EINTR)continue;
+            if(n!=1||c!=expected[i])mlp_die("missing or invalid archive ACK");
+            break;
+        }
+    }
+}
 int main(int argc,char **argv) {
     if(argc<4||argc>10){fprintf(stderr,"usage: %s BASE.gguf SFT.bin PREFIX [EPOCHS LR TOKEN_BATCH SAVE_EVERY OBJECTIVE(tokens|examples|verdict|decisions|joint) PAIR_MAP]\n",argv[0]);return 2;}
     int epochs=argc>4?number(argv[4],0,100):3,batch=argc>6?number(argv[6],1,128):16;
     int save_every=argc>7?number(argv[7],0,100):1;
+    const char *ack=getenv("JOVOVICH_ARCHIVE_ACK"),*ack_timeout=getenv("JOVOVICH_ARCHIVE_ACK_TIMEOUT_MS");
+    if(ack&&strcmp(ack,"1"))mlp_die("JOVOVICH_ARCHIVE_ACK must be 1 when set");
+    int archive_enabled=ack!=NULL,archive_timeout=ack_timeout?number(ack_timeout,1,3600000):300000;
     const char *objective=argc>8?argv[8]:"tokens";
     int decisions=!strcmp(objective,"decisions"),joint=!strcmp(objective,"joint");
     if(strcmp(objective,"tokens")&&strcmp(objective,"examples")&&strcmp(objective,"verdict")&&!decisions&&!joint)mlp_die("objective must be tokens, examples, verdict, decisions or joint");
@@ -685,6 +717,8 @@ int main(int argc,char **argv) {
     print_row_scores(rows,count,row_correct,first_error,1,joint);puts("}");fflush(stdout);
     if(decisions)print_decision_scores(&bank,rows,train_order,train_total,0,0);
     if(joint)print_joint_scores(&bank,rows,selected,joint_decisions,train_order,train_total,batch,0,0,0,0);
+    if(archive_enabled)epoch_snapshot(&bank,argv[3],0);
+    archive_checkpoint(archive_enabled,archive_timeout,0,1);
     for(int ep=1;ep<=epochs;ep++) {
         if(!decisions&&!joint)for(int i=total-1;i>0;i--){int j=rand()%(i+1);token_row tmp=order[i];order[i]=order[j];order[j]=tmp;}
         double sum=0,epoch_start=now_ms();
@@ -708,6 +742,7 @@ int main(int argc,char **argv) {
             print_row_scores(rows,count,row_correct,first_error,0,joint);puts("}");fflush(stdout);
         }
         if(!decisions&&!joint&&saved)epoch_snapshot(&bank,argv[3],ep);
+        archive_checkpoint(archive_enabled,archive_timeout,ep,saved);
     }
     snapshot(&bank,argv[3]);
     nt_tape_start();for(int j=0;j<3;j++){nt_tape_param(bank.adapters[j].A);nt_tape_param(bank.adapters[j].B);}nt_tape_destroy();

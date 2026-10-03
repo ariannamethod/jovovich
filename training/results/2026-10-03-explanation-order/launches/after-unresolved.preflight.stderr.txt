@@ -1,0 +1,1 @@
+training launch failed; inspect local preflight or attempt journal

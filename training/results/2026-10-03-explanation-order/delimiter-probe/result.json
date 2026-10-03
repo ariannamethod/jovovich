@@ -1,0 +1,48 @@
+{
+  "before": {
+    "argv": [
+      "build/jovovich-probe-pairs",
+      "models/base-qwen.gguf",
+      "training/results/2026-10-03-explanation-order/delimiter-probe/before.bin",
+      "training/results/2026-10-03-explanation-order/delimiter-probe/before.pairs.bin"
+    ],
+    "return_code": 0,
+    "corpus_sha256": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+    "stdout_sha256": "b33c3c4fb77f9f8d978e04fb2132ddb22d04db1c656a797709cbc5b9cfa9f177",
+    "target_alternative_ids": [
+      [
+        8899,
+        66582
+      ],
+      [
+        66582,
+        8899
+      ]
+    ],
+    "rows": 52
+  },
+  "after": {
+    "argv": [
+      "build/jovovich-probe-pairs",
+      "models/base-qwen.gguf",
+      "training/results/2026-10-03-explanation-order/delimiter-probe/after.bin",
+      "training/results/2026-10-03-explanation-order/delimiter-probe/after.pairs.bin"
+    ],
+    "return_code": 0,
+    "corpus_sha256": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+    "stdout_sha256": "3ce5c8879099eae6a54f2a38d7332d69ea568fe4edc64c0fe50940b4c87e777a",
+    "target_alternative_ids": [
+      [
+        8899,
+        66582
+      ],
+      [
+        66582,
+        8899
+      ]
+    ],
+    "rows": 52
+  },
+  "status": "pass",
+  "format": "newline after every top-level value, comma begins next field line; compact findings-array prefix preserved"
+}

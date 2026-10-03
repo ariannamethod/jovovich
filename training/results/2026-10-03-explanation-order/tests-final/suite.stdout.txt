@@ -1,0 +1,202 @@
+./build/test-head
+DPO shared A/B finite difference:16/16 max_error=6.08712e-06 max_gradient=0.0411154; merged head logits max_error=7.45058e-09
+./build/test-mlp
+MLP LoRA: 54/54 finite differences max_error=0.000110343; gate/up/down max_grad=0.189277/0.377375/0.336615; merged residual/logits max_error=1.19209e-07; frozen tensors unchanged
+./build/test-optimizer
+MLP optimizer: 4320 Adam updates checked; 120 frozen evaluations leave trajectory identical; max update error=0, norm error=1.19209e-07
+./build/test-weighting
+Example weighting: 4 batch sizes, 216 adapter gradients match independent token composition; max_loss_error=0 max_gradient_error=1.19209e-07; evaluation remains token-mean
+Verdict weighting: global pool=1.03136; mass error=1.19209e-07; 4 batch sizes, 216 adapter gradients match independent composition (loss=2.38419e-07 gradient=1.3411e-07); defaults/evaluation unchanged; 18 invalid maps rejected
+Decision-only: 40 ordered tokens across unequal lengths; CE/54 gradients match token means (max gradient error=1.49012e-08); excluded positions contribute zero; 4 Adam steps with/without diagnostics are bit-identical; invalid batches/missing map rejected
+./build/test-joint
+Joint finite difference: state=nonzero-AB tensor=gate.A coordinates=6 max_abs_error=3.42493219e-05 max_abs_gradient=0.0510172248
+Joint finite difference: state=nonzero-AB tensor=gate.B coordinates=8 max_abs_error=3.61757813e-05 max_abs_gradient=0.09980575
+Joint finite difference: state=nonzero-AB tensor=up.A coordinates=6 max_abs_error=2.53958083e-05 max_abs_gradient=0.026826892
+Joint finite difference: state=nonzero-AB tensor=up.B coordinates=8 max_abs_error=5.76898909e-05 max_abs_gradient=0.0933168679
+Joint finite difference: state=nonzero-AB tensor=down.A coordinates=8 max_abs_error=2.18893979e-05 max_abs_gradient=0.105265819
+Joint finite difference: state=nonzero-AB tensor=down.B coordinates=6 max_abs_error=2.55928811e-05 max_abs_gradient=0.083800219
+Joint finite difference: state=nonzero-AB 42/42 pass h=0.00200000009 loss=4.6208334 loss_error=9.17911525e-08 max_abs_error=5.76898909e-05 max_tolerance_fraction=0.199070616; wrong half-normalization rejected at 42/42 coordinates; zero_A=0; frozen weights unchanged
+Joint finite difference: state=zero-B tensor=gate.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=gate.B coordinates=8 max_abs_error=4.31956347e-05 max_abs_gradient=0.089331679
+Joint finite difference: state=zero-B tensor=up.A coordinates=6 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=up.B coordinates=8 max_abs_error=7.79435632e-05 max_abs_gradient=0.0854364485
+Joint finite difference: state=zero-B tensor=down.A coordinates=8 max_abs_error=0 max_abs_gradient=0
+Joint finite difference: state=zero-B tensor=down.B coordinates=6 max_abs_error=2.41487173e-05 max_abs_gradient=0.0643597916
+Joint finite difference: state=zero-B 42/42 pass h=0.00200000009 loss=4.62602729 loss_error=2.25901603e-07 max_abs_error=7.79435632e-05 max_tolerance_fraction=0.144958098; wrong half-normalization rejected at 21/42 coordinates; zero_A=20; frozen weights unchanged
+Joint objective: 4 decision + 25 residual positions; each partition has unit mass; 4 EOS included, 2 unmapped rows excluded; 6 microbatch sizes match independent token derivatives (loss=1.4329e-06 gradient=2.6077e-08)
+Joint optimizer: 40 whole-objective clipped Adam steps; 5 batch sizes preserve trajectories; diagnostics preserve parameters/moments bit-for-bit (update=1.49012e-08 norm=5.96046e-08 trajectory=1.49012e-08)
+Joint selection: 7 invalid map/objective inputs rejected
+./build/test-verdict-positions
+JVPR2 real BPE: positions 74/29 and 72/29; literal Unicode bytes, escaped quotes and nested findings retain the top-level decision
+JVPR2 joint objective: 4 decisions at unequal positions + 230 residual targets; rationale and EOS included; 3 microbatch sizes match 42 independent adapter derivatives (loss=2.45778e-06 gradient=5.81114e-08)
+JVPR2 rejects 26 malformed, stale, ambiguous, EOS, capacity and BPE-boundary inputs
+JVPR1 compatibility: rationale's first divergence remains historical selection; JVPR2 uses each verdict boundary
+JVPR2 asymmetric BPE: clean target is only quote/colon; counterfactual suffixes verify reciprocal alternatives without equal decoded widths
+./build/test-readout-extract
+readout extraction: prompt-only parsing, malformed/gold input rejection, unique causal hook position passed
+./build/test-layer-extract
+layer extraction: all layers/two positions, exact layout, fresh caches, chunk/step and future invariance, mutation and failure gates passed
+./build/test-readout
+readout: derivatives, primal Newton, fold isolation, constants, convergence and weak ridge passed
+node --test test/*.test.mjs
+✔ qwen2 runner inserts ChatML CONTROL IDs and measures that exact sequence (22.296591ms)
+✔ qwen3 runner inserts ChatML CONTROL IDs and measures that exact sequence (13.08127ms)
+✔ runner rejects unsupported Qwen MoE architecture (3.849425ms)
+✔ checkpoint archive gate: actual native Chuck trajectory, readback failures, ACK protocol (3591.825405ms)
+✔ decision selector prioritizes complete pairs, then hits, then earlier eligible saved step (86.489154ms)
+✔ decision scoring rejects missing updates, snapshots, pair rows and false saved claims (178.779662ms)
+✔ decision scoring rejects contradictory IDs, margins and declared counts (190.466806ms)
+✔ full readouts must agree with the decision trajectory and every corpus row (202.645898ms)
+✔ native argmax tie ordering is distinguished from positive-margin counts (50.392943ms)
+✔ joint scoring preserves checkpoint selection and exposes loss, gradient and prefix diagnostics (106.334018ms)
+✔ joint scoring enforces fixed coverage and independently normalized finite losses (638.481225ms)
+✔ joint online loss is measured before the update and matches the previous frozen readout (197.388194ms)
+✔ joint gradient diagnostics distinguish zero, boundary and clipped norms with declared tolerance (382.839403ms)
+✔ joint initial gradient diagnostics are explicitly null and later diagnostics are mandatory (363.036743ms)
+✔ joint runs retain the fixed stage order, objective and complete snapshot schedule (172.789878ms)
+✔ joint prefix summaries require complete mapped-row coverage and consistent aggregates (643.633488ms)
+✔ joint prefix accuracy must agree with first error and complete-row accuracy (192.614783ms)
+✔ joint scorer derives 76-row coverage, 26-pair group means and residual normalization from the corpus (72.326662ms)
+✔ expanded joint corpus rejects tampered counts, row coverage, token totals and microbatch declarations (614.583387ms)
+✔ corpus validation requires unique IDs, known task kinds and complete role-valid review pairs (31.23395ms)
+✔ supplied corpus determines non-review group sizes as well as mapped decision ranges (34.680636ms)
+✔ historical decision-only, small-step and joint scores remain exactly unchanged (91.200242ms)
+✔ joint scorer CLI requires explicit agreement for a nondefault microbatch (154.320678ms)
+✔ JVPR2 joint scoring selects over a full trajectory with independent verdict positions and source-bound prefix diagnostics (88.718393ms)
+✔ JVPR2 scorer rejects missing, malformed, non-review and source-mismatched verdict-boundary evidence (363.121953ms)
+✔ pair-map versions fail closed and legacy logs retain equal-position validation (337.327914ms)
+✔ JVPR2 retains reciprocal target IDs, non-EOS positions and immutable decision positions across all readouts (229.541563ms)
+✔ JVPR2 source evidence rejects same-byte-length rationale substitutions and requires the exact native prefix (174.830976ms)
+✔ durable archive: normal (47.687531ms)
+✔ durable archive: lost-ack (46.552166ms)
+✔ durable archive: corrupt-remote (58.570896ms)
+✔ durable archive: missing-remote (40.58079ms)
+✔ durable archive: corrupt-readback (50.346198ms)
+✔ durable archive: local-loss (43.931432ms)
+✔ durable archive: parent-conflict (38.381048ms)
+✔ durable archive: unsafe-paths (41.291794ms)
+✔ durable archive: source-mutation (45.417967ms)
+✔ durable archive: privacy (35.490441ms)
+✔ durable archive: auth-redaction (40.585402ms)
+✔ durable archive: sequence-gate (45.043792ms)
+✔ durable archive: verification-barrier (57.498387ms)
+✔ durable archive: hf-transport-contract (48.821048ms)
+✔ durable archive: runner-barrier (44.142051ms)
+✔ durable archive: runner-lost-ack (52.099719ms)
+✔ durable archive: runner-interrupted (71.606546ms)
+✔ durable archive: runner-preflight (58.274216ms)
+✔ durable archive: runner-stale-output (69.76914ms)
+✔ durable archive: runner-symlink (51.631932ms)
+✔ durable archive: runner-failed-work (54.538273ms)
+✔ durable archive: runner-validation-failure (91.371111ms)
+✔ durable archive: verification survives python -O (1157.81956ms)
+✔ durable archive: verification survives PYTHONOPTIMIZE=1 (1131.829425ms)
+✔ SFT exact match requires raw equality, successful execution, and EOS (235.526077ms)
+✔ explanation arms preserve all prompts, findings, pair order and 24 raw nonreview rows (13.117074ms)
+✔ builder reproduces both frozen corpora and binds its generated audit (107.187616ms)
+✔ builder rejects missing, duplicate, reordered and foreign rationale coverage before writing (271.917219ms)
+✔ evidence validation rejects wrong scopes, changed-line substitutions and rationale metadata leakage (362.5996ms)
+✔ reasons reject duplicate JSON keys and changed source bytes (82.256772ms)
+✔ exclusive publication protects existing destinations and removes incomplete new outputs (189.553089ms)
+✔ both arms pack as explicit JVPR2 with different semantic verdict prefixes (66.695036ms)
+✔ explanation generation: normal (218.419246ms)
+✔ explanation generation: bootstrap-fail (64.914449ms)
+✔ explanation generation: result-fail (113.77109ms)
+✔ explanation generation: native-fail (110.927355ms)
+✔ explanation generation: bad-trace (117.540439ms)
+✔ explanation generation: model-mutation (120.452943ms)
+✔ explanation generation: prompt-mutation (84.863275ms)
+✔ explanation generation: tokenizer-fail (97.803131ms)
+✔ explanation generation: tokenizer-archive-fail (92.907752ms)
+✔ explanation generation: wrong-prompt-ids (134.84517ms)
+✔ explanation generation: completion-fail (188.512857ms)
+✔ explanation generation: heldout prompts use production context and empty assistant header (143.066689ms)
+✔ explanation generation: native trace rejects truncation ambiguities (37.831427ms)
+✔ after launch binds nested verified completion and initialization hashes (48.826447ms)
+✔ after launch rejects changed receipts, local plans and invalid adapter hashes (40.771259ms)
+✔ after launch rejects differing training settings and missing shared bindings (54.351362ms)
+✔ free generation scorer binds raw files and complete concern/clean pairs (41.219906ms)
+✔ full JSON rejects fences, substrings, duplicate keys, NaN and incomplete output (41.631923ms)
+✔ strict schema rejects unknown fields and invalid findings or line IDs (53.684215ms)
+✔ classification and canonical citations remain separate from explanation compliance (44.473711ms)
+✔ truncation, execution errors and missing cases cannot earn complete passes (37.963793ms)
+✔ record corruption, stale source hashes, duplicate and unknown cases are rejected (42.015778ms)
+✔ CLI marks incomplete coverage and preserves existing output files (134.875952ms)
+✔ heldout scorer shares production prompts and keeps alternate citations separate (257.397762ms)
+✔ fresh evaluation quartets reproduce production prompts with matched non-token cues (14.034971ms)
+✔ fresh source semantics hold before edits and expose precise concern boundaries after edits (2731.405934ms)
+✔ fresh evaluation material does not reuse prior train or evaluation cases (30.500622ms)
+✔ builder rejects malformed context mechanisms and CLI preserves existing outputs (149.876261ms)
+✔ qwen2 MLP export replaces only the last three MLP tensors (7.181619ms)
+✔ qwen3 MLP export replaces only the last three MLP tensors (3.536843ms)
+✔ MLP export rejects malformed replacements and removes an incomplete output (18.52257ms)
+✔ MLP export refuses to overwrite an existing file (4.994985ms)
+✔ MLP export checks last-block matrix orientation and rejects Qwen MoE (7.270082ms)
+✔ review pair maps retain original row indices and concern/clean direction (39.309269ms)
+✔ JVPR2 records independent exact Unicode prefixes and ignores structural decoys (98.91062ms)
+✔ JVPR2 rejects spacing at the verdict branch and nonobject concern findings; JVPR1 stays unchanged (630.668613ms)
+✔ JVPR2 rejects duplicate keys, escaped top-level keys and malformed JSON before writing (262.884399ms)
+✔ JVPR2 retains pair-completeness checks and preserves existing outputs on validation failure (128.371832ms)
+✔ pair format 2 requires a map and unknown formats fail (62.39104ms)
+✔ the fixed 52-review v5 curriculum preserves JVDS and legacy JVPR1 bytes (64.756037ms)
+✔ review pair preparation rejects incomplete, duplicate and malformed partners (105.528606ms)
+✔ pair maps require SFT-only packing and a distinct output (58.967803ms)
+✔ native readout applies every family mask to complete pairs, keeps held-out rows out of statistics, and exports no coefficients (11.091599ms)
+✔ native readout reports incomplete optimization as a failed gate without dropping fits (3.147796ms)
+✔ native readout rejects broken pairs, duplicated or identity masks, nonfinite and trailing matrix data (27.213056ms)
+✔ collector accepts documented repository helpers with an external scratch run (255.275695ms)
+✔ python -O: v4 preparation and summary retain archived results (585.277123ms)
+✔ python -O: corpus fingerprint and nested structural checks cannot disappear (322.267631ms)
+✔ python -O: malformed native traces are rejected before writing nuisance data (660.175665ms)
+✔ python -O: malformed native fits and transitive summary gates are rejected (1375.756579ms)
+✔ python -O: runner retains partial hashes and requires every successful output (488.24077ms)
+✔ python -O: runner retains phase evidence when executable permission prevents launch (133.73963ms)
+✔ python -O: runner retains stdout when opening stderr fails before launch (162.680957ms)
+✔ PYTHONOPTIMIZE=1: v4 preparation and summary retain archived results (540.975994ms)
+✔ PYTHONOPTIMIZE=1: corpus fingerprint and nested structural checks cannot disappear (268.639564ms)
+✔ PYTHONOPTIMIZE=1: malformed native traces are rejected before writing nuisance data (554.684331ms)
+✔ PYTHONOPTIMIZE=1: malformed native fits and transitive summary gates are rejected (1242.697431ms)
+✔ PYTHONOPTIMIZE=1: runner retains partial hashes and requires every successful output (632.700641ms)
+✔ PYTHONOPTIMIZE=1: runner retains phase evidence when executable permission prevents launch (138.6016ms)
+✔ PYTHONOPTIMIZE=1: runner retains stdout when opening stderr fails before launch (225.927021ms)
+✔ patch coordinates preserve removed -- and added ++ source lines (4.328228ms)
+✔ findings resolve citations from actual changed lines, ignoring model-supplied locations (0.862814ms)
+✔ ChatML-shaped code cannot add turns and cited code retains its original bytes (0.494076ms)
+✔ explicit Qwen3 non-thinking template preserves the review and closes its reasoning prefix (0.429399ms)
+✔ chunking preserves all changes and refuses indivisible or excessive input (6.653911ms)
+✔ GitHub context rules come from the base revision and collection detects a push (2.020241ms)
+✔ GitHub loads each scoped baseline rule once and excludes sibling instructions (1.542059ms)
+✔ posting refuses changed head, changed base, or closed PR without a write (0.504342ms)
+JOVOVICH reviews good.c (1/2)
+JOVOVICH reviews failed.c (2/2)
+✔ partial inference failure stays visible beside completed chunks (2.735582ms)
+✔ inference preserves Unicode when a code point crosses pipe chunks (94.232323ms)
+✔ local collection ignores external diff/textconv and reads baseline rules (195.518229ms)
+✔ v4 artifact exactly regenerates approved quartets while retaining every other v3 raw row (15.740437ms)
+✔ v4 builder refuses existing destinations and removes its unused reservation if audit already exists (901.001575ms)
+✔ v4 semantics exercise unsafe inputs, retained protections, ordering and credit; lost redundant guard fails (714.431772ms)
+✔ v5 changes only sixteen declared context lines and keeps task, targets, changed lines and cohort (33.658503ms)
+✔ v5 witnesses distinguish ineffective protection and retain correct before/ordinary/boundary behavior (786.776702ms)
+✔ v5 builder reserves destinations without overwriting an existing corpus or audit (750.537972ms)
+✔ runner traces sampled IDs before decoding and EOS, without changing stdout (17.379152ms)
+✔ runner traces immediate stopping ID 1 with empty response stdout (5.774743ms)
+✔ runner traces immediate stopping ID 2 with empty response stdout (4.796175ms)
+✔ runner traces exactly the token limit and the complete supplied prompt IDs (9.737219ms)
+✔ runner refuses existing trace files and symlinks before inference (7.978051ms)
+✔ runner validates trace options and destination before generation (8.055448ms)
+✔ runner removes its incomplete trace when model loading fails (3.397983ms)
+✔ runner reports trace write failure and removes the incomplete file (7.128337ms)
+✔ runner reports a closed stdout reader and removes its reserved trace (12.561785ms)
+✔ runner reports buffered stdout failure in --tokens-only mode (12.689974ms)
+✔ runner reports buffered stdout failure in --token-ids mode (2.901994ms)
+✔ training summaries preserve pair direction and select by complete review pairs (34.750582ms)
+✔ decision summaries retain full-vocabulary correctness without changing checkpoint selection (27.594087ms)
+✔ decision summaries reject contradictory IDs, margins and missing declared pairs (36.71807ms)
+ℹ tests 151
+ℹ suites 0
+ℹ pass 151
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8951.22451

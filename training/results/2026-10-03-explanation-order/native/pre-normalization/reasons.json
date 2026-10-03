@@ -1,0 +1,1046 @@
+{
+  "schema_version": 1,
+  "source": {
+    "path": "training/sft_review_v5.jsonl",
+    "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+  },
+  "authoring_inputs": [
+    "training/sft_review_v5.jsonl"
+  ],
+  "rows": [
+    {
+      "id": "scoped-python-analysis-concern",
+      "pair": "scoped-python-analysis",
+      "analysis": "The nearest analysis/ rule requires Lua even though the root permits Python tools. Adding import statistics at [1] puts Python code in that directory; being an offline script does not supply an exception.",
+      "evidence": {
+        "rule": "This directory must contain only Lua scripts. Do not add Python files here.",
+        "context": "This file reads saved measurements during developer analysis; it is not shipped with the executable.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "analysis/profile_notes.py",
+            "line": 11,
+            "quote": "import statistics"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scoped-python-analysis-clean",
+      "pair": "scoped-python-analysis",
+      "analysis": "The analysis/ rule explicitly permits offline Python scripts and standard-library modules. Import statistics at [1] serves the stated saved-measurement analysis, so the directory exception covers this addition.",
+      "evidence": {
+        "rule": "Offline analysis scripts in this directory may use Python and its standard library.",
+        "context": "This file reads saved measurements during developer analysis; it is not shipped with the executable.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "analysis/profile_notes.py",
+            "line": 11,
+            "quote": "import statistics"
+          }
+        ]
+      }
+    },
+    {
+      "id": "approved-binary-decoder-concern",
+      "pair": "approved-binary-decoder",
+      "analysis": "The viewer must use built-in decoders and acquire no third-party runtime packages. The dependencies entry at [1] installs cbor-x at runtime; pinning its version still adds the forbidden package.",
+      "evidence": {
+        "rule": "Keep this viewer free of third-party runtime packages. New packet formats must use an existing built-in decoder.",
+        "context": "Add the CBOR decoder used by the packet viewer. This manifest entry installs a runtime package.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "package.json",
+            "line": 11,
+            "quote": "  \"dependencies\": {\"cbor-x\": \"1.6.0\"},"
+          }
+        ]
+      }
+    },
+    {
+      "id": "approved-binary-decoder-clean",
+      "pair": "approved-binary-decoder",
+      "analysis": "The rule names cbor-x 1.6.0 as the approved runtime decoder. The dependencies entry at [1] installs precisely that package and version for the stated CBOR feature.",
+      "evidence": {
+        "rule": "The maintainer approved cbor-x 1.6.0 as the runtime decoder for this CBOR feature; pin that version.",
+        "context": "Add the CBOR decoder used by the packet viewer. This manifest entry installs a runtime package.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "package.json",
+            "line": 11,
+            "quote": "  \"dependencies\": {\"cbor-x\": \"1.6.0\"},"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sqlite-build-requirement-concern",
+      "pair": "sqlite-build-requirement",
+      "analysis": "Persistence is allowed only as an opt-in extension to the compiler-only default build. The unconditional find_package(SQLite3 REQUIRED) at [1] makes every configuration depend on SQLite3, including the default.",
+      "evidence": {
+        "rule": "The default build must require only a C compiler. A persistence backend may be added only behind an opt-in build option.",
+        "context": "This command is unconditional in the top-level build; every build will need SQLite3.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "CMakeLists.txt",
+            "line": 11,
+            "quote": "find_package(SQLite3 REQUIRED)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sqlite-build-requirement-clean",
+      "pair": "sqlite-build-requirement",
+      "analysis": "Every supported build is required to have SQLite3. The unconditional REQUIRED lookup at [1] enforces that requirement during top-level configuration, exactly where the rule places it.",
+      "evidence": {
+        "rule": "SQLite3 is now a required component of every supported build. Require it during top-level CMake configuration.",
+        "context": "This command is unconditional in the top-level build; every build will need SQLite3.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "CMakeLists.txt",
+            "line": 11,
+            "quote": "find_package(SQLite3 REQUIRED)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "background-service-scope-concern",
+      "pair": "background-service-scope",
+      "analysis": "This release permits help-text corrections and excludes new service targets. ExecStart at [1] belongs to a newly installed continuous watcher, so the patch introduces both installation work and runtime behavior beyond that scope.",
+      "evidence": {
+        "rule": "This release is limited to correcting help text. Do not add background services or new installation targets.",
+        "context": "This is a new service unit that starts a continuously running watcher. It will be installed by this patch.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "deploy/observer.service",
+            "line": 11,
+            "quote": "ExecStart=/usr/bin/observer --watch"
+          }
+        ]
+      }
+    },
+    {
+      "id": "background-service-scope-clean",
+      "pair": "background-service-scope",
+      "analysis": "The release explicitly includes one systemd unit for observer --watch. ExecStart at [1] starts that command in the new unit; the installation and continuous watcher belong to the approved feature.",
+      "evidence": {
+        "rule": "This release introduces the approved systemd watcher. Installing one service unit for observer --watch is in scope.",
+        "context": "This is a new service unit that starts a continuously running watcher. It will be installed by this patch.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "deploy/observer.service",
+            "line": 11,
+            "quote": "ExecStart=/usr/bin/observer --watch"
+          }
+        ]
+      }
+    },
+    {
+      "id": "preserve-trie-credit-deletion-concern",
+      "pair": "preserve-trie-credit-deletion",
+      "analysis": "The adapted implementation remains, so its source attribution must remain too. Deleting the implementation credit at [1] leaves only a documentation credit to firwood/trie, which does not identify the retained code's origin.",
+      "evidence": {
+        "rule": "Retain source attribution for code that remains derived from upstream implementations.",
+        "context": "Trie documentation derived from firwood/trie (MIT).",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Trie design adapted from firwood/trie (MIT)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "preserve-trie-credit-deletion-clean",
+      "pair": "preserve-trie-credit-deletion",
+      "analysis": "The rule preserves attribution for the retained implementation. Deleting [1] leaves the explicit 'Trie implementation derived from firwood/trie (MIT).' credit in place, removing a redundant attribution rather than the code's origin.",
+      "evidence": {
+        "rule": "Retain source attribution for code that remains derived from upstream implementations.",
+        "context": "Trie implementation derived from firwood/trie (MIT).",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Trie design adapted from firwood/trie (MIT)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "preserve-trie-credit-replacement-concern",
+      "pair": "preserve-trie-credit-replacement",
+      "analysis": "The retained trie implementation needs its upstream credit. Replacing [1] with the generic notice at [2] leaves only a documentation attribution; neither surviving text credits the implementation to firwood/trie.",
+      "evidence": {
+        "rule": "Retain source attribution for code that remains derived from upstream implementations.",
+        "context": "Trie documentation derived from firwood/trie (MIT).",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Trie design adapted from firwood/trie (MIT)."
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Implementation notice."
+          }
+        ]
+      }
+    },
+    {
+      "id": "preserve-trie-credit-replacement-clean",
+      "pair": "preserve-trie-credit-replacement",
+      "analysis": "The remaining implementation credit still names firwood/trie and MIT. Replacing the duplicate design credit at [1] with the generic text at [2] therefore preserves the required attribution for the retained code.",
+      "evidence": {
+        "rule": "Retain source attribution for code that remains derived from upstream implementations.",
+        "context": "Trie implementation derived from firwood/trie (MIT).",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Trie design adapted from firwood/trie (MIT)."
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "NOTICE",
+            "line": 11,
+            "quote": "Implementation notice."
+          }
+        ]
+      }
+    },
+    {
+      "id": "model-parent-provenance-introduced",
+      "pair": "model-parent-provenance",
+      "analysis": "The supplied history identifies an adapter merge over Qwen2.5-Coder-0.5B-Instruct. The new base_model value at [2] claims a scratch origin, replacing the actual parent that the manifest rule requires.",
+      "evidence": {
+        "rule": "Model manifests must name the actual parent checkpoint. An adapter merge does not erase that provenance.",
+        "context": "The weights are an adapter merge over Qwen2.5-Coder-0.5B-Instruct. No training from random initialization occurred.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "models/source.json",
+            "line": 11,
+            "quote": "  \"base_model\": \"trained-from-scratch\","
+          }
+        ]
+      }
+    },
+    {
+      "id": "model-parent-provenance-repaired",
+      "pair": "model-parent-provenance",
+      "analysis": "These weights were merged over Qwen2.5-Coder-0.5B-Instruct. The base_model entry at [2] restores that exact parent, bringing the manifest back into agreement with the supplied history and provenance rule.",
+      "evidence": {
+        "rule": "Model manifests must name the actual parent checkpoint. An adapter merge does not erase that provenance.",
+        "context": "The weights are an adapter merge over Qwen2.5-Coder-0.5B-Instruct. No training from random initialization occurred.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "models/source.json",
+            "line": 11,
+            "quote": "  \"base_model\": \"Qwen2.5-Coder-0.5B-Instruct\","
+          }
+        ]
+      }
+    },
+    {
+      "id": "scoped-design-record-concern",
+      "pair": "scoped-design-record",
+      "analysis": "The repository keeps architectural decisions in README.md and forbids separate decision files. The heading at [1] creates just such a file for the journal format, moving the decision outside its required home.",
+      "evidence": {
+        "rule": "Keep architectural decisions in README.md. Do not create separate decision Markdown files.",
+        "context": "This adds one design record for the format chosen in the current change.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "docs/decisions/004-journal.md",
+            "line": 11,
+            "quote": "# Decision 004: journal record format"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scoped-design-record-clean",
+      "pair": "scoped-design-record",
+      "analysis": "The nearest docs/decisions/ rule requires a numbered record for this persistent format. The Decision 004 heading at [1] supplies that record for the current journal change, using the explicit exception to the README rule.",
+      "evidence": {
+        "rule": "For persistent on-disk formats, create one numbered Markdown decision here. This journal format requires such a record.",
+        "context": "This adds one design record for the format chosen in the current change.",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "ADDED",
+            "path": "docs/decisions/004-journal.md",
+            "line": 11,
+            "quote": "# Decision 004: journal record format"
+          }
+        ]
+      }
+    },
+    {
+      "id": "checksum-indirection-concern",
+      "pair": "checksum-indirection",
+      "analysis": "A dispatch registry requires a second implemented checksum, while this scope contains only CRC32. The registry call at [2] replaces the direct function without satisfying that prerequisite; availability of the registry alone is insufficient.",
+      "evidence": {
+        "rule": "Only CRC32 is supported or planned in this change. Use its direct function; a dispatch registry requires a second implemented checksum.",
+        "context": "The registry implementation is included elsewhere in this same patch and is available to this call.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/digest.c",
+            "line": 11,
+            "quote": "    return digest_registry_run(kind, data, length);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "checksum-indirection-clean",
+      "pair": "checksum-indirection",
+      "analysis": "The rule supplies both CRC32 and Adler32 and requires dispatch by kind. The registry call at [2] uses the available implementation to select between those two algorithms, extending the former CRC32-only call as requested.",
+      "evidence": {
+        "rule": "This change implements CRC32 and Adler32. kind selects either one; use the shared registry to dispatch to both existing implementations.",
+        "context": "The registry implementation is included elsewhere in this same patch and is available to this call.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/digest.c",
+            "line": 11,
+            "quote": "    return digest_registry_run(kind, data, length);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sequence-field-width-introduced",
+      "pair": "sequence-field-width",
+      "analysis": "The wire contract keeps sequence at 64 bits, and supplied values can exceed UINT32_MAX. Changing the member to uint32_t at [2] narrows its range and loses sequence values that the unchanged format permits.",
+      "evidence": {
+        "rule": "The public wire contract requires a 64-bit sequence field. Keep or restore that field width; this patch does not change the wire format.",
+        "context": "sequence stores the full sequence number from the wire and can exceed UINT32_MAX.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "include/frame.h",
+            "line": 12,
+            "quote": "    uint32_t sequence;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sequence-field-width-repaired",
+      "pair": "sequence-field-width",
+      "analysis": "The unchanged wire format requires the full 64-bit sequence value. The uint64_t member at [2] restores that range, including values above UINT32_MAX that the previous declaration could not retain.",
+      "evidence": {
+        "rule": "The public wire contract requires a 64-bit sequence field. Keep or restore that field width; this patch does not change the wire format.",
+        "context": "sequence stores the full sequence number from the wire and can exceed UINT32_MAX.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "include/frame.h",
+            "line": 12,
+            "quote": "    uint64_t sequence;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "pair": "allocation-null-guard-deletion",
+      "analysis": "Allocation failure must be checked before n->value is written. Removing the pointer-value check at [1] leaves only a test of &n, the local variable's address; calloc can return NULL and still reach the dereference.",
+      "evidence": {
+        "rule": "Check allocation failure before dereferencing a newly allocated pointer.",
+        "context": "    if (&n == NULL) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    if (n == NULL) return NULL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "pair": "allocation-null-guard-deletion",
+      "analysis": "A newly allocated pointer must be checked before dereference. Removing [1] leaves the identical n == NULL guard immediately before n->value, so allocation failure still returns before the write.",
+      "evidence": {
+        "rule": "Check allocation failure before dereferencing a newly allocated pointer.",
+        "context": "    if (n == NULL) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    if (n == NULL) return NULL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-null-guard-replacement-concern",
+      "pair": "allocation-null-guard-replacement",
+      "analysis": "Replacing the guard at [1] with the no-op at [2] removes the test of calloc's result. The surviving &n comparison tests the local variable's address and lets a NULL result reach n->value, violating the required failure check.",
+      "evidence": {
+        "rule": "Check allocation failure before dereferencing a newly allocated pointer.",
+        "context": "    if (&n == NULL) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    if (n == NULL) return NULL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-null-guard-replacement-clean",
+      "pair": "allocation-null-guard-replacement",
+      "analysis": "The no-op at [2] replaces the first null guard at [1], while another n == NULL guard remains before n->value. That surviving check returns on allocation failure, preserving the required order of validation and dereference.",
+      "evidence": {
+        "rule": "Check allocation failure before dereferencing a newly allocated pointer.",
+        "context": "    if (n == NULL) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    if (n == NULL) return NULL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/list_node.c",
+            "line": 12,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-worker-guard-deletion-concern",
+      "pair": "zero-worker-guard-deletion",
+      "analysis": "The caller may supply zero workers, which must be rejected before arithmetic. Deleting [1] leaves workers < 0, a condition that does not reject zero, so total / workers can still divide by zero.",
+      "evidence": {
+        "rule": "Reject an invalid worker count before performing arithmetic with it.",
+        "context": "    if (workers < 0) return EINVAL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    if (workers == 0) return EINVAL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-worker-guard-deletion-clean",
+      "pair": "zero-worker-guard-deletion",
+      "analysis": "Invalid worker counts must be rejected before division. After removing [1], the next workers == 0 check still returns EINVAL before total / workers; the deleted guard was a duplicate.",
+      "evidence": {
+        "rule": "Reject an invalid worker count before performing arithmetic with it.",
+        "context": "    if (workers == 0) return EINVAL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    if (workers == 0) return EINVAL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-worker-guard-replacement-concern",
+      "pair": "zero-worker-guard-replacement",
+      "analysis": "The guard removed at [1] rejected a caller-supplied zero input before division. Its no-op replacement at [2] and the remaining workers < 0 test both let zero reach total / workers, breaking the required validation.",
+      "evidence": {
+        "rule": "Reject an invalid worker count before performing arithmetic with it.",
+        "context": "    if (workers < 0) return EINVAL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    if (workers == 0) return EINVAL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zero-worker-guard-replacement-clean",
+      "pair": "zero-worker-guard-replacement",
+      "analysis": "The replacement at [2] does no work, but deleting [1] leaves another workers == 0 guard. That guard still returns EINVAL before division, retaining the required handling of a zero count.",
+      "evidence": {
+        "rule": "Reject an invalid worker count before performing arithmetic with it.",
+        "context": "    if (workers == 0) return EINVAL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    if (workers == 0) return EINVAL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/shard.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "validated-port-conversion-introduced",
+      "pair": "validated-port-conversion",
+      "analysis": "Ports must reject invalid decimal text and values outside 1 through 65535. The atoi conversion at [4] removes the supplied validating parser and immediately narrows to uint16_t, allowing invalid or out-of-range input through.",
+      "evidence": {
+        "rule": "Ports must be decimal integers from 1 through 65535. Invalid text must return EINVAL rather than being accepted or truncated.",
+        "context": "parse_decimal_range rejects non-decimal text and values outside the inclusive range. text is untrusted configuration input.",
+        "changed": [
+          {
+            "line_id": 4,
+            "side": "ADDED",
+            "path": "src/endpoint.c",
+            "line": 11,
+            "quote": "    port = (uint16_t)atoi(text);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "validated-port-conversion-repaired",
+      "pair": "validated-port-conversion",
+      "analysis": "The supplied parse_decimal_range rejects non-decimal and out-of-range input. The check at [3] applies the required 1 through 65535 bounds and returns EINVAL before the cast at [4], so accepted values fit the port type.",
+      "evidence": {
+        "rule": "Ports must be decimal integers from 1 through 65535. Invalid text must return EINVAL rather than being accepted or truncated.",
+        "context": "parse_decimal_range rejects non-decimal text and values outside the inclusive range. text is untrusted configuration input.",
+        "changed": [
+          {
+            "line_id": 3,
+            "side": "ADDED",
+            "path": "src/endpoint.c",
+            "line": 12,
+            "quote": "    if (!parse_decimal_range(text, 1, 65535, &value)) return EINVAL;"
+          },
+          {
+            "line_id": 4,
+            "side": "ADDED",
+            "path": "src/endpoint.c",
+            "line": 13,
+            "quote": "    port = (uint16_t)value;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "negative-offset-type-introduced",
+      "pair": "negative-offset-type",
+      "analysis": "The direction check must recognize backward movement. The unsigned delta at [2] converts a negative requested - current result to an unsigned value, making the retained delta < 0 branch unreachable for backward requests.",
+      "evidence": {
+        "rule": "The direction check must recognize movement both backward and forward.",
+        "context": "    if (delta < 0) return MOVE_BACKWARD;",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/seek_delta.c",
+            "line": 11,
+            "quote": "    unsigned int delta = requested - current;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "negative-offset-type-repaired",
+      "pair": "negative-offset-type",
+      "analysis": "Requested and current are bounded signed values, so their difference fits int. The signed delta at [2] preserves negative differences for the existing delta < 0 check, restoring backward movement detection.",
+      "evidence": {
+        "rule": "The direction check must recognize movement both backward and forward.",
+        "context": "    if (delta < 0) return MOVE_BACKWARD;",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/seek_delta.c",
+            "line": 11,
+            "quote": "    int delta = requested - current;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-property-name-introduced",
+      "pair": "exact-property-name",
+      "analysis": "Property dispatch must match complete names, including the distinction between size and size_hint. The four-byte strncmp at [2] accepts both prefixes as SIZE_FIELD, diverting an unknown longer name from UNKNOWN_FIELD.",
+      "evidence": {
+        "rule": "Property dispatch matches complete names; unknown names must remain unknown.",
+        "context": "key is a valid NUL-terminated string. Names such as size_hint must remain distinct from size.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/property.c",
+            "line": 11,
+            "quote": "    if (strncmp(key, \"size\", 4) == 0) return SIZE_FIELD;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exact-property-name-repaired",
+      "pair": "exact-property-name",
+      "analysis": "The rule requires complete-name matching for valid NUL-terminated keys. The strcmp at [2] compares the whole key with size, so size_hint falls through to UNKNOWN_FIELD while the exact name still selects SIZE_FIELD.",
+      "evidence": {
+        "rule": "Property dispatch matches complete names; unknown names must remain unknown.",
+        "context": "key is a valid NUL-terminated string. Names such as size_hint must remain distinct from size.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/property.c",
+            "line": 11,
+            "quote": "    if (strcmp(key, \"size\") == 0) return SIZE_FIELD;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "idempotent-event-retry-introduced",
+      "pair": "idempotent-event-retry",
+      "analysis": "The event already exists, and retries must preserve that operation's journal entry. Calling append_event at [2] allocates another event ID on an unacknowledged delivery, duplicating the event instead of resending it.",
+      "evidence": {
+        "rule": "Retrying delivery must not create another journal event for the same operation.",
+        "context": "The event has already been appended once. retry_delivery resends that existing event ID; append_event always allocates and stores a new event ID.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/delivery.c",
+            "line": 11,
+            "quote": "    if (!acknowledged) append_event(payload);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "idempotent-event-retry-repaired",
+      "pair": "idempotent-event-retry",
+      "analysis": "The supplied retry_delivery resends an existing event ID. The call at [2] uses the already appended event for another delivery attempt, preserving the rule that a retry must not create another journal entry.",
+      "evidence": {
+        "rule": "Retrying delivery must not create another journal event for the same operation.",
+        "context": "The event has already been appended once. retry_delivery resends that existing event ID; append_event always allocates and stores a new event ID.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/delivery.c",
+            "line": 11,
+            "quote": "    if (!acknowledged) retry_delivery(event_id);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-permission-check-deletion-concern",
+      "pair": "write-permission-check-deletion",
+      "analysis": "Read-only sessions must be stopped before replace_record writes. Removing [1] leaves a comparison with the address of can_write, which does not test permission; a false permission value can now reach the unchecked replacement.",
+      "evidence": {
+        "rule": "Read-only sessions must never modify records; enforce write permission before replacement.",
+        "context": "    if (&session.can_write == NULL) return DENIED;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-permission-check-deletion-clean",
+      "pair": "write-permission-check-deletion",
+      "analysis": "Write permission must be checked before replacement. Deleting [1] leaves session.can_write == false returning DENIED, so read-only sessions are still stopped before the unchecked replace_record call.",
+      "evidence": {
+        "rule": "Read-only sessions must never modify records; enforce write permission before replacement.",
+        "context": "    if (session.can_write == false) return DENIED;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-permission-check-replacement-concern",
+      "pair": "write-permission-check-replacement",
+      "analysis": "Replacing the permission test at [1] with the no-op at [2] leaves only a comparison of &session.can_write to NULL. That address test does not reject a read-only session, allowing it to reach the write contrary to the rule.",
+      "evidence": {
+        "rule": "Read-only sessions must never modify records; enforce write permission before replacement.",
+        "context": "    if (&session.can_write == NULL) return DENIED;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "write-permission-check-replacement-clean",
+      "pair": "write-permission-check-replacement",
+      "analysis": "The guard removed at [1] is replaced by a no-op at [2], but session.can_write == false still returns DENIED before replacement. The remaining value check preserves the required protection for read-only sessions.",
+      "evidence": {
+        "rule": "Read-only sessions must never modify records; enforce write permission before replacement.",
+        "context": "    if (session.can_write == false) return DENIED;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    if (!session.can_write) return DENIED;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/edit_record.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stable-manifest-order-deletion-concern",
+      "pair": "stable-manifest-order-deletion",
+      "analysis": "Manifest bytes must be independent of insertion order. Removing names.sort() at [1] leaves only output.sort() before entries are appended; it does not order names, so the loop can emit equivalent mappings in different orders.",
+      "evidence": {
+        "rule": "The generated manifest must be byte-for-byte identical for the same key/value mapping, regardless of insertion order.",
+        "context": "output.sort();",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "names.sort();"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stable-manifest-order-deletion-clean",
+      "pair": "stable-manifest-order-deletion",
+      "analysis": "The manifest requires a stable ordering of ASCII keys. Deleting [1] leaves another names.sort() before the output loop, so the same mapping still yields the same key order and manifest bytes.",
+      "evidence": {
+        "rule": "The generated manifest must be byte-for-byte identical for the same key/value mapping, regardless of insertion order.",
+        "context": "names.sort();",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "names.sort();"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stable-manifest-order-replacement-concern",
+      "pair": "stable-manifest-order-replacement",
+      "analysis": "Replacing names.sort() at [1] with the no-op at [2] leaves the key list unsorted. The remaining output.sort() runs before the loop appends entries and cannot stop insertion order from changing the required stable manifest.",
+      "evidence": {
+        "rule": "The generated manifest must be byte-for-byte identical for the same key/value mapping, regardless of insertion order.",
+        "context": "output.sort();",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "names.sort();"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "void 0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stable-manifest-order-replacement-clean",
+      "pair": "stable-manifest-order-replacement",
+      "analysis": "The no-op at [2] replaces one sort at [1], while the second names.sort() remains before the loop. ASCII keys are still sorted before emission, preserving identical manifest bytes across insertion orders.",
+      "evidence": {
+        "rule": "The generated manifest must be byte-for-byte identical for the same key/value mapping, regardless of insertion order.",
+        "context": "names.sort();",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "names.sort();"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "tools/manifest.mjs",
+            "line": 12,
+            "quote": "void 0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "atomic-snapshot-publication-introduced",
+      "pair": "atomic-snapshot-publication",
+      "analysis": "Concurrent readers must see a complete old or new snapshot. The direct write to snapshotPath at [3] overwrites the live file while readers can open it, exposing truncation or partial contents after removing atomic rename publication.",
+      "evidence": {
+        "rule": "Readers must observe either the old complete snapshot or the new complete snapshot, never a partially rewritten file.",
+        "context": "Readers open snapshotPath concurrently. tempPath is a unique path in the same directory; its completed write is published by rename. Both functions propagate their errors.",
+        "changed": [
+          {
+            "line_id": 3,
+            "side": "ADDED",
+            "path": "src/snapshot.mjs",
+            "line": 11,
+            "quote": "await writeFile(snapshotPath, payload);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "atomic-snapshot-publication-repaired",
+      "pair": "atomic-snapshot-publication",
+      "analysis": "The write at [2] completes at a unique temporary path before the rename at [3] publishes it in the same directory. With propagated errors, this preserves the required old-or-new complete snapshot for concurrent readers.",
+      "evidence": {
+        "rule": "Readers must observe either the old complete snapshot or the new complete snapshot, never a partially rewritten file.",
+        "context": "Readers open snapshotPath concurrently. tempPath is a unique path in the same directory; its completed write is published by rename. Both functions propagate their errors.",
+        "changed": [
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/snapshot.mjs",
+            "line": 11,
+            "quote": "await writeFile(tempPath, payload);"
+          },
+          {
+            "line_id": 3,
+            "side": "ADDED",
+            "path": "src/snapshot.mjs",
+            "line": 12,
+            "quote": "await rename(tempPath, snapshotPath);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "save-status-propagation-introduced",
+      "pair": "save-status-propagation",
+      "analysis": "Callers require the actual persistence status. The unconditional return 0 at [3] follows a save whose result is discarded, reporting success even when save_settings returns a failure code.",
+      "evidence": {
+        "rule": "A save failure must reach the caller. Do not report success when persistence failed.",
+        "context": "save_settings returns zero on success and a nonzero error code on failure. Callers rely on this wrapper to report that result.",
+        "changed": [
+          {
+            "line_id": 3,
+            "side": "ADDED",
+            "path": "src/settings.c",
+            "line": 12,
+            "quote": "    return 0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "save-status-propagation-repaired",
+      "pair": "save-status-propagation",
+      "analysis": "The wrapper must pass persistence failures to its caller. Returning save_settings directly at [3] preserves both its zero success value and nonzero errors, replacing the previous unconditional success response.",
+      "evidence": {
+        "rule": "A save failure must reach the caller. Do not report success when persistence failed.",
+        "context": "save_settings returns zero on success and a nonzero error code on failure. Callers rely on this wrapper to report that result.",
+        "changed": [
+          {
+            "line_id": 3,
+            "side": "ADDED",
+            "path": "src/settings.c",
+            "line": 11,
+            "quote": "    return save_settings(settings);"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-product-overflow-deletion-concern",
+      "pair": "allocation-product-overflow-deletion",
+      "analysis": "Allocation size must be checked against the actual uint64_t element width. Removing [1] leaves a uint32_t-based limit, which permits counts whose larger count * sizeof(*items) product wraps and underallocates the buffer the caller fills.",
+      "evidence": {
+        "rule": "Check multiplication overflow before computing an allocation size from an untrusted element count.",
+        "context": "    if (count > SIZE_MAX / sizeof(uint32_t)) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-product-overflow-deletion-clean",
+      "pair": "allocation-product-overflow-deletion",
+      "analysis": "Items are uint64_t, so the retained SIZE_MAX / sizeof(uint64_t) limit checks the same product as the removed guard at [1]. Oversized counts still return before multiplication, preserving the required allocation-overflow protection.",
+      "evidence": {
+        "rule": "Check multiplication overflow before computing an allocation size from an untrusted element count.",
+        "context": "    if (count > SIZE_MAX / sizeof(uint64_t)) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-product-overflow-replacement-concern",
+      "pair": "allocation-product-overflow-replacement",
+      "analysis": "The no-op at [2] replaces the element-width guard at [1]. The surviving uint32_t limit allows larger counts than uint64_t elements can safely occupy, letting the size product wrap before allocation despite the overflow rule.",
+      "evidence": {
+        "rule": "Check multiplication overflow before computing an allocation size from an untrusted element count.",
+        "context": "    if (count > SIZE_MAX / sizeof(uint32_t)) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    },
+    {
+      "id": "allocation-product-overflow-replacement-clean",
+      "pair": "allocation-product-overflow-replacement",
+      "analysis": "Replacing [1] with the no-op at [2] leaves the uint64_t-based count limit in place. Since items points to uint64_t, that remaining guard still rejects overflowing products before bytes is calculated and allocated.",
+      "evidence": {
+        "rule": "Check multiplication overflow before computing an allocation size from an untrusted element count.",
+        "context": "    if (count > SIZE_MAX / sizeof(uint64_t)) return NULL;",
+        "changed": [
+          {
+            "line_id": 1,
+            "side": "REMOVED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    if (count > SIZE_MAX / sizeof(*items)) return NULL;"
+          },
+          {
+            "line_id": 2,
+            "side": "ADDED",
+            "path": "src/vector_alloc.c",
+            "line": 11,
+            "quote": "    (void)0;"
+          }
+        ]
+      }
+    }
+  ]
+}
