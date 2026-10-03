@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -30,8 +31,11 @@ training={'argv_template':['build/jovovich-train-mlp','@BASE@','@ARM_DATASET@','
 dump(repo/'training/explanations/plan.json',{'training':training})
 for name in ('training/prepare.py','deps/notorch/notorch.c','models/before-native/before.bin','models/before-native/before.pairs.bin',
  'models/before-native/verification.json','training/quote/PREREGISTRATION.md','training/quote/bind_quote.py',
- 'training/sft_review_v7_quote.jsonl','test/quote_bind.test.mjs','models/quote-native/quote.bin','models/quote-native/quote.pairs.bin'):
+ 'training/sft_review_v7_quote.jsonl','test/quote_bind.test.mjs','models/quote-native/quote.bin','models/quote-native/quote.pairs.bin',
+ 'models/before-launch/evaluation-plan.json'):
  write(name,'fixture '+name)
+for name in ('training/explanations/evaluation_plan.json','training/quote/evaluation_contract.json'):
+ shutil.copyfile(name,repo/name)
 native=repo/'models/quote-native'
 dump(native/'verification.json',{'status':'fail' if variant=='native_fail' else 'pass','identical_prompt_rows':52,'unchanged_nonreview_rows':24})
 recorded=[bind(n,True) for n in ('models/base-qwen.gguf','training/quote/bind_quote.py','training/sft_review_v7_quote.jsonl')]
@@ -40,9 +44,10 @@ dump(native/'bindings.json',{'files':recorded})
 argv=['build/jovovich-train-mlp','models/base-qwen.gguf','models/before-native/before.bin','@RUN@/adapter','100','0.0001','40','25','joint','models/before-native/before.pairs.bin']
 plan={'schema_version':1,'run_id':'fixture-before','argv':argv,'environment':dict(training['native_environment']),
  'bindings':[bind(n) for n in ('models/base-qwen.gguf','build/jovovich-train-mlp','training/explanations/plan.json','training/prepare.py',
-  'deps/notorch/notorch.c','models/before-native/verification.json','models/before-native/before.bin','models/before-native/before.pairs.bin')],
+  'deps/notorch/notorch.c','models/before-native/verification.json','models/before-native/before.bin','models/before-native/before.pairs.bin',
+  'models/before-launch/evaluation-plan.json')],
  'remote':{'private':True,'repo':'fixture/archive','prefix':'experiments/explanation-order'},'ack_timeout_ms':900000,'arm':'before',
- 'scientific_plan_sha256':sha(repo/'training/explanations/plan.json')}
+ 'scientific_plan_sha256':sha(repo/'training/explanations/plan.json'),'evaluation_plan':'models/before-launch/evaluation-plan.json'}
 if variant=='scientific':plan['scientific_plan_sha256']='0'*64
 if variant=='environment':plan['environment']['NT_QMV_THREADS']='8'
 if variant=='lr':plan['argv'][5]='0.001'
@@ -72,6 +77,9 @@ shutil.rmtree(repo/'models/before-native')
 if variant=='source':write('training/prepare.py','changed after the before run')
 if variant=='trainer':trainer.write_text(trainer.read_text()+'# rebuilt\n')
 if variant=='native_source':write('training/sft_review_v7_quote.jsonl','changed after native verification')
+if variant=='contract_drift':
+ c=json.loads((repo/'training/quote/evaluation_contract.json').read_text());s=c['collector_jobs'][0]['score_argv']
+ s[s.index('--order')+1]='after';(repo/'training/quote/evaluation_contract.json').write_text(json.dumps(c,indent=2,ensure_ascii=False)+'\n')
 print(json.dumps({'repo':str(repo),'recovered':str(recovered),'native':str(native),'initial':initial,'before':plan}))
 `;
 
@@ -85,7 +93,8 @@ function fixture(t, variant) {
 
 function bind(f) {
   return spawnSync('python3', ['training/quote/bind_quote.py', 'bind', '--before-recovered', f.recovered,
-    '--native', f.native, '--run-prefix', 'fixture', '--out', f.out, '--repo', f.repo],
+    '--native', f.native, '--run-prefix', 'fixture', '--out', f.out, '--repo', f.repo,
+    '--evaluation-contract', join(f.repo, 'training/quote/evaluation_contract.json')],
   { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
 }
 
@@ -112,10 +121,17 @@ test('bind derives a runnable quote plan from the recovered before run', t => {
     if (b.path.startsWith('models/before-native/')) {
       assert.equal(bound[b.path], undefined);
       assert.ok(!existsSync(join(f.repo, b.path)));
-    } else assert.deepEqual(bound[b.path], b);
+    } else if (b.path === f.before.evaluation_plan) assert.equal(bound[b.path], undefined);
+    else assert.deepEqual(bound[b.path], b);
   }
   assert.deepEqual(plan.before_artifacts.map(a => a.path).sort(),
-    ['models/before-native/before.bin', 'models/before-native/before.pairs.bin', 'models/before-native/verification.json']);
+    ['models/before-launch/evaluation-plan.json', 'models/before-native/before.bin', 'models/before-native/before.pairs.bin',
+      'models/before-native/verification.json']);
+  const contract = readFileSync(join(f.repo, 'training/quote/evaluation_contract.json'));
+  assert.equal(plan.evaluation_plan, 'training/quote/evaluation_contract.json');
+  assert.deepEqual(bound[plan.evaluation_plan], { path: plan.evaluation_plan, bytes: contract.length,
+    sha256: createHash('sha256').update(contract).digest('hex') });
+  assert.ok(bound['training/explanations/evaluation_plan.json']);
   for (const path of ['models/quote-native/quote.bin', 'models/quote-native/quote.pairs.bin',
     'models/quote-native/verification.json', 'models/quote-native/bindings.json', 'training/quote/PREREGISTRATION.md',
     'training/quote/bind_quote.py', 'training/sft_review_v7_quote.jsonl', 'test/quote_bind.test.mjs'])
@@ -148,6 +164,7 @@ const rejected = [
   ['native_fail', 'quote native verification did not pass'],
   ['native_base', 'quote native base differs from the before base'],
   ['native_source', 'quote native source changed since verification: training/sft_review_v7_quote.jsonl'],
+  ['contract_drift', 'quote evaluation contract differs from its derivation'],
 ];
 
 test('every rejection has its own message', () => {

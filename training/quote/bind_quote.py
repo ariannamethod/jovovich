@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / 'training/explanations'))
 from prepare import prepare, review_pairs, review_prefixes
 from verify_native import binding, save, command, require
 from run_training import validate_plan
+from evaluate_quote import SCHEMA as QUOTE_SCHEMA, TEMPLATE, check_contract
 
 ARMS = {'before': 'training/sft_review_v6_before.jsonl', 'quote': 'training/sft_review_v7_quote.jsonl'}
 
@@ -118,8 +119,8 @@ def matches(path, item):
     return (found['bytes'], found['sha256']) == (item['bytes'], item['sha256'])
 
 
-def bind(recovered, native_dir, prefix, output, repo):
-    repo, recovered, native_dir, output = (p.resolve() for p in (repo, recovered, native_dir, output))
+def bind(recovered, native_dir, prefix, output, repo, contract):
+    repo, recovered, native_dir, output, contract = (p.resolve() for p in (repo, recovered, native_dir, output, contract))
     require(not output.exists(), 'output plan already exists')
     require(re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,79}', prefix), 'invalid run prefix')
 
@@ -130,7 +131,10 @@ def bind(recovered, native_dir, prefix, output, repo):
         item['path'] = str(path.relative_to(repo))
         return item
 
-    receipt = json.loads((recovered / '_durable-recovery.json').read_text())
+    evaluation = inside(contract)
+    require(json.loads(contract.read_text()).get('schema') == QUOTE_SCHEMA, 'evaluation contract is not the quote contract')
+    check_contract(contract, repo / TEMPLATE)
+    receipt =json.loads((recovered / '_durable-recovery.json').read_text())
     require(receipt.get('verified_remote_bytes') is True, 'recovery receipt does not verify remote bytes')
     units = [u for u in receipt['units'] if u['unit_id'] == 'completion']
     require(len(units) == 1 and any(f['name'] == 'completion.json' for f in units[0]['files']),
@@ -167,7 +171,8 @@ def bind(recovered, native_dir, prefix, output, repo):
     for item in before['bindings']:
         if item['path'] not in (argv[0], argv[1]) and not artifact(item['path']):
             require(matches(repo / item['path'], item), 'before source differs in this checkout: ' + item['path'])
-    own = (argv[2], argv[9])
+    # The before evaluation plan belongs to the before arm; it moves into before_artifacts.
+    own = (argv[2], argv[9], before.get('evaluation_plan'))
     carried = [b for b in before['bindings'] if b['path'] not in own and
                (b['path'] in (argv[0], argv[1]) or not artifact(b['path']))]
     artifacts = [{'path': b['path'], 'sha256': b['sha256']} for b in before['bindings'] if b not in carried]
@@ -187,7 +192,7 @@ def bind(recovered, native_dir, prefix, output, repo):
         require(matches(repo / name, item), 'quote native source changed since verification: ' + name)
 
     data, pairs = native_dir / 'quote.bin', native_dir / 'quote.pairs.bin'
-    added = [data, pairs, native_dir / 'verification.json', native_dir / 'bindings.json',
+    added = [data, pairs, native_dir / 'verification.json', native_dir / 'bindings.json', contract, repo / TEMPLATE,
              *sorted(p for p in (repo / 'training/quote').iterdir() if p.is_file()),
              repo / 'training/sft_review_v7_quote.jsonl', *sorted((repo / 'test').glob('quote_*.test.mjs'))]
     paths = {b['path'] for b in carried}
@@ -199,6 +204,7 @@ def bind(recovered, native_dir, prefix, output, repo):
     plan = copy.deepcopy(before)
     plan['argv'][2], plan['argv'][9] = inside(data)['path'], inside(pairs)['path']
     plan.update(run_id=prefix + '-quote', arm='quote', bindings=carried, before_artifacts=artifacts,
+                evaluation_plan=evaluation['path'],
                 expected_initial_lora_sha256=completion['initial_lora_sha256'],
                 before_completion={'run_id': before['run_id'], 'revision': receipt['revision'],
                                    'manifest_sha256': units[0]['manifest_sha256'],
@@ -221,12 +227,13 @@ def main():
     bnd.add_argument('--run-prefix', required=True)
     bnd.add_argument('--out', type=Path, required=True)
     bnd.add_argument('--repo', type=Path, default=ROOT)
+    bnd.add_argument('--evaluation-contract', type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.mode == 'native':
             native(args.base, args.out)
         else:
-            bind(args.before_recovered, args.native, args.run_prefix, args.out, args.repo)
+            bind(args.before_recovered, args.native, args.run_prefix, args.out, args.repo, args.evaluation_contract)
     except (RuntimeError, ValueError) as error:
         print('bind_quote: ' + str(error), file=sys.stderr)
         raise SystemExit(1)

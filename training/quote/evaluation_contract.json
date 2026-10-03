@@ -1,0 +1,290 @@
+{
+  "schema": "jovovich.quote.evaluation.v1",
+  "derived_from": {
+    "path": "training/explanations/evaluation_plan.json",
+    "sha256": "84c547e6e77dbf9a6d23254d7ae301cea61178c4628357785d479c6ca740a524",
+    "export_arm": "before",
+    "collector_jobs": [
+      "before_update100-train",
+      "before_update100-holdout"
+    ]
+  },
+  "substitutions": [
+    [
+      "before-endpoint-binding",
+      "quote-endpoint-binding"
+    ],
+    [
+      "before-merge",
+      "quote-merge"
+    ],
+    [
+      "before-byte-export-audit",
+      "quote-byte-export-audit"
+    ],
+    [
+      "before-native-export-parity",
+      "quote-native-export-parity"
+    ],
+    [
+      "@BEFORE_RUN@",
+      "@QUOTE_RUN@"
+    ],
+    [
+      "/exports/before/",
+      "/exports/quote/"
+    ],
+    [
+      "training/results/2026-10-03-explanation-order-run/native/before.bin",
+      "@QUOTE_NATIVE@/quote.bin"
+    ],
+    [
+      "before_update100",
+      "quote_update100"
+    ],
+    [
+      "@BEFORE_UPDATE100_SHA256@",
+      "@QUOTE_UPDATE100_SHA256@"
+    ]
+  ],
+  "field_substitutions": [
+    {
+      "path": [
+        "export",
+        "arm"
+      ],
+      "from": "before",
+      "to": "quote"
+    }
+  ],
+  "resolution": {
+    "INFER_SHA256": "Frozen inference executable SHA256 from pretraining launch bindings.",
+    "SHARED_BASE_UPDATE0_SHA256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "native_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "4",
+    "NT_ATTN_THREADS": "4",
+    "NT_SIMD_THREADS": "4"
+  },
+  "generation": {
+    "jobs": 6,
+    "rows": 228,
+    "pairs_per_model": {
+      "train": 26,
+      "holdout": 12
+    },
+    "max_new_tokens": 512,
+    "context": 8192,
+    "temperature": 0,
+    "parallel_processes": 1,
+    "expected_verified_archive_units": 696,
+    "archive_units_explanation": "Each collector writes input+completion units and three units per case: intent, standalone tokenizer result and native result. Six collectors sum to 696 verified units.",
+    "cross_model_prompt_identity": "For each split, require the same case IDs, exact prompt bytes, prompt SHA256 and native prompt_token_ids across base/before/after. Compare each response with the prompt bytes and standalone tokenizer output archived by its collector before generation.",
+    "stop_rule": "Generation errors stop the active collector after archiving its closed evidence. Missing rows retain the full planned denominator. An interrupted attempt is never silently overwritten."
+  },
+  "parity": {
+    "rows": [
+      {
+        "index": 0,
+        "case_id": "scoped-python-analysis-concern",
+        "kind": "review"
+      },
+      {
+        "index": 1,
+        "case_id": "scoped-python-analysis-clean",
+        "kind": "review"
+      },
+      {
+        "index": 2,
+        "case_id": "voice-01",
+        "kind": "voice"
+      },
+      {
+        "index": 3,
+        "case_id": "code-01",
+        "kind": "code"
+      },
+      {
+        "index": 51,
+        "case_id": "validated-port-conversion-repaired",
+        "kind": "review"
+      }
+    ],
+    "rationale": "Rows 0/1 cover concern/clean; rows 2/3 cover unchanged voice/code; row 51 covers the maximal 58-token delayed verdict. Every tensor is separately checked by the byte-export audit.",
+    "expected_calls_per_arm": 5,
+    "acceptance": {
+      "all_completion_argmax_identical": true,
+      "maximum_logit_relative_l2": 1e-05,
+      "maximum_residual_relative_l2": 1e-05,
+      "maximum_batch_ce_difference": 0.0001
+    },
+    "probe_jsonl_rule": "Require exactly one complete JSONL result for each fixed row in the same order; every native pass must be true."
+  },
+  "export": {
+    "arm": "quote",
+    "required_completed_update": 100,
+    "checkpoint_prefix": "@QUOTE_RUN@/adapter.epoch100",
+    "model": "@EVALUATION_RUN@/exports/quote/jovovich.gguf",
+    "steps": [
+      {
+        "id": "quote-endpoint-binding",
+        "argv": [
+          "python3",
+          "-c",
+          "import hashlib,json,sys\nfrom pathlib import Path\nrun=Path(sys.argv[1]); output=Path(sys.argv[2]); values=[]\nack=json.loads((run/'_units/completion.ack.json').read_text())\nassert ack['status']=='completed' and ack['archive_status']=='verified' and ack['acknowledged_updates']==100\nassert ack['remote_verification']['verified_remote_bytes'] is True\nsaved=json.loads((run/'_units/update-100.ack.json').read_text())\nassert saved['verified_remote_bytes'] is True and saved['unit_id']=='update-100'\nfinal_entries={r['name']:r for r in ack['remote_verification']['files']}\nsaved_entries={r['name']:r for r in saved['files']}\nfor part in ('gate','up','down'):\n for ext in ('f32','lora'):\n  final=f'adapter.{part}.{ext}'; epoch=f'adapter.epoch100.{part}.{ext}'\n  a=(run/final).read_bytes(); b=(run/epoch).read_bytes(); h=hashlib.sha256(a).hexdigest()\n  assert a==b and final_entries[final]['sha256']==h and saved_entries[epoch]['sha256']==h\n  assert final_entries[final]['size']==len(a) and saved_entries[epoch]['size']==len(a)\n  values.append(dict(final=final,epoch100=epoch,bytes=len(a),sha256=h))\nwith output.open('x') as f:json.dump(dict(update=100,status='pass',files=values,completion_revision=ack['remote_verification']['revision'],checkpoint_revision=saved['revision']),f,indent=2);f.write('\\n')\n",
+          "@QUOTE_RUN@",
+          "@EVALUATION_RUN@/exports/quote/endpoint-binding.json"
+        ],
+        "outputs": [
+          "@EVALUATION_RUN@/exports/quote/endpoint-binding.json"
+        ]
+      },
+      {
+        "id": "quote-merge",
+        "argv": [
+          "build/jovovich-merge-mlp",
+          "models/base-qwen.gguf",
+          "@QUOTE_RUN@/adapter.epoch100",
+          "@EVALUATION_RUN@/exports/quote/jovovich.gguf"
+        ],
+        "outputs": [
+          "@EVALUATION_RUN@/exports/quote/jovovich.gguf"
+        ]
+      },
+      {
+        "id": "quote-byte-export-audit",
+        "argv": [
+          "python3",
+          "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+          "models/base-qwen.gguf",
+          "@EVALUATION_RUN@/exports/quote/jovovich.gguf",
+          "@QUOTE_RUN@/adapter.epoch100",
+          "@EVALUATION_RUN@/exports/quote/export-audit.json"
+        ],
+        "outputs": [
+          "@EVALUATION_RUN@/exports/quote/export-audit.json"
+        ]
+      },
+      {
+        "id": "quote-native-export-parity",
+        "argv": [
+          "build/jovovich-probe-mlp",
+          "models/base-qwen.gguf",
+          "@EVALUATION_RUN@/exports/quote/jovovich.gguf",
+          "@QUOTE_NATIVE@/quote.bin",
+          "@QUOTE_RUN@/adapter.epoch100",
+          "0",
+          "1",
+          "2",
+          "3",
+          "51"
+        ],
+        "stdout": "@EVALUATION_RUN@/exports/quote/parity.jsonl",
+        "stderr": "@EVALUATION_RUN@/exports/quote/parity.stderr",
+        "check_argv": [
+          "python3",
+          "-c",
+          "import json,sys\nfrom pathlib import Path\nrows=[json.loads(line) for line in Path(sys.argv[1]).read_text().splitlines()]\nassert [row['row'] for row in rows]==[0,1,2,3,51]\nassert all(row['pass'] is True and row['argmax_agree']==row['completion_tokens'] and row['logits_relative_l2']<=1e-5 and row['residual_relative_l2']<=1e-5 and row['max_batch_ce_diff']<=1e-4 for row in rows)\nprint(json.dumps(dict(status='pass',rows=[row['row'] for row in rows],completion_tokens=sum(row['completion_tokens'] for row in rows))))\n",
+          "@EVALUATION_RUN@/exports/quote/parity.jsonl"
+        ],
+        "outputs": [
+          "@EVALUATION_RUN@/exports/quote/parity.jsonl",
+          "@EVALUATION_RUN@/exports/quote/parity.stderr"
+        ]
+      }
+    ]
+  },
+  "collector_jobs": [
+    {
+      "id": "quote_update100-train",
+      "model": "quote_update100",
+      "split": "train",
+      "source": "training/sft_review_v6_before.jsonl",
+      "rows": 52,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--model",
+        "@EVALUATION_RUN@/exports/quote/jovovich.gguf",
+        "--model-sha256",
+        "@QUOTE_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/quote_update100-train",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-quote_update100-train",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/quote_update100-train/generations.jsonl",
+        "--sft",
+        "training/sft_review_v6_before.jsonl",
+        "--split",
+        "train",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/quote_update100-train/structural-score.json"
+      ]
+    },
+    {
+      "id": "quote_update100-holdout",
+      "model": "quote_update100",
+      "split": "holdout",
+      "source": "training/review_holdout_v5.jsonl",
+      "rows": 24,
+      "expected_order": "before",
+      "argv": [
+        "python3",
+        "training/explanations/collect_generation.py",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--model",
+        "@EVALUATION_RUN@/exports/quote/jovovich.gguf",
+        "--model-sha256",
+        "@QUOTE_UPDATE100_SHA256@",
+        "--infer",
+        "build/jovovich-infer",
+        "--infer-sha256",
+        "@INFER_SHA256@",
+        "--output",
+        "@EVALUATION_RUN@/generation/quote_update100-holdout",
+        "--run-id",
+        "@EVALUATION_RUN_ID@-quote_update100-holdout",
+        "--hf-repo",
+        "ataeff/jovovich",
+        "--remote-prefix",
+        "experiments/explanation-order"
+      ],
+      "score_argv": [
+        "python3",
+        "training/explanations/score_generation.py",
+        "@EVALUATION_RUN@/generation/quote_update100-holdout/generations.jsonl",
+        "--sft",
+        "training/review_holdout_v5.jsonl",
+        "--split",
+        "holdout",
+        "--order",
+        "before",
+        "--output",
+        "@EVALUATION_RUN@/generation/quote_update100-holdout/structural-score.json"
+      ]
+    }
+  ]
+}
