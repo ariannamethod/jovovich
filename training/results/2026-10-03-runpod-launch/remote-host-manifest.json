@@ -1,0 +1,18 @@
+{
+  "source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "python": "3.11.17",
+  "machine": "x86_64",
+  "huggingface_hub": "0.35.3",
+  "ack_timeout_ms": 900000,
+  "schema": "jovovich.persistent-host.v1",
+  "quote_training": "separate subsequent launch",
+  "training_updates_per_arm": 100,
+  "training_environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "execution": "fresh before, matched after, native evaluation; sequential archive writers"
+}

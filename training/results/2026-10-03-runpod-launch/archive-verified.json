@@ -1,0 +1,35 @@
+{
+  "checked_utc": "2026-10-03T20:25:11.657037+00:00",
+  "status": "intent-and-source-bindings-verified",
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "intent_revision": "4a4c715115efb4c4f6631cd2eb65607a8518eb52",
+  "latest_revision": "4a4c715115efb4c4f6631cd2eb65607a8518eb52",
+  "run_id": "order-rp-20261003-01-before",
+  "source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "source_bindings_checked": 49,
+  "argv": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/order-rp-20261003-01-native/before.bin",
+    "@RUN@/adapter",
+    "100",
+    "0.0001",
+    "40",
+    "25",
+    "joint",
+    "models/order-rp-20261003-01-native/before.pairs.bin"
+  ],
+  "environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "units": [
+    {
+      "path": "experiments/explanation-order/order-rp-20261003-01-before/units/000000-intent.json",
+      "size": 21367
+    }
+  ]
+}

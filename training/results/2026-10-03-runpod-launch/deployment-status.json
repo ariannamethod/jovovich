@@ -1,0 +1,27 @@
+{
+  "observed_utc": "2026-10-03T20:27:02.703821+00:00",
+  "status": "running; intent remotely verified; no closed optimizer updates observed",
+  "pod_id": "9m15r69jnnlpx4",
+  "network_volume_id": "ogxwco58mr",
+  "run_prefix": "order-rp-20261003-01",
+  "source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "pod_created_at": "2026-10-03T20:15:15.006Z",
+  "host_deadline_approx_utc": "2026-10-04T08:15:18Z",
+  "compute_usd_per_hour": 0.16,
+  "compute_12h_estimate_usd": 1.92,
+  "network_volume_usd_per_month": 1.4,
+  "native_preflight_passed": true,
+  "archive_evidence": "archive-verified.json",
+  "completed_updates_observed": 0,
+  "natural_generation_calls_observed": 0,
+  "next_automatic_phases": [
+    "finish before100",
+    "bind matched after initialization",
+    "after100",
+    "228 native responses",
+    "request own pod stop"
+  ],
+  "quote_arm": "not included; separate launch still required",
+  "semantic_review": "pending independent blinded adjudication",
+  "shutdown_limit": "host watchdog; remote API outage can delay stopping; network volume is retained and billed"
+}

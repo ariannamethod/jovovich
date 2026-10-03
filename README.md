@@ -865,9 +865,29 @@ Its [verified recovery](training/results/2026-10-03-order-recovery) preserves
 all closed metric units through update 58 and full weight snapshots at 0/25/50;
 the second arm and natural generation had not started. The snapshots omit
 optimizer state, so the next attempt starts at zero on a persistent Linux host.
-The [host launcher](training/results/2026-10-03-order-recovery/persistent-host-launch.sh)
-runs from the pinned checkout documented in its header and keeps the existing
-private archive barriers throughout the sequential before/after/evaluation path.
+The [portable host launcher](training/explanations/persistent_host_launch.sh)
+takes the reviewed commit explicitly and keeps the private archive barriers
+throughout the sequential before/after/evaluation path:
+
+```sh
+bash training/explanations/persistent_host_launch.sh \
+  /private/path/hf-token order-FRESH-ATTEMPT EXPECTED_FULL_SOURCE_SHA
+```
+
+Run from a clean checkout on a persistent Linux host under a supervisor, tmux
+or systemd. It requires Git, a C compiler, Make, Python 3.11+, Node 22+ and
+`flock`; it creates a local environment with `huggingface_hub==0.35.3`.
+The launcher checks the exact source commit and its notorch gitlink, fetches
+the checksum-pinned base, builds the native tools and performs native preflight.
+Both fresh arms retain 100 updates, two training threads, and a 900000 ms
+archive ACK timeout. The host manifest, launcher, cloud setup scripts and
+frozen quote instrument/corpus join both arms' source bindings before training.
+Quote training remains a separately declared subsequent launch; the original
+228-response evaluation is unchanged. A failed phase stops without restarting
+or advancing. Keep the host and its disk alive until the verified evaluation
+completes; semantic adjudication remains pending. The
+[original recovery launcher](training/results/2026-10-03-order-recovery/persistent-host-launch.sh)
+retains its historical source pin.
 
 The scientific contract fixes epoch 100, five native parity rows per arm and
 all 228 natural responses before training. The evaluator records teacher-forced

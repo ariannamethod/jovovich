@@ -1,0 +1,37 @@
+{
+  "name": "jovovich-order-20261003-01",
+  "image": "python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a",
+  "cpu": {
+    "id": "cpu5g",
+    "vcpuCount": 4
+  },
+  "cloud": "SECURE",
+  "dataCenterIds": [
+    "EU-RO-1"
+  ],
+  "disk": 10,
+  "mounts": {
+    "network": [
+      {
+        "volumeId": "ogxwco58mr",
+        "path": "/workspace"
+      }
+    ]
+  },
+  "ports": [],
+  "entrypoint": [
+    "python3",
+    "-u",
+    "-c"
+  ],
+  "source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "run_prefix": "order-rp-20261003-01",
+  "environment_keys": [
+    "HF_TOKEN",
+    "JOVOVICH_RUNPOD_CONTROL_KEY"
+  ],
+  "embedded_watchdog_sha256": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75",
+  "embedded_setup_sha256": "250665aee413eaabb5fb6913bb0f9f7431675d88887cf6e6b63c6a69e983d915",
+  "entrypoint_payload_sha256": "85aa2bd943ca18a15195ca30ceea5da449386e4d386c346159e27b79d71220ca",
+  "max_seconds": 43200
+}

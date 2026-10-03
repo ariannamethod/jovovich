@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "prepared_not_deployed",
+  "checked_utc": "2026-10-03T19:59:12.813965+00:00",
+  "organism": "JOVOVICH",
+  "training": {
+    "arms": [
+      "before",
+      "after"
+    ],
+    "updates_per_arm": 100,
+    "optimizer": "nt_tape_chuck_step",
+    "learning_rate": 0.0001,
+    "batch_tokens": 40,
+    "model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+    "model_sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "adaptation": "final MLP gate/up/down LoRA rank16 alpha32, 276480 parameters",
+    "tokenizer": "GGUF BPE and native ChatML preflight",
+    "quote_arm": "registered; separate launcher still required; not trained in this deployment"
+  },
+  "host": {
+    "provider": "Runpod",
+    "api_base": "https://api.runpod.io/v2",
+    "cpu_type": "cpu5g",
+    "vcpus": 4,
+    "memory_gb": 16,
+    "datacenter": "EU-RO-1",
+    "container_disk_gb": 10,
+    "network_volume_gb": 20,
+    "network_volume_type": "STANDARD",
+    "image": "python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a",
+    "node_version": "22.23.3",
+    "node_tar_sha256": "df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de"
+  },
+  "cost": {
+    "catalog_compute_usd_per_hour": 0.184,
+    "deadline_hours": 12,
+    "compute_12h_estimate_usd": 2.208,
+    "network_volume_usd_per_month": 1.4,
+    "container_disk_usd_per_month_while_running": 1.0,
+    "budget_mechanism": "host watchdog requests stop on success, failure, signal or 12h deadline; API/network failure can delay stop; volume kept for recovery"
+  },
+  "archive": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "prefix": "experiments/explanation-order",
+    "policy": "native update waits for verified remote archive ACK; no fresh training in transient local workspace"
+  },
+  "evidence": {
+    "cpu_catalog": "cpu-catalog.json",
+    "image": "image.json"
+  },
+  "sources": [
+    "https://docs.runpod.io/api-reference-v2/catalog/list-cpu-types",
+    "https://docs.runpod.io/pods/pricing",
+    "https://docs.runpod.io/api-reference-v2/pods/create-a-pod"
+  ],
+  "starting_main_commit": "b0c23f87dfa78ddd961eee0c476e20d64d18d426",
+  "deployment_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "source_resolution": {
+    "resolved_utc": "2026-10-03T20:30:13.194213+00:00",
+    "note": "starting_main_commit is provenance only. Provisioning uses deployment_source_commit as the explicit launcher argument. The private archived host manifest independently confirms that SHA.",
+    "evidence": [
+      "source-publication.json",
+      "pod-request-cpu3g.json",
+      "remote-host-manifest.json",
+      "archive-verified.json"
+    ]
+  }
+}

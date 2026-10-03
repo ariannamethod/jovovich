@@ -1,0 +1,13 @@
+{
+  "checked_utc": "2026-10-03T20:21:19.852960+00:00",
+  "repo": "ataeff/jovovich",
+  "private": true,
+  "revision": "4a4c715115efb4c4f6631cd2eb65607a8518eb52",
+  "run_id": "order-rp-20261003-01-before",
+  "units": [
+    {
+      "path": "experiments/explanation-order/order-rp-20261003-01-before/units/000000-intent.json",
+      "size": 21367
+    }
+  ]
+}

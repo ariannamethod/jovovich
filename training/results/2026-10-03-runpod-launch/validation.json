@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "source_tree_before_validation_record": "bda7bb894100f3aa9aaec2d33aa538fd703848f1",
+  "main_merged_native_and_node_tests": {
+    "command": "make test",
+    "node_tests": 174,
+    "failures": 0
+  },
+  "combined_node_tests": {
+    "command": "node --test test/*.test.mjs",
+    "tests": 192,
+    "failures": 0
+  },
+  "watchdog_mocked_scenarios": 15,
+  "new_acceptance_controls": 18,
+  "independent_watchdog_fault": "injected journal ENOSPC still requests own pod stop",
+  "bootstrap_sha256": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75",
+  "model_training_updates_local": 0,
+  "natural_generation_calls_local": 0
+}

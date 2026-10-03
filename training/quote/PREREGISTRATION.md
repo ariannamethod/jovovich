@@ -157,3 +157,38 @@ rules block" into code:
 On the gold corpora the instrument reads v7 at 52/52 passing, 52/52 decisive
 and 52/52 whole-rule copies, and v6_before at 0/52. Removing the header
 exclusion or lowering the threshold to 39 each fails its own test.
+
+## Integrity addendum, 2026-10-03 19:59 UTC: bind the denominator to the split
+
+Before any model generation, an independent audit reproduced a coverage defect
+in the original instrument: one training case could be scored as heldout, and
+24 copies of that case could report 24 passes. The original instrument and its
+receipts remain in Git history. This integrity correction changes admission of
+scoring inputs; the quote definition, 40-character threshold and decision rule
+above remain unchanged.
+
+The CLI now requires exactly the frozen source-order case IDs: 52 unique train
+reviews or 24 unique heldout reviews. Train prompts are reconstructed from the
+pinned v6_before source shared by all three arms. Heldout prompts are rendered
+from pinned heldout_v5, the production renderer and identity, with the exact
+common extension read from the pinned corpus builder. Each stored prompt must
+match both its recorded hash and those reconstructed bytes. Missing generation
+rows, duplicate IDs, a wrong split or reordered IDs stop scoring; a complete
+case with a null response still counts in the fixed denominator and fails the
+manipulation check. No partial-case CLI mode is offered.
+
+Collector response hashes and corpus hashes are verified when supplied.
+Optional train decisive-scope annotations require the frozen reasons bytes.
+Report schema 2 records source hashes, exact coverage, per-case prompt and
+response hashes, and whether each supplied response hash was checked. Collector
+completion, model identity and remote archive verification remain the launcher's
+responsibility before admitting a model to the evaluation.
+
+Validation: 14 tests pass, including the original quote boundary/exclusion
+checks and rejection of missing, duplicate, reordered, wrong-split, substituted
+prompt and response inputs. The independent collector renderer agrees on all
+76 case IDs and prompt hashes (52 train, 24 heldout); only prompt construction
+runs in that check, with no model inference or training.
+
+- Corrected instrument SHA-256: `a1a221a690f61686b31751d2c95f65c4449f614898d60d73b370eb62e3848855`.
+- Tests SHA-256: `7f1b46d155784812082a9eea5256e0a1dd5b908db22e337332e66bd307dd09eb`.
