@@ -29,6 +29,18 @@ verified launcher described below.
 
 ## 2026-10-03 — Twenty-four copies of one witness are still one witness.
 
+Deployment update, 20:25 UTC: the fresh `order-rp-20261003-01-before` attempt
+is running on Runpod pod `9m15r69jnnlpx4`, with a 20 GB network volume. The
+CPU5g candidate returned no capacity; CPU3g placed with 4 vCPUs, 16 GB RAM and
+an observed compute price of $0.16/hour. The frozen training checkout is
+`53fd4406de170d3b67785729b789ec61e1a30a27`; later receipt commits do not change it.
+Native preflight passed. An external read of the private HF intent at
+`4a4c715115efb4c4f6631cd2eb65607a8518eb52` verified its plan/host objects and
+all 49 source bindings against that checkout. At this observation the intent
+was the only closed unit: no completed optimizer update, after-arm result or
+natural generation is claimed. See the
+[deployment receipts](training/results/2026-10-03-runpod-launch).
+
 The independent auditor and the PR24 reviewer reproduced the same hole in the
 new quote instrument: a duplicate or incomplete collector file could still
 produce passing counts. The revised instrument requires the frozen split's

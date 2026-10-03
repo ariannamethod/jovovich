@@ -1,0 +1,14 @@
+{
+  "checked_utc": "2026-10-03T20:15:01.405039+00:00",
+  "request": "pod-request.json",
+  "http_status": 400,
+  "detail": "There are no longer any instances available with the requested specifications. Please refresh and try again.",
+  "pod_created": false,
+  "next_candidate": {
+    "cpu": "cpu3g",
+    "vcpus": 4,
+    "ram_gb": 16,
+    "usd_per_hour": 0.16,
+    "datacenter": "EU-RO-1"
+  }
+}

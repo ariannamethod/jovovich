@@ -1,0 +1,74 @@
+id: 2026-10-03T20:15:16Z
+data: {"source":"system","line":"create container python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a","ts":"2026-10-03T20:15:16Z"}
+id: 2026-10-03T20:15:17Z
+data: {"source":"system","line":"docker.io/library/python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a Pulling from library/python","ts":"2026-10-03T20:15:17Z"}
+id: 2026-10-03T20:15:17Z
+data: {"source":"system","line":"Digest: sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a","ts":"2026-10-03T20:15:17Z"}
+id: 2026-10-03T20:15:17Z
+data: {"source":"system","line":"Status: Downloaded newer image for python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a","ts":"2026-10-03T20:15:17Z"}
+id: 2026-10-03T20:15:17Z
+data: {"source":"system","line":"start container for python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a: begin","ts":"2026-10-03T20:15:17Z"}
+id: 2026-10-03T20:15:18.760723173Z
+data: {"source":"container","line":"{\"watchdog\": \"child-started\", \"phase\": \"running\", \"elapsed_seconds\": 0.922}","ts":"2026-10-03T20:15:18.760723173Z"}
+id: 2026-10-03T20:15:18.779181244Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 0.941}","ts":"2026-10-03T20:15:18.779181244Z"}
+id: 2026-10-03T20:15:20.963576702Z
+data: {"source":"container","line":"Reading package lists...","ts":"2026-10-03T20:15:20.963576702Z"}
+id: 2026-10-03T20:15:21.110032536Z
+data: {"source":"container","line":"Building dependency tree...","ts":"2026-10-03T20:15:21.110032536Z"}
+id: 2026-10-03T20:15:21.110052286Z
+data: {"source":"container","line":"Reading state information...","ts":"2026-10-03T20:15:21.110052286Z"}
+id: 2026-10-03T20:15:21.110053976Z
+data: {"source":"container","line":"git is already the newest version (1:2.39.5-0+deb12u3).","ts":"2026-10-03T20:15:21.110053976Z"}
+id: 2026-10-03T20:15:21.110056157Z
+data: {"source":"container","line":"ca-certificates is already the newest version (20250419~deb12u1).","ts":"2026-10-03T20:15:21.110056157Z"}
+id: 2026-10-03T20:15:21.110058247Z
+data: {"source":"container","line":"curl is already the newest version (7.88.1-10+deb12u15).","ts":"2026-10-03T20:15:21.110058247Z"}
+id: 2026-10-03T20:15:21.110059647Z
+data: {"source":"container","line":"xz-utils is already the newest version (5.4.1-1+deb12u2).","ts":"2026-10-03T20:15:21.110059647Z"}
+id: 2026-10-03T20:15:21.110061337Z
+data: {"source":"container","line":"util-linux is already the newest version (2.38.1-5+deb12u3).","ts":"2026-10-03T20:15:21.110061337Z"}
+id: 2026-10-03T20:15:21.110686971Z
+data: {"source":"container","line":"util-linux set to manually installed.","ts":"2026-10-03T20:15:21.110686971Z"}
+id: 2026-10-03T20:15:21.170780405Z
+data: {"source":"container","line":"The following NEW packages will be installed:","ts":"2026-10-03T20:15:21.170780405Z"}
+id: 2026-10-03T20:15:21.170808066Z
+data: {"source":"container","line":"  build-essential","ts":"2026-10-03T20:15:21.170808066Z"}
+id: 2026-10-03T20:15:21.170811586Z
+data: {"source":"container","line":"0 upgraded, 1 newly installed, 0 to remove and 7 not upgraded.","ts":"2026-10-03T20:15:21.170811586Z"}
+id: 2026-10-03T20:15:21.170814346Z
+data: {"source":"container","line":"Need to get 7704 B of archives.","ts":"2026-10-03T20:15:21.170814346Z"}
+id: 2026-10-03T20:15:21.170821776Z
+data: {"source":"container","line":"After this operation, 20.5 kB of additional disk space will be used.","ts":"2026-10-03T20:15:21.170821776Z"}
+id: 2026-10-03T20:15:21.275088482Z
+data: {"source":"container","line":"Get:1 http://deb.debian.org/debian bookworm/main amd64 build-essential amd64 12.9 [7704 B]","ts":"2026-10-03T20:15:21.275088482Z"}
+id: 2026-10-03T20:15:21.315766199Z
+data: {"source":"container","line":"debconf: delaying package configuration, since apt-utils is not installed","ts":"2026-10-03T20:15:21.315766199Z"}
+id: 2026-10-03T20:15:21.315784550Z
+data: {"source":"container","line":"Fetched 7704 B in 0s (142 kB/s)","ts":"2026-10-03T20:15:21.315784550Z"}
+id: 2026-10-03T20:15:21.319751188Z
+data: {"source":"container","line":"Selecting previously unselected package build-essential.","ts":"2026-10-03T20:15:21.319751188Z"}
+id: 2026-10-03T20:15:21.329247785Z
+data: {"source":"container","line":"(Reading database ... \r(Reading database ... 5%\r(Reading database ... 10%\r(Reading database ... 15%\r(Reading database ... 20%\r(Reading database ... 25%\r(Reading database ... 30%\r(Reading database ... 35%\r(Reading database ... 40%\r(Reading database ... 45%\r(Reading database ... 50%\r(Reading database ... 55%\r(Reading database ... 60%\r(Reading database ... 65%\r(Reading database ... 70%\r(Reading database ... 75%\r(Reading database ... 80%\r(Reading database ... 85%\r(Reading database ... 90%\r(Reading database ... 95%\r(Reading database ... 100%\r(Reading database ... 23978 files and directories currently installed.)","ts":"2026-10-03T20:15:21.329247785Z"}
+id: 2026-10-03T20:15:21.351901485Z
+data: {"source":"container","line":"Preparing to unpack .../build-essential_12.9_amd64.deb ...","ts":"2026-10-03T20:15:21.351901485Z"}
+id: 2026-10-03T20:15:21.379882892Z
+data: {"source":"container","line":"Unpacking build-essential (12.9) ...","ts":"2026-10-03T20:15:21.379882892Z"}
+id: 2026-10-03T20:15:21.379900853Z
+data: {"source":"container","line":"Setting up build-essential (12.9) ...","ts":"2026-10-03T20:15:21.379900853Z"}
+id: 2026-10-03T20:15:21.379902533Z
+data: {"source":"container","line":"  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current","ts":"2026-10-03T20:15:21.379902533Z"}
+id: 2026-10-03T20:15:21.379904513Z
+data: {"source":"container","line":"                                 Dload  Upload   Total   Spent    Left  Speed","ts":"2026-10-03T20:15:21.379904513Z"}
+id: 2026-10-03T20:16:07.439189293Z
+data: {"source":"container","line":"\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100 29.5M  100 29.5M    0     0  86.0M      0 --:--:-- --:--:-- --:--:-- 86.1M","ts":"2026-10-03T20:16:07.439189293Z"}
+id: 2026-10-03T20:16:07.439252034Z
+data: {"source":"container","line":"Cloning into '/workspace/jovovich'...","ts":"2026-10-03T20:16:07.439252034Z"}
+id: 2026-10-03T20:16:10.655820462Z
+data: {"source":"container","line":"HEAD is now at 53fd440 Bind quote scoring to complete splits and prepare a supervised Runpod experiment","ts":"2026-10-03T20:16:10.655820462Z"}
+id: 2026-10-03T20:16:10.749694575Z
+data: {"source":"container","line":"Submodule 'deps/notorch' (https://github.com/ariannamethod/notorch.git) registered for path 'deps/notorch'","ts":"2026-10-03T20:16:10.749694575Z"}
+id: 2026-10-03T20:16:19.036589474Z
+data: {"source":"container","line":"Cl{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 61.198}","ts":"2026-10-03T20:16:19.036589474Z"}
+id: 2026-10-03T20:16:20.035948153Z
+data: {"source":"container","line":"oning into '/workspace/jovovich/deps/notorch'...","ts":"2026-10-03T20:16:20.035948153Z"}

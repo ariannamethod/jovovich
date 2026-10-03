@@ -1,0 +1,57 @@
+id: 2026-10-03T20:18:38.925473570Z
+data: {"source":"container","line":"  129 |             strncpy(kv-\u003ekey, key, GGUF_MAX_NAME - 1);","ts":"2026-10-03T20:18:38.925473570Z"}
+id: 2026-10-03T20:18:40.695789260Z
+data: {"source":"container","line":"      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~","ts":"2026-10-03T20:18:40.695789260Z"}
+id: 2026-10-03T20:18:40.696482795Z
+data: {"source":"container","line":"deps/notorch/examples/bpe.c: In function ‘scheme_encode_span’:","ts":"2026-10-03T20:18:40.696482795Z"}
+id: 2026-10-03T20:18:40.696518515Z
+data: {"source":"container","line":"deps/notorch/examples/bpe.c:454:48: warning: ‘%s’ directive output may be truncated writing up to 510 bytes into a region of size between 1 and 511 [-Wformat-truncation=]","ts":"2026-10-03T20:18:40.696518515Z"}
+id: 2026-10-03T20:18:40.696523415Z
+data: {"source":"container","line":"  454 |                 snprintf(key, sizeof(key), \"%s %s\", sym[b], sym[b + 1]);","ts":"2026-10-03T20:18:40.696523415Z"}
+id: 2026-10-03T20:18:40.696527345Z
+data: {"source":"container","line":"      |                                                ^~","ts":"2026-10-03T20:18:40.696527345Z"}
+id: 2026-10-03T20:18:40.696531265Z
+data: {"source":"container","line":"In function ‘spm_bpe_encode’,","ts":"2026-10-03T20:18:40.696531265Z"}
+id: 2026-10-03T20:18:40.696534755Z
+data: {"source":"container","line":"    inlined from ‘scheme_encode_span’ at deps/notorch/examples/bpe.c:554:22:","ts":"2026-10-03T20:18:40.696534755Z"}
+id: 2026-10-03T20:18:40.696537715Z
+data: {"source":"container","line":"deps/notorch/examples/bpe.c:454:17: note: ‘snprintf’ output between 2 and 1022 bytes into a destination of size 512","ts":"2026-10-03T20:18:40.696537715Z"}
+id: 2026-10-03T20:18:40.696542655Z
+data: {"source":"container","line":"  454 |                 snprintf(key, sizeof(key), \"%s %s\", sym[b], sym[b + 1]);","ts":"2026-10-03T20:18:40.696542655Z"}
+id: 2026-10-03T20:18:50.595636148Z
+data: {"source":"container","line":"      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~","ts":"2026-10-03T20:18:50.595636148Z"}
+id: 2026-10-03T20:18:50.595674988Z
+data: {"source":"container","line":"packed 26 review pairs into /workspace/jovovich/models/order-rp-20261003-01-native/before.pairs.bin","ts":"2026-10-03T20:18:50.595674988Z"}
+id: 2026-10-03T20:18:51.187871466Z
+data: {"source":"container","line":"packed 76 examples into /workspace/jovovich/models/order-rp-20261003-01-native/before.bin","ts":"2026-10-03T20:18:51.187871466Z"}
+id: 2026-10-03T20:18:51.187909566Z
+data: {"source":"container","line":"packed 26 review pairs into /workspace/jovovich/models/order-rp-20261003-01-native/after.pairs.bin","ts":"2026-10-03T20:18:51.187909566Z"}
+id: 2026-10-03T20:18:53.230258286Z
+data: {"source":"container","line":"packed 76 examples into /workspace/jovovich/models/order-rp-20261003-01-native/after.bin","ts":"2026-10-03T20:18:53.230258286Z"}
+id: 2026-10-03T20:19:00.251095526Z
+data: {"source":"container","line":"{\"status\": \"pass\", \"arms\": {\"before\": {\"review_rows\": 52, \"pairs\": 26, \"decision_tokens\": 52, \"residual_tokens\": 3411, \"max_prompt_tokens\": 570, \"max_answer_tokens_including_eos\": 99, \"verdict_position_min\": 40, \"verdict_position_max\": 58}, \"after\": {\"review_rows\": 52, \"pairs\": 26, \"decision_tokens\": 52, \"residual_tokens\": 3411, \"max_prompt_tokens\": 570, \"max_answer_tokens_including_eos\": 99, \"verdict_position_min\": 3, \"verdict_position_max\": 3}}, \"identical_prompt_and_content_rows\": 52, \"unchanged_nonreview_rows\": 24, \"native_chatml_comparisons\": 304, \"inference_calls\": 0, \"training_updates\": 0}","ts":"2026-10-03T20:19:00.251095526Z"}
+id: 2026-10-03T20:19:06.561081628Z
+data: {"source":"container","line":"{\"status\": \"prepared\", \"directory\": \"/workspace/jovovich/models/order-rp-20261003-01-launch\", \"evaluation_plan\": \"/workspace/jovovich/models/order-rp-20261003-01-launch/evaluation-plan.json\", \"after_requires\": \"bind-after with the completed, remotely verified before run\"}","ts":"2026-10-03T20:19:06.561081628Z"}
+id: 2026-10-03T20:19:06.561118599Z
+data: {"source":"container","line":"{\"status\": \"preflight-passed\"}","ts":"2026-10-03T20:19:06.561118599Z"}
+id: 2026-10-03T20:19:19.600376680Z
+data: {"source":"container","line":"Sta{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 241.762}","ts":"2026-10-03T20:19:19.600376680Z"}
+id: 2026-10-03T20:20:19.730645601Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 301.891}","ts":"2026-10-03T20:20:19.730645601Z"}
+: heartbeat
+id: 2026-10-03T20:21:19.919142365Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 362.08}","ts":"2026-10-03T20:21:19.919142365Z"}
+: heartbeat
+: heartbeat
+: heartbeat
+: heartbeat
+id: 2026-10-03T20:22:20.046885069Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 422.207}","ts":"2026-10-03T20:22:20.046885069Z"}
+: heartbeat
+: heartbeat
+: heartbeat
+: heartbeat
+id: 2026-10-03T20:23:20.191250713Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 482.352}","ts":"2026-10-03T20:23:20.191250713Z"}
+: heartbeat
+: heartbeat

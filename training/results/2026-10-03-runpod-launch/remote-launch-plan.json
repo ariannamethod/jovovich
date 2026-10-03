@@ -1,0 +1,338 @@
+{
+  "schema_version": 1,
+  "run_id": "order-rp-20261003-01-before",
+  "argv": [
+    "build/jovovich-train-mlp",
+    "models/base-qwen.gguf",
+    "models/order-rp-20261003-01-native/before.bin",
+    "@RUN@/adapter",
+    "100",
+    "0.0001",
+    "40",
+    "25",
+    "joint",
+    "models/order-rp-20261003-01-native/before.pairs.bin"
+  ],
+  "environment": {
+    "NT_NO_I8": "1",
+    "NT_QMV_THREADS": "2",
+    "NT_ATTN_THREADS": "2",
+    "NT_SIMD_THREADS": "2"
+  },
+  "bindings": [
+    {
+      "path": "models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "build/jovovich-train-mlp",
+      "bytes": 259560,
+      "sha256": "c1bf84e6010b91124c437e14381112ea2fef5f2d0845d0accf62b289baf38573"
+    },
+    {
+      "path": "training/explanations/plan.json",
+      "bytes": 32754,
+      "sha256": "70ccfe238d7fb3115f021a58ba856fd0200d9e011a84a5a0c563c213cb8746cc"
+    },
+    {
+      "path": "training/durable_archive.py",
+      "bytes": 23730,
+      "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "bytes": 16874,
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5"
+    },
+    {
+      "path": "training/train_mlp.c",
+      "bytes": 50514,
+      "sha256": "ccdbf2bfa72b7177f49ff45778958c63c234b0f076397c21af60edf3f3db95f5"
+    },
+    {
+      "path": "training/prepare.py",
+      "bytes": 7692,
+      "sha256": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd"
+    },
+    {
+      "path": "training/score_decisions.py",
+      "bytes": 24469,
+      "sha256": "58442cd95f4721999c8e3a43105f7e1b3d08466929a895a6c829e4091b32187c"
+    },
+    {
+      "path": "training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    {
+      "path": "training/explanations/reasons.json",
+      "bytes": 45384,
+      "sha256": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+    },
+    {
+      "path": "training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "training/review_holdout_v5.jsonl",
+      "bytes": 40748,
+      "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+    },
+    {
+      "path": "training/sft_review_v6_before.jsonl",
+      "bytes": 180759,
+      "sha256": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250"
+    },
+    {
+      "path": "training/sft_review_v6_after.jsonl",
+      "bytes": 180759,
+      "sha256": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218"
+    },
+    {
+      "path": "models/order-rp-20261003-01-native/verification.json",
+      "bytes": 14205,
+      "sha256": "4847605f168b148c77bcac89a4ba92b77363ec1361747f39b3d4ce4fd1b1b350"
+    },
+    {
+      "path": "models/order-rp-20261003-01-native/bindings.json",
+      "bytes": 3898,
+      "sha256": "a0241a051b390aede0070204284ee41ca3519247f13f8c9ed4c4f0b26ae89b33"
+    },
+    {
+      "path": "models/order-rp-20261003-01-launch/evaluation-plan.json",
+      "bytes": 27751,
+      "sha256": "3b30da1751597568194ee6256cf408eef3b7f438380935056547a5dc295313c3"
+    },
+    {
+      "path": "training/explanations/evaluation_plan.json",
+      "bytes": 27814,
+      "sha256": "84c547e6e77dbf9a6d23254d7ae301cea61178c4628357785d479c6ca740a524"
+    },
+    {
+      "path": "training/merge_mlp.c",
+      "bytes": 8538,
+      "sha256": "73c25a0cbf80e37e4f8bdea71baf34332913b8394d9779f744c4e4f6e1c62b67"
+    },
+    {
+      "path": "training/probe_mlp.c",
+      "bytes": 9303,
+      "sha256": "618e6a0ba96c3f1ef83e3e691b822f8d031f24a4f3d55a3d9be006f66b349bac"
+    },
+    {
+      "path": "build/jovovich-merge-mlp",
+      "bytes": 44456,
+      "sha256": "9bdf49bdfe80d5ae8c89a6faabaa6718f739ce5c1fac239c93f351d8ee8a365c"
+    },
+    {
+      "path": "build/jovovich-probe-mlp",
+      "bytes": 263944,
+      "sha256": "2e8eb0844f764b14baaa576c1213968754744b4ec718f16d380a9eecc9bcae89"
+    },
+    {
+      "path": "build/jovovich-infer",
+      "bytes": 225152,
+      "sha256": "8e4aad1f4a5f661f8b96662dda014d6c1f09da9ecdef7ba15b188bc73a09aef2"
+    },
+    {
+      "path": "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+      "bytes": 2197,
+      "sha256": "3e0c4fc2eccb82c534c241b690337b200461c691a4d49834bf4dfb48899723a1"
+    },
+    {
+      "path": "training/results/2026-09-29-convergence/check_convergence_export.py",
+      "bytes": 9393,
+      "sha256": "7adba865b32ea9e07fb37df9a4ce864f4ac0594a266f8eace4befb5e4a044b99"
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "bytes": 20881,
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "bytes": 19862,
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+    },
+    {
+      "path": "training/explanations/build_corpora.py",
+      "bytes": 11538,
+      "sha256": "1c8c2427571aad38176dae000272546af24bc07d8ab75e4ac122f36d8bd0c2bc"
+    },
+    {
+      "path": "bin/jovovich.mjs",
+      "bytes": 16336,
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2"
+    },
+    {
+      "path": "prompts/identity.txt",
+      "bytes": 1096,
+      "sha256": "187cdf809c21e28c1bb2f1fb71c6bbb1aabf32b7a0c987ba24b52bf4452d62f8"
+    },
+    {
+      "path": "training/explanations/continue_experiment.py",
+      "bytes": 15808,
+      "sha256": "01428e07fe150504624595771b5f73f669c946dc0034e08151a259a43ea5d505"
+    },
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "bytes": 26294,
+      "sha256": "061dfd93f7dffaa032a26ea6449cc1305d5467e23022383e1046cf6b43788c54"
+    },
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 10247,
+      "sha256": "fea623728d9761da211a927f35891e26e73782416ba21f35ad284cee68fd233d"
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "bytes": 17416,
+      "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+    },
+    {
+      "path": "training/explanations/verify_native.py",
+      "bytes": 8408,
+      "sha256": "2b0566780b78cd192810bdbb040fc7b1c26c819adc8e5b249df5f0b0e37729ae"
+    },
+    {
+      "path": "deps/notorch/notorch.c",
+      "bytes": 486394,
+      "sha256": "07bf137b1c5b1a63be0b5c81c44141df322bac32bbaf79ba37fc14c093052ad4"
+    },
+    {
+      "path": "deps/notorch/notorch.h",
+      "bytes": 50653,
+      "sha256": "402d34c2aa41efc457ecc7a32ff318d62e2ff92f3818b7c4a539fc564dd46302"
+    },
+    {
+      "path": "deps/notorch/notorch_simd.h",
+      "bytes": 28218,
+      "sha256": "eea8e74cd943325db32647eda7e1ebae458dbad41d1486937adf8df0fca1633c"
+    },
+    {
+      "path": "deps/notorch/gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "deps/notorch/gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "deps/notorch/harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "deps/notorch/harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "deps/notorch/harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "deps/notorch/harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "models/order-rp-20261003-01-native/before.bin",
+      "bytes": 166165,
+      "sha256": "a97b8dbb9bc62cd1ce955d7f4a01b36ef98d2a68fba3073958f0ee45609cd920"
+    },
+    {
+      "path": "models/order-rp-20261003-01-native/before.pairs.bin",
+      "bytes": 12706,
+      "sha256": "85e618125832c05ea32a9b871eca2eae9fade73509f6d0c7a7adf227c3326fb1"
+    },
+    {
+      "path": "models/order-rp-20261003-01-job/launcher.sh",
+      "bytes": 8018,
+      "sha256": "efb38845397886720d28109dcfcb8ca0098ac1a76f8d51e2f305a2651b5a5edc"
+    },
+    {
+      "path": "models/order-rp-20261003-01-job/host-manifest.json",
+      "bytes": 592,
+      "sha256": "c751b7fd0d950d0a57c50570df378adb4442bec2b76151b6f115f16dc6322cf6"
+    },
+    {
+      "path": "training/explanations/persistent_host_launch.sh",
+      "bytes": 8018,
+      "sha256": "efb38845397886720d28109dcfcb8ca0098ac1a76f8d51e2f305a2651b5a5edc"
+    },
+    {
+      "path": "test/persistent_host_launch.test.mjs",
+      "bytes": 9259,
+      "sha256": "90c739ffd208417182cdb27c5fdeb6938e8597f1ca9f3fc92616929aaef92e4f"
+    },
+    {
+      "path": "training/cloud/prepare_host.sh",
+      "bytes": 1841,
+      "sha256": "250665aee413eaabb5fb6913bb0f9f7431675d88887cf6e6b63c6a69e983d915"
+    },
+    {
+      "path": "training/cloud/runpod_bootstrap.py",
+      "bytes": 19615,
+      "sha256": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75"
+    },
+    {
+      "path": "training/quote/PREREGISTRATION.md",
+      "bytes": 10082,
+      "sha256": "0cc3ceb2618039b3030f0b9ea983e1bcff9e399b386e34ac02ebe9c3cae92b15"
+    },
+    {
+      "path": "training/quote/build.mjs",
+      "bytes": 4879,
+      "sha256": "7d4ea2087f9a187b2faf2b6d9afb99c1134636a2151da78e7d60b0a015fecd16"
+    },
+    {
+      "path": "training/quote/manipulation.mjs",
+      "bytes": 10659,
+      "sha256": "a1a221a690f61686b31751d2c95f65c4449f614898d60d73b370eb62e3848855"
+    },
+    {
+      "path": "training/quote/preflight.json",
+      "bytes": 2375,
+      "sha256": "98516f4c80f63fe2ed2b0216378d8f49d44afce73741164131f3e3e5bfb5de7e"
+    },
+    {
+      "path": "test/quote_manipulation.test.mjs",
+      "bytes": 10618,
+      "sha256": "7f1b46d155784812082a9eea5256e0a1dd5b908db22e337332e66bd307dd09eb"
+    },
+    {
+      "path": "training/sft_review_v7_quote.jsonl",
+      "bytes": 186132,
+      "sha256": "43d85910640550abc48685347f11644a9c3e086dbb083de1e16f1fbbd59d60f7"
+    }
+  ],
+  "remote": {
+    "private": true,
+    "repo": "ataeff/jovovich",
+    "prefix": "experiments/explanation-order"
+  },
+  "ack_timeout_ms": 900000,
+  "arm": "before",
+  "scientific_plan_sha256": "70ccfe238d7fb3115f021a58ba856fd0200d9e011a84a5a0c563c213cb8746cc",
+  "evaluation_plan": "models/order-rp-20261003-01-launch/evaluation-plan.json"
+}
