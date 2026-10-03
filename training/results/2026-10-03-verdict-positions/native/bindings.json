@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+      "bytes": 675710848,
+      "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/sft_review_v5.jsonl",
+      "bytes": 163753,
+      "sha256": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-pairs",
+      "bytes": 263440,
+      "sha256": "61351a7c98aa6ca4d8ca5816b01fa195fef3537da61aca4d01c85b93459cb8ba"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-tokenization",
+      "bytes": 276184,
+      "sha256": "5763ae556945ec8f58eed969fdb13b90ac6ce0a926f7b193b55051f30ba24a45"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/verify_native.py",
+      "bytes": 8155,
+      "sha256": "f8d3002999f2b837566c1efd4afa1ab558a966d932835752be62dd6b40f7510e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/prepare.py",
+      "bytes": 7692,
+      "sha256": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/train_mlp.c",
+      "bytes": 47800,
+      "sha256": "ba33b6f578cdd79398f112b533d4ed5361e91e14a84e7dcc399f444a4dbd155e"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_pairs.c",
+      "bytes": 2190,
+      "sha256": "3817517f309e048b05141ad7f08bc5418aa109fbad93167995da6e761cd19552"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/probe_tokenization.c",
+      "bytes": 3221,
+      "sha256": "7a2265d1560c196ce796a99113ccddc1783b56e1b1862248b4e6f6cd867008f6"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "/workspace/scratch/ec5ba60588d8/jovovich/deps/notorch/examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    }
+  ],
+  "arithmetic": "native tokenization only"
+}

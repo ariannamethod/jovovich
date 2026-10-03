@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-pairs",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.pairs.bin"
+  ],
+  "started_utc": "2026-10-03T16:20:07.854908+00:00"
+}

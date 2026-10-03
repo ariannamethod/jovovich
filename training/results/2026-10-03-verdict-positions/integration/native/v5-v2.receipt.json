@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-pairs",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.pairs.bin"
+  ],
+  "started_utc": "2026-10-03T16:20:07.854908+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:20:08.293084+00:00",
+  "stdout": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.jsonl",
+    "bytes": 15675,
+    "sha256": "d339699a0a828c93f1be4446178067708059bc5c796113a7d137361b1544622b"
+  },
+  "stderr": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native/v5-v2.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -6,7 +6,7 @@ import json
 import math
 from pathlib import Path
 
-from prepare import review_pairs
+from prepare import review_pairs, review_prefixes
 from score_training import summarize
 
 
@@ -15,6 +15,7 @@ SNAPSHOTS = (25, 50, 75, 100)
 DECISION_FIELDS = {'decision_position', 'decision_correct', 'decision_margin',
                    'decision_predicted_id', 'decision_target_id', 'decision_alternative_id'}
 PREFIX_FIELDS = {'prefix_tokens', 'prefix_correct', 'prefix_exact'}
+PREFIX_EVIDENCE_FIELDS = {'decision_prefix', 'decision_prefix_bytes'}
 GRADIENT_FIELDS = {'gradient_norm', 'clip_scale', 'clipped', 'gradient_measurement', 'online_joint_ce'}
 
 
@@ -91,13 +92,29 @@ def validate_decision(score, reference=None, tokens=None):
             require(score[field] == reference[field], f'{field} changed from initial metadata')
 
 
-def references(initial, mapping, pairs, example_count):
+def validate_prefix_evidence(score, reference):
+    """Optional later readouts must preserve the initial source-bound boundary."""
+    if 'decision_prefix' in score:
+        require(isinstance(score['decision_prefix'], str), 'invalid decision prefix')
+        require('decision_prefix' in reference and score['decision_prefix'] == reference['decision_prefix'],
+                'decision prefix changed from initial metadata')
+    if 'decision_prefix_bytes' in score:
+        size = integer(score['decision_prefix_bytes'], 'decision prefix bytes', 1)
+        require('decision_prefix_bytes' in reference and size == reference['decision_prefix_bytes'],
+                'decision prefix bytes changed from initial metadata')
+
+
+def references(initial, mapping, pairs, data, version):
     require(initial.get('objective') in ('decisions', 'joint'), 'initial objective must be decisions or joint')
+    example_count = len(data)
     require(initial.get('examples') == example_count and type(initial.get('examples')) is int,
             'initial example count disagrees')
     require(integer(initial.get('decision_pairs'), 'initial decision pairs') == len(pairs),
             'initial decision pair count disagrees')
     scores = indexed(initial.get('teacher_forced_rows'), range(example_count), 'initial full scores')
+    prefixes = review_prefixes(data) if version == 2 else {}
+    if version == 2:
+        require(set(prefixes) == set(mapping), 'verdict prefixes must cover every mapped review row')
     result = {}
     for index, score in scores.items():
         n = integer(score.get('tokens'), 'initial completion tokens', 1)
@@ -105,12 +122,25 @@ def references(initial, mapping, pairs, example_count):
         if index in mapping:
             validate_decision(score, tokens=n)
             result[index].update({key: score[key] for key in DECISION_FIELDS})
+            if version == 2:
+                require(isinstance(score.get('decision_prefix'), str), 'invalid decision prefix')
+                require(score['decision_prefix'] == prefixes[index],
+                        'decision prefix disagrees with corpus verdict prefix')
+                encoded = prefixes[index].encode('utf-8')
+                size = integer(score.get('decision_prefix_bytes'), 'decision prefix bytes', 1)
+                require(size == len(encoded), 'decision prefix bytes disagree with corpus verdict prefix')
+                result[index].update(decision_prefix=score['decision_prefix'], decision_prefix_bytes=size,
+                                     decision_prefix_sha256=hashlib.sha256(encoded).hexdigest())
+            else:
+                require(not PREFIX_EVIDENCE_FIELDS.intersection(score),
+                        'decision prefix evidence requires pair map version 2')
         else:
             require(not DECISION_FIELDS.intersection(score), 'decision fields on a non-review row')
+            require(not PREFIX_EVIDENCE_FIELDS.intersection(score), 'decision prefix evidence on a non-review row')
     require(integer(initial.get('tokens'), 'initial total tokens', 1) ==
             sum(r['tokens'] for r in result.values()), 'initial token total disagrees')
     for a, b in pairs:
-        require(result[a]['decision_position'] == result[b]['decision_position'] and
+        require((version == 2 or result[a]['decision_position'] == result[b]['decision_position']) and
                 result[a]['decision_target_id'] == result[b]['decision_alternative_id'] and
                 result[b]['decision_target_id'] == result[a]['decision_alternative_id'],
                 'paired decision positions or target/alternative IDs are not reciprocal')
@@ -214,6 +244,7 @@ def decision_summary(metric, mapping, pairs, refs):
         require(integer(score.get('pair_index'), 'pair index') == mapping[index]['pair_index'],
                 'decision pair index disagrees with explicit corpus map')
         validate_decision(score, refs[index], refs[index]['tokens'])
+        validate_prefix_evidence(score, refs[index])
         group = groups[mapping[index]['kind']]
         group['correct'] += score['decision_correct']
         group['positive_margin'] += score['decision_margin'] > 0
@@ -258,6 +289,7 @@ def full_summary(data, metric, update, decision_rows, refs, mapping, joint=False
             for field in id_fields:
                 normalized.setdefault(field, refs[index][field])
             validate_decision(normalized, refs[index], n)
+            validate_prefix_evidence(score, refs[index])
             reference = decision_rows[index]
             for field in DECISION_FIELDS - {'decision_margin'}:
                 require(normalized[field] == reference[field], 'full/decision readout disagreement')
@@ -269,6 +301,7 @@ def full_summary(data, metric, update, decision_rows, refs, mapping, joint=False
                     'full decision correctness contradicts first error or token counts')
         else:
             require(not DECISION_FIELDS.intersection(score), 'decision fields on a non-review row')
+            require(not PREFIX_EVIDENCE_FIELDS.intersection(score), 'decision prefix evidence on a non-review row')
     finite(metric.get('mean_token_ce'), 'full token CE', nonnegative=True)
     for field in ('teacher_forced_correct_tokens', 'teacher_forced_exact_examples'):
         integer(metric.get(field), field)
@@ -291,7 +324,9 @@ def score_run(data, metrics, *, joint_microbatch_tokens=40):
     require(isinstance(metrics, list) and metrics and metrics[0].get('stage') == 'sft_initial',
             'first metric must be full sft_initial')
     initial = metrics[0]
-    refs = references(initial, mapping, pairs, len(data))
+    version = initial.get('pair_map_version', 1)
+    require(type(version) is int and version in (1, 2), 'invalid pair map version')
+    refs = references(initial, mapping, pairs, data, version)
     objective = initial['objective']
     config = joint_config(initial, refs, mapping, joint_microbatch_tokens) if objective == 'joint' else None
     decisions, full, trajectory = {}, {0: initial}, []
@@ -303,6 +338,9 @@ def score_run(data, metrics, *, joint_microbatch_tokens=40):
     require(len(metrics) == len(sequence), 'incomplete run: require updates 0..100 and all full snapshots')
     for metric, (stage, update) in zip(metrics, sequence):
         require(metric.get('stage') == stage, 'unexpected metric stage/order')
+        if 'pair_map_version' in metric:
+            require(type(metric['pair_map_version']) is int and metric['pair_map_version'] == version,
+                    'pair map version changed within decision run')
         if 'objective' in metric:
             require(metric['objective'] == objective, 'objective changed within decision run')
         if config is not None and 'microbatch_tokens' in metric:
@@ -336,6 +374,12 @@ def score_run(data, metrics, *, joint_microbatch_tokens=40):
                 interpretation='Decision margins compare two target-template tokens. Full-vocabulary hits govern selection; positive margins alone do not. Generated JSON and reasons must be assessed separately.')
     if config is not None:
         result['joint_normalization'] = config
+    if version == 2:
+        result.update(pair_map_version=version, decision_metadata=[
+            dict(row=index, id=data[index]['id'], **mapping[index],
+                 **{key: refs[index][key] for key in ('decision_position', 'decision_target_id',
+                    'decision_alternative_id', 'decision_prefix_bytes', 'decision_prefix_sha256')})
+            for index in sorted(mapping)])
     return result
 
 

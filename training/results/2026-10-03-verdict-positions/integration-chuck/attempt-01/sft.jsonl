@@ -1,0 +1,2 @@
+{"id": "0", "kind": "review", "pair": "tiny", "messages": [{"role": "system", "content": "Review."}, {"role": "user", "content": "Diff."}, {"role": "assistant", "content": "{\"analysis\":\"A longer reason.\",\"findings\":[{\"reason\":\"bad\"}]}"}]}
+{"id": "1", "kind": "review", "pair": "tiny", "messages": [{"role": "system", "content": "Review."}, {"role": "user", "content": "Diff."}, {"role": "assistant", "content": "{\"analysis\":\"Fine.\",\"findings\":[]}"}]}

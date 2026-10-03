@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "make",
+    "test"
+  ],
+  "started_utc": "2026-10-03T16:22:08.140460+00:00",
+  "reason": "Require complete assertion and TAP evidence after the rebuild; previous rc0 log contained compilation lines only.",
+  "stdout": {
+    "path": "training/results/2026-10-03-verdict-positions/integration/test-complete.stdout.txt",
+    "bytes": 15576,
+    "sha256": "e0f7069a64920154265bafc8d775db2d4780d45904787336259ce4275083b6d8"
+  },
+  "stderr": {
+    "path": "training/results/2026-10-03-verdict-positions/integration/test-complete.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:22:16.954464+00:00",
+  "tap_complete": false
+}

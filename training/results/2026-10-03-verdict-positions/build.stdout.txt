@@ -1,0 +1,2 @@
+make: Nothing to be done for 'probe-pairs'.
+cc -Ideps/notorch -O2 -Wall -Wextra -std=gnu11 -march=native -DUSE_SIMD -o build/jovovich-probe-tokenization training/probe_tokenization.c deps/notorch/notorch.c deps/notorch/gguf.c deps/notorch/harness/runtime.c deps/notorch/harness/arch_llama.c deps/notorch/examples/bpe.c  -lm -pthread

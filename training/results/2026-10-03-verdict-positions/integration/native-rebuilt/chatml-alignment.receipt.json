@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/workspace/scratch/ec5ba60588d8/jovovich/build/jovovich-probe-tokenization",
+    "/workspace/scratch/ec5ba60588d8/jovovich/models/base-qwen.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native-rebuilt/v5-v2.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native-rebuilt/fixture-v2.bin"
+  ],
+  "started_utc": "2026-10-03T16:21:13.453501+00:00",
+  "return_code": 0,
+  "finished_utc": "2026-10-03T16:21:13.815952+00:00",
+  "stdout": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native-rebuilt/chatml-alignment.jsonl",
+    "bytes": 195,
+    "sha256": "5114c333200afa5cd3c70ff69274833778345d708e8697dff150fba151dc1c1b"
+  },
+  "stderr": {
+    "path": "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration/native-rebuilt/chatml-alignment.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

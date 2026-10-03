@@ -27,6 +27,111 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The verdict has an address.
+
+The explanation-before-verdict path now has a versioned position contract.
+JVPR2 stores original concern/clean row indices and a separate length-prefixed
+UTF-8 answer prefix for each row. The prefix ends before the closing quote of
+the actual top-level findings key. Python locates that key structurally, so
+quoted mentions of `findings` and nested objects do not move the boundary.
+Duplicate JSON keys, escaped top-level keys and non-object findings are
+rejected by preparation. Tokenization remains native.
+
+The C loader verifies exact prefix bytes, the structural findings boundary,
+compact concern/clean continuations, native prefix IDs and a non-EOS target.
+For each row it then joins that row's own prefix to the opposite findings
+suffix and re-tokenizes: the prefix IDs must remain identical and the next
+token must equal the reciprocal alternative. Each row keeps its own position
+through decision weighting, joint normalization, prefix diagnostics and the
+gradient probe. JVPR1 retains its original byte layout and first-divergence
+selection.
+
+The independent auditor found a concrete formatting trap before acceptance.
+On the pinned Qwen tokenizer, a concern answer with a space before the colon
+selected ID 1, a quote; spaces just inside the array could select ID 8899,
+`":[`. All three reproduced variants now fail in both Python and native C.
+Canonical concern/clean targets remain 66582 and 788. Their decoded widths
+differ: the concern token contains `":[{"`, while the clean token is `":`
+and its following token supplies `[]}`. Counterfactual tokenization checks this
+actual segmentation directly.
+
+Initial native metrics now include `pair_map_version`, exact `decision_prefix`
+and `decision_prefix_bytes`. The scorer compares the text and byte length with
+the corpus before recording its SHA256. An independently tested same-byte-length
+replacement of an explanation is rejected. Legacy metrics without a version
+continue through V1; their archived scores reproduce exactly.
+
+The official Qwen2.5-Coder-0.5B-Instruct Q8_0 was restored and verified against
+SHA256 `e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1`.
+The native tokenizer check preserves all 52 existing v5 review positions,
+target IDs and alternative IDs. JVDS bytes match between V1 and V2. Six
+additional boundary-fixture answers use unequal explanations, Cyrillic,
+escaped quotes and nested findings decoys:
+
+| Pair | V1 positions | V2 positions |
+| --- | --- | --- |
+| Scoped Python analysis | 4 / 4 | 18 / 21 |
+| Approved binary decoder | 4 / 4 | 35 / 10 |
+| SQLite build requirement | 3 / 3 | 34 / 35 |
+
+All positions are zero-based completion indices. All 164 native
+trainer/runtime ChatML comparisons match. These checks execute tokenization;
+their process receipts record zero inference calls and zero training updates.
+
+The new C fixture exercises four independent decision positions and 230
+residual targets. Three microbatch sizes match 42 independent adapter
+derivatives, with maximum loss error `2.56041e-6` and gradient error
+`6.24449e-8`. Its 26 rejection cases cover stale prefixes, whitespace and role
+conflicts, invalid maps, EOS, BPE boundary crossing and capacity overflow.
+A separate fixture preserves Qwen's asymmetric clean/concern token widths.
+The complete suite passes nine native executables and 119 Node tests.
+
+The first full-suite attempt stopped at sandbox subprocess input: even
+`node -> cat` received its bytes but failed to finish on EOF. The identical
+minimal command completed outside the sandbox. We preserved that interrupted
+attempt and reran the same suite outside the sandbox; it passed with every
+bound source hash unchanged. Both receipts and the isolated reproduction are
+retained.
+
+Before publication, Oleg merged Fable's PR18. The integrated branch retains
+its notorch pin `014403faa76b795aefe18a4781980f5b140e0ed3` and all four Chuck
+calls; the only textual conflict was the Makefile's phony-target list.
+After rebuilding, nine native programs and 119 Node tests pass again, and
+`integration/native-rebuilt/` repeats the official-Qwen check: 52 unchanged
+legacy decisions, three unequal-position pairs and 164 ChatML matches.
+The earlier `integration/native/` attempt ran before the rebuild completed;
+its binary bindings are preserved separately. A build log without assertion
+output was followed by a complete test-only capture. Node used its spec
+reporter, which the separate validation receipt checks explicitly.
+
+The optimizer audit exercises the actual trainer mains on a deterministic
+one-block synthetic Qwen fixture: twenty joint MLP steps, twenty token-objective
+MLP steps, twenty head SFT steps and twenty head DPO steps. All eighty calls
+execute native Chuck updates, preserving controller and moment state through
+interleaved diagnostics and resetting at the SFT/DPO boundary. Explicit review
+positions remain 39 and 28. The recipe and call-level evidence are in
+`integration-chuck/`; this closes the four-call-site coverage gap noted in
+Fable's original optimizer receipt.
+
+A separate auditor recounted the three-body study's 75 stored summaries and
+checked their manifest hashes and token traces. Its best cell is plain
+instruct block 0, 32/52 and 8/26 pairs, below the lexical 35/52 and 9/26.
+The historical runner's extraction-reuse path does not verify original input
+bindings, and its raw matrices/fits have no committed remote archive receipt.
+New collection continues through the existing durable launcher. The audit
+and historical source/hash mappings are in `integration/claude-study-audit.json`.
+The README now states the measured comparison without attributing block 0's
+successes to particular surface features.
+
+Code, raw token traces, preparation outputs, independent audit and verification
+recipe are in
+[`training/results/2026-10-03-verdict-positions`](training/results/2026-10-03-verdict-positions).
+The next step is the complete paired explanation corpus, its independent
+content audit and a frozen comparison with matched generation budgets.
+
+SERGE may explain why the abstraction offends him. We now know where he casts
+the vote.
+
 ## 2026-10-02 — Twenty-four floors. No secret penthouse.
 
 The frozen Qwen2.5-Coder-0.5B-Instruct Q8_0 depth survey completed with all
@@ -167,14 +272,12 @@ coder base peaks at 31/52 and 7/26 at the same block 0 and at block 3; the
 abliterated twin's best complete-pair counts sit at blocks 0, 6, 16 and 23 at
 5 to 7 pairs.
 
-Block 0 is the only cell that clears on all three bodies, and that is the
-reading. One decoder block above the embedding, at a decision position whose own
-token is identical in all 52 rows, is where surface information lives — and the
-seven token-count and diff-shape features read that same surface better than any
-depth of any body reads it. The final post-norm z is the weakest row on the
-coder base at 24/52 and 0/26. Depth did not hide the judgment. The judgment is
-not in these states in a form this probe can read, and nothing in the profile
-says "unfreeze here" to the next training run.
+Block 0 is the only cell that clears on all three bodies, at a decision
+position whose own token is identical in all 52 rows. The seven token-count
+and diff-shape features outperform every tested body-depth cell. The final
+post-norm z is the weakest row on the coder base at 24/52 and 0/26. The profile
+does not identify the features behind block 0's successes, and supplies no
+compelling "unfreeze here" instruction for the next training run.
 
 What this does not say. The declared reading was fixed per depth and carries no
 multiplicity rule; applied to seventy-five cells, an exceedance near 0.01 is

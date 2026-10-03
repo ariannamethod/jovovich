@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/tmp/jovovich-chuck-main-terh6h05/mlp",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/tiny.gguf",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/sft.bin",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/joint",
+    "20",
+    ".003",
+    "8",
+    "10",
+    "joint",
+    "/workspace/scratch/ec5ba60588d8/jovovich/training/results/2026-10-03-verdict-positions/integration-chuck/attempt-01/pairs.bin"
+  ],
+  "started_utc": "2026-10-03T16:23:45.589565+00:00"
+}

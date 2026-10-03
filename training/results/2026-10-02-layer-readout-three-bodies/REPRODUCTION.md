@@ -5,6 +5,16 @@ feature matrix and fit file stay out of Git; each is content-addressed in
 `plan.json` or in a run's `manifest.json`, so a reproduction is checked against
 hashes rather than against a description.
 
+Integration audit, 2026-10-03: the commands below document the historical
+runner. It does not implement the repository's incremental remote archive
+contract, and its `--reuse-extraction` option does not verify the original
+model/prompt/extractor bindings. New collection uses
+`training/layers/run_layers.py` with its durable archive configuration.
+The committed summaries and token traces were checked independently; this
+repository contains no remote archive receipt for this study's raw matrices
+and fit files. Historical source/hash mappings and the audit are recorded in
+`training/results/2026-10-03-verdict-positions/integration/claude-study-audit.json`.
+
 ## 1. Build
 
 ```sh

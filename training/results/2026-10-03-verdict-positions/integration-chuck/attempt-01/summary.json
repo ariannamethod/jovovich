@@ -1,0 +1,43 @@
+{
+  "status": "pass",
+  "trainer_callsites_executed": 4,
+  "results": {
+    "joint": {
+      "chuck_calls": 20,
+      "decision_positions": [
+        39,
+        28
+      ],
+      "final_frozen_slots": 0,
+      "final_noise": 0,
+      "first_loss": 11.3313532,
+      "last_loss": 10.2179556
+    },
+    "tokens": {
+      "chuck_calls": 20,
+      "decision_positions": [
+        39,
+        28
+      ],
+      "final_frozen_slots": 0,
+      "final_noise": 0,
+      "first_loss": 5.82279062,
+      "last_loss": 5.39986467
+    },
+    "head": {
+      "sft_chuck_calls": 20,
+      "dpo_chuck_calls": 20,
+      "optimizer_reset_at_dpo": true,
+      "sft_final_frozen_slots": 0,
+      "dpo_final_frozen_slots": 0
+    }
+  },
+  "controller_and_moments_preserved_across_diagnostics": true,
+  "native_chuck_updates_used": true,
+  "source_modifications": false,
+  "binary_sha256": {
+    "mlp": "57ce0a80c22b622ff634412e7c3c7bd53057897a1e979c3df7c58436ce264a8f",
+    "head": "d6c9e87d33ac121ab646fbbcf8435a5ba12bc3db44fb822f1609603112b2983c"
+  },
+  "fixture_scope": "Deterministic tiny synthetic one-block Qwen; integration assertions only."
+}

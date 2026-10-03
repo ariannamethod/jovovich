@@ -1,0 +1,16 @@
+{
+  "command": "node -e spawnSync(\"cat\", [], {input:\"probe\", encoding:\"utf8\", timeout:1000})",
+  "sandbox_result": {
+    "status": null,
+    "signal": "SIGTERM",
+    "error": "ETIMEDOUT",
+    "stdout": "probe"
+  },
+  "outside_sandbox_result": {
+    "status": 0,
+    "signal": null,
+    "stdout": "probe"
+  },
+  "observation": "The sandboxed child receives bytes but does not finish at input EOF; identical outside-sandbox call completes.",
+  "next_action": "Run the same project tests outside sandbox; preserve the interrupted attempt."
+}

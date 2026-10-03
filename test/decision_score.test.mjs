@@ -31,7 +31,8 @@ def full(update,decision):
     scores=[]
     for row in range(len(data)):
         n=native[row]['tokens']; hit=dec.get(row,{}).get('decision_correct',True)
-        score=dict(row=row,tokens=n,correct=n if hit else n-1,first_error_position=-1 if hit else 3)
+        score=dict(row=row,tokens=n,correct=n if hit else n-1,
+                   first_error_position=-1 if hit else dec[row]['decision_position'])
         if row in dec:
             score.update({k:v for k,v in dec[row].items() if k.startswith('decision_')})
             if update:
@@ -623,5 +624,198 @@ with tempfile.TemporaryDirectory() as temporary:
     result=subprocess.run(command+['--output',str(rejected_output)],capture_output=True,text=True)
     assert result.returncode!=0 and 'joint microbatch disagrees' in result.stderr
     assert not rejected_output.exists()
+`);
+});
+
+const explicitVerdictFixture = `
+from prepare import review_prefixes
+# Distinct rationale lengths and a nested decoy key precede the real verdict key.
+# Token positions below are native-record fixtures; byte boundaries come from
+# the exact source answer and include multibyte text and escaped string content.
+expected_prefixes={}
+for row,entry in mapping.items():
+    findings=json.loads(data[row]['messages'][2]['content'])['findings']
+    analysis=('Геометрия: ' if entry['kind']=='concern' else 'Clean café: ')+('one fact. '*(row%7+1))
+    analysis += 'A quoted "findings" is only prose.'
+    lead=dict(analysis=analysis,nested=dict(findings=[]))
+    prefix=json.dumps(lead,ensure_ascii=False)[:-1]+', "findings'
+    answer=prefix+'":'+json.dumps(findings,ensure_ascii=False,separators=(',',':'))+'}'
+    data[row]['messages'][2]['content']=answer
+    expected_prefixes[row]=prefix
+    position=11+row%7+(9 if entry['kind']=='clean' else 0)
+    native[row]['tokens']+=position-native[row]['decision_position']
+    native[row]['decision_position']=position
+assert all(native[a]['decision_position']!=native[b]['decision_position'] for a,b in pairs)
+assert review_prefixes(data)==expected_prefixes
+
+def explicit_joint(pattern=None):
+    metrics=joint(pattern)
+    metrics[0]['pair_map_version']=2
+    for row in metrics[0]['teacher_forced_rows']:
+        if row['row'] in mapping:
+            row['decision_prefix']=expected_prefixes[row['row']]
+            row['decision_prefix_bytes']=len(expected_prefixes[row['row']].encode('utf-8'))
+    return metrics
+`;
+
+function explicitVerdictPython(code) {
+  jointPython(explicitVerdictFixture + '\n' + code);
+}
+
+test('JVPR2 joint scoring selects over a full trajectory with independent verdict positions and source-bound prefix diagnostics', () => {
+  explicitVerdictPython(`
+import hashlib
+metrics=explicit_joint({25:hits(2,3),50:hits(3),75:hits(20),100:hits(3)})
+prefix_miss(metrics,25,pairs[0][0])
+prefix_miss(metrics,25,pairs[10][1])
+result=score_run(data,metrics)
+assert result['pair_map_version']==2
+assert result['selected_update']==50 and result['selected']['complete_decision_pairs']==3
+assert result['eligible_updates']==[25,50,100] and len(result['trajectory'])==101
+assert result['trajectory'][75]['complete_decision_pairs']==20 and not result['trajectory'][75]['eligible']
+assert len(result['decision_metadata'])==len(mapping)
+for evidence in result['decision_metadata']:
+    row=evidence['row']; prefix=expected_prefixes[row].encode('utf-8')
+    assert evidence['id']==data[row]['id'] and evidence['pair']==data[row]['pair']
+    assert evidence['kind']==mapping[row]['kind'] and evidence['pair_index']==mapping[row]['pair_index']
+    assert evidence['decision_prefix_bytes']==len(prefix)
+    assert evidence['decision_prefix_sha256']==hashlib.sha256(prefix).hexdigest()
+    assert evidence['decision_position']==native[row]['decision_position']
+    assert evidence['decision_target_id']==native[row]['decision_target_id']
+    assert evidence['decision_alternative_id']==native[row]['decision_alternative_id']
+expected_tokens=sum(native[row]['decision_position'] for row in mapping)
+for readout in result['full_readouts']:
+    missed=2 if readout['update']==25 else 0
+    assert readout['prefix_positions']==expected_tokens
+    assert readout['prefix_correct']==expected_tokens-missed
+    assert readout['prefix_exact_examples']==len(mapping)-missed
+assert result['joint_normalization']['joint_positions']==sum(native[row]['tokens'] for row in mapping)
+# Native later records may repeat the evidence, but are not required to.
+repeat=copy.deepcopy(metrics)
+for metric in repeat[1:]:
+    for row in metric.get('decision_rows',metric.get('teacher_forced_rows',[])):
+        if row['row'] in mapping:
+            row['decision_prefix']=expected_prefixes[row['row']]
+            row['decision_prefix_bytes']=len(expected_prefixes[row['row']].encode('utf-8'))
+    metric['pair_map_version']=2
+assert score_run(data,repeat)==result
+`);
+});
+
+test('JVPR2 scorer rejects missing, malformed, non-review and source-mismatched verdict-boundary evidence', () => {
+  explicitVerdictPython(`
+metrics=explicit_joint()
+for value in (None,0,-1,True,1.,'1'):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_prefix_bytes']=value
+    rejected(bad,'invalid decision prefix bytes')
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0].pop('decision_prefix_bytes')
+rejected(bad,'invalid decision prefix bytes')
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_prefix_bytes']+=1
+rejected(bad,'corpus verdict prefix')
+# Counting Unicode code points instead of UTF-8 bytes is rejected.
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_prefix_bytes']=len(expected_prefixes[0])
+rejected(bad,'corpus verdict prefix')
+for update in (0,25):
+    for field,value in (('decision_prefix_bytes',10),('decision_prefix','a prefix')):
+        bad=copy.deepcopy(metrics)
+        row=next(row for row in full_at(bad,update)['teacher_forced_rows'] if row['row'] not in mapping)
+        row[field]=value
+        rejected(bad,'prefix evidence on a non-review row')
+for stage in ('decision','full'):
+    bad=copy.deepcopy(metrics)
+    row=(at(bad,25)['decision_rows'] if stage=='decision' else full_at(bad,25)['teacher_forced_rows'])[0]
+    row['decision_prefix_bytes']=len(expected_prefixes[0].encode('utf-8'))+1
+    rejected(bad,'prefix bytes changed from initial metadata')
+    row['decision_prefix_bytes']=True
+    rejected(bad,'invalid decision prefix bytes')
+    bad=copy.deepcopy(metrics)
+    row=(at(bad,25)['decision_rows'] if stage=='decision' else full_at(bad,25)['teacher_forced_rows'])[0]
+    row['decision_prefix']=expected_prefixes[0].replace('one fact.','two facts',1)
+    rejected(bad,'decision prefix changed from initial metadata')
+    row['decision_prefix']=True
+    rejected(bad,'invalid decision prefix')
+# The corpus itself must have the exact prefix byte length recorded by native.
+bad_data=copy.deepcopy(data)
+bad_data[0]['messages'][2]['content']=' '+bad_data[0]['messages'][2]['content']
+try:score_run(bad_data,metrics)
+except ValueError as error:assert 'corpus verdict prefix' in str(error),str(error)
+else:raise AssertionError('source prefix changed without matching native evidence')
+`);
+});
+
+test('pair-map versions fail closed and legacy logs retain equal-position validation', () => {
+  jointPython(`
+metrics=joint()
+legacy=score_run(data,metrics)
+explicit=copy.deepcopy(metrics);explicit[0]['pair_map_version']=1
+assert score_run(data,explicit)==legacy
+for version in (None,0,3,-1,True,False,1.,2.,'2'):
+    bad=copy.deepcopy(metrics);bad[0]['pair_map_version']=version
+    rejected(bad,'invalid pair map version')
+for version in (2,True,1.,None):
+    bad=copy.deepcopy(metrics);at(bad,1)['pair_map_version']=version
+    rejected(bad,'pair map version changed')
+# Unequal positions remain invalid for both implicit and explicit JVPR1.
+for explicit_version in (False,True):
+    bad=copy.deepcopy(metrics)
+    if explicit_version:bad[0]['pair_map_version']=1
+    bad[0]['teacher_forced_rows'][0]['decision_position']+=1
+    rejected(bad,'not reciprocal')
+for field,value in (('decision_prefix_bytes',11),('decision_prefix','a prefix')):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0][field]=value
+    rejected(bad,'prefix evidence requires pair map version 2')
+`);
+});
+
+test('JVPR2 retains reciprocal target IDs, non-EOS positions and immutable decision positions across all readouts', () => {
+  explicitVerdictPython(`
+metrics=explicit_joint()
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_alternative_id']=123
+rejected(bad,'not reciprocal')
+for value in (True,-1,1.):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_position']=value
+    rejected(bad,'invalid decision position')
+for value in (native[0]['tokens']-1,native[0]['tokens']):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_position']=value
+    rejected(bad,'EOS or outside completion')
+for stage in ('decision','full'):
+    bad=copy.deepcopy(metrics)
+    row=(at(bad,25)['decision_rows'] if stage=='decision' else full_at(bad,25)['teacher_forced_rows'])[0]
+    row['decision_position']+=1
+    rejected(bad,'decision_position changed from initial metadata')
+bad=copy.deepcopy(metrics);full_at(bad,25)['teacher_forced_rows'][0]['prefix_tokens']+=1
+rejected(bad,'prefix counts disagree with decision position')
+bad=copy.deepcopy(metrics);bad[0]['pair_map_version']=1
+rejected(bad,'prefix evidence requires pair map version 2')
+bad=copy.deepcopy(metrics);at(bad,1)['pair_map_version']=1
+rejected(bad,'pair map version changed')
+`);
+});
+
+test('JVPR2 source evidence rejects same-byte-length rationale substitutions and requires the exact native prefix', () => {
+  explicitVerdictPython(`
+metrics=explicit_joint()
+for value in (None,True,123,[],{}):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_prefix']=value
+    rejected(bad,'invalid decision prefix')
+bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0].pop('decision_prefix')
+rejected(bad,'invalid decision prefix')
+for value in ('',expected_prefixes[0].replace('one fact.','two facts',1)):
+    bad=copy.deepcopy(metrics);bad[0]['teacher_forced_rows'][0]['decision_prefix']=value
+    rejected(bad,'decision prefix disagrees with corpus verdict prefix')
+# A byte count alone would accept this different source answer. Exact native
+# prefix evidence binds both its contents and its boundary.
+bad_data=copy.deepcopy(data)
+original=bad_data[0]['messages'][2]['content']
+changed=original.replace('one fact.','two facts',1)
+assert original!=changed and len(original.encode('utf-8'))==len(changed.encode('utf-8'))
+bad_data[0]['messages'][2]['content']=changed
+try:score_run(bad_data,metrics)
+except ValueError as error:assert 'decision prefix disagrees with corpus verdict prefix' in str(error),str(error)
+else:raise AssertionError('same-byte-length source substitution accepted')
+# The scorer publishes the verified digest and length without copying the full
+# explanation text into every score summary.
+result=score_run(data,metrics)
+assert all('decision_prefix' not in row for row in result['decision_metadata'])
 `);
 });
