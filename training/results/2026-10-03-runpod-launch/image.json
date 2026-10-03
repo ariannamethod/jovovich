@@ -1,0 +1,10 @@
+{
+  "tag": "3.11-bookworm",
+  "digest": "sha256:3fd8382c50bae84184460a6e1a8ff4eeac0e3ca6a560691cb56bd84d2b6ec9ca",
+  "amd64": [
+    {
+      "digest": "sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a",
+      "os": "linux"
+    }
+  ]
+}

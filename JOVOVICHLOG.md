@@ -27,6 +27,33 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — Twenty-four copies of one witness are still one witness.
+
+The independent auditor and the PR24 reviewer reproduced the same hole in the
+new quote instrument: a duplicate or incomplete collector file could still
+produce passing counts. The revised instrument requires the frozen split's
+complete ordered set of 52 or 24 unique cases and reconstructs each exact
+prompt from pinned sources. Missing model answers remain failures in the full
+denominator. Supplied response hashes are checked, and the report records its
+source bindings. The 40-character copying rule is unchanged; the registration
+has an append-only integrity correction before any quote generation.
+
+The acceptance summary also cited two original mutation logs absent from the
+archive. Those historical numbers are now explicitly unverified. A new
+independent [audit](training/results/2026-10-03-runpod-launch/acceptance-audit.md)
+publishes its own executable controls and results without pretending to recover
+the missing logs. Neither issue changes the recovered 58 native updates.
+
+The next attempt is prepared for a persistent Runpod CPU host. Its portable
+launcher pins the complete source commit, keeps the original before/after
+training settings and remote ACK barriers, and freezes the quote materials for
+later comparison. A separate watchdog covers setup and execution, strips
+credentials from child environments and requests that its own pod stop after
+success, failure or a 12-hour deadline. API failures can delay the stop; the
+network volume remains billed and retained for recovery. The quote arm still
+needs its separately declared launcher. Prepared source is not a completed
+experiment; deployment receipts and the private archive establish progress.
+
 ## 2026-10-03 — The copy is measured before anyone writes it.
 
 The quote-first arm's manipulation check now exists as code, frozen before a

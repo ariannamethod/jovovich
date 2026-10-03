@@ -1,0 +1,912 @@
+{
+  "schema_version": 1,
+  "performed_at_utc": "2026-10-03T20:02:13.234405+00:00",
+  "repo_commit": "7096ecef1b04e4847c9eb74787e01311f0b20d39",
+  "checker": {
+    "path": "training/acceptance/v6_check.mjs",
+    "sha256": "3329eafc00e9e0da17c40c598bcd0a17735cf404c4d06ccd6b90edd8c3fc4662"
+  },
+  "input_sha256": {
+    "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+    "before": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+    "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+    "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+  },
+  "historical_evidence": {
+    "files": {
+      "red-run-v1.log": {
+        "tracked_current_matches": [],
+        "expected_path_exists": false
+      },
+      "red-run-v2.log": {
+        "tracked_current_matches": [],
+        "expected_path_exists": false
+      }
+    },
+    "matching_available_git_history": "",
+    "conclusion": "Referenced original red-run logs are absent. This audit is new evidence, not their reconstruction."
+  },
+  "interpretation": [
+    "Every semantic mutation must fail its named check; H1 hash rejection alone is insufficient.",
+    "The content-adjudication case tests the H9 branch only; full exit remains 1 because inputs changed.",
+    "Baseline retains declared soft H4_strict deviation and superseded soft H8 failure.",
+    "No model, native probe, training, generation, or cloud resource operation was performed."
+  ],
+  "cases": [
+    {
+      "case": "baseline",
+      "target_check": null,
+      "expected_target_status": "PASS",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "changed_inputs": [],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "PASS",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 0,
+      "target_failures": [],
+      "stdout": "H1 PASS failures=0 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "hash-only-whitespace",
+      "target_check": "H1",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "44fc68aade88a80eedc22fdd922b54d42330ac6040962c11c9250b76376916ae"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "input": "reasons",
+          "path": "/tmp/jovovich-v6-audit-1072ofyy/hash-only-whitespace/reasons",
+          "expected": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45",
+          "actual": "44fc68aade88a80eedc22fdd922b54d42330ac6040962c11c9250b76376916ae"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "row-id",
+      "target_check": "H2",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "3beb7ec4b58c614df0160f19bb5c07791c5e22ed437b334c3d6814583b9c82e1",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "FAIL",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "arm": "before",
+          "index": 0,
+          "v5": [
+            "scoped-python-analysis-concern",
+            "review",
+            true,
+            "scoped-python-analysis"
+          ],
+          "arm_meta": [
+            "scoped-python-analysis-concern-mutated",
+            "review",
+            true,
+            "scoped-python-analysis"
+          ]
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 FAIL failures=1 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "nonreview-byte-change",
+      "target_check": "H3",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "a17351c3b917d85b623705853e6c1547ecc648e87975c734d2b660e22543b13a",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "FAIL",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "arm": "before",
+          "index": 2,
+          "id": "voice-01"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 FAIL failures=1 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "system-byte-change",
+      "target_check": "H4_suffix",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "bb42fe174a0e754ec27668d52bed2e3733e35e5e46c830f9e79b5264040e9fb6",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "FAIL",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "system content differs"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix FAIL failures=1 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "nonuniform-user-suffix",
+      "target_check": "H4_suffix",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "f0e84fedfe0d5ec955377b3e244d2e6b56896b4efb4343ecc60eeb4d77ad8585",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "FAIL",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 2,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "error": "before.user !== after.user"
+        },
+        {
+          "unique_deltas": 2,
+          "expected": 1
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix FAIL failures=2 unique_deltas=2 \" Include a concise analysis string connecting the relevant rule, changed line and consequence. changed\"x1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x103\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "concern-to-clean",
+      "target_check": "H5",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "9be79b47f4b47c72bbd5d9cb93b7890a818dac98ab3bd22f2e017497b577c344",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "FAIL",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 4,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "findings differ from v5"
+        },
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "compact findings substring missing"
+        },
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "concern marker missing"
+        },
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "class differs from v5"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 FAIL failures=4 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "noncompact-findings",
+      "target_check": "H5",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "b5be4a7d5f10f192918ecdaed34c81b5c7ee685503ab3d64068cb26cd2047352",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "FAIL",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 2,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "compact findings substring missing"
+        },
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "error": "concern marker missing"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 FAIL failures=2 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "wrong-answer-key-order",
+      "target_check": "H6",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "4e3c35b0826d7cdf9f079d8fb8368d433e92025036ce09d85796eb4853e5b8b6",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "FAIL",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "arm": "before",
+          "keys": [
+            "findings",
+            "analysis"
+          ]
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 FAIL failures=1 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "analysis-disagrees-with-reasons",
+      "target_check": "H6",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "f0ab26c40e85b6242d5b1f9a84619c130300f42e892f50b96758ec6c431d9f2f",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "FAIL",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "error": "analysis differs from reasons or between arms"
+        }
+      ],
+      "stdout": "H1 FAIL failures=1 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 FAIL failures=1 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "one-sentence-analysis",
+      "target_check": "H7",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "e5eed254be91217101a2ee24a2bf1d8ff5be838721759f2d25ff2182742f9ef4",
+        "after": "8d3f9a013529a44d001a6a74ce49500253948e7af163487a76cee5877909e8c8",
+        "reasons": "ee0746d04646f5d9170ba85815c49a2ed0cb25ded7bfc8dc5f767fc620a256f5"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "FAIL",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "id": "scoped-python-analysis-concern",
+          "ends_with_terminal": true,
+          "sentence_count": 1,
+          "sentences": [
+            "The rule forbids the change at [1]."
+          ]
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 FAIL failures=1 sentence counts {\"1\":1,\"2\":51}\nH8 FAIL failures=3 sentences 25/26 citations 24/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 25/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "nonexistent-citation",
+      "target_check": "H8v2",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "89cf41defd178b40dbc73fa328cf174e691e3c8ee7de2726778a0c63e249b08d",
+        "after": "7660ab4bf5d9d519e327ec7de13ab0461bf5ae38c024a02f87ce37ece1ce1aaf",
+        "reasons": "01e6082b275fe8a1fdbf5c3791469438cc395811bd3a423083228e50c941a3e9"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "pair": "scoped-python-analysis",
+          "type": "same_diff",
+          "concern": {
+            "id": "scoped-python-analysis-concern",
+            "citations": [
+              {
+                "id": "999",
+                "side": null
+              }
+            ]
+          },
+          "clean": {
+            "id": "scoped-python-analysis-clean",
+            "citations": [
+              {
+                "id": "1",
+                "side": "ADDED"
+              }
+            ]
+          },
+          "cited_sides": {
+            "concern": [],
+            "clean": [
+              "ADDED"
+            ]
+          },
+          "sentences_equal": true,
+          "citations_exist": false,
+          "citations_equal": false,
+          "pass": false
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=3 sentences 26/26 citations 23/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "mirrored-removed-side-citation",
+      "target_check": "H8v2",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "b333c3040e2037b42eac8053118e02f5fa353b700544ccda77dafe0772a1edf6",
+        "after": "eb223aaf6807f45b86584c1407e5bdb1470929a9cac5495cd5be06659cadde63",
+        "reasons": "1faab8405038e4d8ea81c812c5178193909152c9771d8261e96ba54fb6864e38"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "pair": "model-parent-provenance",
+          "type": "mirrored",
+          "concern": {
+            "id": "model-parent-provenance-introduced",
+            "citations": [
+              {
+                "id": "1",
+                "side": "REMOVED"
+              }
+            ]
+          },
+          "clean": {
+            "id": "model-parent-provenance-repaired",
+            "citations": [
+              {
+                "id": "2",
+                "side": "ADDED"
+              }
+            ]
+          },
+          "cited_sides": {
+            "concern": [
+              "REMOVED"
+            ],
+            "clean": [
+              "ADDED"
+            ]
+          },
+          "sentences_equal": true,
+          "citations_exist": true,
+          "sides_equal": false,
+          "pass": false
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=3 sentences 26/26 citations 23/26\nH8v2 FAIL failures=1 same_diff 18/18 mirrored 7/8 sentences 26/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "unequal-pair-sentence-count",
+      "target_check": "H8v2",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "e5773606dbc035abc7cbf17a9d8dd2ffa5175527b267ff12acd3dd4416749e00",
+        "after": "84a61114a6e728514326923f9b15954dc1a22c45d554f028acb34c328f692bcf",
+        "reasons": "e2128e17cce13f1c491c71ace24458d224cc4b2eaf4d20898885a517ad349c98"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "PASS"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "pair": "scoped-python-analysis",
+          "type": "same_diff",
+          "concern": {
+            "id": "scoped-python-analysis-concern",
+            "citations": [
+              {
+                "id": "1",
+                "side": "ADDED"
+              }
+            ]
+          },
+          "clean": {
+            "id": "scoped-python-analysis-clean",
+            "citations": [
+              {
+                "id": "1",
+                "side": "ADDED"
+              }
+            ]
+          },
+          "cited_sides": {
+            "concern": [
+              "ADDED"
+            ],
+            "clean": [
+              "ADDED"
+            ]
+          },
+          "sentences_equal": false,
+          "citations_exist": true,
+          "citations_equal": true,
+          "pass": false
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":51,\"3\":1}\nH8 FAIL failures=3 sentences 25/26 citations 24/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 25/26\nH9 PASS failures=0 hits 0 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "forbidden-shape-unadjudicated",
+      "target_check": "H9",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "00aa471fbf216cab2cd7e184a50518e06bb07eccba508cc6cee4145b283604a2",
+        "after": "61df15ef0b831d35e241948ed8440bd856cc7696a954fb878004c8ba6f250a61",
+        "reasons": "7b0ecc9d140c344e357e8b81e42aca79b2d68a56304e50cc7150dac4bd98c756"
+      },
+      "adjudication": null,
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "FAIL"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "key": "scoped-python-analysis-concern:8:patch is large",
+          "verdict": null
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":51,\"3\":1}\nH8 FAIL failures=3 sentences 25/26 citations 24/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 25/26\nH9 FAIL failures=1 hits 1 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "forbidden-shape-content-adjudication",
+      "target_check": "H9",
+      "expected_target_status": "PASS",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "00aa471fbf216cab2cd7e184a50518e06bb07eccba508cc6cee4145b283604a2",
+        "after": "61df15ef0b831d35e241948ed8440bd856cc7696a954fb878004c8ba6f250a61",
+        "reasons": "7b0ecc9d140c344e357e8b81e42aca79b2d68a56304e50cc7150dac4bd98c756"
+      },
+      "adjudication": {
+        "scoped-python-analysis-concern:8:patch is large": {
+          "verdict": "content",
+          "reason": "Synthetic branch control, not a substantive adjudication."
+        }
+      },
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "PASS"
+      },
+      "target_failure_count": 0,
+      "target_failures": [],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":51,\"3\":1}\nH8 FAIL failures=3 sentences 25/26 citations 24/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 25/26\nH9 PASS failures=0 hits 1 content 1 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "forbidden-shape-shape-adjudication",
+      "target_check": "H9",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [
+        "before",
+        "after",
+        "reasons"
+      ],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "00aa471fbf216cab2cd7e184a50518e06bb07eccba508cc6cee4145b283604a2",
+        "after": "61df15ef0b831d35e241948ed8440bd856cc7696a954fb878004c8ba6f250a61",
+        "reasons": "7b0ecc9d140c344e357e8b81e42aca79b2d68a56304e50cc7150dac4bd98c756"
+      },
+      "adjudication": {
+        "scoped-python-analysis-concern:8:patch is large": {
+          "verdict": "shape",
+          "reason": "Synthetic branch control."
+        }
+      },
+      "statuses": {
+        "H1": "FAIL",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "FAIL",
+        "H9": "FAIL"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "key": "scoped-python-analysis-concern:8:patch is large",
+          "verdict": "shape"
+        }
+      ],
+      "stdout": "H1 FAIL failures=3 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":51,\"3\":1}\nH8 FAIL failures=3 sentences 25/26 citations 24/26\nH8v2 FAIL failures=1 same_diff 17/18 mirrored 8/8 sentences 25/26\nH9 FAIL failures=1 hits 1 content 0 stale 0\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "case": "stale-adjudication",
+      "target_check": "H9",
+      "expected_target_status": "FAIL",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "changed_inputs": [],
+      "input_sha256": {
+        "v5": "a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417",
+        "before": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+        "after": "d5f3e06e62440135d2a4e8a91c99705d68e69ce3ad2dde5bac272ba647b42218",
+        "reasons": "c2269304dea5dbe65a42308116a51b383d9a535ec47fca7cedd122136c670e45"
+      },
+      "adjudication": {
+        "nonexistent:8:patch is large": {
+          "verdict": "content"
+        }
+      },
+      "statuses": {
+        "H1": "PASS",
+        "H2": "PASS",
+        "H3": "PASS",
+        "H4_strict": "DEVIATION",
+        "H4_suffix": "PASS",
+        "H5": "PASS",
+        "H6": "PASS",
+        "H7": "PASS",
+        "H8": "FAIL",
+        "H8v2": "PASS",
+        "H9": "FAIL"
+      },
+      "target_failure_count": 1,
+      "target_failures": [
+        {
+          "key": "nonexistent:8:patch is large",
+          "error": "stale adjudication"
+        }
+      ],
+      "stdout": "H1 PASS failures=0 reasons.source.sha256=a677211e90576dea45ad4fa534fc97a3a6496944d63df99315ed934505936417\nH2 PASS failures=0 rows 76/76/76 review 52 reasons 52\nH3 PASS failures=0 nonreview 24\nH4_strict DEVIATION failures=104 review rows 52 x 2 arms\nH4_suffix PASS failures=0 unique_deltas=1 \" Include a concise analysis string connecting the relevant rule, changed line and consequence.\"x104\nH5 PASS failures=0 pairs 26\nH6 PASS failures=0 review rows 52\nH7 PASS failures=0 sentence counts {\"2\":52}\nH8 FAIL failures=2 sentences 26/26 citations 24/26\nH8v2 PASS failures=0 same_diff 18/18 mirrored 8/8 sentences 26/26\nH9 FAIL failures=1 hits 0 content 0 stale 1\n",
+      "stderr": "",
+      "passed": true
+    }
+  ],
+  "passed": 18,
+  "total": 18,
+  "all_passed": true
+}

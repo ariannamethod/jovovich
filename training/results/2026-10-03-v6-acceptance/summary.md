@@ -57,6 +57,14 @@ After H8v2, ten mutations including a REMOVED-side citation and a nonexistent
 line id: 10/10 (`red-run-v2.log`). H9 adjudication: `content` passes, `shape`
 and a stale key fail.
 
+**Evidence correction, 2026-10-03:** neither referenced original red-run log
+was included in the published tree or found in the available Git history.
+The 7/8 and 10/10 numbers above remain the author's historical report and are
+not independently verifiable from this archive. A new, separately timestamped
+[acceptance audit](../2026-10-03-runpod-launch/acceptance-audit.md) publishes its
+runner, mutations and target-check results. It does not reconstruct or certify
+those missing original runs.
+
 ## Native JVPR2
 
 `make probe-pairs`, `training/prepare.py --pair-format 2`, and
