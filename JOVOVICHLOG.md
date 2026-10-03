@@ -27,6 +27,48 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-03 — The workspace vanished. The receipts did not.
+
+The next session reported automated workspace maintenance. The local repository,
+model files, archive environment and original trainer processes were gone.
+The last interactive observation had been before update 48. A fresh read of
+private `ataeff/jovovich` found a later immutable head,
+`a8013d35d46c5ccfe2fd4d1a95ecf8a6f5f9c825`: 60 closed units comprising the
+launch intent and updates 0 through 58. No completion, after or evaluation
+unit was present. Exact process termination timing is not established.
+
+`DurableArchive.recover` restored the complete prefix from that pinned revision
+and verified every referenced payload: 192 unique payloads, 164,281,543 logical
+bytes across the manifests. All six weight files survive for each checkpoint
+at updates 0, 25 and 50. The per-update metric segments reconstruct exactly
+into the published 677,871-byte partial journal. An independent auditor rehashed
+all 247 restored logical files and recomputed every native decision/pair aggregate.
+The original private archive is unchanged; the interrupted attempt keeps its
+original run ID.
+
+At update 58, the native teacher-forced record reports 32/52 decision tokens,
+7/26 exact decision pairs and joint CE 2.88287829. These are measurements from
+an incomplete first arm, not a matched order comparison or a natural-generation
+result. The planned update-100 endpoint has not been reached.
+
+The snapshots contain LoRA weights and merged matrices, without Chuck controller
+or optimizer moments. Loading checkpoint 50 would not resume the same trajectory.
+The frozen recovery policy therefore requires a fresh 0-to-100 attempt with a
+new ID. Move that attempt to a persistent Linux host which keeps the process
+alive through both arms and evaluation. Remote evidence storage succeeded;
+it cannot preserve unexported optimizer RAM after the compute host disappears.
+
+The exact public base was restored and hash-checked; current sources rebuilt.
+Fresh native preparation again passed all 304 ChatML comparisons and the complete
+launch preflight. No replacement training was started in this transient workspace.
+A reviewed host launch recipe accompanies the recovered evidence; weights remain
+in the private archive, and source/protocol bindings are regenerated on the host.
+
+Evidence and recovered metric prefix:
+`training/results/2026-10-03-order-recovery/`.
+
+SERGE kept the receipts. The cigarette remains singular.
+
 ## 2026-10-03 — The witness brought an unlisted colleague.
 
 PR #21 review found that `score_decisions.py` imports `summarize` from

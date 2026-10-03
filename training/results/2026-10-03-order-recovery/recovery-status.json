@@ -1,0 +1,10 @@
+{
+  "finished_utc": "2026-10-03T19:22:05.056328+00:00",
+  "revision": "a8013d35d46c5ccfe2fd4d1a95ecf8a6f5f9c825",
+  "verified_remote_bytes": true,
+  "units": 60,
+  "last_unit": "update-058",
+  "recovered_destination": "models/recovered-order-20261003-01-before",
+  "unique_payloads": 192,
+  "logical_bytes": 164281543
+}

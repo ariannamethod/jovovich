@@ -1,0 +1,164 @@
+{
+  "observed_utc": "2026-10-03T19:24:35.174807+00:00",
+  "status": "interrupted_environment_pruned",
+  "training_run": "order-20261003-01-before",
+  "last_closed_update": 58,
+  "closed_units": 60,
+  "verified_remote_revision": "a8013d35d46c5ccfe2fd4d1a95ecf8a6f5f9c825",
+  "verified_remote_bytes": true,
+  "recovered_full_checkpoints": [
+    {
+      "update": 0,
+      "files": [
+        {
+          "git_blob_sha1": "2d042bb5d9e0012951454a1b5691213a658a19cc",
+          "name": "adapter.epoch00.down.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/92cda3081ba2e03dca8624288c6c18e2fec2da9ac6b914f7d869a77c7cf5e9a5",
+          "sha256": "92cda3081ba2e03dca8624288c6c18e2fec2da9ac6b914f7d869a77c7cf5e9a5",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "483be5ff42369ca639cafb8c81b995713a282fd6",
+          "name": "adapter.epoch00.down.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a",
+          "sha256": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "fd5cf89af5eaefd44875189fb3129c84bf325aa5",
+          "name": "adapter.epoch00.gate.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/284757c3491d72c443b569b61c4f3cbc3a4ad3e50640230b1cf3b630d9fcb557",
+          "sha256": "284757c3491d72c443b569b61c4f3cbc3a4ad3e50640230b1cf3b630d9fcb557",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "3ed18d1a5df6b950506b6473e8f2c9381980674c",
+          "name": "adapter.epoch00.gate.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+          "sha256": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "fce582e1a5dc59b38f4331d8cb0bb9b769a375b7",
+          "name": "adapter.epoch00.up.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/6d399179dbd2a3c4d4645188ce02326ef595e1afce198e3f6e06d08ea2f47661",
+          "sha256": "6d399179dbd2a3c4d4645188ce02326ef595e1afce198e3f6e06d08ea2f47661",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "63b14e96392a2c8817e9f90b05e755e5ce8a052a",
+          "name": "adapter.epoch00.up.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+          "sha256": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+          "size": 368693
+        }
+      ]
+    },
+    {
+      "update": 25,
+      "files": [
+        {
+          "git_blob_sha1": "21d3c165729f05960da03750279a79f066bdf96e",
+          "name": "adapter.epoch25.down.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/2117a6b0315c6e779e36d10042872d567927f03e7393c5b5c80254c50f8db846",
+          "sha256": "2117a6b0315c6e779e36d10042872d567927f03e7393c5b5c80254c50f8db846",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "d540854b38c46da77a49eb9ac27bfb950f0fc0a1",
+          "name": "adapter.epoch25.down.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/7be706f17e560add41e2ac6f51a7ff0efc67a549c82c0b2dd5d06da0faef63e2",
+          "sha256": "7be706f17e560add41e2ac6f51a7ff0efc67a549c82c0b2dd5d06da0faef63e2",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "797aee6e8ee5dddb3650cf5137d2a485afed1106",
+          "name": "adapter.epoch25.gate.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/7f85247dca982a6e1f9df28573d31daa1345135d8eb4209e2a0d893baad75f49",
+          "sha256": "7f85247dca982a6e1f9df28573d31daa1345135d8eb4209e2a0d893baad75f49",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "8ef297c5d09b7beb27ef6785dc8cd28921d93d05",
+          "name": "adapter.epoch25.gate.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/2d2e7e4ce81169ad22452888f2cd2bbbbae154a55595c4a4fc4e9d0684f95b08",
+          "sha256": "2d2e7e4ce81169ad22452888f2cd2bbbbae154a55595c4a4fc4e9d0684f95b08",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "38ed083146faec6ff5fb4e956689263f355251bb",
+          "name": "adapter.epoch25.up.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/21599981acbe3acf56356b99e84c17afc3130237fe5a36993b4db40cdbbf60d8",
+          "sha256": "21599981acbe3acf56356b99e84c17afc3130237fe5a36993b4db40cdbbf60d8",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "ce4f7af7f385a4b24e9d736cdeefb0a4b93bdc57",
+          "name": "adapter.epoch25.up.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/8e42f26b0219a35c983c0a67827f0dc621393de2ee40dd646224d92af03d5b00",
+          "sha256": "8e42f26b0219a35c983c0a67827f0dc621393de2ee40dd646224d92af03d5b00",
+          "size": 368693
+        }
+      ]
+    },
+    {
+      "update": 50,
+      "files": [
+        {
+          "git_blob_sha1": "d7de7ae36c75b8839f109a746fa4488274e40dd9",
+          "name": "adapter.epoch50.down.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/68cb55536b90bcbd459e223258bc4b31ef8ce12a3e1fb2a396ee9a693d7a6235",
+          "sha256": "68cb55536b90bcbd459e223258bc4b31ef8ce12a3e1fb2a396ee9a693d7a6235",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "5c5f854634d0f7a224145a0295426a0c71170183",
+          "name": "adapter.epoch50.down.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/4a565eae6809e7ce3317417c15ebf21326f3249e3e0ff71f0598df3805acccfc",
+          "sha256": "4a565eae6809e7ce3317417c15ebf21326f3249e3e0ff71f0598df3805acccfc",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "730f995380196c2c9b3d8df9313d7f8ec7fa0598",
+          "name": "adapter.epoch50.gate.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/c022b1b8cd45bcaa95a7e4f132b52b9a3ba202df885040c7d5fc98486f63dfb8",
+          "sha256": "c022b1b8cd45bcaa95a7e4f132b52b9a3ba202df885040c7d5fc98486f63dfb8",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "af868f23a857a99f545bd0e8c2c2ad504b7070db",
+          "name": "adapter.epoch50.gate.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/d74ede92efac7ec7d58483371fd95d6a03fdb2685e8e3fb841fe6c53b322123b",
+          "sha256": "d74ede92efac7ec7d58483371fd95d6a03fdb2685e8e3fb841fe6c53b322123b",
+          "size": 368695
+        },
+        {
+          "git_blob_sha1": "783f74f0fd11c78d9ce94c04686584aa4b5e21f0",
+          "name": "adapter.epoch50.up.f32",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/e03185771bbbccb54b8f919b05f096166deef505f651849912b2bf45141fb597",
+          "sha256": "e03185771bbbccb54b8f919b05f096166deef505f651849912b2bf45141fb597",
+          "size": 17432576
+        },
+        {
+          "git_blob_sha1": "96e4bef09f606ce130b1f17e7ed287adec236086",
+          "name": "adapter.epoch50.up.lora",
+          "object": "experiments/explanation-order/order-20261003-01-before/objects/ccffdeec2681bbd64842bd2047064b30e284ef6ca25be10ae9e004fcc184ab2b",
+          "sha256": "ccffdeec2681bbd64842bd2047064b30e284ef6ca25be10ae9e004fcc184ab2b",
+          "size": 368693
+        }
+      ]
+    }
+  ],
+  "optimizer_state_present": false,
+  "complete_before": false,
+  "after_started": false,
+  "evaluation_started": false,
+  "reconstructed_metrics": {
+    "path": "partial-metrics.jsonl",
+    "bytes": 677871,
+    "sha256": "24d9b35c9b00c9c501565a979a40ff8d61acf48ba680c238ea87a14eb1d33594"
+  },
+  "cause_evidence": "The runtime explicitly reported automated workspace maintenance; the prior workspace directories and training PIDs were absent on the next turn. Exact termination timing is not established.",
+  "inference_limit": "The archive preserves an incomplete first arm; no matched before/after or natural-generation conclusion is available.",
+  "next_run": "Fresh 0..100 attempt on a persistent host, same scientific protocol and corrected source bindings; restored LoRA weights do not restore the Chuck controller and optimizer moments/counters."
+}
