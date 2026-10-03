@@ -1,0 +1,89 @@
+{
+  "status": "pass",
+  "started_utc": "2026-10-03T18:33:12.129560+00:00",
+  "finished_utc": "2026-10-03T18:33:14.742951+00:00",
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "test/explanation_launches.test.mjs"
+      ],
+      "started_utc": "2026-10-03T18:33:12.129797+00:00",
+      "finished_utc": "2026-10-03T18:33:12.486893+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "node",
+        "test/explanation_execution.test.mjs"
+      ],
+      "started_utc": "2026-10-03T18:33:12.486953+00:00",
+      "finished_utc": "2026-10-03T18:33:14.257531+00:00",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "node",
+        "test/continuation.test.mjs"
+      ],
+      "started_utc": "2026-10-03T18:33:14.257573+00:00",
+      "finished_utc": "2026-10-03T18:33:14.742170+00:00",
+      "exit_code": 0
+    }
+  ],
+  "tests": 22,
+  "sources_unchanged": true,
+  "bindings": {
+    "training/explanations/prepare_launches.py": {
+      "bytes": 10247,
+      "sha256": "fea623728d9761da211a927f35891e26e73782416ba21f35ad284cee68fd233d"
+    },
+    "training/explanations/evaluation_plan.json": {
+      "bytes": 27814,
+      "sha256": "84c547e6e77dbf9a6d23254d7ae301cea61178c4628357785d479c6ca740a524"
+    },
+    "training/explanations/execute_evaluation.py": {
+      "bytes": 26294,
+      "sha256": "061dfd93f7dffaa032a26ea6449cc1305d5467e23022383e1046cf6b43788c54"
+    },
+    "training/explanations/continue_experiment.py": {
+      "bytes": 15808,
+      "sha256": "01428e07fe150504624595771b5f73f669c946dc0034e08151a259a43ea5d505"
+    },
+    "training/score_decisions.py": {
+      "bytes": 24469,
+      "sha256": "58442cd95f4721999c8e3a43105f7e1b3d08466929a895a6c829e4091b32187c"
+    },
+    "training/score_training.py": {
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    "training/prepare.py": {
+      "bytes": 7692,
+      "sha256": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd"
+    },
+    "test/explanation_launches.test.mjs": {
+      "bytes": 10790,
+      "sha256": "5c64cab2c7384ed4fec9fd795a00cc897fe5f67f478263b22ee4925b697f5fde"
+    },
+    "test/explanation_execution.test.mjs": {
+      "bytes": 14905,
+      "sha256": "60c294b26ce7fce4a0514367ef7020c0d4dbcb4b5f17b2aefdda2a2d91b591c9"
+    },
+    "test/continuation.test.mjs": {
+      "bytes": 9558,
+      "sha256": "9ae9bd2447ebd8acaed7238c740047093753a65c8eed2ee6171c23834f34e997"
+    },
+    "README.md": {
+      "bytes": 54666,
+      "sha256": "40daa38a446a06d59d4ee26925d463e74f8892a8b7c28220d1da55d9e5d73ecd"
+    }
+  },
+  "log": {
+    "path": "training/results/2026-10-03-diagnostic-binding/tests.output.txt",
+    "bytes": 2428,
+    "sha256": "2a212310ef63616c306675f56dfbe6a4f3a34afd65b3a982246fc513519f0a00"
+  },
+  "native_model_calls": 0,
+  "training_updates": 0
+}

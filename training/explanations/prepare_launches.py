@@ -55,19 +55,46 @@ def prepare(base, preflight, output, run_prefix):
     spec_path = ROOT / 'training/explanations/plan.json'
     spec = json.loads(spec_path.read_text())
     need(sha(base) == spec['training']['base_expected_sha256'], 'wrong base model')
+    evaluation_template = ROOT / 'training/explanations/evaluation_plan.json'
+    evaluation = json.loads(evaluation_template.read_text())
+    need(evaluation['schema'] == 'jovovich.explanation-order.evaluation.v1',
+         'unsupported evaluation contract')
+    packed = set()
+    # Freeze the selected preflight paths before either arm starts. The source
+    # contract's archived example paths are not the paths of a fresh repeat.
+    for arm in ('before', 'after'):
+        export = next(item for item in evaluation['exports'] if item['arm'] == arm)
+        parity = next(step for step in export['steps'] if step['id'] == arm + '-native-export-parity')
+        previous = parity['argv'][3]
+        previous_pair = previous[:-4] + '.pairs.bin'
+        dataset = str((preflight / (arm + '.bin')).relative_to(ROOT))
+        pair_map = str((preflight / (arm + '.pairs.bin')).relative_to(ROOT))
+        need(previous in evaluation['required_pretraining_launch_bindings'] and
+             previous_pair in evaluation['required_pretraining_launch_bindings'],
+             'evaluation packed-input requirements are incomplete')
+        parity['argv'][3] = dataset
+        replacements = {previous: dataset, previous_pair: pair_map}
+        evaluation['required_pretraining_launch_bindings'] = [
+            replacements.get(path, path) for path in evaluation['required_pretraining_launch_bindings']]
+        packed.update((dataset, pair_map))
+    evaluation_path = output / 'evaluation-plan.json'
+    evaluation['required_pretraining_launch_bindings'].append(str(evaluation_path.relative_to(ROOT)))
     common = [base, ROOT / 'build/jovovich-train-mlp', spec_path,
               ROOT / 'training/durable_archive.py', ROOT / 'training/layers/run_layers.py',
               ROOT / 'training/train_mlp.c', ROOT / 'training/prepare.py',
-              ROOT / 'training/score_decisions.py', ROOT / 'training/explanations/reasons.json',
+              ROOT / 'training/score_decisions.py', ROOT / 'training/score_training.py',
+              ROOT / 'training/explanations/reasons.json',
               ROOT / 'training/sft_review_v5.jsonl', ROOT / 'training/review_holdout_v5.jsonl',
               ROOT / 'training/sft_review_v6_before.jsonl', ROOT / 'training/sft_review_v6_after.jsonl',
-              preflight / 'verification.json', preflight / 'bindings.json']
+              preflight / 'verification.json', preflight / 'bindings.json', evaluation_path]
+    common += [ROOT / path for path in evaluation['required_pretraining_launch_bindings'] if path not in packed]
     common += sorted((ROOT / 'training/explanations').glob('*.py'))
     common += [ROOT / 'deps/notorch' / name for name in (
         'notorch.c', 'notorch.h', 'notorch_simd.h', 'gguf.c', 'gguf.h',
         'harness/runtime.c', 'harness/runtime.h', 'harness/arch_llama.c',
         'harness/arch.h', 'harness/arch_models.h', 'examples/bpe.c', 'examples/bpe.h')]
     output.mkdir(parents=True)
+    save(evaluation_path, evaluation)
     for arm in ('before', 'after'):
         paths = common + [preflight / (arm + '.bin'), preflight / (arm + '.pairs.bin')]
         bound = [binding(p) for p in dict.fromkeys(paths)]
@@ -79,7 +106,8 @@ def prepare(base, preflight, output, run_prefix):
                 'environment': spec['training']['native_environment'], 'bindings': bound,
                 'remote': {'private': True, 'repo': 'ataeff/jovovich',
                            'prefix': 'experiments/explanation-order'}, 'ack_timeout_ms': 300000,
-                'arm': arm, 'scientific_plan_sha256': sha(spec_path)}
+                'arm': arm, 'scientific_plan_sha256': sha(spec_path),
+                'evaluation_plan': str(evaluation_path.relative_to(ROOT))}
         validate_plan(plan)
         if arm == 'after':
             plan['schema_version'] = 'awaiting-before-initialization'
@@ -87,6 +115,7 @@ def prepare(base, preflight, output, run_prefix):
         else:
             save(output / 'before.launch.json', plan)
     print(json.dumps({'status': 'prepared', 'directory': str(output),
+                      'evaluation_plan': str(evaluation_path),
                       'after_requires': 'bind-after with the completed, remotely verified before run'}))
 
 

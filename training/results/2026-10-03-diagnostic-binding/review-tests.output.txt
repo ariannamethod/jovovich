@@ -1,0 +1,9 @@
+Independent rerun in isolated jovovich-diagnostic-bindings worktree.
+Recorded from the three completed tool results; this is an execution summary, not a reconstructed raw stream.
+node test/explanation_launches.test.mjs
+{"exit_code": 0, "tests": 4, "passed": 4, "failed": 0, "duration_ms": 465.114779}
+node test/explanation_execution.test.mjs
+{"exit_code": 0, "tests": 9, "passed": 9, "failed": 0, "duration_ms": 1803.886411}
+node test/continuation.test.mjs
+{"exit_code": 0, "tests": 9, "passed": 9, "failed": 0, "duration_ms": 630.226463}
+Total: 22 passed, 0 failed. No actual training, inference, archive transport, or credential access.

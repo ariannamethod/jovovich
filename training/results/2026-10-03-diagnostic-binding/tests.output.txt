@@ -1,0 +1,49 @@
+{"command": ["node", "test/explanation_launches.test.mjs"]}
+✔ after launch binds nested verified completion and initialization hashes (59.961532ms)
+✔ after launch rejects changed receipts, local plans and invalid adapter hashes (39.288064ms)
+✔ after launch rejects differing training settings and missing shared bindings (39.257939ms)
+✔ fresh launches freeze evaluation inputs and detect imported diagnostic scorer mutation (177.065714ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 321.451628
+{"command": ["node", "test/explanation_execution.test.mjs"]}
+✔ evaluation orchestration: success (449.171451ms)
+✔ evaluation orchestration: bootstrap-fail (43.164996ms)
+✔ evaluation orchestration: merge-archive-fail (73.087815ms)
+✔ evaluation orchestration: source-mutation (189.064986ms)
+✔ evaluation orchestration: prompt-mismatch (439.079156ms)
+✔ evaluation orchestration: generation-mutation (202.085976ms)
+✔ evaluation orchestration: outer-plan-mutation (200.763683ms)
+✔ evaluation subprocess environment retains only declared native settings (48.25385ms)
+✔ evaluation preflight accepts arm-local datasets and rejects swapped arms or protocol drift (84.29178ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1736.535752
+{"command": ["node", "test/continuation.test.mjs"]}
+✔ continuation waits for verified completion and the exact original parent exit (46.820724ms)
+✔ continuation handles partial JSON while parent lives and fails without a completed receipt (45.629841ms)
+✔ continuation times out and rejects corrupt verified receipt bytes (46.375787ms)
+✔ continuation runs one writer at a time with bound after launch and pending semantic audit (57.270245ms)
+✔ continuation does not initialize archive on before failure or restart failed phases (41.021479ms)
+✔ continuation CLI validates required named arguments without reading credentials (46.581507ms)
+✔ continuation stops between phases when the bound after plan or supervisor bytes change (53.955428ms)
+✔ continuation archives closed child failures and preserves pending archive units (52.455427ms)
+✔ continuation rejects completion identity and acknowledgement field substitution (51.080505ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 448.623551

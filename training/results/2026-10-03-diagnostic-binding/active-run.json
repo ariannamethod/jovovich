@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-10-03T18:24:51.836643+00:00",
+  "finding": "https://github.com/ariannamethod/jovovich/pull/21#discussion_r4174281648",
+  "dependency": {
+    "path": "training/score_training.py",
+    "bytes": 7249,
+    "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33",
+    "matches_launch_commit": "064dd2c721eaf6ba6a1958f97c10852161b09e55",
+    "git_blob_sha1": "d0de957ecc7d7926621a30ecfa9725a904759f38"
+  },
+  "frozen_plans": {
+    "before": {
+      "path": "models/order-20261003-01-before/plan.json",
+      "sha256": "60f13bba578ca3bc65cf46c76e450b4ef9b99ea6fa84e861e8945a4632297423",
+      "scorer_bound": false
+    },
+    "continuation": {
+      "path": "models/order-20261003-01-supervisor/plan.json",
+      "sha256": "28f79b2db3457f0af6aebe26bc9e13311bd485a257ce24bc9a518c3f229ff9f1",
+      "scorer_bound": false
+    }
+  },
+  "active_before": {
+    "latest_verified_unit": "update-036",
+    "revision": "ad488dcd110084ea9b3c1ba8bb6f7ca11f046181",
+    "local_payload_hashes_match_receipt": true,
+    "failure_present": false,
+    "completion_present": false
+  },
+  "treatment": {
+    "original_sources_and_plans": "unchanged; no retrospective binding",
+    "training": "continue fixed 100-update paired experiment",
+    "teacher_forced_reports": "provisional until reproduced with explicitly bound original scorer against archived metrics and corpora",
+    "required_followup": "check original scorer SHA256, freeze scorer plus score_decisions.py and prepare.py, rerun both reports, compare every scientific field and metrics_sha256/sft_sha256; document only metrics/sft path substitutions if recovered paths differ; record result before drawing diagnostic conclusions",
+    "native_generation": "independent of score_training.summarize; existing export and generation checks still apply"
+  }
+}

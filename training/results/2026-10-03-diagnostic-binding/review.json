@@ -1,0 +1,249 @@
+{
+  "schema": "jovovich.diagnostic-binding.review.v1",
+  "auditor": "independent explanation_auditor agent",
+  "reviewed_utc": "2026-10-03T18:34:38.001972+00:00",
+  "status": "pass",
+  "blocking_findings": [],
+  "scope": "Read-only inspection of the live experiment dependency closure; code review and targeted synthetic regressions only in the isolated diagnostic-bindings worktree.",
+  "confirmed_finding": {
+    "source": "PR21 discussion_r4174281648",
+    "severity": "P2",
+    "dependency": "training/score_decisions.py:10 imports summarize from training/score_training.py",
+    "original_problem": "The import was absent from original training launch bindings and the required evaluation bindings, so existing guards did not detect changes to it.",
+    "actual_effect": "summarize validates and computes full teacher-forced readout group/pair statistics at updates0/25/50/75/100. An incompatible edit could change those diagnostic reports or stop evaluation. It is not called by the native optimizer, fixed update100 export, or natural-generation collector."
+  },
+  "dependency_audit": {
+    "method": "Read Python AST imports at all scopes plus explicit dynamic GGUF module loading and embedded Node imports; compare repository dependencies against the original 50-file launch and supervisor/evaluator coverage.",
+    "repository_edges": [
+      {
+        "source": "training/score_decisions.py",
+        "dependency": "training/prepare.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/score_decisions.py",
+        "dependency": "training/score_training.py",
+        "coverage": "omitted_in_original_launch; fixed_for_fresh_launches"
+      },
+      {
+        "source": "training/explanations/score_generation.py",
+        "dependency": "training/explanations/collect_generation.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/collect_generation.py",
+        "dependency": "training/explanations/build_corpora.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/collect_generation.py",
+        "dependency": "training/durable_archive.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/collect_generation.py",
+        "dependency": "bin/jovovich.mjs",
+        "coverage": "frozen embedded Node import"
+      },
+      {
+        "source": "training/explanations/collect_generation.py",
+        "dependency": "prompts/identity.txt",
+        "coverage": "frozen prompt resource"
+      },
+      {
+        "source": "training/explanations/execute_evaluation.py",
+        "dependency": "training/explanations/collect_generation.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/execute_evaluation.py",
+        "dependency": "training/durable_archive.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/execute_evaluation.py",
+        "dependency": "training/layers/run_layers.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/run_training.py",
+        "dependency": "training/durable_archive.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/run_training.py",
+        "dependency": "training/layers/run_layers.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/prepare_launches.py",
+        "dependency": "training/explanations/run_training.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/continue_experiment.py",
+        "dependency": "training/layers/run_layers.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/explanations/continue_experiment.py",
+        "dependency": "training/durable_archive.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/layers/run_layers.py",
+        "dependency": "training/durable_archive.py",
+        "coverage": "frozen"
+      },
+      {
+        "source": "training/results/2026-09-29-verdict-balance/verify_verdict_export.py",
+        "dependency": "training/results/2026-09-29-convergence/check_convergence_export.py",
+        "coverage": "frozen dynamic module import"
+      }
+    ],
+    "additional_unbound_repository_dependencies": [],
+    "leaf_modules_with_only_standard_library_imports": [
+      "training/score_training.py",
+      "training/prepare.py",
+      "training/explanations/build_corpora.py",
+      "training/durable_archive.py",
+      "training/results/2026-09-29-convergence/check_convergence_export.py"
+    ]
+  },
+  "future_fix_review": [
+    "Launch preparation binds score_training.py together with score_decisions.py and prepare.py.",
+    "Evaluation explicitly requires the diagnostic entry point and both direct imports; the evaluator enforces this minimum even when supplied an older contract.",
+    "Preparation freezes all required evaluation inputs and emits a per-launch contract using the selected preflight packed-data paths; only each arm own packed data/pair map differs.",
+    "The generated contract is itself bound before training. Fresh prepare, bind-after and evaluation preflight succeed without manually augmenting source lists.",
+    "Future continuation supervisors bind the same diagnostic trio during their wait interval."
+  ],
+  "independent_validation": {
+    "tests": [
+      {
+        "command": [
+          "node",
+          "test/explanation_launches.test.mjs"
+        ],
+        "exit_code": 0,
+        "tests": 4,
+        "passed": 4,
+        "failed": 0,
+        "duration_ms": 465.114779
+      },
+      {
+        "command": [
+          "node",
+          "test/explanation_execution.test.mjs"
+        ],
+        "exit_code": 0,
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "duration_ms": 1803.886411
+      },
+      {
+        "command": [
+          "node",
+          "test/continuation.test.mjs"
+        ],
+        "exit_code": 0,
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "duration_ms": 630.226463
+      }
+    ],
+    "total_passed": 22,
+    "total_failed": 0,
+    "specific_regressions": [
+      "same-size imported-helper mutation rejected before diagnostics or archive writes",
+      "internally consistent historical receipts missing helper binding rejected",
+      "fresh custom preflight paths propagate to both launch and numeric parity contract",
+      "existing receipt, arm identity, protocol drift, archive failure, generation mutation, prompt mismatch and supervisor continuation checks remain passing"
+    ]
+  },
+  "current_run_treatment": {
+    "original_launch": {
+      "path": "models/order-20261003-01-before/plan.json",
+      "bytes": 9397,
+      "sha256": "60f13bba578ca3bc65cf46c76e450b4ef9b99ea6fa84e861e8945a4632297423"
+    },
+    "omitted_helper_at_review": {
+      "path": "training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    "matches_prelaunch_commit": "064dd2c",
+    "matches_prelaunch_bytes": true,
+    "do_not_modify": [
+      "live sources",
+      "live launch plans",
+      "after template",
+      "live supervisor plan",
+      "running processes"
+    ],
+    "interpretation": "The original launch did not pre-bind this helper. Present byte equality with prelaunch Git history is supplemental evidence, not a retroactive launch binding.",
+    "action": "Allow unchanged fixed-math training and frozen continuation to finish. Keep teacher-forced reports provisional until replayed with an explicitly bound immutable scorer dependency closure against archived final metrics and corpora.",
+    "comparison": "Require exact equality of all diagnostic fields and metrics/sft SHA256 values. If recovery changes literal metrics/sft path strings, record those two provenance-path substitutions separately.",
+    "restart_required": false
+  },
+  "read_only_live_checkout": true,
+  "bindings": [
+    {
+      "path": "training/explanations/prepare_launches.py",
+      "bytes": 10247,
+      "sha256": "fea623728d9761da211a927f35891e26e73782416ba21f35ad284cee68fd233d"
+    },
+    {
+      "path": "training/explanations/evaluation_plan.json",
+      "bytes": 27814,
+      "sha256": "84c547e6e77dbf9a6d23254d7ae301cea61178c4628357785d479c6ca740a524"
+    },
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "bytes": 26294,
+      "sha256": "061dfd93f7dffaa032a26ea6449cc1305d5467e23022383e1046cf6b43788c54"
+    },
+    {
+      "path": "training/explanations/continue_experiment.py",
+      "bytes": 15808,
+      "sha256": "01428e07fe150504624595771b5f73f669c946dc0034e08151a259a43ea5d505"
+    },
+    {
+      "path": "training/score_decisions.py",
+      "bytes": 24469,
+      "sha256": "58442cd95f4721999c8e3a43105f7e1b3d08466929a895a6c829e4091b32187c"
+    },
+    {
+      "path": "training/score_training.py",
+      "bytes": 7249,
+      "sha256": "5f0dfce44eef8b6cc9bf7aa9d42b8f346386576001b42676a619deb4a399cf33"
+    },
+    {
+      "path": "training/prepare.py",
+      "bytes": 7692,
+      "sha256": "eb3cb8c393763eb91e369e2edad64e9ad9120b7dc9097d600728c69c24c0a5dd"
+    },
+    {
+      "path": "test/explanation_launches.test.mjs",
+      "bytes": 10790,
+      "sha256": "5c64cab2c7384ed4fec9fd795a00cc897fe5f67f478263b22ee4925b697f5fde"
+    },
+    {
+      "path": "test/explanation_execution.test.mjs",
+      "bytes": 14905,
+      "sha256": "60c294b26ce7fce4a0514367ef7020c0d4dbcb4b5f17b2aefdda2a2d91b591c9"
+    },
+    {
+      "path": "test/continuation.test.mjs",
+      "bytes": 9558,
+      "sha256": "9ae9bd2447ebd8acaed7238c740047093753a65c8eed2ee6171c23834f34e997"
+    },
+    {
+      "path": "training/results/2026-10-03-diagnostic-binding/review-tests.output.txt",
+      "bytes": 639,
+      "sha256": "525d7a53d8000e0096039e399c0445fd62cf7163529dd6099380d0964ea939f8"
+    }
+  ],
+  "actual_model_or_private_archive_work_performed_by_auditor": false
+}
