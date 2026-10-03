@@ -860,13 +860,20 @@ before loading the model. Rebuild a stale trainer before preparing its plan.
 The plan records export and generation commands; both collectors expose
 `--help`.
 
-The first real explanation-order run is active after a verified private upload
-and readback. Its [launch bindings and startup audit](training/results/2026-10-03-explanation-order-run)
-include the fixed [evaluation contract](training/explanations/evaluation_plan.json),
-export/parity executables and their sources. That contract fixes epoch 100,
-five native parity rows per arm and all 228 natural responses before training.
-The evaluator records teacher-forced diagnostics separately from complete
-responses and leaves semantic judgments for the independent reviewers.
+The first explanation-order attempt was interrupted by workspace maintenance.
+Its [verified recovery](training/results/2026-10-03-order-recovery) preserves
+all closed metric units through update 58 and full weight snapshots at 0/25/50;
+the second arm and natural generation had not started. The snapshots omit
+optimizer state, so the next attempt starts at zero on a persistent Linux host.
+The [host launcher](training/results/2026-10-03-order-recovery/persistent-host-launch.sh)
+runs from the pinned checkout documented in its header and keeps the existing
+private archive barriers throughout the sequential before/after/evaluation path.
+
+The scientific contract fixes epoch 100, five native parity rows per arm and
+all 228 natural responses before training. The evaluator records teacher-forced
+diagnostics separately from complete responses and leaves semantic judgments
+for the independent reviewers. Historical [launch bindings and startup evidence](training/results/2026-10-03-explanation-order-run)
+retain their original executed bytes.
 
 To repeat the survey, use the checksum-pinned base at `models/base-qwen.gguf`
 and a separate Python environment containing `huggingface_hub==0.35.3`.

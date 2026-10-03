@@ -1,0 +1,552 @@
+{
+  "status": "pass",
+  "arms": {
+    "before": {
+      "review_rows": 52,
+      "pairs": 26,
+      "decision_tokens": 52,
+      "residual_tokens": 3411,
+      "max_prompt_tokens": 570,
+      "max_answer_tokens_including_eos": 99,
+      "verdict_position_min": 40,
+      "verdict_position_max": 58
+    },
+    "after": {
+      "review_rows": 52,
+      "pairs": 26,
+      "decision_tokens": 52,
+      "residual_tokens": 3411,
+      "max_prompt_tokens": 570,
+      "max_answer_tokens_including_eos": 99,
+      "verdict_position_min": 3,
+      "verdict_position_max": 3
+    }
+  },
+  "identical_prompt_and_content_rows": 52,
+  "unchanged_nonreview_rows": 24,
+  "native_chatml_comparisons": 304,
+  "comparisons": [
+    {
+      "id": "scoped-python-analysis-concern",
+      "row": 0,
+      "before_position": 45,
+      "after_position": 3,
+      "before_answer_tokens": 82,
+      "after_answer_tokens": 82,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "scoped-python-analysis-clean",
+      "row": 1,
+      "before_position": 42,
+      "after_position": 3,
+      "before_answer_tokens": 46,
+      "after_answer_tokens": 46,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "approved-binary-decoder-concern",
+      "row": 4,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 78,
+      "after_answer_tokens": 78,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "approved-binary-decoder-clean",
+      "row": 5,
+      "before_position": 44,
+      "after_position": 3,
+      "before_answer_tokens": 48,
+      "after_answer_tokens": 48,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "sqlite-build-requirement-concern",
+      "row": 8,
+      "before_position": 47,
+      "after_position": 3,
+      "before_answer_tokens": 79,
+      "after_answer_tokens": 79,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "sqlite-build-requirement-clean",
+      "row": 9,
+      "before_position": 40,
+      "after_position": 3,
+      "before_answer_tokens": 44,
+      "after_answer_tokens": 44,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "background-service-scope-concern",
+      "row": 12,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 76,
+      "after_answer_tokens": 76,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "background-service-scope-clean",
+      "row": 13,
+      "before_position": 43,
+      "after_position": 3,
+      "before_answer_tokens": 47,
+      "after_answer_tokens": 47,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "preserve-trie-credit-deletion-concern",
+      "row": 16,
+      "before_position": 48,
+      "after_position": 3,
+      "before_answer_tokens": 78,
+      "after_answer_tokens": 78,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "preserve-trie-credit-deletion-clean",
+      "row": 17,
+      "before_position": 50,
+      "after_position": 3,
+      "before_answer_tokens": 54,
+      "after_answer_tokens": 54,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "preserve-trie-credit-replacement-concern",
+      "row": 18,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 76,
+      "after_answer_tokens": 76,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "preserve-trie-credit-replacement-clean",
+      "row": 19,
+      "before_position": 47,
+      "after_position": 3,
+      "before_answer_tokens": 51,
+      "after_answer_tokens": 51,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "model-parent-provenance-introduced",
+      "row": 22,
+      "before_position": 53,
+      "after_position": 3,
+      "before_answer_tokens": 99,
+      "after_answer_tokens": 99,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "model-parent-provenance-repaired",
+      "row": 23,
+      "before_position": 54,
+      "after_position": 3,
+      "before_answer_tokens": 58,
+      "after_answer_tokens": 58,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "scoped-design-record-concern",
+      "row": 26,
+      "before_position": 45,
+      "after_position": 3,
+      "before_answer_tokens": 74,
+      "after_answer_tokens": 74,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "scoped-design-record-clean",
+      "row": 27,
+      "before_position": 52,
+      "after_position": 3,
+      "before_answer_tokens": 56,
+      "after_answer_tokens": 56,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "checksum-indirection-concern",
+      "row": 30,
+      "before_position": 48,
+      "after_position": 3,
+      "before_answer_tokens": 83,
+      "after_answer_tokens": 83,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "checksum-indirection-clean",
+      "row": 31,
+      "before_position": 52,
+      "after_position": 3,
+      "before_answer_tokens": 56,
+      "after_answer_tokens": 56,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "sequence-field-width-introduced",
+      "row": 34,
+      "before_position": 53,
+      "after_position": 3,
+      "before_answer_tokens": 91,
+      "after_answer_tokens": 91,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "sequence-field-width-repaired",
+      "row": 35,
+      "before_position": 49,
+      "after_position": 3,
+      "before_answer_tokens": 53,
+      "after_answer_tokens": 53,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "allocation-null-guard-deletion-concern",
+      "row": 38,
+      "before_position": 52,
+      "after_position": 3,
+      "before_answer_tokens": 80,
+      "after_answer_tokens": 80,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "allocation-null-guard-deletion-clean",
+      "row": 39,
+      "before_position": 43,
+      "after_position": 3,
+      "before_answer_tokens": 47,
+      "after_answer_tokens": 47,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "allocation-null-guard-replacement-concern",
+      "row": 40,
+      "before_position": 56,
+      "after_position": 3,
+      "before_answer_tokens": 84,
+      "after_answer_tokens": 84,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "allocation-null-guard-replacement-clean",
+      "row": 41,
+      "before_position": 52,
+      "after_position": 3,
+      "before_answer_tokens": 56,
+      "after_answer_tokens": 56,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "zero-worker-guard-deletion-concern",
+      "row": 44,
+      "before_position": 48,
+      "after_position": 3,
+      "before_answer_tokens": 77,
+      "after_answer_tokens": 77,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "zero-worker-guard-deletion-clean",
+      "row": 45,
+      "before_position": 42,
+      "after_position": 3,
+      "before_answer_tokens": 46,
+      "after_answer_tokens": 46,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "zero-worker-guard-replacement-concern",
+      "row": 46,
+      "before_position": 52,
+      "after_position": 3,
+      "before_answer_tokens": 81,
+      "after_answer_tokens": 81,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "zero-worker-guard-replacement-clean",
+      "row": 47,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 50,
+      "after_answer_tokens": 50,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "validated-port-conversion-introduced",
+      "row": 50,
+      "before_position": 56,
+      "after_position": 3,
+      "before_answer_tokens": 93,
+      "after_answer_tokens": 93,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "validated-port-conversion-repaired",
+      "row": 51,
+      "before_position": 58,
+      "after_position": 3,
+      "before_answer_tokens": 62,
+      "after_answer_tokens": 62,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "negative-offset-type-introduced",
+      "row": 54,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 77,
+      "after_answer_tokens": 77,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "negative-offset-type-repaired",
+      "row": 55,
+      "before_position": 44,
+      "after_position": 3,
+      "before_answer_tokens": 48,
+      "after_answer_tokens": 48,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "exact-property-name-introduced",
+      "row": 56,
+      "before_position": 47,
+      "after_position": 3,
+      "before_answer_tokens": 75,
+      "after_answer_tokens": 75,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "exact-property-name-repaired",
+      "row": 57,
+      "before_position": 50,
+      "after_position": 3,
+      "before_answer_tokens": 54,
+      "after_answer_tokens": 54,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "idempotent-event-retry-introduced",
+      "row": 58,
+      "before_position": 51,
+      "after_position": 3,
+      "before_answer_tokens": 85,
+      "after_answer_tokens": 85,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "idempotent-event-retry-repaired",
+      "row": 59,
+      "before_position": 46,
+      "after_position": 3,
+      "before_answer_tokens": 50,
+      "after_answer_tokens": 50,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "write-permission-check-deletion-concern",
+      "row": 60,
+      "before_position": 48,
+      "after_position": 3,
+      "before_answer_tokens": 77,
+      "after_answer_tokens": 77,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "write-permission-check-deletion-clean",
+      "row": 61,
+      "before_position": 42,
+      "after_position": 3,
+      "before_answer_tokens": 46,
+      "after_answer_tokens": 46,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "write-permission-check-replacement-concern",
+      "row": 62,
+      "before_position": 56,
+      "after_position": 3,
+      "before_answer_tokens": 85,
+      "after_answer_tokens": 85,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "write-permission-check-replacement-clean",
+      "row": 63,
+      "before_position": 49,
+      "after_position": 3,
+      "before_answer_tokens": 53,
+      "after_answer_tokens": 53,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "stable-manifest-order-deletion-concern",
+      "row": 64,
+      "before_position": 50,
+      "after_position": 3,
+      "before_answer_tokens": 78,
+      "after_answer_tokens": 78,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "stable-manifest-order-deletion-clean",
+      "row": 65,
+      "before_position": 44,
+      "after_position": 3,
+      "before_answer_tokens": 48,
+      "after_answer_tokens": 48,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "stable-manifest-order-replacement-concern",
+      "row": 66,
+      "before_position": 53,
+      "after_position": 3,
+      "before_answer_tokens": 81,
+      "after_answer_tokens": 81,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "stable-manifest-order-replacement-clean",
+      "row": 67,
+      "before_position": 47,
+      "after_position": 3,
+      "before_answer_tokens": 51,
+      "after_answer_tokens": 51,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "atomic-snapshot-publication-introduced",
+      "row": 68,
+      "before_position": 51,
+      "after_position": 3,
+      "before_answer_tokens": 85,
+      "after_answer_tokens": 85,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "atomic-snapshot-publication-repaired",
+      "row": 69,
+      "before_position": 49,
+      "after_position": 3,
+      "before_answer_tokens": 53,
+      "after_answer_tokens": 53,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "save-status-propagation-introduced",
+      "row": 70,
+      "before_position": 42,
+      "after_position": 3,
+      "before_answer_tokens": 71,
+      "after_answer_tokens": 71,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "save-status-propagation-repaired",
+      "row": 71,
+      "before_position": 41,
+      "after_position": 3,
+      "before_answer_tokens": 45,
+      "after_answer_tokens": 45,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "allocation-product-overflow-deletion-concern",
+      "row": 72,
+      "before_position": 57,
+      "after_position": 3,
+      "before_answer_tokens": 92,
+      "after_answer_tokens": 92,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "allocation-product-overflow-deletion-clean",
+      "row": 73,
+      "before_position": 54,
+      "after_position": 3,
+      "before_answer_tokens": 58,
+      "after_answer_tokens": 58,
+      "target_id": 8899,
+      "alternative_id": 66582
+    },
+    {
+      "id": "allocation-product-overflow-replacement-concern",
+      "row": 74,
+      "before_position": 54,
+      "after_position": 3,
+      "before_answer_tokens": 89,
+      "after_answer_tokens": 89,
+      "target_id": 66582,
+      "alternative_id": 8899
+    },
+    {
+      "id": "allocation-product-overflow-replacement-clean",
+      "row": 75,
+      "before_position": 53,
+      "after_position": 3,
+      "before_answer_tokens": 57,
+      "after_answer_tokens": 57,
+      "target_id": 8899,
+      "alternative_id": 66582
+    }
+  ],
+  "inference_calls": 0,
+  "training_updates": 0
+}

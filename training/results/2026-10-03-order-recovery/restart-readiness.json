@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-10-03T19:26:17.519320+00:00",
+  "status": "pass",
+  "source_commit": "7b03bc7216619660fc5fb3b02e89ee1513b625e2",
+  "native_verification": "native-verification.json",
+  "launch_validation": "launch-preflight.stdout.json",
+  "base": {
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "binaries": {
+    "build/jovovich-train-mlp": {
+      "bytes": 263472,
+      "sha256": "3ab3a3709a289b0aa99b6432b662003e218f10c6f3487775cc3c391a7720e135"
+    },
+    "build/jovovich-probe-mlp": {
+      "bytes": 267840,
+      "sha256": "49e21b2f114d28f125a82aecefb200267e61f4a9a1dec114bc37166d417d98df"
+    },
+    "build/jovovich-merge-mlp": {
+      "bytes": 52784,
+      "sha256": "4218482a0e2730c7984fb364ab799658282ef4b39a08d13bd9e2eca2f505d572"
+    },
+    "build/jovovich-infer": {
+      "bytes": 229136,
+      "sha256": "adaec885eab0e7964f7252b146bbcc038688bd40ae93e55d0c86815063f5303c"
+    }
+  },
+  "model_training_updates": 0,
+  "generation_calls": 0,
+  "launch_status": "preflight only; no replacement training started in transient workspace",
+  "host_requirement": "persistent Linux process lifetime for complete paired training and evaluation; a disk volume alone does not preserve the absent Chuck RAM state"
+}
