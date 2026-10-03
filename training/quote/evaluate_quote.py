@@ -20,6 +20,7 @@ from execute_evaluation import (ArchiveError, DurableArchive, HFTransport, argum
 SCHEMA = 'jovovich.quote.evaluation.v1'
 TEMPLATE = 'training/explanations/evaluation_plan.json'
 CONTRACT = 'training/quote/evaluation_contract.json'
+LAUNCH_INPUTS = 'training/quote/launch_inputs.json'
 SCIENTIFIC = 'training/explanations/plan.json'
 REMOTE = {'repo': 'ataeff/jovovich', 'prefix': 'experiments/explanation-order', 'private': True}
 SPLITS = [('train', 52), ('holdout', 24)]
@@ -67,12 +68,22 @@ def derive(template):
         parent, key = derived[field['path'][0]], field['path'][1]
         need(parent[key] == field['from'], 'field substitution source differs')
         parent[key] = field['to']
+    generation = dict(plan['generation'])
+    generation.update(jobs=len(derived['collector_jobs']),
+                      rows=sum(job['rows'] for job in derived['collector_jobs']))
+    generation.update(expected_verified_archive_units=3 * generation['rows'] + 2 * generation['jobs'],
+                      archive_units_explanation='Each collector writes input+completion units and three units per case: '
+                                                'intent, standalone tokenizer result and native result. '
+                                                'Two quote collectors sum to 232 verified units.',
+                      cross_model_prompt_identity='For each split, require the same case IDs, exact prompt bytes, '
+                                                 'prompt SHA256 and native prompt_token_ids across quote and the '
+                                                 'recovered before collector; reuse the archived before responses.')
     return {'schema': SCHEMA,
             'derived_from': {'path': TEMPLATE, 'sha256': hashlib.sha256(raw).hexdigest(), 'export_arm': 'before',
                              'collector_jobs': [job['id'] for job in branch['collector_jobs']]},
             'substitutions': SUBSTITUTIONS, 'field_substitutions': FIELD_SUBSTITUTIONS,
             'resolution': {key: plan['resolution'][key] for key in ('INFER_SHA256', 'SHARED_BASE_UPDATE0_SHA256')},
-            'native_environment': plan['native_environment'], 'generation': plan['generation'],
+            'native_environment': plan['native_environment'], 'generation': generation,
             'parity': plan['parity'], **derived}
 
 
@@ -82,6 +93,62 @@ def render(contract):
 
 def check_contract(path, template):
     need(Path(path).read_bytes() == render(derive(template)), 'quote evaluation contract differs from its derivation')
+
+
+def before_evidence(directory, split, rows, inputs):
+    """Bind reused baseline bytes to completed units at the declared archive revision."""
+    expected_run = inputs['before_eval_run_id'] + '-before_update100-' + split
+    receipt_path = local(directory / '_durable-recovery.json')
+    recovery = read(receipt_path)
+    prefix = REMOTE['prefix'] + '/' + expected_run
+    need(recovery.get('schema') == 'jovovich.durable-recovery.v1' and
+         recovery.get('verified_remote_bytes') is True and recovery.get('run_id') == expected_run and
+         recovery.get('revision') == inputs['archive_revision'] and recovery.get('prefix') == prefix,
+         'before recovery receipt differs from the frozen run, revision or prefix')
+    units = recovery.get('units', [])
+    expected_ids = ['inputs'] + [f'case-{i:03d}-{stage}' for i in range(rows)
+                                for stage in ('intent', 'tokenizer', 'result')] + ['completion']
+    need(recovery.get('next_sequence') == len(expected_ids) == len(units) and
+         all(unit.get('sequence') == i and unit.get('unit_id') == name
+             for i, (unit, name) in enumerate(zip(units, expected_ids))),
+         'before recovery has no complete collector unit sequence')
+    selected = [units[0], units[-1]]
+    receipts, entries = [], {}
+    for unit in selected:
+        need(isinstance(unit.get('manifest_sha256'), str) and
+             re.fullmatch(r'[0-9a-f]{64}', unit['manifest_sha256']), 'invalid before manifest checksum')
+        receipts.append(dict(unit, prefix=prefix, run_id=expected_run,
+                             revision=inputs['archive_revision'], verified_remote_bytes=True))
+        for entry in unit['files']:
+            need(entry['name'] not in entries, 'duplicate before evidence path')
+            entries[entry['name']] = entry
+    need({'manifest.json', 'generations.jsonl', 'completion.json'} <= set(entries),
+         'before recovery is missing required collector artifacts')
+    need({'generations.jsonl', 'completion.json'} <= {item['name'] for item in selected[-1]['files']},
+         'before collector has no archived completion artifacts')
+    bound = [binding(receipt_path)]
+    for name, entry in entries.items():
+        path = local(directory / name)
+        need(path.is_relative_to(directory) and Path(name).as_posix() == name and not Path(name).is_absolute(),
+             'before recovery artifact escapes its collector')
+        item = binding(path)
+        need(item['bytes'] == entry['size'] and item['sha256'] == entry['sha256'],
+             'before collector bytes differ from their recovery receipt')
+        bound.append(item)
+    manifest = read(directory / 'manifest.json')
+    need(manifest.get('split') == split and manifest.get('run_id') == expected_run,
+         'before collector is not the archived before_update100 run for its split')
+    need(len(manifest['cases']) == len((directory / 'generations.jsonl').read_text().splitlines()) == rows,
+         'before collector coverage differs from its split')
+    need(all(case['prompt_path'] in entries for case in manifest['cases']),
+         'before prompt is missing from its recovery receipt')
+    completed = read(directory / 'completion.json')
+    need(completed.get('status') == 'native_completed' and completed.get('run_id') == expected_run and
+         completed.get('cases') == rows and completed.get('inputs_unchanged') is True and
+         completed.get('generations_sha256') == digest(directory / 'generations.jsonl'),
+         'before collector completion is incomplete or unbound')
+    samples(directory, rows)
+    return bound, receipts
 
 
 def prepare(contract_path, quote_run, before_collectors, output, run_id):
@@ -152,19 +219,27 @@ def prepare(contract_path, quote_run, before_collectors, output, run_id):
     required = {path for path in read(template)['required_pretraining_launch_bindings'] if '/native/' not in path}
     required |= {'training/sft_review_v7_quote.jsonl', 'training/explanations/reasons.json',
                  'training/quote/manipulation.mjs', 'training/quote/evaluate_quote.py',
-                 'training/explanations/execute_evaluation.py'}
+                 'training/explanations/execute_evaluation.py', LAUNCH_INPUTS}
     need(required <= set(frozen), 'quote evaluation source was not frozen in the training launch')
-    before = {}
+    inputs = read(local(LAUNCH_INPUTS))
+    need(inputs.get('schema') == 'jovovich.quote-launch-inputs.v1' and
+         isinstance(inputs.get('archive_revision'), str) and
+         re.fullmatch(r'[0-9a-f]{40}', inputs['archive_revision']) and
+         isinstance(inputs.get('before_eval_run_id'), str) and
+         re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,70}', inputs['before_eval_run_id']),
+         'invalid frozen quote launch inputs')
+    need(inputs.get('expected_initial_lora_sha256') == completed['initial_lora_sha256'] and
+         inputs.get('before_run_id') == launch.get('before_completion', {}).get('run_id') and
+         inputs['archive_revision'] == launch.get('before_completion', {}).get('revision'),
+         'quote training lineage differs from the frozen launch inputs')
+    need(len(before_collectors) == len(SPLITS), 'expected both before collector directories')
+    before, before_receipts = {}, []
     for (split, rows), collected in zip(SPLITS, before_collectors):
         collected = local(collected, existing=False)
-        manifest_path, generations = local(collected / 'manifest.json'), local(collected / 'generations.jsonl')
-        manifest = read(manifest_path)
-        need(manifest.get('split') == split and str(manifest.get('run_id')).endswith('-before_update100-' + split),
-             'before collector is not the archived before_update100 run for its split')
-        need(len(manifest['cases']) == len(generations.read_text().splitlines()) == rows,
-             'before collector coverage differs from its split')
-        for path in (manifest_path, generations, *(collected / case['prompt_path'] for case in manifest['cases'])):
-            item = binding(path); bindings[item['path']] = item
+        bound, recovered = before_evidence(collected, split, rows, inputs)
+        for item in bound:
+            bindings[item['path']] = item
+        before_receipts += recovered
         before[split] = str(collected)
     parameters = {'QUOTE_RUN': str(directory), 'QUOTE_NATIVE': str(Path(dataset).parent),
                   'EVALUATION_RUN': str(output), 'EVALUATION_RUN_ID': run_id,
@@ -181,7 +256,7 @@ def prepare(contract_path, quote_run, before_collectors, output, run_id):
     return dict(schema_version=1, arm='quote', run_id=run_id, parameters=parameters,
                 training=dict(directory=str(directory), run_id=launch['run_id'],
                               initial_lora_sha256=completed['initial_lora_sha256']),
-                before_collectors=before, contract=contract, contract_source=source,
+                before_collectors=before, before_receipts=before_receipts, contract=contract, contract_source=source,
                 bindings=list(bindings.values()), training_receipts=receipts, export_phases=exports)
 
 
@@ -282,7 +357,7 @@ def execute(archive, prepared, output, *, collector=collect):
         kind = unit['kind']
         if kind == 'verify_training':
             with tempfile.TemporaryDirectory(prefix='quote-remote-check-') as tmp:
-                verified = verify_training_receipts(archive, prepared['training_receipts'], Path(tmp))
+                verified = verify_training_receipts(archive, prepared['training_receipts'] + prepared['before_receipts'], Path(tmp))
             save(directory / unit['outputs'][0], verified)
         elif kind == 'resolve_generation':
             model = directory / 'exports/quote/jovovich.gguf'
