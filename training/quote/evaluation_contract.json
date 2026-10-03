@@ -68,8 +68,8 @@
     "NT_SIMD_THREADS": "4"
   },
   "generation": {
-    "jobs": 6,
-    "rows": 228,
+    "jobs": 2,
+    "rows": 76,
     "pairs_per_model": {
       "train": 26,
       "holdout": 12
@@ -78,9 +78,9 @@
     "context": 8192,
     "temperature": 0,
     "parallel_processes": 1,
-    "expected_verified_archive_units": 696,
-    "archive_units_explanation": "Each collector writes input+completion units and three units per case: intent, standalone tokenizer result and native result. Six collectors sum to 696 verified units.",
-    "cross_model_prompt_identity": "For each split, require the same case IDs, exact prompt bytes, prompt SHA256 and native prompt_token_ids across base/before/after. Compare each response with the prompt bytes and standalone tokenizer output archived by its collector before generation.",
+    "expected_verified_archive_units": 232,
+    "archive_units_explanation": "Each collector writes input+completion units and three units per case: intent, standalone tokenizer result and native result. Two quote collectors sum to 232 verified units.",
+    "cross_model_prompt_identity": "For each split, require the same case IDs, exact prompt bytes, prompt SHA256 and native prompt_token_ids across quote and the recovered before collector; reuse the archived before responses.",
     "stop_rule": "Generation errors stop the active collector after archiving its closed evidence. Missing rows retain the full planned denominator. An interrupted attempt is never silently overwritten."
   },
   "parity": {

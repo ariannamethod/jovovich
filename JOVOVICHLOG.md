@@ -27,6 +27,30 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-04 — The comparator brings its receipts.
+
+Review of PR26 confirmed two defects: quote evaluation admitted recovered
+before responses without checking their archive receipts, and its derived
+summary retained the original experiment's six-job totals. The evaluator now
+binds both before collectors to the committed launch revision and exact run
+IDs, checks their complete unit sequences and local evidence bytes, and reads
+the pinned remote input/completion manifests and payloads again before any
+quote export or generation. The quote summary describes two collectors,
+76 responses and 232 collector archive units. Decoding settings are preserved.
+
+The quote host manifest and launcher copy now enter the training bindings
+before preflight, so the initial archive includes the machine/compiler/source
+provenance. Both evaluation fixtures create their scratch `models` directory
+on a fresh checkout. Independent cross-review passed; `make test` passes the
+native suite and all 259 Node tests.
+
+At 2026-10-03 22:41 UTC, private HF revision
+`873331a94debd62cff1bd2fcbb9248ad8da2d56c` contains all 103 closed units of
+`order-rp-20261003-01-before`, including update100 and completion. Downloaded
+completion bytes match their recorded SHA256: return code 0, 100 acknowledged
+updates. The same revision contains the after arm's launch intent. The running
+experiment remains pinned to `53fd4406de170d3b67785729b789ec61e1a30a27`.
+
 ## 2026-10-04 — The third arm gets its own door, and the same key.
 
 The quote-first arm now has a launch and evaluation path of its own, built

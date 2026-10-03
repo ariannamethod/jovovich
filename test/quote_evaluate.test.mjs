@@ -54,7 +54,14 @@ test('quote contract differs from the before branch only by the frozen substitut
   assert.deepEqual(restored.collector_jobs, plan.collector_jobs.filter(job => job.model === 'before_update100'));
   const derived = JSON.stringify([contract.export, contract.collector_jobs]);
   for (const [old] of SUBSTITUTIONS) assert.ok(!derived.includes(old), 'before token survived: ' + old);
-  for (const key of ['native_environment', 'generation', 'parity']) assert.deepEqual(contract[key], plan[key]);
+  for (const key of ['native_environment', 'parity']) assert.deepEqual(contract[key], plan[key]);
+  for (const key of ['max_new_tokens', 'context', 'temperature', 'parallel_processes', 'pairs_per_model', 'stop_rule'])
+    assert.deepEqual(contract.generation[key], plan.generation[key]);
+  assert.equal(contract.generation.jobs, 2);
+  assert.equal(contract.generation.rows, 76);
+  assert.equal(contract.generation.expected_verified_archive_units, 232);
+  assert.equal(contract.generation.expected_verified_archive_units,
+    contract.collector_jobs.reduce((n, job) => n + 3 * job.rows + 2, 0));
   assert.deepEqual(contract.resolution, { INFER_SHA256: plan.resolution.INFER_SHA256,
     SHARED_BASE_UPDATE0_SHA256: plan.resolution.SHARED_BASE_UPDATE0_SHA256 });
 });
@@ -77,6 +84,7 @@ with tempfile.TemporaryDirectory() as t:
 
 const BEFORE = String.raw`
 import hashlib,json
+baseline_remote={}
 def write_before(directory,split,rows,model='before_update100'):
     cases=[];records=[]
     for i in range(rows):
@@ -90,6 +98,27 @@ def write_before(directory,split,rows,model='before_update100'):
     (directory/'manifest.json').write_text(json.dumps(dict(split=split,run_id=f'fixture-before-{model}-{split}',
         model=dict(sha256='d'*64),cases=cases)))
     (directory/'generations.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in records))
+    run_id=f'fixture-before-{model}-{split}';prefix='experiments/explanation-order/'+run_id
+    completed=dict(status='native_completed',run_id=run_id,cases=rows,inputs_unchanged=True,
+        generations_sha256=hashlib.sha256((directory/'generations.jsonl').read_bytes()).hexdigest())
+    (directory/'completion.json').write_text(json.dumps(completed))
+    units=[];expected_rows=52 if split=='train' else 24
+    names=['inputs']+[f'case-{i:03d}-{stage}' for i in range(expected_rows) for stage in ('intent','tokenizer','result')]+['completion']
+    for seq,name in enumerate(names):
+        paths=([directory/'manifest.json']+[directory/c['prompt_path'] for c in cases] if name=='inputs' else
+               [directory/'generations.jsonl',directory/'completion.json'] if name=='completion' else [])
+        entries=[]
+        for path in paths:
+            raw=path.read_bytes();h=hashlib.sha256(raw).hexdigest();obj=prefix+'/objects/'+h
+            entry=dict(name=str(path.relative_to(directory)),size=len(raw),sha256=h,
+                       git_blob_sha1=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(),object=obj)
+            entries.append(entry);baseline_remote[obj]=raw
+        manifest=dict(run_id=run_id,sequence=seq,unit_id=name,files=entries)
+        raw=json.dumps(manifest).encode();h=hashlib.sha256(raw).hexdigest()
+        baseline_remote[prefix+f'/units/{seq:06d}-{name}.json']=raw
+        units.append(dict(sequence=seq,unit_id=name,files=entries,manifest_sha256=h))
+    (directory/'_durable-recovery.json').write_text(json.dumps(dict(schema='jovovich.durable-recovery.v1',
+        run_id=run_id,prefix=prefix,revision='d'*40,next_sequence=len(units),verified_remote_bytes=True,units=units)))
     return directory
 `;
 
@@ -112,11 +141,15 @@ with tempfile.TemporaryDirectory() as temporary:
     put(quote.CONTRACT,quote.render(quote.derive(root/quote.TEMPLATE)))
     scientific=json.loads((real/quote.SCIENTIFIC).read_text());put(quote.SCIENTIFIC,json.dumps(scientific).encode())
     names=[p for p in template['required_pretraining_launch_bindings'] if '/native/' not in p]+['models/base-qwen.gguf',
-        quote.SCIENTIFIC,quote.CONTRACT,'training/sft_review_v7_quote.jsonl','training/explanations/reasons.json',
+        quote.SCIENTIFIC,quote.CONTRACT,quote.LAUNCH_INPUTS,'training/sft_review_v7_quote.jsonl','training/explanations/reasons.json',
         'training/quote/manipulation.mjs','training/quote/evaluate_quote.py','training/explanations/execute_evaluation.py',
         'models/quote-native/quote.bin','models/quote-native/quote.pairs.bin']
     for name in names:
         if not (root/name).exists():put(name,('fixture '+name).encode())
+    initial={'gate':'a'*64,'up':'b'*64,'down':'c'*64}
+    put(quote.LAUNCH_INPUTS,json.dumps(dict(schema='jovovich.quote-launch-inputs.v1',archive_revision='d'*40,
+        before_run_id='fixture-before',before_eval_run_id='fixture-before',expected_initial_lora_sha256=initial)).encode())
+    if variant=='unfrozen_inputs':names.remove(quote.LAUNCH_INPUTS)
     if variant=='unfrozen_source':names.remove('training/quote/manipulation.mjs')
     if variant=='unfrozen_contract':names.remove(quote.CONTRACT)
     bindings=[runner.binding(root/n) for n in dict.fromkeys(names)]
@@ -127,7 +160,7 @@ with tempfile.TemporaryDirectory() as temporary:
               '0.001' if variant=='lr' else '0.0001','40','25','joint','models/quote-native/quote.pairs.bin'],
         bindings=bindings,environment=scientific['training']['native_environment'],
         remote=dict(repo='other/archive' if variant=='remote' else 'ataeff/jovovich',prefix='experiments/explanation-order',private=True),
-        evaluation_plan=quote.CONTRACT,expected_initial_lora_sha256=dict(initial,gate='f'*64) if variant=='initialization' else initial)
+        before_completion=dict(run_id='fixture-before',revision='d'*40),evaluation_plan=quote.CONTRACT,expected_initial_lora_sha256=dict(initial,gate='f'*64) if variant=='initialization' else initial)
     (directory/'plan.json').write_text(json.dumps(launch))
     final=[];saved=[]
     for part in ('gate','up','down'):
@@ -146,6 +179,24 @@ with tempfile.TemporaryDirectory() as temporary:
     collectors=[write_before(root/'models/before-evaluation'/split,split,rows-(variant=='before_rows' and split=='train'),
                              'shared_base_update0' if variant=='before_model' and split=='holdout' else 'before_update100')
                 for split,rows in quote.SPLITS]
+    baseline=collectors[0];recovery_path=baseline/'_durable-recovery.json'
+    if variant in ('before_revision','before_run','before_prefix','before_unverified','before_missing_completion','before_missing_prompt'):
+        recovery=json.loads(recovery_path.read_text())
+        if variant=='before_revision':recovery['revision']='e'*40
+        if variant=='before_run':recovery['run_id']='other-before_update100-train'
+        if variant=='before_prefix':recovery['prefix']='other/prefix'
+        if variant=='before_unverified':recovery['verified_remote_bytes']=False
+        if variant=='before_missing_completion':recovery['units'].pop()
+        if variant=='before_missing_prompt':recovery['units'][0]['files']=[e for e in recovery['units'][0]['files'] if e['name']!='cases/000/prompt.txt']
+        recovery_path.write_text(json.dumps(recovery))
+    if variant=='before_missing_receipt':recovery_path.unlink()
+    if variant=='before_changed_response':
+        p=baseline/'generations.jsonl';records=[json.loads(line) for line in p.read_text().splitlines()]
+        records[0]['raw_response']='changed response';records[0]['raw_response_sha256']=hashlib.sha256(b'changed response').hexdigest()
+        p.write_text(''.join(json.dumps(row)+'\n' for row in records))
+    if variant=='before_changed_manifest':
+        p=baseline/'manifest.json';m=json.loads(p.read_text());m['model']['sha256']='e'*64;p.write_text(json.dumps(m))
+    if variant=='before_changed_prompt':(baseline/'cases/000/prompt.txt').write_text('changed prompt')
     if variant=='contract_drift':
         c=json.loads((root/quote.CONTRACT).read_text());c['parity']['rows'][4]['index']=50;put(quote.CONTRACT,quote.render(c))
     if variant=='source_drift':put('training/prepare.py',b'changed after the quote launch')
@@ -185,7 +236,7 @@ const rejected = [
   ['source_drift', 'binding mismatch: '],
   ['initialization', 'quote initialization differs from the before arm'],
   ['unfrozen_source', 'quote evaluation source was not frozen in the training launch'],
-  ['before_model', 'before collector is not the archived before_update100 run for its split'],
+  ['before_model', 'before recovery receipt differs from the frozen run, revision or prefix'],
   ['before_rows', 'before collector coverage differs from its split'],
 ];
 
@@ -193,7 +244,17 @@ test('every preflight rejection has its own message', () => {
   assert.equal(new Set(rejected.map(([, message]) => message)).size, rejected.length);
 });
 
-for (const [variant, message] of rejected) {
+for (const [variant, message] of [...rejected,
+  ['unfrozen_inputs', 'quote evaluation source was not frozen in the training launch'],
+  ['before_revision', 'before recovery receipt differs'], ['before_run', 'before recovery receipt differs'],
+  ['before_prefix', 'before recovery receipt differs'], ['before_unverified', 'before recovery receipt differs'],
+  ['before_missing_receipt', 'required evaluation input is missing'],
+  ['before_missing_completion', 'before recovery has no complete collector unit sequence'],
+  ['before_missing_prompt', 'before prompt is missing from its recovery receipt'],
+  ['before_changed_response', 'before collector bytes differ from their recovery receipt'],
+  ['before_changed_manifest', 'before collector bytes differ from their recovery receipt'],
+  ['before_changed_prompt', 'before collector bytes differ from their recovery receipt'],
+]) {
   test(`preflight rejects ${variant}`, () => {
     const r = python(PREFLIGHT, variant);
     assert.equal(r.status, 1, r.stderr);
@@ -211,6 +272,7 @@ from durable_archive import DurableArchive, ArchiveError
 from durable_archive_fixture import FakeTransport
 contract=json.loads(Path(quote.CONTRACT).read_text())
 scenario=sys.argv[1]
+Path('models').mkdir(exist_ok=True)
 with tempfile.TemporaryDirectory(prefix='quote-evaluation-fixture-',dir='models') as temporary:
     temporary=Path(temporary).resolve();output=temporary/'evaluation';run=temporary/'quote-run'
     source=temporary/'bound.txt';source.write_bytes(b'frozen fixture input')
@@ -219,11 +281,18 @@ with tempfile.TemporaryDirectory(prefix='quote-evaluation-fixture-',dir='models'
                 'EVALUATION_RUN_ID':'fixture-evaluation','INFER_SHA256':'a'*64,'SHARED_BASE_UPDATE0_SHA256':'b'*64}
     phases=[quote.export_unit(step,parameters,output) for step in contract['export']['steps']]
     prepared=dict(schema_version=1,arm='quote',run_id='fixture-evaluation',parameters=parameters,training={'directory':str(run)},
-                  before_collectors=before,contract=contract,bindings=[quote.binding(source)],training_receipts=[],export_phases=phases)
+                  before_collectors=before,before_receipts=[],contract=contract,bindings=[quote.binding(source)],training_receipts=[],export_phases=phases)
+    for split,rows in quote.SPLITS:
+        bound,receipts=quote.before_evidence(Path(before[split]),split,rows,dict(before_eval_run_id='fixture-before',archive_revision='d'*40))
+        prepared['before_receipts']+=receipts;prepared['bindings']+=bound
     class DirectoryTransport(FakeTransport):
         def inventory(self,revision,prefix):
             return {name:value for name,value in super().inventory(revision,prefix).items() if name.startswith(prefix+'/')}
-    transport=DirectoryTransport();archive=DurableArchive(transport,'fixture-evaluation','experiments/explanation-order')
+    transport=DirectoryTransport();transport.revisions['d'*40]=dict(baseline_remote)
+    if scenario=='before-remote-fail':
+        target=next(p for p in baseline_remote if '/objects/' in p)
+        transport.revisions['d'*40][target]=b'changed at pinned revision'
+    archive=DurableArchive(transport,'fixture-evaluation','experiments/explanation-order')
     corrupt=lambda name,data:b'corrupt' if '/objects/' in name else data
     if scenario=='bootstrap-fail':transport.download_fault=corrupt
     native_calls=[];collector_calls=[]
@@ -298,7 +367,7 @@ with tempfile.TemporaryDirectory(prefix='quote-evaluation-fixture-',dir='models'
     except (RuntimeError,ArchiveError):
         assert scenario!='success'
         assert not (output/'completion.json').exists()
-        if scenario=='bootstrap-fail':assert not native_calls and not collector_calls
+        if scenario in ('bootstrap-fail','before-remote-fail'):assert not native_calls and not collector_calls
         if scenario=='merge-archive-fail':assert not collector_calls and sum(a[0]=='build/jovovich-merge-mlp' for a in native_calls)==1
         if scenario=='source-mutation':assert len(collector_calls)==1
         if scenario=='prompt-mismatch':assert len(collector_calls)==2 and not node()
@@ -308,6 +377,7 @@ with tempfile.TemporaryDirectory(prefix='quote-evaluation-fixture-',dir='models'
         assert result['arm']=='quote' and result['generation_calls']==76 and result['semantic_audit']=='pending'
         assert result['structural_reports']==2 and result['teacher_forced_reports']==1 and result['manipulation_reports']==2
         assert result['remote_verification']['verified_remote_bytes']
+        assert any(revision=='d'*40 and '/units/' in path for revision,path in transport.downloads)
         assert collector_calls==['fixture-evaluation-quote_update100-train','fixture-evaluation-quote_update100-holdout']
         assert sum(a[0]=='build/jovovich-merge-mlp' for a in native_calls)==1 and sum(a[0]=='build/jovovich-probe-mlp' for a in native_calls)==1
         assert [a[a.index('--split')+1] for a in node()]==['train','heldout']
@@ -319,7 +389,7 @@ with tempfile.TemporaryDirectory(prefix='quote-evaluation-fixture-',dir='models'
         assert os.environ['HF_TOKEN']=='fixture-token'
 `;
 
-for (const scenario of ['success', 'bootstrap-fail', 'merge-archive-fail', 'source-mutation', 'prompt-mismatch', 'manipulation-fail']) {
+for (const scenario of ['success', 'bootstrap-fail', 'before-remote-fail', 'merge-archive-fail', 'source-mutation', 'prompt-mismatch', 'manipulation-fail']) {
   test(`quote evaluation orchestration: ${scenario}`, () => {
     const r = python(RUN, scenario);
     assert.equal(r.status, 0, r.stderr || r.stdout || String(r.error));

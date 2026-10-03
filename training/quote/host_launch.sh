@@ -139,6 +139,33 @@ mkdir "$JOV_LAUNCH"
 "$JOV_PY" training/quote/bind_quote.py bind --before-recovered "$JOV_BEFORE" --native "$JOV_NATIVE" \
   --run-prefix "$JOV_RUN_PREFIX" --out "$JOV_LAUNCH/quote.launch.json" \
   --evaluation-contract training/quote/evaluation_contract.json
+# The archive parent uploads every bound input before training starts. Keep the
+# host/compiler provenance alongside the source and recovered initialization.
+"$JOV_PY" - "$JOV_LAUNCH/quote.launch.json" "$JOV_JOB" "$JOV_INPUTS" <<'PY'
+import hashlib, json, sys
+from pathlib import Path
+plan_path, job, inputs = map(Path, sys.argv[1:4])
+def binding(path):
+    if path.is_symlink() or not path.is_file():
+        raise SystemExit('quote host provenance must be a regular file')
+    name = str(path.resolve().relative_to(Path.cwd().resolve()))
+    return {'path': name, 'bytes': path.stat().st_size,
+            'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+plan = json.loads(plan_path.read_text())
+existing = {item['path']: item for item in plan['bindings']}
+if len(existing) != len(plan['bindings']):
+    raise SystemExit('duplicate quote source binding')
+frozen_inputs = binding(inputs)
+if existing.get(frozen_inputs['path']) != frozen_inputs:
+    raise SystemExit('quote launch inputs are not frozen in the bound plan')
+for path in (job / 'launcher.sh', job / 'host-manifest.json'):
+    item = binding(path)
+    if item['path'] in existing and existing[item['path']] != item:
+        raise SystemExit('existing quote host provenance binding changed')
+    existing[item['path']] = item
+plan['bindings'] = list(existing.values())
+plan_path.write_text(json.dumps(plan, indent=2) + '\n')
+PY
 "$JOV_PY" training/explanations/run_training.py preflight --plan "$JOV_LAUNCH/quote.launch.json"
 
 assert_source

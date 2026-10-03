@@ -11,6 +11,7 @@ from durable_archive import DurableArchive, ArchiveError
 from durable_archive_fixture import FakeTransport
 contract=json.loads(Path('training/explanations/evaluation_plan.json').read_text())
 scenario=sys.argv[1]
+Path('models').mkdir(exist_ok=True)
 with tempfile.TemporaryDirectory(prefix='eval-execution-fixture-',dir='models') as temporary:
     temporary=Path(temporary).resolve();output=temporary/'evaluation'
     source=temporary/'bound.txt';source.write_bytes(b'frozen fixture input')
