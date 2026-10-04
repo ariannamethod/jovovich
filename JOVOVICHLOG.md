@@ -65,6 +65,15 @@ recovery hardening passed all 29 focused cases, including three new cases.
 The native fault fixture preserved bitwise LoRA results through a lost commit
 reply, with 24 fault scenarios and no repeated optimizer update.
 
+The real private HF archive was then recovered afresh: 103 before units and
+11 failed-after units passed byte verification at the original pinned revision.
+All original non-infrastructure bindings and initial adapters match. The
+candidate differs on exactly the two allowed paths, and the public verification
+record lists both original/candidate SHA256 pairs for the shared after/quote
+admission rule. The preflight, source bytes and test logs were archived and
+recovered again from private HF revision `e983dc43212f0d8a06b4c63b4d751d690bd4f2cc`.
+See `training/results/2026-10-04-archive-retry/verification.json`.
+
 ## 2026-10-04 — An archive failure stops the second arm.
 
 The first Runpod attempt completed and archived all 100 before updates. The

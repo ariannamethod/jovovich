@@ -1,0 +1,127 @@
+{
+  "schema": "jovovich.archive-retry-preflight-result.v1",
+  "source_commit": "b68238354f3058a35557e9acbf728cf69a15cb04",
+  "status": "evidence-verified-admission-pending",
+  "runnable": false,
+  "training_pods_launched": 0,
+  "recovered_original_units": {
+    "before": 103,
+    "failed-after": 11
+  },
+  "original_archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+  "new_after_run_id": "order-rp-20261004-02-after",
+  "infrastructure_changes": [
+    {
+      "path": "training/durable_archive.py",
+      "original": {
+        "path": "training/durable_archive.py",
+        "bytes": 23730,
+        "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+      },
+      "candidate": {
+        "path": "training/durable_archive.py",
+        "bytes": 32395,
+        "sha256": "c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9"
+      }
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "original": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 17416,
+        "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+      },
+      "candidate": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 21799,
+        "sha256": "f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1"
+      }
+    }
+  ],
+  "verification": {
+    "combined_tests": 301,
+    "final_recovery_tests": 29,
+    "new_cases_in_final_recovery": 3,
+    "native_fault_scenarios": 24,
+    "retry_trajectory_bitwise_equal": true
+  },
+  "evidence_archive": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "remote_only_recovery_verified": true,
+    "schema": "jovovich.durable-receipt.v1",
+    "run_id": "archive-retry-preflight-20261004-01",
+    "prefix": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01",
+    "revision": "e983dc43212f0d8a06b4c63b4d751d690bd4f2cc",
+    "sequence": 0,
+    "unit_id": "preflight",
+    "manifest_sha256": "93b85ab6ab83b70a871aaec0431c862577c9e2e82e57c105ef86cba15f1dc24e",
+    "files": [
+      {
+        "name": "durable_archive.py",
+        "size": 32395,
+        "sha256": "c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9",
+        "git_blob_sha1": "299dfa53c721cbd7e1c1d4e29400e5ef021bf6c6",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9"
+      },
+      {
+        "name": "inputs.json",
+        "size": 1086,
+        "sha256": "c64921e74dfafa73b973dcdbcb925ef99888323924ca532d305096f7b9a46d9f",
+        "git_blob_sha1": "996aea671413c4e5f49d3056616ddcfba59db917",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/c64921e74dfafa73b973dcdbcb925ef99888323924ca532d305096f7b9a46d9f"
+      },
+      {
+        "name": "preflight.json",
+        "size": 14874,
+        "sha256": "9bc5effaaf2a59b69d7919b8dc20d52e6b125f554377540efb1beba57005372e",
+        "git_blob_sha1": "ebf130b30fd1e3c31dd9da8d236718b0bf7b5e21",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/9bc5effaaf2a59b69d7919b8dc20d52e6b125f554377540efb1beba57005372e"
+      },
+      {
+        "name": "preflight.py",
+        "size": 12986,
+        "sha256": "8e8236075a2a92dbbcf74894f20dc454aeb67bb43b7348a0d604241187bca3fd",
+        "git_blob_sha1": "c5ea7388d1893d3a066ebb3cd0e3adeb7baac24b",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/8e8236075a2a92dbbcf74894f20dc454aeb67bb43b7348a0d604241187bca3fd"
+      },
+      {
+        "name": "run_training.py",
+        "size": 21799,
+        "sha256": "f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1",
+        "git_blob_sha1": "2c625b3cc9fa6eaebecda71b4a8fca999c58fa2a",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1"
+      },
+      {
+        "name": "tests/all.tap",
+        "size": 23471,
+        "sha256": "0cc6b90f1e2531b325fdd244d9fc0704d31726bd7c32e59ea50418c463e2c713",
+        "git_blob_sha1": "24621d2380ad8a54987199089259645698529ce1",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/0cc6b90f1e2531b325fdd244d9fc0704d31726bd7c32e59ea50418c463e2c713"
+      },
+      {
+        "name": "tests/final-recovery.tap",
+        "size": 1772,
+        "sha256": "65a757fa82f29868ba8575ac6aecf0ea015641726b33461337734f7f3969bd99",
+        "git_blob_sha1": "9db3f18adce346c47b8cb879747b9a810c4382a8",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/65a757fa82f29868ba8575ac6aecf0ea015641726b33461337734f7f3969bd99"
+      },
+      {
+        "name": "tests/focused.tap",
+        "size": 4114,
+        "sha256": "57563162919afe1b1298410e778887cdba84c765321365051bc5b24645dec286",
+        "git_blob_sha1": "e28ced36a1999075437964a96dff89146db729b9",
+        "object": "experiments/explanation-order-preflight/archive-retry-preflight-20261004-01/objects/57563162919afe1b1298410e778887cdba84c765321365051bc5b24645dec286"
+      }
+    ],
+    "verified_remote_bytes": true,
+    "reused": false
+  },
+  "remaining_blockers": [
+    "Implement a fresh after-only host launcher with source and watchdog pins.",
+    "Materialize authenticated binaries and packed inputs; verify the pinned base model.",
+    "Admit old before and new after infrastructure bindings explicitly in evaluation.",
+    "Reconstruct training receipts from verified recovery manifests for evaluation.",
+    "Recheck unused remote run IDs and archive the final launch contract before native startup."
+  ]
+}
