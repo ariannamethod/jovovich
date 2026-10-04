@@ -14,6 +14,10 @@ JOV_TOKEN_FILE=$(realpath -- "$1")
 JOV_LAUNCHER_PATH=$(realpath -- "${BASH_SOURCE[0]}")
 JOV_RUN_PREFIX=$2
 JOV_SOURCE_COMMIT=$3
+while IFS= read -r JOV_ENV_NAME; do
+  case "$JOV_ENV_NAME" in GIT_*) unset "$JOV_ENV_NAME" ;; esac
+done < <(compgen -e)
+export GIT_NO_REPLACE_OBJECTS=1
 [[ "$JOV_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'expected source SHA must be a full lowercase Git commit'
 [[ -f "$JOV_TOKEN_FILE" && -r "$JOV_TOKEN_FILE" ]] || fail 'token file must be readable'
 # The evaluation run ID <prefix>-quote-eval must stay within 50 characters.
@@ -34,9 +38,39 @@ assert_source
 # Ignored files escape assert_source and skip-worktree hides edits from git diff: hash the bytes
 # on disk against the blob of the pinned commit.
 assert_pinned_file() {
-  [[ $(git cat-file -t "$JOV_SOURCE_COMMIT:$2" 2>/dev/null) == blob &&
-     $(git hash-object --no-filters -- "$2") == $(git rev-parse "$JOV_SOURCE_COMMIT:$2") ]] ||
+  if ! python3 - "$2" "$JOV_SOURCE_COMMIT" <<'PINNED'
+import os, subprocess, sys
+from pathlib import Path
+name, source = sys.argv[1:]
+root = Path.cwd().resolve()
+path = root
+if Path(name).is_absolute():
+    raise SystemExit(1)
+for part in Path(name).parts:
+    if part in ('.', '..'):
+        raise SystemExit(1)
+    path /= part
+    if path.is_symlink():
+        raise SystemExit(1)
+env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+env.update(GIT_NO_LAZY_FETCH='1', GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL='/dev/null')
+def git(*args):
+    return subprocess.check_output(['git', '--no-replace-objects', '-c', 'core.fsmonitor=false',
+                                    '-C', str(root), *args], env=env,
+                                   stderr=subprocess.DEVNULL, timeout=30)
+entry = git('ls-tree', '-z', '--full-tree', source, '--', name)
+fields = entry.rstrip(b'\0').split(b'\t')
+if len(fields) != 2 or fields[1].decode() != name:
+    raise SystemExit(1)
+mode, kind, oid = fields[0].split()
+if mode not in (b'100644', b'100755') or kind != b'blob' or not path.is_file():
+    raise SystemExit(1)
+if git('cat-file', 'blob', oid.decode()) != path.read_bytes():
+    raise SystemExit(1)
+PINNED
+  then
     fail "$1 must be tracked and unchanged in $JOV_SOURCE_COMMIT: $2"
+  fi
 }
 JOV_NOTORCH_COMMIT=$(git rev-parse "$JOV_SOURCE_COMMIT:deps/notorch")
 [[ "$JOV_NOTORCH_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'missing pinned notorch gitlink'

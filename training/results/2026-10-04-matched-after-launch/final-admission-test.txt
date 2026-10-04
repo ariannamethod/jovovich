@@ -1,0 +1,16 @@
+✔ continuation evaluator admits authenticated before100 and fresh after100 to the original 228-response contract (7264.014562ms)
+✔ continuation admission rejects omitted helpers even when report and launch hashes are recomputed (10975.458139ms)
+✔ continuation admission rejects an extra arbitrary payload with self-consistent hashes (1454.468807ms)
+✔ managed continuation cannot remove its host provenance by declaring it optional (1486.829283ms)
+✔ continuation requires the full recovered ledgers even when a truncated ledger is rehashed (1236.270582ms)
+✔ continuation admission rejects changed training parameters and attempt IDs (5482.695907ms)
+✔ continuation evaluation requires both complete endpoints and original initialization (7211.038447ms)
+✔ continuation evaluation rejects remote checkpoint corruption before exports (2366.663313ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37782.080667

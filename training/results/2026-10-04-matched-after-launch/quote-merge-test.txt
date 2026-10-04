@@ -1,0 +1,25 @@
+✔ quote launcher recovers the before arm, trains quote once and evaluates it (628.405978ms)
+✔ wrong source SHA is rejected before installation or model work (52.707862ms)
+✔ missing committed launch inputs are refused before any work (66.763231ms)
+✔ malformed launch inputs are refused before any work (116.419058ms)
+✔ launch inputs without an infrastructure record are refused before any work (128.602957ms)
+✔ launch inputs with an infrastructure record outside the checkout are refused before any work (123.60631ms)
+✔ an ignored untracked infrastructure record is refused before any work (167.337302ms)
+✔ a modified tracked infrastructure record is refused before any work (59.35698ms)
+✔ a modified skip-worktree infrastructure record is refused before any work (182.432842ms)
+✔ an untracked launch inputs file is refused before any work (75.48339ms)
+✔ an untracked launch inputs file hidden by info/exclude is refused before any work (117.598107ms)
+✔ recovered initialization that differs from launch inputs stops before bind (435.869155ms)
+✔ failed quote training stops without evaluation or restart (712.309529ms)
+✔ tracked source mutation after training stops before evaluation (608.439375ms)
+✔ invalid duplicate binding stops before training preflight (497.168327ms)
+✔ invalid inputs binding stops before training preflight (521.671173ms)
+✔ invalid provenance binding stops before training preflight (608.687774ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5193.040157
