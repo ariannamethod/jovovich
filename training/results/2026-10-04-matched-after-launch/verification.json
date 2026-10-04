@@ -97,6 +97,12 @@
       "failed": 0,
       "claude_pr": 32,
       "claude_commit": "a79483276b4210addd0cf89bda2fcfa80a174620"
+    },
+    "quote_replace_refs": {
+      "tests": 18,
+      "failed": 0,
+      "review_comment": 4179627349,
+      "policy": "disable Git replacement objects in pinned helper and source assertions"
     }
   },
   "remote_preflight": {
@@ -145,8 +151,8 @@
     },
     {
       "path": "training/quote/host_launch.sh",
-      "bytes": 12620,
-      "sha256": "b37819a6a39ef06606c085cdcced24d77c458a6841f249a1d969e1d0d169e3b7"
+      "bytes": 12652,
+      "sha256": "9473c1a33911f344c49f24a8b7a74c535fd4ab008b219cee708a734c41f515c3"
     },
     {
       "path": "test/after_recovery_bind.test.mjs",
@@ -175,8 +181,8 @@
     },
     {
       "path": "test/quote_host_launch.test.mjs",
-      "bytes": 15193,
-      "sha256": "fbbfeb60104199ef33c4897f108b1caed86c362b2c7c7fc412f8b5bb071691a7"
+      "bytes": 15978,
+      "sha256": "0d1bda5fefcb4ac8a200104725b8bb54ef5b0ced3d14cb8dede3cb48fc9dcff9"
     }
   ],
   "evidence_bindings": [
@@ -199,6 +205,11 @@
       "path": "training/results/2026-10-04-matched-after-launch/quote-merge-test.txt",
       "bytes": 1573,
       "sha256": "58ac4e24ed59077e61e4dbbe6fe4ad7d53611d897c73ba142ee1c79792fd3f86"
+    },
+    {
+      "path": "training/results/2026-10-04-matched-after-launch/quote-replace-test.txt",
+      "bytes": 1673,
+      "sha256": "7578fe4138afe87405e36f48c49d0d886586c89a2fd140fe3ebff0f34d9d4221"
     }
   ],
   "launch_command": "bash training/after_recovery/host_launch.sh TOKEN_FILE order-rp-20261004-02 EXPECTED_SOURCE_SHA",

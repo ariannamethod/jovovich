@@ -72,6 +72,15 @@ regular Git modes, symlink rejection and offline Git inspection. All 17 quote
 host tests passed after the integration. PR33 contains this integration so
 there is one combined continuation to review.
 
+The subsequent connector review identified Git replacement refs as another
+source-verification ambiguity. Quote now disables replacement objects in its
+shell source checks as well as the pinned-file helper. A real replacement-ref
+fixture reproduces the masking attempt and is rejected before any work;
+all 18 quote host tests pass. The managed after deployment remains pinned to
+`970163b792d24dba1b5d2d3077177baf9cd1e28b`; this quote-only follow-up is outside
+that numerical path. Its CPU request, source/setup/watchdog hashes and 12-hour
+budget are published in the deployment intent before provisioning.
+
 ## 2026-10-04 — Keep the gate closed; retry the same parcel.
 
 PR29 review found two recovery defects. The wrapper checked the shape of a

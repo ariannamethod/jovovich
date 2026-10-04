@@ -17,6 +17,7 @@ JOV_SOURCE_COMMIT=$3
 while IFS= read -r JOV_ENV_NAME; do
   case "$JOV_ENV_NAME" in GIT_*) unset "$JOV_ENV_NAME" ;; esac
 done < <(compgen -e)
+export GIT_NO_REPLACE_OBJECTS=1
 [[ "$JOV_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'expected source SHA must be a full lowercase Git commit'
 [[ -f "$JOV_TOKEN_FILE" && -r "$JOV_TOKEN_FILE" ]] || fail 'token file must be readable'
 # The evaluation run ID <prefix>-quote-eval must stay within 50 characters.

@@ -178,6 +178,20 @@ for (const [name, inputs] of [
 }
 
 const RECORD = INPUTS.infrastructure_record, LAUNCH_INPUTS = 'training/quote/launch_inputs.json';
+test('Git replacement refs cannot hide a modified launcher from the pinned source check', t => {
+  const f = fixture(t);
+  const launcher = join(f.repo, 'training/quote/host_launch.sh');
+  write(launcher, readFileSync(launcher, 'utf8') + '\n# changed source\n');
+  command('git', ['add', 'training/quote/host_launch.sh'], f.repo);
+  command('git', ['commit', '-qm', 'replacement tree'], f.repo);
+  const replacement = command('git', ['rev-parse', 'HEAD'], f.repo);
+  command('git', ['reset', '--soft', f.sha], f.repo);
+  command('git', ['replace', f.sha, replacement], f.repo);
+  const r = f.run();
+  assert.notEqual(r.status, 0); assert.match(r.stderr, /tracked checkout files have local changes/);
+  assert.deepEqual(f.events(), []); assert.equal(existsSync(f.job('')), false);
+});
+
 const swap = f => write(join(f.repo, RECORD), '{"infrastructure_changes": ["swapped"]}\n');
 const untrack = f => {
   command('git', ['rm', '-q', '--cached', LAUNCH_INPUTS], f.repo); command('git', ['commit', '-qm', 'untrack'], f.repo);
