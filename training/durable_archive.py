@@ -8,13 +8,16 @@ The optional HF transport requires huggingface_hub==0.35.3; the core is stdlib.
 from __future__ import annotations
 
 import hashlib
+import errno
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
 import tempfile
+import time
 from typing import Mapping
 
 HUB_VERSION = "0.35.3"
@@ -23,10 +26,145 @@ _HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 _HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,95}\Z")
 _CHUNK = 1024 * 1024
+_OPERATIONS = frozenset(('validation', 'head', 'inventory', 'download', 'commit',
+                         'local', 'recover', 'deadline'))
+_ERROR_TYPES = frozenset(('Exception', 'ArchiveError', 'OSError', 'TimeoutError',
+    'ConnectionError', 'ConnectionResetError', 'ConnectionRefusedError',
+    'ConnectionAbortedError', 'BrokenPipeError', 'FileNotFoundError',
+    'PermissionError', 'ValueError', 'RuntimeError', 'HTTPError', 'HfHubHTTPError',
+    'Timeout', 'ConnectTimeout', 'ReadTimeout', 'ProxyError', 'SSLError',
+    'RepositoryNotFoundError', 'RevisionNotFoundError', 'EntryNotFoundError',
+    'LocalEntryNotFoundError', 'BadRequestError', 'GatedRepoError',
+    'OfflineModeIsEnabled'))
+_TRANSIENT_STATUS = frozenset((408, 429, 500, 502, 503, 504))
+_TRANSIENT_ERRNO = frozenset((errno.ECONNRESET, errno.ECONNREFUSED,
+    errno.ECONNABORTED, errno.ETIMEDOUT, errno.EPIPE, errno.ENETUNREACH,
+    errno.EHOSTUNREACH))
+
+
+def _safe_diagnostic(value):
+    """A closed metadata schema; never copies error text, URLs or headers."""
+    value = value if isinstance(value, dict) else {}
+    operation = value.get('operation')
+    kind, status, number, attempts = (value.get(k) for k in
+                                    ('exception_type', 'http_status', 'errno', 'attempts'))
+    return {'operation': operation if isinstance(operation, str) and operation in _OPERATIONS else 'validation',
+            'exception_type': kind if isinstance(kind, str) and kind in _ERROR_TYPES else 'Exception',
+            'http_status': status if type(status) is int and 100 <= status <= 599 else None,
+            'errno': number if type(number) is int and 0 < number < 4096 else None,
+            'retryable': value.get('retryable') is True and isinstance(operation, str) and operation in
+                         ('head', 'inventory', 'download', 'commit'),
+            'attempts': attempts if type(attempts) is int and 0 <= attempts <= 8 else None}
 
 
 class ArchiveError(RuntimeError):
     """A sanitized, fail-closed archive failure; never includes transport text."""
+
+    def __init__(self, message, *, diagnostic=None):
+        super().__init__(message)
+        self._diagnostic = _safe_diagnostic(diagnostic or
+            {'operation': 'validation', 'exception_type': 'ArchiveError'})
+
+    @property
+    def diagnostic(self):
+        return dict(self._diagnostic)
+
+
+def _operation_failure(operation, exc):
+    if isinstance(exc, ArchiveError):
+        return ArchiveError('archive operation failed', diagnostic=exc.diagnostic)
+    # requests is optional for the stdlib core, but is installed by the HF client.
+    network_types, excluded_types = (ConnectionError, TimeoutError), ()
+    try:
+        from requests.exceptions import ConnectionError as RequestsConnectionError
+        from requests.exceptions import Timeout, SSLError
+        network_types += (RequestsConnectionError, Timeout)
+        excluded_types = (SSLError,)
+    except ImportError:
+        pass
+    # HF wraps LFS-upload and forced-download failures. Follow only explicit
+    # causes, bounded and without ever reading their text or traceback.
+    seen = set()
+    for _ in range(8):
+        status = getattr(getattr(exc, 'response', None), 'status_code', None)
+        status = status if type(status) is int and 100 <= status <= 599 else None
+        number = getattr(exc, 'errno', None)
+        number = number if type(number) is int and 0 < number < 4096 else None
+        network = isinstance(exc, network_types) and not isinstance(exc, excluded_types)
+        cause = exc.__cause__
+        if status is not None or number is not None or network or not isinstance(cause, Exception) or id(cause) in seen:
+            break
+        seen.add(id(exc))
+        exc = cause
+        if isinstance(exc, ArchiveError):
+            return ArchiveError('archive operation failed', diagnostic=exc.diagnostic)
+    retryable = (status in _TRANSIENT_STATUS or
+                 (operation == 'commit' and status == 409) or
+                 (status is None and (network or number in _TRANSIENT_ERRNO)))
+    return ArchiveError('archive operation failed', diagnostic={
+        'operation': operation, 'exception_type': type(exc).__name__,
+        'http_status': status, 'errno': number, 'retryable': retryable})
+
+
+def sync_unit_with_retry(archive, unit_id, files, *, sequence, deadline,
+                         max_attempts=4, clock=time.monotonic, sleep=time.sleep,
+                         on_retry=None):
+    """Retry the identical closed unit, never native work or a raw commit.
+
+    A commit with a lost response is discovered and read back by sync_unit.
+    The absolute monotonic deadline also rejects a late successful receipt.
+    It does not cancel a transport call already in progress: transports must
+    impose their own finite request timeouts. Callback data is safe to journal.
+    """
+    _need(type(max_attempts) is int and 1 <= max_attempts <= 8,
+          'invalid archive retry count')
+    _need(type(deadline) in (int, float) and math.isfinite(deadline),
+          'invalid archive retry deadline')
+    # Freeze the mapping even if a caller mutates its original dict between tries.
+    _need(isinstance(files, Mapping) and files, 'unit must contain files')
+    try:
+        closed_files = dict(files)
+        signatures = {name: (_source_stat(Path(path)), _digest(Path(path)))
+                      for name, path in closed_files.items()}
+    except Exception as exc:
+        raise _operation_failure('local', exc) from None
+
+    def expired(attempt):
+        return ArchiveError('archive acknowledgement deadline exceeded', diagnostic={
+            'operation': 'deadline', 'exception_type': 'TimeoutError',
+            'attempts': attempt})
+
+    previous_deadline = getattr(archive, '_operation_deadline', None)
+    archive._operation_deadline = (clock, deadline)
+    try:
+        for attempt in range(1, max_attempts + 1):
+            if clock() >= deadline:
+                raise expired(attempt - 1) from None
+            try:
+                for name, path in closed_files.items():
+                    try:
+                        signature = (_source_stat(Path(path)), _digest(Path(path)))
+                    except Exception as exc:
+                        raise _operation_failure('local', exc) from None
+                    _need(signature == signatures[name], 'closed unit changed between archive retries')
+                receipt = archive.sync_unit(unit_id, closed_files, sequence=sequence)
+            except ArchiveError as exc:
+                diagnostic = {**exc.diagnostic, 'attempts': attempt}
+                if clock() >= deadline:
+                    raise expired(attempt) from None
+                if not diagnostic['retryable'] or attempt == max_attempts:
+                    raise ArchiveError('archive synchronization stopped', diagnostic=diagnostic) from None
+                delay = min(float(2 ** (attempt - 1)), max(0.0, deadline - clock()))
+                if on_retry is not None:
+                    on_retry({'attempt': attempt, 'next_attempt': attempt + 1,
+                              'delay_seconds': delay, 'diagnostic': diagnostic})
+                sleep(min(delay, max(0.0, deadline - clock())))
+                continue
+            if clock() >= deadline:
+                raise expired(attempt) from None
+            return receipt
+    finally:
+        archive._operation_deadline = previous_deadline
 
 
 def _need(condition, message):
@@ -117,15 +255,23 @@ class DurableArchive:
         self._manifest_cache = {}  # path -> (verified digest, bytes)
         self._verified_objects = set()
         self._pending = None
+        self._operation_deadline = None
+
+    def _check_deadline(self):
+        if self._operation_deadline is not None:
+            clock, deadline = self._operation_deadline
+            if clock() >= deadline:
+                raise ArchiveError('archive acknowledgement deadline exceeded', diagnostic={
+                    'operation': 'deadline', 'exception_type': 'TimeoutError'})
 
     def _remote(self, method, *args):
+        self._check_deadline()
         try:
-            return getattr(self.transport, method)(*args)
-        except ArchiveError:
-            # Even an injected transport must not leak arbitrary exception text.
-            raise ArchiveError("remote archive operation failed") from None
-        except Exception:
-            raise ArchiveError("remote archive operation failed") from None
+            result = getattr(self.transport, method)(*args)
+        except Exception as exc:
+            raise _operation_failure(method, exc) from None
+        self._check_deadline()
+        return result
 
     def _object_path(self, sha):
         return self.prefix + "/objects/" + sha
@@ -332,8 +478,8 @@ class DurableArchive:
                 return self._receipt(revision, manifest, manifest_sha, False)
         except ArchiveError:
             raise
-        except Exception:
-            raise ArchiveError("local archive operation failed") from None
+        except Exception as exc:
+            raise _operation_failure('local', exc) from None
 
     def _receipt(self, revision, manifest, sha, reused):
         return {"schema": "jovovich.durable-receipt.v1", "run_id": self.run_id,
@@ -386,8 +532,28 @@ class DurableArchive:
                 return result
         except ArchiveError:
             raise
-        except Exception:
-            raise ArchiveError("archive recovery failed") from None
+        except Exception as exc:
+            raise _operation_failure('recover', exc) from None
+
+
+def _bounded_timeout(value):
+    def component(item):
+        return min(float(item), 30.0) if (type(item) in (int, float) and
+            math.isfinite(item) and item > 0) else 30.0
+    if isinstance(value, tuple) and len(value) == 2:
+        return tuple(component(item) for item in value)
+    return component(value)
+
+
+def _hf_session_factory():
+    import requests
+
+    class BoundedSession(requests.Session):
+        def request(self, method, url, **kwargs):
+            kwargs['timeout'] = _bounded_timeout(kwargs.get('timeout'))
+            return super().request(method, url, **kwargs)
+
+    return BoundedSession()
 
 
 class HFTransport:
@@ -395,6 +561,11 @@ class HFTransport:
 
     Existing repository/branch only. Nothing here creates or changes visibility.
     The fixed official endpoint avoids ambient HF_ENDPOINT credential redirects.
+    Intended for the dedicated archive parent: configuring the official Hub HTTP
+    backend is process-wide. Every requests call, including metadata, pagination
+    and commit requests, receives finite connect/read timeouts of at most 30s.
+    SDK download retries may span several requests; DurableArchive checks the
+    overall acknowledgement deadline between transport operations.
     """
 
     def __init__(self, repo_id, token, branch="main"):
@@ -409,6 +580,7 @@ class HFTransport:
             _need(hub.__version__ == HUB_VERSION, "unsupported hub client version")
             from huggingface_hub.utils import disable_progress_bars
             disable_progress_bars()
+            hub.configure_http_backend(backend_factory=_hf_session_factory)
             self._hub = hub
             self._api = hub.HfApi(endpoint="https://huggingface.co", token=token)
             self._token = token
@@ -420,7 +592,7 @@ class HFTransport:
 
     def _private(self, revision):
         info = self._api.repo_info(repo_id=self.repo_id, repo_type="model",
-                                   revision=revision)
+                                   revision=revision, timeout=30)
         _need(info.private is True and info.id == self.repo_id,
               "archive repository must be private")
         sha = _revision(info.sha)
@@ -431,8 +603,8 @@ class HFTransport:
     def head(self):
         try:
             return self._private(self.branch)
-        except Exception:
-            raise ArchiveError("private repository verification failed") from None
+        except Exception as exc:
+            raise _operation_failure('head', exc) from None
 
     def inventory(self, revision, prefix):
         try:
@@ -453,8 +625,8 @@ class HFTransport:
                                           "sha256": lfs.sha256 if lfs else None,
                                           "git_blob_sha1": None if lfs else value.blob_id}
             return result
-        except Exception:
-            raise ArchiveError("remote archive inventory failed") from None
+        except Exception as exc:
+            raise _operation_failure('inventory', exc) from None
 
     def download(self, path, revision, destination):
         try:
@@ -468,8 +640,8 @@ class HFTransport:
                     endpoint="https://huggingface.co", force_download=True,
                     local_files_only=False)
                 shutil.copyfile(downloaded, destination)
-        except Exception:
-            raise ArchiveError("fresh remote archive read failed") from None
+        except Exception as exc:
+            raise _operation_failure('download', exc) from None
 
     def commit(self, files, parent, message):
         try:
@@ -483,5 +655,5 @@ class HFTransport:
                 parent_commit=parent, operations=operations,
                 commit_message="Archive closed research unit", num_threads=2)
             return _revision(result.oid)
-        except Exception:
-            raise ArchiveError("remote archive commit not acknowledged") from None
+        except Exception as exc:
+            raise _operation_failure('commit', exc) from None

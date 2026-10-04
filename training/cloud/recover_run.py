@@ -3,7 +3,6 @@
 import argparse
 from datetime import datetime, timezone
 import hashlib
-import importlib.util
 import json
 import os
 from pathlib import Path
@@ -11,12 +10,16 @@ import re
 import shutil
 import stat
 import sys
+import subprocess
+import types
 
 STATE_FILES = ('state.json', 'exit.json', 'child.log')
 JOB_FILES = ('after.stderr', 'after.stdout', 'exit-status.txt', 'host-manifest.json')
 AFTER_FILES = ('failure.json', 'stderr.log', 'stdout.jsonl', 'metrics.jsonl', 'plan.json')
 MAX_BYTES = 16 * 1024 * 1024
 SAFE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,79}\Z')
+HEX40 = re.compile(r'[0-9a-f]{40}\Z')
+HEX64 = re.compile(r'[0-9a-f]{64}\Z')
 ACK = re.compile(r'(?:intent|completion|update-[0-9]{3})\.ack\.json\Z')
 
 
@@ -62,6 +65,132 @@ def regular_snapshot(path):
     return raw, {'bytes': len(raw), 'sha256': sha(raw), 'mtime_ns': before.st_mtime_ns}
 
 
+def git_bytes(repo, *args):
+    result = subprocess.run(['git', '--no-replace-objects', '-C', str(safe_path(repo)), *args],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False,
+                            env={'PATH': os.environ.get('PATH', os.defpath), 'LANG': 'C',
+                                 'GIT_NO_LAZY_FETCH': '1', 'GIT_TERMINAL_PROMPT': '0',
+                                 'GIT_CONFIG_NOSYSTEM': '1', 'GIT_CONFIG_GLOBAL': os.devnull})
+    need(result.returncode == 0, 'source revision is unavailable')
+    return result.stdout
+
+
+def bind_sources(repo, source_repo, source_revision, host_source):
+    """Use Git objects offline; the recovery source and retained engine are distinct."""
+    need(isinstance(source_revision, str) and HEX40.fullmatch(source_revision), 'invalid recovery revision')
+    need(git_bytes(source_repo, 'rev-parse', source_revision + '^{commit}').decode().strip() == source_revision,
+         'recovery source must name an exact commit')
+    retained_revision = git_bytes(repo, 'rev-parse', 'HEAD^{commit}').decode().strip()
+    need(HEX40.fullmatch(retained_revision), 'invalid retained source revision')
+    bindings, sources = {}, {}
+    for name, path, git_repo, revision, logical in [
+            ('recover_run.py', Path(__file__), source_repo, source_revision, 'training/cloud/recover_run.py'),
+            ('recover_host.sh', host_source, source_repo, source_revision, 'training/cloud/recover_host.sh'),
+            ('durable_archive.py', repo / 'training/durable_archive.py', repo, retained_revision, 'training/durable_archive.py')]:
+        raw, info = regular_snapshot(path)
+        need(raw == git_bytes(git_repo, 'show', revision + ':' + logical), 'executed source differs from pinned Git object')
+        sources[name] = raw
+        bindings[name] = dict(revision=revision, path=logical, bytes=info['bytes'], sha256=info['sha256'])
+    return bindings, sources
+
+
+def valid_entries(entries, prefix):
+    if not isinstance(entries, list) or not entries:
+        return False
+    names = []
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {'name', 'size', 'sha256', 'git_blob_sha1', 'object'}:
+            return False
+        name = entry['name']
+        if (not isinstance(name, str) or len(name) > 512 or
+                not re.fullmatch(r'[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*', name) or
+                any(part in ('.', '..') for part in name.split('/')) or
+                type(entry['size']) is not int or entry['size'] < 0 or
+                not isinstance(entry['sha256'], str) or not HEX64.fullmatch(entry['sha256']) or
+                not isinstance(entry['git_blob_sha1'], str) or not HEX40.fullmatch(entry['git_blob_sha1']) or
+                entry['object'] != prefix + '/objects/' + entry['sha256']):
+            return False
+        names.append(name)
+    return names == sorted(set(names)) and not any(b.startswith(a + '/') for a, b in zip(names, names[1:]))
+
+
+def receipt_candidate(name, receipt, plan, run_prefix):
+    """Local validation only. A structurally valid receipt remains a local claim."""
+    match = re.fullmatch(r'_units/update-([0-9]{3})\.ack\.json', name)
+    if not match or not isinstance(receipt, dict) or not isinstance(plan, dict):
+        return False
+    update = int(match[1]); run_id = run_prefix + '-after'
+    try:
+        steps = plan['argv'][4]
+        if not isinstance(steps, str) or not steps.isdecimal() or not 0 <= update <= int(steps) <= 999:
+            return False
+        remote = plan['remote']; prefix = remote['prefix'] + '/' + run_id
+        return (plan.get('schema_version') == 1 and plan.get('run_id') == run_id and plan.get('arm') == 'after' and
+                remote == {'private': True, 'repo': 'ataeff/jovovich', 'prefix': 'experiments/explanation-order'} and
+                set(receipt) == {'schema', 'run_id', 'prefix', 'revision', 'sequence', 'unit_id', 'manifest_sha256',
+                                 'files', 'verified_remote_bytes', 'reused'} and
+                receipt['schema'] == 'jovovich.durable-receipt.v1' and receipt['run_id'] == run_id and
+                receipt['prefix'] == prefix and receipt['unit_id'] == 'update-' + match[1] and
+                type(receipt['sequence']) is int and receipt['sequence'] == update + 1 and
+                isinstance(receipt['revision'], str) and bool(HEX40.fullmatch(receipt['revision'])) and
+                isinstance(receipt['manifest_sha256'], str) and bool(HEX64.fullmatch(receipt['manifest_sha256'])) and
+                receipt['verified_remote_bytes'] is True and type(receipt['reused']) is bool and
+                valid_entries(receipt['files'], prefix))
+    except (KeyError, TypeError, IndexError):
+        return False
+
+
+def verify_ack_manifest(transport, receipt, plan_raw, directory):
+    """Fresh pinned manifest-chain and plan checks; never downloads weight objects."""
+    directory.mkdir()
+    revision, prefix = receipt['revision'], receipt['prefix']
+    inventory = transport.inventory(revision, prefix)
+    need(isinstance(inventory, dict), 'invalid remote inventory')
+    total = 0
+
+    def download(path, destination, limit):
+        nonlocal total
+        meta = inventory.get(path, {})
+        need(type(meta.get('size')) is int and 0 <= meta['size'] <= limit, 'remote evidence exceeds bound')
+        total += meta['size']
+        need(total <= MAX_BYTES, 'remote receipt evidence exceeds total bound')
+        transport.download(path, revision, destination)
+        raw, _ = regular_snapshot(destination)
+        need(len(raw) == meta['size'], 'remote evidence size mismatch')
+        return raw
+
+    previous = None
+    for sequence in range(receipt['sequence'] + 1):
+        unit_id = 'intent' if sequence == 0 else f'update-{sequence - 1:03d}'
+        filename = f'{sequence:06d}-{unit_id}.json'
+        raw = download(prefix + '/units/' + filename, directory / filename, 1000000)
+        manifest = json.loads(raw)
+        canonical = (json.dumps(manifest, sort_keys=True, separators=(',', ':'), ensure_ascii=True, allow_nan=False) + '\n').encode()
+        need(raw == canonical and isinstance(manifest, dict) and set(manifest) ==
+             {'schema', 'run_id', 'sequence', 'unit_id', 'previous_manifest', 'parent_revision', 'files'},
+             'invalid remote manifest')
+        need(manifest['schema'] == 'jovovich.durable-unit.v1' and manifest['run_id'] == receipt['run_id'] and
+             type(manifest['sequence']) is int and manifest['sequence'] == sequence and manifest['unit_id'] == unit_id and
+             manifest['previous_manifest'] == previous and isinstance(manifest['parent_revision'], str) and
+             HEX40.fullmatch(manifest['parent_revision']) and valid_entries(manifest['files'], prefix),
+             'remote manifest binding mismatch')
+        previous = sha(raw)
+        if sequence == 0:
+            entries = [entry for entry in manifest['files'] if entry['name'] == 'plan.json']
+            need(len(entries) == 1, 'remote intent has no unique plan')
+            entry = entries[0]
+            need(entry['size'] == len(plan_raw) and entry['sha256'] == sha(plan_raw) and
+                 entry['git_blob_sha1'] == hashlib.sha1(b'blob ' + str(len(plan_raw)).encode() + b'\0' + plan_raw).hexdigest(),
+                 'receipt archive belongs to a different training plan')
+            need(download(entry['object'], directory / 'plan.json', len(plan_raw)) == plan_raw,
+                 'remote training plan differs from local incident plan')
+    need(previous == receipt['manifest_sha256'] and manifest['files'] == receipt['files'],
+         'local receipt differs from remote manifest')
+    return {'status': 'manifest_and_plan_verified', 'revision': revision,
+            'manifest_sha256': previous, 'update': receipt['sequence'] - 1,
+            'scope': 'Fresh manifest chain and exact plan bytes; payload verification is the original local receipt claim.'}
+
+
 def sanitize(raw, secrets):
     for secret in secrets:
         if secret:
@@ -85,8 +214,11 @@ def layout(repo, state_dir, run_prefix, output, run_id):
     return repo, roots, output
 
 
-def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_file=None, secrets=()):
+def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_repo, source_revision, host_source,
+            secrets=(), receipt_transport=None, _source_bundle=None):
     repo, roots, output = layout(repo, state_dir, run_prefix, output, run_id)
+    source_bindings, source_bytes = (_source_bundle if _source_bundle is not None else
+                                     bind_sources(repo, source_repo, source_revision, host_source))
     output.mkdir(parents=True, mode=0o700)
     sequence = 0
 
@@ -102,7 +234,7 @@ def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_file
 
     storage = shutil.disk_usage(repo)
     intent = {'schema': 'jovovich.incident-recovery.v1', 'run_id': run_id, 'original_run_prefix': run_prefix,
-              'started_utc': now(), 'read_only_original': True,
+              'started_utc': now(), 'read_only_original': True, 'source_bindings': source_bindings,
               'host': {'uname': list(os.uname()), 'filesystem_bytes': dict(total=storage.total, used=storage.used, free=storage.free)},
               'roots': {k: {'path': str(v), 'exists': v.exists(),
                            'is_directory': v.is_dir(),
@@ -111,8 +243,7 @@ def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_file
               'policy': 'Allowlisted text evidence only; no old credential, environment or model-weight files.'}
     save(output / 'intent.json', intent)
     bootstrap = {'intent.json': output / 'intent.json'}
-    for name, path in [('recover_run.py', source_file or Path(__file__)), ('durable_archive.py', repo / 'training/durable_archive.py')]:
-        raw, _ = regular_snapshot(path)
+    for name, raw in source_bytes.items():
         dest = output / name; dest.write_bytes(raw); bootstrap[name] = dest
     sync('intent', bootstrap)
     requests = [(group, name) for group, names in [('state', STATE_FILES), ('job', JOB_FILES), ('after', AFTER_FILES),
@@ -164,12 +295,29 @@ def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_file
     for source, key, target in [(watchdog, 'child_exit_code', 'watchdog_child_exit_code'), (failure, 'return_code', 'trainer_return_code')]:
         if type(source.get(key)) is int:
             diagnostic[target] = source[key]
-    acknowledged = [int(name[14:17]) for (group, name), value in parsed.items()
-                    if group == 'after' and re.fullmatch(r'_units/update-[0-9]{3}\.ack\.json', name) and
-                    isinstance(value, dict) and value.get('verified_remote_bytes') is True]
-    diagnostic['latest_local_verified_update_ack'] = max(acknowledged, default=None)
+    plan = parsed.get(('after', 'plan.json'))
+    receipts = [(name, value) for (group, name), value in parsed.items()
+                if group == 'after' and re.fullmatch(r'_units/update-[0-9]{3}\.ack\.json', name)]
+    candidates = [value for name, value in receipts if receipt_candidate(name, value, plan, run_prefix)]
+    diagnostic['local_update_receipts_rejected'] = len(receipts) - len(candidates)
+    diagnostic['latest_manifest_bound_local_update_ack'] = None
+    verification = {'status': 'no_valid_local_receipt' if not candidates else 'not_requested'}
+    if candidates and receipt_transport is not None:
+        candidate = max(candidates, key=lambda value: value['sequence'])
+        try:
+            verification = verify_ack_manifest(receipt_transport, candidate, (output / 'after/plan.json').read_bytes(),
+                                               output / 'receipt-verification')
+            diagnostic['latest_manifest_bound_local_update_ack'] = verification['update']
+        except Exception as error:
+            verification = {'status': 'failed', 'error_type': type(error).__name__
+                            if re.fullmatch(r'[A-Za-z0-9_]{1,80}', type(error).__name__) else 'Exception'}
+    diagnostic['receipt_verification'] = verification
     save(output / 'diagnosis.json', diagnostic)
-    receipt = sync('completion', {'diagnosis.json': output / 'diagnosis.json'})
+    closed = {'diagnosis.json': output / 'diagnosis.json'}
+    if verification['status'] == 'manifest_and_plan_verified':
+        for path in sorted((output / 'receipt-verification').iterdir()):
+            closed[str(path.relative_to(output))] = path
+    receipt = sync('completion', closed)
     result = dict(diagnostic, archive_status='verified', remote_verification=receipt)
     save(output / 'completion.ack.json', result)
     return result
@@ -177,24 +325,30 @@ def recover(archive, *, repo, state_dir, run_prefix, output, run_id, source_file
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ('repo', 'state-dir', 'run-prefix', 'run-id', 'output', 'token-file'):
+    for name in ('repo', 'state-dir', 'run-prefix', 'run-id', 'output', 'token-file', 'source-repo', 'source-revision', 'host-source'):
         parser.add_argument('--' + name, required=True)
     args = parser.parse_args()
     try:
         repo, roots, _ = layout(args.repo, args.state_dir, args.run_prefix, args.output, args.run_id)
-        module = safe_path(repo / 'training/durable_archive.py')
-        spec = importlib.util.spec_from_file_location('incident_durable_archive', module)
-        archive_module = importlib.util.module_from_spec(spec); spec.loader.exec_module(archive_module)
+        source_bundle = bind_sources(repo, args.source_repo, args.source_revision, args.host_source)
+        _, sources = source_bundle
+        module = repo / 'training/durable_archive.py'
+        archive_module = types.ModuleType('incident_durable_archive')
+        archive_module.__file__ = str(module)
+        exec(compile(sources['durable_archive.py'], str(module), 'exec'), archive_module.__dict__)
         # Only this newly supplied parent credential is read; original credentials are never consulted.
         credential = safe_path(args.token_file)
         need(not credential.is_relative_to(repo) and
              all(not credential.is_relative_to(root) for root in roots.values()),
              'supply a new parent credential outside the original evidence')
         token = credential.read_text().strip()
-        archive = archive_module.DurableArchive(archive_module.HFTransport('ataeff/jovovich', token),
+        transport = archive_module.HFTransport('ataeff/jovovich', token)
+        archive = archive_module.DurableArchive(transport,
                                                 args.run_id, prefix='experiments/explanation-order')
         result = recover(archive, repo=repo, state_dir=args.state_dir, run_prefix=args.run_prefix,
-                         output=args.output, run_id=args.run_id, secrets=(token,))
+                         output=args.output, run_id=args.run_id, secrets=(token,), receipt_transport=transport,
+                         source_repo=args.source_repo, source_revision=args.source_revision, host_source=args.host_source,
+                         _source_bundle=source_bundle)
         print(json.dumps(result), flush=True)
         return 0
     except Exception as error:

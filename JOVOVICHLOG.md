@@ -27,6 +27,53 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-04 — Keep the gate closed; retry the same parcel.
+
+PR29 review found two recovery defects. The wrapper checked the shape of a
+source SHA without binding its executing bytes, and the incident summary
+accepted an ACK filename without checking its manifest. Recovery now binds
+the wrapper/helper to the supplied Git revision and the retained archive
+module to its separate original revision. The highest local update receipt
+must match a fresh pinned manifest chain and the exact original launch plan;
+the diagnostic names that metadata verification scope explicitly.
+
+The training archive already supported accepted-but-unacknowledged commits,
+but the training parent never retried them. New attempts retry the identical
+closed unit for selected transient failures, at most four attempts by default.
+Native work remains blocked at its existing ACK boundary. Changed payloads,
+authentication failures and integrity failures stop immediately. The default
+receipt acceptance deadline is 120 seconds, capped at 80% of the native ACK
+budget. HF requests have finite connect/read timeouts; an in-flight SDK call
+can finish after the deadline, at which point its receipt is rejected.
+
+Failure records now retain the operation, exception class, numeric HTTP status
+or errno, attempted unit and last acknowledged unit/update without transport
+exception text. After stopping the native child, the parent also attempts a
+separate failure-evidence archive. Retry records through the pre-completion
+snapshot travel with completion; retries of completion itself remain in the
+local retry journal and parent stderr. The original failure's underlying
+operation was not recorded by the old deployed handler.
+
+`training/after_recovery/preflight.py` prepares the next after attempt from
+freshly verified original before/after archives. It preserves the numerical
+inputs and initialization and identifies exactly two permitted infrastructure
+changes. Its contract is explicitly non-runnable: an after-only host launcher
+and evaluator admission for these infrastructure changes are the next stage.
+The completed before comparator remains pinned. No new training pod was
+launched for this code change. The combined suite passed 301 tests; the final
+recovery hardening passed all 29 focused cases, including three new cases.
+The native fault fixture preserved bitwise LoRA results through a lost commit
+reply, with 24 fault scenarios and no repeated optimizer update.
+
+The real private HF archive was then recovered afresh: 103 before units and
+11 failed-after units passed byte verification at the original pinned revision.
+All original non-infrastructure bindings and initial adapters match. The
+candidate differs on exactly the two allowed paths, and the public verification
+record lists both original/candidate SHA256 pairs for the shared after/quote
+admission rule. The preflight, source bytes and test logs were archived and
+recovered again from private HF revision `e983dc43212f0d8a06b4c63b4d751d690bd4f2cc`.
+See `training/results/2026-10-04-archive-retry/verification.json`.
+
 ## 2026-10-04 — An archive failure stops the second arm.
 
 The first Runpod attempt completed and archived all 100 before updates. The

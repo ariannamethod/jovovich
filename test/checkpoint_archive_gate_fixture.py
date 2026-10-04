@@ -169,6 +169,39 @@ def main():
         for suffix in ('gate', 'up', 'down'):
             check((output / ('adapter.epoch00.' + suffix + '.lora')).read_bytes() ==
                   (directory / ('initial.' + suffix + '.lora')).read_bytes(), 'initial A/B changed before gate0')
+        # A server-accepted commit with a lost reply is retried while the exact
+        # native process remains blocked. No duplicate update or Chuck reset.
+        transient_remote = FakeTransport()
+        transient_archive = DurableArchive(transient_remote, 'transient-gate')
+        transient_sync = transient_archive.sync_unit
+        transient_output = directory / 'transient-success'
+        injected = False
+        def transient(name, files, *, sequence):
+            nonlocal injected
+            if name == 'update-001':
+                check(len(calls(transient_output / 'stderr.log')) == 1,
+                      'native advanced during archive retry')
+                if not injected:
+                    injected = True
+                    def disconnect(_):
+                        raise ConnectionResetError(104, 'hf_SECRET_SENTINEL')
+                    transient_remote.after_commit = disconnect
+            return transient_sync(name, files, sequence=sequence)
+        transient_archive.sync_unit = transient
+        retried = run_training(transient_archive, plan, transient_output)
+        check(retried['status'] == 'completed' and transient_remote.commits == 11,
+              'retry duplicated the closed unit or failed to finish')
+        for suffix in ('gate', 'up', 'down'):
+            check((transient_output / ('adapter.' + suffix + '.lora')).read_bytes() ==
+                  (output / ('adapter.' + suffix + '.lora')).read_bytes(),
+                  'archive retry changed the native optimizer trajectory')
+        retry_journal = (transient_output / 'archive-retries.jsonl').read_text()
+        check('SECRET' not in retry_journal and json.loads(retry_journal)['unit_id'] == 'update-001',
+              'retry journal leaked transport text or lost unit identity')
+        retry_recovery = directory / 'transient-recovered'
+        DurableArchive(transient_remote, 'transient-gate').recover(retry_recovery)
+        check((retry_recovery / '_units/pre-completion-retries.jsonl').read_text() == retry_journal,
+              'retry evidence did not survive remote-only recovery')
         for scenario in ('intent-failure', 'readback-corruption', 'lost-ack', 'binding-change', 'binding-during-archive', 'plan-during-archive'):
             dest = directory / scenario
             transport = FakeTransport()
@@ -206,6 +239,13 @@ def main():
                   'native update crossed failed archive gate')
             check(not (dest / 'adapter.gate.f32').exists(), 'failed attempt exported final model')
             check((dest / 'failure.json').is_file(), 'failure receipt missing')
+            failure = json.loads((dest / 'failure.json').read_text())
+            if scenario in ('readback-corruption', 'lost-ack'):
+                check(failure['unit_id'] == 'update-001' and failure['sequence'] == 2 and
+                      failure['last_acknowledged_update'] == 0 and
+                      failure['last_acknowledged_unit']['unit_id'] == 'update-000' and
+                      'archive_error' in failure and 'SECRET' not in json.dumps(failure),
+                      'archive failure lost its unit, last ACK, or sanitized diagnosis')
             check(not (dest / '_units/completion.ack.json').exists(), 'failed trajectory claimed verified completion')
             binding_file.write_text('frozen source\n')
         for scenario in ('final-sync-failure', 'final-readback-corruption'):
@@ -301,8 +341,37 @@ def main():
         check(no_start.returncode != 0 and json.loads(no_start.stdout) == ARCHIVE_HELLO and
               b'missing or invalid archive ACK' in no_start.stderr and b'dataset' not in no_start.stderr,
               'native opened inputs before START')
+        # A permanent corrupt readback blocks native progress but its failure
+        # evidence can still reach a separate chain when that destination works.
+        incident_remote = FakeTransport()
+        incident_archive = DurableArchive(incident_remote, 'incident-gate')
+        incident_output = directory / 'incident-gate'
+        incident_plan = dict(plan, remote={'private': True, 'repo': 'ataeff/jovovich',
+                                         'prefix': 'experiments/durable-layer-readout'})
+        incident_sync = incident_archive.sync_unit
+        def corrupt_unit(name, files, *, sequence):
+            if name == 'update-001':
+                def corrupt_once(path, data):
+                    incident_remote.download_fault = None
+                    return data + b'corrupt'
+                incident_remote.download_fault = corrupt_once
+            return incident_sync(name, files, sequence=sequence)
+        incident_archive.sync_unit = corrupt_unit
+        try:
+            run_training(incident_archive, incident_plan, incident_output)
+        except TrainingError:
+            pass
+        else:
+            raise RuntimeError('incident corruption did not stop training')
+        incident_receipt = json.loads((incident_output / 'failure-archive.json').read_text())
+        check(incident_receipt['status'] == 'verified' and len(calls(incident_output / 'stderr.log')) == 1,
+              'failure archive advanced training or failed to preserve the diagnosis')
+        restored_failure = directory / 'restored-failure'
+        DurableArchive(incident_remote, 'incident-gate', prefix='experiments/durable-layer-readout/failures').recover(restored_failure)
+        check((restored_failure / 'failure.json').read_bytes() == (incident_output / 'failure.json').read_bytes(),
+              'separate failure archive lost exact failure bytes')
         print(json.dumps({'passed': True, 'native_updates': 8, 'bitwise_trajectory_match': True,
-                          'verified_units': 11, 'fault_scenarios': 22,
+                          'verified_units': 11, 'fault_scenarios': 24,
                           'initial_adapter_match': True, 'scorer_metrics_preserved': True}))
 
 

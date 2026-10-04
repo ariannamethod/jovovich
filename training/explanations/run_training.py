@@ -16,12 +16,13 @@ import time
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / 'training'))
-from durable_archive import DurableArchive, HFTransport
+from durable_archive import ArchiveError, DurableArchive, HFTransport, sync_unit_with_retry
 from layers.run_layers import check_binding, digest, identity, now, relative, save
 
 ARCHIVE_CAPABILITY = {'schema': 'jovovich.archive-ack.v1', 'startup_ack': True,
                       'initial_snapshot': True, 'per_update_ack': True}
 ARCHIVE_HELLO = {'stage': 'archive_hello', 'schema': ARCHIVE_CAPABILITY['schema']}
+ARCHIVE_RETRY = {'max_attempts': 4, 'budget_seconds': 120}
 
 
 class TrainingError(RuntimeError):
@@ -111,6 +112,11 @@ def validate_plan(plan, repo=REPO):
     need(environment.get('NT_NO_I8', '1') == '1', 'native trainer requires NT_NO_I8=1')
     timeout = plan.get('ack_timeout_ms', 300000)
     need(type(timeout) is int and 1 <= timeout <= 3600000, 'invalid archive acknowledgement timeout')
+    retry = plan.get('archive_retry', ARCHIVE_RETRY)
+    need(isinstance(retry, dict) and set(retry) == set(ARCHIVE_RETRY) and
+         type(retry['max_attempts']) is int and 1 <= retry['max_attempts'] <= 6 and
+         type(retry['budget_seconds']) is int and 1 <= retry['budget_seconds'] <= 600,
+         'invalid bounded archive retry policy')
     initial = plan.get('expected_initial_lora_sha256')
     need(initial is None or (isinstance(initial, dict) and set(initial) == {'gate', 'up', 'down'} and
          all(isinstance(v, str) and re.fullmatch(r'[0-9a-f]{64}', v) for v in initial.values())),
@@ -145,6 +151,33 @@ def _stop(child):
                 pass
 
 
+def archive_failure_evidence(archive, plan, run_dir):
+    """Try a separate incident chain after the native process has stopped.
+
+    The failed training chain may contain an accepted, unacknowledged unit. It
+    must remain locked to that unit; this sibling chain preserves the diagnosis
+    without advancing or rewriting it. Failure here leaves the local journal.
+    """
+    remote = plan.get('remote', {})
+    if not isinstance(archive, DurableArchive) or remote.get('private') is not True:
+        return None
+    try:
+        failure_archive = DurableArchive(archive.transport, archive.run_id,
+                                        prefix=remote['prefix'] + '/failures')
+        files = {name: run_dir / name for name in
+                 ('failure.json', 'plan.json', 'stdout.jsonl', 'metrics.jsonl',
+                  'stderr.log', 'archive-retries.jsonl') if (run_dir / name).is_file()}
+        receipt = sync_unit_with_retry(failure_archive, 'failure', files, sequence=0,
+                                      deadline=time.monotonic() + 30, max_attempts=2)
+        result = {'status': 'verified', 'remote_verification': receipt}
+    except ArchiveError as exc:
+        result = {'status': 'unavailable', 'archive_error': exc.diagnostic}
+    except Exception:
+        result = {'status': 'unavailable'}
+    save(run_dir / 'failure-archive.json', result)
+    return result
+
+
 def run_training(archive, plan, run_dir, *, repo=REPO):
     """Archive intent, then each closed boundary, before allowing another update.
 
@@ -163,6 +196,7 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
     signatures = {p: check_binding(p, b) for p, b in bound.items()}
     intent = {'status': 'intent', 'started_utc': now(), 'argv': plan['argv'],
               'environment': plan.get('environment', {}), 'bindings': plan['bindings'],
+              'archive_retry': plan.get('archive_retry', ARCHIVE_RETRY),
               'archive_capability': ARCHIVE_CAPABILITY}
     save(units / 'intent.json', intent)
     files = {'plan.json': run_dir / 'plan.json', '_units/intent.json': units / 'intent.json'}
@@ -177,8 +211,37 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
         check_binding(target, b)
         files[str(target.relative_to(run_dir))] = target
     child = None
+    current_unit, current_sequence = 'intent', 0
+    last_acknowledged_unit, last_acknowledged_update = None, None
+    retry_policy = plan.get('archive_retry', ARCHIVE_RETRY)
+
+    def sync(name, files, sequence, *, boundary_start=None):
+        nonlocal current_unit, current_sequence, last_acknowledged_unit
+        current_unit, current_sequence = name, sequence
+        budget = retry_policy['budget_seconds']
+        started = time.monotonic() if boundary_start is None else boundary_start
+        if boundary_start is not None:
+            budget = min(budget, plan.get('ack_timeout_ms', 300000) / 1000 * .8)
+
+        def record_retry(event):
+            record = {'unit_id': name, 'sequence': sequence, **event}
+            with (run_dir / 'archive-retries.jsonl').open('a') as journal:
+                journal.write(json.dumps(record, allow_nan=False) + '\n')
+                journal.flush()
+                os.fsync(journal.fileno())
+            print(json.dumps({'archive_retry': record}), file=sys.stderr, flush=True)
+
+        receipt = sync_unit_with_retry(archive, name, files, sequence=sequence,
+                                      deadline=started + budget,
+                                      max_attempts=retry_policy['max_attempts'],
+                                      on_retry=record_retry)
+        last_acknowledged_unit = {'unit_id': name, 'sequence': sequence,
+                                 'revision': receipt['revision'],
+                                 'manifest_sha256': receipt['manifest_sha256']}
+        return receipt
+
     try:
-        archive.sync_unit('intent', files, sequence=0)
+        sync('intent', files, 0)
         need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed during intent verification')
         for p, b in bound.items():
             check_binding(p, b)
@@ -220,10 +283,12 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
                     metric_out.write(raw)
                     metric_segment.append(raw)
                     continue
+                boundary_start = time.monotonic()
                 saved = expected == 0 or expected % every == 0 or expected == epochs
                 need(type(event.get('update')) is int and event['update'] == expected and
                      type(event.get('snapshot_saved')) is bool and event['snapshot_saved'] == saved and
                      expected <= epochs, 'unexpected trainer acknowledgement boundary')
+                current_unit, current_sequence = 'update-%03d' % expected, sequence
                 for p, before in signatures.items():
                     need(identity(p) == before, 'bound file changed during native training')
                 out.flush()
@@ -258,13 +323,14 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
                     save(initialization, {'initial_lora_sha256': initial_lora_sha256,
                                           'expected_initial_lora_sha256': wanted})
                     files['_units/initialization.json'] = initialization
-                receipt = archive.sync_unit(name, files, sequence=sequence)
+                receipt = sync(name, files, sequence, boundary_start=boundary_start)
                 save(units / (name + '.ack.json'), receipt)
                 for p, before in signatures.items():
                     need(identity(p) == before, 'bound file changed during archive verification')
                 need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed during archive verification')
                 child.stdin.write(('ACK %d\n' % expected).encode())
                 child.stdin.flush()
+                last_acknowledged_update = expected
                 expected += 1
                 sequence += 1
                 segment = []
@@ -282,6 +348,10 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
             check_binding(p, b)
         need(digest(run_dir / 'plan.json') == plan_sha256, 'launch plan changed during native training')
         files = {n: run_dir / n for n in ('stdout.jsonl', 'metrics.jsonl', 'stderr.log')}
+        if (run_dir / 'archive-retries.jsonl').exists():
+            closed_retries = units / 'pre-completion-retries.jsonl'
+            _closed_copy(run_dir / 'archive-retries.jsonl', closed_retries)
+            files[str(closed_retries.relative_to(run_dir))] = closed_retries
         for suffix in ('gate', 'up', 'down'):
             for extension in ('f32', 'lora'):
                 path = Path('%s.%s.%s' % (argv[3], suffix, extension))
@@ -295,7 +365,7 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
                       'bindings': plan['bindings'], 'sequence': sequence}
         save(run_dir / 'completion.json', completion)
         files['completion.json'] = run_dir / 'completion.json'
-        receipt = archive.sync_unit('completion', files, sequence=sequence)
+        receipt = sync('completion', files, sequence)
         verified = {**completion, 'status': 'completed', 'archive_status': 'verified',
                     'remote_verification': receipt}
         save(units / 'completion.ack.json', verified)
@@ -304,9 +374,17 @@ def run_training(archive, plan, run_dir, *, repo=REPO):
         if child is not None:
             _stop(child)
         if not (run_dir / 'failure.json').exists():
-            save(run_dir / 'failure.json', {'status': 'interrupted' if isinstance(exc, (KeyboardInterrupt, SystemExit)) else 'failed',
+            failure = {'status': 'interrupted' if isinstance(exc, (KeyboardInterrupt, SystemExit)) else 'failed',
                   'finished_utc': now(), 'error_type': type(exc).__name__,
-                  'return_code': child.returncode if child is not None else None})
+                  'return_code': child.returncode if child is not None else None,
+                  'unit_id': current_unit, 'sequence': current_sequence,
+                  'last_acknowledged_update': last_acknowledged_update,
+                  'last_acknowledged_unit': last_acknowledged_unit}
+            if isinstance(exc, ArchiveError):
+                failure['archive_error'] = exc.diagnostic
+            save(run_dir / 'failure.json', failure)
+            print(json.dumps({'training_failure': failure}), file=sys.stderr, flush=True)
+        archive_failure_evidence(archive, plan, run_dir)
         raise TrainingError('training attempt stopped; inspect its closed journal and start a new attempt') from None
     finally:
         if child is not None:
