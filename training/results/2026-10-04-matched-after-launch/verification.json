@@ -91,7 +91,13 @@
     },
     "shell_syntax": "passed",
     "python_compile": "passed",
-    "git_diff_check": "passed"
+    "git_diff_check": "passed",
+    "quote_merge": {
+      "tests": 17,
+      "failed": 0,
+      "claude_pr": 32,
+      "claude_commit": "a79483276b4210addd0cf89bda2fcfa80a174620"
+    }
   },
   "remote_preflight": {
     "status": "blocked",
@@ -113,7 +119,8 @@
       "9m15r69jnnlpx4": "EXITED",
       "65ctblsv5a626i": "EXITED"
     },
-    "required_next_step": "Restore private repository access by freeing authorized storage or increasing account quota; rerun fresh remote preflight before deployment."
+    "required_next_step": "Restore private repository access by freeing authorized storage or increasing account quota; rerun fresh remote preflight before deployment.",
+    "repository_used_storage_bytes": 9981238735
   },
   "code_bindings": [
     {
@@ -138,8 +145,8 @@
     },
     {
       "path": "training/quote/host_launch.sh",
-      "bytes": 12196,
-      "sha256": "5a9bf27f2e26f57397ce0dd28c19496c25682c16e39ce73346cab1e902ec2e06"
+      "bytes": 12620,
+      "sha256": "b37819a6a39ef06606c085cdcced24d77c458a6841f249a1d969e1d0d169e3b7"
     },
     {
       "path": "test/after_recovery_bind.test.mjs",
@@ -168,8 +175,8 @@
     },
     {
       "path": "test/quote_host_launch.test.mjs",
-      "bytes": 13484,
-      "sha256": "4d46f43a2eeaf5e69938679233625ff5cf5c254b71c889496d299790eb486bfa"
+      "bytes": 15193,
+      "sha256": "fbbfeb60104199ef33c4897f108b1caed86c362b2c7c7fc412f8b5bb071691a7"
     }
   ],
   "evidence_bindings": [
@@ -187,6 +194,11 @@
       "path": "training/results/2026-10-04-matched-after-launch/make-test.txt",
       "bytes": 33417,
       "sha256": "8c46620d92bb590aa5a7356b7a643cccd7106ddb5e71bd588175bd0b4c01972b"
+    },
+    {
+      "path": "training/results/2026-10-04-matched-after-launch/quote-merge-test.txt",
+      "bytes": 1573,
+      "sha256": "58ac4e24ed59077e61e4dbbe6fe4ad7d53611d897c73ba142ee1c79792fd3f86"
     }
   ],
   "launch_command": "bash training/after_recovery/host_launch.sh TOKEN_FILE order-rp-20261004-02 EXPECTED_SOURCE_SHA",

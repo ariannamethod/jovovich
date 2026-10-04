@@ -129,6 +129,7 @@ else:raise AssertionError(a)
 test('quote launcher recovers the before arm, trains quote once and evaluates it', t => {
   const f = fixture(t); const r = f.run(); assert.equal(r.status, 0, r.stderr);
   assert.deepEqual(f.events(), ORDER);
+  command('git', ['ls-files', '--error-unmatch', '--', INPUTS.infrastructure_record, 'training/quote/launch_inputs.json'], f.repo);
   const manifest = JSON.parse(readFileSync(f.job('host-manifest.json'), 'utf8'));
   assert.equal(manifest.source_commit, f.sha); assert.equal(manifest.notorch_commit, f.notorch);
   assert.equal(manifest.checkout, f.repo); assert.equal(manifest.machine, 'fixture-machine');
@@ -168,11 +169,34 @@ test('malformed launch inputs are refused before any work', t => {
 
 for (const [name, inputs] of [
   ['without an infrastructure record', Object.fromEntries(Object.entries(INPUTS).filter(([k]) => k !== 'infrastructure_record'))],
-  ['with an infrastructure record outside the checkout', { ...INPUTS, infrastructure_record: '../outside.json' }],
-  ['with an ignored infrastructure record absent from the pinned commit', { ...INPUTS, infrastructure_record: 'models/record.json' }]]) {
+  ['with an infrastructure record outside the checkout', { ...INPUTS, infrastructure_record: '../outside.json' }]]) {
   test(`launch inputs ${name} are refused before any work`, t => {
     const f = fixture(t, inputs); const r = f.run();
     assert.notEqual(r.status, 0); assert.match(r.stderr, /invalid training\/quote\/launch_inputs\.json/);
+    assert.deepEqual(f.events(), []); assert.equal(existsSync(f.job('')), false);
+  });
+}
+
+const RECORD = INPUTS.infrastructure_record, LAUNCH_INPUTS = 'training/quote/launch_inputs.json';
+const swap = f => write(join(f.repo, RECORD), '{"infrastructure_changes": ["swapped"]}\n');
+const untrack = f => {
+  command('git', ['rm', '-q', '--cached', LAUNCH_INPUTS], f.repo); command('git', ['commit', '-qm', 'untrack'], f.repo);
+  return command('git', ['rev-parse', 'HEAD'], f.repo);
+};
+for (const [name, inputs, prepare, message] of [
+  ['an ignored untracked infrastructure record', { ...INPUTS, infrastructure_record: 'models/record.json' }, () => {},
+    pin => `infrastructure record must be tracked and unchanged in ${pin}: models/record.json`],
+  ['a modified tracked infrastructure record', INPUTS, swap, () => 'tracked checkout files have local changes'],
+  ['a modified skip-worktree infrastructure record', INPUTS,
+    f => { command('git', ['update-index', '--skip-worktree', RECORD], f.repo); swap(f); },
+    pin => `infrastructure record must be tracked and unchanged in ${pin}: ${RECORD}`],
+  ['an untracked launch inputs file', INPUTS, untrack, () => 'untracked source files are outside the reviewed commit'],
+  ['an untracked launch inputs file hidden by info/exclude', INPUTS,
+    f => { write(join(f.repo, '.git/info/exclude'), LAUNCH_INPUTS + '\n'); return untrack(f); },
+    pin => `launch inputs must be tracked and unchanged in ${pin}: ${LAUNCH_INPUTS}`]]) {
+  test(`${name} is refused before any work`, t => {
+    const f = fixture(t, inputs); const pin = prepare(f) ?? f.sha; const r = f.run({}, pin);
+    assert.notEqual(r.status, 0); assert.ok(r.stderr.includes(message(pin)), r.stderr);
     assert.deepEqual(f.events(), []); assert.equal(existsSync(f.job('')), false);
   });
 }

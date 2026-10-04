@@ -34,6 +34,43 @@ assert_source() {
   [[ -z $(git ls-files --others --exclude-standard -- training test bin prompts deps) ]] || fail 'untracked source files are outside the reviewed commit'
 }
 assert_source
+# Ignored files escape assert_source and skip-worktree hides edits from git diff: hash the bytes
+# on disk against the blob of the pinned commit.
+assert_pinned_file() {
+  if ! python3 - "$2" "$JOV_SOURCE_COMMIT" <<'PINNED'
+import os, subprocess, sys
+from pathlib import Path
+name, source = sys.argv[1:]
+root = Path.cwd().resolve()
+path = root
+if Path(name).is_absolute():
+    raise SystemExit(1)
+for part in Path(name).parts:
+    if part in ('.', '..'):
+        raise SystemExit(1)
+    path /= part
+    if path.is_symlink():
+        raise SystemExit(1)
+env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+env.update(GIT_NO_LAZY_FETCH='1', GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL='/dev/null')
+def git(*args):
+    return subprocess.check_output(['git', '--no-replace-objects', '-c', 'core.fsmonitor=false',
+                                    '-C', str(root), *args], env=env,
+                                   stderr=subprocess.DEVNULL, timeout=30)
+entry = git('ls-tree', '-z', '--full-tree', source, '--', name)
+fields = entry.rstrip(b'\0').split(b'\t')
+if len(fields) != 2 or fields[1].decode() != name:
+    raise SystemExit(1)
+mode, kind, oid = fields[0].split()
+if mode not in (b'100644', b'100755') or kind != b'blob' or not path.is_file():
+    raise SystemExit(1)
+if git('cat-file', 'blob', oid.decode()) != path.read_bytes():
+    raise SystemExit(1)
+PINNED
+  then
+    fail "$1 must be tracked and unchanged in $JOV_SOURCE_COMMIT: $2"
+  fi
+}
 JOV_NOTORCH_COMMIT=$(git rev-parse "$JOV_SOURCE_COMMIT:deps/notorch")
 [[ "$JOV_NOTORCH_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'missing pinned notorch gitlink'
 # Credentials are read only by archive-parent processes from the private file.
@@ -43,33 +80,10 @@ node -e 'if (+process.versions.node.split(".")[0] < 22) process.exit(1)' || fail
 
 JOV_INPUTS=training/quote/launch_inputs.json
 [[ -f "$JOV_INPUTS" ]] || fail "missing committed $JOV_INPUTS"
-JOV_FIELDS=$(python3 - "$JOV_INPUTS" "$JOV_SOURCE_COMMIT" <<'PY'
-import json, os, re, subprocess, sys
+assert_pinned_file 'launch inputs' "$JOV_INPUTS"
+JOV_FIELDS=$(python3 - "$JOV_INPUTS" <<'PY'
+import json, re, sys
 from pathlib import Path
-def committed(name):
-    root = Path.cwd().resolve()
-    path = root
-    for part in Path(name).parts:
-        if part in ('.', '..'):
-            raise SystemExit(1)
-        path /= part
-        if path.is_symlink():
-            raise SystemExit(1)
-    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
-    env.update(GIT_NO_LAZY_FETCH='1', GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL='/dev/null')
-    def git(*args):
-        return subprocess.check_output(['git', '-c', 'core.fsmonitor=false', '-C', str(root), *args],
-                                       env=env, stderr=subprocess.DEVNULL)
-    entry = git('ls-tree', '-z', '--full-tree', sys.argv[2], '--', name)
-    fields = entry.rstrip(b'\0').split(b'\t')
-    if len(fields) != 2 or fields[1].decode() != name:
-        raise SystemExit(1)
-    mode, kind, oid = fields[0].split()
-    if mode not in (b'100644', b'100755') or kind != b'blob' or not path.is_file():
-        raise SystemExit(1)
-    if git('cat-file', 'blob', oid.decode()) != path.read_bytes():
-        raise SystemExit(1)
-committed(sys.argv[1])
 value = json.load(open(sys.argv[1]))
 if not isinstance(value, dict):
     raise SystemExit(1)
@@ -86,11 +100,11 @@ if not (set(value) == {'schema', 'archive_revision', 'before_run_id',
         Path(value['infrastructure_record']).resolve().is_relative_to(Path.cwd().resolve()) and
         Path(value['infrastructure_record']).is_file()):
     raise SystemExit(1)
-committed(value['infrastructure_record'])
 print(value['archive_revision'], value['before_run_id'], value['before_eval_run_id'], value['infrastructure_record'])
 PY
 ) || fail "invalid $JOV_INPUTS"
 read -r JOV_ARCHIVE_REVISION JOV_BEFORE_RUN_ID JOV_BEFORE_EVAL_RUN_ID JOV_INFRASTRUCTURE_RECORD <<<"$JOV_FIELDS"
+assert_pinned_file 'infrastructure record' "$JOV_INFRASTRUCTURE_RECORD"
 
 JOV_JOB="models/$JOV_RUN_PREFIX-quote-job"
 JOV_BEFORE="models/$JOV_RUN_PREFIX-quote-before-run"

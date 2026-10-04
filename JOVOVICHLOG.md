@@ -65,6 +65,13 @@ were both observed EXITED. Private HF access must be restored before fresh
 remote recovery and deployment can proceed. No archive data was deleted.
 See `training/results/2026-10-04-matched-after-launch/verification.json`.
 
+Claude's parallel PR32 was then incorporated into this continuation branch:
+its five additional quote gate regressions and retained-log provenance
+follow-up remain included. The overlap uses one pinned-file check, retaining
+regular Git modes, symlink rejection and offline Git inspection. All 17 quote
+host tests passed after the integration. PR33 contains this integration so
+there is one combined continuation to review.
+
 ## 2026-10-04 — Keep the gate closed; retry the same parcel.
 
 PR29 review found two recovery defects. The wrapper checked the shape of a
