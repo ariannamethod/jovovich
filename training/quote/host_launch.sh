@@ -42,23 +42,27 @@ JOV_INPUTS=training/quote/launch_inputs.json
 [[ -f "$JOV_INPUTS" ]] || fail "missing committed $JOV_INPUTS"
 JOV_FIELDS=$(python3 - "$JOV_INPUTS" <<'PY'
 import json, re, sys
+from pathlib import Path
 value = json.load(open(sys.argv[1]))
 if not isinstance(value, dict):
     raise SystemExit(1)
 text = lambda key, pattern: isinstance(value.get(key), str) and re.fullmatch(pattern, value[key])
 initial = value.get('expected_initial_lora_sha256')
 if not (set(value) == {'schema', 'archive_revision', 'before_run_id',
-        'before_eval_run_id', 'expected_initial_lora_sha256'} and
+        'before_eval_run_id', 'expected_initial_lora_sha256', 'infrastructure_record'} and
         value['schema'] == 'jovovich.quote-launch-inputs.v1' and text('archive_revision', r'[0-9a-f]{40}') and
         text('before_run_id', r'[A-Za-z0-9][A-Za-z0-9_.-]{0,95}') and
         text('before_eval_run_id', r'[A-Za-z0-9][A-Za-z0-9_.-]{0,70}') and
         isinstance(initial, dict) and set(initial) == {'gate', 'up', 'down'} and
-        all(isinstance(v, str) and re.fullmatch(r'[0-9a-f]{64}', v) for v in initial.values())):
+        all(isinstance(v, str) and re.fullmatch(r'[0-9a-f]{64}', v) for v in initial.values()) and
+        text('infrastructure_record', r'[A-Za-z0-9_.-]+(/[A-Za-z0-9_.-]+)*') and
+        Path(value['infrastructure_record']).resolve().is_relative_to(Path.cwd().resolve()) and
+        Path(value['infrastructure_record']).is_file()):
     raise SystemExit(1)
-print(value['archive_revision'], value['before_run_id'], value['before_eval_run_id'])
+print(value['archive_revision'], value['before_run_id'], value['before_eval_run_id'], value['infrastructure_record'])
 PY
 ) || fail "invalid $JOV_INPUTS"
-read -r JOV_ARCHIVE_REVISION JOV_BEFORE_RUN_ID JOV_BEFORE_EVAL_RUN_ID <<<"$JOV_FIELDS"
+read -r JOV_ARCHIVE_REVISION JOV_BEFORE_RUN_ID JOV_BEFORE_EVAL_RUN_ID JOV_INFRASTRUCTURE_RECORD <<<"$JOV_FIELDS"
 
 JOV_JOB="models/$JOV_RUN_PREFIX-quote-job"
 JOV_BEFORE="models/$JOV_RUN_PREFIX-quote-before-run"
@@ -138,7 +142,7 @@ assert_source
 mkdir "$JOV_LAUNCH"
 "$JOV_PY" training/quote/bind_quote.py bind --before-recovered "$JOV_BEFORE" --native "$JOV_NATIVE" \
   --run-prefix "$JOV_RUN_PREFIX" --out "$JOV_LAUNCH/quote.launch.json" \
-  --evaluation-contract training/quote/evaluation_contract.json
+  --evaluation-contract training/quote/evaluation_contract.json --infrastructure-record "$JOV_INFRASTRUCTURE_RECORD"
 # The archive parent uploads every bound input before training starts. Keep the
 # host/compiler provenance alongside the source and recovered initialization.
 "$JOV_PY" - "$JOV_LAUNCH/quote.launch.json" "$JOV_JOB" "$JOV_INPUTS" <<'PY'

@@ -16,6 +16,7 @@ from verify_native import binding, save, command, require
 from run_training import validate_plan
 from evaluate_quote import SCHEMA as QUOTE_SCHEMA, TEMPLATE, check_contract
 from durable_archive import DurableArchive, HFTransport
+from after_recovery.preflight import INFRASTRUCTURE
 
 ARMS = {'before': 'training/sft_review_v6_before.jsonl', 'quote': 'training/sft_review_v7_quote.jsonl'}
 
@@ -120,8 +121,9 @@ def matches(path, item):
     return (found['bytes'], found['sha256']) == (item['bytes'], item['sha256'])
 
 
-def bind(recovered, native_dir, prefix, output, repo, contract):
-    repo, recovered, native_dir, output, contract = (p.resolve() for p in (repo, recovered, native_dir, output, contract))
+def bind(recovered, native_dir, prefix, output, repo, contract, infrastructure):
+    repo, recovered, native_dir, output, contract, infrastructure = (
+        p.resolve() for p in (repo, recovered, native_dir, output, contract, infrastructure))
     require(not output.exists(), 'output plan already exists')
     require(re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,79}', prefix), 'invalid run prefix')
 
@@ -169,14 +171,37 @@ def bind(recovered, native_dir, prefix, output, repo, contract):
     require(matches(repo / argv[1], base) and base['sha256'] == spec['base_expected_sha256'],
             'base model differs from the before run: ' + argv[1])
     artifact = lambda path: Path(path).parts[0] == 'models'
+    record = json.loads(infrastructure.read_text())
+    require(isinstance(record, dict) and isinstance(record.get('infrastructure_changes'), list),
+            'infrastructure record has no infrastructure_changes list')
+    pending = {}
+    for entry in record['infrastructure_changes']:
+        require(isinstance(entry, dict) and set(entry) == {'path', 'original', 'candidate'} and
+                isinstance(entry['path'], str) and entry['path'] not in pending, 'malformed infrastructure record entry')
+        pending[entry['path']] = entry
+    # Only the preflight's infrastructure files may differ, each exactly as one record pair states.
+    changes = []
     for item in before['bindings']:
-        if item['path'] not in (argv[0], argv[1]) and not artifact(item['path']):
-            require(matches(repo / item['path'], item), 'before source differs in this checkout: ' + item['path'])
+        name = item['path']
+        if name in (argv[0], argv[1]) or artifact(name) or matches(repo / name, item):
+            continue
+        require(name in INFRASTRUCTURE, 'before source differs in this checkout: ' + name)
+        entry = pending.pop(name, None)
+        require(entry is not None, 'changed infrastructure has no record entry: ' + name)
+        require(entry['original'] == item, 'infrastructure record original differs from the before binding: ' + name)
+        require(entry['candidate'] == inside(repo / name),
+                'infrastructure record candidate differs from this checkout: ' + name)
+        changes.append(entry)
+    for name in sorted(pending):
+        require(name in INFRASTRUCTURE, 'infrastructure record path is not admitted: ' + name)
+    require(not pending, 'infrastructure record entry matches no observed change: ' + ', '.join(sorted(pending)))
     # The before evaluation plan belongs to the before arm; it moves into before_artifacts.
     own = (argv[2], argv[9], before.get('evaluation_plan'))
     carried = [b for b in before['bindings'] if b['path'] not in own and
                (b['path'] in (argv[0], argv[1]) or not artifact(b['path']))]
     artifacts = [{'path': b['path'], 'sha256': b['sha256']} for b in before['bindings'] if b not in carried]
+    candidates = {c['path']: c['candidate'] for c in changes}
+    carried = [candidates.get(b['path'], b) for b in carried]
 
     report = json.loads((native_dir / 'verification.json').read_text())
     require(report.get('status') == 'pass' and report.get('identical_prompt_rows') == 52 and
@@ -194,7 +219,7 @@ def bind(recovered, native_dir, prefix, output, repo, contract):
 
     data, pairs = native_dir / 'quote.bin', native_dir / 'quote.pairs.bin'
     added = [data, pairs, native_dir / 'verification.json', native_dir / 'bindings.json', contract, repo / TEMPLATE,
-             *sorted(p for p in (repo / 'training/quote').iterdir() if p.is_file()),
+             infrastructure, *sorted(p for p in (repo / 'training/quote').iterdir() if p.is_file()),
              repo / 'training/sft_review_v7_quote.jsonl', *sorted((repo / 'test').glob('quote_*.test.mjs'))]
     paths = {b['path'] for b in carried}
     for path in added:
@@ -205,7 +230,7 @@ def bind(recovered, native_dir, prefix, output, repo, contract):
     plan = copy.deepcopy(before)
     plan['argv'][2], plan['argv'][9] = inside(data)['path'], inside(pairs)['path']
     plan.update(run_id=prefix + '-quote', arm='quote', bindings=carried, before_artifacts=artifacts,
-                evaluation_plan=evaluation['path'],
+                evaluation_plan=evaluation['path'], infrastructure_changes=changes,
                 expected_initial_lora_sha256=completion['initial_lora_sha256'],
                 before_completion={'run_id': before['run_id'], 'revision': receipt['revision'],
                                    'manifest_sha256': units[0]['manifest_sha256'],
@@ -213,7 +238,8 @@ def bind(recovered, native_dir, prefix, output, repo, contract):
     validate_plan(plan, repo)
     save(output, plan)
     print(json.dumps({'status': 'quote-bound', 'output': str(output), 'run_id': plan['run_id'],
-                      'bindings': len(carried), 'before_artifacts': len(artifacts)}))
+                      'bindings': len(carried), 'before_artifacts': len(artifacts),
+                      'infrastructure_changes': len(changes)}))
 
 
 def recover(run_id, revision, out, prefix, connect):
@@ -238,6 +264,7 @@ def main():
     bnd.add_argument('--out', type=Path, required=True)
     bnd.add_argument('--repo', type=Path, default=ROOT)
     bnd.add_argument('--evaluation-contract', type=Path, required=True)
+    bnd.add_argument('--infrastructure-record', type=Path, required=True)
     rec = sub.add_parser('recover')
     rec.add_argument('--run-id', required=True)
     rec.add_argument('--revision', required=True)
@@ -253,7 +280,8 @@ def main():
             recover(args.run_id, args.revision, args.out, args.prefix,
                     lambda: HFTransport('ataeff/jovovich', args.token_file.read_text().strip()))
         else:
-            bind(args.before_recovered, args.native, args.run_prefix, args.out, args.repo, args.evaluation_contract)
+            bind(args.before_recovered, args.native, args.run_prefix, args.out, args.repo, args.evaluation_contract,
+                 args.infrastructure_record)
     except (RuntimeError, ValueError) as error:
         print('bind_quote: ' + str(error), file=sys.stderr)
         raise SystemExit(1)

@@ -29,7 +29,8 @@ base=write('models/base-qwen.gguf','fixture base')
 training={'argv_template':['build/jovovich-train-mlp','@BASE@','@ARM_DATASET@','@ARM_PREFIX@','100','0.0001','40','25','joint','@ARM_PAIR_MAP@'],
  'native_environment':{'NT_NO_I8':'1','NT_QMV_THREADS':'2','NT_ATTN_THREADS':'2','NT_SIMD_THREADS':'2'},'base_expected_sha256':sha(base)}
 dump(repo/'training/explanations/plan.json',{'training':training})
-for name in ('training/prepare.py','deps/notorch/notorch.c','models/before-native/before.bin','models/before-native/before.pairs.bin',
+INFRA=('training/durable_archive.py','training/explanations/run_training.py')
+for name in ('training/prepare.py','deps/notorch/notorch.c',*INFRA,'models/before-native/before.bin','models/before-native/before.pairs.bin',
  'models/before-native/verification.json','training/quote/PREREGISTRATION.md','training/quote/bind_quote.py',
  'training/sft_review_v7_quote.jsonl','test/quote_bind.test.mjs','models/quote-native/quote.bin','models/quote-native/quote.pairs.bin',
  'models/before-launch/evaluation-plan.json'):
@@ -44,7 +45,7 @@ dump(native/'bindings.json',{'files':recorded})
 argv=['build/jovovich-train-mlp','models/base-qwen.gguf','models/before-native/before.bin','@RUN@/adapter','100','0.0001','40','25','joint','models/before-native/before.pairs.bin']
 plan={'schema_version':1,'run_id':'fixture-before','argv':argv,'environment':dict(training['native_environment']),
  'bindings':[bind(n) for n in ('models/base-qwen.gguf','build/jovovich-train-mlp','training/explanations/plan.json','training/prepare.py',
-  'deps/notorch/notorch.c','models/before-native/verification.json','models/before-native/before.bin','models/before-native/before.pairs.bin',
+  'deps/notorch/notorch.c',*INFRA,'models/before-native/verification.json','models/before-native/before.bin','models/before-native/before.pairs.bin',
   'models/before-launch/evaluation-plan.json')],
  'remote':{'private':True,'repo':'fixture/archive','prefix':'experiments/explanation-order'},'ack_timeout_ms':900000,'arm':'before',
  'scientific_plan_sha256':sha(repo/'training/explanations/plan.json'),'evaluation_plan':'models/before-launch/evaluation-plan.json'}
@@ -77,10 +78,22 @@ shutil.rmtree(repo/'models/before-native')
 if variant=='source':write('training/prepare.py','changed after the before run')
 if variant=='trainer':trainer.write_text(trainer.read_text()+'# rebuilt\n')
 if variant=='native_source':write('training/sft_review_v7_quote.jsonl','changed after native verification')
+if variant in ('infra','infra_unpaired','infra_original','infra_candidate'):
+ for n in INFRA:write(n,'reviewed infrastructure fix '+n)
+if variant=='infra_nonadmitted':write('deps/notorch/notorch.c','changed numerical source')
+old={b['path']:dict(b) for b in plan['bindings']}
+paired={'infra':INFRA,'infra_original':INFRA,'infra_candidate':INFRA,'infra_nonadmitted':('deps/notorch/notorch.c',),
+ 'infra_unused':INFRA[:1],'infra_outside':('training/prepare.py',)}.get(variant,())
+changes=[{'path':n,'original':old[n],'candidate':bind(n)} for n in paired]
+if variant=='infra_original':changes[0]['original']['sha256']='1'*64
+if variant=='infra_candidate':changes[0]['candidate']['sha256']='2'*64
+record=repo/'training/results/fixture-retry/verification.json'
+dump(record,{'infrastructure_changes':changes})
 if variant=='contract_drift':
  c=json.loads((repo/'training/quote/evaluation_contract.json').read_text());s=c['collector_jobs'][0]['score_argv']
  s[s.index('--order')+1]='after';(repo/'training/quote/evaluation_contract.json').write_text(json.dumps(c,indent=2,ensure_ascii=False)+'\n')
-print(json.dumps({'repo':str(repo),'recovered':str(recovered),'native':str(native),'initial':initial,'before':plan}))
+print(json.dumps({'repo':str(repo),'recovered':str(recovered),'native':str(native),'initial':initial,'before':plan,
+ 'record':str(record),'changes':changes}))
 `;
 
 function fixture(t, variant) {
@@ -94,8 +107,24 @@ function fixture(t, variant) {
 function bind(f) {
   return spawnSync('python3', ['training/quote/bind_quote.py', 'bind', '--before-recovered', f.recovered,
     '--native', f.native, '--run-prefix', 'fixture', '--out', f.out, '--repo', f.repo,
-    '--evaluation-contract', join(f.repo, 'training/quote/evaluation_contract.json')],
+    '--evaluation-contract', join(f.repo, 'training/quote/evaluation_contract.json'), '--infrastructure-record', f.record],
   { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
+}
+
+const RECORD = 'training/results/fixture-retry/verification.json';
+const INFRA = ['training/durable_archive.py', 'training/explanations/run_training.py'];
+
+function fileBinding(repo, path) {
+  const bytes = readFileSync(join(repo, path));
+  return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
+}
+
+function validatePlan(f) {
+  const check = spawnSync('python3', ['-c', `import json,sys
+sys.path.insert(0,'training/explanations')
+from run_training import validate_plan
+validate_plan(json.load(open(sys.argv[1])),sys.argv[2])`, f.out, f.repo], { cwd: ROOT, encoding: 'utf8' });
+  assert.equal(check.status, 0, check.stderr);
 }
 
 test('bind derives a runnable quote plan from the recovered before run', t => {
@@ -136,14 +165,34 @@ test('bind derives a runnable quote plan from the recovered before run', t => {
     'models/quote-native/verification.json', 'models/quote-native/bindings.json', 'training/quote/PREREGISTRATION.md',
     'training/quote/bind_quote.py', 'training/sft_review_v7_quote.jsonl', 'test/quote_bind.test.mjs'])
     assert.ok(bound[path], path);
-  const check = spawnSync('python3', ['-c', `import json,sys
-sys.path.insert(0,'training/explanations')
-from run_training import validate_plan
-validate_plan(json.load(open(sys.argv[1])),sys.argv[2])`, f.out, f.repo], { cwd: ROOT, encoding: 'utf8' });
-  assert.equal(check.status, 0, check.stderr);
+  assert.deepEqual(plan.infrastructure_changes, []);
+  assert.deepEqual(bound[RECORD], fileBinding(f.repo, RECORD));
+  validatePlan(f);
   const again = bind(f);
   assert.equal(again.status, 1);
   assert.match(again.stderr, /bind_quote: output plan already exists/);
+});
+
+test('bind admits recorded infrastructure changes and carries their candidate bindings', t => {
+  const f = fixture(t, 'infra');
+  const r = bind(f);
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(JSON.parse(r.stdout).infrastructure_changes, 2);
+  const plan = JSON.parse(readFileSync(f.out, 'utf8'));
+  assert.deepEqual(plan.infrastructure_changes, f.changes);
+  assert.deepEqual(plan.infrastructure_changes.map(c => c.path), INFRA);
+  const bound = Object.fromEntries(plan.bindings.map(b => [b.path, b]));
+  for (const c of f.changes) {
+    assert.deepEqual(c.original, f.before.bindings.find(b => b.path === c.path));
+    assert.deepEqual(c.candidate, fileBinding(f.repo, c.path));
+    assert.notEqual(c.original.sha256, c.candidate.sha256);
+    assert.deepEqual(bound[c.path], c.candidate);
+  }
+  assert.deepEqual(bound[RECORD], fileBinding(f.repo, RECORD));
+  assert.deepEqual(plan.before_artifacts.map(a => a.path).sort(),
+    ['models/before-launch/evaluation-plan.json', 'models/before-native/before.bin', 'models/before-native/before.pairs.bin',
+      'models/before-native/verification.json']);
+  validatePlan(f);
 });
 
 const rejected = [
@@ -165,6 +214,12 @@ const rejected = [
   ['native_base', 'quote native base differs from the before base'],
   ['native_source', 'quote native source changed since verification: training/sft_review_v7_quote.jsonl'],
   ['contract_drift', 'quote evaluation contract differs from its derivation'],
+  ['infra_unpaired', 'changed infrastructure has no record entry: training/durable_archive.py'],
+  ['infra_original', 'infrastructure record original differs from the before binding: training/durable_archive.py'],
+  ['infra_candidate', 'infrastructure record candidate differs from this checkout: training/durable_archive.py'],
+  ['infra_nonadmitted', 'before source differs in this checkout: deps/notorch/notorch.c'],
+  ['infra_unused', 'infrastructure record entry matches no observed change: training/durable_archive.py'],
+  ['infra_outside', 'infrastructure record path is not admitted: training/prepare.py'],
 ];
 
 test('every rejection has its own message', () => {
