@@ -1,5 +1,7 @@
 # JOVOVICH
 
+> **Read the [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) first.** This repository is governed by it; every instruction here, `CLAUDE.md` included, is subordinate to it.
+
 **Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy**
 
 > The implementation works. I am less convinced that it belongs here.
