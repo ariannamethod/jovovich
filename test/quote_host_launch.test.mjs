@@ -9,7 +9,8 @@ import { createHash } from 'node:crypto';
 const source = resolve('training/quote/host_launch.sh');
 const INPUTS = { schema: 'jovovich.quote-launch-inputs.v1', archive_revision: 'd'.repeat(40),
   before_run_id: 'fixture-before', before_eval_run_id: 'fixture-eval',
-  expected_initial_lora_sha256: { gate: 'a'.repeat(64), up: 'b'.repeat(64), down: 'c'.repeat(64) } };
+  expected_initial_lora_sha256: { gate: 'a'.repeat(64), up: 'b'.repeat(64), down: 'c'.repeat(64) },
+  infrastructure_record: 'training/results/fixture-retry/verification.json' };
 const ORDER = ['install', 'node training/quote/build.mjs', 'derive-check', 'node bin/jovovich.mjs', 'build',
   'recover fixture-before', 'recover fixture-eval-before_update100-train', 'recover fixture-eval-before_update100-holdout',
   'native', 'bind', 'preflight-quote', 'run-quote', 'evaluate'];
@@ -32,6 +33,9 @@ function fixture(t, inputs = INPUTS) {
   write(join(repo, '.gitignore'), 'models/\n');
   write(join(repo, 'training/quote/manipulation.mjs'), 'fixture\n');
   if (inputs !== null) write(join(repo, 'training/quote/launch_inputs.json'), JSON.stringify(inputs, null, 2) + '\n');
+  // An escaping record path names a real file outside the checkout.
+  if (typeof inputs?.infrastructure_record === 'string')
+    write(resolve(repo, inputs.infrastructure_record), '{"infrastructure_changes": []}\n');
   const native = join(repo, 'deps/notorch'); mkdirSync(native, { recursive: true });
   for (const dir of [native, repo]) {
     command('git', ['init', '-q'], dir);
@@ -84,6 +88,7 @@ elif a[:2]==['training/quote/bind_quote.py','native']:log('native');Path(arg('--
 elif a[:2]==['training/quote/bind_quote.py','bind']:
  log('bind');assert json.loads((Path(arg('--before-recovered'))/'plan.json').read_text())['arm']=='before'
  assert arg('--evaluation-contract')=='training/quote/evaluation_contract.json' and Path(arg('--native')).is_dir()
+ assert arg('--infrastructure-record')==inputs()['infrastructure_record'] and Path(arg('--infrastructure-record')).is_file()
  bindings=[binding(name) for name in ('training/quote/launch_inputs.json','training/quote/manipulation.mjs','training/quote/host_launch.sh')]
  variant=os.environ.get('HOST_TEST_BINDINGS')
  if variant=='duplicate':bindings.append(dict(bindings[0]))
@@ -160,6 +165,16 @@ test('malformed launch inputs are refused before any work', t => {
   assert.notEqual(r.status, 0); assert.match(r.stderr, /invalid training\/quote\/launch_inputs\.json/);
   assert.deepEqual(f.events(), []); assert.equal(existsSync(f.job('')), false);
 });
+
+for (const [name, inputs] of [
+  ['without an infrastructure record', Object.fromEntries(Object.entries(INPUTS).filter(([k]) => k !== 'infrastructure_record'))],
+  ['with an infrastructure record outside the checkout', { ...INPUTS, infrastructure_record: '../outside.json' }]]) {
+  test(`launch inputs ${name} are refused before any work`, t => {
+    const f = fixture(t, inputs); const r = f.run();
+    assert.notEqual(r.status, 0); assert.match(r.stderr, /invalid training\/quote\/launch_inputs\.json/);
+    assert.deepEqual(f.events(), []); assert.equal(existsSync(f.job('')), false);
+  });
+}
 
 test('recovered initialization that differs from launch inputs stops before bind', t => {
   const f = fixture(t); const r = f.run({ HOST_TEST_INITIAL: 'mismatch' });
