@@ -65,6 +65,17 @@ not independently verifiable from this archive. A new, separately timestamped
 runner, mutations and target-check results. It does not reconstruct or certify
 those missing original runs.
 
+**Follow-up, 2026-10-05 (author):** the two logs were left out because
+`.gitignore` excludes `*.log`. Commit `8280761` (PR #28, 2026-10-03 22:58 UTC)
+added the author's retained local copies as `red-run-v1.txt` and
+`red-run-v2.txt`, after this acceptance and after the correction above. They
+are those copies, not separately timestamped originals. In v1 the eight
+per-mutation lines are the first pass's recorded output and the last line is
+the recorded output of the M2 rerun, appended to the same file by that run;
+the words "(M2 no-op mutation, rerun below)" on the summary line were added by
+hand after the first pass. The separately timestamped acceptance audit remains
+the independent check.
+
 ## Native JVPR2
 
 `make probe-pairs`, `training/prepare.py --pair-format 2`, and
