@@ -317,6 +317,7 @@ def hf_transport_contract(directory):
     hub = types.ModuleType("huggingface_hub")
     hub.__version__ = archive_module.HUB_VERSION
     hub.HfApi = Api
+    hub.configure_http_backend = lambda **kwargs: None
     hub.hf_api = types.SimpleNamespace(RepoFile=RepoFile)
     hub.hf_hub_download = download
     hub.CommitOperationAdd = lambda **kwargs: types.SimpleNamespace(**kwargs)
@@ -358,6 +359,237 @@ def hf_transport_contract(directory):
         check(token not in traceback.format_exc(), "HF error exposed authentication")
     else:
         raise RuntimeError("HF error was ignored")
+
+
+
+class HTTPError(RuntimeError):
+    def __init__(self, status):
+        super().__init__('Authorization: Bearer hf_SYNTHETIC_RETRY_SECRET')
+        self.response = types.SimpleNamespace(status_code=status,
+            text='hf_SYNTHETIC_RETRY_SECRET', url='https://secret.invalid',
+            headers={'Authorization': 'hf_SYNTHETIC_RETRY_SECRET'})
+
+
+class RetryClock:
+    def __init__(self):
+        self.value, self.sleeps = 0.0, []
+
+    def __call__(self):
+        return self.value
+
+    def sleep(self, delay):
+        self.sleeps.append(delay)
+        self.value += delay
+
+
+def bounded_sync(archive, local, *, clock=None, deadline=60, attempts=4, callback=None):
+    clock = clock or RetryClock()
+    return archive_module.sync_unit_with_retry(archive, '000', {'weights.bin': local},
+        sequence=0, deadline=deadline, max_attempts=attempts, clock=clock,
+        sleep=clock.sleep, on_retry=callback)
+
+
+def retry_transient(directory):
+    wrapped = RuntimeError('hf_SYNTHETIC_RETRY_SECRET LFS upload path')
+    wrapped.__cause__ = HTTPError(503)
+    for index, error in enumerate([HTTPError(n) for n in (408, 429, 500, 502, 503, 504)] +
+                                  [wrapped] +
+                                  [ConnectionResetError(104, 'secret'), TimeoutError('secret')]):
+        remote, records = FakeTransport(), []
+        remote.head_fault = error
+        local = source(directory, str(index))
+        def callback(record):
+            records.append(record)
+            remote.head_fault = None
+        result = bounded_sync(DurableArchive(remote, 'retry-' + str(index)), local, callback=callback)
+        check(result['verified_remote_bytes'] and remote.commits == 1 and len(records) == 1,
+              'transient archive failure did not retry exactly once')
+        record = records[0]
+        check(set(record) == {'attempt', 'next_attempt', 'delay_seconds', 'diagnostic'} and
+              record['attempt'] == 1 and record['next_attempt'] == 2 and
+              record['diagnostic']['operation'] == 'head' and record['diagnostic']['retryable'],
+              'retry callback lacks fixed safe metadata')
+        check('secret' not in json.dumps(record).lower(), 'retry callback leaked exception contents')
+
+
+def retry_commit(directory):
+    for mode in ('lost-ack', 'readback', 'cas'):
+        remote, local, events = FakeTransport(), source(directory, mode), []
+        archive = DurableArchive(remote, mode)
+        if mode == 'lost-ack':
+            def lost(_):
+                raise ConnectionResetError(104, 'credential-containing transport text')
+            remote.after_commit = lost
+        elif mode == 'readback':
+            def disconnected(path, data):
+                remote.download_fault = None
+                raise TimeoutError('credential-containing transport text')
+            remote.download_fault = disconnected
+        else:
+            other = source(directory, 'other', b'concurrent writer')
+            def conflict(_):
+                DurableArchive(remote, 'other-writer').sync_unit('000', {'other': other}, sequence=0)
+                raise HTTPError(409)
+            remote.before_commit = conflict
+        result = bounded_sync(archive, local, callback=events.append)
+        check(remote.commits == (2 if mode == 'cas' else 1) and len(events) == 1,
+              'whole-unit retry duplicated an accepted commit or lost CAS writer')
+        check(result['reused'] is (mode != 'cas'), 'ambiguous commit was not discovered on retry')
+        check(events[0]['diagnostic']['operation'] == ('download' if mode == 'readback' else 'commit'),
+              'retry failure lost the remote operation')
+        check(archive._pending is None and archive._operation_deadline is None,
+              'successful retry left stale gate/deadline state')
+
+
+def retry_terminal(directory):
+    for index, error in enumerate([HTTPError(n) for n in (400, 401, 403, 404, 409, 422)] +
+                                  [RuntimeError('hf_SYNTHETIC_RETRY_SECRET')]):
+        remote, events = FakeTransport(), []
+        remote.head_fault = error
+        try:
+            bounded_sync(DurableArchive(remote, 'terminal-' + str(index)),
+                         source(directory, str(index)), callback=events.append)
+        except ArchiveError as exc:
+            check(not exc.diagnostic['retryable'] and exc.diagnostic['attempts'] == 1,
+                  'terminal remote failure was classified transient')
+            check('SYNTHETIC' not in traceback.format_exc() + json.dumps(exc.diagnostic),
+                  'terminal retry error leaked credential text')
+        else:
+            raise RuntimeError('terminal remote failure accepted')
+        check(not events and remote.commits == 0, 'terminal failure retried or committed')
+    remote, events = FakeTransport(), []
+    remote.download_fault = lambda path, data: data + b'corrupt'
+    try:
+        bounded_sync(DurableArchive(remote, 'integrity'), source(directory, 'integrity'),
+                     callback=events.append)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'validation' and not exc.diagnostic['retryable'],
+              'integrity failure was classified as transport retry')
+    else:
+        raise RuntimeError('corrupt readback accepted')
+    check(remote.commits == 1 and not events, 'integrity failure retried')
+
+
+def retry_exhaustion(directory):
+    remote, clock, events = FakeTransport(), RetryClock(), []
+    remote.head_fault = HTTPError(503)
+    archive, local = DurableArchive(remote, 'exhaustion'), source(directory)
+    try:
+        bounded_sync(archive, local, attempts=3, clock=clock, callback=events.append)
+    except ArchiveError as exc:
+        check(exc.diagnostic['attempts'] == 3 and exc.diagnostic['http_status'] == 503,
+              'exhaustion lost attempt count or original status')
+    else:
+        raise RuntimeError('retry count limit ignored')
+    check(len(events) == 2 and clock.sleeps == [1.0, 2.0], 'retry exhaustion exceeded bounded attempts')
+    check(archive._pending == (0, '000') and archive._operation_deadline is None,
+          'failed retry unlocked unit or retained scoped deadline')
+    rejected(lambda: archive.sync_unit('next', {'weights.bin': local}, sequence=1),
+             'failed retry allowed the next unit')
+
+
+def retry_deadline(directory):
+    remote, clock, events = FakeTransport(), RetryClock(), []
+    remote.head_fault = HTTPError(503)
+    try:
+        bounded_sync(DurableArchive(remote, 'deadline'), source(directory), clock=clock,
+                     deadline=.5, callback=events.append)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'deadline' and not exc.diagnostic['retryable'] and
+              exc.diagnostic['attempts'] == 1, 'deadline failure missing terminal metadata')
+    else:
+        raise RuntimeError('deadline accepted')
+    check(clock.sleeps == [.5] and len(events) == 1 and remote.commits == 0,
+          'deadline sleep or retry exceeded the budget')
+    # A slow successful remote head must stop before inventory or commit.
+    remote, clock = FakeTransport(), RetryClock()
+    original = remote.head
+    def slow_head():
+        clock.value = 3
+        return original()
+    remote.head = slow_head
+    try:
+        bounded_sync(DurableArchive(remote, 'late-head'), source(directory, 'late'), clock=clock, deadline=2)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'deadline', 'late operation lost deadline metadata')
+    else:
+        raise RuntimeError('late head acknowledged')
+    check(remote.commits == 0 and not remote.downloads, 'archive continued after a late remote call')
+    # Even a non-DurableArchive caller cannot receive an ACK after its deadline.
+    class LateArchive:
+        def sync_unit(self, *args, **kwargs):
+            clock.value = 9
+            return {'verified_remote_bytes': True}
+    clock.value = 0
+    try:
+        bounded_sync(LateArchive(), source(directory, 'late-receipt'), clock=clock, deadline=2)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'deadline', 'late successful receipt was misclassified')
+    else:
+        raise RuntimeError('late successful receipt acknowledged')
+
+
+def retry_immutable(directory):
+    remote, local = FakeTransport(), source(directory)
+    remote.head_fault = HTTPError(503)
+    def changed(_):
+        remote.head_fault = None
+        local.write_bytes(b'changed between retries')
+    try:
+        bounded_sync(DurableArchive(remote, 'changed-retry'), local, callback=changed)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'validation' and not exc.diagnostic['retryable'],
+              'changed retry input was not terminal')
+    else:
+        raise RuntimeError('retry uploaded changed closed unit')
+    check(remote.commits == 0, 'retry sent changed bytes to remote')
+
+
+def retry_metadata(directory):
+    malformed = ArchiveError('unused', diagnostic={
+        'operation': ['https://secret.invalid'], 'exception_type': {'Authorization': 'secret'},
+        'http_status': True, 'errno': 'secret', 'retryable': True, 'attempts': False,
+        'headers': {'Authorization': 'secret'}})
+    check(malformed.diagnostic == {'operation': 'validation', 'exception_type': 'Exception',
+        'http_status': None, 'errno': None, 'retryable': False, 'attempts': None},
+        'diagnostic schema accepted unbounded or credential-bearing values')
+    Poison = type('hf_SYNTHETIC_RETRY_SECRET', (RuntimeError,), {})
+    remote = FakeTransport()
+    remote.head_fault = Poison('hf_SYNTHETIC_RETRY_SECRET')
+    try:
+        bounded_sync(DurableArchive(remote, 'metadata'), source(directory))
+    except ArchiveError as exc:
+        check(exc.diagnostic['exception_type'] == 'Exception' and
+              'SYNTHETIC' not in traceback.format_exc() + json.dumps(exc.diagnostic),
+              'credential-bearing class name escaped safe enum')
+    else:
+        raise RuntimeError('poison error ignored')
+    missing = directory / ('missing-' + 'source')
+    try:
+        bounded_sync(DurableArchive(FakeTransport(), 'missing-source'), missing)
+    except ArchiveError as exc:
+        check(exc.diagnostic['operation'] == 'local' and
+              exc.diagnostic['exception_type'] == 'FileNotFoundError' and
+              str(missing) not in traceback.format_exc(), 'local source error leaked a path')
+    else:
+        raise RuntimeError('missing retry input accepted')
+
+
+def hf_request_timeouts(directory):
+    observed = []
+    class Session:
+        def request(self, method, url, **kwargs):
+            observed.append(kwargs['timeout'])
+            return object()
+    request_module = types.ModuleType('requests')
+    request_module.Session = Session
+    sys.modules['requests'] = request_module
+    session = archive_module._hf_session_factory()
+    for value in (None, 7, (4, 8), 100, (None, 5), float('inf'), 0):
+        session.request('GET', 'https://unused.invalid', timeout=value)
+    session.request('POST', 'https://unused.invalid')
+    check(observed == [30.0, 7.0, (4.0, 8.0), 30.0, (30.0, 5.0), 30.0, 30.0, 30.0],
+          'HF requests lack bounded connect/read timeouts or lost a stricter timeout')
 
 
 def runner_module():
@@ -547,6 +779,14 @@ def runner_validation_failure(directory):
 
 SCENARIOS = {
     "normal": normal,
+    "retry-transient": retry_transient,
+    "retry-commit": retry_commit,
+    "retry-terminal": retry_terminal,
+    "retry-exhaustion": retry_exhaustion,
+    "retry-deadline": retry_deadline,
+    "retry-immutable": retry_immutable,
+    "retry-metadata": retry_metadata,
+    "hf-request-timeouts": hf_request_timeouts,
     "lost-ack": lost_ack,
     "corrupt-remote": remote_damage,
     "missing-remote": lambda directory: remote_damage(directory, missing=True),
