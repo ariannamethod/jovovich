@@ -1,0 +1,13 @@
+{
+  "source_commit": "a88ea0f15dfce69bf0100ac20434fe041a453646",
+  "run_id": "order-rp-20261003-01-incident01",
+  "entrypoint_sha256": "9de07001f5ad43948bb837eeae6d78174d824cb439a5d13761a1d4459c3bd761",
+  "files": {
+    "/tmp/jovovich-runpod-bootstrap.py": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75",
+    "/tmp/jovovich-recover.py": "016ec5e8e8cd0513b8effb93de68aef9501f497a60ef8d4a1b375f0b134cab7f",
+    "/tmp/jovovich-recover-host.sh": "a74519539f13d299dd4eb2e1ab5e5aefa191b7e7709cc6da7e60f83791f88024"
+  },
+  "max_seconds": 900,
+  "source_volume_access": "script-enforced read-only",
+  "expected_compute_usd_per_hour": 0.08
+}

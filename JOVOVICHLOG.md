@@ -27,6 +27,30 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-04 — An archive failure stops the second arm.
+
+The first Runpod attempt completed and archived all 100 before updates. The
+after arm computed update10 and emitted its archive-ready boundary; its
+archive synchronization then raised `ArchiveError`. Its last original remote
+ACK is update9. At 2026-10-03 23:08:27 UTC the wrapper recorded failure and
+native return code -15; the watchdog recorded child exit 1 and an accepted
+own-pod stop request. Evaluation had not started.
+
+A separate 15-minute diagnostic pod read the persistent volume through an
+allowlist. It copied 24 evidence files into 26 verified archive units, without
+changing the original run directories. The full incident was recovered again
+from private HF revision `b7908cf8f5cf1516241756addb80ba9531b06e1e` and checked
+by bytes. The diagnostic pod is stopped. The deployed failure handler recorded
+the exception class but omitted the underlying operation and HTTP status.
+
+Evidence bindings and the deployment source are in
+`training/results/2026-10-04-after-archive-incident/summary.json`.
+The completed before remains the comparator for a fresh matched after
+attempt. Before that attempt, the archive failure path needs structured
+diagnostics and reviewed handling of transient failures. The recovery helper
+passes eight focused tests; its unchanged watchdog has the previously
+reviewed source hash and bounded own-pod shutdown.
+
 ## 2026-10-04 — The comparator brings its receipts.
 
 Review of PR26 confirmed two defects: quote evaluation admitted recovered
