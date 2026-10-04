@@ -48,8 +48,18 @@ Python image. Watchdog child-started/heartbeat and checkout
 `970163b792d24dba1b5d2d3077177baf9cd1e28b` were observed. Its maximum envelope
 is 12 hours; the same watchdog requests its own pod stop on child completion,
 failure, signal or deadline. The original checkout is retained separately.
-At this observation the host is preparing the environment; no new native
-training update or generated review has been observed yet.
+At 22:53 UTC the host was preparing the environment; no new native training
+update or generated review had been observed.
+
+At 22:59 UTC the first live after intent was freshly recovered from HF
+revision `52ca299e03d43496d5027b503206534dfcaeef9b`: all 86 files passed byte
+verification. The archived plan and real Runpod host manifest bind the deployed
+source, original before completion and unchanged numerical configuration.
+Only the two approved infrastructure candidate bindings differ from the
+original after plan. Native protocol preflight and the fresh after launch were
+observed on the host. Optimizer updates and generated reviews are not yet
+claimed by this startup verification. At 23:00 UTC the pod was still RUNNING
+and remote inventory contained exactly that first intent unit.
 
 See `training/results/2026-10-04-matched-after-launch/deployment-status.json`.
 

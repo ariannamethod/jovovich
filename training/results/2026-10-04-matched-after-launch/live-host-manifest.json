@@ -1,0 +1,39 @@
+{
+  "schema": "jovovich.matched-after-host.v1",
+  "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "checkout": "/workspace/jovovich-after-order-rp-20261004-02",
+  "machine": "x86_64",
+  "cpu_model": "AMD EPYC 9655P 96-Core Processor",
+  "cpu_flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpuid_fault cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx_vnni avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid bus_lock_detect movdiri movdir64b overflow_recov succor smca fsrm avx512_vp2intersect flush_l1d debug_swap amd_lbr_pmc_freeze",
+  "python": "3.11.17",
+  "huggingface_hub": "0.35.3",
+  "numerical_binaries": "restored from authenticated original intent; no rebuild",
+  "launch_inputs": {
+    "schema": "jovovich.matched-after-inputs.v1",
+    "original_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+    "archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+    "archive": {
+      "private": true,
+      "repo": "ataeff/jovovich",
+      "prefix": "experiments/explanation-order"
+    },
+    "before_run_id": "order-rp-20261003-01-before",
+    "failed_after_run_id": "order-rp-20261003-01-after",
+    "before_plan_sha256": "c7d30c39476d0017f1f7f74a0c14d9ebf0f8c9e18757392698c27215c5e0e935",
+    "before_completion_sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6",
+    "failed_after_plan_sha256": "f37d9fb89f838fd4b8012ec0e66b0f8cc7c66843953e9436d0fbc2f1ca484853",
+    "expected_initial_lora_sha256": {
+      "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    },
+    "new_after_run_id": "order-rp-20261004-02-after",
+    "new_evaluation_run_id": "order-rp-20261004-02-eval"
+  },
+  "infrastructure_record": {
+    "path": "training/results/2026-10-04-archive-retry/verification.json",
+    "bytes": 5808,
+    "sha256": "c0c7247ab80daf7bf556877f8f0e092d6edb9e0c131d9574d9f6caccec959b55"
+  }
+}

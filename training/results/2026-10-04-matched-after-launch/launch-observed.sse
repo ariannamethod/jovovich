@@ -583,4 +583,28 @@ data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"r
 id: 2026-10-04T22:52:29.756853728Z
 data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 361.788}","ts":"2026-10-04T22:52:29.756853728Z"}
 
+id: 2026-10-04T22:53:29.924761336Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 421.953}","ts":"2026-10-04T22:53:29.924761336Z"}
+
+id: 2026-10-04T22:54:30.035328101Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 482.066}","ts":"2026-10-04T22:54:30.035328101Z"}
+
+id: 2026-10-04T22:55:30.152205958Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 542.183}","ts":"2026-10-04T22:55:30.152205958Z"}
+
+id: 2026-10-04T22:56:28.735981134Z
+data: {"source":"container","line":" downloaded: Qwen2.5-Coder-0.5B-Instruct (base).","ts":"2026-10-04T22:56:28.735981134Z"}
+
+id: 2026-10-04T22:56:28.736026164Z
+data: {"source":"container","line":"{\"status\": \"preflight-passed\"}","ts":"2026-10-04T22:56:28.736026164Z"}
+
+id: 2026-10-04T22:56:30.257527409Z
+data: {"source":"container","line":"Starting fresh {\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 602.289}","ts":"2026-10-04T22:56:30.257527409Z"}
+
+id: 2026-10-04T22:57:30.432960443Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 662.463}","ts":"2026-10-04T22:57:30.432960443Z"}
+
+id: 2026-10-04T22:58:30.541026873Z
+data: {"source":"container","line":"{\"watchdog\": \"heartbeat\", \"phase\": \"running\", \"elapsed_seconds\": 722.572}","ts":"2026-10-04T22:58:30.541026873Z"}
+
 : heartbeat
