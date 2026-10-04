@@ -1,0 +1,160 @@
+{
+  "schema": "jovovich.after-archive-incident.v1",
+  "original_run_prefix": "order-rp-20261003-01",
+  "original_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+  "original_pod_id": "9m15r69jnnlpx4",
+  "before": {
+    "acknowledged_updates": 100,
+    "completion_archived": true
+  },
+  "after": {
+    "last_original_archive_ack": 9,
+    "last_computed_update": 10,
+    "last_native_event": {
+      "stage": "archive_ready",
+      "update": 10,
+      "snapshot_saved": false
+    },
+    "failure": {
+      "status": "failed",
+      "finished_utc": "2026-10-03T23:08:27.042965+00:00",
+      "error_type": "ArchiveError",
+      "return_code": -15
+    },
+    "optimizer_resume_supported": false
+  },
+  "evaluation": {
+    "started": false,
+    "generated_responses": 0
+  },
+  "watchdog": {
+    "phase": "child-failed",
+    "child_exit_code": 1,
+    "stop_requested": true,
+    "stop_attempts": [
+      {
+        "attempt": 1,
+        "started_at": "2026-10-03T23:08:27.174371+00:00",
+        "status": "accepted",
+        "http_status": 200
+      }
+    ],
+    "finished_at": "2026-10-03T23:08:28.268116+00:00"
+  },
+  "incident_archive": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "prefix": "experiments/explanation-order/order-rp-20261003-01-incident01",
+    "revision": "b7908cf8f5cf1516241756addb80ba9531b06e1e",
+    "verified_units": 26,
+    "verified_files_copied": 24,
+    "completion_manifest_sha256": "bd8db88a41f9bfb472306444eae781f3977ebdfb095971a4f71ce8f5bd3faffc",
+    "evidence": [
+      {
+        "name": "state/state.json",
+        "size": 1337,
+        "sha256": "e17eaa57e68674f47bbea911672a339c2e1c6d9b9e34e1a1ee92cf15a67df21c",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/e17eaa57e68674f47bbea911672a339c2e1c6d9b9e34e1a1ee92cf15a67df21c"
+      },
+      {
+        "name": "state/exit.json",
+        "size": 1337,
+        "sha256": "e17eaa57e68674f47bbea911672a339c2e1c6d9b9e34e1a1ee92cf15a67df21c",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/e17eaa57e68674f47bbea911672a339c2e1c6d9b9e34e1a1ee92cf15a67df21c"
+      },
+      {
+        "name": "job/after.stderr",
+        "size": 67,
+        "sha256": "402c57766733cb45ad57250370b01105b3545b7de8ed3bad4b01ec6125bc749c",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/402c57766733cb45ad57250370b01105b3545b7de8ed3bad4b01ec6125bc749c"
+      },
+      {
+        "name": "after/failure.json",
+        "size": 133,
+        "sha256": "731114c18aae4b4beeb99bc0259c58c6aef182bcfbfa352f2018104a95bb6bee",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/731114c18aae4b4beeb99bc0259c58c6aef182bcfbfa352f2018104a95bb6bee"
+      },
+      {
+        "name": "after/stderr.log",
+        "size": 3372,
+        "sha256": "f8898eec3d5bdacab74218d6cf62005c30bf28be34369529ede83f457e6650a0",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/f8898eec3d5bdacab74218d6cf62005c30bf28be34369529ede83f457e6650a0"
+      },
+      {
+        "name": "after/stdout.jsonl",
+        "size": 134917,
+        "sha256": "cb08f2e0f85cb7aac9af6abd70cce8bf047909429073cffb6aaa82df18e7fdb8",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/cb08f2e0f85cb7aac9af6abd70cce8bf047909429073cffb6aaa82df18e7fdb8"
+      },
+      {
+        "name": "after/metrics.jsonl",
+        "size": 134196,
+        "sha256": "50a566a64da8586315cff90d49d71abd0a0b1ea56dcf048e14a91deb24a33da2",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/50a566a64da8586315cff90d49d71abd0a0b1ea56dcf048e14a91deb24a33da2"
+      },
+      {
+        "name": "after/_units/update-009.ack.json",
+        "size": 1552,
+        "sha256": "42fcc3dc41ea3f79a1e3e8a6335e950a7c21a2fea97899bf218b6a5ce564fe40",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/42fcc3dc41ea3f79a1e3e8a6335e950a7c21a2fea97899bf218b6a5ce564fe40"
+      },
+      {
+        "name": "before/completion.json",
+        "size": 10934,
+        "sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6",
+        "object": "experiments/explanation-order/order-rp-20261003-01-incident01/objects/029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6"
+      }
+    ]
+  },
+  "recovery_deployment": {
+    "source_commit": "a88ea0f15dfce69bf0100ac20434fe041a453646",
+    "run_id": "order-rp-20261003-01-incident01",
+    "entrypoint_sha256": "9de07001f5ad43948bb837eeae6d78174d824cb439a5d13761a1d4459c3bd761",
+    "files": {
+      "/tmp/jovovich-runpod-bootstrap.py": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75",
+      "/tmp/jovovich-recover.py": "016ec5e8e8cd0513b8effb93de68aef9501f497a60ef8d4a1b375f0b134cab7f",
+      "/tmp/jovovich-recover-host.sh": "a74519539f13d299dd4eb2e1ab5e5aefa191b7e7709cc6da7e60f83791f88024"
+    },
+    "max_seconds": 900,
+    "source_volume_access": "script-enforced read-only",
+    "expected_compute_usd_per_hour": 0.08
+  },
+  "recovery_pod": {
+    "id": "65ctblsv5a626i",
+    "name": "jovovich-recovery-20261004-01",
+    "status": "EXITED",
+    "cost": 0.08,
+    "cpu": {
+      "id": "cpu3g",
+      "memory": 8,
+      "vcpuCount": 2
+    },
+    "mounts": {
+      "network": [
+        {
+          "path": "/workspace",
+          "volumeId": "ogxwco58mr"
+        }
+      ]
+    },
+    "actions": [
+      "start",
+      "terminate"
+    ],
+    "createdAt": "2026-10-04T00:37:26.113Z"
+  },
+  "diagnosis": {
+    "failed_stage": "archive synchronization of update 10",
+    "observed_exception_class": "ArchiveError",
+    "underlying_operation_http_status_and_exception": "not recorded by the deployed failure handler"
+  },
+  "next_attempt": {
+    "reuse_completed_before": true,
+    "after": "fresh 0-to-100 attempt with the original matched initialization",
+    "prerequisites": [
+      "add structured archive-error diagnostics",
+      "review bounded handling of transient archive failures",
+      "publish a new matched-after launch contract before training"
+    ]
+  }
+}
