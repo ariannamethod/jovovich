@@ -1,0 +1,194 @@
+{
+  "schema": "jovovich.matched-after-launch-verification.v1",
+  "checked_utc": "2026-10-04T22:27:42.644422+00:00",
+  "status": "locally_validated_remote_preflight_blocked_by_hf_storage_quota",
+  "merged_base_commit": "09b00ee2a25b44ae6465d81eead6f28b36b51184",
+  "inputs": {
+    "schema": "jovovich.matched-after-inputs.v1",
+    "original_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+    "archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+    "archive": {
+      "private": true,
+      "repo": "ataeff/jovovich",
+      "prefix": "experiments/explanation-order"
+    },
+    "before_run_id": "order-rp-20261003-01-before",
+    "failed_after_run_id": "order-rp-20261003-01-after",
+    "before_plan_sha256": "c7d30c39476d0017f1f7f74a0c14d9ebf0f8c9e18757392698c27215c5e0e935",
+    "before_completion_sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6",
+    "failed_after_plan_sha256": "f37d9fb89f838fd4b8012ec0e66b0f8cc7c66843953e9436d0fbc2f1ca484853",
+    "expected_initial_lora_sha256": {
+      "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    },
+    "new_after_run_id": "order-rp-20261004-02-after",
+    "new_evaluation_run_id": "order-rp-20261004-02-eval"
+  },
+  "numerical_policy": {
+    "before": "reuse original authenticated update100; never retrain",
+    "after": "fresh process from update0 to update100; no checkpoint resume",
+    "binaries": "restore original archived bytes, never rebuild",
+    "argv_environment_data": "unchanged original after plan",
+    "evaluation": "original contract bytes; six collectors / 228 responses; parity rows 0,1,2,3,51"
+  },
+  "infrastructure_changes": [
+    {
+      "path": "training/durable_archive.py",
+      "original": {
+        "path": "training/durable_archive.py",
+        "bytes": 23730,
+        "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+      },
+      "candidate": {
+        "path": "training/durable_archive.py",
+        "bytes": 32395,
+        "sha256": "c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9"
+      }
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "original": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 17416,
+        "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+      },
+      "candidate": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 21799,
+        "sha256": "f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1"
+      }
+    }
+  ],
+  "evaluation_archive_retry": {
+    "max_attempts": 4,
+    "receipt_deadline_seconds": 900,
+    "unit": "identical closed files; no repeated native generation",
+    "note": "Whole-unit acceptance deadline; an in-flight SDK request can finish later and its receipt is rejected."
+  },
+  "validation": {
+    "make_test": {
+      "native_suite": "passed",
+      "node_tests": 360,
+      "failed": 0,
+      "phase": "before final mandatory-host and full-ledger admission hardening"
+    },
+    "focused": {
+      "tests": 50,
+      "failed": 0
+    },
+    "final_admission": {
+      "tests": 8,
+      "failed": 0
+    },
+    "independent_audit": {
+      "status": "no remaining blocking findings in reviewed path",
+      "regressions": [
+        "rehash after omitted helper",
+        "host manifest removed by nullable declaration",
+        "truncated full recovery ledger"
+      ]
+    },
+    "shell_syntax": "passed",
+    "python_compile": "passed",
+    "git_diff_check": "passed"
+  },
+  "remote_preflight": {
+    "status": "blocked",
+    "operation": "download",
+    "http_status": 403,
+    "method": "HEAD",
+    "service": "huggingface.co",
+    "account": "ataeff",
+    "authenticated_token_role": "write",
+    "provider_reason": "Private repository storage limit reached for ataeff",
+    "head_verified_private": "e983dc43212f0d8a06b4c63b4d751d690bd4f2cc",
+    "new_run_ids_observed_empty": true,
+    "fresh_payload_recovery_completed": false,
+    "remote_writes": 0,
+    "training_updates": 0,
+    "generation_calls": 0,
+    "new_pods_created": 0,
+    "existing_pods_observed": {
+      "9m15r69jnnlpx4": "EXITED",
+      "65ctblsv5a626i": "EXITED"
+    },
+    "required_next_step": "Restore private repository access by freeing authorized storage or increasing account quota; rerun fresh remote preflight before deployment."
+  },
+  "code_bindings": [
+    {
+      "path": "training/after_recovery/bind.py",
+      "bytes": 18614,
+      "sha256": "e0279c7e6cc7d98c47fadea0e7c73fe5f0534d14c0b822d22ac938c37255fcc9"
+    },
+    {
+      "path": "training/after_recovery/evaluate.py",
+      "bytes": 18973,
+      "sha256": "e3bd0871a887260752bf8c6887fa2129091e74e0bd296675f7c9547fa7cc622e"
+    },
+    {
+      "path": "training/after_recovery/host_launch.sh",
+      "bytes": 13135,
+      "sha256": "80c88a5eb16f78a22cf76aefbaac16f7be4448317e8da3bacd3b632e423171db"
+    },
+    {
+      "path": "training/cloud/prepare_after_host.sh",
+      "bytes": 2449,
+      "sha256": "3b139d47554eee40c4aa6c98e68da795f7a11eb9b77d42efc0095780e5efc46c"
+    },
+    {
+      "path": "training/quote/host_launch.sh",
+      "bytes": 12196,
+      "sha256": "5a9bf27f2e26f57397ce0dd28c19496c25682c16e39ce73346cab1e902ec2e06"
+    },
+    {
+      "path": "test/after_recovery_bind.test.mjs",
+      "bytes": 7279,
+      "sha256": "8c7d63fa4440226dc58563ecf390c9c161b085bcbe05306d816861f2e9c008da"
+    },
+    {
+      "path": "test/after_recovery_evaluate.test.mjs",
+      "bytes": 9089,
+      "sha256": "b1b9bf4b882e42750fff36700f8620703a8295562e14121f377725304839f18d"
+    },
+    {
+      "path": "test/after_recovery_retry.test.mjs",
+      "bytes": 11439,
+      "sha256": "aaaf438d760cfe840708956b31358712d8d0e297971c2e1ee61a98b432cd7abc"
+    },
+    {
+      "path": "test/after_recovery_fixture.py",
+      "bytes": 7116,
+      "sha256": "cc0d98920eb3418c8a68ab2ef35f0b94aa944b6c227eb6d030c7f262d09f0fda"
+    },
+    {
+      "path": "test/after_host_launch.test.mjs",
+      "bytes": 18428,
+      "sha256": "0220c8cca77018cefe6c1c3fee445182f8721ffb1af145c784e766f0084da5e0"
+    },
+    {
+      "path": "test/quote_host_launch.test.mjs",
+      "bytes": 13484,
+      "sha256": "4d46f43a2eeaf5e69938679233625ff5cf5c254b71c889496d299790eb486bfa"
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "training/results/2026-10-04-matched-after-launch/final-admission-test.txt",
+      "bytes": 978,
+      "sha256": "e32f83046704c54ec22cab1c93204e8a6abf5eec0e57bbaadf234c26ee88c9f6"
+    },
+    {
+      "path": "training/results/2026-10-04-matched-after-launch/focused-test.txt",
+      "bytes": 4858,
+      "sha256": "f843a1783cae3749f17d6e1fa076360fd973b8b0e8f19ba0da14f97699996c83"
+    },
+    {
+      "path": "training/results/2026-10-04-matched-after-launch/make-test.txt",
+      "bytes": 33417,
+      "sha256": "8c46620d92bb590aa5a7356b7a643cccd7106ddb5e71bd588175bd0b4c01972b"
+    }
+  ],
+  "launch_command": "bash training/after_recovery/host_launch.sh TOKEN_FILE order-rp-20261004-02 EXPECTED_SOURCE_SHA",
+  "managed_setup": "training/cloud/prepare_after_host.sh via the unchanged pinned Runpod watchdog"
+}

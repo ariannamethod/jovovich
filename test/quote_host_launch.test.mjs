@@ -168,7 +168,8 @@ test('malformed launch inputs are refused before any work', t => {
 
 for (const [name, inputs] of [
   ['without an infrastructure record', Object.fromEntries(Object.entries(INPUTS).filter(([k]) => k !== 'infrastructure_record'))],
-  ['with an infrastructure record outside the checkout', { ...INPUTS, infrastructure_record: '../outside.json' }]]) {
+  ['with an infrastructure record outside the checkout', { ...INPUTS, infrastructure_record: '../outside.json' }],
+  ['with an ignored infrastructure record absent from the pinned commit', { ...INPUTS, infrastructure_record: 'models/record.json' }]]) {
   test(`launch inputs ${name} are refused before any work`, t => {
     const f = fixture(t, inputs); const r = f.run();
     assert.notEqual(r.status, 0); assert.match(r.stderr, /invalid training\/quote\/launch_inputs\.json/);

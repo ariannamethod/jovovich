@@ -14,6 +14,9 @@ JOV_TOKEN_FILE=$(realpath -- "$1")
 JOV_LAUNCHER_PATH=$(realpath -- "${BASH_SOURCE[0]}")
 JOV_RUN_PREFIX=$2
 JOV_SOURCE_COMMIT=$3
+while IFS= read -r JOV_ENV_NAME; do
+  case "$JOV_ENV_NAME" in GIT_*) unset "$JOV_ENV_NAME" ;; esac
+done < <(compgen -e)
 [[ "$JOV_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'expected source SHA must be a full lowercase Git commit'
 [[ -f "$JOV_TOKEN_FILE" && -r "$JOV_TOKEN_FILE" ]] || fail 'token file must be readable'
 # The evaluation run ID <prefix>-quote-eval must stay within 50 characters.
@@ -40,9 +43,33 @@ node -e 'if (+process.versions.node.split(".")[0] < 22) process.exit(1)' || fail
 
 JOV_INPUTS=training/quote/launch_inputs.json
 [[ -f "$JOV_INPUTS" ]] || fail "missing committed $JOV_INPUTS"
-JOV_FIELDS=$(python3 - "$JOV_INPUTS" <<'PY'
-import json, re, sys
+JOV_FIELDS=$(python3 - "$JOV_INPUTS" "$JOV_SOURCE_COMMIT" <<'PY'
+import json, os, re, subprocess, sys
 from pathlib import Path
+def committed(name):
+    root = Path.cwd().resolve()
+    path = root
+    for part in Path(name).parts:
+        if part in ('.', '..'):
+            raise SystemExit(1)
+        path /= part
+        if path.is_symlink():
+            raise SystemExit(1)
+    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+    env.update(GIT_NO_LAZY_FETCH='1', GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL='/dev/null')
+    def git(*args):
+        return subprocess.check_output(['git', '-c', 'core.fsmonitor=false', '-C', str(root), *args],
+                                       env=env, stderr=subprocess.DEVNULL)
+    entry = git('ls-tree', '-z', '--full-tree', sys.argv[2], '--', name)
+    fields = entry.rstrip(b'\0').split(b'\t')
+    if len(fields) != 2 or fields[1].decode() != name:
+        raise SystemExit(1)
+    mode, kind, oid = fields[0].split()
+    if mode not in (b'100644', b'100755') or kind != b'blob' or not path.is_file():
+        raise SystemExit(1)
+    if git('cat-file', 'blob', oid.decode()) != path.read_bytes():
+        raise SystemExit(1)
+committed(sys.argv[1])
 value = json.load(open(sys.argv[1]))
 if not isinstance(value, dict):
     raise SystemExit(1)
@@ -59,6 +86,7 @@ if not (set(value) == {'schema', 'archive_revision', 'before_run_id',
         Path(value['infrastructure_record']).resolve().is_relative_to(Path.cwd().resolve()) and
         Path(value['infrastructure_record']).is_file()):
     raise SystemExit(1)
+committed(value['infrastructure_record'])
 print(value['archive_revision'], value['before_run_id'], value['before_eval_run_id'], value['infrastructure_record'])
 PY
 ) || fail "invalid $JOV_INPUTS"
