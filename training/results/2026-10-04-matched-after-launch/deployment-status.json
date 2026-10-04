@@ -1,0 +1,45 @@
+{
+  "schema": "jovovich.matched-after-live-status.v1",
+  "observed_utc": "2026-10-04T23:00:40.491315+00:00",
+  "status": "fresh_after_started_live_intent_verified",
+  "pod_id": "fnwhk6bqjfy30a",
+  "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "run_prefix": "order-rp-20261004-02",
+  "model": "Qwen2.5-Coder-0.5B-Instruct Q8_0",
+  "completed_comparator": "order-rp-20261003-01-before update100",
+  "new_after": "fresh initialization to update100; no optimizer checkpoint resume",
+  "compute_usd_per_hour": 0.16,
+  "deadline_seconds": 43200,
+  "approximate_deadline_utc": "2026-10-05T10:46:28Z",
+  "preflight_roundtrip": {
+    "status": "actual_archive_admission_passed",
+    "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+    "recovered_units": {
+      "before": 103,
+      "failed_after": 11
+    },
+    "infrastructure_changes": [
+      "training/durable_archive.py",
+      "training/explanations/run_training.py"
+    ],
+    "added_bindings": 24,
+    "native_archive_protocol": "passed",
+    "training_updates": 0,
+    "generation_calls": 0,
+    "remote_revision": "25c8b3b0c4c7ad4d5b5214350056dd382ee4e99c",
+    "remote_manifest_sha256": "cb63d68a378b2620c4a268a2e4c495213e14064db0111ab9f9ed20e7c8775a5c",
+    "archive_prefix": "experiments/explanation-order-preflight/after-launch-preflight-20261004-02",
+    "archived_files": 30,
+    "fresh_roundtrip_verified": true
+  },
+  "observed_native_training_updates": 0,
+  "observed_generation_calls": 0,
+  "archived_intent_verified": true,
+  "watchdog": "native archive-protocol preflight and after launch observed; first 86-file intent freshly recovered by bytes",
+  "quote_arm": "not launched; separate preregistered continuation follows matched evaluation",
+  "live_intent_verification": "live-intent-verification.json",
+  "last_verified_unit": "intent",
+  "pod_status": "RUNNING",
+  "remote_units_observed": 1,
+  "remote_inventory_evidence": "live-archive-observed.json"
+}

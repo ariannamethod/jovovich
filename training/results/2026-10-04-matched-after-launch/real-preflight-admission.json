@@ -1,0 +1,16 @@
+{
+  "status": "actual_archive_admission_passed",
+  "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "recovered_units": {
+    "before": 103,
+    "failed_after": 11
+  },
+  "infrastructure_changes": [
+    "training/durable_archive.py",
+    "training/explanations/run_training.py"
+  ],
+  "added_bindings": 24,
+  "native_archive_protocol": "passed",
+  "training_updates": 0,
+  "generation_calls": 0
+}

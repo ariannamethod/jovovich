@@ -27,6 +27,42 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-04 — The archive opens again.
+
+The maintainer restored HF Pro. A fresh recovery then verified all 103 original
+before units and 11 failed-after units. On those real bytes, the binder restored
+the original numerical artifacts and produced an 85-binding after plan;
+independent evaluator admission accepted exactly the two reviewed source
+changes. The original C executable passed its archive-protocol preflight.
+No local training or generation was performed.
+
+Thirty preflight/source/provenance files were committed to private HF and
+recovered again by bytes at revision
+`25c8b3b0c4c7ad4d5b5214350056dd382ee4e99c`, under
+`experiments/explanation-order-preflight/after-launch-preflight-20261004-02`.
+The receipt and verification result are retained beside the deployment intent.
+
+The new CPU pod `fnwhk6bqjfy30a` was created at 2026-10-04 22:46:18 UTC. It uses
+4 vCPU / 16 GB CPU3g at $0.16/hour, the retained EU-RO-1 volume and the pinned
+Python image. Watchdog child-started/heartbeat and checkout
+`970163b792d24dba1b5d2d3077177baf9cd1e28b` were observed. Its maximum envelope
+is 12 hours; the same watchdog requests its own pod stop on child completion,
+failure, signal or deadline. The original checkout is retained separately.
+At 22:53 UTC the host was preparing the environment; no new native training
+update or generated review had been observed.
+
+At 22:59 UTC the first live after intent was freshly recovered from HF
+revision `52ca299e03d43496d5027b503206534dfcaeef9b`: all 86 files passed byte
+verification. The archived plan and real Runpod host manifest bind the deployed
+source, original before completion and unchanged numerical configuration.
+Only the two approved infrastructure candidate bindings differ from the
+original after plan. Native protocol preflight and the fresh after launch were
+observed on the host. Optimizer updates and generated reviews are not yet
+claimed by this startup verification. At 23:00 UTC the pod was still RUNNING
+and remote inventory contained exactly that first intent unit.
+
+See `training/results/2026-10-04-matched-after-launch/deployment-status.json`.
+
 ## 2026-10-04 — The after arm gets a return ticket.
 
 PR30 and Claude's PR31 are merged. The matched continuation now has a complete

@@ -1,0 +1,29 @@
+{
+  "schema": "jovovich.matched-after-live-intent-verification.v1",
+  "verified_utc": "2026-10-04T22:59:31.286926+00:00",
+  "status": "live_intent_freshly_recovered_and_verified",
+  "run_id": "order-rp-20261004-02-after",
+  "pod_id": "fnwhk6bqjfy30a",
+  "archive_revision": "52ca299e03d43496d5027b503206534dfcaeef9b",
+  "archive_prefix": "experiments/explanation-order/order-rp-20261004-02-after",
+  "manifest_sha256": "3b3e6dc70153134d11b681dd4edb4c25187da9f9a18c2bd6d82e3f12c2cb2b16",
+  "files_verified": 86,
+  "plan_sha256": "8beecbe02ed562e46b59497538195b82bfe1d6c49edbcedfd6eb95f4a9eacdf1",
+  "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "cpu_model": "AMD EPYC 9655P 96-Core Processor",
+  "original_numerical_bindings": "unchanged; only the approved two infrastructure candidates substituted",
+  "before_completion": {
+    "run_id": "order-rp-20261003-01-before",
+    "revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+    "manifest_sha256": "87afa29ea2d1f81b7498164b176ec1f93f219742816720e29a0a582fb99f2543",
+    "completion_sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6"
+  },
+  "expected_initial_lora_sha256": {
+    "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+    "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+    "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+  },
+  "completed_optimizer_updates_observed": 0,
+  "generation_calls_observed": 0
+}
