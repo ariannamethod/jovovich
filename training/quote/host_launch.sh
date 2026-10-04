@@ -31,6 +31,13 @@ assert_source() {
   [[ -z $(git ls-files --others --exclude-standard -- training test bin prompts deps) ]] || fail 'untracked source files are outside the reviewed commit'
 }
 assert_source
+# Ignored files escape assert_source and skip-worktree hides edits from git diff: hash the bytes
+# on disk against the blob of the pinned commit.
+assert_pinned_file() {
+  [[ $(git cat-file -t "$JOV_SOURCE_COMMIT:$2" 2>/dev/null) == blob &&
+     $(git hash-object --no-filters -- "$2") == $(git rev-parse "$JOV_SOURCE_COMMIT:$2") ]] ||
+    fail "$1 must be tracked and unchanged in $JOV_SOURCE_COMMIT: $2"
+}
 JOV_NOTORCH_COMMIT=$(git rev-parse "$JOV_SOURCE_COMMIT:deps/notorch")
 [[ "$JOV_NOTORCH_COMMIT" =~ ^[0-9a-f]{40}$ ]] || fail 'missing pinned notorch gitlink'
 # Credentials are read only by archive-parent processes from the private file.
@@ -40,6 +47,7 @@ node -e 'if (+process.versions.node.split(".")[0] < 22) process.exit(1)' || fail
 
 JOV_INPUTS=training/quote/launch_inputs.json
 [[ -f "$JOV_INPUTS" ]] || fail "missing committed $JOV_INPUTS"
+assert_pinned_file 'launch inputs' "$JOV_INPUTS"
 JOV_FIELDS=$(python3 - "$JOV_INPUTS" <<'PY'
 import json, re, sys
 from pathlib import Path
@@ -63,6 +71,7 @@ print(value['archive_revision'], value['before_run_id'], value['before_eval_run_
 PY
 ) || fail "invalid $JOV_INPUTS"
 read -r JOV_ARCHIVE_REVISION JOV_BEFORE_RUN_ID JOV_BEFORE_EVAL_RUN_ID JOV_INFRASTRUCTURE_RECORD <<<"$JOV_FIELDS"
+assert_pinned_file 'infrastructure record' "$JOV_INFRASTRUCTURE_RECORD"
 
 JOV_JOB="models/$JOV_RUN_PREFIX-quote-job"
 JOV_BEFORE="models/$JOV_RUN_PREFIX-quote-before-run"
