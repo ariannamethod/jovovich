@@ -1,0 +1,14 @@
+{
+  "id": "fnwhk6bqjfy30a",
+  "name": "jovovich-after-20261004-02",
+  "status": "EXITED",
+  "actions": [
+    "start",
+    "terminate"
+  ],
+  "cost": 0.16,
+  "createdAt": "2026-10-04T22:46:18.962Z",
+  "startedAt": "2026-10-04T22:46:18.957Z",
+  "stoppedAt": null,
+  "dataCenterId": "EU-RO-1"
+}

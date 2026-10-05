@@ -40,6 +40,63 @@ _TRANSIENT_STATUS = frozenset((408, 429, 500, 502, 503, 504))
 _TRANSIENT_ERRNO = frozenset((errno.ECONNRESET, errno.ECONNREFUSED,
     errno.ECONNABORTED, errno.ETIMEDOUT, errno.EPIPE, errno.ENETUNREACH,
     errno.EHOSTUNREACH))
+# Only these fixed internal invariant messages can produce a diagnostic reason.
+# Never derive a code from arbitrary exception text: transport errors may carry
+# credentials, URLs or paths even after their class/status has been sanitized.
+_VALIDATION_REASONS = {message: message.replace(' ', '_').replace('-', '_') for message in (
+    'archive repository must be private',
+    'closed unit changed between archive retries',
+    'committed manifest mismatch',
+    'duplicate or unordered logical names',
+    'duplicate remote unit',
+    'empty remote unit',
+    'file changed while hashing',
+    'invalid archive retry count',
+    'invalid archive retry deadline',
+    'invalid identifier',
+    'invalid logical path',
+    'invalid remote commit',
+    'invalid remote file digest',
+    'invalid remote file entry',
+    'invalid remote inventory',
+    'invalid remote manifest',
+    'invalid remote manifest fields',
+    'invalid repository identifier',
+    'invalid unit sequence',
+    'logical path was changed across units',
+    'missing archive credential',
+    'noncanonical remote manifest',
+    'overlapping logical paths',
+    'overlapping logical paths across units',
+    'pinned research hub client unavailable',
+    'previous unit has not been durably acknowledged',
+    'previously verified unit changed',
+    'previously verified unit missing',
+    'recovery destination already exists',
+    'recovery destination appeared during restore',
+    'remote archive has no closed units',
+    'remote manifest chain mismatch',
+    'remote manifest exceeds size bound',
+    'remote manifest metadata mismatch',
+    'remote object integrity mismatch',
+    'remote object missing',
+    'remote object missing or changed',
+    'remote object path mismatch',
+    'remote revision binding mismatch',
+    'remote sequence path mismatch',
+    'reserved logical path',
+    'source changed during archive operation',
+    'source must be a regular non-symlink file',
+    'unexpected remote path',
+    'unit already exists with different content',
+    'unit identifier already used',
+    'unit manifest exceeds size bound',
+    'unit must contain files',
+    'unit sequence has a gap',
+    'unreferenced or unexpected archive object',
+    'unsupported hub client version',
+)}
+_VALIDATION_REASON_CODES = frozenset(_VALIDATION_REASONS.values())
 
 
 def _safe_diagnostic(value):
@@ -48,8 +105,10 @@ def _safe_diagnostic(value):
     operation = value.get('operation')
     kind, status, number, attempts = (value.get(k) for k in
                                     ('exception_type', 'http_status', 'errno', 'attempts'))
+    reason = value.get('reason_code')
     return {'operation': operation if isinstance(operation, str) and operation in _OPERATIONS else 'validation',
             'exception_type': kind if isinstance(kind, str) and kind in _ERROR_TYPES else 'Exception',
+            'reason_code': reason if isinstance(reason, str) and reason in _VALIDATION_REASON_CODES else None,
             'http_status': status if type(status) is int and 100 <= status <= 599 else None,
             'errno': number if type(number) is int and 0 < number < 4096 else None,
             'retryable': value.get('retryable') is True and isinstance(operation, str) and operation in
@@ -63,7 +122,8 @@ class ArchiveError(RuntimeError):
     def __init__(self, message, *, diagnostic=None):
         super().__init__(message)
         self._diagnostic = _safe_diagnostic(diagnostic or
-            {'operation': 'validation', 'exception_type': 'ArchiveError'})
+            {'operation': 'validation', 'exception_type': 'ArchiveError',
+             'reason_code': _VALIDATION_REASONS.get(message) if isinstance(message, str) else None})
 
     @property
     def diagnostic(self):

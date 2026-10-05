@@ -1,0 +1,104 @@
+{
+  "cases": [
+    {
+      "case": "cold-direct-dual",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "warm-direct-dual",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "cold-retry-dual",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "warm-retry-dual",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "warm-retry-git-only",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "warm-retry-sha256-only",
+      "injected_fault": null,
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "accepted-commit-response-loss",
+      "injected_fault": "accepted-commit-lost-response",
+      "local_commits": 1,
+      "status": "passed"
+    },
+    {
+      "case": "inventory-integrity-control",
+      "injected_fault": "bad-object-inventory-size",
+      "local_commits": 0,
+      "status": "failed"
+    },
+    {
+      "case": "download-integrity-control",
+      "injected_fault": "corrupt-object-download",
+      "local_commits": 0,
+      "status": "failed"
+    }
+  ],
+  "closed_unit_derivation": "Exact suffixes after byte-matched archived update000..023 log prefixes.",
+  "closed_unit_files": [
+    {
+      "name": "_units/update-024.raw.jsonl",
+      "sha256": "58a8d15f384246b1210de71631561f5298dc1be4513bcfdb59c1bc4c5209a970",
+      "size": 10462
+    },
+    {
+      "name": "_units/update-024.metrics.jsonl",
+      "sha256": "84e08ea9cf7e6a9a01e829e5557dee7403de20893d131f6e6dfec9a3227d54d7",
+      "size": 10401
+    },
+    {
+      "name": "_units/update-024.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  ],
+  "complete_report": "report.json",
+  "deployed_archive_sha256": "c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9",
+  "historical_manifests": "exact remote bytes",
+  "network_requests": 0,
+  "recovered_payloads": 165,
+  "recovered_units": 25,
+  "recovery_revision": "11f6c33b277f24459147bf6a9314205be1c334de",
+  "remote_writes": 0,
+  "result": {
+    "all_source_bytes_preserved": true,
+    "integrity_controls": 2,
+    "integrity_controls_rejected": 2,
+    "positive_cases": 7,
+    "positive_passes": 7,
+    "validation_failure_reproduced_without_injected_fault": false
+  },
+  "schema": "jovovich.archive-local-replay-summary.v1",
+  "script_sha256": "e0fbba8e060a84eed43de986c1f99ac9d0b5ebdd2a8ded919f9f5e2380959dcb",
+  "seed_head_revision": "2ca031a6cdf24f84a3bdd344e2187e6c135d4c05",
+  "sequence": 25,
+  "source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "training_calls": 0,
+  "training_run_id": "order-rp-20261004-02-after",
+  "unit_id": "update-024",
+  "unrecorded_incident_state": [
+    "Filesystem inode/mtime and local file mutations during the failed call.",
+    "Private-service responses and metadata returned during the failed call."
+  ]
+}

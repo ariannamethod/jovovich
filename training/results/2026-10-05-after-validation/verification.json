@@ -1,0 +1,58 @@
+{
+  "schema": "jovovich.after-archive-validation-incident.v1",
+  "observed_utc": "2026-10-05T08:16:00.016341+00:00",
+  "status": "stopped_on_archive_validation",
+  "run_id": "order-rp-20261004-02-after",
+  "pod_id": "fnwhk6bqjfy30a",
+  "pod_status": "EXITED",
+  "deployed_source_commit": "970163b792d24dba1b5d2d3077177baf9cd1e28b",
+  "failure_utc": "2026-10-04T23:27:15.155497+00:00",
+  "container_removed_utc": "2026-10-04T23:27:24Z",
+  "last_acknowledged_update": 23,
+  "last_computed_update": 24,
+  "native_return_code": -15,
+  "original_archive_error": {
+    "operation": "validation",
+    "exception_type": "ArchiveError",
+    "http_status": null,
+    "errno": null,
+    "retryable": false,
+    "attempts": 1
+  },
+  "specific_validation_reason": "not retained by the deployed diagnostic schema",
+  "archive_revision": "11f6c33b277f24459147bf6a9314205be1c334de",
+  "full_training_recovery": {
+    "verified_remote_bytes": true,
+    "units": 25,
+    "logical_files": 165,
+    "last_unit": "update-023",
+    "ledger_sha256": "a16377f5403cc266ed9fb3c1c0153f0d7a77cb87b942bbc0efc28716994be843",
+    "reader_sha256": "c8feaf5b25baef0e36698c30270047e0b4b1b80cce6a94a106d9a3262a90e7b9"
+  },
+  "failure_recovery": {
+    "verified_remote_bytes": true,
+    "units": 1,
+    "logical_files": 5,
+    "manifest_sha256": "3e04c52ecb0bc7b2f9ce6772c8a6719870e20587fc6560148a20041f17b79f8c",
+    "ledger": "failure-recovery.json"
+  },
+  "evaluation_units": 0,
+  "numerical_restart_performed": false,
+  "diagnostic_change": "Preserve a finite allowlisted reason_code through archive wrappers into failure.json.",
+  "local_replay": "replay-summary.json",
+  "local_replay_result": {
+    "all_source_bytes_preserved": true,
+    "integrity_controls": 2,
+    "integrity_controls_rejected": 2,
+    "positive_cases": 7,
+    "positive_passes": 7,
+    "validation_failure_reproduced_without_injected_fault": false
+  },
+  "validation_tests": {
+    "tests": 44,
+    "passed": 44,
+    "failed": 0,
+    "evidence": "archive-tests.txt"
+  },
+  "diagnostic_candidate_sha256": "9d29059e852d8f81033df2048b234d636d89c208becb25b29a431439c822a20d"
+}

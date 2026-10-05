@@ -551,7 +551,7 @@ def retry_metadata(directory):
         'http_status': True, 'errno': 'secret', 'retryable': True, 'attempts': False,
         'headers': {'Authorization': 'secret'}})
     check(malformed.diagnostic == {'operation': 'validation', 'exception_type': 'Exception',
-        'http_status': None, 'errno': None, 'retryable': False, 'attempts': None},
+        'reason_code': None, 'http_status': None, 'errno': None, 'retryable': False, 'attempts': None},
         'diagnostic schema accepted unbounded or credential-bearing values')
     Poison = type('hf_SYNTHETIC_RETRY_SECRET', (RuntimeError,), {})
     remote = FakeTransport()
@@ -573,6 +573,118 @@ def retry_metadata(directory):
               str(missing) not in traceback.format_exc(), 'local source error leaked a path')
     else:
         raise RuntimeError('missing retry input accepted')
+
+
+def retry_validation_reasons(directory):
+    # These distinct real invariant failures previously became the same
+    # validation/ArchiveError metadata after the bounded sync wrapper.
+    for scenario, expected in (
+            ('missing-object', 'remote_object_missing_or_changed'),
+            ('missing-history', 'previously_verified_unit_missing'),
+            ('extra-object', 'unreferenced_or_unexpected_archive_object'),
+            ('different-unit', 'unit_already_exists_with_different_content')):
+        remote, local = FakeTransport(), source(directory, scenario)
+        archive = DurableArchive(remote, scenario)
+        bounded_sync(archive, local)
+        if scenario == 'missing-object':
+            del remote.revisions[remote.current][payload_path(remote, local.read_bytes())]
+        elif scenario == 'missing-history':
+            remote.inventory = lambda revision, prefix: {}
+        elif scenario == 'extra-object':
+            remote.revisions[remote.current][archive.prefix + '/objects/' + 'f' * 64] = b'unreferenced'
+        else:
+            local.write_bytes(b'different closed bytes')
+        events = []
+        try:
+            bounded_sync(archive, local, callback=events.append)
+        except ArchiveError as exc:
+            check(str(exc) == 'archive synchronization stopped' and
+                  exc.diagnostic['reason_code'] == expected and
+                  exc.diagnostic['operation'] == 'validation' and
+                  not exc.diagnostic['retryable'] and exc.diagnostic['attempts'] == 1,
+                  'bounded wrapper lost the distinct validation reason: ' + scenario)
+        else:
+            raise RuntimeError('invalid archive accepted: ' + scenario)
+        check(not events and remote.commits == 1, 'validation diagnostic change retried or committed')
+
+    # Exercise the HF transport's own _need(), then both operation wrappers and
+    # the retry wrapper, with no installed HF client, token or network request.
+    transport = archive_module.HFTransport.__new__(archive_module.HFTransport)
+    transport.repo_id, transport.branch = 'fixture/archive', 'main'
+    transport._api = types.SimpleNamespace(repo_info=lambda **kwargs:
+        types.SimpleNamespace(private=False, id='fixture/archive', sha='0' * 40))
+    try:
+        bounded_sync(DurableArchive(transport, 'privacy-reason'), source(directory, 'privacy'))
+    except ArchiveError as exc:
+        check(exc.diagnostic['reason_code'] == 'archive_repository_must_be_private' and
+              exc.diagnostic['attempts'] == 1 and not exc.diagnostic['retryable'],
+              'transport operation wrapper lost its validation reason')
+    else:
+        raise RuntimeError('public archive accepted')
+
+
+def retry_unknown_reasons(directory):
+    secret = 'hf_SYNTHETIC_REASON_SECRET https://secret.invalid/private /private/credential'
+    values = ('unknown_reason', 'remote_object_missing_or_changed ' + secret,
+              [secret], {'reason_code': secret}, secret)
+    for index, reason in enumerate(values):
+        remote = FakeTransport()
+        remote.head_fault = ArchiveError(secret, diagnostic={
+            'operation': 'validation', 'exception_type': 'ArchiveError',
+            'reason_code': reason, 'message': secret})
+        try:
+            bounded_sync(DurableArchive(remote, 'unknown-' + str(index)),
+                         source(directory, 'unknown-' + str(index)))
+        except ArchiveError as exc:
+            check(exc.diagnostic['reason_code'] is None and exc.diagnostic['attempts'] == 1,
+                  'unlisted reason entered the diagnostic schema')
+            check('SYNTHETIC' not in traceback.format_exc() + json.dumps(exc.diagnostic),
+                  'unknown reason leaked through an operation or retry wrapper')
+        else:
+            raise RuntimeError('unknown validation failure accepted')
+    # A known message plus arbitrary suffix must not become an allowed code.
+    remote = FakeTransport()
+    remote.head_fault = ArchiveError('remote object missing ' + secret)
+    try:
+        bounded_sync(DurableArchive(remote, 'message-suffix'), source(directory, 'suffix'))
+    except ArchiveError as exc:
+        check(exc.diagnostic['reason_code'] is None and
+              'SYNTHETIC' not in traceback.format_exc() + json.dumps(exc.diagnostic),
+              'arbitrary exception text was converted to a reason')
+    else:
+        raise RuntimeError('unknown exception message accepted')
+
+
+def training_failure_reason(directory):
+    from explanations.run_training import ARCHIVE_CAPABILITY, TrainingError, run_training
+    trainer = source(directory, 'protocol-trainer', (
+        '#!/usr/bin/env python3\nimport sys\n'
+        'if sys.argv[1:] != ["--archive-protocol"]: raise SystemExit(88)\n'
+        'print(' + repr(json.dumps(ARCHIVE_CAPABILITY)) + ')\n').encode())
+    trainer.chmod(0o755)
+    paths = [trainer, source(directory, 'base'), source(directory, 'dataset'), source(directory, 'pairs')]
+    plan = {'schema_version': 1, 'run_id': 'failure-reason',
+            'argv': [path.name for path in paths[:3]] +
+                    ['@RUN@/adapter', '0', '0.0001', '40', '25', 'joint', paths[3].name],
+            'bindings': [{'path': path.name, 'bytes': path.stat().st_size,
+                          'sha256': hashlib.sha256(path.read_bytes()).hexdigest()} for path in paths],
+            'environment': {'NT_NO_I8': '1'}}
+    transport = archive_module.HFTransport.__new__(archive_module.HFTransport)
+    transport.repo_id, transport.branch = 'fixture/archive', 'main'
+    transport._api = types.SimpleNamespace(repo_info=lambda **kwargs:
+        types.SimpleNamespace(private=False, id='fixture/archive', sha='0' * 40))
+    output = directory / 'training-failure'
+    try:
+        run_training(DurableArchive(transport, plan['run_id']), plan, output, repo=directory)
+    except TrainingError:
+        pass
+    else:
+        raise RuntimeError('training ignored the archive validation failure')
+    failure = json.loads((output / 'failure.json').read_text())
+    check(failure['archive_error']['reason_code'] == 'archive_repository_must_be_private' and
+          failure['archive_error']['attempts'] == 1 and failure['unit_id'] == 'intent' and
+          failure['return_code'] is None, 'real training failure journal lost the validation reason')
+    check(not (output / 'stdout.jsonl').exists(), 'training began after failed archive intent')
 
 
 def hf_request_timeouts(directory):
@@ -786,6 +898,9 @@ SCENARIOS = {
     "retry-deadline": retry_deadline,
     "retry-immutable": retry_immutable,
     "retry-metadata": retry_metadata,
+    "retry-validation-reasons": retry_validation_reasons,
+    "retry-unknown-reasons": retry_unknown_reasons,
+    "training-failure-reason": training_failure_reason,
     "hf-request-timeouts": hf_request_timeouts,
     "lost-ack": lost_ack,
     "corrupt-remote": remote_damage,
