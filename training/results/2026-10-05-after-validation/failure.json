@@ -1,0 +1,23 @@
+{
+  "status": "failed",
+  "finished_utc": "2026-10-04T23:27:15.155497+00:00",
+  "error_type": "ArchiveError",
+  "return_code": -15,
+  "unit_id": "update-024",
+  "sequence": 25,
+  "last_acknowledged_update": 23,
+  "last_acknowledged_unit": {
+    "unit_id": "update-023",
+    "sequence": 24,
+    "revision": "2ca031a6cdf24f84a3bdd344e2187e6c135d4c05",
+    "manifest_sha256": "22e761662f3049db82f852ddad41a080e4adbd3fe458812d2c64bd17b7f1f6b1"
+  },
+  "archive_error": {
+    "operation": "validation",
+    "exception_type": "ArchiveError",
+    "http_status": null,
+    "errno": null,
+    "retryable": false,
+    "attempts": 1
+  }
+}

@@ -27,6 +27,42 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+## 2026-10-05 — The failed boundary keeps its evidence.
+
+The fresh matched after attempt stopped at 2026-10-04 23:27:15 UTC while
+archiving update024. Update023 was acknowledged; the native log contains the
+computed update024 and its archive-ready boundary. The parent stopped the
+native process with return code -15. Runpod recorded container removal at
+23:27:24 UTC, and the pod is EXITED. The evaluation archive has no units.
+
+Fresh recovery from private HF revision
+`11f6c33b277f24459147bf6a9314205be1c334de` verified all 25 training units
+(165 logical files) and the separate failure unit (five files). The last ACK
+matches the recovered update023 manifest. The failure is classified as
+`ArchiveError / validation`, with one attempt and no retry. Its exact invariant
+was lost: the retry wrapper replaced the exception message, and the diagnostic
+schema did not retain a validation reason.
+
+An independent local replay used the deployed archive source, all 25 exact
+remote manifests and the recovered payloads. The update024 files were extracted
+as exact suffixes of the failure logs after matching every earlier log byte.
+All six ordinary replay cases passed; an accepted-commit/lost-response control
+also passed with one local commit. Both corruption controls rejected before
+commit. The original validation failure was not reproduced on those bytes.
+The incident's transient service responses and filesystem state were not
+recorded, so the specific triggering invariant remains unidentified.
+
+The archive diagnostic now preserves an allowlisted `reason_code` through the
+operation and retry wrappers into `failure.json`. Unknown diagnostic text maps
+to null. The change retains the existing retry policy and integrity checks.
+All 44 archive and continuation tests passed, including optimized Python.
+The original launch pins and infrastructure approval record remain historical;
+a future native attempt needs its own reviewed bindings and fresh run ID.
+
+Evidence and the reproducible local replay are in
+`training/results/2026-10-05-after-validation/`. No new native attempt was
+started during this investigation.
+
 ## 2026-10-04 — The archive opens again.
 
 The maintainer restored HF Pro. A fresh recovery then verified all 103 original

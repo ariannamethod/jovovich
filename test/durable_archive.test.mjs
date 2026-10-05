@@ -13,6 +13,7 @@ const scenarios = [
   'hf-transport-contract', 'hf-request-timeouts',
   'retry-transient', 'retry-commit', 'retry-terminal', 'retry-exhaustion',
   'retry-deadline', 'retry-immutable', 'retry-metadata',
+  'retry-validation-reasons', 'retry-unknown-reasons', 'training-failure-reason',
   'runner-barrier', 'runner-lost-ack', 'runner-interrupted',
   'runner-preflight', 'runner-stale-output',
   'runner-symlink', 'runner-failed-work',
@@ -38,7 +39,9 @@ for (const mode of [
     for (const scenario of ['normal', 'corrupt-remote', 'unsafe-paths', 'privacy',
       'hf-transport-contract', 'hf-request-timeouts',
   'retry-transient', 'retry-commit', 'retry-terminal', 'retry-exhaustion',
-  'retry-deadline', 'retry-immutable', 'retry-metadata', 'runner-barrier', 'runner-preflight']) {
+  'retry-deadline', 'retry-immutable', 'retry-metadata',
+  'retry-validation-reasons', 'retry-unknown-reasons', 'training-failure-reason',
+  'runner-barrier', 'runner-preflight']) {
       const result = spawnSync('python3', [...mode.flags, fixture, scenario], {
         cwd: repo, encoding: 'utf8', timeout: 30_000,
         env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1', PYTHONOPTIMIZE: mode.optimize },
