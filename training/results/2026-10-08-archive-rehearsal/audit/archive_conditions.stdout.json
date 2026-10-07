@@ -1,0 +1,37 @@
+{
+  "archive_source_sha256": "9d29059e852d8f81033df2048b234d636d89c208becb25b29a431439c822a20d",
+  "cases": [
+    {
+      "acknowledged_before": 25,
+      "case": "head_returns_preceding_valid_commit",
+      "commits_after_restore": 26,
+      "commits_at_failure": 25,
+      "diagnostic": {
+        "attempts": 1,
+        "errno": null,
+        "exception_type": "ArchiveError",
+        "http_status": null,
+        "operation": "validation",
+        "reason_code": "previously_verified_unit_missing",
+        "retryable": false
+      },
+      "injected_condition": true,
+      "retry_events": 0,
+      "same_pending_unit_succeeds_after_head_restored": true
+    },
+    {
+      "case": "later_listing_entry_not_found",
+      "error_propagated": false,
+      "injected_condition": true,
+      "returned_inventory": {},
+      "yielded_files_before_failure": 1
+    }
+  ],
+  "fixture_sha256": "df1f4117bbc82b69bb11895995557aff7b85e019aeae4fced074e58097adc6bd",
+  "hub_version": "0.35.3",
+  "incident_attribution": "These are injected conditions. The original incident cause remains unestablished.",
+  "network_calls": 0,
+  "repository_edits": 0,
+  "schema": "jovovich.independent-archive-condition-audit.v1",
+  "training_calls": 0
+}
