@@ -84,6 +84,16 @@ The independent evaluation audit found the frozen path ready through its
 and two independent blinded reviewers, with root operating and adjudicating.
 The automatic executor records semantic audit pending at native completion.
 
+Added `training/explanations/prepare_semantic_packet.py` for that stage. It
+accepts a completed parent recovery and six collector recoveries, checks all
+228 responses against their prompts, native output and token traces, and runs
+the unchanged production `parseReview`. Two opaque reviewer packets carry full
+texts, source hashes and blank judgments; model mapping stays with the operator.
+Local preparation records `pending_archive`; publication precedes distribution.
+Ten synthetic tests passed. Independent review matched all 24 heldout chunks
+against production `chunksFor` and all 52 train tables between the paired arms.
+The live training and frozen evaluation files are unchanged.
+
 SERGE counted 103 receipts. Still one cigarette.
 
 ## 2026-10-05 — The failed boundary keeps its evidence.

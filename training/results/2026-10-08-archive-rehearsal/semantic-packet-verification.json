@@ -1,0 +1,41 @@
+{
+  "schema": "jovovich.semantic-packet-verification.v1",
+  "checked_utc": "2026-10-08T00:47:38.049815+00:00",
+  "status": "passed",
+  "helper": {
+    "path": "training/explanations/prepare_semantic_packet.py",
+    "sha256": "bda597f4f049be605ab9ada4018e61f2be1ff4eab519320b4883433d32286b8f"
+  },
+  "test_command": [
+    "node",
+    "--test",
+    "test/semantic_packet.test.mjs"
+  ],
+  "node_exit_code": 0,
+  "python_tests": 10,
+  "fixture": "explicitly synthetic completed journals; 228 rows, zero model or network calls",
+  "root_production_chunk_check": {
+    "holdout_cases": 24,
+    "mismatches": 0
+  },
+  "independent_audit": {
+    "reviewer": "notorch_updates_audit",
+    "status": "clean",
+    "holdout_chunk_matches": 24,
+    "train_table_matches": 52,
+    "parent_units": 52,
+    "collector_units": 696,
+    "full_review_judgments_created": 0
+  },
+  "frozen_files_unchanged": [
+    "training/explanations/plan.json",
+    "training/explanations/evaluation_plan.json",
+    "training/explanations/collect_generation.py",
+    "training/explanations/execute_evaluation.py",
+    "training/explanations/score_generation.py",
+    "training/after_recovery/evaluate.py",
+    "bin/jovovich.mjs"
+  ],
+  "real_packet_status": "awaiting native evaluation completion",
+  "publication_policy": "Prepare locally; archive reviewer packets and separate operator mapping before distribution."
+}
