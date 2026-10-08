@@ -1,0 +1,142 @@
+{
+  "schema": "jovovich.evaluation-readiness-audit.v1",
+  "deployed_source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+  "review_checkout_commit": "3b493683401f3bfe889c95a21c34ae3e01f98499",
+  "live_intent_revision": "f246950c131eef726a1d2055c79e85242b070611",
+  "model_calls": 0,
+  "remote_writes": 0,
+  "repository_edits": 0,
+  "source_checks": [
+    {
+      "path": "training/after_recovery/evaluate.py",
+      "sha256": "e3bd0871a887260752bf8c6887fa2129091e74e0bd296675f7c9547fa7cc622e",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "sha256": "061dfd93f7dffaa032a26ea6449cc1305d5467e23022383e1046cf6b43788c54",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/explanations/collect_generation.py",
+      "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/explanations/score_generation.py",
+      "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/explanations/plan.json",
+      "sha256": "70ccfe238d7fb3115f021a58ba856fd0200d9e011a84a5a0c563c213cb8746cc",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "bin/jovovich.mjs",
+      "sha256": "570f01033adcc144f6bac8448dcec0a357b9fa2c193a6f2bc9f4a3ca7fa981c2",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/explanations/build_corpora.py",
+      "sha256": "1c8c2427571aad38176dae000272546af24bc07d8ab75e4ac122f36d8bd0c2bc",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5",
+      "matches_live_intent_binding": true,
+      "matches_archived_source": true,
+      "matches_deployed_git_source": true
+    }
+  ],
+  "semantic_contract_matches_resolved_plan": true,
+  "execution_blockers_found": [],
+  "findings": [
+    {
+      "finding": "The fixed comparison is 76 exact common review prompts on three models: 52 training reviews/26 pairs and 24 heldout reviews/12 pairs, one greedy continuation per model/case. The trained comparison is before100 versus after100; shared base is the common reference.",
+      "sources": [
+        "training/explanations/plan.json:182",
+        "training/explanations/plan.json:197",
+        "training/explanations/plan.json:218",
+        "training/explanations/plan.json:258"
+      ]
+    },
+    {
+      "finding": "Report complete grounded pairs separately per split, paired before-only/after-only/both/neither outcomes, and actual generated analysis presence/support/order. Equal-content/order targets establish the intervention; the generated-order check establishes how it appeared in answers.",
+      "sources": [
+        "training/explanations/plan.json:36",
+        "training/explanations/plan.json:218",
+        "training/explanations/plan.json:227",
+        "training/explanations/evaluation_plan.json:585"
+      ]
+    },
+    {
+      "finding": "The automatic evaluation ends with native_evaluation_completed and semantic_audit pending. Structural scores deliberately leave production acceptance and semantics null. Their exact canonical citation IDs, strict keys, order and EOS checks are separate from the primary semantic endpoint.",
+      "sources": [
+        "training/explanations/execute_evaluation.py:415",
+        "training/explanations/score_generation.py:297",
+        "training/explanations/score_generation.py:342"
+      ]
+    },
+    {
+      "finding": "Use actual production parseReview: it accepts wrappers/array shorthand and discards extra top-level fields. Both findings and every material analysis claim still require semantic reading of the complete raw response. Missing analysis is recorded and does not automatically fail an otherwise grounded review.",
+      "sources": [
+        "bin/jovovich.mjs:59",
+        "training/explanations/plan.json:219",
+        "training/explanations/plan.json:240",
+        "training/explanations/evaluation_plan.json:567"
+      ]
+    },
+    {
+      "finding": "The executable frozen semantic contract requires two independent blinded reviewers and an unblinded root adjudicator. Its packet keeps exact prompt and raw-response/file/line hashes while withholding model/path labels and storing the mapping separately.",
+      "sources": [
+        "training/explanations/evaluation_plan.json:548",
+        "training/explanations/evaluation_plan.json:566",
+        "training/explanations/evaluation_plan.json:584"
+      ]
+    },
+    {
+      "finding": "Native collection is stored in six separate collector journals, and the parent evaluation archives collector completion receipts. Recover the parent plus all six collectors to assemble the full 228-response audit packet with per-case prompts, token traces and process receipts.",
+      "sources": [
+        "training/explanations/execute_evaluation.py:351",
+        "training/explanations/execute_evaluation.py:379",
+        "training/explanations/collect_generation.py:302",
+        "training/explanations/collect_generation.py:327",
+        "training/explanations/collect_generation.py:372"
+      ]
+    },
+    {
+      "finding": "Teacher-forced trajectories use gold answer prefixes, including gold before-analysis, and remain separate from natural response scores. Only update100 is exported; selected_update in diagnostics does not choose the evaluated model. Voice/code rows have teacher-forced readouts, not free-generation cases in the 228.",
+      "sources": [
+        "training/explanations/plan.json:38",
+        "training/explanations/plan.json:148",
+        "training/explanations/plan.json:347",
+        "training/explanations/execute_evaluation.py:418"
+      ]
+    }
+  ],
+  "post_native_work": [
+    "Authenticate parent native completion, 10 parity rows, 6 collector completions, 228 records, 6 structural scores and prompt-comparison; retain all fixed denominators and failures.",
+    "Run the frozen production parseReview for every actual response with its exact source changed-line chunk; preserve accepted findings/errors as immutable parser evidence.",
+    "Build hash-bound opaque packets for two independent reviewers, preserving full prompts and responses. Archive model mapping separately.",
+    "Mark every prescribed semantic field, including genuine issue, all findings grounded, causal citation, all analysis claims supported, unsupported extras, and full_review_pass; preserve separate readings.",
+    "Adjudicate row disagreements against exact evidence before revealing mapping to reviewers.",
+    "Aggregate all three models by train/holdout: full review rows/pairs, paired before-vs-after outcomes, production acceptance, findings-only quality, analysis/order checks, EOS/budget counts and timings; keep teacher-forced diagnostics separate.",
+    "Archive parser evidence, both readings, adjudication, aggregates, mapping/reveal record and final bound manifest."
+  ]
+}

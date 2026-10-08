@@ -49,7 +49,11 @@
     "source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
     "cost_usd_per_hour": 0.16,
     "max_seconds": 43200,
-    "phase": "bootstrap",
-    "numerical_updates_observed": 0
-  }
+    "phase": "native-training",
+    "numerical_updates_observed": 1,
+    "observed_utc": "2026-10-08T00:35:31.614025+00:00",
+    "startup_evidence": "native-startup.json"
+  },
+  "startup_binding_verification": "startup-verification.json",
+  "independent_evaluation_readiness_audit": "evaluation-readiness-audit.json"
 }
