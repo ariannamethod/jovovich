@@ -27,6 +27,52 @@ window by decree.
 Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
+
+## 2026-10-08 — 103 archive receipts. Back to the half-billion woman.
+
+Resumed from merged PR #35 (`42c40a1`). The October 4 after attempt ended at
+ACK23/computed24; its exact validation reason was lost by the old diagnostic
+schema. All three previous CPU pods were EXITED. Fresh HF recovery authenticated
+its 25 closed units/165 logical files and the separate five-file incident record.
+
+Ran an isolated live HF rehearsal with the merged diagnostic archive: original
+intent and closed update000..024 bytes, followed by 77 explicitly labelled
+repetitions of closed bytes. **103/103 ACKs, zero retries, zero training calls.**
+The slowest unit took 54.687 seconds within the unchanged 120-second limit.
+Fresh full recovery verified **103 units and 504 logical files**, followed by
+another local digest check. The independently archived terminal record is at
+`4a3eb7f63a9354984998f2703d7c747f1b8588de`. The original night failure did not
+reproduce in this live run.
+
+The independent auditor reproduced two injected service conditions: a stale
+branch HEAD stops a warm archive on `previously_verified_unit_missing`, and a
+partial inventory ending in EntryNotFound loses its transport classification.
+The historical incident remains unattributed. Archive checks and retry policy
+stay unchanged. The rehearsal now archives its terminal recovery result
+separately; its interim report explicitly records recovery pending. The live
+103-unit script and the later terminal helper each retain their own source hash.
+
+NoTorch was audited from pinned `014403f` to `420fa54`: 30 Qwen/harness/GGUF/BPE/
+SIMD files are unchanged. Independently compiled legacy CPU Chuck traces match
+byte-for-byte over 6000 steps (3,336,000 bytes). New device-coherence and
+checked-action fixes concern other paths. Qwen3.5 requires a new backend and
+trainer support; the current registered dense paths are Qwen2/Qwen3.
+
+Fresh original recovery (before103 + failed-after11), the 85-binding launch,
+native protocol preflight and a 20-file private preflight archive roundtrip all
+passed. Targeted suites: **44 archive +47 host/binding/evaluation tests, zero
+failures**. Original numerical binaries, packed inputs, base SHA, initialization,
+100 updates and the 228-response evaluation contract are preserved.
+
+Started CPU pod `sb0zexiv12aeoe` at 00:02:27 UTC on October 8, source
+`f5f5d6eac077ea37ca5e254211280c0a1c1c7a13`, run prefix
+`order-rp-20261008-03`. Four vCPUs/16GB, $0.16/hour, the same 12-hour watchdog
+and retained volume. The new process starts from update0; Chuck snapshots do
+not carry its controller/moments. Bootstrap is running; native startup is being
+checked separately. Evidence: `training/results/2026-10-08-archive-rehearsal/`.
+
+SERGE counted 103 receipts. Still one cigarette.
+
 ## 2026-10-05 — The failed boundary keeps its evidence.
 
 The fresh matched after attempt stopped at 2026-10-04 23:27:15 UTC while

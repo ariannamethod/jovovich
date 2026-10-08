@@ -1,0 +1,55 @@
+{
+  "files": [
+    {
+      "git_blob_sha1": "dd143274516b70f0481f202e4afe19037a279b3d",
+      "name": "protocol.json",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/dea016f6dcc09a553383702d067a029cd2154fde8004a6ac2a215eabaa1839f2",
+      "sha256": "dea016f6dcc09a553383702d067a029cd2154fde8004a6ac2a215eabaa1839f2",
+      "size": 1161
+    },
+    {
+      "git_blob_sha1": "0c665a8117d248de6ba6c40ab67775fd75a557a4",
+      "name": "remote-recovery-summary.json",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/8e9922639437eea4e5448d7e3aaf6fa89753af28228ff29a9caeac4f190487cb",
+      "sha256": "8e9922639437eea4e5448d7e3aaf6fa89753af28228ff29a9caeac4f190487cb",
+      "size": 163
+    },
+    {
+      "git_blob_sha1": "ae4953b2627064c790eff8eaa81d8e6b478b960b",
+      "name": "report-receipt.json",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/b2603d0cae2c58ae1f68af09f2afabf3ced85b0d6b62aefa49e85f78d1ce5b46",
+      "sha256": "b2603d0cae2c58ae1f68af09f2afabf3ced85b0d6b62aefa49e85f78d1ce5b46",
+      "size": 41151
+    },
+    {
+      "git_blob_sha1": "07d93ff9f4c28dc6d3b7ab90c043c693c19b758f",
+      "name": "report.json",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/4a2234cdf6defc3331f70d888ecc535bd2589b065e6f847c04a43fa359b45034",
+      "sha256": "4a2234cdf6defc3331f70d888ecc535bd2589b065e6f847c04a43fa359b45034",
+      "size": 4943
+    },
+    {
+      "git_blob_sha1": "af193cd799038d77c38b6849485861382a9de23e",
+      "name": "terminal-source.py",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/33ced2f2e2ff79ecdeaefaafda63a60a6e015f191e4eebc3369ebc1c1547fd11",
+      "sha256": "33ced2f2e2ff79ecdeaefaafda63a60a6e015f191e4eebc3369ebc1c1547fd11",
+      "size": 11514
+    },
+    {
+      "git_blob_sha1": "f1783cea5ffc07be8574f233135cada3bd4ddf32",
+      "name": "terminal.json",
+      "object": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01/objects/aec4475987a0df77478d66e430c85cf81d605aa212f0da037799e778ed73a0bd",
+      "sha256": "aec4475987a0df77478d66e430c85cf81d605aa212f0da037799e778ed73a0bd",
+      "size": 924
+    }
+  ],
+  "manifest_sha256": "15de8a19901db5452e44a0f48f02792f5c4d1e8c2110eb83da5f51b3b2679578",
+  "prefix": "experiments/archive-rehearsal/terminals/archive-rehearsal-20261008-01",
+  "reused": false,
+  "revision": "4a3eb7f63a9354984998f2703d7c747f1b8588de",
+  "run_id": "archive-rehearsal-20261008-01",
+  "schema": "jovovich.durable-receipt.v1",
+  "sequence": 0,
+  "unit_id": "terminal",
+  "verified_remote_bytes": true
+}

@@ -1,0 +1,26 @@
+{
+  "archive_source": {
+    "git_blob_sha1": "3b221f046f6fa0a856b9fafa7e75c7bc639384ae",
+    "sha256": "9d29059e852d8f81033df2048b234d636d89c208becb25b29a431439c822a20d",
+    "size": 34980
+  },
+  "evidence": "Each unit carries the previous receipt and bounded transport trace. Final report and remote recovery follow.",
+  "max_attempts": 4,
+  "per_unit_budget_seconds": 120,
+  "prefix": "experiments/archive-rehearsal",
+  "private": true,
+  "repo": "ataeff/jovovich",
+  "run_id": "archive-rehearsal-20261008-01",
+  "schedule": "intent and exact update000..024 payloads; then 77 repetitions of the closed update024 bytes under unique rehearsal names",
+  "schema": "jovovich.live-archive-rehearsal.v1",
+  "scope": "Live transport and closed-unit validation. Repeated payloads are archive load, never optimizer updates.",
+  "script": {
+    "git_blob_sha1": "35b61d8156b2351fc367f80578bb0d4bf70a8c7b",
+    "sha256": "5bdd09091f84e0bb343142344c62d6a012057f54efe58f9436e5c561de9718b7",
+    "size": 9829
+  },
+  "source_recovery_revision": "11f6c33b277f24459147bf6a9314205be1c334de",
+  "training_calls": 0,
+  "units": 103,
+  "utc": "2026-10-07T23:48:44.097329+00:00"
+}

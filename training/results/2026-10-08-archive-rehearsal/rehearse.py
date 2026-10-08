@@ -41,6 +41,23 @@ def checked_recovery(directory):
     return ledger
 
 
+def archive_terminal(transport, protocol, output, terminal):
+    """Keep the full-recovery outcome durable separately from unit receipts."""
+    terminal = {**terminal, 'schema': 'jovovich.live-archive-terminal.v1',
+                'run_id': protocol['run_id'], 'training_calls': 0,
+                'terminal_implementation': _digest(Path(__file__))}
+    save(output / 'terminal.json', terminal)
+    files = {name: output / name for name in ('protocol.json', 'report.json',
+        'report-receipt.json', 'terminal.json', 'remote-recovery-summary.json')
+        if (output / name).is_file()}
+    files['terminal-source.py'] = Path(__file__)
+    archive = DurableArchive(transport, protocol['run_id'], protocol['prefix'] + '/terminals')
+    receipt = sync_unit_with_retry(archive, 'terminal', files, sequence=0,
+                                  deadline=time.monotonic() + 120, max_attempts=4)
+    save(output / 'terminal-receipt.json', receipt)
+    return terminal, receipt
+
+
 class TracedTransport:
     """Record bounded operation metadata; never record exceptions or credentials."""
     def __init__(self, actual):
@@ -160,22 +177,33 @@ def run(args):
               'last_receipt': receipts[-1]['receipt'] if receipts else None,
               'unit_seconds': [r['seconds'] for r in receipts],
               'retry_events': sum(len(r['retries']) for r in receipts),
-              'status': 'failed' if failure_record else 'passed'}
+              'status': 'failed' if failure_record else 'units-passed-recovery-pending'}
     save(args.out / 'report.json', report)
     evidence = {p.name: p for p in args.out.iterdir() if p.is_file()}
     report_archive = DurableArchive(transport, args.run_id, protocol['prefix'] + '/reports')
     receipt = sync_unit_with_retry(report_archive, 'report', evidence, sequence=0,
                                   deadline=time.monotonic() + 600, max_attempts=4)
     save(args.out / 'report-receipt.json', receipt)
+    terminal = {'status': 'units-failed', 'recovered_units': 0}
     if not failure_record:
-        recovered = DurableArchive(transport, args.run_id, protocol['prefix']).recover(
-            args.out / 'remote-recovery', revision=report['last_receipt']['revision'])
-        save(args.out / 'remote-recovery-summary.json', {k: recovered[k] for k in
-            ('run_id', 'revision', 'next_sequence', 'verified_remote_bytes')})
-    print(json.dumps({'status': report['status'], 'acknowledged_units': len(receipts),
+        try:
+            recovered = DurableArchive(transport, args.run_id, protocol['prefix']).recover(
+                args.out / 'remote-recovery', revision=report['last_receipt']['revision'])
+            need(recovered['next_sequence'] == protocol['units'], 'recovery sequence differs')
+            summary = {k: recovered[k] for k in
+                ('run_id', 'revision', 'next_sequence', 'verified_remote_bytes')}
+            save(args.out / 'remote-recovery-summary.json', summary)
+            terminal = {'status': 'verified', 'recovered_units': recovered['next_sequence'],
+                        'recovery': summary}
+        except ArchiveError as error:
+            terminal = {'status': 'recovery-failed', 'recovered_units': 0,
+                        'diagnostic': error.diagnostic}
+    terminal, seal = archive_terminal(transport, protocol, args.out, terminal)
+    print(json.dumps({'status': terminal['status'], 'acknowledged_units': len(receipts),
                       'failure_diagnostic': failure_record['diagnostic'] if failure_record else None,
-                      'report_revision': receipt['revision']}), flush=True)
-    return 1 if failure_record else 0
+                      'report_revision': receipt['revision'],
+                      'terminal_revision': seal['revision']}), flush=True)
+    return 0 if terminal['status'] == 'verified' else 1
 
 
 if __name__ == '__main__':
