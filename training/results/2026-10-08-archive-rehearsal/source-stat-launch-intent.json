@@ -1,0 +1,101 @@
+{
+  "schema": "jovovich.matched-after-deployment-intent.v1",
+  "status": "prepared_not_deployed",
+  "source_commit": "8bcd56f97a25788b982171c4dd5ff5880eaf5f0f",
+  "prefix": "order-rp-20261008-04",
+  "pod_name": "jovovich-after-20261008-04",
+  "inputs": {
+    "schema": "jovovich.matched-after-inputs.v1",
+    "original_source_commit": "53fd4406de170d3b67785729b789ec61e1a30a27",
+    "archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+    "archive": {
+      "private": true,
+      "repo": "ataeff/jovovich",
+      "prefix": "experiments/explanation-order"
+    },
+    "before_run_id": "order-rp-20261003-01-before",
+    "failed_after_run_id": "order-rp-20261003-01-after",
+    "before_plan_sha256": "c7d30c39476d0017f1f7f74a0c14d9ebf0f8c9e18757392698c27215c5e0e935",
+    "before_completion_sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6",
+    "failed_after_plan_sha256": "f37d9fb89f838fd4b8012ec0e66b0f8cc7c66843953e9436d0fbc2f1ca484853",
+    "expected_initial_lora_sha256": {
+      "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    },
+    "new_after_run_id": "order-rp-20261008-04-after",
+    "new_evaluation_run_id": "order-rp-20261008-04-eval"
+  },
+  "infrastructure": {
+    "schema": "jovovich.archive-retry-preflight-result.v1",
+    "status": "prepared-source-bindings",
+    "original_archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+    "new_after_run_id": "order-rp-20261008-04-after",
+    "infrastructure_changes": [
+      {
+        "path": "training/durable_archive.py",
+        "original": {
+          "path": "training/durable_archive.py",
+          "bytes": 23730,
+          "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+        },
+        "candidate": {
+          "path": "training/durable_archive.py",
+          "bytes": 37816,
+          "sha256": "98ae97ecdecf687b5c5b00f3fb99e03854e352bde49fc4beb75b807e8e3f814e"
+        }
+      },
+      {
+        "path": "training/explanations/run_training.py",
+        "original": {
+          "path": "training/explanations/run_training.py",
+          "bytes": 17416,
+          "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+        },
+        "candidate": {
+          "path": "training/explanations/run_training.py",
+          "bytes": 21799,
+          "sha256": "f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1"
+        }
+      }
+    ],
+    "numerical_policy": "Original authenticated native binaries, data and initial adapters; fresh optimizer trajectory. No numerical rebuild or state resume.",
+    "admitted_change": "Closed source validation tolerates timestamp-only drift after verifying regular-file identity and complete bytes before/after hashing, including retries; bounded source mismatch diagnostics. Same-volume FUSE probe reproduced ctime-only drift with equal hashes.",
+    "prior_attempt": "order-rp-20261008-03-after stopped on update038 after ACK37 with source_changed_during_archive_operation. Its three candidate sources were closed per-update log segments. Failure evidence recovered at afb699a77c359cdf23e20529a86a93fc7677791d."
+  },
+  "host": {
+    "image": "python@sha256:9fd630803ec3446920ed6b64d20150bd724c1751e71817293a4230522c1a384a",
+    "cpu": {
+      "id": "cpu3g",
+      "vcpuCount": 4
+    },
+    "cloud": "SECURE",
+    "dataCenterIds": [
+      "EU-RO-1"
+    ],
+    "disk": 10,
+    "mounts": {
+      "network": [
+        {
+          "volumeId": "ogxwco58mr",
+          "path": "/workspace"
+        }
+      ]
+    },
+    "ports": []
+  },
+  "max_seconds": 43200,
+  "hourly_cap_usd": 0.2,
+  "expected_hourly_usd": 0.16,
+  "watchdog_sha256": "0eb3a0ebde3fceeae6202c5a3a0df0f31b1fd7af78bbb2afe190c4d5b2e28c75",
+  "setup_sha256": "3b139d47554eee40c4aa6c98e68da795f7a11eb9b77d42efc0095780e5efc46c",
+  "entrypoint_sha256": "7f7313fa1ddb4b6c0584ff8429d5b021fe7c29f1b41d21ac91728fc7b7c77e5a",
+  "training": "Original archived numerical binaries and initialization; 100 updates; joint objective; 228 evaluation responses.",
+  "startup_gates": [
+    "fresh IDs",
+    "frozen remote original recovery",
+    "binding",
+    "native protocol",
+    "remote intent ACK"
+  ]
+}

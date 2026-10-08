@@ -59,6 +59,15 @@ numerical executables, inputs, initialization and the matched comparison stay
 pinned. Evidence and the executed probe live beside the earlier rehearsal in
 `training/results/2026-10-08-archive-rehearsal/source-stat-*`.
 
+Fresh CPU pod `geolsdk7o3f0ww` started at 02:46:19 UTC, pinned to
+`8bcd56f97a25788b982171c4dd5ff5880eaf5f0f`: four vCPUs, 16GB, $0.16/hour.
+Its nine-file launch contract passed a private archive/recovery roundtrip at
+`9f9a49e1372c604009d31d26cf5b514ac79450a8`. Startup restores and verifies the
+original comparison before native work; the existing twelve-hour watchdog
+stops its own pod on completion, failure or deadline. Deployment receipts:
+`source-stat-launch-intent.json`, `source-stat-launch-preflight.json` and
+`source-stat-deployment.json` in the same evidence directory.
+
 ## 2026-10-08 — 103 archive receipts. Back to the half-billion woman.
 
 Resumed from merged PR #35 (`42c40a1`). The October 4 after attempt ended at

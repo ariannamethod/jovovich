@@ -177,5 +177,11 @@
     "native_dependency": "014403faa76b795aefe18a4781980f5b140e0ed3"
   },
   "fresh_after_run_id": "order-rp-20261008-04-after",
-  "deployment": "prepared"
+  "deployment": {
+    "status": "pod_created_setup_pending",
+    "pod_id": "geolsdk7o3f0ww",
+    "source_commit": "8bcd56f97a25788b982171c4dd5ff5880eaf5f0f",
+    "started_utc": "2026-10-08T02:46:19.562Z",
+    "launch_contract_revision": "9f9a49e1372c604009d31d26cf5b514ac79450a8"
+  }
 }
