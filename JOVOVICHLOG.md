@@ -28,6 +28,46 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-08 — The filesystem changed its watch. SERGE objected.
+
+The fresh after03 attempt stopped at update38 after ACK37, at 01:13:41 UTC.
+Its failure archive names `source_changed_during_archive_operation`. All five
+failure files were recovered and rehashed at
+`afb699a77c359cdf23e20529a86a93fc7677791d`. That update contains three closed
+log segments; its weights are outside this archive unit.
+
+A ten-minute-capped CPU probe mounted the same Runpod volume. Across 96 network
+files and 96 local controls, sampled eleven times, two network files advanced
+their `ctime` by one second after close/fsync. Device, inode, size, mtime and
+both content hashes remained identical. Local controls had no stat changes.
+The six-unit probe archive was recovered completely at
+`13b43515a915e41f42e220b1ec8cde7f10c50dd8`; the pod stopped after its work.
+Replaying those recorded timestamps and remotely recovered bytes reproduces
+the old guard's exact failure and passes the repaired guard.
+
+Closed-source validation now checks regular-file identity and full bytes on
+both sides of hashing, including retries. Timestamp drift is accepted after
+those checks. Content mutation, inode replacement, symlinks and corrupt remote
+readback still block the ACK. Failures include the sorted source index, check
+phase and mismatch category. The old incident record carries its original
+three-source ambiguity; the live probe supplies the measured filesystem behavior.
+
+Independent review is clean. Archive checks: 41 passed. Native gate, launch,
+binding, retry, evaluation and watchdog checks: 58 passed. Fresh attempt IDs
+are `order-rp-20261008-04-after` and `order-rp-20261008-04-eval`. Original
+numerical executables, inputs, initialization and the matched comparison stay
+pinned. Evidence and the executed probe live beside the earlier rehearsal in
+`training/results/2026-10-08-archive-rehearsal/source-stat-*`.
+
+Fresh CPU pod `geolsdk7o3f0ww` started at 02:46:19 UTC, pinned to
+`8bcd56f97a25788b982171c4dd5ff5880eaf5f0f`: four vCPUs, 16GB, $0.16/hour.
+Its nine-file launch contract passed a private archive/recovery roundtrip at
+`9f9a49e1372c604009d31d26cf5b514ac79450a8`. Startup restores and verifies the
+original comparison before native work; the existing twelve-hour watchdog
+stops its own pod on completion, failure or deadline. Deployment receipts:
+`source-stat-launch-intent.json`, `source-stat-launch-preflight.json` and
+`source-stat-deployment.json` in the same evidence directory.
+
 ## 2026-10-08 — 103 archive receipts. Back to the half-billion woman.
 
 Resumed from merged PR #35 (`42c40a1`). The October 4 after attempt ended at

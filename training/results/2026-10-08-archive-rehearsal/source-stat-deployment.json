@@ -1,0 +1,20 @@
+{
+  "id": "geolsdk7o3f0ww",
+  "name": "jovovich-after-20261008-04",
+  "status": "RUNNING",
+  "cost": 0.16,
+  "cpu": {
+    "id": "cpu3g",
+    "memory": 16,
+    "vcpuCount": 4
+  },
+  "dataCenterId": "EU-RO-1",
+  "startedAt": "2026-10-08T02:46:19.562Z",
+  "createdAt": "2026-10-08T02:46:19.568Z",
+  "schema": "jovovich.matched-after-deployment.v1",
+  "source_commit": "8bcd56f97a25788b982171c4dd5ff5880eaf5f0f",
+  "run_prefix": "order-rp-20261008-04",
+  "phase": "pod_created_setup_pending",
+  "max_seconds": 43200,
+  "gpu": null
+}

@@ -2,7 +2,7 @@
   "schema": "jovovich.archive-retry-preflight-result.v1",
   "status": "prepared-source-bindings",
   "original_archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
-  "new_after_run_id": "order-rp-20261008-03-after",
+  "new_after_run_id": "order-rp-20261008-04-after",
   "infrastructure_changes": [
     {
       "path": "training/durable_archive.py",
@@ -13,8 +13,8 @@
       },
       "candidate": {
         "path": "training/durable_archive.py",
-        "bytes": 34980,
-        "sha256": "9d29059e852d8f81033df2048b234d636d89c208becb25b29a431439c822a20d"
+        "bytes": 37816,
+        "sha256": "98ae97ecdecf687b5c5b00f3fb99e03854e352bde49fc4beb75b807e8e3f814e"
       }
     },
     {
@@ -32,6 +32,6 @@
     }
   ],
   "numerical_policy": "Original authenticated native binaries, data and initial adapters; fresh optimizer trajectory. No numerical rebuild or state resume.",
-  "admitted_change": "Merged PR35 validation reason codes; unchanged retry policy and archive integrity checks.",
-  "prior_attempt": "order-rp-20261004-02-after stopped after ACK23 on validation; exact historical cause unestablished."
+  "admitted_change": "Closed source validation tolerates timestamp-only drift after verifying regular-file identity and complete bytes before/after hashing, including retries; bounded source mismatch diagnostics. Same-volume FUSE probe reproduced ctime-only drift with equal hashes.",
+  "prior_attempt": "order-rp-20261008-03-after stopped on update038 after ACK37 with source_changed_during_archive_operation. Its three candidate sources were closed per-update log segments. Failure evidence recovered at afb699a77c359cdf23e20529a86a93fc7677791d."
 }

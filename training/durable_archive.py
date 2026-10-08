@@ -40,6 +40,9 @@ _TRANSIENT_STATUS = frozenset((408, 429, 500, 502, 503, 504))
 _TRANSIENT_ERRNO = frozenset((errno.ECONNRESET, errno.ECONNREFUSED,
     errno.ECONNABORTED, errno.ETIMEDOUT, errno.EPIPE, errno.ENETUNREACH,
     errno.EHOSTUNREACH))
+_SOURCE_PHASES = frozenset(('capture', 'retry_snapshot', 'retry', 'after_staging',
+                            'before_commit', 'after_readback'))
+_SOURCE_MISMATCHES = frozenset(('identity', 'content', 'not_regular', 'unreadable'))
 # Only these fixed internal invariant messages can produce a diagnostic reason.
 # Never derive a code from arbitrary exception text: transport errors may carry
 # credentials, URLs or paths even after their class/status has been sanitized.
@@ -106,7 +109,7 @@ def _safe_diagnostic(value):
     kind, status, number, attempts = (value.get(k) for k in
                                     ('exception_type', 'http_status', 'errno', 'attempts'))
     reason = value.get('reason_code')
-    return {'operation': operation if isinstance(operation, str) and operation in _OPERATIONS else 'validation',
+    result = {'operation': operation if isinstance(operation, str) and operation in _OPERATIONS else 'validation',
             'exception_type': kind if isinstance(kind, str) and kind in _ERROR_TYPES else 'Exception',
             'reason_code': reason if isinstance(reason, str) and reason in _VALIDATION_REASON_CODES else None,
             'http_status': status if type(status) is int and 100 <= status <= 599 else None,
@@ -114,6 +117,16 @@ def _safe_diagnostic(value):
             'retryable': value.get('retryable') is True and isinstance(operation, str) and operation in
                          ('head', 'inventory', 'download', 'commit'),
             'attempts': attempts if type(attempts) is int and 0 <= attempts <= 8 else None}
+    # A source is identified by its index in sorted logical-name order, never
+    # by an absolute path or an exception's text. Preserve the old schema when
+    # no complete, bounded source detail is available.
+    index, phase, mismatch = (value.get(k) for k in
+                             ('source_index', 'source_phase', 'source_mismatch'))
+    if (type(index) is int and 0 <= index < 1000000 and
+            isinstance(phase, str) and phase in _SOURCE_PHASES and
+            isinstance(mismatch, str) and mismatch in _SOURCE_MISMATCHES):
+        result.update(source_index=index, source_phase=phase, source_mismatch=mismatch)
+    return result
 
 
 class ArchiveError(RuntimeError):
@@ -183,9 +196,9 @@ def sync_unit_with_retry(archive, unit_id, files, *, sequence, deadline,
     # Freeze the mapping even if a caller mutates its original dict between tries.
     _need(isinstance(files, Mapping) and files, 'unit must contain files')
     try:
-        closed_files = dict(files)
-        signatures = {name: (_source_stat(Path(path)), _digest(Path(path)))
-                      for name, path in closed_files.items()}
+        closed_files = {name: files[name] for name in sorted(_name(x) for x in files)}
+        signatures = {name: _source_signature(Path(path), index=index, phase='retry_snapshot')
+                      for index, (name, path) in enumerate(closed_files.items())}
     except Exception as exc:
         raise _operation_failure('local', exc) from None
 
@@ -201,12 +214,13 @@ def sync_unit_with_retry(archive, unit_id, files, *, sequence, deadline,
             if clock() >= deadline:
                 raise expired(attempt - 1) from None
             try:
-                for name, path in closed_files.items():
+                for index, (name, path) in enumerate(closed_files.items()):
                     try:
-                        signature = (_source_stat(Path(path)), _digest(Path(path)))
+                        _source_signature(Path(path), index=index, phase='retry',
+                            expected=signatures[name],
+                            message='closed unit changed between archive retries')
                     except Exception as exc:
                         raise _operation_failure('local', exc) from None
-                    _need(signature == signatures[name], 'closed unit changed between archive retries')
                 receipt = archive.sync_unit(unit_id, closed_files, sequence=sequence)
             except ArchiveError as exc:
                 diagnostic = {**exc.diagnostic, 'attempts': attempt}
@@ -279,6 +293,45 @@ def _source_stat(path):
     _need(stat.S_ISREG(value.st_mode), "source must be a regular non-symlink file")
     return (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns,
             value.st_ctime_ns)
+
+
+def _source_failure(exc, index, phase, mismatch):
+    diagnostic = _operation_failure('local', exc).diagnostic
+    return ArchiveError('archive source validation failed', diagnostic={
+        **diagnostic, 'source_index': index, 'source_phase': phase,
+        'source_mismatch': mismatch})
+
+
+def _checked_source_stat(path, index, phase):
+    try:
+        return _source_stat(path)
+    except ArchiveError as exc:
+        raise _source_failure(exc, index, phase, 'not_regular') from None
+    except Exception as exc:
+        raise _source_failure(exc, index, phase, 'unreadable') from None
+
+
+def _source_signature(path, *, index, phase, expected=None,
+                      message='source changed during archive operation'):
+    """Verify regular-file identity and full bytes, allowing timestamp drift.
+
+    mtime/ctime are advisory filesystem metadata: neither authorizes an ACK nor
+    vetoes an otherwise identical closed source. Identity is checked on both
+    sides of hashing so replacement during the read still fails.
+    """
+    before = _checked_source_stat(path, index, phase)
+    try:
+        content = _digest(path)
+    except ArchiveError as exc:
+        raise _source_failure(exc, index, phase, 'content') from None
+    except Exception as exc:
+        raise _source_failure(exc, index, phase, 'unreadable') from None
+    after = _checked_source_stat(path, index, phase)
+    if before[:3] != after[:3] or (expected is not None and expected[0][:3] != after[:3]):
+        raise _source_failure(ArchiveError(message), index, phase, 'identity') from None
+    if expected is not None and content != expected[1]:
+        raise _source_failure(ArchiveError(message), index, phase, 'content') from None
+    return after, content
 
 
 def _metadata_matches(meta, entry):
@@ -440,11 +493,10 @@ class DurableArchive:
               "unreferenced or unexpected archive object")
         return manifests, inventory
 
-    def _source_unchanged(self, sources):
-        for source, signature, entry in sources:
-            _need(_source_stat(source) == signature and _digest(source) ==
-                  {key: entry[key] for key in ("size", "sha256", "git_blob_sha1")},
-                  "source changed during archive operation")
+    def _source_unchanged(self, sources, phase):
+        for index, (source, signature, entry) in enumerate(sources):
+            _source_signature(source, index=index, phase=phase, expected=(signature,
+                {key: entry[key] for key in ("size", "sha256", "git_blob_sha1")}))
 
     def sync_unit(self, unit_id, files: Mapping[str, Path], *, sequence: int):
         """Archive one closed unit; returning is the permission to advance.
@@ -474,7 +526,7 @@ class DurableArchive:
                           not name.startswith("_durable-recovery.json/"),
                           "reserved logical path")
                     source = Path(files[name])
-                    before = _source_stat(source)
+                    before = _checked_source_stat(source, index, 'capture')
                     target = staging / str(index)
                     shutil.copyfile(source, target)
                     digests = _digest(target)
@@ -483,7 +535,7 @@ class DurableArchive:
                     entries.append(entry)
                     sources.append((source, before, entry))
                     staged[entry["object"]] = target
-                self._source_unchanged(sources)
+                self._source_unchanged(sources, 'after_staging')
                 head = _revision(self._remote("head"))
                 history, inventory = self._history(head, directory)
                 _need(sequence <= len(history), "unit sequence has a gap")
@@ -493,7 +545,7 @@ class DurableArchive:
                           "unit already exists with different content")
                     for entry in entries:
                         self._download_verified(entry["object"], head, entry, directory)
-                    self._source_unchanged(sources)
+                    self._source_unchanged(sources, 'after_readback')
                     self._known = {i: item[1] for i, item in enumerate(history)}
                     self._pending = None
                     return self._receipt(head, manifest, manifest_sha, True)
@@ -520,7 +572,7 @@ class DurableArchive:
                 local_manifest.write_bytes(raw)
                 additions = {p: f for p, f in staged.items() if p not in inventory}
                 additions[manifest_path] = local_manifest
-                self._source_unchanged(sources)
+                self._source_unchanged(sources, 'before_commit')
                 revision = _revision(self._remote("commit", additions, head,
                                                  "Archive closed research unit"))
                 # Do not trust the upload response or a cache hit as byte evidence.
@@ -529,7 +581,7 @@ class DurableArchive:
                 _need(actual.read_bytes() == raw, "committed manifest mismatch")
                 for entry in entries:
                     self._download_verified(entry["object"], revision, entry, directory)
-                self._source_unchanged(sources)
+                self._source_unchanged(sources, 'after_readback')
                 self._known = {i: item[1] for i, item in enumerate(history)}
                 self._known[sequence] = manifest_sha
                 self._manifest_cache[manifest_path] = (_digest(actual), raw)
