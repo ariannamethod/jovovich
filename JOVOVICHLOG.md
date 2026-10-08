@@ -28,6 +28,43 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-09 — The weights arrived. The evaluator checked its watch.
+
+After04 completed all 100 updates at 04:41:59 UTC on October 8, exit code zero.
+Its six final adapter files were downloaded from the private archive and passed
+size/SHA-256 checks. The CPU pod is EXITED. Evaluation stopped at
+`after-endpoint-binding`, 04:48:48 UTC, before opening command stdout/stderr.
+The complete seventeen-unit evaluation journal was recovered at
+`b6e51085ad1d8dea8c5c340852145d34ec3ba293`.
+
+An independent auditor reproduced that exact failure shape: changing only a
+bound input's ctime after the phase intent was acknowledged caused RuntimeError,
+null return code and an intent-only artifact list. The old evaluator and
+collector compared timestamps as file identity. The historical receipt omitted
+the offending input and field; the reproduction records the mechanism directly.
+
+Evaluation now verifies regular-file device/inode/length and full SHA-256.
+Timestamp drift passes after byte verification; changed bytes, replaced inodes
+and symlinks stop. A bounded input index, phase and reason survive in the remote
+failure receipt. The same checks cover tokenization and generation.
+
+`training/after_recovery/evaluate_saved.py` admits the completed endpoints from
+the old evaluation bootstrap under an explicit evaluation-only source record.
+The historical training source, initialization, corpora, binaries, update100
+endpoint and 228-response contract remain in that record. The new attempt is
+`order-rp-20261009-01-eval`, with zero training updates. The launcher restores
+from HF, runs on local disk, archives every closed unit and uses the existing
+CPU-only twelve-hour watchdog.
+
+At the fixed update100 endpoint, teacher-forced before scores 32/52 decisions
+and 6/26 complete pairs; after scores 26/52 and 0/26. The independent numerical
+audit rebuilt both corpora byte-for-byte and passed the joint/MLP finite-difference
+checks on the pinned NoTorch source. The free-generation comparison is the next
+measurement. Receipts and the admission hash pairs live in
+`training/results/2026-10-09-saved-evaluation/`.
+
+SERGE checked the cigarette. Same cigarette. Different ctime.
+
 ## 2026-10-08 — The filesystem changed its watch. SERGE objected.
 
 The fresh after03 attempt stopped at update38 after ACK37, at 01:13:41 UTC.

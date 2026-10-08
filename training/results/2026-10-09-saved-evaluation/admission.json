@@ -1,0 +1,49 @@
+{
+  "schema": "jovovich.saved-evaluation-admission.v1",
+  "parent_run_id": "order-rp-20261008-04-eval",
+  "parent_archive_revision": "b6e51085ad1d8dea8c5c340852145d34ec3ba293",
+  "parent_plan_sha256": "827d1153443f2d0652571459e6eefe61047829aa5a2f90b814b7fe33029cf6ea",
+  "training_source_commit": "8bcd56f97a25788b982171c4dd5ff5880eaf5f0f",
+  "evaluation_run_id": "order-rp-20261009-01-eval",
+  "source_changes": [
+    {
+      "path": "training/explanations/collect_generation.py",
+      "original": {
+        "path": "training/explanations/collect_generation.py",
+        "bytes": 20881,
+        "sha256": "79ff32d26efd4a66048bfcc603090f19f5ff44c59580efea851fef03af302a3d"
+      },
+      "candidate": {
+        "path": "training/explanations/collect_generation.py",
+        "bytes": 20689,
+        "sha256": "47953cce7fa512fe7a77d3b5cb68fec3ffac614aa400bcb41a1fd3530869d7ea"
+      }
+    },
+    {
+      "path": "training/explanations/execute_evaluation.py",
+      "original": {
+        "path": "training/explanations/execute_evaluation.py",
+        "bytes": 26294,
+        "sha256": "061dfd93f7dffaa032a26ea6449cc1305d5467e23022383e1046cf6b43788c54"
+      },
+      "candidate": {
+        "path": "training/explanations/execute_evaluation.py",
+        "bytes": 26250,
+        "sha256": "617eb1d72608700c11de0a8c1e3f26bd89c2fc9969f1c9ee89abefd9a8f1bbbf"
+      }
+    },
+    {
+      "path": "training/layers/run_layers.py",
+      "original": {
+        "path": "training/layers/run_layers.py",
+        "bytes": 16874,
+        "sha256": "f889c009c6f2e8f4681bba7d6e49192ef57a01471f0b1939800337f92a9f80a5"
+      },
+      "candidate": {
+        "path": "training/layers/run_layers.py",
+        "bytes": 17094,
+        "sha256": "a83b121ab9284e46b8bc3f2b9fe9b30987f91d400e0d9baf505537f4a6c949f5"
+      }
+    }
+  ]
+}

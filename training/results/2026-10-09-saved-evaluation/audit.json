@@ -1,0 +1,71 @@
+{
+  "schema": "jovovich.saved-evaluation-audit.v1",
+  "training_run": "order-rp-20261008-04-after",
+  "training_finished_utc": "2026-10-08T04:41:59.330872+00:00",
+  "training_return_code": 0,
+  "acknowledged_updates": 100,
+  "parent_evaluation_recovery": {
+    "revision": "b6e51085ad1d8dea8c5c340852145d34ec3ba293",
+    "units": 17,
+    "verified_remote_bytes": true,
+    "ledger_sha256": "4f102a8103cd65dc87a0e6e1c863fafa634166f3f814706db5dbe61de1634444"
+  },
+  "failed_phase": {
+    "unit": {
+      "id": "after-endpoint-binding",
+      "argv": [
+        "python3",
+        "-c",
+        "import hashlib,json,sys\nfrom pathlib import Path\nrun=Path(sys.argv[1]); output=Path(sys.argv[2]); values=[]\nack=json.loads((run/'_units/completion.ack.json').read_text())\nassert ack['status']=='completed' and ack['archive_status']=='verified' and ack['acknowledged_updates']==100\nassert ack['remote_verification']['verified_remote_bytes'] is True\nsaved=json.loads((run/'_units/update-100.ack.json').read_text())\nassert saved['verified_remote_bytes'] is True and saved['unit_id']=='update-100'\nfinal_entries={r['name']:r for r in ack['remote_verification']['files']}\nsaved_entries={r['name']:r for r in saved['files']}\nfor part in ('gate','up','down'):\n for ext in ('f32','lora'):\n  final=f'adapter.{part}.{ext}'; epoch=f'adapter.epoch100.{part}.{ext}'\n  a=(run/final).read_bytes(); b=(run/epoch).read_bytes(); h=hashlib.sha256(a).hexdigest()\n  assert a==b and final_entries[final]['sha256']==h and saved_entries[epoch]['sha256']==h\n  assert final_entries[final]['size']==len(a) and saved_entries[epoch]['size']==len(a)\n  values.append(dict(final=final,epoch100=epoch,bytes=len(a),sha256=h))\nwith output.open('x') as f:json.dump(dict(update=100,status='pass',files=values,completion_revision=ack['remote_verification']['revision'],checkpoint_revision=saved['revision']),f,indent=2);f.write('\\n')\n",
+        "/workspace/jovovich-after-order-rp-20261008-04/models/order-rp-20261008-04-after",
+        "/workspace/jovovich-after-order-rp-20261008-04/models/order-rp-20261008-04-eval/exports/after/endpoint-binding.json"
+      ],
+      "outputs": [
+        "exports/after/endpoint-binding.json"
+      ],
+      "kind": "command"
+    },
+    "sequence": 16,
+    "started_utc": "2026-10-08T04:48:43.491336+00:00",
+    "status": "failed",
+    "return_code": null,
+    "error_type": "RuntimeError",
+    "finished_utc": "2026-10-08T04:48:48.991570+00:00",
+    "artifacts": [
+      {
+        "path": "_units/after-endpoint-binding.intent.json",
+        "bytes": 1805,
+        "sha256": "8e75dd507dbee934c714bb45918032526452d07a149da8aeec6d4332c697cc91"
+      }
+    ]
+  },
+  "after100_diagnostics": {
+    "decision_correct": 26,
+    "decision_positions": 52,
+    "decision_pairs_exact": 0,
+    "decision_pairs": 26,
+    "mean_decision_ce": 0.69095773,
+    "mean_joint_ce": 2.1070486
+  },
+  "independent_reproduction": {
+    "injection": "chmod bound input immediately after after-endpoint-binding.intent remote ACK",
+    "bytes_unchanged": true,
+    "dev_inode_size_mtime_unchanged": true,
+    "ctime_changed": true,
+    "historical_receipt_shape_reproduced": true,
+    "after_endpoint_native_calls": 0,
+    "historical_changed_file": "not recorded by original runner"
+  },
+  "evaluation_recovery": {
+    "training_updates": 0,
+    "generation_calls": 228,
+    "new_run_id": "order-rp-20261009-01-eval",
+    "cpu_only": true
+  },
+  "training_recovery": {
+    "revision": "b6e51085ad1d8dea8c5c340852145d34ec3ba293",
+    "units": 103,
+    "verified_remote_bytes": true,
+    "ledger_sha256": "98d9e3e2fcd16346d578beb218911e3abaec78c64121cc9726ca07c450a3d9b8"
+  }
+}

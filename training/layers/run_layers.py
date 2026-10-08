@@ -11,6 +11,9 @@ import shutil
 import subprocess
 import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from file_integrity import IntegrityError
+
 REPO = Path(__file__).resolve().parents[2]
 
 
@@ -152,6 +155,8 @@ def run_work_units(archive, units, execute_callback, *, run_dir, next_sequence=0
                 failure = exc
                 receipt['status'] = 'interrupted' if isinstance(exc, (KeyboardInterrupt, SystemExit)) else 'failed'
                 receipt['error_type'] = type(exc).__name__
+                if isinstance(exc, IntegrityError):
+                    receipt['integrity_error'] = exc.diagnostic
         receipt['finished_utc'] = now()
         receipt['artifacts'] = []
         try:

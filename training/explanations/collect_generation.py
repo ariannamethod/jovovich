@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "training"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from durable_archive import ArchiveError, DurableArchive, HFTransport
+from file_integrity import snapshot, verify_inputs, IntegrityError
 
 LIMIT = 512
 CONTEXT = 8192
@@ -47,16 +48,9 @@ def digest(path):
     return value.hexdigest()
 
 
-def identity(path):
-    stat = path.stat()
-    return (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
-
-
 def binding(path):
-    before = identity(path)
-    result = {"path": str(path), "bytes": before[2], "sha256": digest(path)}
-    require(before == identity(path), "input changed while hashing")
-    return result, before
+    value = snapshot(path)
+    return {"path": str(path), "bytes": value.size, "sha256": value.sha256}, value
 
 
 def save(path, value):
@@ -239,7 +233,7 @@ def collect(archive, *, corpus, model, executable, output, run_id,
     output = Path(output).resolve()
     require(not output.exists(), "run output must be new")
     source_paths = [Path(__file__).resolve(), ROOT / "training/durable_archive.py",
-                    ROOT / "src/infer.c", ROOT / "Makefile"]
+                    ROOT / "src/infer.c", ROOT / "Makefile", ROOT / "training/file_integrity.py"]
     if split == "holdout":
         source_paths.extend([ROOT / "bin/jovovich.mjs", ROOT / "prompts/identity.txt",
                              ROOT / "training/explanations/build_corpora.py"])
@@ -305,8 +299,7 @@ def collect(archive, *, corpus, model, executable, output, run_id,
         code, trace, failure, token_code = None, None, None, None
         response, finish = None, "error"
         try:
-            require(all(identity(path) == signature for path, signature in identities.items()),
-                    "bound input changed before generation")
+            verify_inputs(identities, "before_generation")
             require(digest(prompt) == case["prompt_sha256"], "rendered prompt changed")
             token_failure, expected_ids = None, None
             try:
@@ -328,13 +321,11 @@ def collect(archive, *, corpus, model, executable, output, run_id,
             sequence += 1
             if token_failure is not None:
                 raise token_failure
-            require(all(identity(path) == signature for path, signature in identities.items()),
-                    "bound input changed during tokenization")
+            verify_inputs(identities, "after_tokenization")
             require(digest(prompt) == case["prompt_sha256"], "rendered prompt changed after tokenization")
             code = execute(argv, prompt, stdout, stderr, env)
             require(code == 0, "native inference failed")
-            require(all(identity(path) == signature for path, signature in identities.items()),
-                    "bound input changed during generation")
+            verify_inputs(identities, "after_generation")
             trace = parse(trace_path.read_bytes())
             finish = validate_trace(trace)
             require(trace["prompt_token_ids"] == expected_ids,
@@ -361,12 +352,16 @@ def collect(archive, *, corpus, model, executable, output, run_id,
                   "finish_reason": finish, "metadata": metadata}
         if failure is not None:
             record["error"] = type(failure).__name__
+            if isinstance(failure, IntegrityError):
+                record["integrity_error"] = failure.diagnostic
         save(directory / "record.json", record)
         result_files = {str(path.relative_to(output)): path for path in
                         (stdout, stderr, trace_path, directory / "record.json") if path.is_file()}
         receipt = {"case_id": case["case_id"], "return_code": code,
                    "tokenizer_return_code": token_code, "finish_reason": finish,
                    "finished_utc": now(), "artifacts": [binding(path)[0] for path in result_files.values()]}
+        if isinstance(failure, IntegrityError):
+            receipt["integrity_error"] = failure.diagnostic
         save(directory / "result.json", receipt)
         result_files[str((directory / "result.json").relative_to(output))] = directory / "result.json"
         archive.sync_unit(f"case-{index:03d}-result", result_files, sequence=sequence)

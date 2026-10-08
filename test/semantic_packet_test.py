@@ -82,7 +82,7 @@ def make_fixture(root):
     parameters = dict(BEFORE_RUN=str(POD / 'models/before'), AFTER_RUN=str(POD / 'models/after'),
         EVALUATION_RUN=str(output), EVALUATION_RUN_ID=RUN,
         SHARED_BASE_UPDATE0_SHA256=contract['resolution']['SHARED_BASE_UPDATE0_SHA256'])
-    source_names = set(contract['required_pretraining_launch_bindings']) | set(packet.SOURCES) | {
+    source_names = set(contract['required_pretraining_launch_bindings']) | set(packet.SOURCES) | {'training/file_integrity.py',
         'src/infer.c', 'Makefile'}
     bindings, sources = [], {}
     for name in sorted(source_names):
@@ -118,7 +118,7 @@ def make_fixture(root):
         source_rows = [json.loads(line) for line in corpus.splitlines()]
         rendered = packet.collect.review_cases(corpus, split=job['split'])
         rows_by_id = {r['id']: r for r in source_rows}
-        source_list = ['training/explanations/collect_generation.py', 'training/durable_archive.py', 'src/infer.c', 'Makefile']
+        source_list = ['training/explanations/collect_generation.py', 'training/durable_archive.py', 'src/infer.c', 'Makefile', 'training/file_integrity.py']
         if job['split'] == 'holdout':
             source_list += ['bin/jovovich.mjs', 'prompts/identity.txt', 'training/explanations/build_corpora.py']
         infer = dict(bound['build/jovovich-infer'], path=str(POD / 'build/jovovich-infer'))
