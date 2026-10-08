@@ -235,6 +235,8 @@ def verify_collector(parent, journal, job, bindings):
          manifest['context'] == collect.CONTEXT and manifest['environment'] == collect.ENVIRONMENT and
          manifest['assistant_prefix'] == '<|im_start|>assistant\n', 'collector source/model contract differs')
     sources = ['training/explanations/collect_generation.py', 'training/durable_archive.py', 'src/infer.c', 'Makefile']
+    if 'training/file_integrity.py' in bindings:
+        sources.append('training/file_integrity.py')
     if split == 'holdout':
         sources += ['bin/jovovich.mjs', 'prompts/identity.txt', 'training/explanations/build_corpora.py']
     need(len(manifest['sources']) == len(sources), 'collector source list differs')

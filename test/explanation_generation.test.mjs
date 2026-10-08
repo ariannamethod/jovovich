@@ -93,6 +93,12 @@ Path(args['--trace-tokens']).write_text(json.dumps(trace)+'\n')
                 marker.write_text(str(int(marker.read_text())+1))
             if unit.endswith('-tokenizer'):
                 (root/f'tokenizer-{int(unit.split("-")[1])}.ack').write_text('verified')
+            if scenario in ('metadata-intent','metadata-tokenizer','content-tokenizer') and unit==('case-000-intent' if scenario=='metadata-intent' else 'case-000-tokenizer'):
+                old=model.stat()
+                if scenario.startswith('metadata-'):model.chmod(0o400)
+                else:
+                    model.write_bytes(b'X'*old.st_size)
+                    os.utime(model,ns=(old.st_atime_ns,old.st_mtime_ns))
             return receipt
     failed = None
     os.environ['HF_TOKEN']='must-never-reach-native'
@@ -110,7 +116,7 @@ Path(args['--trace-tokens']).write_text(json.dumps(trace)+'\n')
     count=len(calls.read_text().splitlines()) if calls.exists() else 0
     token_calls=root/'tokenizer-calls.jsonl'
     token_count=len(token_calls.read_text().splitlines()) if token_calls.exists() else 0
-    if scenario=='normal':
+    if scenario in ('normal','metadata-intent','metadata-tokenizer'):
         require(failed is None, str(failed))
         records=[json.loads(line) for line in (root/'out/generations.jsonl').read_text().splitlines()]
         require(count==2 and [row['finish_reason'] for row in records]==['eos','length'], 'stop reason changed')
@@ -133,7 +139,7 @@ Path(args['--trace-tokens']).write_text(json.dumps(trace)+'\n')
         require((restored/'generations.jsonl').read_bytes()==(root/'out/generations.jsonl').read_bytes(), 'remote-only recovery changed output')
     else:
         require(failed is not None, 'fault did not stop collection')
-        require(count==(2 if scenario=='completion-fail' else 0 if scenario in ('bootstrap-fail','prompt-mutation','tokenizer-fail','tokenizer-archive-fail') else 1), 'next model call escaped archive/error barrier')
+        require(count==(2 if scenario=='completion-fail' else 0 if scenario in ('bootstrap-fail','prompt-mutation','tokenizer-fail','tokenizer-archive-fail','content-tokenizer') else 1), 'next model call escaped archive/error barrier')
         require(token_count==(2 if scenario=='completion-fail' else 0 if scenario in ('bootstrap-fail','prompt-mutation') else 1), 'tokenizer calls escaped failure barrier')
         if scenario=='completion-fail':
             candidate=json.loads((root/'out/completion.json').read_text())
@@ -144,10 +150,14 @@ Path(args['--trace-tokens']).write_text(json.dumps(trace)+'\n')
             record=json.loads((root/'out/cases/000/record.json').read_text())
             require(record['finish_reason']=='error' and record['error'], 'missing closed error record')
             require(synced[-1]=='case-000-result', 'failure evidence not archived')
+            if scenario=='content-tokenizer':
+                expected={'reason':'content','input_index':1,'phase':'after_tokenization'}
+                require(record['integrity_error']==expected,'wrong integrity reason')
+                require(json.loads((root/'out/cases/000/result.json').read_text())['integrity_error']==expected,'reason missing from archived receipt')
 print(json.dumps({'scenario':scenario,'passed':True}))
 `;
 
-for (const scenario of ['normal', 'bootstrap-fail', 'result-fail', 'native-fail',
+for (const scenario of ['normal', 'metadata-intent', 'metadata-tokenizer', 'content-tokenizer', 'bootstrap-fail', 'result-fail', 'native-fail',
   'bad-trace', 'model-mutation', 'prompt-mutation', 'tokenizer-fail',
   'tokenizer-archive-fail', 'wrong-prompt-ids', 'completion-fail']) {
   test(`explanation generation: ${scenario}`, () => {

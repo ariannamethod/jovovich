@@ -15,7 +15,8 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / 'training'), str(Path(__file__).resolve().parent)]
 from durable_archive import DurableArchive, HFTransport, ArchiveError
-from layers.run_layers import check_binding, digest, identity, now, run_work_units, save, unit_paths
+from layers.run_layers import digest, now, run_work_units, save, unit_paths
+from file_integrity import snapshot, verify_inputs
 from collect_generation import collect
 
 
@@ -41,10 +42,12 @@ def local(path, *, existing=True):
 
 def binding(path):
     path = local(path)
-    before = identity(path)
-    result = dict(path=str(path.relative_to(ROOT)), bytes=path.stat().st_size, sha256=digest(path))
-    need(identity(path) == before, 'input changed while hashing')
-    return result
+    value = snapshot(path)
+    return dict(path=str(path.relative_to(ROOT)), bytes=value.size, sha256=value.sha256)
+
+
+def check_binding(path, expected):
+    return snapshot(path, expected)
 
 
 def resolve(value, parameters):
@@ -288,7 +291,7 @@ def execute(archive, prepared, output, *, collector=collect):
     save(output / 'plan.json', prepared)
     inputs = {'plan.json': output / 'plan.json'}
     plan_sha256 = digest(output / 'plan.json')
-    tracked = {output / 'plan.json': identity(output / 'plan.json')}
+    tracked = {output / 'plan.json': snapshot(output / 'plan.json')}
     for item in prepared['bindings']:
         source = local(item['path']); tracked[source] = check_binding(source, item)
         if item['path'] == 'models/base-qwen.gguf':
@@ -320,12 +323,11 @@ def execute(archive, prepared, output, *, collector=collect):
                            outputs=['generation/' + job['id'] + '/structural-score.json']))
     phases.append(dict(id='cross-model-prompts', kind='compare_prompts', outputs=['prompt-comparison.json']))
 
-    def guard():
-        need(all(identity(path) == signature for path, signature in tracked.items()),
-             'bound evaluation input changed')
+    def guard(phase):
+        verify_inputs(tracked, phase)
 
     def command(unit, directory):
-        guard()
+        guard('before_command')
         print(json.dumps(dict(unit=unit['id'], status='intent_remotely_verified', started_utc=now())),
               file=sys.stderr, flush=True)
         for name in unit.get('outputs', []):
@@ -344,7 +346,7 @@ def execute(archive, prepared, output, *, collector=collect):
                 need(audit.get('valid') is True and audit['adapted'] == 3 and audit['metadata_equal'] is True and
                      audit['model']['sha256'] == digest(model), 'export audit/model binding failed')
                 parameters[arm.upper() + '_UPDATE100_SHA256'] = audit['model']['sha256']
-                tracked[model] = identity(model)
+                tracked[model] = snapshot(model)
             jobs = resolve(contract['collector_jobs'], parameters)
             save(directory / 'generation-plan.json', dict(jobs=jobs, parameters=parameters))
         elif kind == 'collector':
@@ -375,7 +377,7 @@ def execute(archive, prepared, output, *, collector=collect):
             for path in collected.rglob('*'):
                 if path.is_file():
                     need(not path.is_symlink(), 'collector artifact must be a regular file')
-                    tracked[path] = identity(path)
+                    tracked[path] = snapshot(path)
             save(directory / unit['outputs'][0], dict(argv=job['argv'], result=result))
         elif kind == 'compare_prompts':
             save(directory / unit['outputs'][0], compare_prompts(read(directory / 'generation-plan.json')['jobs']))
@@ -399,16 +401,16 @@ def execute(archive, prepared, output, *, collector=collect):
                 score = read(directory / unit['outputs'][0])
                 need(score['status'] == 'complete' and score['summary']['received_reviews'] == job['rows'],
                      'structural scorer has incomplete coverage')
-        guard()
+        guard('after_command')
         # Closed artifacts become immutable inputs to subsequent phases.
         for name in unit.get('outputs', []) + [unit[key] for key in ('stdout', 'stderr') if key in unit]:
             path = directory / name
             need(path.is_file() and not path.is_symlink(), 'phase output missing or invalid')
-            tracked[path] = identity(path)
+            tracked[path] = snapshot(path)
         return dict(return_code=0, commands=commands)
 
     sequence = run_work_units(archive, phases, command, run_dir=output, next_sequence=1)
-    guard()
+    guard('completion')
     need(digest(output / 'plan.json') == plan_sha256, 'evaluation manifest changed')
     for item in prepared['bindings']:
         check_binding(local(item['path']), item)

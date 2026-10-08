@@ -31,6 +31,17 @@ with tempfile.TemporaryDirectory(prefix='eval-execution-fixture-',dir='models') 
     if scenario=='bootstrap-fail':
         transport.download_fault=lambda name,data:b'corrupt' if '/objects/' in name else data
     native_calls=[];collector_calls=[]
+    original_sync=archive.sync_unit
+    def injected_sync(unit, files, *, sequence):
+        receipt=original_sync(unit, files, sequence=sequence)
+        if unit=='after-endpoint-binding.intent' and scenario in ('metadata-only','same-size-mutation'):
+            old=source.stat()
+            if scenario=='metadata-only':source.chmod(0o400)
+            else:
+                source.write_bytes(b'X'*old.st_size)
+                os.utime(source,ns=(old.st_atime_ns,old.st_mtime_ns))
+        return receipt
+    archive.sync_unit=injected_sync
     def fake_command(argv,stdout,stderr,environment):
         assert environment['NT_NO_I8']=='1' and environment['NT_QMV_THREADS']=='4'
         assert all(k not in environment for k in ('HF_TOKEN','UNLABELED_CREDENTIAL','NT_QMV_IMPL','LD_PRELOAD'))
@@ -96,14 +107,19 @@ with tempfile.TemporaryDirectory(prefix='eval-execution-fixture-',dir='models') 
     try:
         result=runner.execute(archive,prepared,output,collector=fake_collector)
     except (RuntimeError,ArchiveError):
-        assert scenario!='success'
+        assert scenario not in ('success','metadata-only')
+        if scenario=='same-size-mutation':
+            result=json.loads((output/'_units/after-endpoint-binding.result.json').read_text())
+            assert result['integrity_error']=={'reason':'content','input_index':1,'phase':'before_command'}
+            assert result['return_code'] is None and not collector_calls
+            assert not (output/'_units/after-endpoint-binding.stdout').exists()
         if scenario=='bootstrap-fail':assert not native_calls and not collector_calls
         if scenario=='merge-archive-fail':assert not collector_calls and sum(a[0]=='build/jovovich-merge-mlp' for a in native_calls)==1
         if scenario=='source-mutation':assert len(collector_calls)==1
         if scenario in ('generation-mutation','outer-plan-mutation'):assert len(collector_calls)==1 and not (output/'completion.json').exists()
         if scenario=='prompt-mismatch':assert len(collector_calls)==6 and not (output/'completion.json').exists()
     else:
-        assert scenario=='success'
+        assert scenario in ('success','metadata-only')
         assert result['generation_calls']==228 and result['semantic_audit']=='pending'
         assert result['teacher_forced_reports']==2 and result['structural_reports']==6
         assert result['remote_verification']['verified_remote_bytes']
@@ -116,7 +132,7 @@ with tempfile.TemporaryDirectory(prefix='eval-execution-fixture-',dir='models') 
         assert os.environ['HF_TOKEN']=='fixture-token' and os.environ['UNLABELED_CREDENTIAL']=='fixture-token'
 `;
 
-for (const scenario of ['success', 'bootstrap-fail', 'merge-archive-fail', 'source-mutation', 'prompt-mismatch', 'generation-mutation', 'outer-plan-mutation']) {
+for (const scenario of ['success', 'metadata-only', 'same-size-mutation', 'bootstrap-fail', 'merge-archive-fail', 'source-mutation', 'prompt-mismatch', 'generation-mutation', 'outer-plan-mutation']) {
   test(`evaluation orchestration: ${scenario}`, () => {
     const result = spawnSync('python3', ['-c', fixture, scenario], {encoding:'utf8', timeout:30000});
     assert.equal(result.status, 0, result.stderr || result.stdout || String(result.error));
