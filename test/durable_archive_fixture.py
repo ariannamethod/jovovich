@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -225,6 +226,156 @@ def source_mutation(directory):
     # closed snapshot and remote bytes, never silently adopt a moving source.
     check(original in remote.revisions[remote.current].values(), "moving source was uploaded without immutable staging")
     check(hashlib.sha256(original).hexdigest() in json.dumps(receipt), "receipt did not bind original snapshot")
+
+
+def source_metadata(directory):
+    # Change real filesystem timestamps without changing inode, size or bytes.
+    # Cover every remote-facing window and the all-empty stderr-segment case.
+    for point in ('after-copy', 'head', 'commit', 'readback'):
+        for empty in (False, True):
+            remote = FakeTransport()
+            local = source(directory, point + str(empty), b'' if empty else b'closed bytes')
+            original, before = local.read_bytes(), archive_module._source_stat(local)
+            def touch():
+                value = local.stat()
+                os.utime(local, ns=(value.st_atime_ns, value.st_mtime_ns + 1000000))
+                local.chmod(0o600)
+            real_copy, real_head = archive_module.shutil.copyfile, remote.head
+            if point == 'after-copy':
+                def copy(src, dst, **kwargs):
+                    result = real_copy(src, dst, **kwargs)
+                    if Path(src) == local:
+                        touch()
+                    return result
+                archive_module.shutil.copyfile = copy
+            elif point == 'head':
+                def head():
+                    touch()
+                    return real_head()
+                remote.head = head
+            elif point == 'commit':
+                remote.before_commit = lambda _: touch()
+            else:
+                def readback(path, data):
+                    touch()
+                    return data
+                remote.download_fault = readback
+            try:
+                receipt = DurableArchive(remote, point + str(empty)).sync_unit(
+                    '000', {'closed.bin': local}, sequence=0)
+            finally:
+                archive_module.shutil.copyfile = real_copy
+            after = archive_module._source_stat(local)
+            check(before[:3] == after[:3] and before[3:] != after[3:], 'metadata injection did not execute')
+            check(receipt['verified_remote_bytes'] and local.read_bytes() == original and
+                  original in remote.revisions[remote.current].values(), 'metadata drift lost exact bytes')
+
+
+def source_identity(directory):
+    for kind in ('replacement', 'symlink', 'replacement-during-hash', 'symlink-during-hash'):
+        remote, local = FakeTransport(), source(directory, kind)
+        original, real_digest = local.read_bytes(), archive_module._digest
+        replacement = source(directory, kind + '-target', original)
+        def replace():
+            if kind.startswith('symlink'):
+                local.unlink()
+                local.symlink_to(replacement)
+            else:
+                replacement.replace(local)
+        if kind.endswith('during-hash'):
+            armed = [False]
+            original_head = remote.head
+            def head():
+                armed[0] = True
+                return original_head()
+            remote.head = head
+            def digest(path):
+                result = real_digest(path)
+                if Path(path) == local and armed[0]:
+                    armed[0] = False
+                    replace()
+                return result
+            archive_module._digest = digest
+        else:
+            remote.before_commit = lambda _: replace()
+        archive = DurableArchive(remote, kind)
+        try:
+            try:
+                archive.sync_unit('000', {'closed.bin': local}, sequence=0)
+            except ArchiveError as exc:
+                expected = 'not_regular' if kind.startswith('symlink') else 'identity'
+                check(exc.diagnostic['source_mismatch'] == expected and
+                      exc.diagnostic['source_index'] == 0 and not exc.diagnostic['retryable'],
+                      'source replacement lost bounded identity diagnosis')
+            else:
+                raise RuntimeError('same-byte replacement received an ACK: ' + kind)
+        finally:
+            archive_module._digest = real_digest
+        check(archive._pending == (0, '000'), 'source replacement unlocked the next unit')
+
+
+def source_content(directory):
+    for point in ('after-copy', 'head', 'commit'):
+        remote, local = FakeTransport(), source(directory, point)
+        original, value = local.read_bytes(), local.stat()
+        def mutate():
+            local.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+            os.utime(local, ns=(value.st_atime_ns, value.st_mtime_ns))
+        real_copy, real_head = archive_module.shutil.copyfile, remote.head
+        if point == 'after-copy':
+            def copy(src, dst, **kwargs):
+                result = real_copy(src, dst, **kwargs)
+                if Path(src) == local:
+                    mutate()
+                return result
+            archive_module.shutil.copyfile = copy
+        elif point == 'head':
+            def head():
+                mutate()
+                return real_head()
+            remote.head = head
+        else:
+            remote.before_commit = lambda _: mutate()
+        archive = DurableArchive(remote, point)
+        try:
+            try:
+                archive.sync_unit('000', {'closed.bin': local}, sequence=0)
+            except ArchiveError as exc:
+                phases = {'after-copy': 'after_staging', 'head': 'before_commit', 'commit': 'after_readback'}
+                check(exc.diagnostic['source_mismatch'] == 'content' and
+                      exc.diagnostic['source_phase'] == phases[point] and
+                      exc.diagnostic['source_index'] == 0, 'content mutation lost its exact phase')
+            else:
+                raise RuntimeError('same-size mutation with restored mtime received an ACK')
+        finally:
+            archive_module.shutil.copyfile = real_copy
+        check(local.stat().st_mtime_ns == value.st_mtime_ns and
+              archive._pending == (0, '000'), 'mutation fixture did not preserve mtime or gate')
+        check(remote.commits == (1 if point == 'commit' else 0), 'content mutation crossed the wrong commit boundary')
+
+
+def source_diagnostic(directory):
+    secret = 'hf_SYNTHETIC_SOURCE_SECRET /private/file'
+    for fields in (
+            {'source_index': True, 'source_phase': 'retry', 'source_mismatch': 'content'},
+            {'source_index': 1000000, 'source_phase': 'retry', 'source_mismatch': 'content'},
+            {'source_index': 0, 'source_phase': secret, 'source_mismatch': 'content'},
+            {'source_index': 0, 'source_phase': 'retry', 'source_mismatch': [secret]},
+            {'source_index': 0, 'source_phase': 'retry', 'source_mismatch': 'content ' + secret}):
+        error = ArchiveError('unused', diagnostic={**fields, 'path': secret})
+        check(not any(k.startswith('source_') for k in error.diagnostic) and
+              secret not in json.dumps(error.diagnostic), 'unbounded source detail escaped sanitization')
+    remote = FakeTransport()
+    first, second = source(directory, 'first'), source(directory, 'second')
+    remote.before_commit = lambda _: second.write_bytes(b'changed')
+    try:
+        DurableArchive(remote, 'source-index').sync_unit('000',
+            {'z-last.bin': second, 'a-first.bin': first}, sequence=0)
+    except ArchiveError as exc:
+        check(exc.diagnostic['source_index'] == 1 and
+              str(directory) not in json.dumps(exc.diagnostic), 'source index was not sorted or leaked a path')
+    else:
+        raise RuntimeError('source-index mutation accepted')
 
 
 def privacy(directory):
@@ -543,6 +694,50 @@ def retry_immutable(directory):
     else:
         raise RuntimeError('retry uploaded changed closed unit')
     check(remote.commits == 0, 'retry sent changed bytes to remote')
+
+
+def retry_source_metadata(directory):
+    remote, local, events = FakeTransport(), source(directory), []
+    original = local.read_bytes()
+    remote.head_fault = HTTPError(503)
+    def changed(event):
+        events.append(event)
+        remote.head_fault = None
+        value = local.stat()
+        os.utime(local, ns=(value.st_atime_ns, value.st_mtime_ns + 1000000))
+        local.chmod(0o600)
+    receipt = bounded_sync(DurableArchive(remote, 'metadata-retry'), local, callback=changed)
+    check(receipt['verified_remote_bytes'] and len(events) == 1 and remote.commits == 1 and
+          original in remote.revisions[remote.current].values(), 'metadata-only retry lost exact bytes')
+
+
+def retry_source_identity(directory):
+    for kind in ('replacement', 'symlink', 'content'):
+        remote, local = FakeTransport(), source(directory, kind)
+        original, value = local.read_bytes(), local.stat()
+        remote.head_fault = HTTPError(503)
+        def changed(_):
+            remote.head_fault = None
+            if kind == 'content':
+                local.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+                os.utime(local, ns=(value.st_atime_ns, value.st_mtime_ns))
+            else:
+                target = source(directory, kind + '-target', original)
+                if kind == 'symlink':
+                    local.unlink()
+                    local.symlink_to(target)
+                else:
+                    target.replace(local)
+        try:
+            bounded_sync(DurableArchive(remote, kind + '-retry'), local, callback=changed)
+        except ArchiveError as exc:
+            expected = {'replacement': 'identity', 'symlink': 'not_regular', 'content': 'content'}[kind]
+            check(exc.diagnostic['source_mismatch'] == expected and
+                  exc.diagnostic['source_phase'] == 'retry' and exc.diagnostic['attempts'] == 2,
+                  'retry replacement/content failure lost its diagnosis')
+        else:
+            raise RuntimeError('changed retry source received an ACK')
+        check(remote.commits == 0, 'changed retry source reached remote commit')
 
 
 def retry_metadata(directory):
@@ -897,6 +1092,8 @@ SCENARIOS = {
     "retry-exhaustion": retry_exhaustion,
     "retry-deadline": retry_deadline,
     "retry-immutable": retry_immutable,
+    "retry-source-metadata": retry_source_metadata,
+    "retry-source-identity": retry_source_identity,
     "retry-metadata": retry_metadata,
     "retry-validation-reasons": retry_validation_reasons,
     "retry-unknown-reasons": retry_unknown_reasons,
@@ -910,6 +1107,10 @@ SCENARIOS = {
     "parent-conflict": parent_conflict,
     "unsafe-paths": unsafe_paths,
     "source-mutation": source_mutation,
+    "source-metadata": source_metadata,
+    "source-identity": source_identity,
+    "source-content": source_content,
+    "source-diagnostic": source_diagnostic,
     "privacy": privacy,
     "auth-redaction": auth_redaction,
     "sequence-gate": sequence_gate,

@@ -1,0 +1,181 @@
+{
+  "schema": "jovovich.source-stat-evidence.v1",
+  "failure": {
+    "status": "failed",
+    "finished_utc": "2026-10-08T01:13:41.418968+00:00",
+    "error_type": "ArchiveError",
+    "return_code": -15,
+    "unit_id": "update-038",
+    "sequence": 39,
+    "last_acknowledged_update": 37,
+    "last_acknowledged_unit": {
+      "unit_id": "update-037",
+      "sequence": 38,
+      "revision": "57f3d9abba10ae62373b9635555b06b09c28b442",
+      "manifest_sha256": "02734a73ad6eaaa63543daee07a73742f0ca5521671490383cc242307d9e45fe"
+    },
+    "archive_error": {
+      "operation": "validation",
+      "exception_type": "ArchiveError",
+      "reason_code": "source_changed_during_archive_operation",
+      "http_status": null,
+      "errno": null,
+      "retryable": false,
+      "attempts": 1
+    }
+  },
+  "failure_archive_revision": "afb699a77c359cdf23e20529a86a93fc7677791d",
+  "failure_remote_recovery": {
+    "units": 1,
+    "logical_files": 5,
+    "verified_remote_bytes": true
+  },
+  "failed_unit_sources": [
+    "_units/update-038.metrics.jsonl",
+    "_units/update-038.raw.jsonl",
+    "_units/update-038.stderr"
+  ],
+  "probe": {
+    "run_id": "storage-probe-20261008-01",
+    "prefix": "experiments/storage-probe/storage-probe-20261008-01",
+    "revision": "13b43515a915e41f42e220b1ec8cde7f10c50dd8",
+    "verified_remote_bytes": true,
+    "units": 6,
+    "logical_files": 10,
+    "status": "completed",
+    "pod_id": "qatg4fid8zr4ra",
+    "pod_status": "EXITED",
+    "cpu_vcpus": 4,
+    "hourly_cost_usd": 0.16,
+    "deadline_seconds": 600,
+    "mounts": [
+      {
+        "mountpoint": "/workspace",
+        "filesystem": "fuse",
+        "options": "rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other"
+      }
+    ],
+    "files_per_body": 96,
+    "samples": 11,
+    "observations": 2112,
+    "network_files_with_ctime_drift": 2,
+    "local_files_with_stat_drift": 0,
+    "changed_observations": 22,
+    "all_changed_observations_content_equal": true,
+    "finished_utc": "2026-10-08T02:39:45.498772+00:00",
+    "model_calls": 0,
+    "source_sha256": "1a2c3b45c2d5af526d9e35d6fcdbfc2723865112ce0ad6ae7416bb1922143340"
+  },
+  "first_changed_observations": [
+    {
+      "sample": 0,
+      "body": "network",
+      "name": "unit-006.metrics.jsonl",
+      "initial_stat": [
+        161,
+        668140551,
+        10442,
+        1791427055000000000,
+        1791427054000000000
+      ],
+      "before_stat": [
+        161,
+        668140551,
+        10442,
+        1791427055000000000,
+        1791427055000000000
+      ],
+      "after_stat": [
+        161,
+        668140551,
+        10442,
+        1791427055000000000,
+        1791427055000000000
+      ],
+      "changed_fields": [
+        "ctime_ns"
+      ],
+      "expected": {
+        "size": 10442,
+        "sha256": "47fe583c79aba84dd3bb2946d13e9102a619f61f19922247e71968bed176d819",
+        "git_blob_sha1": "5d1417fbe692bf2e90c78b7d1f3ae1708f8afaf5"
+      },
+      "observed": {
+        "size": 10442,
+        "sha256": "47fe583c79aba84dd3bb2946d13e9102a619f61f19922247e71968bed176d819",
+        "git_blob_sha1": "5d1417fbe692bf2e90c78b7d1f3ae1708f8afaf5"
+      },
+      "content_equal": true
+    },
+    {
+      "sample": 0,
+      "body": "network",
+      "name": "unit-014.metrics.jsonl",
+      "initial_stat": [
+        161,
+        668145229,
+        10442,
+        1791427056000000000,
+        1791427055000000000
+      ],
+      "before_stat": [
+        161,
+        668145229,
+        10442,
+        1791427056000000000,
+        1791427056000000000
+      ],
+      "after_stat": [
+        161,
+        668145229,
+        10442,
+        1791427056000000000,
+        1791427056000000000
+      ],
+      "changed_fields": [
+        "ctime_ns"
+      ],
+      "expected": {
+        "size": 10442,
+        "sha256": "47fe583c79aba84dd3bb2946d13e9102a619f61f19922247e71968bed176d819",
+        "git_blob_sha1": "5d1417fbe692bf2e90c78b7d1f3ae1708f8afaf5"
+      },
+      "observed": {
+        "size": 10442,
+        "sha256": "47fe583c79aba84dd3bb2946d13e9102a619f61f19922247e71968bed176d819",
+        "git_blob_sha1": "5d1417fbe692bf2e90c78b7d1f3ae1708f8afaf5"
+      },
+      "content_equal": true
+    }
+  ],
+  "recorded_stat_replay": [
+    {
+      "name": "unit-006.metrics.jsonl",
+      "old_reason": "source_changed_during_archive_operation",
+      "repaired_validation": "passed",
+      "hashes_verified_from_remote_payload": true
+    },
+    {
+      "name": "unit-014.metrics.jsonl",
+      "old_reason": "source_changed_during_archive_operation",
+      "repaired_validation": "passed",
+      "hashes_verified_from_remote_payload": true
+    }
+  ],
+  "implementation": {
+    "path": "training/durable_archive.py",
+    "sha256": "98ae97ecdecf687b5c5b00f3fb99e03854e352bde49fc4beb75b807e8e3f814e"
+  },
+  "independent_review": {
+    "status": "clean",
+    "archive_checks_passed": 41,
+    "reviewed_source_sha256": "98ae97ecdecf687b5c5b00f3fb99e03854e352bde49fc4beb75b807e8e3f814e"
+  },
+  "targeted_regressions": {
+    "passed": 58,
+    "failed": 0,
+    "native_dependency": "014403faa76b795aefe18a4781980f5b140e0ed3"
+  },
+  "fresh_after_run_id": "order-rp-20261008-04-after",
+  "deployment": "prepared"
+}

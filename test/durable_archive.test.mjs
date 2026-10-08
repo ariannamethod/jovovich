@@ -9,10 +9,12 @@ const fixture = path.join(repo, 'test/durable_archive_fixture.py');
 const scenarios = [
   'normal', 'lost-ack', 'corrupt-remote', 'missing-remote', 'corrupt-readback',
   'local-loss', 'parent-conflict', 'unsafe-paths', 'source-mutation', 'privacy',
+  'source-metadata', 'source-identity', 'source-content', 'source-diagnostic',
   'auth-redaction', 'sequence-gate', 'verification-barrier',
   'hf-transport-contract', 'hf-request-timeouts',
   'retry-transient', 'retry-commit', 'retry-terminal', 'retry-exhaustion',
   'retry-deadline', 'retry-immutable', 'retry-metadata',
+  'retry-source-metadata', 'retry-source-identity',
   'retry-validation-reasons', 'retry-unknown-reasons', 'training-failure-reason',
   'runner-barrier', 'runner-lost-ack', 'runner-interrupted',
   'runner-preflight', 'runner-stale-output',
@@ -40,6 +42,8 @@ for (const mode of [
       'hf-transport-contract', 'hf-request-timeouts',
   'retry-transient', 'retry-commit', 'retry-terminal', 'retry-exhaustion',
   'retry-deadline', 'retry-immutable', 'retry-metadata',
+  'source-metadata', 'source-identity', 'source-content', 'source-diagnostic',
+  'retry-source-metadata', 'retry-source-identity',
   'retry-validation-reasons', 'retry-unknown-reasons', 'training-failure-reason',
   'runner-barrier', 'runner-preflight']) {
       const result = spawnSync('python3', [...mode.flags, fixture, scenario], {
