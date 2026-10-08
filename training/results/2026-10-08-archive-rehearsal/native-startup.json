@@ -1,0 +1,75 @@
+{
+  "schema": "jovovich.after-native-startup.v1",
+  "checked_utc": "2026-10-08T00:35:31.614025+00:00",
+  "status": "native-update-001-remotely-restored",
+  "run_id": "order-rp-20261008-03-after",
+  "revision": "15a72e56e52544a495672e79680b11f4ef5b2003",
+  "units": [
+    "intent",
+    "update-000",
+    "update-001"
+  ],
+  "logical_files_verified": 99,
+  "initialization": {
+    "initial_lora_sha256": {
+      "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    },
+    "expected_initial_lora_sha256": {
+      "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+      "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+      "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+    }
+  },
+  "initialization_matches_previous_attempt": true,
+  "metrics": [
+    {
+      "unit": "update-000",
+      "metrics_sha256": "f2e6636adab17f10056b2b3d60ed4c327321dcd08a74e8b1be70f6235b644029",
+      "previous_metrics_sha256": "f2e6636adab17f10056b2b3d60ed4c327321dcd08a74e8b1be70f6235b644029",
+      "metrics_bytes_equal": true,
+      "changed_scalar_fields": 0,
+      "largest_numeric_difference": 0,
+      "first_differences": [],
+      "metrics": [
+        {
+          "stage": "sft_initial",
+          "mean_token_ce": 3.25432687,
+          "teacher_forced_correct_tokens": 2130
+        },
+        {
+          "stage": "decision_train",
+          "update": 0,
+          "mean_decision_ce": 3.69842172,
+          "decision_correct": 0,
+          "decision_pairs_exact": 0,
+          "mean_joint_ce": 7.10256137
+        }
+      ]
+    },
+    {
+      "unit": "update-001",
+      "metrics_sha256": "9e31d1ffbff5458e15988d4f574375af58d7e66168ed113034f2bec8f5e4756f",
+      "previous_metrics_sha256": "9e31d1ffbff5458e15988d4f574375af58d7e66168ed113034f2bec8f5e4756f",
+      "metrics_bytes_equal": true,
+      "changed_scalar_fields": 0,
+      "largest_numeric_difference": 0,
+      "first_differences": [],
+      "metrics": [
+        {
+          "stage": "decision_train",
+          "update": 1,
+          "mean_decision_ce": 3.38922286,
+          "decision_correct": 0,
+          "decision_pairs_exact": 0,
+          "mean_joint_ce": 6.78725042
+        }
+      ]
+    }
+  ],
+  "previous_attempt": {
+    "run_id": "order-rp-20261004-02-after",
+    "archive_revision": "11f6c33b277f24459147bf6a9314205be1c334de"
+  }
+}

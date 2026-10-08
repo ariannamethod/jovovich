@@ -68,8 +68,31 @@ Started CPU pod `sb0zexiv12aeoe` at 00:02:27 UTC on October 8, source
 `f5f5d6eac077ea37ca5e254211280c0a1c1c7a13`, run prefix
 `order-rp-20261008-03`. Four vCPUs/16GB, $0.16/hour, the same 12-hour watchdog
 and retained volume. The new process starts from update0; Chuck snapshots do
-not carry its controller/moments. Bootstrap is running; native startup is being
-checked separately. Evidence: `training/results/2026-10-08-archive-rehearsal/`.
+not carry its controller/moments. Evidence:
+`training/results/2026-10-08-archive-rehearsal/`.
+
+At 00:35 UTC, fresh HF recovery verified intent, update000 and update001:
+99 logical files at `15a72e56e52544a495672e79680b11f4ef5b2003`.
+The live plan preserves all eight scientific fields and 59 original bindings;
+the two declared infrastructure replacements and all additional source bytes
+match their committed pins. All three initial LoRA hashes match the paired
+initialization. Complete metric files for update0 and update1 are byte-identical
+to the previous after attempt. Native training is running.
+
+The independent evaluation audit found the frozen path ready through its
+228-response collection. Its next stage requires the actual production parser
+and two independent blinded reviewers, with root operating and adjudicating.
+The automatic executor records semantic audit pending at native completion.
+
+Added `training/explanations/prepare_semantic_packet.py` for that stage. It
+accepts a completed parent recovery and six collector recoveries, checks all
+228 responses against their prompts, native output and token traces, and runs
+the unchanged production `parseReview`. Two opaque reviewer packets carry full
+texts, source hashes and blank judgments; model mapping stays with the operator.
+Local preparation records `pending_archive`; publication precedes distribution.
+Ten synthetic tests passed. Independent review matched all 24 heldout chunks
+against production `chunksFor` and all 52 train tables between the paired arms.
+The live training and frozen evaluation files are unchanged.
 
 SERGE counted 103 receipts. Still one cigarette.
 

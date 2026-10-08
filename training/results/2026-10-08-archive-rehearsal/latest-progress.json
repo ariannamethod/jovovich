@@ -1,0 +1,13 @@
+{
+  "checked_utc": "2026-10-08T00:47:43.688275+00:00",
+  "revision": "9f20bbcb33a9ff6f2e86d1328f1a3fca8e22d4cd",
+  "unit_count": 15,
+  "last_units": [
+    "000011-update-010.json",
+    "000012-update-011.json",
+    "000013-update-012.json",
+    "000014-update-013.json"
+  ],
+  "observation": "remote_inventory",
+  "last_fully_restored_update": 1
+}

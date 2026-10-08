@@ -1,0 +1,76 @@
+{
+  "schema": "jovovich.after-startup-evidence.v1",
+  "checked_utc": "2026-10-08T00:31:31.955489+00:00",
+  "status": "intent-byte-verification-passed",
+  "run_id": "order-rp-20261008-03-after",
+  "source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+  "notorch_commit": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "archive_revision": "f246950c131eef726a1d2055c79e85242b070611",
+  "archive_units": [
+    "intent"
+  ],
+  "logical_files_verified": 86,
+  "binding_count": 85,
+  "plan_sha256": "4b103eb502fddff71906435b68ef313f483d1dc191023ffb460ea182d7ee42a6",
+  "recovery_ledger_sha256": "86aa3eb0740a4e43ea19f6e02fac00e50288494b0a8d9875e04e2cc4194443f6",
+  "scientific_keys_preserved": [
+    "arm",
+    "argv",
+    "environment",
+    "remote",
+    "ack_timeout_ms",
+    "scientific_plan_sha256",
+    "evaluation_plan",
+    "expected_initial_lora_sha256"
+  ],
+  "original_bindings_preserved": 59,
+  "approved_infrastructure_changes": [
+    "training/durable_archive.py",
+    "training/explanations/run_training.py"
+  ],
+  "cpu_model": "AMD EPYC 9655P 96-Core Processor",
+  "numerical_binary_bindings": [
+    {
+      "path": "build/jovovich-train-mlp",
+      "bytes": 259560,
+      "sha256": "c1bf84e6010b91124c437e14381112ea2fef5f2d0845d0accf62b289baf38573"
+    },
+    {
+      "path": "build/jovovich-merge-mlp",
+      "bytes": 44456,
+      "sha256": "9bdf49bdfe80d5ae8c89a6faabaa6718f739ce5c1fac239c93f351d8ee8a365c"
+    },
+    {
+      "path": "build/jovovich-probe-mlp",
+      "bytes": 263944,
+      "sha256": "2e8eb0844f764b14baaa576c1213968754744b4ec718f16d380a9eecc9bcae89"
+    },
+    {
+      "path": "build/jovovich-infer",
+      "bytes": 225152,
+      "sha256": "8e4aad1f4a5f661f8b96662dda014d6c1f09da9ecdef7ba15b188bc73a09aef2"
+    }
+  ],
+  "base": {
+    "path": "models/base-qwen.gguf",
+    "bytes": 675710848,
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1"
+  },
+  "expected_initial_lora_sha256": {
+    "gate": "503251a51b577f17da38f2daef9c3ed45447cc0694ba2893500e3ed810b15236",
+    "up": "85e8ad39df1873485ccb896cd0ee687cc8aa8039d8da9e17d22f51551371424e",
+    "down": "c7858694fbb9cc971ca9dd634c11f2774545e846090efdf77f78d821cd97d71a"
+  },
+  "before_completion_sha256": "029ea18460142cf50d31955ce789e4913604ded30cd9ba82e37965b1b5bcfde6",
+  "host_manifest": {
+    "path": "models/order-rp-20261008-03-job/host-manifest.json",
+    "bytes": 3150,
+    "sha256": "352d0f7149a3b2104d75ae5b4a563cc2c361c2e64604191f7582d4f5f73a06ae"
+  },
+  "pod_specific_metadata_bindings": [
+    "models/order-rp-20261008-03-recovered/preflight.json",
+    "models/order-rp-20261008-03-job/host-manifest.json",
+    "models/order-rp-20261008-03-launch/binding.json"
+  ],
+  "numerical_updates_verified": 0
+}
