@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 const source = resolve('training/after_recovery/host_launch.sh');
 const prepareSource = resolve('training/cloud/prepare_after_host.sh');
 const INPUT_PATH = 'training/after_recovery/inputs.json';
-const RECORD_PATH = 'training/results/2026-10-04-archive-retry/verification.json';
+const RECORD_PATH = 'training/results/2026-10-08-archive-rehearsal/launch-bindings.json';
 const INPUTS = { ...JSON.parse(readFileSync(INPUT_PATH, 'utf8')),
   new_after_run_id: 'fixture-after', new_evaluation_run_id: 'fixture-eval' };
 const ORDER = ['install', 'fetch-model', 'recover', 'bind', 'preflight-after', 'run-after', 'evaluate'];
@@ -95,7 +95,7 @@ elif a[0]=='training/after_recovery/bind.py':
  log('bind')
  if os.environ.get('HOST_TEST_FAIL')=='bind':sys.exit(8)
  assert json.loads((Path(arg('--recovered'))/'preflight.json').read_text())['fixture']
- assert arg('--infrastructure-record')=='training/results/2026-10-04-archive-retry/verification.json'
+ assert arg('--infrastructure-record')=='training/results/2026-10-08-archive-rehearsal/launch-bindings.json'
  host=Path(arg('--host-manifest'));assert json.loads(host.read_text())['source_commit']==arg('--source-sha')
  bindings=[binding(name) for name in ('training/after_recovery/inputs.json','training/after_recovery/host_launch.sh',
             'models/fixture-job/launcher.sh','models/fixture-job/host-manifest.json')]

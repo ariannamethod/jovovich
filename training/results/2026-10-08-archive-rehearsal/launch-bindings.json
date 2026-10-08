@@ -1,0 +1,37 @@
+{
+  "schema": "jovovich.archive-retry-preflight-result.v1",
+  "status": "prepared-source-bindings",
+  "original_archive_revision": "da956877094005bff2cd96b2fb42f0b8e3a5ed42",
+  "new_after_run_id": "order-rp-20261008-03-after",
+  "infrastructure_changes": [
+    {
+      "path": "training/durable_archive.py",
+      "original": {
+        "path": "training/durable_archive.py",
+        "bytes": 23730,
+        "sha256": "5e163cfe174bcd20b5f4c815027e1e8ce0e18c1659606048acee8928523b5a2a"
+      },
+      "candidate": {
+        "path": "training/durable_archive.py",
+        "bytes": 34980,
+        "sha256": "9d29059e852d8f81033df2048b234d636d89c208becb25b29a431439c822a20d"
+      }
+    },
+    {
+      "path": "training/explanations/run_training.py",
+      "original": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 17416,
+        "sha256": "b32e1d3cf61280914e088fb25addeeb6a60cdaeb2ee61aeb3e2d867cdcceec2c"
+      },
+      "candidate": {
+        "path": "training/explanations/run_training.py",
+        "bytes": 21799,
+        "sha256": "f132b02ce45bdd3880991cb51fb742b29d6644c79db80d4c7c67dd6a417373c1"
+      }
+    }
+  ],
+  "numerical_policy": "Original authenticated native binaries, data and initial adapters; fresh optimizer trajectory. No numerical rebuild or state resume.",
+  "admitted_change": "Merged PR35 validation reason codes; unchanged retry policy and archive integrity checks.",
+  "prior_attempt": "order-rp-20261004-02-after stopped after ACK23 on validation; exact historical cause unestablished."
+}

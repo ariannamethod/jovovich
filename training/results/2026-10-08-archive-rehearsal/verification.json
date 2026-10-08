@@ -1,0 +1,55 @@
+{
+  "schema": "jovovich.archive-rehearsal-and-after-relaunch.v1",
+  "source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+  "historical_incident": "ACK23, computed24; specific original validation reason unavailable",
+  "live_rehearsal": {
+    "acknowledged_units": 103,
+    "retry_events": 0,
+    "training_calls": 0,
+    "recovered_units": 103,
+    "logical_files": 504,
+    "all_recovered_payloads_rehashed": true,
+    "max_unit_seconds": 54.68679,
+    "terminal_revision": "4a3eb7f63a9354984998f2703d7c747f1b8588de",
+    "terminal_receipt": "terminal-receipt.json"
+  },
+  "rehearsal_sources": {
+    "executed_script_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+    "executed_script_sha256": "5bdd09091f84e0bb343142344c62d6a012057f54efe58f9436e5c561de9718b7",
+    "terminal_implementation_sha256": "33ced2f2e2ff79ecdeaefaafda63a60a6e015f191e4eebc3369ebc1c1547fd11",
+    "terminal_fix": "Archive the full recovery result in its own closed unit; future intermediate reports explicitly say recovery pending."
+  },
+  "validation": {
+    "archive_tests": 44,
+    "host_bind_evaluate_tests": 47,
+    "failed": 0,
+    "original_recovered_units": {
+      "before": 103,
+      "failed_after": 11
+    },
+    "plan_bindings": 85,
+    "native_preflight": "passed",
+    "preflight_remote_roundtrip": {
+      "run_id": "after-launch-preflight-20261008-03",
+      "revision": "d6510976d40cb0e3dfede0f10402f3d79dc09282",
+      "next_sequence": 1,
+      "verified_remote_bytes": true,
+      "logical_files": 20
+    }
+  },
+  "notorch_audit": "notorch/audit.json",
+  "independent_archive_audit": "audit/archive_conditions.stdout.json",
+  "fresh_attempt": "order-rp-20261008-03-after",
+  "fresh_evaluation": "order-rp-20261008-03-eval",
+  "numerical_policy": "Preserve original numerical binaries, data, initialization, settings and 228-response evaluation. Fresh optimizer process.",
+  "deployment": {
+    "status": "RUNNING",
+    "pod_id": "sb0zexiv12aeoe",
+    "name": "jovovich-after-20261008-03",
+    "source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+    "cost_usd_per_hour": 0.16,
+    "max_seconds": 43200,
+    "phase": "bootstrap",
+    "numerical_updates_observed": 0
+  }
+}

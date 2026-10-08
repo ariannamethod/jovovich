@@ -1,0 +1,216 @@
+{
+  "notorch_baseline": "014403faa76b795aefe18a4781980f5b140e0ed3",
+  "notorch_snapshot": "420fa54fe3b92cdb2f83e20d19fc887b09db3d8e",
+  "jovovich_snapshot": "42c40a12315ba54ff8ecb3bbe9094bd5b4e357a5",
+  "snapshot_retrieval": "Successful Git clone; subsequent refresh failed CONNECT tunnel HTTP 403. Findings refer to the exact snapshot above.",
+  "recommendation": "Continue the original archived before100/fresh-after100 matched comparison with its original numerical binaries and inputs after archive repair. No post-pin change inspected establishes a defect in this CPU path requiring invalidation of both arms. A new core/optimizer or architecture must be a separately bound experiment.",
+  "findings": [
+    {
+      "finding": "Qwen inference, GGUF, tokenizer, residual capture and SIMD files unchanged since pin",
+      "evidence": "git diff 014403faa76b795aefe18a4781980f5b140e0ed3..420fa54fe3b92cdb2f83e20d19fc887b09db3d8e -- harness gguf.c gguf.h examples/bpe.c examples/bpe.h examples/unicode_numbers.h notorch_simd.h",
+      "unchanged_files": 30
+    },
+    {
+      "finding": "Legacy CPU Chuck preserves the measured 6000-step trajectory",
+      "commits": [
+        "097fc062418bc9f29de8f0a89d781608680aef4d",
+        "d5103e89797b47920f76c730cf5a24613791d04d"
+      ],
+      "evidence": "chuck-parity.json; reproduce.py; tests/chuck_legacy_parity.c; notorch.c:3259 calls chuck_step_impl with NULL action",
+      "details": "New Loss Architect is an opt-in policy/action interface. Golden-vector addition changes documentation/tests; the pinned source and 097fc06 differ only in comments."
+    },
+    {
+      "finding": "Concrete new correctness fixes target device coherence and checked-action shape validation",
+      "commits": [
+        "0dea13331077d9c5da504c5c6608b4f804f345ed",
+        "de08f90"
+      ],
+      "evidence": "notorch.c:3157,3221,3707 contain USE_CUDA coherence guards; notorch.c:3281 checks state only through nt_tape_chuck_step_action; NOTORCHLOG.md:857,920",
+      "details": "JOVOVICH training/train_mlp.c:744,748 calls legacy nt_tape_chuck_step. Archived host is a CPU pod, Makefile has no USE_CUDA. These fixes do not identify the archive validation failure."
+    },
+    {
+      "finding": "Qwen3.5 is outside the implemented architecture boundary",
+      "evidence": "harness/archs.c exact-name lookup; harness/arch_llama.c:476; harness/main.c:413; jovovich/src/infer.c:169; jovovich/training/train_mlp.c:699",
+      "notorch_registered_architectures": [
+        "llama",
+        "mistral3",
+        "qwen2",
+        "qwen3",
+        "gemma3",
+        "gemma4",
+        "olmoe",
+        "qwen3moe",
+        "mamba",
+        "resonance",
+        "janus"
+      ],
+      "jovovich_inference": [
+        "qwen2",
+        "qwen3"
+      ],
+      "jovovich_trainer": [
+        "qwen2"
+      ],
+      "trainer_extra_requirement": "RMSNorm epsilon 1e-6; ChatML without thinking prefix",
+      "next_requirement": "Implement/validate the new family backend and cache/state semantics, then adapt JOVOVICH training capture/export and token/template contract. Changing only the model URL or architecture label is insufficient."
+    },
+    {
+      "finding": "Archive acknowledgement and LoRA lifecycle remain JOVOVICH orchestration",
+      "evidence": "jovovich/training/train_mlp.c:643-675,735-760; jovovich/training/explanations/run_training.py; jovovich/training/durable_archive.py",
+      "details": "NoTorch post-pin additions are SPA, owned RNG/stateless kernels, tanh/SGD and Chuck Architect. None replaces the existing HF unit upload/readback/ACK mechanism."
+    }
+  ],
+  "unchanged_sources": [
+    {
+      "path": "harness/arch.h",
+      "bytes": 6538,
+      "sha256": "dbd80d442d5c4b140902555ae17738d2a0ff7df19598400e43cfcfd291da1978"
+    },
+    {
+      "path": "harness/arch_gemma3.c",
+      "bytes": 13729,
+      "sha256": "f936602e61908df0882afae3a7c7baec430b390953fb46f5ec07d42ee199cedf"
+    },
+    {
+      "path": "harness/arch_gemma4.c",
+      "bytes": 24066,
+      "sha256": "3b4ccd4323d315533d7ce454ba28b5d1d29ef16ea7aa4dcf693f16b94e948c09"
+    },
+    {
+      "path": "harness/arch_janus.c",
+      "bytes": 19788,
+      "sha256": "ea7ae3b159653a70a71edf4fd4ff5d1cabea3c5aafe5c4d4455a46fac85c7d3c"
+    },
+    {
+      "path": "harness/arch_llama.c",
+      "bytes": 22664,
+      "sha256": "2d8ed9dd224d615ab31d44330e7f61b77598e1d9a409c4393cb682d8d76580d5"
+    },
+    {
+      "path": "harness/arch_mamba.c",
+      "bytes": 17170,
+      "sha256": "90541f723f17d45cc36fb6e86053acaaa76a21f4db6e423c071c27ecfc8d2616"
+    },
+    {
+      "path": "harness/arch_models.h",
+      "bytes": 1879,
+      "sha256": "cc20f70ecdb4b45607b669be857a9b3b59a289db47994313dbfb182628642bf0"
+    },
+    {
+      "path": "harness/arch_olmoe.c",
+      "bytes": 34763,
+      "sha256": "694cff9f53dd40f25392a25fe83bf3150899f7104b6865838fde494d54e99ede"
+    },
+    {
+      "path": "harness/arch_resonance.c",
+      "bytes": 15041,
+      "sha256": "9333d6bc91cd12c5be4f91c7e10b6d9c1464d4740bb3ced1630becb8d4a9a476"
+    },
+    {
+      "path": "harness/archs.c",
+      "bytes": 569,
+      "sha256": "1e728463b90025e99460231fe3129560cb25dca5c289fa3d04a19d064bb376f4"
+    },
+    {
+      "path": "harness/archs.h",
+      "bytes": 913,
+      "sha256": "24a8ded5dd4aaaa533f5d308dd23487848492f60d164ec7290fd2924bdb346d8"
+    },
+    {
+      "path": "harness/cuda_decode.cu",
+      "bytes": 38261,
+      "sha256": "af990b0cc6dfccdfb821378e33ca930c0ba4865e4aaec6578cc828f00d178509"
+    },
+    {
+      "path": "harness/cuda_decode.h",
+      "bytes": 1106,
+      "sha256": "08811d1e46c20a05befe1dfb3e48b2150d168dba3cfad0f433f6dee8156a22cf"
+    },
+    {
+      "path": "harness/logo.h",
+      "bytes": 950,
+      "sha256": "d63ba07dc8ec891f9810e34941617654c138e379664e17ea3b0d0b1766e35f69"
+    },
+    {
+      "path": "harness/main.c",
+      "bytes": 21882,
+      "sha256": "fc6506cbda8d099b403000c2b40df4edaa8d227dd309461dc1e4e3078d8f4834"
+    },
+    {
+      "path": "harness/runtime.c",
+      "bytes": 15583,
+      "sha256": "f7408acf30c3a1968ff2b58b8bdfb83d4f7d6efca6061d1908f3e45b04a4d13a"
+    },
+    {
+      "path": "harness/runtime.h",
+      "bytes": 5513,
+      "sha256": "e0a87ae20c3836670bcfa32d7ecdf74e5e2d3d534da2cf901f277b2eb6e7c4ba"
+    },
+    {
+      "path": "harness/test_consumer_link.sh",
+      "bytes": 3386,
+      "sha256": "b0dcab6b82d4211c5a5695f2432b53d34226f960bc16a762d4a21f9e8539209c"
+    },
+    {
+      "path": "harness/test_janus.sh",
+      "bytes": 3505,
+      "sha256": "ec81d3ed2971530a38952c77847ccd89076492acdd458ae46a8bb28ca91fbd17"
+    },
+    {
+      "path": "harness/test_parity.sh",
+      "bytes": 4975,
+      "sha256": "d481519ac5128784f903f426c2037f72d9d30f2106ec7e59a2a2e695ad514f4b"
+    },
+    {
+      "path": "harness/test_reference.sh",
+      "bytes": 14808,
+      "sha256": "2c620a4c5b15d1434c7bf79935a17b16de65dedc7259932fee3f9cdda7122773"
+    },
+    {
+      "path": "harness/test_repeat.sh",
+      "bytes": 3231,
+      "sha256": "6b5039e4fd26bf7f1068a6f25b233d48416429e5d63c06fea0fbf938f4df0463"
+    },
+    {
+      "path": "harness/test_resonance.sh",
+      "bytes": 2151,
+      "sha256": "743975ac601bf7db79bac76109cfa0e107b5418f4d8660fa41c8a8318290b249"
+    },
+    {
+      "path": "harness/test_tokenizer.sh",
+      "bytes": 5526,
+      "sha256": "c85c7ced3390f7128e70e928e9f83a29d6d25cd0062dd95d9284aeae78a034fe"
+    },
+    {
+      "path": "gguf.c",
+      "bytes": 53933,
+      "sha256": "39bfb68692bb025b23844bb8e56eef8add56a2660bc9f731ab9c9ef15d5879e9"
+    },
+    {
+      "path": "gguf.h",
+      "bytes": 11406,
+      "sha256": "cc657d588e2ef47e3cdaf0e3ea017ef422cbbd5ab394730b6bc412bd3adb6589"
+    },
+    {
+      "path": "examples/bpe.c",
+      "bytes": 36729,
+      "sha256": "f89e648cb10ae2b7f93af9a31eafe5537a974fab11d9d960d7884355cccba9c5"
+    },
+    {
+      "path": "examples/bpe.h",
+      "bytes": 2388,
+      "sha256": "2e5769426da001c944851a876724de40ed481f44f2ce13669fbde13c1c0aa32f"
+    },
+    {
+      "path": "examples/unicode_numbers.h",
+      "bytes": 3449,
+      "sha256": "c77829428be33a7d0e71d3c851cea86ca8121e34c969d4744fcb6279e759944c"
+    },
+    {
+      "path": "notorch_simd.h",
+      "bytes": 28218,
+      "sha256": "eea8e74cd943325db32647eda7e1ebae458dbad41d1486937adf8df0fca1633c"
+    }
+  ],
+  "reproduce_command": "python3 reproduce.py --repo /path/to/notorch --output chuck-parity.json"
+}

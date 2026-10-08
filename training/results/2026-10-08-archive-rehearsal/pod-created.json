@@ -1,0 +1,29 @@
+{
+  "id": "sb0zexiv12aeoe",
+  "name": "jovovich-after-20261008-03",
+  "status": "RUNNING",
+  "cost": 0.16,
+  "cpu": {
+    "id": "cpu3g",
+    "memory": 16,
+    "vcpuCount": 4
+  },
+  "gpu": null,
+  "dataCenterId": "EU-RO-1",
+  "mounts": {
+    "network": [
+      {
+        "path": "/workspace",
+        "volumeId": "ogxwco58mr"
+      }
+    ]
+  },
+  "locked": false,
+  "actions": [
+    "stop",
+    "restart",
+    "terminate"
+  ],
+  "createdAt": "2026-10-08T00:02:27.211Z",
+  "startedAt": "2026-10-08T00:02:27.203Z"
+}

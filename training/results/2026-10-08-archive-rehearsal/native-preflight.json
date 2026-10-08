@@ -1,0 +1,8 @@
+{
+  "status": "preflight-passed",
+  "return_code": 0,
+  "source_commit": "f5f5d6eac077ea37ca5e254211280c0a1c1c7a13",
+  "run_id": "order-rp-20261008-03-after",
+  "bindings": 85,
+  "command": "python training/explanations/run_training.py preflight --plan models/order-rp-20261008-03-launch/after.launch.json"
+}

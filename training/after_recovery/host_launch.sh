@@ -44,7 +44,7 @@ node -e 'if (+process.versions.node.split(".")[0] < 22) process.exit(1)' || fail
 export PYTHONDONTWRITEBYTECODE=1
 
 JOV_INPUTS=training/after_recovery/inputs.json
-JOV_INFRASTRUCTURE_RECORD=training/results/2026-10-04-archive-retry/verification.json
+JOV_INFRASTRUCTURE_RECORD=training/results/2026-10-08-archive-rehearsal/launch-bindings.json
 # Read the exact committed inputs and approved infrastructure pairs before any
 # installation, model download, or archive recovery.
 JOV_FIELDS=$(python3 - "$JOV_INPUTS" "$JOV_INFRASTRUCTURE_RECORD" "$JOV_SOURCE_COMMIT" "$JOV_RUN_PREFIX" <<'PY'

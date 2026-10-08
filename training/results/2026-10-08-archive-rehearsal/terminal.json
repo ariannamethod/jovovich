@@ -1,0 +1,26 @@
+{
+  "all_recovered_payloads_rehashed": true,
+  "executed_rehearsal_script": {
+    "git_blob_sha1": "35b61d8156b2351fc367f80578bb0d4bf70a8c7b",
+    "sha256": "5bdd09091f84e0bb343142344c62d6a012057f54efe58f9436e5c561de9718b7",
+    "size": 9829
+  },
+  "logical_files": 504,
+  "recovered_units": 103,
+  "recovery": {
+    "next_sequence": 103,
+    "revision": "42d06de0410a41f60ab90aa2318670b0cda74488",
+    "run_id": "archive-rehearsal-20261008-01",
+    "verified_remote_bytes": true
+  },
+  "recovery_ledger_sha256": "7e4f56cc81444c18c519d43ce0413cf01de63534d30c40e4a44113ee16dfc41d",
+  "run_id": "archive-rehearsal-20261008-01",
+  "schema": "jovovich.live-archive-terminal.v1",
+  "status": "verified",
+  "terminal_implementation": {
+    "git_blob_sha1": "af193cd799038d77c38b6849485861382a9de23e",
+    "sha256": "33ced2f2e2ff79ecdeaefaafda63a60a6e015f191e4eebc3369ebc1c1547fd11",
+    "size": 11514
+  },
+  "training_calls": 0
+}
