@@ -5,6 +5,7 @@ This evaluator is for the bundled fixtures; review.py never executes repository 
 import ast,copy,sys,pathlib,json,re,collections
 root=pathlib.Path(__file__).resolve().parent
 from verify_functions import safe,check
+from fixture_quality import quarantined, semantic_verdict
 src={r['task_id']:r for r in map(json.loads,(root/'data/verified_functions.jsonl').read_text().splitlines())}
 rows=list(map(json.loads,pathlib.Path(sys.argv[1]).read_text().splitlines()))
 case_files=sys.argv[2:] or [str(root/'data/test.jsonl'),str(root/'data/acceptance.jsonl')]
@@ -16,18 +17,26 @@ for path in case_files:
 ids=[r['id'] for r in rows]
 if len(ids)!=len(set(ids)) or set(ids)!=set(cases):raise ValueError('Missing, duplicate or unexpected generated cases')
 if any(r['expected']!=cases[r['id']]['expected'] for r in rows):raise ValueError('Generated case metadata does not match the reference')
+excluded=[r['id'] for r in rows if quarantined(cases[r['id']])]
+rows=[r for r in rows if r['id'] not in excluded]
 counts=collections.Counter();details=[];identity=[];suites=collections.defaultdict(collections.Counter)
 for r in rows:
  if r['expected']=='IDENTITY':
   identity.append({'id':r['id'],'response':r['review']});continue
- text=r['review'];m=re.search(r'Verdict:\s*(CLEAN|CONCERN)\s*$',text);pred=m[1] if m else 'INVALID'
+ text=r['review'];m=re.search(r'Verdict:\s*(CLEAN|CONCERN)\s*$',text)
+ complete=r.get('complete') is True and not text.startswith('[Incomplete generation]')
+ counts['completion_unknown']+='complete' not in r
+ pred=m[1] if m and complete else 'INVALID'
+ semantic=semantic_verdict(text) if complete else 'INVALID'
  suite=suites['repository_acceptance' if r['id'].startswith('accept-') else 'legacy_control'];suite['total']+=1;suite['correct_verdict']+=pred==r['expected']
+ suite['correct_semantic_verdict']+=semantic==r['expected']
  counts['total']+=1;counts['correct_verdict']+=pred==r['expected'];counts[r['expected']+'->'+pred]+=1
+ counts['correct_semantic_verdict']+=semantic==r['expected'];counts['complete']+=complete
  if not re.fullmatch(r'mbpp-\d+-changed',r['id']):continue
  task=src[int(r['id'].split('-')[1])];parts=re.findall(r'`([^`]+)`',text);counterexample=False;repair=False
  structured=re.search(r'The expression `([^`]+)` breaks the required behavior: `(assert[^`]+)` fails\. Replacing it with `([^`]+)`',text)
  if structured:parts=list(structured.groups())
- if len(parts)>=3:
+ if complete and len(parts)>=3:
   expr,assertion,fix=parts[:3]
   try:
    dump=lambda t:ast.dump(t,include_attributes=False)
@@ -41,6 +50,16 @@ for r in rows:
     code=task['imports']+'\n'+ast.unparse(ast.fix_missing_locations(Replace().visit(t)))
     if safe(code) and check(code,task['tests'])=={}:repair=True;break
   except (SyntaxError,ValueError,TypeError):pass
+ # A complete replacement function is also an executable repair. Do not require
+ # an untuned candidate to reproduce our training sentence to get credit for it.
+ name=next(n.name for n in ast.parse(task['changed']).body if isinstance(n,ast.FunctionDef))
+ for block in re.findall(r'```(?:python|py)?\s*\n(.*?)```',text,re.S) if complete else []:
+  try:
+   nodes=ast.parse(block).body
+   if any(isinstance(n,ast.FunctionDef) and n.name==name for n in nodes):
+    code=task['imports']+'\n'+block
+    if safe(code) and check(code,task['tests'])=={}:repair=True;break
+  except (SyntaxError,ValueError,TypeError):pass
  counts['mutation_reviews']+=1;counts['verified_counterexamples']+=counterexample;counts['passing_repairs']+=repair
  details.append({'id':r['id'],'counterexample':counterexample,'repair':repair})
-print(json.dumps({'counts':dict(counts),'suites':dict(suites),'repair_checks':details,'identity_responses':identity},indent=2))
+print(json.dumps({'excluded_quarantined_cases':excluded,'counts':dict(counts),'suites':dict(suites),'repair_checks':details,'identity_responses':identity},indent=2))

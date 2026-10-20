@@ -4,6 +4,8 @@ from pathlib import Path
 os.environ['HF_HUB_ENABLE_HF_TRANSFER']='0'
 ROOT=Path('/workspace/jovovich-job');ROOT.mkdir(exist_ok=True)
 STATE={'status':'starting'}
+OVERRIDE_COMMANDS=None
+MAX_REQUEST_BYTES=8*1024*1024
 def update_state(**values):
     STATE.update(values)
     target=ROOT/'state.json'
@@ -14,8 +16,25 @@ def update_state(**values):
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self,*args):pass
     def do_POST(self):
+        global OVERRIDE_COMMANDS
         if self.headers.get('Authorization')!='Bearer '+os.environ['JOB_TOKEN']:
             self.send_error(403);return
+        if self.path=='/run':
+            if STATE['status'] not in ('completed','failed'):self.send_error(409);return
+            size=int(self.headers.get('Content-Length','0'))
+            if not 0<size<=MAX_REQUEST_BYTES:self.send_error(413);return
+            request=json.loads(self.rfile.read(size))
+            commands=request.get('commands',[])
+            allowed={'batch_review.py','distill.py','train.py','review.py','evaluate.py'}
+            if not commands or any(not isinstance(c,list) or len(c)<3 or c[:2]!=['python','-u'] or c[2] not in allowed or any(not isinstance(a,str) for a in c) for c in commands):
+                self.send_error(400);return
+            files=request.get('files',{})
+            if not set(files).issubset(allowed|{'model_config.py','fixture_quality.py','data/fixture_quarantine.json','data/train_distilled.jsonl'}):self.send_error(400);return
+            for name,content in files.items():Path(name).write_text(content)
+            OVERRIDE_COMMANDS=commands
+            STATE.clear();STATE['status']='starting'
+            threading.Thread(target=job,daemon=True).start()
+            self.send_response(200);self.end_headers();self.wfile.write(b'accepted');return
         if self.path=='/approve-data':
             if STATE['status']!='awaiting_data_review':self.send_error(409);return
             size=int(self.headers.get('Content-Length','0'))
@@ -28,9 +47,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path!='/retry' or STATE['status'] not in ('failed','completed'):
             self.send_error(409);return
         size=int(self.headers.get('Content-Length','0'))
-        if size>500000:self.send_error(413);return
+        if not 0<size<=MAX_REQUEST_BYTES:self.send_error(413);return
         update=json.loads(self.rfile.read(size))
-        allowed={'distill.py','train.py','review.py','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
+        allowed={'distill.py','train.py','review.py','model_config.py','fixture_quality.py','data/fixture_quarantine.json','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
         if not set(update).issubset(allowed):self.send_error(400);return
         for name,content in update.items():Path(name).write_text(content)
         STATE.clear();STATE['status']='starting'
@@ -67,6 +86,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             p=ROOT/'reviews.jsonl';body=p.read_bytes() if p.exists() else b''
         elif self.path=='/training-data':
             p=ROOT/'data/train_distilled.jsonl';body=p.read_bytes() if p.exists() else b''
+        elif self.path.startswith('/artifact/'):
+            name=self.path[len('/artifact/'):]
+            if name!=Path(name).name or Path(name).suffix not in ('.json','.jsonl','.log'):
+                self.send_error(400);return
+            p=ROOT/name
+            if not p.is_file() or p.is_symlink():self.send_error(404);return
+            body=p.read_bytes()
         else:self.send_error(404);return
         self.send_response(200);self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
 def job():
@@ -80,6 +106,7 @@ def job():
                         if hashlib.sha256(Path('data/train_distilled.jsonl').read_bytes()).hexdigest()!=os.environ['TEACHER_DATA_SHA256']:
                             raise ValueError('Approved training data checksum mismatch')
                     else:
+                        commands.append(['python','-m','pip','install','vllm==0.32.0'])
                         commands.append(['python','-u','distill.py','--model',os.environ['TEACHER_MODEL'],
                                          '--revision',os.environ['TEACHER_REVISION']])
                     data_args=['--data','data/train_distilled.jsonl']
@@ -94,7 +121,7 @@ def job():
                     cases=[json.loads(s) for s in Path('data/validation.jsonl').read_text().splitlines()]
                     assert [(r['id'],r['expected']) for r in baseline]==[(r['id'],r['expected']) for r in cases]
                 else:
-                    from train import MODEL, REVISION
+                    from model_config import MODEL, REVISION
                     commands.append(['python','-u','review.py','--model',MODEL,'--revision',REVISION,'--cases','data/validation.jsonl'])
                 commands.append(['python','-u','train.py','--epochs','3'] + data_args)
             review_command=['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl']
@@ -103,6 +130,10 @@ def job():
             if os.environ.get('REVIEW_REVISION'):
                 review_command += ['--revision',os.environ['REVIEW_REVISION']]
             commands.append(review_command)
+            if OVERRIDE_COMMANDS is not None:
+                commands=OVERRIDE_COMMANDS
+            elif os.environ.get('JOB_COMMANDS'):
+                commands=json.loads(os.environ['JOB_COMMANDS'])
             for cmd in commands:
                 if '--check-only' in cmd and os.environ.get('TEACHER_REVIEW_REQUIRED')=='1':
                     digest=hashlib.sha256(Path('data/train_distilled.jsonl').read_bytes()).hexdigest()

@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 from review import messages, SYSTEM
+from fixture_quality import QUARANTINED_GROUPS
 
 ROOT = Path(__file__).parent
 DATA = ROOT / 'data'
@@ -73,6 +74,8 @@ def main():
         fingerprint = function_fingerprint(r['original'])
         if fingerprint in seen_functions: continue
         seen_functions.add(fingerprint)
+        if 'mbpp-' + str(r['task_id']) in QUARANTINED_GROUPS:
+            continue
         group = 'mbpp-' + str(r['task_id'])
         path = 'functions.py'
         for kind, code, verdict in [('original', r['original'], 'CLEAN'), ('changed', r['changed'], 'CONCERN')]:
@@ -103,6 +106,8 @@ def main():
             add(group, kind, context, answer, verdict)
     for i, r in enumerate(json.loads((DATA / 'policies.json').read_text())):
         group = 'policy-' + str(i)
+        if group in QUARANTINED_GROUPS:
+            continue
         cases = [('bad', r['bad'], r['rule'], r['why'], 'CONCERN'),
                  ('good', r['good'], r['rule'], r['ok'], 'CLEAN')]
         if 'permissive' in r:

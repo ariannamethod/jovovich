@@ -1,14 +1,14 @@
 """PyTorch Transformers Trainer SFT. One final model, no Hub writes."""
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
 import torch
+from fixture_quality import require_usable
+from model_config import MODEL, REVISION
 from transformers import (AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig, Trainer,
                           TrainingArguments, DataCollatorForSeq2Seq, TrainerCallback, set_seed)
-
-MODEL = 'Qwen/Qwen3.5-0.8B'
-REVISION = '2fc06364715b967f1860aea9cf38778875588b17'
 
 class BestValidationWeights(TrainerCallback):
     """Keep the best trained epoch in RAM; write only the selected final model."""
@@ -54,13 +54,15 @@ def encode(tokenizer, row, max_length):
 
 def read_rows(path):
     rows = [json.loads(s) for s in Path(path).read_text().splitlines() if s.strip()]
-    return [r for r in rows if r['group'] != 'mbpp-66']
+    require_usable(rows)
+    return rows
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', default=MODEL)
-    parser.add_argument('--revision', default=REVISION)
+    parser.add_argument('--revision')
     parser.add_argument('--data', default='data/train.jsonl')
+    parser.add_argument('--data-sha256')
     parser.add_argument('--validation', default='data/validation.jsonl')
     parser.add_argument('--output', default='/workspace/jovovich-final')
     parser.add_argument('--epochs', type=int, default=3)
@@ -70,6 +72,12 @@ def main():
     parser.add_argument('--max-length', type=int, default=2048)
     parser.add_argument('--check-only', action='store_true')
     args = parser.parse_args()
+    if args.revision is None:
+        if args.model != MODEL:
+            parser.error('--revision is required when selecting another model')
+        args.revision = REVISION
+    if args.data_sha256 and hashlib.sha256(Path(args.data).read_bytes()).hexdigest() != args.data_sha256:
+        raise ValueError('Training corpus does not match the reviewed SHA-256')
     set_seed(42)
     tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision)
     tokenizer.padding_side = 'right'

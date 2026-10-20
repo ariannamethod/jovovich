@@ -1,0 +1,266 @@
+[
+  {
+    "task_id": 3,
+    "test": "assert is_not_prime(1) is True",
+    "reason": "One is non-prime."
+  },
+  {
+    "task_id": 18,
+    "test": "assert remove_dirty_chars('ёж','ё') == 'ж'",
+    "reason": "Character table only covers 256 code points; contract has no such limit."
+  },
+  {
+    "task_id": 66,
+    "test": "assert pos_count([0]) == 0",
+    "reason": "Zero is not positive."
+  },
+  {
+    "task_id": 69,
+    "test": "assert is_sublist([1,2,1],[1,2]) is True",
+    "reason": "A later partial match raises IndexError after finding the sublist."
+  },
+  {
+    "task_id": 83,
+    "test": "assert get_Char('z') == 'z'",
+    "reason": "Modulo-zero branch returns integer instead of character."
+  },
+  {
+    "task_id": 104,
+    "test": "assert sort_sublists([['ab','aa']]) == [['aa','ab']]",
+    "reason": "Only first character is sorted."
+  },
+  {
+    "task_id": 113,
+    "test": "assert check_integer('+') is False",
+    "reason": "A lone sign is accepted as an integer."
+  },
+  {
+    "task_id": 117,
+    "test": "assert list_to_float([('1','2','3')]) == [(1.0,2.0,3.0)]",
+    "reason": "Convertible third element is discarded."
+  },
+  {
+    "task_id": 126,
+    "test": "assert sum(4,8) == 7",
+    "reason": "Common divisor equal to the smaller input is excluded."
+  },
+  {
+    "task_id": 129,
+    "test": "assert magic_square_test([[0,1,2],[1,2,0],[2,0,1]]) is False",
+    "reason": "Checks main diagonal twice and ignores opposite diagonal."
+  },
+  {
+    "task_id": 143,
+    "test": "assert find_lists(([1],2,[3])) == 2",
+    "reason": "Counts non-list tuple elements."
+  },
+  {
+    "task_id": 160,
+    "test": "assert find_solution(4,6,2) is not None",
+    "reason": "Integer solution (-1,1) exists but search restricts signs."
+  },
+  {
+    "task_id": 164,
+    "test": "assert are_equivalent(9,8) is False",
+    "reason": "Square root divisor counted twice; supplied examples imply proper divisors."
+  },
+  {
+    "task_id": 222,
+    "test": "assert check_type((1,True)) is False",
+    "reason": "Subtype passes same-type check."
+  },
+  {
+    "task_id": 229,
+    "test": "assert re_arrange_array([1,2,-1],3) == [-1,1,2]",
+    "reason": "Stable partition contract contradicted by implementation and supplied example."
+  },
+  {
+    "task_id": 261,
+    "test": "assert division_elements((5,),(2,)) == (2.5,)",
+    "reason": "Floor division substitutes for mathematical division."
+  },
+  {
+    "task_id": 267,
+    "test": "assert square_Sum(10**8) == 10**8*(4*10**16-1)//3",
+    "reason": "Float division loses exact integer result."
+  },
+  {
+    "task_id": 280,
+    "test": "assert sequential_search([1],2) == (False,-1)",
+    "reason": "Missing-element index violates explicit minus-one contract."
+  },
+  {
+    "task_id": 283,
+    "test": "assert validate(0) is False",
+    "reason": "Zero digit frequency is skipped."
+  },
+  {
+    "task_id": 286,
+    "test": "assert max_sub_array_sum_repeated([-3000000000],1,1) == -3000000000",
+    "reason": "Fixed sentinel exceeds valid subarray result."
+  },
+  {
+    "task_id": 287,
+    "test": "assert square_Sum(10**8) == 2*10**8*(10**8+1)*(2*10**8+1)//3",
+    "reason": "Float division loses exact integer result."
+  },
+  {
+    "task_id": 291,
+    "test": "assert count_no_of_ways(1,3) == 3",
+    "reason": "Single fence post causes out-of-range access."
+  },
+  {
+    "task_id": 406,
+    "test": "assert find_Parity(1<<32) is True",
+    "reason": "Parity fold silently assumes 32-bit input."
+  },
+  {
+    "task_id": 408,
+    "test": "assert k_smallest_pairs([3,1],[2],1) == [[1,2]]",
+    "reason": "Sorted inputs are required by the implementation but absent from the contract."
+  },
+  {
+    "task_id": 409,
+    "test": "assert min_product_tuple([(-2,3),(1,1)]) == -6",
+    "reason": "Absolute value removes the sign of products."
+  },
+  {
+    "task_id": 412,
+    "test": "assert remove_odd([1,3,2]) == [2]",
+    "reason": "Mutates iterated list and skips odd values."
+  },
+  {
+    "task_id": 438,
+    "test": "assert count_bidirectional([(1,2),(2,3)]) == 0",
+    "reason": "Repeats one equality instead of checking both coordinates."
+  },
+  {
+    "task_id": 452,
+    "test": "assert loss_amount(100,80) == 20",
+    "reason": "Implementation and supplied examples calculate profit instead of loss."
+  },
+  {
+    "task_id": 453,
+    "test": "assert sumofFactors(2) == 2",
+    "reason": "Includes odd divisor one."
+  },
+  {
+    "task_id": 454,
+    "test": "assert text_match_wordz('z') is True",
+    "reason": "Pattern requires a character after z."
+  },
+  {
+    "task_id": 461,
+    "test": "assert upper_ctr('AB') == 2",
+    "reason": "Returns from first loop iteration; supplied uppercase example is also wrong."
+  },
+  {
+    "task_id": 463,
+    "test": "assert max_subarray_product([-2]) == -2",
+    "reason": "Returns an empty-product value for a nonempty negative subarray."
+  },
+  {
+    "task_id": 468,
+    "test": "assert max_product([2,1,3]) == 6",
+    "reason": "Only contiguous runs are considered instead of increasing subsequences."
+  },
+  {
+    "task_id": 558,
+    "test": "assert digit_distance_nums(19,20) == 10",
+    "reason": "Computes digit sum of subtraction instead of per-digit distances."
+  },
+  {
+    "task_id": 566,
+    "test": "assert sum_digits(1000000000000000019) == 11",
+    "reason": "Float division loses digits."
+  },
+  {
+    "task_id": 589,
+    "test": "assert perfect_squares(0,1) == [0,1]",
+    "reason": "Zero square is omitted."
+  },
+  {
+    "task_id": 590,
+    "test": "assert polar_rect(1,0) == 1+0j",
+    "reason": "Contract/API conflict: fixed rect(2,pi) is returned alongside reverse conversion."
+  },
+  {
+    "task_id": 595,
+    "test": "assert min_Swaps('00','11') == 'Not Possible'",
+    "reason": "Swapping cannot change number of set bits."
+  },
+  {
+    "task_id": 605,
+    "test": "assert prime_num(9) is False",
+    "reason": "Returns true after first non-divisor."
+  },
+  {
+    "task_id": 617,
+    "test": "assert min_Jumps((3,4),8) == 2",
+    "reason": "Division produces fractional jump count; source example also fractional."
+  },
+  {
+    "task_id": 620,
+    "test": "assert largest_subset([2,6,3]) == 2",
+    "reason": "Divisibility chain does not ensure every pair is divisible."
+  },
+  {
+    "task_id": 639,
+    "test": "assert sample_nam(['ALICE']) == 5",
+    "reason": "Adds lowercase-tail restriction absent from contract."
+  },
+  {
+    "task_id": 752,
+    "test": "assert jacobsthal_num(0) == 0",
+    "reason": "Explicit sequence base case indexes outside allocation."
+  },
+  {
+    "task_id": 757,
+    "test": "assert count_reverse_pairs(['aba']) == 0",
+    "reason": "Ambiguous pair domain: implementation pairs an entry with itself; fixture does not specify this choice."
+  },
+  {
+    "task_id": 763,
+    "test": "assert find_min_diff([0,10**21],2) == 10**21",
+    "reason": "Sentinel caps valid difference."
+  },
+  {
+    "task_id": 775,
+    "test": "assert odd_position([1,1]) is True",
+    "reason": "Also constrains even positions, contrary to the odd-index contract."
+  },
+  {
+    "task_id": 776,
+    "test": "assert count_vowels('b') == 0",
+    "reason": "A single character has no vowel neighbors; implementation indexes outside the string."
+  },
+  {
+    "task_id": 790,
+    "test": "assert even_position([2,2]) is True",
+    "reason": "Also constrains odd positions; duplicate body of task775 with different contract."
+  },
+  {
+    "task_id": 799,
+    "test": "assert left_rotate(0x80000000,1) == 1",
+    "reason": "Rotation lacks the 32-bit mask required by the contract."
+  },
+  {
+    "task_id": 803,
+    "test": "assert is_perfect_square(0) is True",
+    "reason": "Zero is a perfect square."
+  },
+  {
+    "task_id": 806,
+    "test": "assert max_run_uppercase('ABCaD') == 3",
+    "reason": "Overwrites the maximum with the most recent run."
+  },
+  {
+    "group": "policy-4",
+    "reason": "Permissive contract requires pre-approved PRs; implementation checks only score."
+  },
+  {
+    "group": "policy-28",
+    "reason": "Requests timeout limits socket inactivity, while the contract requires a total ten-second deadline.",
+    "source": "https://requests.readthedocs.io/en/latest/user/quickstart/#timeouts"
+  }
+]
