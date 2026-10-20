@@ -263,7 +263,9 @@ int main(int argc,char **argv) {
         adapter_io(&m,argv[3],0);gguf_file *ref=gguf_open(argv[4]);if(!ref)die("cannot read exported model");
         bpe_tokenizer *tok=bpe_load(argv[2]);if(!tok)die("cannot load tokenizer");int count=0;
         full_example *data=dataset(argv[5],tok,&count);
-        parity_with(&m,ref,data[0].ids,data[0].n>65?64:data[0].n-1);return 0;
+        /* Export verification must include the complete real example; a short
+         * identity prefix does not exercise review-context rotary positions. */
+        parity_with(&m,ref,data[0].ids,data[0].n-1);return 0;
     }
     int check=!strcmp(argv[1],"--check"),exporting=!strcmp(argv[1],"--export");
     if((check&&argc!=4)||(exporting&&(argc<5||argc>6))||(!check&&!exporting&&(argc<6||argc>8)))die("invalid arguments");
