@@ -1,4 +1,6 @@
 """Construct disjoint task-level splits; no path variants or duplicated samples."""
+import ast
+import builtins
 import hashlib
 import json
 from pathlib import Path
@@ -11,6 +13,24 @@ def split(group):
     bucket = int(hashlib.sha256(group.encode()).hexdigest(), 16) % 10
     return 'test' if bucket == 0 else 'validation' if bucket == 1 else 'train'
 
+def function_fingerprint(code):
+    class Normalize(ast.NodeTransformer):
+        def __init__(self):
+            self.names = {}
+        def name(self, name):
+            if name in vars(builtins): return name
+            return self.names.setdefault(name, 'symbol_' + str(len(self.names)))
+        def visit_FunctionDef(self, node):
+            node.name = self.name(node.name)
+            return self.generic_visit(node)
+        def visit_arg(self, node):
+            node.arg = self.name(node.arg)
+            return node
+        def visit_Name(self, node):
+            node.id = self.name(node.id)
+            return node
+    return ast.dump(Normalize().visit(ast.parse(code)), include_attributes=False)
+
 def main():
     groups = {name: [] for name in ('train', 'validation', 'test')}
     def add(group, suffix, context, answer, verdict):
@@ -18,8 +38,12 @@ def main():
             'id': group + '-' + suffix, 'group': group, 'context': context,
             'expected': verdict,
             'messages': messages(context) + [{'role': 'assistant', 'content': answer + '\nVerdict: ' + verdict}]})
+    seen_functions = set()
     for line in (DATA / 'verified_functions.jsonl').read_text().splitlines():
         r = json.loads(line)
+        fingerprint = function_fingerprint(r['original'])
+        if fingerprint in seen_functions: continue
+        seen_functions.add(fingerprint)
         group = 'mbpp-' + str(r['task_id'])
         path = 'functions.py'
         for kind, code, verdict in [('original', r['original'], 'CLEAN'), ('changed', r['changed'], 'CONCERN')]:
@@ -45,6 +69,7 @@ def main():
         groups['train'].append({'id': f'identity-{i}', 'group': 'identity', 'messages': [
             {'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': question},
             {'role': 'assistant', 'content': answer}]})
+    print('distinct function bodies:', len(seen_functions))
     seen = set()
     for name, rows in groups.items():
         for row in rows:

@@ -21,9 +21,9 @@ python train.py --check-only
 HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --output /workspace/jovovich-final
 ```
 
-There are 614 training rows from 292 source groups, 62 validation rows from 30 groups, and 76 final-check rows from 38 groups. A function and all its variants stay in one split. No filename multiplication or duplicate-row oversampling.
+There are 608 training rows from 289 source groups, 60 validation rows from 29 groups, and 74 final-check rows from 37 groups. A function and all its variants stay in one split. Equivalent function bodies are deduplicated after normalizing local names. No filename multiplication or duplicate-row oversampling.
 
-The corpus includes 295 MBPP functions with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old 16-case file is a legacy diagnostic, not the final check.
+The corpus includes 290 distinct MBPP function bodies with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old 16-case file is a legacy diagnostic, not the final check.
 
 Before optimization the trainer checks exact chat-prefix continuity, target decoding, ignored padding and agreement with explicit shifted PyTorch cross entropy. LoRA uses rank 16, alpha 32, learning rate 1e-4 and three epochs. Validation loss is measured before training and after each epoch. Only the final merged model is saved. No script uploads weights to Hugging Face.
 
