@@ -71,7 +71,8 @@ while not (ROOT/'STOP').exists():
         api.upload_file(repo_id=REPO,path_in_repo=f'{PREFIX}/jobs/{ident}/final.log',path_or_fileobj=log,commit_message='JOVOVICH job closed log')
         (directory/'closed.json').write_text(json.dumps({'returncode':result}))
         status('closed',job=ident,returncode=result)
-        if (result != 0 and job.get('stop_on_failure', True)) or job.get('stop_on_success', False):
+        if ((result != 0 and job.get('stop_on_failure', True)) or
+                (result == 0 and job.get('stop_on_success', False))):
             (ROOT/'STOP').touch()
     except EntryNotFoundError:
         time.sleep(10)

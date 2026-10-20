@@ -195,7 +195,14 @@ checkpoint. Resume accepts a checkpoint directory as the final positional
 argument and requires the **same base, corpus, epochs, learning rate, rank and
 NoTorch build**; retain the archived recipe with it. The merged GGUF preserves
 the tokenizer and writes adapted projections as F32. Use it with
-`JOVOVICH_MODEL=models/jovovich-full.gguf NT_NO_I8=1 node bin/jovovich.mjs review ...`.
+`JOVOVICH_MODEL=models/jovovich-full.gguf node bin/jovovich.mjs review --profile full-lora ...`.
+The explicit `full-lora` profile uses the trained concise-analysis instruction,
+ChatML and the same F32 activation path as delivery. Its prompts match all 24
+delivery cases byte for byte. It does not change the base model's default prompt.
+An independently pinned trained model can use `--model-lock path/to/lock.json`
+with `fetch-model`, `review` or `github`. The lock carries the usual repository,
+revision, file, bytes and SHA-256 fields plus `"prompt_profile":"full-lora"`;
+review verifies that explicit lock against the selected GGUF before inference.
 `training/full_lora/deliver.py` archives that body and each native held-out review.
 
 ### Earlier training paths

@@ -12,6 +12,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MARKER = '<!-- jovovich:advisory:v1 -->';
 const API = 'https://api.github.com';
 export const modelPath = () => path.resolve(process.env.JOVOVICH_MODEL || path.join(ROOT, 'models/jovovich.gguf'));
+const FULL_LORA_TASK_SUFFIX = ' Include a concise analysis string connecting the relevant rule, changed line and consequence.';
+function checkProfile(profile) {
+  if (!['base', 'full-lora'].includes(profile)) throw new Error(`Unknown model prompt profile: ${profile}`);
+  return profile;
+}
 const limit = (s, n) => s.length > n ? s.slice(0, n) + '\n[context excerpt ends]' : s;
 const literal = s => s.replaceAll('<|', '\\u003c|').replaceAll('|>', '|\\u003e');
 const quoteMarkdown = s => s.replaceAll('`', '\\`').replaceAll('@', '@\u200b').replaceAll('<', '&lt;');
@@ -74,8 +79,12 @@ export function parseReview(text, chunk) {
   return { findings };
 }
 
-export async function promptFor(chunk, context, identity, template = process.env.JOVOVICH_CHAT_TEMPLATE || 'chatml') {
+// Keep the renderer's profile explicit: the established evaluation collector
+// calls this function with four arguments, then adds its own trained suffix.
+export async function promptFor(chunk, context, identity, template = process.env.JOVOVICH_CHAT_TEMPLATE || 'chatml', profile = 'base') {
+  checkProfile(profile);
   if (!['chatml', 'qwen3-no-think'].includes(template)) throw new Error(`Unknown chat template: ${template}`);
+  if (profile === 'full-lora' && template !== 'chatml') throw new Error('full-lora requires the trained ChatML template');
   const lines = chunk.lines.map((l, i) => `[${i + 1}] ${l.side === 'LEFT' ? 'REMOVED' : 'ADDED'} ${chunk.path}:${l.line}: ${l.quote}`).join('\n');
   const stored = context.rules || {};
   const applicable = (chunk.agent_paths || agentsFor(chunk.path)).filter(name => Object.hasOwn(stored, name));
@@ -87,13 +96,18 @@ export async function promptFor(chunk, context, identity, template = process.env
   // Qwen3's embedded enable_thinking=false template completes an empty thinking
   // block before generation. Select it explicitly; Qwen2 keeps plain ChatML.
   const suffix = template === 'qwen3-no-think' ? '<think>\n\n</think>\n\n' : '';
-  return `<|im_start|>system\n${identity.trim()}<|im_end|>\n<|im_start|>user\n${literal(task)}<|im_end|>\n<|im_start|>assistant\n${suffix}`;
+  const user = task + (profile === 'full-lora' ? FULL_LORA_TASK_SUFFIX : '');
+  return `<|im_start|>system\n${identity.trim()}<|im_end|>\n<|im_start|>user\n${literal(user)}<|im_end|>\n<|im_start|>assistant\n${suffix}`;
 }
 
-export function infer(prompt, tokens = 512) {
+export function infer(prompt, tokens = 512, profile = process.env.JOVOVICH_PROFILE || 'base') {
+  checkProfile(profile);
   return new Promise((resolve, reject) => {
     const exe = process.env.JOVOVICH_INFER || path.join(ROOT, 'build/jovovich-infer');
-    const child = spawn(exe, ['--model', modelPath(), '--tokens', String(tokens), '--context', '8192', '--temperature', '0'], { stdio: ['pipe', 'pipe', 'pipe'] });
+    // Delivery uses F32 activations, including the remaining quantized base
+    // tensors. Do not silently switch that model back to int8 activations.
+    const env = profile === 'full-lora' ? { ...process.env, NT_NO_I8: '1', NT_QMV_THREADS: '4', NT_ATTN_THREADS: '4', NT_SIMD_THREADS: '4', OPENBLAS_NUM_THREADS: '4' } : process.env;
+    const child = spawn(exe, ['--model', modelPath(), '--tokens', String(tokens), '--context', '8192', '--temperature', '0'], { stdio: ['pipe', 'pipe', 'pipe'], env });
     child.stdout.setEncoding('utf8');
     child.stderr.setEncoding('utf8');
     let out = '', err = '';
@@ -107,15 +121,16 @@ export function infer(prompt, tokens = 512) {
   });
 }
 
-export async function review(input, runner = infer) {
+export async function review(input, runner = infer, profile = process.env.JOVOVICH_PROFILE || 'base') {
+  checkProfile(profile);
   const identity = await readFile(path.join(ROOT, 'prompts/identity.txt'), 'utf8');
   const chunks = chunksFor(input.files);
   if (chunks.length > 24) throw new Error(`Change needs ${chunks.length} review chunks; narrow the diff (limit 24)`);
-  const result = { ...input, reviews: [], failures: [], chunks: chunks.length };
+  const result = { ...input, reviews: [], failures: [], chunks: chunks.length, prompt_profile: profile };
   for (let i = 0; i < chunks.length; i++) {
     process.stderr.write(`JOVOVICH reviews ${chunks[i].path} (${i + 1}/${chunks.length})\n`);
     try {
-      const raw = await runner(await promptFor(chunks[i], input.context, identity));
+      const raw = await runner(await promptFor(chunks[i], input.context, identity, undefined, profile), 512, profile);
       result.reviews.push(parseReview(raw, chunks[i]));
     } catch (e) { result.failures.push(`${chunks[i].path}: ${e.message}`); }
   }
@@ -124,7 +139,8 @@ export async function review(input, runner = infer) {
 
 export function render(result, lock) {
   const findings = result.reviews.flatMap(r => r.findings);
-  const body = [MARKER, '## JOVOVICH', '*Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy*', '', `Commit: \`${result.head}\` · ${result.reviews.length}/${result.chunks} chunks reviewed · ${lock.stage} weights`, '', '**JOVOVICH reviews. JOVOVICH does not rule.**', ''];
+  const profile = result.prompt_profile === 'full-lora' ? ' · full-lora prompt' : '';
+  const body = [MARKER, '## JOVOVICH', '*Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy*', '', `Commit: \`${result.head}\` · ${result.reviews.length}/${result.chunks} chunks reviewed · ${lock.stage} weights${profile}`, '', '**JOVOVICH reviews. JOVOVICH does not rule.**', ''];
   if (findings.length) for (const f of findings) body.push(`- **${quoteMarkdown(f.path)}:${f.line} (${f.side})** — ${quoteMarkdown(f.reason)}\n  \`${quoteMarkdown(f.quote)}\``);
   else if (result.chunks && !result.failures.length) body.push('No grounded concerns returned for the reviewed changed lines.');
   else body.push('Review incomplete. No verdict on this change.');
@@ -215,8 +231,9 @@ async function digest(file) {
   return hash.digest('hex');
 }
 
-export async function fetchModel() {
-  const lock = JSON.parse(await readFile(path.join(ROOT, 'model.json'), 'utf8'));
+export async function fetchModel(lockFile = process.env.JOVOVICH_MODEL_LOCK || path.join(ROOT, 'model.json')) {
+  const lock = JSON.parse(await readFile(lockFile, 'utf8'));
+  checkProfile(lock.prompt_profile || 'base');
   const dest = modelPath();
   try {
     if ((await stat(dest)).size === lock.bytes && await digest(dest) === lock.sha256) { process.stderr.write('Model checksum matches.\n'); return; }
@@ -240,19 +257,23 @@ async function main() {
   const opts = {};
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--post') opts.post = true;
-    else if (['--repo', '--pr', '--base', '--head', '--output'].includes(args[i]) && args[i + 1]) { const key = args[i].slice(2); opts[key] = args[++i]; }
+    else if (['--repo', '--pr', '--base', '--head', '--output', '--profile', '--model-lock'].includes(args[i]) && args[i + 1]) { const key = args[i].slice(2); opts[key] = args[++i]; }
     else throw new Error(`Unknown or incomplete argument: ${args[i]}`);
   }
-  if (command === 'fetch-model') return fetchModel();
+  const explicitLock = opts['model-lock'] || process.env.JOVOVICH_MODEL_LOCK;
+  if (command === 'fetch-model') return fetchModel(explicitLock);
   if (!['review', 'github'].includes(command)) {
-    process.stdout.write('JOVOVICH reviews. JOVOVICH does not rule.\n\nnode bin/jovovich.mjs fetch-model\nnode bin/jovovich.mjs review --repo . --base HEAD~1 --head HEAD\nnode bin/jovovich.mjs github --repo owner/repo --pr 1 [--post]\n');
+    process.stdout.write('JOVOVICH reviews. JOVOVICH does not rule.\n\nnode bin/jovovich.mjs fetch-model [--model-lock PATH]\nnode bin/jovovich.mjs review --repo . --base HEAD~1 --head HEAD [--profile base|full-lora] [--model-lock PATH]\nnode bin/jovovich.mjs github --repo owner/repo --pr 1 [--post] [--profile base|full-lora] [--model-lock PATH]\n');
     if (command && command !== '--help') process.exitCode = 1;
     return;
   }
+  const lock = JSON.parse(await readFile(explicitLock || path.join(ROOT, 'model.json'), 'utf8'));
+  const lockedPath = modelPath() === path.join(ROOT, 'models/jovovich.gguf');
+  if (explicitLock && ((await stat(modelPath())).size !== lock.bytes || await digest(modelPath()) !== lock.sha256)) throw new Error('Selected model does not match --model-lock checksum');
+  const profile = checkProfile(opts.profile || process.env.JOVOVICH_PROFILE || ((lockedPath || explicitLock) && lock.prompt_profile) || 'base');
   const input = command === 'github' ? await collectGithub(opts.repo || '', Number(opts.pr)) : collectLocal(opts.repo || '.', opts.base, opts.head);
-  const result = await review(input);
-  const lock = JSON.parse(await readFile(path.join(ROOT, 'model.json'), 'utf8'));
-  const body = render(result, modelPath() === path.join(ROOT, 'models/jovovich.gguf') ? lock : { stage: 'custom' });
+  const result = await review(input, infer, profile);
+  const body = render(result, lockedPath || explicitLock ? lock : { stage: 'custom' });
   if (opts.output) await writeFile(opts.output, body + '\n'); else process.stdout.write(body + '\n');
   if (opts.post && command === 'github') {
     if (!result.reviews.length) throw new Error('No valid model review; nothing posted');
