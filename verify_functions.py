@@ -56,6 +56,9 @@ def process(r):
   if failure.get('error')=='AssertionError':
    return {'task_id':r['task_id'],'contract':r['prompt'],'original':r['code'],'changed':changed,'tests':tests,'imports':imports,'failure':failure['failed'],'expression_before':before,'expression_after':after}
  return None
-with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool: verified=[r for r in pool.map(process,rows) if r]
-out=ROOT/'data/verified_functions.jsonl';out.write_text(''.join(json.dumps(r)+'\n' for r in verified))
-print('verified independent functions:',len(verified),flush=True)
+def main():
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool: verified=[r for r in pool.map(process,rows) if r]
+    out=ROOT/'data/verified_functions.jsonl';out.write_text(''.join(json.dumps(r)+'\n' for r in verified))
+    print('verified independent functions:',len(verified),flush=True)
+
+if __name__ == '__main__': main()

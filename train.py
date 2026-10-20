@@ -4,19 +4,19 @@ import json
 import math
 from pathlib import Path
 import torch
-from transformers import (AutoTokenizer, AutoModelForCausalLM, Trainer,
+from transformers import (AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig, Trainer,
                           TrainingArguments, DataCollatorForSeq2Seq, set_seed)
 from peft import LoraConfig, get_peft_model
 
-MODEL = 'Qwen/Qwen2.5-Coder-1.5B-Instruct'
-REVISION = '2e1fd397ee46e1388853d2af2c993145b0f1098a'
+MODEL = 'Qwen/Qwen3.5-0.8B'
+REVISION = '2fc06364715b967f1860aea9cf38778875588b17'
 
 def encode(tokenizer, row, max_length):
     messages = row['messages']
     if messages[-1]['role'] != 'assistant':
         raise ValueError('Training row must end with an assistant answer')
-    prefix = tokenizer.apply_chat_template(messages[:-1], tokenize=True, add_generation_prompt=True, return_dict=False)
-    complete = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False, return_dict=False)
+    prefix = tokenizer.apply_chat_template(messages[:-1], tokenize=True, add_generation_prompt=True, return_dict=False, enable_thinking=False)
+    complete = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False, return_dict=False, enable_thinking=False)
     if complete[:len(prefix)] != prefix:
         raise ValueError('Training chat is not an exact continuation of the inference prefix')
     target = complete[len(prefix):]
@@ -64,12 +64,18 @@ def main():
         return
     if not torch.cuda.is_available():
         raise RuntimeError('CUDA required')
-    model = AutoModelForCausalLM.from_pretrained(args.model, revision=args.revision,
+    config = AutoConfig.from_pretrained(args.model, revision=args.revision)
+    model_class = AutoModelForImageTextToText if config.model_type == 'qwen3_5' else AutoModelForCausalLM
+    model = model_class.from_pretrained(args.model, revision=args.revision,
                     dtype=torch.bfloat16, attn_implementation='sdpa')
     model = get_peft_model(model, LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05,
                     target_modules='all-linear', task_type='CAUSAL_LM'))
+    for name, parameter in model.named_parameters():
+        if '.visual.' in name or '.vision_' in name:
+            parameter.requires_grad_(False)
     model.enable_input_require_grads()
     model.config.use_cache = False
+    if hasattr(model.config, 'text_config'): model.config.text_config.use_cache = False
     training = TrainingArguments(
         output_dir=args.output + '-trainer', num_train_epochs=args.epochs,
         learning_rate=args.lr, per_device_train_batch_size=args.batch_size,
@@ -97,6 +103,7 @@ def main():
     trainer.train()
     model.eval()
     model.config.use_cache = True
+    if hasattr(model.config, 'text_config'): model.config.text_config.use_cache = True
     merged = model.merge_and_unload()
     merged.to(dtype=torch.bfloat16).save_pretrained(args.output, safe_serialization=True)
     tokenizer.save_pretrained(args.output)

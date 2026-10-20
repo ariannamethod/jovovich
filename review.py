@@ -11,7 +11,7 @@ def messages(context):
 
 def generate(model, tokenizer, chat):
     import torch
-    prompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True)
+    prompt = tokenizer.apply_chat_template(chat, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     inputs = tokenizer(prompt, add_special_tokens=False, return_tensors='pt').to(model.device)
     if inputs.input_ids.shape[1] > 4096:
         raise ValueError('Review context exceeds 4096 tokens')
@@ -28,7 +28,7 @@ def generate(model, tokenizer, chat):
 
 def main():
     import torch
-    from transformers import AutoTokenizer, AutoModelForCausalLM
+    from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', required=True)
     parser.add_argument('--revision')
@@ -37,7 +37,9 @@ def main():
     source.add_argument('--cases')
     args = parser.parse_args()
     tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision)
-    model = AutoModelForCausalLM.from_pretrained(
+    config = AutoConfig.from_pretrained(args.model, revision=args.revision)
+    model_class = AutoModelForImageTextToText if config.model_type == 'qwen3_5' else AutoModelForCausalLM
+    model = model_class.from_pretrained(
         args.model, revision=args.revision, dtype=torch.bfloat16,
         attn_implementation='sdpa').cuda().eval()
     if args.cases:
