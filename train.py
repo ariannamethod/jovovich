@@ -1,8 +1,8 @@
-"""PyTorch full SFT. Only the final model is saved; no Hub writes."""
+"""PyTorch / PEFT LoRA SFT. Only the final model is saved; no Hub writes."""
 import argparse,json,math,random
 from pathlib import Path
 import torch
-from transformers import AutoTokenizer,AutoModelForImageTextToText,get_cosine_schedule_with_warmup
+from transformers import AutoTokenizer,AutoModelForCausalLM,get_cosine_schedule_with_warmup
 
 def encode(tokenizer,row,max_length):
     messages=row['messages']
@@ -17,12 +17,12 @@ def encode(tokenizer,row,max_length):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument('--model',default='Qwen/Qwen3.5-0.8B')
-    p.add_argument('--revision',default='2fc06364715b967f1860aea9cf38778875588b17')
+    p.add_argument('--model',default='Qwen/Qwen2.5-Coder-1.5B-Instruct')
+    p.add_argument('--revision',default='2e1fd397ee46e1388853d2af2c993145b0f1098a')
     p.add_argument('--data',default='data/train.jsonl')
     p.add_argument('--output',default='/workspace/jovovich-final')
     p.add_argument('--epochs',type=int,default=3)
-    p.add_argument('--lr',type=float,default=2e-6)
+    p.add_argument('--lr',type=float,default=1e-4)
     p.add_argument('--accumulation',type=int,default=8)
     p.add_argument('--max-length',type=int,default=2048)
     a=p.parse_args()
@@ -31,14 +31,17 @@ def main():
     tok=AutoTokenizer.from_pretrained(a.model,revision=a.revision,trust_remote_code=False)
     rows=[json.loads(s) for s in Path(a.data).read_text().splitlines() if s.strip()]
     encoded=[encode(tok,r,a.max_length) for r in rows]
-    model=AutoModelForImageTextToText.from_pretrained(a.model,revision=a.revision,dtype=torch.float32,attn_implementation='sdpa',trust_remote_code=False).cuda()
-    model.gradient_checkpointing_enable();model.config.text_config.use_cache=False
-    model.generation_config.eos_token_id=tok.eos_token_id
+    model=AutoModelForCausalLM.from_pretrained(a.model,revision=a.revision,dtype=torch.bfloat16,attn_implementation='sdpa',trust_remote_code=False).cuda()
+    from peft import LoraConfig,get_peft_model
+    model=get_peft_model(model,LoraConfig(r=16,lora_alpha=32,lora_dropout=0.05,target_modules='all-linear',task_type='CAUSAL_LM'))
+    model.enable_input_require_grads();model.gradient_checkpointing_enable();model.config.use_cache=False
+    eos=model.generation_config.eos_token_id
+    model.generation_config.eos_token_id=sorted(set((eos if isinstance(eos,list) else [eos])+[tok.eos_token_id])-{None})
     model.generation_config.pad_token_id=tok.eos_token_id
-    optimizer=torch.optim.AdamW(model.parameters(),lr=a.lr,weight_decay=.01)
+    optimizer=torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],lr=a.lr,weight_decay=.01)
     total=a.epochs*math.ceil(len(encoded)/a.accumulation)
     scheduler=get_cosine_schedule_with_warmup(optimizer,max(1,total//10),total)
-    print(json.dumps({'status':'training','model':a.model,'examples':len(rows),'updates':total,'parameters':sum(p.numel() for p in model.parameters())}),flush=True)
+    print(json.dumps({'status':'training','model':a.model,'examples':len(rows),'updates':total,'parameters':sum(p.numel() for p in model.parameters()),'trainable_parameters':sum(p.numel() for p in model.parameters() if p.requires_grad)}),flush=True)
     step=0
     model.train()
     for epoch in range(a.epochs):
@@ -55,7 +58,8 @@ def main():
             norm=torch.nn.utils.clip_grad_norm_(model.parameters(),1.0,error_if_nonfinite=True)
             optimizer.step();scheduler.step();step+=1
             print(json.dumps({'step':step,'total':total,'epoch':epoch+1,'loss':loss_sum/len(group),'grad_norm':float(norm)}),flush=True)
-    model.eval();model.config.text_config.use_cache=True
+    model.eval();model.config.use_cache=True
+    model=model.merge_and_unload()
     model.to(dtype=torch.bfloat16).save_pretrained(a.output,safe_serialization=True)
     tok.save_pretrained(a.output)
     print(json.dumps({'status':'saved','path':a.output}),flush=True)
