@@ -5,10 +5,34 @@ import math
 from pathlib import Path
 import torch
 from transformers import (AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig, Trainer,
-                          TrainingArguments, DataCollatorForSeq2Seq, set_seed)
+                          TrainingArguments, DataCollatorForSeq2Seq, TrainerCallback, set_seed)
 
 MODEL = 'Qwen/Qwen3.5-0.8B'
 REVISION = '2fc06364715b967f1860aea9cf38778875588b17'
+
+class BestValidationWeights(TrainerCallback):
+    """Keep the best trained epoch in RAM; write only the selected final model."""
+    def __init__(self):
+        self.loss = math.inf
+        self.epoch = None
+        self.weights = None
+
+    def on_evaluate(self, args, state, control, model=None, metrics=None, **kwargs):
+        if state.epoch is None or state.epoch <= 0:
+            return
+        loss = metrics['eval_loss']
+        if math.isfinite(loss) and loss < self.loss:
+            self.weights = {name: value.detach().cpu().clone()
+                            for name, value in model.state_dict().items()}
+            self.loss, self.epoch = loss, state.epoch
+
+    def restore(self, model):
+        if self.weights is None:
+            raise RuntimeError('No trained epoch has a finite validation loss')
+        model.load_state_dict(self.weights, strict=True)
+        self.weights = None
+        print(json.dumps({'status': 'selected_by_validation', 'epoch': self.epoch,
+                          'eval_loss': self.loss}), flush=True)
 
 def encode(tokenizer, row, max_length):
     messages = row['messages']
@@ -89,8 +113,10 @@ def main():
         max_grad_norm=1.0, eval_strategy='epoch', save_strategy='no',
         logging_steps=10, report_to='none', seed=42, data_seed=42,
         remove_unused_columns=False, prediction_loss_only=True)
+    best = BestValidationWeights()
     trainer = Trainer(model=model, args=training, train_dataset=train,
-                      eval_dataset=valid, data_collator=collator, processing_class=tokenizer)
+                      eval_dataset=valid, data_collator=collator, processing_class=tokenizer,
+                      callbacks=[best])
     # Verify the model's causal shift and masked cross entropy against PyTorch directly.
     batch = {k: v.to(trainer.model.device) for k, v in sample.items()}
     model.eval()
@@ -105,6 +131,7 @@ def main():
     del output, manual, batch
     print(json.dumps({'before_training': trainer.evaluate()}), flush=True)
     trainer.train()
+    best.restore(model)
     model.eval()
     model.config.use_cache = True
     if hasattr(model.config, 'text_config'): model.config.text_config.use_cache = True
