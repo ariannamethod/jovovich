@@ -29,7 +29,8 @@ def encode(tokenizer, row, max_length):
             'labels': [-100] * len(prefix) + target}
 
 def read_rows(path):
-    return [json.loads(s) for s in Path(path).read_text().splitlines() if s.strip()]
+    rows = [json.loads(s) for s in Path(path).read_text().splitlines() if s.strip()]
+    return [r for r in rows if r['group'] != 'mbpp-66']
 
 def main():
     parser = argparse.ArgumentParser()

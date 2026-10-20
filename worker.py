@@ -16,12 +16,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         if self.headers.get('Authorization')!='Bearer '+os.environ['JOB_TOKEN']:
             self.send_error(403);return
+        if self.path=='/approve-data':
+            if STATE['status']!='awaiting_data_review':self.send_error(409);return
+            size=int(self.headers.get('Content-Length','0'))
+            if not 0<size<=256:self.send_error(413);return
+            approval=json.loads(self.rfile.read(size))
+            current=hashlib.sha256(Path('data/train_distilled.jsonl').read_bytes()).hexdigest()
+            if approval.get('sha256')!=current:self.send_error(409);return
+            os.environ['APPROVED_DATA_SHA256']=current
+            self.send_response(200);self.end_headers();self.wfile.write(b'approved');return
         if self.path!='/retry' or STATE['status'] not in ('failed','completed'):
             self.send_error(409);return
         size=int(self.headers.get('Content-Length','0'))
         if size>500000:self.send_error(413);return
         update=json.loads(self.rfile.read(size))
-        allowed={'train.py','review.py','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
+        allowed={'distill.py','train.py','review.py','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
         if not set(update).issubset(allowed):self.send_error(400);return
         for name,content in update.items():Path(name).write_text(content)
         STATE.clear();STATE['status']='starting'
@@ -95,6 +104,11 @@ def job():
                 review_command += ['--revision',os.environ['REVIEW_REVISION']]
             commands.append(review_command)
             for cmd in commands:
+                if '--check-only' in cmd and os.environ.get('TEACHER_REVIEW_REQUIRED')=='1':
+                    digest=hashlib.sha256(Path('data/train_distilled.jsonl').read_bytes()).hexdigest()
+                    update_state(status='awaiting_data_review',training_data_sha256=digest)
+                    while os.environ.get('APPROVED_DATA_SHA256')!=digest:
+                        time.sleep(1)
                 update_state(status='running',command=cmd)
                 filename='baseline.jsonl' if 'data/validation.jsonl' in cmd else 'reviews.jsonl'
                 output=log if 'review.py' not in cmd else (ROOT/filename).open('w',buffering=1)

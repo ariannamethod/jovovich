@@ -2,6 +2,8 @@
 import argparse
 import json
 import re
+import os
+import hashlib
 from pathlib import Path
 
 import torch
@@ -28,8 +30,12 @@ def main():
     parser.add_argument('--revision', required=True)
     parser.add_argument('--input', default='data/train.jsonl')
     parser.add_argument('--output', default='data/train_distilled.jsonl')
+    parser.add_argument('--cache-dir', default=os.environ.get('TEACHER_CACHE_DIR'))
+    parser.add_argument('--batch-size', type=int, default=4)
     args = parser.parse_args()
     rows = [json.loads(line) for line in Path(args.input).read_text().splitlines()]
+    # The source labels >= 0 as counting positive numbers; zero contradicts it.
+    rows = [row for row in rows if row['group'] != 'mbpp-66']
     forbidden = set()
     for filename in ('data/validation.jsonl', 'data/test.jsonl'):
         forbidden.update(json.loads(line)['group'] for line in Path(filename).read_text().splitlines())
@@ -37,6 +43,13 @@ def main():
         raise ValueError('Held-out source group entered teacher input')
     output_path = Path(args.output)
     temporary = output_path.with_suffix('.partial')
+    provenance = {'model': args.model, 'revision': args.revision,
+                  'input_sha256': hashlib.sha256(Path(args.input).read_bytes()).hexdigest(),
+                  'instruction_sha256': hashlib.sha256(INSTRUCTION.encode()).hexdigest()}
+    metadata = output_path.with_suffix('.provenance.json')
+    if temporary.exists() and (not metadata.exists() or json.loads(metadata.read_text()) != provenance):
+        raise ValueError('Partial teacher data belongs to another source or teacher')
+    metadata.write_text(json.dumps(provenance))
     completed = []
     if temporary.exists():
         completed = [json.loads(line) for line in temporary.read_text().splitlines()]
@@ -49,13 +62,13 @@ def main():
                     or not old['messages'][-1]['content'].endswith(original['messages'][-1]['content'])):
                 raise ValueError('Partial corpus does not match current source')
     print(json.dumps({'status': 'distillation_resume', 'rows': len(completed)}), flush=True)
-    tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision)
+    tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision, cache_dir=args.cache_dir)
     tokenizer.padding_side = 'left'
     model = AutoModelForCausalLM.from_pretrained(args.model, revision=args.revision,
-        dtype=torch.bfloat16, attn_implementation='sdpa').cuda().eval()
+        cache_dir=args.cache_dir, dtype=torch.bfloat16, attn_implementation='sdpa').cuda().eval()
     with temporary.open('a', buffering=1) as output:
-        for start in range(len(completed), len(rows), 8):
-            batch = rows[start:start + 8]
+        for start in range(len(completed), len(rows), args.batch_size):
+            batch = rows[start:start + args.batch_size]
             to_explain = [r for r in batch if r['group'] != 'identity']
             prompts = []
             for row in to_explain:
