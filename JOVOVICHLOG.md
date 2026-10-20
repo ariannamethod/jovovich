@@ -28,6 +28,43 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-20 — The body is trained; preserve the actual verdicts
+
+The all-layer SFT run completed all 380 updates on the H200. Every checkpoint,
+including step 380, received a remote byte-verification ACK. Mean assistant
+loss over the same 76 examples was 2.510603, 1.319239, 0.491191, 0.133375 and
+0.052171 across the five epochs. These are training losses, not held-out quality.
+`training/results/2026-10-20-full-lora/training-events.jsonl` preserves the
+native update events; `training-summary.json` pins the complete remote log.
+
+The merged GGUF is 1,726,826,368 bytes, SHA-256
+`74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707`.
+Merged/native forward parity at 64 tokens passed with relative L2
+`2.51310107e-6`, max absolute error `4.86373901e-5` and equal argmax.
+The model was uploaded and read back before held-out generation began.
+`model.full-lora.json` pins the private artifact separately from the default base
+and selects the matching runtime prompt/precision profile.
+
+During delivery, the old mailbox's 15-second log uploads exhausted HF's
+256-commits/hour repository quota. Its unhandled HTTP 429 was followed by a
+container restart. The GGUF and closed cases 000 through 004 survived in the
+verified remote archive; case 005 was unfinished. Do not count that unfinished
+attempt as a completed review. The failed job has no final log.
+
+The mailbox now limits progress snapshots to one per 120 seconds, skips
+unchanged bytes, honors Retry-After across retry windows and keeps logging
+outages from killing the live child. Eight focused tests cover this behavior,
+including ready/running failures before process launch. Delivery recovery
+restores the remote archive into a fresh directory and binds model, binary,
+corpora, prompt, literal output and native token trace before reusing a closed
+case. Resuming records its new source separately and does not retrain or
+regenerate already closed cases.
+
+Early held-out responses exposed real false negatives and incorrect
+explanations. The trained body is not promoted to the default model on the
+strength of a low training loss or a valid JSON response. Full results follow
+when the preserved 24-case delivery closes.
+
 ## 2026-10-20 — Give all twenty-four floors a gradient
 
 `training/train_full.c` trains rank-16, alpha-32 LoRA on Q, K, V, attention

@@ -32,6 +32,25 @@ def save(path, value):
         os.fsync(stream.fileno())
 
 
+def recovered_record(directory, case, model_sha, corpus_sha):
+    """Reuse only remotely verified, closed evidence for this exact request."""
+    record = json.loads((directory / 'record.json').read_text(encoding='utf-8'))
+    prompt = (directory / 'prompt.txt').read_bytes()
+    raw = (directory / 'stdout.bin').read_bytes()
+    trace = json.loads((directory / 'trace.json').read_text(encoding='utf-8'))
+    execution = json.loads((directory / 'execution.json').read_text(encoding='utf-8'))
+    expected = case.get('corpus_sha256', corpus_sha)
+    if (record['case_id'] != case['case_id'] or record['corpus_sha256'] != expected or
+            prompt != case['prompt'] or record['metadata']['model_sha256'] != model_sha or
+            record['metadata']['prompt_sha256'] != hashlib.sha256(prompt).hexdigest() or
+            record['metadata']['requested_limit'] != 512 or
+            raw.decode('utf-8') != record['raw_response'] or
+            hashlib.sha256(raw).hexdigest() != record['raw_response_sha256'] or
+            execution['returncode'] != 0 or record['finish_reason'] != validate_trace(trace)):
+        raise ValueError('recovered native case does not match this delivery')
+    return record
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model', required=True, type=Path)
@@ -42,12 +61,18 @@ def main():
     p.add_argument('--branch', default='main')
     p.add_argument('--export-log', required=True, type=Path)
     p.add_argument('--parity-log', required=True, type=Path)
+    p.add_argument('--resume', action='store_true', help='Recover closed remote units into a new output directory')
     a = p.parse_args()
     a.model, a.infer, a.output = (x.resolve() for x in (a.model, a.infer, a.output))
-    a.output.mkdir(parents=True, exist_ok=False)
     archive = DurableArchive(HFTransport('ataeff/jovovich', a.token_file.read_text().strip(), a.branch),
                              a.run_id, prefix='training/full-lora-delivery')
-    sequence = 0
+    recovery = archive.recover(a.output) if a.resume else None
+    if not recovery:
+        a.output.mkdir(parents=True, exist_ok=False)
+    sequence = recovery['next_sequence'] if recovery else 0
+    closed = {u['unit_id'] for u in recovery['units']} if recovery else set()
+    if recovery and 'model' not in closed:
+        raise ValueError('recovered delivery has no model unit')
 
     def sync(unit, files):
         nonlocal sequence
@@ -65,11 +90,24 @@ def main():
                     training_demo_corpus_sha256=digest(demo_corpus),
                     run_id=a.run_id, temperature=0, max_tokens=512,
                     prompt_policy='production ChatML plus the trained concise-analysis instruction')
-    save(a.output / 'model.json', manifest)
-    sync('model', {'jovovich.gguf': a.model, 'model.json': a.output / 'model.json',
-                   'export.log': a.export_log, 'parity.log': a.parity_log,
-                   'deliver.py': Path(__file__).resolve(), 'holdout.jsonl': corpus,
-                   'training-demo-source.jsonl': demo_corpus})
+    if recovery:
+        if json.loads((a.output / 'model.json').read_text(encoding='utf-8')) != manifest:
+            raise ValueError('model, inference binary or corpus changed since delivery')
+        # Preserve the new launcher separately; never replace the originally
+        # archived source or a closed native response.
+        resume_name = f'resume-{sequence:03d}'
+        resume_dir = a.output / resume_name
+        resume_dir.mkdir()
+        save(resume_dir / 'recovery.json', recovery)
+        sync(resume_name, {f'{resume_name}/recovery.json': resume_dir / 'recovery.json',
+                           f'{resume_name}/deliver.py': Path(__file__).resolve()})
+        print(json.dumps({'event': 'delivery_recovered', 'closed_units': sorted(closed)}), flush=True)
+    else:
+        save(a.output / 'model.json', manifest)
+        sync('model', {'jovovich.gguf': a.model, 'model.json': a.output / 'model.json',
+                       'export.log': a.export_log, 'parity.log': a.parity_log,
+                       'deliver.py': Path(__file__).resolve(), 'holdout.jsonl': corpus,
+                       'training-demo-source.jsonl': demo_corpus})
     cases = review_cases(corpus.read_bytes(), split='holdout')
     env = {k: os.environ[k] for k in ('PATH', 'LANG', 'LC_ALL') if k in os.environ}
     env.update(NT_NO_I8='1', NT_QMV_THREADS='4', NT_ATTN_THREADS='4',
@@ -77,7 +115,12 @@ def main():
     records = []
 
     def generate(case, index, split):
-        directory = a.output / f'{split}-{index:03d}'
+        unit = f'{split}-{index:03d}'
+        directory = a.output / unit
+        if unit in closed:
+            record = recovered_record(directory, case, manifest['model_sha256'], corpus_hash)
+            print(json.dumps({'event': 'review_recovered', 'case_id': case['case_id']}), flush=True)
+            return record
         directory.mkdir()
         prompt = directory / 'prompt.txt'
         prompt.write_bytes(case['prompt'])
@@ -131,12 +174,17 @@ def main():
     for index, case in enumerate(cases):
         records.append(generate(case, index, 'holdout'))
     generations = a.output / 'generations.jsonl'
-    with generations.open('x', encoding='utf-8') as stream:
-        for record in records:
-            stream.write(json.dumps(record, ensure_ascii=False) + '\n')
-    score = score_files(corpus, generations, 'before', 'holdout')
-    save(a.output / 'score.json', score)
-    sync('scores', {'generations.jsonl': generations, 'score.json': a.output / 'score.json'})
+    encoded = ''.join(json.dumps(record, ensure_ascii=False) + '\n' for record in records)
+    if 'scores' in closed:
+        if generations.read_text(encoding='utf-8') != encoded:
+            raise ValueError('recovered scores refer to different native generations')
+        score = json.loads((a.output / 'score.json').read_text(encoding='utf-8'))
+    else:
+        with generations.open('x', encoding='utf-8') as stream:
+            stream.write(encoded)
+        score = score_files(corpus, generations, 'before', 'holdout')
+        save(a.output / 'score.json', score)
+        sync('scores', {'generations.jsonl': generations, 'score.json': a.output / 'score.json'})
     print(json.dumps({'event': 'review_score', 'summary': score['summary']}, ensure_ascii=False), flush=True)
     # Explicitly labelled training examples demonstrate voice/code, not held-out accuracy.
     rows = [json.loads(x) for x in demo_corpus.read_text(encoding='utf-8').splitlines()]
@@ -144,9 +192,14 @@ def main():
     for index, row in enumerate(demonstrations):
         generate({'case_id': row['id'], 'prompt': render_prompt(row),
                   'corpus_sha256': manifest['training_demo_corpus_sha256']}, index, 'training-demonstration')
-    save(a.output / 'completed.json', {'status': 'completed', 'heldout_cases': len(cases),
-                                      'training_demonstrations': len(demonstrations), **manifest})
-    sync('completed', {'completed.json': a.output / 'completed.json'})
+    completion = {'status': 'completed', 'heldout_cases': len(cases),
+                  'training_demonstrations': len(demonstrations), **manifest}
+    if 'completed' in closed:
+        if json.loads((a.output / 'completed.json').read_text(encoding='utf-8')) != completion:
+            raise ValueError('recovered completion differs')
+    else:
+        save(a.output / 'completed.json', completion)
+        sync('completed', {'completed.json': a.output / 'completed.json'})
 
 
 if __name__ == '__main__':

@@ -17,6 +17,7 @@ jobs:
     with:
       pull-request: ${{ github.event.pull_request.number }}
       jovovich-ref: main
+      # model-lock: model.full-lora.json
     # Only needed after selecting privately hosted weights in the model lock.
     # secrets:
     #   HF_TOKEN: ${{ secrets.HF_TOKEN }}

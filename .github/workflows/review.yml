@@ -12,6 +12,11 @@ on:
         required: false
         default: main
         type: string
+      model-lock:
+        description: Model lock in the trusted JOVOVICH checkout (model.full-lora.json selects private trained weights)
+        required: false
+        default: model.json
+        type: string
     secrets:
       HF_TOKEN:
         description: Optional Hugging Face token for privately hosted model weights
@@ -36,6 +41,7 @@ jobs:
         shell: bash
     env:
       JOVOVICH_MODEL: ${{ github.workspace }}/.jovovich/models/jovovich.gguf
+      JOVOVICH_MODEL_LOCK: ${{ inputs.model-lock }}
     steps:
       # Checkout only the trusted reviewer. PR contents arrive through the API as data.
       - name: Summon JOVOVICH

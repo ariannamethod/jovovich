@@ -49,6 +49,22 @@ missed an explicit forbidden-Python-inference example and repeated themselves
 on a held-out perspective question. The runtime lock therefore stays on the
 official base. Both checkpoints are preserved with their exact test outputs.
 
+The **2026-10-20 full-layer LoRA** body is separately pinned by
+[`model.full-lora.json`](model.full-lora.json). It completed 380 native NoTorch
+updates, and its merged GGUF passed forward parity against the trained adapters.
+Weights remain private in `ataeff/jovovich`; fetching them requires `HF_TOKEN`.
+Use the same explicit lock for download and review:
+
+```sh
+export JOVOVICH_MODEL="$PWD/models/jovovich-full.gguf"
+export JOVOVICH_MODEL_LOCK="$PWD/model.full-lora.json"
+node bin/jovovich.mjs fetch-model
+node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
+```
+
+The lock selects the matching prompt and F32 activation profile. Check the
+measured review results below before choosing this body for unattended reviews.
+
 ## Bring a diff
 
 ```sh
@@ -134,6 +150,8 @@ For a fixed installation, replace both `main` references with the same reviewed
 commit SHA. The workflow checks out the trusted JOVOVICH implementation and
 reads the PR as data. It never executes code from the PR. When selecting private
 weights, pass the `HF_TOKEN` secret as shown in the example.
+Set `with.model-lock: model.full-lora.json` to select the private trained body;
+the default remains `model.json`.
 
 **PR opened → summon JOVOVICH.** Contributors may learn her name before yours.
 
