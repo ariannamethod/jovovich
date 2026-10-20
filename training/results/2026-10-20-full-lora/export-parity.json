@@ -1,7 +1,0 @@
-{
-  "event": "forward_parity",
-  "tokens": 64,
-  "relative_l2": 2.51310107e-06,
-  "max_abs": 4.86373901e-05,
-  "argmax_equal": true
-}
