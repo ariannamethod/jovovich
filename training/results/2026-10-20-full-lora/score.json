@@ -1,0 +1,1307 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "measurement": "free_generation_json_structure",
+  "expected_order": "before",
+  "split": "holdout",
+  "classification_basis": "full_json_known_keys_valid_findings",
+  "exact_gold_line_ids_basis": "exact_canonical_id_set",
+  "production_acceptance": null,
+  "corpus": {
+    "path": "/workspace/jovovich-full-lora/jovovich/training/review_holdout_v5.jsonl",
+    "bytes": 40748,
+    "sha256": "e066e033cd339243b0eb099291c69540cb183e725d1643f5c4e04af9e6c22451"
+  },
+  "generations": {
+    "path": "/workspace/jovovich-full-lora/delivery-03/generations.jsonl",
+    "bytes": 19324,
+    "sha256": "6dd6a07ae9422c8d7137516886362ac5a05e4ec9123f2d7367dd1cd2bf6f4662"
+  },
+  "scorer": {
+    "path": "/workspace/jovovich-full-lora/jovovich/training/explanations/score_generation.py",
+    "sha256": "f6bcb7eee4f25215fe41c58ecc19ffffbf0dd7a98a07ac6c1ee148d8cde311e1"
+  },
+  "summary": {
+    "expected_reviews": 24,
+    "expected_pairs": 12,
+    "received_reviews": 24,
+    "missing_reviews": 0,
+    "json_valid": 24,
+    "schema_valid": 24,
+    "findings_schema_valid": 24,
+    "order_adherent": 24,
+    "empty_analysis": 0,
+    "eos_reviews": 24,
+    "truncated_reviews": 0,
+    "generation_errors": 0,
+    "invalid_json": 0,
+    "invalid_schema": 0,
+    "classification_correct": 12,
+    "exact_gold_line_ids": 12,
+    "format_pass": 24,
+    "strict_output_pass": 12,
+    "complete_classification_pairs": 0,
+    "complete_exact_gold_line_pairs": 0,
+    "complete_format_pairs": 12,
+    "complete_strict_output_pairs": 0
+  },
+  "rows": [
+    {
+      "case_id": "holdout-v5-shift-width-pure-deletion-concern",
+      "row": 0,
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "corpus_record": {
+        "line": 1,
+        "sha256": "810d4550f3c4b5c28b3b551d5026084f4eda53cbeb5575e3c2a45a35aff0343e"
+      },
+      "prompt_sha256": "1bfcc4342319652cdd2fc544d7d27d2eba15b2746ef1cc10a34129dc2084ce07",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 1,
+        "sha256": "05593ec010177001da3d543ff5a3ceb8fb9201b491622815267a65af3bc0c167"
+      },
+      "raw_response_sha256": "08a79050dfe450edd12d1da59fdfe941ac246e62041f0d2ff9ac6e274a0eb797",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing this check lets shift == 32 reach value << shift. The remaining shift > 32U check admits that boundary, which is outside the width of uint32_t.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "1bfcc4342319652cdd2fc544d7d27d2eba15b2746ef1cc10a34129dc2084ce07",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-shift-width-pure-deletion-clean",
+      "row": 1,
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "corpus_record": {
+        "line": 2,
+        "sha256": "c41fbfefb70c3a6d6d0a2da45b97f7783d9dc2df66a7aec25e8efbcaaf3d885c"
+      },
+      "prompt_sha256": "0bf459878b090bf268df0725d5a2cd4d45f6b671a22d449c8a627dafda5665c2",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 2,
+        "sha256": "8f951982bfa9f32cf9e9ed3598be1074c33382e5376241e676acd152cdb2048f"
+      },
+      "raw_response_sha256": "f603ad0423ff6da43c0802d5e3bf752015808b37ccc38bf58e5601b435b1afb4",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained shift >= 32U check rejects all out-of-range shift counts before the shift.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "0bf459878b090bf268df0725d5a2cd4d45f6b671a22d449c8a627dafda5665c2",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-shift-width-replacement-noop-concern",
+      "row": 2,
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "corpus_record": {
+        "line": 3,
+        "sha256": "5a2b7d871896eec93c46f8ebdb690da661a30f465fc499dc550b5beb3cc1f51f"
+      },
+      "prompt_sha256": "07c826477634d1e631ffc0da8a6b72ff280c6c43a83e7139c21ed773f92ad969",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 3,
+        "sha256": "d50ef935b712854d93ad0e3406c72ccac6e751b89fd9d50b40be2b33ddbd0e4d"
+      },
+      "raw_response_sha256": "cebc370db57e825a64168dc0510221b723b8e1125ffab4538f747a570299c3df",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing this check lets shift == 32 reach value << shift. The remaining shift > 32U check admits that boundary, which is outside the width of uint32_t.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "07c826477634d1e631ffc0da8a6b72ff280c6c43a83e7139c21ed773f92ad969",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-shift-width-replacement-noop-clean",
+      "row": 3,
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "corpus_record": {
+        "line": 4,
+        "sha256": "510ff78a327eec01442e1d759c3a2096c00c34863ee950a422fdbd31ec4cba35"
+      },
+      "prompt_sha256": "09c5b6f418a9e08f543b4068543de628ee3669a65c6d88c05796a997bf6bf965",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 4,
+        "sha256": "565e69e4789ea82ccb43f70fb7922d4a586b7ca8bfadfb730241bd393ba9f5bf"
+      },
+      "raw_response_sha256": "317d51640988ef7d93a45bc8420cc3923c6d3425befd22a784e0f8c292b71ba9",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained shift >= 32U check rejects all out-of-range shift counts before the shift.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "09c5b6f418a9e08f543b4068543de628ee3669a65c6d88c05796a997bf6bf965",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-pure-deletion-concern",
+      "row": 4,
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "corpus_record": {
+        "line": 5,
+        "sha256": "de9ad848dcc72134cc6f2c764f75b5f3ce5e386815d224023ea8947c6c2a0315"
+      },
+      "prompt_sha256": "9454ff1a78617a4e9a50864bceef400ac984bb555078b5714fe3e9c9524b6da9",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 5,
+        "sha256": "f464d8376278bf69936466ed4f47827954f0d4101804b3627b3f787644a7835b"
+      },
+      "raw_response_sha256": "bd6e4b817378744fd608c5a5c330b8c2a61f2567ce32397c73339683f523abc2",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing the assignment leaves the last byte nonzero when it started nonzero. The retained |= 0 operation leaves that byte unchanged.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "9454ff1a78617a4e9a50864bceef400ac984bb555078b5714fe3e9c9524b6da9",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-pure-deletion-clean",
+      "row": 5,
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "corpus_record": {
+        "line": 6,
+        "sha256": "3d251676c1379ddecd2f0c946edf251a6abd64cb15d6bb9ee88e3f4da949b357"
+      },
+      "prompt_sha256": "ecd465e57987b9f466c081e64d54dcbf6669a7bab83c0d112e468f7d0015040b",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 6,
+        "sha256": "933e3137adc28510f461d63ffb16bf38a7f701dca611261a2d8aaa3e0eca382f"
+      },
+      "raw_response_sha256": "9f7bad0a1b1ad592b6d635dd0f01245f642df72955da0cf0378f92fed797949c",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained &= 0 operation already clears the last byte for every positive n.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "ecd465e57987b9f466c081e64d54dcbf6669a7bab83c0d112e468f7d0015040b",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-replacement-noop-concern",
+      "row": 6,
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "corpus_record": {
+        "line": 7,
+        "sha256": "dca23c0679b31aa018b3ced9d1b32e3daee6c4d9b0a2b50f7fa971b2ec41903c"
+      },
+      "prompt_sha256": "7a8f301c85c1c1e7f61d0894fe4a13429076d0e8bf7d9179d32690097401eca9",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 7,
+        "sha256": "b05a8f5b78c044d5686f93e8ac94cb505e616bcbdac4da86f2aea1c7899fa5e6"
+      },
+      "raw_response_sha256": "f5c4bacb5369f88067f8d56c5a2ffa1d296dcb66e37090fa1c6cec12ad09d91a",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing the assignment leaves the last byte nonzero when it started nonzero. The retained |= 0 operation leaves that byte unchanged.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "7a8f301c85c1c1e7f61d0894fe4a13429076d0e8bf7d9179d32690097401eca9",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-replacement-noop-clean",
+      "row": 7,
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "corpus_record": {
+        "line": 8,
+        "sha256": "7cceaa9cbd72f716df23b623cab0d3f653d8c20449d1ff5aef2609132700381d"
+      },
+      "prompt_sha256": "4e52f6b2ff6855c1f337c6f40441439d0d9874dee9fbe9936079cd6916cff8db",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 8,
+        "sha256": "59019fc7135b03d623e41f6d3b56ce156bfdbc3c48269f4d311f7f1d4f6b4d32"
+      },
+      "raw_response_sha256": "02ef34d8e018644d0d494927f673be656133cace9c1fcacc7aec5d854348ce2a",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained &= 0 operation already clears the last byte for every positive n.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "4e52f6b2ff6855c1f337c6f40441439d0d9874dee9fbe9936079cd6916cff8db",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+      "row": 8,
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "corpus_record": {
+        "line": 9,
+        "sha256": "436eb9e24db6b3a6f3f7b2bc59f7b125b1b321c97280c86a184537eb6484f037"
+      },
+      "prompt_sha256": "cdaf69fb0135f73f0da9226fa36fea2ac3e3e6aad611119c2b13536af3b11769",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 9,
+        "sha256": "b3cb650f8e32f292566380deac8a01f353c30b614309081f4a2d1b7094b9bc6d"
+      },
+      "raw_response_sha256": "04bd253ff420e95e7d8ac7585c33872183159b8b6466b5b920298c561ab181c0",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing the mask permits reserved high bits in the returned byte. The remaining |= 0x00 operation preserves every input bit.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "cdaf69fb0135f73f0da9226fa36fea2ac3e3e6aad611119c2b13536af3b11769",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+      "row": 9,
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "corpus_record": {
+        "line": 10,
+        "sha256": "ef8c0f2cf6f4d8cffa55cc57b52706e987b93460c382c2fa278538412356384b"
+      },
+      "prompt_sha256": "1d0a9bd559f3b5439f1d2d8215598ebdf57c09ea8469ef0d87fcf04e344184bb",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 10,
+        "sha256": "0b0b8efc5be69679e1f66c0bc3292710ed15243bfcc46fad24df1393dce3c9c7"
+      },
+      "raw_response_sha256": "705b46f5b0fba5e714298c210273cb356ca699add7cc4a91744b691650430750",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained &= 0x0F mask already clears the high bits while preserving the low bits.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "1d0a9bd559f3b5439f1d2d8215598ebdf57c09ea8469ef0d87fcf04e344184bb",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+      "row": 10,
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "corpus_record": {
+        "line": 11,
+        "sha256": "75aa9c7eed8b049d5924e43d3546bcb8078f0024f3160b793b1ee061bc6b9df8"
+      },
+      "prompt_sha256": "5adc4b8c12c4d88cfe52be423577eeae3aeac9de3dfcdb5b8d49488500cc7f52",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 11,
+        "sha256": "949e84092c93b4b75ca565b88e804f474864b16311f4546dbad3865d8a440042"
+      },
+      "raw_response_sha256": "8111ab2596b19851988529476a776437e188f9ef0abfcec68f3cf481f5fbd05d",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing the mask permits reserved high bits in the returned byte. The remaining |= 0x00 operation preserves every input bit.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "5adc4b8c12c4d88cfe52be423577eeae3aeac9de3dfcdb5b8d49488500cc7f52",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+      "row": 11,
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "corpus_record": {
+        "line": 12,
+        "sha256": "47d840628454c45ec71e1895c2514b6cef0841d95fe49ed950852dbdd1f3c5da"
+      },
+      "prompt_sha256": "1d59aa5963734e3d8c667a97c2912c427f21012093512722281495c1f28cc398",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 12,
+        "sha256": "bbb86e501c1a6b5eed29b743957fe28ab7458fbeb3b5dbede60e68de643342c9"
+      },
+      "raw_response_sha256": "e9efc1856bac9f74b45a35c9d2987c3e823d178b900e084c14cb6e75a03082ab",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained &= 0x0F mask already clears the high bits while preserving the low bits.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "1d59aa5963734e3d8c667a97c2912c427f21012093512722281495c1f28cc398",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-finite-number-pure-deletion-concern",
+      "row": 12,
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "corpus_record": {
+        "line": 13,
+        "sha256": "798b01ccca561037ea1585eb4448d788165f07e8ee6321c60ccbe2a207adb18d"
+      },
+      "prompt_sha256": "a1d5cc8a4debac7e21734c0d6d582fa0cdd1fb3f52ffb148fb881b42bcf92621",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 13,
+        "sha256": "c05cac0642beb0629032abf5554bc912e2f04cfa4c4573179f1102d3f4f2dcca"
+      },
+      "raw_response_sha256": "3cbf4a5371f2f02905f3c1b4d3603f183db229a50ee973016acef5bf9fe3418b",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing this check admits Infinity and -Infinity. The remaining Number.isNaN check rejects NaN but accepts both infinite values.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "a1d5cc8a4debac7e21734c0d6d582fa0cdd1fb3f52ffb148fb881b42bcf92621",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-finite-number-pure-deletion-clean",
+      "row": 13,
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "corpus_record": {
+        "line": 14,
+        "sha256": "500361f48bb674ea2e646f59efd3095eeeb8e061170f276ae9ccc303118d5a4f"
+      },
+      "prompt_sha256": "43d089be3fe1f862007bca4666cccb6083d0869b79cc6502237cfe706684c639",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 14,
+        "sha256": "8cb72afd7adfdd45044e523eb3053ab8ace89868ca1bfcae4ef9fd617e30ca49"
+      },
+      "raw_response_sha256": "26b5419396e4bd480f0c8931497c81f3558a449f5d647da6773910bae89857d8",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained Number.isFinite check rejects NaN and both infinities before computing the reading.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "43d089be3fe1f862007bca4666cccb6083d0869b79cc6502237cfe706684c639",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-finite-number-replacement-noop-concern",
+      "row": 14,
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "corpus_record": {
+        "line": 15,
+        "sha256": "17e731b801247bbd334a54d39f680b0ffeae607c0d77270571e8a9c16b599257"
+      },
+      "prompt_sha256": "c78ecdce30700feba7f7eb117e515257c676789b0d104d1e00f36e7b87d3a675",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 15,
+        "sha256": "5360b081c83e3e16e65ba11767b013bc1373785460d4ab8bff8bc4bd6ac88d53"
+      },
+      "raw_response_sha256": "cfb8fcb0be994966ffca402e44f5149ce03a518bfa7a62d47e2f585086950857",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing this check admits Infinity and -Infinity. The remaining Number.isNaN check rejects NaN but accepts both infinite values.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "c78ecdce30700feba7f7eb117e515257c676789b0d104d1e00f36e7b87d3a675",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-finite-number-replacement-noop-clean",
+      "row": 15,
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "corpus_record": {
+        "line": 16,
+        "sha256": "27f6373dc015eb3881a8c4a8b3d9c9b5d8a20feec720f7f49085fab5bc352860"
+      },
+      "prompt_sha256": "2e81afeea64e24e6a1fcf92f7855b0882fe70a6d720e56fc2c0533985dbb76a7",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 16,
+        "sha256": "895271fa4932ed7f7a292fc0015a526fa45fe39b44498df1f957e0f03365cbb9"
+      },
+      "raw_response_sha256": "460076a3fd7b974bbf95ab63217e2b6ab66fcb5a6d2174c12d22d95c1f6b5fd6",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained Number.isFinite check rejects NaN and both infinities before computing the reading.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "2e81afeea64e24e6a1fcf92f7855b0882fe70a6d720e56fc2c0533985dbb76a7",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-pure-deletion-concern",
+      "row": 16,
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "corpus_record": {
+        "line": 17,
+        "sha256": "6ec71267b167e4cbd8e1c1ede99869cef7124b4b54ff7834fe05a6da6ad19545"
+      },
+      "prompt_sha256": "832cacc5f642bba36976e31629f4c0e2bbe7bec3c10a8a6cd490ce1101fc8a4b",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 17,
+        "sha256": "8bba42c86d3d624bd82db6ad2abb8408d229658ee467bb7f7fd6ee6fe0b54739"
+      },
+      "raw_response_sha256": "f3bb4b5ec1c1d11a16b2fdfb253250035c1328a6076597fc9061e7b1a6c9bf94",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing this check lets index == items.length reach the array access and return undefined. The remaining strict > comparison does not reject that boundary.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "832cacc5f642bba36976e31629f4c0e2bbe7bec3c10a8a6cd490ce1101fc8a4b",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-pure-deletion-clean",
+      "row": 17,
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "corpus_record": {
+        "line": 18,
+        "sha256": "6787f4bad4879b2280d2f9df1c98008f3179e8734e1d2cdc1e90a56d832aebc8"
+      },
+      "prompt_sha256": "3e9dd45f8c367b17ca76f80b6940c47fb60cf669e4f9e038c2e7d297c30587a6",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 18,
+        "sha256": "ab6db9a7338e19a54786878974a3c0906b03c44bfb4c4e070f9942c3a3c60ab9"
+      },
+      "raw_response_sha256": "05ac7e33e8615165877b8acd735ed42aabc1561a6e98852fca1545369e814406",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained >= comparison rejects index equal to or above the array length, including index zero for an empty array.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "3e9dd45f8c367b17ca76f80b6940c47fb60cf669e4f9e038c2e7d297c30587a6",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-replacement-noop-concern",
+      "row": 18,
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "corpus_record": {
+        "line": 19,
+        "sha256": "25a861c0af942acf3a348976b38370bab72ed5d60a9a3948635a89b250623e12"
+      },
+      "prompt_sha256": "a86183033e4cd75667035a14ecf5653cf5ac5b7959c59db2cfc65fde9030c9d7",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 19,
+        "sha256": "4f5b22d43d5c5803eeb9605834f88a1abcf3c3224d8531145bb78b7acc087f59"
+      },
+      "raw_response_sha256": "3040bb06df03053cd24c3fb7f1d2b9a0f266cb67817c4b3eb04144d5a77b215b",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing this check lets index == items.length reach the array access and return undefined. The remaining strict > comparison does not reject that boundary.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "a86183033e4cd75667035a14ecf5653cf5ac5b7959c59db2cfc65fde9030c9d7",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-replacement-noop-clean",
+      "row": 19,
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "corpus_record": {
+        "line": 20,
+        "sha256": "f6461a269e33ab49bdc43ea3eaac77bdecf5253c02d96c34af61c13a9a960fcb"
+      },
+      "prompt_sha256": "96fa9c05900a882afc38d9f88b8856bd9603e086c2a7b7853a18013a9a305587",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 20,
+        "sha256": "21f00fc06237c22c8d24502a83e354b39e413cfe8a7d8ca686759de2f0ec8541"
+      },
+      "raw_response_sha256": "a48d760392e4a507eacfd91c6328e5ae22736e8ab3de448694d78277e34fc5f9",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained >= comparison rejects index equal to or above the array length, including index zero for an empty array.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "96fa9c05900a882afc38d9f88b8856bd9603e086c2a7b7853a18013a9a305587",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-erase-target-pure-deletion-concern",
+      "row": 20,
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "corpus_record": {
+        "line": 21,
+        "sha256": "d6ee2184ec6aedd0d597aa25239c34544560d8b7c989a7dacf57a0243c2fbcb5"
+      },
+      "prompt_sha256": "d3a11035661f1b5a2ae3d6158c6923395c8a0ec3b7449af59be5a466a51b11e2",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 21,
+        "sha256": "8d4115afe95b26a8378d1f941c8bb02f92b5168b6c595cff2899a04c6c4edaa2"
+      },
+      "raw_response_sha256": "13a9f28c43d660d0c9648ea7f50d2c2a16747d1f7ea42dd0e633b418417860c7",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1
+      ],
+      "expected_reason_concept": "Removing this clear leaves the secret bytes intact for a nonzero seed. The retained memset targets the disjoint buffer array and cannot erase secret before the snapshot.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "d3a11035661f1b5a2ae3d6158c6923395c8a0ec3b7449af59be5a466a51b11e2",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-erase-target-pure-deletion-clean",
+      "row": 21,
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "corpus_record": {
+        "line": 22,
+        "sha256": "a8268ab01700d3c55558a455995fb2fe2527235684696a02d39a1844a1d19177"
+      },
+      "prompt_sha256": "a7f99bc0acf78db348b18679d75cbd41ff96a5a94b40bc7b0f456e7488623551",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 22,
+        "sha256": "5ef7b367099dd3cb2d390f321344332a5effa618fe602c1f71b52edc06a0d03f"
+      },
+      "raw_response_sha256": "98c17181ae4fe160690af4a590ecac6d1dea13fb834088ce159da0659007528b",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained memset already zeroes all four secret bytes before they are copied to the snapshot.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "a7f99bc0acf78db348b18679d75cbd41ff96a5a94b40bc7b0f456e7488623551",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-erase-target-replacement-noop-concern",
+      "row": 22,
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "corpus_record": {
+        "line": 23,
+        "sha256": "6f0e320928064b793246659c7fef06cc2149f8731bd6710ea0ccb5cf9f2cb81a"
+      },
+      "prompt_sha256": "e81a8d5606c68281d3d14d0fdc4eff3c5592d9a7d21d5bc67a6eb64ef9fc3c3a",
+      "expected_concern": true,
+      "expected_line_ids": [
+        1
+      ],
+      "status": "scored",
+      "generation_record": {
+        "line": 23,
+        "sha256": "c57803f919a15b82e0d848bf34d9c10aa6577791013efcbe4f9931dc011bc63f"
+      },
+      "raw_response_sha256": "902ce46c49d94da3d90560e8f38e47eea5e7247a4d580ea81c8fe2d2241e6135",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [
+        1,
+        2
+      ],
+      "expected_reason_concept": "Removing this clear leaves the secret bytes intact for a nonzero seed. The retained memset targets the disjoint buffer array and cannot erase secret before the snapshot.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "e81a8d5606c68281d3d14d0fdc4eff3c5592d9a7d21d5bc67a6eb64ef9fc3c3a",
+        "requested_limit": 512
+      }
+    },
+    {
+      "case_id": "holdout-v5-erase-target-replacement-noop-clean",
+      "row": 23,
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "corpus_record": {
+        "line": 24,
+        "sha256": "c87f0ac3c6dcb38eb0b391c33a6f689ed1e5d1bd28e0e082d4e62d1949331cb1"
+      },
+      "prompt_sha256": "0d65121d1af81553bbe59400a61b9694be00c95f77f6709049dd5a07f7a544a0",
+      "expected_concern": false,
+      "expected_line_ids": [],
+      "status": "scored",
+      "generation_record": {
+        "line": 24,
+        "sha256": "66673d4c85ea831f67998712aef67416099e372ec05c49be870e0e3cd9aa5b1d"
+      },
+      "raw_response_sha256": "6e654671880493b893647723a6d177396ed468dd7a149e404620882037d58daf",
+      "finish_reason": "eos",
+      "json_valid": true,
+      "schema_valid": true,
+      "findings_schema_valid": true,
+      "output_order": [
+        "analysis",
+        "findings"
+      ],
+      "order_adherent": true,
+      "empty_analysis": false,
+      "predicted_concern": false,
+      "returned_line_ids": [],
+      "classification_correct": true,
+      "exact_gold_line_ids": true,
+      "format_pass": true,
+      "strict_output_pass": true,
+      "semantic_assessment": null,
+      "parse_error": null,
+      "supplied_candidate_line_ids": [],
+      "expected_reason_concept": "The retained memset already zeroes all four secret bytes before they are copied to the snapshot.",
+      "metadata": {
+        "model_path": "/workspace/jovovich-full-lora/jovovich.gguf",
+        "model_sha256": "74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707",
+        "prompt_sha256": "0d65121d1af81553bbe59400a61b9694be00c95f77f6709049dd5a07f7a544a0",
+        "requested_limit": 512
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "pair": "holdout-v5-shift-width-pure-deletion",
+      "case_ids": [
+        "holdout-v5-shift-width-pure-deletion-concern",
+        "holdout-v5-shift-width-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-shift-width-replacement-noop",
+      "case_ids": [
+        "holdout-v5-shift-width-replacement-noop-concern",
+        "holdout-v5-shift-width-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-bounded-termination-pure-deletion",
+      "case_ids": [
+        "holdout-v5-bounded-termination-pure-deletion-concern",
+        "holdout-v5-bounded-termination-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-bounded-termination-replacement-noop",
+      "case_ids": [
+        "holdout-v5-bounded-termination-replacement-noop-concern",
+        "holdout-v5-bounded-termination-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-reserved-flag-bits-pure-deletion",
+      "case_ids": [
+        "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+        "holdout-v5-reserved-flag-bits-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-reserved-flag-bits-replacement-noop",
+      "case_ids": [
+        "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+        "holdout-v5-reserved-flag-bits-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-finite-number-pure-deletion",
+      "case_ids": [
+        "holdout-v5-finite-number-pure-deletion-concern",
+        "holdout-v5-finite-number-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-finite-number-replacement-noop",
+      "case_ids": [
+        "holdout-v5-finite-number-replacement-noop-concern",
+        "holdout-v5-finite-number-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-array-end-boundary-pure-deletion",
+      "case_ids": [
+        "holdout-v5-array-end-boundary-pure-deletion-concern",
+        "holdout-v5-array-end-boundary-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-array-end-boundary-replacement-noop",
+      "case_ids": [
+        "holdout-v5-array-end-boundary-replacement-noop-concern",
+        "holdout-v5-array-end-boundary-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-erase-target-pure-deletion",
+      "case_ids": [
+        "holdout-v5-erase-target-pure-deletion-concern",
+        "holdout-v5-erase-target-pure-deletion-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    },
+    {
+      "pair": "holdout-v5-erase-target-replacement-noop",
+      "case_ids": [
+        "holdout-v5-erase-target-replacement-noop-concern",
+        "holdout-v5-erase-target-replacement-noop-clean"
+      ],
+      "both_present": true,
+      "classification_correct": false,
+      "exact_gold_line_ids": false,
+      "format_pass": true,
+      "strict_output_pass": false
+    }
+  ],
+  "semantic_assessment": null
+}

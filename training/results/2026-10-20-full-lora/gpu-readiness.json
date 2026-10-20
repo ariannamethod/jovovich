@@ -1,0 +1,88 @@
+{
+  "schema": "jovovich.full-lora.gpu-readiness.v1",
+  "date": "2026-10-20",
+  "result": "pass",
+  "training_started_by_readiness": false,
+  "hardware": {
+    "provider": "Runpod",
+    "gpu": "NVIDIA H200",
+    "gpu_memory_mib": 143771,
+    "host_memory_gb": 251,
+    "vcpus": 20
+  },
+  "runtime": {
+    "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04",
+    "node": "22.23.3",
+    "notorch_commit": "2ed0cb03654b445df76168ada21477ab7282b70f",
+    "torch_dependency": false,
+    "precision": "float32",
+    "NVIDIA_TF32_OVERRIDE": "0"
+  },
+  "base_model": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "source_sha256": {
+    "Makefile": "87c367752d127ae7727bb8b28a141df7800519546e5a37d982856e5869584197",
+    "test/full_lora.c": "987f8ff250b83d1d0ae2b31a267ad11bb4f8b958f65aaef4f4db5b081c0db2d8",
+    "training/train_full.c": "16ed0438209261d178bac55334b87373a574e0864ed083eaf4f75d858d444f70",
+    "training/full_lora/host_archive.py": "cafd2aaa5fffab732fe553e65b97b9e73328cb8baf050df155800629a753a60c"
+  },
+  "source_bundle": {
+    "revision": "7cfca9500ed66835285178b07d5ac2e14db33249",
+    "sha256": "9ad000876d57d2481072d45250ad7512eb20991a81e7b3ec87503d8dc50e8c67"
+  },
+  "native_forward_parity": {
+    "event": "forward_parity",
+    "tokens": 64,
+    "relative_l2": 1.20051519e-06,
+    "max_abs": 1.43051147e-05,
+    "argmax_equal": true
+  },
+  "gpu_checks": [
+    "Qwen rotary row layout",
+    "GQA CPU versus repeated-KV GPU forward and backward",
+    "assistant-only mask and next-token shift",
+    "full-model LoRA finite-difference gradients",
+    "frozen gradient exclusion from clipping",
+    "optimizer slot isolation",
+    "byte-exact Chuck optimizer resume",
+    "all 168 target projection exports",
+    "untouched GGUF tensor and metadata preservation",
+    "merged GGUF inference logits"
+  ],
+  "checkpoint_archive_protocol_tests": {
+    "passed": 2,
+    "checks": [
+      "ACK follows verified archive receipt",
+      "archive failure kills child without ACK"
+    ]
+  },
+  "private_evidence": {
+    "repository_private_verified": true,
+    "log_readbacks": [
+      {
+        "job": "deploy-ready-05",
+        "remote_revision": "853ba01af20a24d7cd86c01e0cac9f9d810c9426",
+        "sha256": "ba90206ad2a35d7db3ed6d9362d3fcfe12f9f490e168a7b23944c02b46e2ae39",
+        "bytes": 12407
+      },
+      {
+        "job": "deploy-tests-06",
+        "remote_revision": "853ba01af20a24d7cd86c01e0cac9f9d810c9426",
+        "sha256": "e79425f5aa8e4be9dd52d76b640e54b4f56a56932e87c8911646e8e785ddeee3",
+        "bytes": 10758
+      }
+    ]
+  },
+  "notes": [
+    "TF32 initially failed strict parity; the verified run uses FP32 without loosening the threshold.",
+    "The source bundle ready-05 passed native forward parity and installed Node; its shell then ran make in the Node directory. A separate explicit-repository tests-06 job passed the remaining GPU tests.",
+    "Training and final quality evaluation are separate from this readiness receipt."
+  ]
+}

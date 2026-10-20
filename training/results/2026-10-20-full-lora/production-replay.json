@@ -1,0 +1,201 @@
+{
+  "measurement": "production_host_replay_of_archived_native_generation",
+  "new_inference": false,
+  "cases": 24,
+  "accepted": 24,
+  "semantic_assessment": "Separate from host acceptance; see heldout score and literal responses.",
+  "results": [
+    {
+      "case_id": "holdout-v5-shift-width-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-shift-width-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-shift-width-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-shift-width-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-bounded-termination-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-reserved-flag-bits-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-finite-number-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-finite-number-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-finite-number-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-finite-number-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-array-end-boundary-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-erase-target-pure-deletion-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-erase-target-pure-deletion-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-erase-target-replacement-noop-concern",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    },
+    {
+      "case_id": "holdout-v5-erase-target-replacement-noop-clean",
+      "prompt_bound": true,
+      "chunks": 1,
+      "reviewed": 1,
+      "failures": [],
+      "findings": []
+    }
+  ]
+}

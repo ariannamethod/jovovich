@@ -28,6 +28,133 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-20 — Twenty-four answers; zero discovered defects
+
+All 24 fixed held-out reviews completed with EOS, valid JSON and the requested
+analysis-before-findings order. Every answer contained `findings: []`.
+That misses all 12 concern cases, accepts all 12 clean cases and solves zero
+of the 12 matched concern/clean pairs. This is a failed review result, not a
+reason to promote the new body. The default `model.json` remains unchanged.
+
+Replaying the literal native responses through the production host accepted
+all 24, with exact prompt-SHA binding and no new inference. The host did not
+strip away useful findings: they were absent from the native JSON itself.
+The code-grounding assessment is separate from this parser acceptance and
+from the automated label score. It includes incorrect explanations attached
+to correct clean labels, and preserves the grounds for each judgment.
+
+Independent full-context export verification used the complete 511-token
+first training review and the archived step-380 adapters. Relative L2 was
+`1.75362623e-6`, maximum absolute logit error `5.53131104e-5`, with equal argmax.
+The unchanged gates passed. `--verify-export` now uses the complete example
+instead of truncating to 64 tokens. No update or new model was trained for
+this check. This establishes the measured numerical agreement; it does not
+explain or excuse the semantic failures.
+
+Literal generations, automated scores, semantic judgments and production
+replay are in `training/results/2026-10-20-full-lora/`. The qualitative audit
+marks one response grounded, three mixed and twenty wrong or unsupported;
+those judgments are recorded separately from the 12/24 label score. All four
+explicitly labelled training demonstrations (two voice, two code) reproduced
+their stored answers exactly. That is training-answer reproduction, not
+held-out success.
+
+The final delivery archive contains all 32 verified units at private HF
+revision `5729f386b1094548daf46a3b78a9dcc385efaaf4`, including all 24 reviews,
+all four demonstrations, scores and completion. The resumed job closed with
+return code 0; the owned H200 pod `ggq00nenyl2tg8` automatically stopped and
+Runpod reported `EXITED` when checked at 2026-10-20 04:01 UTC. The complete
+source/object index and closed-log hashes are included in the result directory.
+The trained GGUF stays private and separately selectable through
+`model.full-lora.json`. The code and artifact are delivered; the requested
+review quality is not achieved.
+
+## 2026-10-20 — The body is trained; preserve the actual verdicts
+
+The all-layer SFT run completed all 380 updates on the H200. Every checkpoint,
+including step 380, received a remote byte-verification ACK. Mean assistant
+loss over the same 76 examples was 2.510603, 1.319239, 0.491191, 0.133375 and
+0.052171 across the five epochs. These are training losses, not held-out quality.
+`training/results/2026-10-20-full-lora/training-events.jsonl` preserves the
+native update events; `training-summary.json` pins the complete remote log.
+
+The merged GGUF is 1,726,826,368 bytes, SHA-256
+`74822f3802f270ada49b746403973da5560b543531cb025fffc8ce60870ad707`.
+Merged/native forward parity at 64 tokens passed with relative L2
+`2.51310107e-6`, max absolute error `4.86373901e-5` and equal argmax.
+The model was uploaded and read back before held-out generation began.
+`model.full-lora.json` pins the private artifact separately from the default base
+and selects the matching runtime prompt/precision profile.
+
+During delivery, the old mailbox's 15-second log uploads exhausted HF's
+256-commits/hour repository quota. Its unhandled HTTP 429 was followed by a
+container restart. The GGUF and closed cases 000 through 004 survived in the
+verified remote archive; case 005 was unfinished. Do not count that unfinished
+attempt as a completed review. The failed job has no final log.
+
+The mailbox now limits progress snapshots to one per 120 seconds, skips
+unchanged bytes, honors Retry-After across retry windows and keeps logging
+outages from killing the live child. Eight focused tests cover this behavior,
+including ready/running failures before process launch. Delivery recovery
+restores the remote archive into a fresh directory and binds model, binary,
+corpora, prompt, literal output and native token trace before reusing a closed
+case. Resuming records its new source separately and does not retrain or
+regenerate already closed cases.
+
+Early held-out responses exposed real false negatives and incorrect
+explanations. The trained body is not promoted to the default model on the
+strength of a low training loss or a valid JSON response. Full results follow
+when the preserved 24-case delivery closes.
+
+## 2026-10-20 — Give all twenty-four floors a gradient
+
+`training/train_full.c` trains rank-16, alpha-32 LoRA on Q, K, V, attention
+output, gate, up and down in every Qwen block: 168 projections and 8,798,208
+adapter parameters. The frozen base is the checksum-pinned official
+Qwen2.5-Coder-0.5B-Instruct Q8_0. The new path uses ordinary assistant-masked
+next-token SFT, including the closing ChatML token. The earlier final-MLP and
+output-head restrictions do not define this path.
+
+NoTorch is pinned to `2ed0cb03654b445df76168ada21477ab7282b70f`. Its tensor
+tape, CUDA backend, LoRA operations and Chuck own the numerical work. Q/K rows
+are interleaved for the tape's rotary operation and restored on GGUF export.
+A frozen replication matrix implements grouped K/V for native GPU attention.
+Frozen-leaf gradients are discarded before adapter gradient clipping.
+
+Two precision mismatches were caught before training. The inference default
+uses quantized activation dot products; the matching F32 reference must use
+`NT_NO_I8=1`. NoTorch's CUDA initialization enables TF32; this trainer sets
+`NVIDIA_TF32_OVERRIDE=0` before CUDA initialization. The strict parity thresholds
+were retained. On the real 64-token Qwen input, CPU relative L2 was
+`2.99000415e-6`, max absolute error `2.28881836e-5`; H200 F32 relative L2 was
+`1.20051519e-6`, max absolute error `1.43051147e-5`. Both matched argmax.
+
+Independent executable tests passed on CPU and H200: rotary layout, GQA
+forward/backward, assistant mask and next-token shift, numerical adapter
+gradients, exclusion of frozen gradients, stable optimizer slots, byte-exact
+Chuck continuation and all 168 GGUF matrix exports with unchanged metadata.
+The archive supervisor's tests also verify that failed remote preservation
+cannot acknowledge a checkpoint or leave the trainer advancing.
+
+The Runpod recipe is five epochs over the existing 76-row before-verdict
+curriculum, 380 updates, learning rate `1e-4`, seed 20261020, clipping at 1.
+Every 25 updates and at the final update, training blocks until all seven
+adapter files, optimizer state and checkpoint metadata pass remote readback.
+The private run ID is `qwen25-full-lora-20261020-02`. Deployment runs on an
+H200 141 GB, with a six-hour watchdog; the earlier 48 GB host was stopped.
+The exported model is checked against its adapter-loaded computation before
+native held-out reviews. Closed reviews are saved individually off-pod.
+
+The first launch preserved its source bootstrap but stopped at checkpoint zero:
+HF returned HTTP 412 when a host-log commit advanced the shared branch. No
+optimizer update had occurred. Weights now use the dedicated
+`full-lora-20261020` branch, while control/log uploads remain on main.
+The archive also treats commit-specific 412 as a bounded whole-unit retry,
+reconciling the fresh head before writing. Tests cover concurrent writers,
+accepted commits with failed responses, no duplicated checkpoint, and terminal
+412 errors for non-commit operations. The same H200 was restarted with its
+original watchdog deadline intact.
+
 ## 2026-10-09 — The weights arrived. The evaluator checked its watch.
 
 After04 completed all 100 updates at 04:41:59 UTC on October 8, exit code zero.

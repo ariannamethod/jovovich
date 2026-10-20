@@ -49,6 +49,35 @@ missed an explicit forbidden-Python-inference example and repeated themselves
 on a held-out perspective question. The runtime lock therefore stays on the
 official base. Both checkpoints are preserved with their exact test outputs.
 
+The **2026-10-20 full-layer LoRA** body is separately pinned by
+[`model.full-lora.json`](model.full-lora.json). It completed 380 native NoTorch
+updates, and its merged GGUF passed forward parity against the trained adapters.
+Weights remain private in `ataeff/jovovich`; fetching them requires `HF_TOKEN`.
+Use the same explicit lock for download and review:
+
+```sh
+export JOVOVICH_MODEL="$PWD/models/jovovich-full.gguf"
+export JOVOVICH_MODEL_LOCK="$PWD/model.full-lora.json"
+node bin/jovovich.mjs fetch-model
+node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
+```
+
+The lock selects the matching prompt and F32 activation profile. **This body
+failed the held-out review check:** all 24 native responses returned empty
+findings, missing all 12 concern cases. The 12 clean labels were correct, but
+correct labels alone do not establish correct explanations. All responses ended
+normally and passed the production parser; the missing findings were already
+missing in the model's literal output. It is not promoted to `model.json`.
+
+The [literal responses](training/results/2026-10-20-full-lora/generations.jsonl),
+[automated scores](training/results/2026-10-20-full-lora/score.json),
+[semantic assessment](training/results/2026-10-20-full-lora/semantic-assessment.json)
+and [host replay](training/results/2026-10-20-full-lora/production-replay.json)
+are preserved together. Export parity also passed on a full 511-token review;
+numerical agreement is separate from review quality. The four explicitly labelled
+training demonstrations reproduced their stored answers exactly; they are
+not evidence of held-out review quality.
+
 ## Bring a diff
 
 ```sh
@@ -134,6 +163,8 @@ For a fixed installation, replace both `main` references with the same reviewed
 commit SHA. The workflow checks out the trusted JOVOVICH implementation and
 reads the PR as data. It never executes code from the PR. When selecting private
 weights, pass the `HF_TOKEN` secret as shown in the example.
+Set `with.model-lock: model.full-lora.json` to select the private trained body;
+the default remains `model.json`.
 
 **PR opened → summon JOVOVICH.** Contributors may learn her name before yours.
 
@@ -152,7 +183,62 @@ under the laundry, examining the plumbing.
 
 ## Teach the body
 
-Current review experiments use `training/train_mlp.c` in explicit `joint` mode
+The current training path is **all-layer LoRA SFT** in `training/train_full.c`:
+all seven attention/MLP projections in all 24 Qwen blocks, rank 16, alpha 32,
+8,798,208 trainable parameters. NoTorch owns forward, backward, CUDA and Chuck.
+The prompt is masked; every assistant token and its closing ChatML token is
+supervised. The 76-row curriculum includes reviews, identity and code.
+
+```sh
+make train-full-cuda test-full-cuda  # CUDA toolkit and OpenBLAS development files
+python3 training/prepare.py models/full-sft.bin \
+  --sft training/sft_review_v6_before.jsonl --sft-only
+build/jovovich-train-full --check models/base-qwen.gguf models/full-sft.bin
+```
+
+CPU builds use `make train-full test-full`. The forward check compares the
+trainer with native inference at matching F32 activation precision. Q/K rotary
+layout, grouped attention and its gradients, assistant masking, exact optimizer
+continuation and all 168 exported matrices have executable regression tests.
+
+On a training host, run the native command through
+`training/full_lora/host_archive.py`, supplying a private HF token **file** and
+closed source/input files with `--source logical-name=path`. Use an existing
+dedicated HF branch for weights when host-status uploads also use that repository:
+
+```sh
+python3 training/full_lora/host_archive.py \
+  --branch full-lora --run-id my-full-lora-run --state-dir models/archive-state \
+  --checkpoint-root models/full-checkpoints --token-file /private/hf.key \
+  --source curriculum.bin=models/full-sft.bin \
+  --source trainer.c=training/train_full.c \
+  -- build/jovovich-train-full models/base-qwen.gguf models/full-sft.bin \
+     models/full-checkpoints 5 0.0001 16
+build/jovovich-train-full --export models/base-qwen.gguf \
+  models/full-checkpoints/step-000380 models/jovovich-full.gguf
+build/jovovich-train-full --verify-export models/base-qwen.gguf \
+  models/full-checkpoints/step-000380 models/jovovich-full.gguf models/full-sft.bin
+```
+
+Checkpoints include all adapters, optimizer moments, Chuck state and RNG.
+Training waits for remote SHA-256 readback before advancing beyond each closed
+checkpoint. Resume accepts a checkpoint directory as the final positional
+argument and requires the **same base, corpus, epochs, learning rate, rank and
+NoTorch build**; retain the archived recipe with it. The merged GGUF preserves
+the tokenizer and writes adapted projections as F32. Use it with
+`JOVOVICH_MODEL=models/jovovich-full.gguf node bin/jovovich.mjs review --profile full-lora ...`.
+The explicit `full-lora` profile uses the trained concise-analysis instruction,
+ChatML and the same F32 activation path as delivery. Its prompts match all 24
+delivery cases byte for byte. It does not change the base model's default prompt.
+An independently pinned trained model can use `--model-lock path/to/lock.json`
+with `fetch-model`, `review` or `github`. The lock carries the usual repository,
+revision, file, bytes and SHA-256 fields plus `"prompt_profile":"full-lora"`;
+review verifies that explicit lock against the selected GGUF before inference.
+`training/full_lora/deliver.py` archives that body and each native held-out review.
+
+### Earlier training paths
+
+Earlier review experiments use `training/train_mlp.c` in explicit `joint` mode
 with `training/sft_review_v5.jsonl`: separately normalized decision and residual
 losses, followed by one accumulated update over all review targets.
 `make train-mlp` builds this trainer. Its default objective is the earlier
