@@ -28,6 +28,55 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-20 — Give all twenty-four floors a gradient
+
+`training/train_full.c` trains rank-16, alpha-32 LoRA on Q, K, V, attention
+output, gate, up and down in every Qwen block: 168 projections and 8,798,208
+adapter parameters. The frozen base is the checksum-pinned official
+Qwen2.5-Coder-0.5B-Instruct Q8_0. The new path uses ordinary assistant-masked
+next-token SFT, including the closing ChatML token. The earlier final-MLP and
+output-head restrictions do not define this path.
+
+NoTorch is pinned to `2ed0cb03654b445df76168ada21477ab7282b70f`. Its tensor
+tape, CUDA backend, LoRA operations and Chuck own the numerical work. Q/K rows
+are interleaved for the tape's rotary operation and restored on GGUF export.
+A frozen replication matrix implements grouped K/V for native GPU attention.
+Frozen-leaf gradients are discarded before adapter gradient clipping.
+
+Two precision mismatches were caught before training. The inference default
+uses quantized activation dot products; the matching F32 reference must use
+`NT_NO_I8=1`. NoTorch's CUDA initialization enables TF32; this trainer sets
+`NVIDIA_TF32_OVERRIDE=0` before CUDA initialization. The strict parity thresholds
+were retained. On the real 64-token Qwen input, CPU relative L2 was
+`2.99000415e-6`, max absolute error `2.28881836e-5`; H200 F32 relative L2 was
+`1.20051519e-6`, max absolute error `1.43051147e-5`. Both matched argmax.
+
+Independent executable tests passed on CPU and H200: rotary layout, GQA
+forward/backward, assistant mask and next-token shift, numerical adapter
+gradients, exclusion of frozen gradients, stable optimizer slots, byte-exact
+Chuck continuation and all 168 GGUF matrix exports with unchanged metadata.
+The archive supervisor's tests also verify that failed remote preservation
+cannot acknowledge a checkpoint or leave the trainer advancing.
+
+The Runpod recipe is five epochs over the existing 76-row before-verdict
+curriculum, 380 updates, learning rate `1e-4`, seed 20261020, clipping at 1.
+Every 25 updates and at the final update, training blocks until all seven
+adapter files, optimizer state and checkpoint metadata pass remote readback.
+The private run ID is `qwen25-full-lora-20261020-02`. Deployment runs on an
+H200 141 GB, with a six-hour watchdog; the earlier 48 GB host was stopped.
+The exported model is checked against its adapter-loaded computation before
+native held-out reviews. Closed reviews are saved individually off-pod.
+
+The first launch preserved its source bootstrap but stopped at checkpoint zero:
+HF returned HTTP 412 when a host-log commit advanced the shared branch. No
+optimizer update had occurred. Weights now use the dedicated
+`full-lora-20261020` branch, while control/log uploads remain on main.
+The archive also treats commit-specific 412 as a bounded whole-unit retry,
+reconciling the fresh head before writing. Tests cover concurrent writers,
+accepted commits with failed responses, no duplicated checkpoint, and terminal
+412 errors for non-commit operations. The same H200 was restarted with its
+original watchdog deadline intact.
+
 ## 2026-10-09 — The weights arrived. The evaluator checked its watch.
 
 After04 completed all 100 updates at 04:41:59 UTC on October 8, exit code zero.

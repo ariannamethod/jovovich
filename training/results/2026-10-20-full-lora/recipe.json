@@ -1,0 +1,46 @@
+{
+  "name": "jovovich-qwen25-full-lora",
+  "base": {
+    "name": "Qwen2.5-Coder-0.5B-Instruct",
+    "stage": "base",
+    "repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF",
+    "revision": "ebb2015119c907b064c512bf053e945850b5875f",
+    "file": "qwen2.5-coder-0.5b-instruct-q8_0.gguf",
+    "sha256": "e1a77721fa97d412f121878223eec81fb4ae6f271e18f922d746711f67b344d1",
+    "bytes": 675710848
+  },
+  "notorch": "2ed0cb03654b445df76168ada21477ab7282b70f",
+  "rank": 16,
+  "alpha": 32,
+  "layers": 24,
+  "targets": [
+    "attn_q",
+    "attn_k",
+    "attn_v",
+    "attn_output",
+    "ffn_gate",
+    "ffn_up",
+    "ffn_down"
+  ],
+  "epochs": 5,
+  "examples": 76,
+  "updates": 380,
+  "learning_rate": 0.0001,
+  "optimizer": "Chuck",
+  "gradient_clip": 1,
+  "seed": 20261020,
+  "mask": "assistant-only including im_end",
+  "precision": "f32 activations and dequantized Q8_0 frozen base",
+  "corpus_sha256": "a2f22e789b176b1f23ed1262b3e94449819a1484ed31ddb87c3dbedbb8574250",
+  "sources": {
+    "Makefile": "87c367752d127ae7727bb8b28a141df7800519546e5a37d982856e5869584197",
+    "test/full_lora.c": "987f8ff250b83d1d0ae2b31a267ad11bb4f8b958f65aaef4f4db5b081c0db2d8",
+    "training/durable_archive.py": "6e4495400b6b73c6859287b0ca05457b61e8507560924399f067f9af0c429220",
+    "training/train_full.c": "16ed0438209261d178bac55334b87373a574e0864ed083eaf4f75d858d444f70",
+    "training/full_lora/host_archive.py": "bf127398ef461e44e2e7a137ad0b95d4e5281b94f90a49c468dd1532f6955b62"
+  },
+  "cuda_precision": "NVIDIA_TF32_OVERRIDE=0",
+  "archive_branch": "full-lora-20261020",
+  "archive_run_id": "qwen25-full-lora-20261020-02",
+  "supersedes": "attempt01 stopped before updates because archive commit returned HTTP412"
+}

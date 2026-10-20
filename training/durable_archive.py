@@ -172,7 +172,9 @@ def _operation_failure(operation, exc):
         if isinstance(exc, ArchiveError):
             return ArchiveError('archive operation failed', diagnostic=exc.diagnostic)
     retryable = (status in _TRANSIENT_STATUS or
-                 (operation == 'commit' and status == 409) or
+                 # HF uses 412 for a changed parent_commit; retry the whole
+                 # closed unit so the fresh head is reconciled before writing.
+                 (operation == 'commit' and status in (409, 412)) or
                  (status is None and (network or number in _TRANSIENT_ERRNO)))
     return ArchiveError('archive operation failed', diagnostic={
         'operation': operation, 'exception_type': type(exc).__name__,

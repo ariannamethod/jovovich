@@ -564,11 +564,14 @@ def retry_transient(directory):
 
 
 def retry_commit(directory):
-    for mode in ('lost-ack', 'readback', 'cas'):
+    for mode in ('lost-ack', 'readback', 'cas-409', 'cas-412', 'accepted-412'):
         remote, local, events = FakeTransport(), source(directory, mode), []
         archive = DurableArchive(remote, mode)
-        if mode == 'lost-ack':
+        cas = mode.startswith('cas-')
+        if mode in ('lost-ack', 'accepted-412'):
             def lost(_):
+                if mode == 'accepted-412':
+                    raise HTTPError(412)
                 raise ConnectionResetError(104, 'credential-containing transport text')
             remote.after_commit = lost
         elif mode == 'readback':
@@ -580,20 +583,31 @@ def retry_commit(directory):
             other = source(directory, 'other', b'concurrent writer')
             def conflict(_):
                 DurableArchive(remote, 'other-writer').sync_unit('000', {'other': other}, sequence=0)
-                raise HTTPError(409)
+                raise HTTPError(int(mode.removeprefix('cas-')))
             remote.before_commit = conflict
         result = bounded_sync(archive, local, callback=events.append)
-        check(remote.commits == (2 if mode == 'cas' else 1) and len(events) == 1,
+        check(remote.commits == (2 if cas else 1) and len(events) == 1,
               'whole-unit retry duplicated an accepted commit or lost CAS writer')
-        check(result['reused'] is (mode != 'cas'), 'ambiguous commit was not discovered on retry')
+        check(result['reused'] is (not cas), 'ambiguous commit was not discovered on retry')
         check(events[0]['diagnostic']['operation'] == ('download' if mode == 'readback' else 'commit'),
               'retry failure lost the remote operation')
+        if mode.endswith('412'):
+            check(events[0]['diagnostic']['http_status'] == 412 and
+                  events[0]['diagnostic']['retryable'], 'commit 412 was not classified as CAS retry')
+        payloads = remote.revisions[remote.current].values()
+        check(local.read_bytes() in payloads and (not cas or other.read_bytes() in payloads),
+              'reconciled CAS commit lost checkpoint or concurrent writer')
+        commits = remote.commits
+        again = bounded_sync(archive, local, callback=events.append)
+        check(again['reused'] and again['verified_remote_bytes'] and
+              remote.commits == commits and len(events) == 1,
+              'reconciled retry created a duplicate closed unit')
         check(archive._pending is None and archive._operation_deadline is None,
               'successful retry left stale gate/deadline state')
 
 
 def retry_terminal(directory):
-    for index, error in enumerate([HTTPError(n) for n in (400, 401, 403, 404, 409, 422)] +
+    for index, error in enumerate([HTTPError(n) for n in (400, 401, 403, 404, 409, 412, 422)] +
                                   [RuntimeError('hf_SYNTHETIC_RETRY_SECRET')]):
         remote, events = FakeTransport(), []
         remote.head_fault = error
@@ -608,6 +622,22 @@ def retry_terminal(directory):
         else:
             raise RuntimeError('terminal remote failure accepted')
         check(not events and remote.commits == 0, 'terminal failure retried or committed')
+    for status in (409, 412):
+        remote, events = FakeTransport(), []
+        def download_precondition(path, data):
+            raise HTTPError(status)
+        remote.download_fault = download_precondition
+        try:
+            bounded_sync(DurableArchive(remote, 'download-' + str(status)),
+                         source(directory, 'download-' + str(status)), callback=events.append)
+        except ArchiveError as exc:
+            check(exc.diagnostic['operation'] == 'download' and
+                  exc.diagnostic['http_status'] == status and
+                  not exc.diagnostic['retryable'] and exc.diagnostic['attempts'] == 1,
+                  'download precondition error was classified as commit CAS retry')
+        else:
+            raise RuntimeError('download precondition failure accepted')
+        check(not events and remote.commits == 1, 'download precondition failure retried')
     remote, events = FakeTransport(), []
     remote.download_fault = lambda path, data: data + b'corrupt'
     try:

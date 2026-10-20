@@ -22,6 +22,30 @@ harness: build/jovovich-infer
 merge-head: build/jovovich-merge-head
 train: build/jovovich-train-head
 train-mlp: build/jovovich-train-mlp
+train-full: build/jovovich-train-full
+.PHONY: train-full train-full-cuda test-full test-full-cuda
+test-full: build/test-full-lora
+	./build/test-full-lora
+
+build/test-full-lora: test/full_lora.c training/train_full.c $(SUBSTRATE) $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ test/full_lora.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+# Full-layer SFT uses the same NoTorch tensor tape on CPU and CUDA.
+build/jovovich-train-full: training/train_full.c $(SUBSTRATE) $(HEADERS) Makefile
+	@mkdir -p build
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) $(TRAIN_SIMD) -o $@ training/train_full.c $(SUBSTRATE) $(LDFLAGS) $(LDLIBS)
+
+build/notorch_cuda.o: $(NOTORCH)/notorch_cuda.cu $(NOTORCH)/notorch_cuda.h
+	@mkdir -p build
+	nvcc -O2 -DUSE_CUDA -c $(NOTORCH)/notorch_cuda.cu -o $@
+
+train-full-cuda: build/notorch_cuda.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) -DUSE_CUDA -DUSE_BLAS -I/usr/local/cuda/include -o build/jovovich-train-full training/train_full.c $(SUBSTRATE) build/notorch_cuda.o -L/usr/local/cuda/lib64 -lcudart -lcublas -lstdc++ -lopenblas $(LDLIBS)
+
+test-full-cuda: build/notorch_cuda.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(NATIVE) -DUSE_CUDA -DUSE_BLAS -I/usr/local/cuda/include -o build/test-full-lora-cuda test/full_lora.c $(SUBSTRATE) build/notorch_cuda.o -L/usr/local/cuda/lib64 -lcudart -lcublas -lstdc++ -lopenblas $(LDLIBS)
+	./build/test-full-lora-cuda --cuda
 probe-mlp: build/jovovich-probe-mlp
 probe-gradients: build/jovovich-probe-gradients
 probe-tokenization: build/jovovich-probe-tokenization
