@@ -6,10 +6,9 @@ from pathlib import Path
 import torch
 from transformers import (AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig, Trainer,
                           TrainingArguments, DataCollatorForSeq2Seq, set_seed)
-from peft import LoraConfig, get_peft_model
 
-MODEL = 'Qwen/Qwen3.5-0.8B'
-REVISION = '2fc06364715b967f1860aea9cf38778875588b17'
+MODEL = 'Qwen/Qwen2.5-Coder-1.5B-Instruct'
+REVISION = '2e1fd397ee46e1388853d2af2c993145b0f1098a'
 
 def encode(tokenizer, row, max_length):
     messages = row['messages']
@@ -40,8 +39,9 @@ def main():
     parser.add_argument('--validation', default='data/validation.jsonl')
     parser.add_argument('--output', default='/workspace/jovovich-final')
     parser.add_argument('--epochs', type=int, default=3)
-    parser.add_argument('--lr', type=float, default=1e-4)
-    parser.add_argument('--batch-size', type=int, default=8)
+    parser.add_argument('--lr', type=float, default=1e-5)
+    parser.add_argument('--batch-size', type=int, default=4)
+    parser.add_argument('--gradient-accumulation', type=int, default=4)
     parser.add_argument('--max-length', type=int, default=2048)
     parser.add_argument('--check-only', action='store_true')
     args = parser.parse_args()
@@ -67,21 +67,24 @@ def main():
     config = AutoConfig.from_pretrained(args.model, revision=args.revision)
     model_class = AutoModelForImageTextToText if config.model_type == 'qwen3_5' else AutoModelForCausalLM
     model = model_class.from_pretrained(args.model, revision=args.revision,
-                    dtype=torch.bfloat16, attn_implementation='sdpa')
-    model = get_peft_model(model, LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05,
-                    target_modules='all-linear', task_type='CAUSAL_LM'))
+                    dtype=torch.float32, attn_implementation='sdpa')
     for name, parameter in model.named_parameters():
         if '.visual.' in name or '.vision_' in name:
             parameter.requires_grad_(False)
     model.enable_input_require_grads()
+    print(json.dumps({'status': 'parameters_checked', 'model': args.model,
+                      'revision': args.revision, 'method': 'full_sft',
+                      'trainable_parameters': sum(p.numel() for p in model.parameters() if p.requires_grad),
+                      'total_parameters': sum(p.numel() for p in model.parameters()),
+                      'parameter_dtypes': sorted({str(p.dtype) for p in model.parameters() if p.requires_grad})}), flush=True)
     model.config.use_cache = False
     if hasattr(model.config, 'text_config'): model.config.text_config.use_cache = False
     training = TrainingArguments(
         output_dir=args.output + '-trainer', num_train_epochs=args.epochs,
         learning_rate=args.lr, per_device_train_batch_size=args.batch_size,
-        per_device_eval_batch_size=args.batch_size, gradient_accumulation_steps=1,
+        per_device_eval_batch_size=args.batch_size, gradient_accumulation_steps=args.gradient_accumulation,
         bf16=True, gradient_checkpointing=True, optim='adamw_torch',
-        lr_scheduler_type='cosine', warmup_steps=max(1, int(args.epochs * math.ceil(len(train) / args.batch_size) * 0.1)), weight_decay=0.01,
+        lr_scheduler_type='cosine', warmup_steps=max(1, int(args.epochs * math.ceil(len(train) / (args.batch_size * args.gradient_accumulation)) * 0.1)), weight_decay=0.01,
         max_grad_norm=1.0, eval_strategy='epoch', save_strategy='no',
         logging_steps=10, report_to='none', seed=42, data_seed=42,
         remove_unused_columns=False, prediction_loss_only=True)
@@ -104,8 +107,7 @@ def main():
     model.eval()
     model.config.use_cache = True
     if hasattr(model.config, 'text_config'): model.config.text_config.use_cache = True
-    merged = model.merge_and_unload()
-    merged.to(dtype=torch.bfloat16).save_pretrained(args.output, safe_serialization=True)
+    model.to(dtype=torch.bfloat16).save_pretrained(args.output, safe_serialization=True)
     tokenizer.save_pretrained(args.output)
     print(json.dumps({'status': 'saved', 'path': args.output}), flush=True)
 

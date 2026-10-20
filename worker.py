@@ -75,7 +75,8 @@ def job():
                     cases=[json.loads(s) for s in Path('data/validation.jsonl').read_text().splitlines()]
                     assert [(r['id'],r['expected']) for r in baseline]==[(r['id'],r['expected']) for r in cases]
                 else:
-                    commands.append(['python','-u','review.py','--model','Qwen/Qwen3.5-0.8B','--revision','2fc06364715b967f1860aea9cf38778875588b17','--cases','data/validation.jsonl'])
+                    from train import MODEL, REVISION
+                    commands.append(['python','-u','review.py','--model',MODEL,'--revision',REVISION,'--cases','data/validation.jsonl'])
                 commands.append(['python','-u','train.py','--epochs','3'])
             commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl'])
             for cmd in commands:
