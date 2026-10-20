@@ -21,7 +21,7 @@ python train.py --check-only
 HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --output /workspace/jovovich-final
 ```
 
-There are 608 training rows from 289 source groups, 60 validation rows from 29 groups, and 74 final-check rows from 37 groups. A function and all its variants stay in one split. Equivalent function bodies are deduplicated after normalizing local names. No filename multiplication or duplicate-row oversampling.
+There are 608 training rows from 289 source groups, 60 validation rows from 29 groups, and 74 final-check rows from 37 groups. A function and all its variants stay in one split. Equivalent function bodies are deduplicated after normalizing local names. Clean and defective functions pass through the same AST formatter before entering the corpus. No filename multiplication or duplicate-row oversampling.
 
 The corpus includes 290 distinct MBPP function bodies with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old 16-case file is a legacy diagnostic, not the final check.
 
@@ -36,7 +36,7 @@ python review.py --model /workspace/jovovich-final --cases data/test.jsonl
 
 The reviewer receives rules and proposed code or diff. It emits evidence followed by `Verdict: CONCERN` or `Verdict: CLEAN`. It cannot merge, reject or execute code. Check explanations alongside verdicts before releasing a trained model.
 
-The authenticated Runpod worker checks tokenization, runs the untuned model on validation cases, trains, then evaluates the saved model on the final cases. It stops the pod 15 minutes after completion/failure, with a 90-minute hard limit. Final weights remain on the stopped pod volume. This branch provides the implementation; it does not yet declare a released model.
+The authenticated Runpod worker checks tokenization, runs the untuned model on validation cases, trains, then evaluates the saved model on the final cases. It stops the pod 15 minutes after completion/failure, with a 90-minute hard limit. Run states and generated answers are mirrored into Runpod container logs as they are produced. The final model is available through authenticated `/model` and `/model/<filename>` endpoints, with SHA-256 checksums. Final weights remain on the stopped pod volume. This branch provides the implementation; it does not yet declare a released model.
 
 ## Data
 
