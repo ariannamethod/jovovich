@@ -15,8 +15,8 @@ Do not invent additional defects, execution results, requirements or dependencie
 Do not claim that you ran code. Do not repeat the whole repository rule.
 Preserve Arianna Method ontology, identity and terminology. Mandatory self-denial is not
 part of its identity. A review is advisory; maintainers decide whether to merge.
-Return ONLY a JSON object with one string key, "explanation". The explanation must be
-two to four short sentences, at most 100 words, with no headings or verdict line.'''
+Return only the explanation as plain text: two to four short sentences, at most
+100 words, with no JSON wrapper, headings or verdict line.'''
 
 
 def main():
@@ -32,14 +32,26 @@ def main():
         forbidden.update(json.loads(line)['group'] for line in Path(filename).read_text().splitlines())
     if any(row['group'] in forbidden for row in rows):
         raise ValueError('Held-out source group entered teacher input')
+    output_path = Path(args.output)
+    temporary = output_path.with_suffix('.partial')
+    completed = []
+    if temporary.exists():
+        completed = [json.loads(line) for line in temporary.read_text().splitlines()]
+        if len(completed) > len(rows):
+            raise ValueError('Partial corpus has extra rows')
+        for old, original in zip(completed, rows):
+            expected = dict(original)
+            expected['messages'] = old['messages']
+            if (old != expected or old['messages'][:-1] != original['messages'][:-1]
+                    or not old['messages'][-1]['content'].endswith(original['messages'][-1]['content'])):
+                raise ValueError('Partial corpus does not match current source')
+    print(json.dumps({'status': 'distillation_resume', 'rows': len(completed)}), flush=True)
     tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision)
     tokenizer.padding_side = 'left'
     model = AutoModelForCausalLM.from_pretrained(args.model, revision=args.revision,
         dtype=torch.bfloat16, attn_implementation='sdpa').cuda().eval()
-    output_path = Path(args.output)
-    temporary = output_path.with_suffix('.partial')
-    with temporary.open('w', buffering=1) as output:
-        for start in range(0, len(rows), 8):
+    with temporary.open('a', buffering=1) as output:
+        for start in range(len(completed), len(rows), 8):
             batch = rows[start:start + 8]
             to_explain = [r for r in batch if r['group'] != 'identity']
             prompts = []
@@ -56,11 +68,7 @@ def main():
                     generated = model.generate(**encoded, max_new_tokens=512, do_sample=False,
                                                pad_token_id=tokenizer.pad_token_id)
                 for row, tokens in zip(to_explain, generated[:, encoded.input_ids.shape[1]:]):
-                    text = tokenizer.decode(tokens, skip_special_tokens=True).strip()
-                    if text.startswith('```json') and text.endswith('```'):
-                        text = text[7:-3].strip()
-                    parsed = json.loads(text)
-                    explanation = parsed['explanation'].strip()
+                    explanation = tokenizer.decode(tokens, skip_special_tokens=True).strip()
                     if not explanation or len(explanation) > 1600 or 'Verdict:' in explanation:
                         raise ValueError('Invalid teacher explanation for ' + row['id'])
                     explanations[row['id']] = explanation

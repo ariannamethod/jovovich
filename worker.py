@@ -116,10 +116,11 @@ def job():
         update_state(status='failed',error=str(e))
 def shutdown_watchdog():
     started=time.monotonic();finished=None
+    deadline=float(os.environ.get('JOB_DEADLINE_UNIX',time.time()+5400))
     while True:
         if STATE['status'] in ('completed','failed') and finished is None: finished=time.monotonic()
         if STATE['status'] not in ('completed','failed'): finished=None
-        if time.monotonic()-started>5400 or (finished and time.monotonic()-finished>900):
+        if time.time()>=deadline or time.monotonic()-started>5400 or (finished and time.monotonic()-finished>900):
             query='mutation { podStop(input:{podId:"'+os.environ['RUNPOD_POD_ID']+'"}) { id } }'
             req=urllib.request.Request('https://api.runpod.io/graphql',data=json.dumps({'query':query}).encode(),headers={'Authorization':'Bearer '+os.environ['RUNPOD_API_KEY'],'Content-Type':'application/json'})
             try: urllib.request.urlopen(req,timeout=30).read();return
