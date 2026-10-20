@@ -14,8 +14,8 @@ def encode(tokenizer, row, max_length):
     messages = row['messages']
     if messages[-1]['role'] != 'assistant':
         raise ValueError('Training row must end with an assistant answer')
-    prefix = tokenizer.apply_chat_template(messages[:-1], tokenize=True, add_generation_prompt=True)
-    complete = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False)
+    prefix = tokenizer.apply_chat_template(messages[:-1], tokenize=True, add_generation_prompt=True, return_dict=False)
+    complete = tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False, return_dict=False)
     if complete[:len(prefix)] != prefix:
         raise ValueError('Training chat is not an exact continuation of the inference prefix')
     target = complete[len(prefix):]
