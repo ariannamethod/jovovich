@@ -4,37 +4,44 @@ Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy.
 
 > You opened a pull request. A woman with half a billion parameters has opinions about your dependency tree.
 
-Read [ARIANNA_METHOD_MANIFESTO.md](ARIANNA_METHOD_MANIFESTO.md).
-
 JOVOVICH reviews. JOVOVICH does not rule.
 
-The fresh implementation uses PyTorch and Transformers, as explicitly requested by the maintainer. Its initial training source is `Qwen/Qwen2.5-Coder-1.5B-Instruct`, pinned in `train.py`. NoTorch is no longer required for training.
+Read [ARIANNA_METHOD_MANIFESTO.md](ARIANNA_METHOD_MANIFESTO.md).
+
+Training now uses PyTorch, Transformers Trainer and PEFT with `Qwen/Qwen2.5-Coder-1.5B-Instruct`, pinned in `train.py`. The half-billion line is the founding joke; the current training target has 1.5 billion parameters. NoTorch is not involved in this training path.
 
 ## Train
 
-Use a CUDA PyTorch environment (the current runner uses PyTorch 2.8.0, CUDA 12.8).
+Use CUDA PyTorch (the runner uses PyTorch 2.8.0 / CUDA 12.8).
 
 ```sh
 pip install -r requirements.txt
 python build_data.py
-HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --epochs 6 --output /workspace/jovovich-final
+python train.py --check-only
+HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --output /workspace/jovovich-final
 ```
 
-PEFT LoRA tuning (rank 16, alpha 32, all linear layers) uses the model's chat template, assistant-only loss, a BF16 base model and BF16 autocast. Overlong examples fail explicitly. Only the final model is saved. Nothing is uploaded to Hugging Face by these scripts.
+There are 614 training rows from 292 source groups, 62 validation rows from 30 groups, and 76 final-check rows from 38 groups. A function and all its variants stay in one split. No filename multiplication or duplicate-row oversampling.
 
-The curriculum contains 24 review situations in four path variants, with policy controls and corrected-code controls. Concern rows are sampled twice to balance the two clean controls: 384 review rows plus 10 identity examples (394 total, 298 unique prompts). Training uses the same context formatter and chat messages as inference. The separate 16-case review check includes different snippets.
+The corpus includes 295 MBPP functions with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old 16-case file is a legacy diagnostic, not the final check.
+
+Before optimization the trainer checks exact chat-prefix continuity, target decoding, ignored padding and agreement with explicit shifted PyTorch cross entropy. LoRA uses rank 16, alpha 32, learning rate 1e-4 and three epochs. Validation loss is measured before training and after each epoch. Only the final merged model is saved. No script uploads weights to Hugging Face.
 
 ## Review
 
-Put repository rules and a diff in a text file, then:
-
 ```sh
 python review.py --model /workspace/jovovich-final --context change.txt
-python review.py --model /workspace/jovovich-final --cases data/eval.jsonl
+python review.py --model /workspace/jovovich-final --cases data/test.jsonl
 ```
 
-The reviewer emits a short explanation followed by `Verdict: CONCERN` or `Verdict: CLEAN`. It does not execute repository text or perform GitHub actions. The supplied repository rules decide whether a dependency or language belongs here.
+The reviewer receives rules and proposed code or diff. It emits evidence followed by `Verdict: CONCERN` or `Verdict: CLEAN`. It cannot merge, reject or execute code. Check explanations alongside verdicts before releasing a trained model.
 
-`worker.py` runs the training and evaluation on Runpod behind a bearer-authenticated HTTP endpoint. It stops the pod 15 minutes after completion or failure, with a 90-minute total limit. Final weights remain on the pod volume; stopping does not terminate the pod or delete that volume.
+The authenticated Runpod worker checks tokenization, runs the untuned model on validation cases, trains, then evaluates the saved model on the final cases. It stops the pod 15 minutes after completion/failure, with a 90-minute hard limit. Final weights remain on the stopped pod volume. This branch provides the implementation; it does not yet declare a released model.
+
+## Data
+
+[Google Research MBPP](https://github.com/google-research/google-research/tree/master/mbpp), sanitized source, Apache 2.0; see `data/MBPP-LICENSE`. Source SHA-256: `ca95deaa9a01ef0a6f439f88bcf0dd3db3563d22f22aad6cae04ebb9a8d8c8e9`.
+
+`python verify_functions.py` rebuilds mutation records from the retained source; `python build_data.py` constructs splits. The verifier checks a computation-oriented subset in resource-limited child processes. It is a dataset utility, not an execution service for PR code.
 
 Origin: Milla Jovovich, freckles, Lalo Salamanca, Oleg and Sol. The provenance remains ridiculous. The implementation must work.

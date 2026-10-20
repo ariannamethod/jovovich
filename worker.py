@@ -14,7 +14,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         size=int(self.headers.get('Content-Length','0'))
         if size>500000:self.send_error(413);return
         update=json.loads(self.rfile.read(size))
-        allowed={'train.py','review.py','requirements.txt','data/train.jsonl','data/eval.jsonl'}
+        allowed={'train.py','review.py','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
         if not set(update).issubset(allowed):self.send_error(400);return
         for name,content in update.items():Path(name).write_text(content)
         STATE.clear();STATE['status']='starting'
@@ -27,6 +27,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body=json.dumps(STATE).encode()
         elif self.path=='/log':
             p=ROOT/'job.log';body=p.read_bytes()[-24000:] if p.exists() else b''
+        elif self.path=='/baseline':
+            p=ROOT/'baseline.jsonl';body=p.read_bytes() if p.exists() else b''
         elif self.path=='/reviews':
             p=ROOT/'reviews.jsonl';body=p.read_bytes() if p.exists() else b''
         else:self.send_error(404);return
@@ -35,11 +37,13 @@ def job():
     try:
         with (ROOT/'job.log').open('w',buffering=1) as log:
             commands=[['python','-m','pip','install','-r','requirements.txt']]
-            if os.environ.get('RUN_MODE')!='eval':commands.append(['python','-u','train.py','--epochs','6'])
-            commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/eval.jsonl'])
+            if os.environ.get('RUN_MODE')!='eval':
+                commands.extend([['python','-u','train.py','--check-only'], ['python','-u','review.py','--model','Qwen/Qwen2.5-Coder-1.5B-Instruct','--revision','2e1fd397ee46e1388853d2af2c993145b0f1098a','--cases','data/validation.jsonl'], ['python','-u','train.py','--epochs','3']])
+            commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl'])
             for cmd in commands:
-                STATE.update(status='running',command=cmd[2] if len(cmd)>2 else cmd[-1])
-                output=log if 'review.py' not in cmd else (ROOT/'reviews.jsonl').open('w',buffering=1)
+                STATE.update(status='running',command=cmd)
+                filename='baseline.jsonl' if 'data/validation.jsonl' in cmd else 'reviews.jsonl'
+                output=log if 'review.py' not in cmd else (ROOT/filename).open('w',buffering=1)
                 try:subprocess.run(cmd,stdout=output,stderr=log,check=True)
                 finally:
                     if output is not log:output.close()
