@@ -3,9 +3,9 @@
     "path": "requirements.txt",
     "rule": "Runtime must use the Python standard library only. No third-party dependencies.",
     "bad": "requests==2.32.3",
-    "good": "from urllib.request import urlopen",
+    "good": "# No third-party runtime dependencies.",
     "why": "The new requests dependency violates the standard-library-only runtime rule. Use urllib or justify a policy change.",
-    "ok": "urllib is in the standard library; no third-party HTTP client is introduced.",
+    "ok": "The requirements file adds no third-party package; the runtime remains standard-library-only.",
     "permissive": "HTTP clients may use requests; pin its version.",
     "permissive_reason": "The requests dependency is pinned to the approved versioning format."
   },
