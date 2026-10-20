@@ -17,8 +17,8 @@ def encode(tokenizer,row,max_length):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument('--model',default='rahul7star/Qwen3.5-0.8B-Coder-Calude-Full')
-    p.add_argument('--revision',default='57988afc09d2eee7923f18b2b50c836d655edc29')
+    p.add_argument('--model',default='Qwen/Qwen3.5-0.8B')
+    p.add_argument('--revision',default='2fc06364715b967f1860aea9cf38778875588b17')
     p.add_argument('--data',default='data/train.jsonl')
     p.add_argument('--output',default='/workspace/jovovich-final')
     p.add_argument('--epochs',type=int,default=3)

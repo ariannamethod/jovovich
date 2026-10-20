@@ -8,7 +8,7 @@ Read [ARIANNA_METHOD_MANIFESTO.md](ARIANNA_METHOD_MANIFESTO.md).
 
 JOVOVICH reviews. JOVOVICH does not rule.
 
-The fresh implementation uses PyTorch and Transformers, as explicitly requested by the maintainer. Its initial training source is `rahul7star/Qwen3.5-0.8B-Coder-Calude-Full`, pinned in `train.py`. NoTorch is no longer required for training.
+The fresh implementation uses PyTorch and Transformers, as explicitly requested by the maintainer. Its initial training source is `Qwen/Qwen3.5-0.8B`, pinned in `train.py`. NoTorch is no longer required for training.
 
 ## Train
 

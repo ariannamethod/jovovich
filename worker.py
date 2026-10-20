@@ -34,7 +34,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
 def job():
     try:
         with (ROOT/'job.log').open('w',buffering=1) as log:
-            for cmd in [['python','-m','pip','install','-r','requirements.txt'],['python','-u','train.py','--epochs','6'],['python','-u','review.py','--model','/workspace/jovovich-final','--cases','data/eval.jsonl']]:
+            commands=[['python','-m','pip','install','-r','requirements.txt']]
+            if os.environ.get('RUN_MODE')!='eval':commands.append(['python','-u','train.py','--epochs','6'])
+            commands.append(['python','-u','review.py','--model','/workspace/jovovich-final','--cases','data/eval.jsonl'])
+            for cmd in commands:
                 STATE.update(status='running',command=cmd[2] if len(cmd)>2 else cmd[-1])
                 output=log if 'review.py' not in cmd else (ROOT/'reviews.jsonl').open('w',buffering=1)
                 try:subprocess.run(cmd,stdout=output,stderr=log,check=True)
