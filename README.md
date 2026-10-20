@@ -21,17 +21,18 @@ python train.py --check-only
 HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --output /workspace/jovovich-final
 ```
 
-There are 608 training rows from 289 source groups, 60 validation rows from 29 groups, and 74 final-check rows from 37 groups. A function and all its variants stay in one split. Equivalent function bodies are deduplicated after normalizing local names. Clean and defective functions pass through the same AST formatter before entering the corpus. No filename multiplication or duplicate-row oversampling.
+There are 620 training rows from 289 source groups, 60 validation rows from 29 groups, and 74 final-check rows from 37 groups. A function and all its variants stay in one split. Equivalent function bodies are deduplicated after normalizing local names. Clean and defective functions pass through the same AST formatter before entering the corpus. No filename multiplication or duplicate-row oversampling.
 
-The corpus includes 290 distinct MBPP function bodies with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old 16-case file is a legacy diagnostic, not the final check.
+The corpus includes 290 distinct MBPP function bodies with execution-checked mutations and 64 authored repository-policy scenarios. Requirements and examples accompany the code. The policy scenarios cover dependencies, runtime contracts, advisory authority, identity, continuity and provenance. The old `data/eval.jsonl` is a legacy diagnostic. `data/acceptance.jsonl` contains 14 additional repository-review cases and two direct identity questions, kept out of training. The 74-case function/policy control has already been used to evaluate previous versions.
 
-Training and inference use the model's native chat template. Prompts and padding are excluded from the loss. Before optimization the trainer checks exact chat-prefix continuity, target decoding, ignored padding and agreement with explicit shifted PyTorch cross entropy. All text parameters are trained with FP32 parameters and optimizer state, BF16 autocast, learning rate 1e-5 and three epochs. Four microbatches of four samples form an effective batch of 16. Validation loss is measured before training and after each epoch. Only the final model is saved. No script uploads weights to Hugging Face.
+Training and inference use the model's native chat template. Prompts and padding are excluded from the loss. Before optimization the trainer checks exact chat-prefix continuity, target decoding, ignored padding and agreement with explicit shifted PyTorch cross entropy. All text parameters are trained with FP32 parameters and optimizer state, BF16 autocast, learning rate 1e-5 and three epochs. Four microbatches of four samples form an effective batch of 16. Validation loss is measured before training and after each epoch. Training function reviews include computed outputs from the retained examples; policy reviews connect the repository rule to the finding. Only the final model is saved. No script uploads weights to Hugging Face.
 
 ## Review
 
 ```sh
 python review.py --model /workspace/jovovich-final --context change.txt
-python review.py --model /workspace/jovovich-final --cases data/test.jsonl
+python review.py --model /workspace/jovovich-final --cases data/test.jsonl data/acceptance.jsonl
+python review.py --model /workspace/jovovich-final --message "Who are you?"
 ```
 
 The reviewer receives rules and proposed code or diff. It emits evidence followed by `Verdict: CONCERN` or `Verdict: CLEAN`. It cannot merge, reject or execute code. Check explanations alongside verdicts before releasing a trained model.

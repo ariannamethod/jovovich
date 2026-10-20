@@ -78,7 +78,12 @@ def job():
                     from train import MODEL, REVISION
                     commands.append(['python','-u','review.py','--model',MODEL,'--revision',REVISION,'--cases','data/validation.jsonl'])
                 commands.append(['python','-u','train.py','--epochs','3'])
-            commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl'])
+            review_command=['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl']
+            if Path('data/acceptance.jsonl').exists():
+                review_command.append('data/acceptance.jsonl')
+            if os.environ.get('REVIEW_REVISION'):
+                review_command += ['--revision',os.environ['REVIEW_REVISION']]
+            commands.append(review_command)
             for cmd in commands:
                 update_state(status='running',command=cmd)
                 filename='baseline.jsonl' if 'data/validation.jsonl' in cmd else 'reviews.jsonl'

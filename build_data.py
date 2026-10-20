@@ -3,11 +3,40 @@ import ast
 import builtins
 import hashlib
 import json
+import subprocess
+import sys
 from pathlib import Path
 from review import messages, SYSTEM
 
 ROOT = Path(__file__).parent
 DATA = ROOT / 'data'
+
+def observed_examples(code, tests):
+    """Compute supervision from the retained, computation-only MBPP source."""
+    from verify_functions import safe
+    if not safe(code + '\n' + '\n'.join(tests)):
+        raise ValueError('Unapproved executable training source')
+    runner = '''import ast,contextlib,io,json,resource,sys
+resource.setrlimit(resource.RLIMIT_CPU,(1,1))
+resource.setrlimit(resource.RLIMIT_AS,(268435456,268435456))
+r=json.load(sys.stdin);ns={};out=[]
+with contextlib.redirect_stdout(io.StringIO()):
+ exec(r['code'],ns)
+ for test in r['tests']:
+  node=ast.parse(test).body[0].test
+  if not isinstance(node,ast.Compare) or len(node.ops)!=1 or not isinstance(node.ops[0],ast.Eq):continue
+  actual=eval(compile(ast.Expression(node.left),'example','eval'),ns)
+  expected=eval(compile(ast.Expression(node.comparators[0]),'example','eval'),ns)
+  a,b=repr(actual),repr(expected)
+  if max(len(a),len(b))<=160:
+   out.append({'call':ast.unparse(node.left),'actual':a,'expected':b,'passed':actual==expected,'test':test})
+print(json.dumps(out))
+'''
+    p = subprocess.run([sys.executable, '-I', '-c', runner],
+        input=json.dumps({'code': code, 'tests': tests}), capture_output=True, text=True, timeout=3)
+    if p.returncode:
+        raise ValueError('Could not compute training evidence: ' + p.stderr[-300:])
+    return json.loads(p.stdout)
 
 def split(group):
     bucket = int(hashlib.sha256(group.encode()).hexdigest(), 16) % 10
@@ -56,6 +85,21 @@ def main():
                           f"`{r['failure']}` fails. Replacing it with `{r['expression_before']}` restores the supplied examples.")
             else:
                 answer = f'{path}: This implementation satisfies the supplied examples for the stated function. No defect is demonstrated by these cases.'
+            if split(group) == 'train':
+                examples = observed_examples(r['imports'] + '\n' + code,
+                    r['tests'] if verdict == 'CLEAN' else [r['failure']])
+                if verdict == 'CLEAN' and examples:
+                    ex = examples[0]
+                    assert all(e['passed'] for e in examples)
+                    answer = (f"{path}: For `{ex['call']}`, the implementation returns `{ex['actual']}`, "
+                              f"matching the required `{ex['expected']}`. All supplied examples pass. "
+                              'No correctness objection under the stated contract.')
+                elif verdict == 'CONCERN':
+                    failed = [e for e in examples if not e['passed'] and e['test'] == r['failure']]
+                    if failed:
+                        ex = failed[0]
+                        answer += (f" On that failing example, the current result is `{ex['actual']}`; "
+                                   f"the required result is `{ex['expected']}`.")
             add(group, kind, context, answer, verdict)
     for i, r in enumerate(json.loads((DATA / 'policies.json').read_text())):
         group = 'policy-' + str(i)
@@ -65,6 +109,8 @@ def main():
             cases.append(('permitted', r['bad'], r['permissive'], r['permissive_reason'], 'CLEAN'))
         for kind, code, rule, answer, verdict in cases:
             context = f"File: {r['path']}\nRepository rule: {rule}\nProposed code or text:\n```\n{code}\n```"
+            if split(group) == 'train':
+                answer = f'The repository requires: {rule} {answer}'
             add(group, kind, context, r['path'] + ': ' + answer, verdict)
     for i, (question, answer) in enumerate(json.loads((DATA / 'identity.json').read_text())):
         groups['train'].append({'id': f'identity-{i}', 'group': 'identity', 'messages': [

@@ -34,7 +34,8 @@ def main():
     parser.add_argument('--revision')
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument('--context')
-    source.add_argument('--cases')
+    source.add_argument('--cases', nargs='+')
+    source.add_argument('--message', help='Direct conversation with JOVOVICH')
     args = parser.parse_args()
     tokenizer = AutoTokenizer.from_pretrained(args.model, revision=args.revision)
     config = AutoConfig.from_pretrained(args.model, revision=args.revision)
@@ -43,10 +44,15 @@ def main():
         args.model, revision=args.revision, dtype=torch.bfloat16,
         attn_implementation='sdpa').cuda().eval()
     if args.cases:
-        for line in Path(args.cases).read_text().splitlines():
-            row = json.loads(line)
-            answer = generate(model, tokenizer, messages(row['context']))
-            print(json.dumps({'id': row['id'], 'expected': row['expected'], 'review': answer}), flush=True)
+        for case_file in args.cases:
+            for line in Path(case_file).read_text().splitlines():
+                row = json.loads(line)
+                chat = row['prompt_messages'] if 'prompt_messages' in row else messages(row['context'])
+                answer = generate(model, tokenizer, chat)
+                print(json.dumps({'id': row['id'], 'expected': row['expected'], 'review': answer}), flush=True)
+    elif args.message:
+        print(generate(model, tokenizer, [{'role': 'system', 'content': SYSTEM},
+                                         {'role': 'user', 'content': args.message}]))
     else:
         print(generate(model, tokenizer, messages(Path(args.context).read_text())))
 
