@@ -67,14 +67,17 @@ def job():
             if os.environ.get('RUN_MODE')!='eval':
                 data_args=[]
                 if os.environ.get('TEACHER_MODEL'):
-                    commands.append(['python','-u','distill.py','--model',os.environ['TEACHER_MODEL'],
-                                     '--revision',os.environ['TEACHER_REVISION']])
+                    if os.environ.get('TEACHER_DATA_SHA256'):
+                        if hashlib.sha256(Path('data/train_distilled.jsonl').read_bytes()).hexdigest()!=os.environ['TEACHER_DATA_SHA256']:
+                            raise ValueError('Approved training data checksum mismatch')
+                    else:
+                        commands.append(['python','-u','distill.py','--model',os.environ['TEACHER_MODEL'],
+                                         '--revision',os.environ['TEACHER_REVISION']])
                     data_args=['--data','data/train_distilled.jsonl']
                 commands.append(['python','-u','train.py','--check-only'] + data_args)
                 if os.environ.get('SKIP_BASELINE') == '1':
                     pass
                 elif os.environ.get('BASELINE_COMPLETE_SHA256'):
-                    import hashlib
                     assert hashlib.sha256((ROOT/'baseline.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_COMPLETE_SHA256']
                     assert hashlib.sha256(Path('data/validation.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_DATA_SHA256']
                     assert hashlib.sha256(Path('review.py').read_bytes()).hexdigest()==os.environ['BASELINE_REVIEW_SHA256']

@@ -1,6 +1,7 @@
 """Expand verified training answers with code-specific explanations. Train split only."""
 import argparse
 import json
+import re
 from pathlib import Path
 
 import torch
@@ -13,6 +14,8 @@ For a correct implementation, explain why it meets the stated contract. For a de
 explain the faulty operation and its consequence. Use the supplied computed observations.
 Do not invent additional defects, execution results, requirements or dependencies.
 Do not claim that you ran code. Do not repeat the whole repository rule.
+The explanation is the reviewer's own standalone answer. Never refer to a reference
+review, gold answer, teacher, or training example: none exists in the reviewer's input.
 Preserve Arianna Method ontology, identity and terminology. Mandatory self-denial is not
 part of its identity. A review is advisory; maintainers decide whether to merge.
 Return only the explanation as plain text: two to four short sentences, at most
@@ -71,7 +74,10 @@ def main():
                     explanation = tokenizer.decode(tokens, skip_special_tokens=True).strip()
                     if not explanation or len(explanation) > 1600 or 'Verdict:' in explanation:
                         raise ValueError('Invalid teacher explanation for ' + row['id'])
-                    explanations[row['id']] = explanation
+                    # Supervisor context is unavailable to the deployed reviewer.
+                    # Preserve the verified target if the augmentation leaks it.
+                    if not re.search(r'\breference\b|\bgold\b|\bteacher\b|\btraining (example|data)\b', explanation, re.I):
+                        explanations[row['id']] = explanation
             for row in batch:
                 if row['id'] in explanations:
                     gold = row['messages'][-1]['content']
