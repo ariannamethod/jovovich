@@ -56,6 +56,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             p=ROOT/'baseline.jsonl';body=p.read_bytes() if p.exists() else b''
         elif self.path=='/reviews':
             p=ROOT/'reviews.jsonl';body=p.read_bytes() if p.exists() else b''
+        elif self.path=='/training-data':
+            p=ROOT/'data/train_distilled.jsonl';body=p.read_bytes() if p.exists() else b''
         else:self.send_error(404);return
         self.send_response(200);self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
 def job():
@@ -63,7 +65,12 @@ def job():
         with (ROOT/'job.log').open('w',buffering=1) as log:
             commands=[['python','-m','pip','install','-r','requirements.txt']]
             if os.environ.get('RUN_MODE')!='eval':
-                commands.append(['python','-u','train.py','--check-only'])
+                data_args=[]
+                if os.environ.get('TEACHER_MODEL'):
+                    commands.append(['python','-u','distill.py','--model',os.environ['TEACHER_MODEL'],
+                                     '--revision',os.environ['TEACHER_REVISION']])
+                    data_args=['--data','data/train_distilled.jsonl']
+                commands.append(['python','-u','train.py','--check-only'] + data_args)
                 if os.environ.get('SKIP_BASELINE') == '1':
                     pass
                 elif os.environ.get('BASELINE_COMPLETE_SHA256'):
@@ -77,7 +84,7 @@ def job():
                 else:
                     from train import MODEL, REVISION
                     commands.append(['python','-u','review.py','--model',MODEL,'--revision',REVISION,'--cases','data/validation.jsonl'])
-                commands.append(['python','-u','train.py','--epochs','3'])
+                commands.append(['python','-u','train.py','--epochs','3'] + data_args)
             review_command=['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl']
             if Path('data/acceptance.jsonl').exists():
                 review_command.append('data/acceptance.jsonl')

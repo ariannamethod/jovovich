@@ -7,8 +7,8 @@ import torch
 from transformers import (AutoTokenizer, AutoModelForCausalLM, AutoModelForImageTextToText, AutoConfig, Trainer,
                           TrainingArguments, DataCollatorForSeq2Seq, set_seed)
 
-MODEL = 'Qwen/Qwen2.5-Coder-1.5B-Instruct'
-REVISION = '2e1fd397ee46e1388853d2af2c993145b0f1098a'
+MODEL = 'Qwen/Qwen3.5-0.8B'
+REVISION = '2fc06364715b967f1860aea9cf38778875588b17'
 
 def encode(tokenizer, row, max_length):
     messages = row['messages']

@@ -16,7 +16,7 @@ def generate(model, tokenizer, chat):
     if inputs.input_ids.shape[1] > 4096:
         raise ValueError('Review context exceeds 4096 tokens')
     with torch.inference_mode():
-        output = model.generate(**inputs, max_new_tokens=256, do_sample=False,
+        output = model.generate(**inputs, max_new_tokens=512, do_sample=False,
                                 pad_token_id=tokenizer.eos_token_id)
     tokens = output[0, inputs.input_ids.shape[1]:]
     answer = tokenizer.decode(tokens, skip_special_tokens=True).strip()
