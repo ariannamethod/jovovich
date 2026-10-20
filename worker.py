@@ -1,9 +1,16 @@
 """Authenticated Runpod HTTP worker. Logs and final weights stay on the pod."""
-import http.server,os,json,threading,subprocess,time,urllib.request,traceback
+import http.server,os,json,threading,subprocess,time,urllib.request,shutil,hashlib
 from pathlib import Path
 os.environ['HF_HUB_ENABLE_HF_TRANSFER']='0'
 ROOT=Path('/workspace/jovovich-job');ROOT.mkdir(exist_ok=True)
 STATE={'status':'starting'}
+def update_state(**values):
+    STATE.update(values)
+    target=ROOT/'state.json'
+    temporary=target.with_suffix('.tmp')
+    temporary.write_text(json.dumps(STATE))
+    temporary.replace(target)
+    print('JOVOVICH_STATE '+json.dumps(STATE),flush=True)
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self,*args):pass
     def do_POST(self):
@@ -27,6 +34,24 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body=json.dumps(STATE).encode()
         elif self.path=='/log':
             p=ROOT/'job.log';body=p.read_bytes()[-24000:] if p.exists() else b''
+        elif self.path=='/model':
+            if STATE['status']!='completed':self.send_error(409);return
+            model=Path('/workspace/jovovich-final')
+            files=[]
+            for p in model.iterdir():
+                if p.is_file() and not p.is_symlink():
+                    with p.open('rb') as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
+                    files.append({'name':p.name,'bytes':p.stat().st_size,'sha256':digest})
+            body=json.dumps(files).encode()
+        elif self.path.startswith('/model/'):
+            if STATE['status']!='completed':self.send_error(409);return
+            name=self.path[len('/model/'):]
+            if not name or name!=Path(name).name or name in ('.','..'):self.send_error(400);return
+            p=Path('/workspace/jovovich-final')/name
+            if not p.is_file() or p.is_symlink():self.send_error(404);return
+            self.send_response(200);self.send_header('Content-Length',str(p.stat().st_size));self.end_headers()
+            with p.open('rb') as f:shutil.copyfileobj(f,self.wfile)
+            return
         elif self.path=='/baseline':
             p=ROOT/'baseline.jsonl';body=p.read_bytes() if p.exists() else b''
         elif self.path=='/reviews':
@@ -39,7 +64,9 @@ def job():
             commands=[['python','-m','pip','install','-r','requirements.txt']]
             if os.environ.get('RUN_MODE')!='eval':
                 commands.append(['python','-u','train.py','--check-only'])
-                if os.environ.get('BASELINE_COMPLETE_SHA256'):
+                if os.environ.get('SKIP_BASELINE') == '1':
+                    pass
+                elif os.environ.get('BASELINE_COMPLETE_SHA256'):
                     import hashlib
                     assert hashlib.sha256((ROOT/'baseline.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_COMPLETE_SHA256']
                     assert hashlib.sha256(Path('data/validation.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_DATA_SHA256']
@@ -52,14 +79,28 @@ def job():
                 commands.append(['python','-u','train.py','--epochs','3'])
             commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl'])
             for cmd in commands:
-                STATE.update(status='running',command=cmd)
+                update_state(status='running',command=cmd)
                 filename='baseline.jsonl' if 'data/validation.jsonl' in cmd else 'reviews.jsonl'
                 output=log if 'review.py' not in cmd else (ROOT/filename).open('w',buffering=1)
-                try:subprocess.run(cmd,stdout=output,stderr=log,check=True)
+                try:
+                    if 'review.py' in cmd:
+                        process=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=log,text=True,bufsize=1)
+                        for line in process.stdout:
+                            output.write(line);output.flush()
+                            print('JOVOVICH_REVIEW '+line.rstrip(),flush=True)
+                    else:
+                        process=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
+                        for line in process.stdout:
+                            log.write(line);log.flush()
+                            print(line.rstrip(),flush=True)
+                    if process.wait():
+                        raise subprocess.CalledProcessError(process.returncode,cmd)
                 finally:
                     if output is not log:output.close()
-            STATE.update(status='completed')
-    except Exception as e:STATE.update(status='failed',error=str(e))
+            update_state(status='completed')
+    except Exception as e:
+        print((ROOT/'job.log').read_text()[-6000:],flush=True)
+        update_state(status='failed',error=str(e))
 def shutdown_watchdog():
     started=time.monotonic();finished=None
     while True:
@@ -72,5 +113,8 @@ def shutdown_watchdog():
             except Exception: time.sleep(30)
         time.sleep(10)
 threading.Thread(target=shutdown_watchdog,daemon=True).start()
-threading.Thread(target=job,daemon=True).start()
+if os.environ.get('RUN_MODE')=='serve':
+    STATE.update(json.loads((ROOT/'state.json').read_text()))
+else:
+    threading.Thread(target=job,daemon=True).start()
 http.server.ThreadingHTTPServer(('0.0.0.0',8888),Handler).serve_forever()
