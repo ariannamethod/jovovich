@@ -28,6 +28,47 @@ Historical launchers retain their executed bytes. New collection runs use the
 verified launcher described below.
 
 
+## 2026-10-20 — Twenty-four answers; zero discovered defects
+
+All 24 fixed held-out reviews completed with EOS, valid JSON and the requested
+analysis-before-findings order. Every answer contained `findings: []`.
+That misses all 12 concern cases, accepts all 12 clean cases and solves zero
+of the 12 matched concern/clean pairs. This is a failed review result, not a
+reason to promote the new body. The default `model.json` remains unchanged.
+
+Replaying the literal native responses through the production host accepted
+all 24, with exact prompt-SHA binding and no new inference. The host did not
+strip away useful findings: they were absent from the native JSON itself.
+The code-grounding assessment is separate from this parser acceptance and
+from the automated label score. It includes incorrect explanations attached
+to correct clean labels, and preserves the grounds for each judgment.
+
+Independent full-context export verification used the complete 511-token
+first training review and the archived step-380 adapters. Relative L2 was
+`1.75362623e-6`, maximum absolute logit error `5.53131104e-5`, with equal argmax.
+The unchanged gates passed. `--verify-export` now uses the complete example
+instead of truncating to 64 tokens. No update or new model was trained for
+this check. This establishes the measured numerical agreement; it does not
+explain or excuse the semantic failures.
+
+Literal generations, automated scores, semantic judgments and production
+replay are in `training/results/2026-10-20-full-lora/`. The qualitative audit
+marks one response grounded, three mixed and twenty wrong or unsupported;
+those judgments are recorded separately from the 12/24 label score. All four
+explicitly labelled training demonstrations (two voice, two code) reproduced
+their stored answers exactly. That is training-answer reproduction, not
+held-out success.
+
+The final delivery archive contains all 32 verified units at private HF
+revision `5729f386b1094548daf46a3b78a9dcc385efaaf4`, including all 24 reviews,
+all four demonstrations, scores and completion. The resumed job closed with
+return code 0; the owned H200 pod `ggq00nenyl2tg8` automatically stopped and
+Runpod reported `EXITED` when checked at 2026-10-20 04:01 UTC. The complete
+source/object index and closed-log hashes are included in the result directory.
+The trained GGUF stays private and separately selectable through
+`model.full-lora.json`. The code and artifact are delivered; the requested
+review quality is not achieved.
+
 ## 2026-10-20 — The body is trained; preserve the actual verdicts
 
 The all-layer SFT run completed all 380 updates on the H200. Every checkpoint,

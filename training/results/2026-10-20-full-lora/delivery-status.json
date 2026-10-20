@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-20T04:01:41.111342+00:00",
+  "pod": "ggq00nenyl2tg8",
+  "pod_status": "EXITED",
+  "job": "deploy-deliver-03",
+  "job_returncode": 0,
+  "control_revision": "a8a0273a4b1a2e77e5446077acdf9eadc3b66505",
+  "status_sha256": "53e2617c7485376e74f026fa985c43fc67f43d0b3b73a731a605d4b702d89bb9",
+  "final_log": {
+    "path": "control/full-lora-ggq00nenyl2tg8/jobs/deploy-deliver-03/final.log",
+    "sha256": "928bdfc5c04657c665600376d5f5cd85f994b47561014aedf1dcab259a6b03c0",
+    "bytes": 21684
+  },
+  "delivery_completed": true,
+  "quality_accepted": false,
+  "promotion": "Not promoted: all 12 held-out concern cases were missed."
+}

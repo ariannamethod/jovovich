@@ -62,8 +62,21 @@ node bin/jovovich.mjs fetch-model
 node bin/jovovich.mjs review --repo /path/to/repository --base HEAD~1 --head HEAD
 ```
 
-The lock selects the matching prompt and F32 activation profile. Check the
-measured review results below before choosing this body for unattended reviews.
+The lock selects the matching prompt and F32 activation profile. **This body
+failed the held-out review check:** all 24 native responses returned empty
+findings, missing all 12 concern cases. The 12 clean labels were correct, but
+correct labels alone do not establish correct explanations. All responses ended
+normally and passed the production parser; the missing findings were already
+missing in the model's literal output. It is not promoted to `model.json`.
+
+The [literal responses](training/results/2026-10-20-full-lora/generations.jsonl),
+[automated scores](training/results/2026-10-20-full-lora/score.json),
+[semantic assessment](training/results/2026-10-20-full-lora/semantic-assessment.json)
+and [host replay](training/results/2026-10-20-full-lora/production-replay.json)
+are preserved together. Export parity also passed on a full 511-token review;
+numerical agreement is separate from review quality. The four explicitly labelled
+training demonstrations reproduced their stored answers exactly; they are
+not evidence of held-out review quality.
 
 ## Bring a diff
 
