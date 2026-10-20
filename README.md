@@ -22,7 +22,7 @@ HF_HUB_ENABLE_HF_TRANSFER=0 python train.py --epochs 6 --output /workspace/jovov
 
 PEFT LoRA tuning (rank 16, alpha 32, all linear layers) uses the model's chat template, assistant-only loss, a BF16 base model and BF16 autocast. Overlong examples fail explicitly. Only the final model is saved. Nothing is uploaded to Hugging Face by these scripts.
 
-The curriculum contains 24 paired review situations in four path variants (192 reviews), plus 10 identity examples. Training uses the same context formatter and chat messages as inference. The separate 16-case review check includes different snippets.
+The curriculum contains 24 review situations in four path variants, with policy controls and corrected-code controls. Concern rows are sampled twice to balance the two clean controls: 384 review rows plus 10 identity examples (394 total, 298 unique prompts). Training uses the same context formatter and chat messages as inference. The separate 16-case review check includes different snippets.
 
 ## Review
 
