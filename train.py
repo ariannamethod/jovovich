@@ -1,6 +1,7 @@
 """PyTorch Transformers Trainer SFT. One final model, no Hub writes."""
 import argparse
 import json
+import math
 from pathlib import Path
 import torch
 from transformers import (AutoTokenizer, AutoModelForCausalLM, Trainer,
@@ -74,7 +75,7 @@ def main():
         learning_rate=args.lr, per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size, gradient_accumulation_steps=1,
         bf16=True, gradient_checkpointing=True, optim='adamw_torch',
-        lr_scheduler_type='cosine', warmup_ratio=0.1, weight_decay=0.01,
+        lr_scheduler_type='cosine', warmup_steps=max(1, int(args.epochs * math.ceil(len(train) / args.batch_size) * 0.1)), weight_decay=0.01,
         max_grad_norm=1.0, eval_strategy='epoch', save_strategy='no',
         logging_steps=10, report_to='none', seed=42, data_seed=42,
         remove_unused_columns=False, prediction_loss_only=True)

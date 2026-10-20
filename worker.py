@@ -38,7 +38,18 @@ def job():
         with (ROOT/'job.log').open('w',buffering=1) as log:
             commands=[['python','-m','pip','install','-r','requirements.txt']]
             if os.environ.get('RUN_MODE')!='eval':
-                commands.extend([['python','-u','train.py','--check-only'], ['python','-u','review.py','--model','Qwen/Qwen2.5-Coder-1.5B-Instruct','--revision','2e1fd397ee46e1388853d2af2c993145b0f1098a','--cases','data/validation.jsonl'], ['python','-u','train.py','--epochs','3']])
+                commands.append(['python','-u','train.py','--check-only'])
+                if os.environ.get('BASELINE_COMPLETE_SHA256'):
+                    import hashlib
+                    assert hashlib.sha256((ROOT/'baseline.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_COMPLETE_SHA256']
+                    assert hashlib.sha256(Path('data/validation.jsonl').read_bytes()).hexdigest()==os.environ['BASELINE_DATA_SHA256']
+                    assert hashlib.sha256(Path('review.py').read_bytes()).hexdigest()==os.environ['BASELINE_REVIEW_SHA256']
+                    baseline=[json.loads(s) for s in (ROOT/'baseline.jsonl').read_text().splitlines()]
+                    cases=[json.loads(s) for s in Path('data/validation.jsonl').read_text().splitlines()]
+                    assert [(r['id'],r['expected']) for r in baseline]==[(r['id'],r['expected']) for r in cases]
+                else:
+                    commands.append(['python','-u','review.py','--model','Qwen/Qwen2.5-Coder-1.5B-Instruct','--revision','2e1fd397ee46e1388853d2af2c993145b0f1098a','--cases','data/validation.jsonl'])
+                commands.append(['python','-u','train.py','--epochs','3'])
             commands.append(['python','-u','review.py','--model',os.environ.get('REVIEW_MODEL','/workspace/jovovich-final'),'--cases','data/test.jsonl'])
             for cmd in commands:
                 STATE.update(status='running',command=cmd)
