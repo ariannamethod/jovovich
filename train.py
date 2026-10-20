@@ -2,7 +2,7 @@
 import argparse,json,math,random
 from pathlib import Path
 import torch
-from transformers import AutoTokenizer,AutoModelForCausalLM,get_cosine_schedule_with_warmup
+from transformers import AutoTokenizer,AutoModelForImageTextToText,get_cosine_schedule_with_warmup
 
 def encode(tokenizer,row,max_length):
     messages=row['messages']
@@ -17,12 +17,12 @@ def encode(tokenizer,row,max_length):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument('--model',default='DavidAU/Qwen3-Zero-Coder-Reasoning-V2-0.8B')
-    p.add_argument('--revision',default='f79ed50414fa059dc4d9a113088599efd4c08d94')
+    p.add_argument('--model',default='rahul7star/Qwen3.5-0.8B-Coder-Calude-Full')
+    p.add_argument('--revision',default='57988afc09d2eee7923f18b2b50c836d655edc29')
     p.add_argument('--data',default='data/train.jsonl')
     p.add_argument('--output',default='/workspace/jovovich-final')
     p.add_argument('--epochs',type=int,default=3)
-    p.add_argument('--lr',type=float,default=1e-5)
+    p.add_argument('--lr',type=float,default=2e-6)
     p.add_argument('--accumulation',type=int,default=8)
     p.add_argument('--max-length',type=int,default=2048)
     a=p.parse_args()
@@ -31,8 +31,10 @@ def main():
     tok=AutoTokenizer.from_pretrained(a.model,revision=a.revision,trust_remote_code=False)
     rows=[json.loads(s) for s in Path(a.data).read_text().splitlines() if s.strip()]
     encoded=[encode(tok,r,a.max_length) for r in rows]
-    model=AutoModelForCausalLM.from_pretrained(a.model,revision=a.revision,torch_dtype=torch.float32,attn_implementation='sdpa',trust_remote_code=False).cuda()
-    model.gradient_checkpointing_enable();model.config.use_cache=False
+    model=AutoModelForImageTextToText.from_pretrained(a.model,revision=a.revision,dtype=torch.float32,attn_implementation='sdpa',trust_remote_code=False).cuda()
+    model.gradient_checkpointing_enable();model.config.text_config.use_cache=False
+    model.generation_config.eos_token_id=tok.eos_token_id
+    model.generation_config.pad_token_id=tok.eos_token_id
     optimizer=torch.optim.AdamW(model.parameters(),lr=a.lr,weight_decay=.01)
     total=a.epochs*math.ceil(len(encoded)/a.accumulation)
     scheduler=get_cosine_schedule_with_warmup(optimizer,max(1,total//10),total)
@@ -53,7 +55,7 @@ def main():
             norm=torch.nn.utils.clip_grad_norm_(model.parameters(),1.0,error_if_nonfinite=True)
             optimizer.step();scheduler.step();step+=1
             print(json.dumps({'step':step,'total':total,'epoch':epoch+1,'loss':loss_sum/len(group),'grad_norm':float(norm)}),flush=True)
-    model.eval();model.config.use_cache=True
+    model.eval();model.config.text_config.use_cache=True
     model.to(dtype=torch.bfloat16).save_pretrained(a.output,safe_serialization=True)
     tok.save_pretrained(a.output)
     print(json.dumps({'status':'saved','path':a.output}),flush=True)
