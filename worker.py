@@ -29,7 +29,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if not commands or any(not isinstance(c,list) or len(c)<3 or c[:2]!=['python','-u'] or c[2] not in allowed or any(not isinstance(a,str) for a in c) for c in commands):
                 self.send_error(400);return
             files=request.get('files',{})
-            if not set(files).issubset(allowed|{'model_config.py','fixture_quality.py','data/fixture_quarantine.json','data/train_distilled.jsonl'}):self.send_error(400);return
+            if not set(files).issubset(allowed|{'model_config.py','fixture_quality.py','data/fixture_quarantine.json','data/train_distilled.jsonl','data/train.jsonl','data/validation.jsonl','data/test.jsonl','data/acceptance.jsonl'}):self.send_error(400);return
             for name,content in files.items():Path(name).write_text(content)
             OVERRIDE_COMMANDS=commands
             STATE.clear();STATE['status']='starting'
@@ -49,7 +49,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         size=int(self.headers.get('Content-Length','0'))
         if not 0<size<=MAX_REQUEST_BYTES:self.send_error(413);return
         update=json.loads(self.rfile.read(size))
-        allowed={'distill.py','train.py','review.py','model_config.py','fixture_quality.py','data/fixture_quarantine.json','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl'}
+        allowed={'distill.py','train.py','review.py','model_config.py','fixture_quality.py','data/fixture_quarantine.json','requirements.txt','data/train.jsonl','data/validation.jsonl','data/test.jsonl','data/acceptance.jsonl'}
         if not set(update).issubset(allowed):self.send_error(400);return
         for name,content in update.items():Path(name).write_text(content)
         STATE.clear();STATE['status']='starting'

@@ -7,11 +7,19 @@ import unittest
 
 from fixture_quality import QUARANTINE, quarantined, require_usable, semantic_verdict
 from verify_functions import check, safe
+from review import SYSTEM
 
 ROOT = Path(__file__).resolve().parent
 
 
 class FixtureQualityTests(unittest.TestCase):
+    def test_all_fixture_system_prompts_match_runtime(self):
+        for name in ('train', 'validation', 'test', 'acceptance'):
+            for row in map(json.loads, (ROOT / f'data/{name}.jsonl').read_text().splitlines()):
+                chat = row.get('messages', row.get('prompt_messages'))
+                if chat:
+                    self.assertEqual(chat[0]['content'], SYSTEM, row['id'])
+
     def test_worker_model_config_has_no_ml_imports(self):
         result = subprocess.run([sys.executable, '-I', '-c',
             "import sys; sys.path.insert(0, " + repr(str(ROOT)) + "); "
