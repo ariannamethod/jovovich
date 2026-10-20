@@ -53,7 +53,7 @@ def main():
                 encoded = tokenizer(prompts, padding=True, add_special_tokens=False,
                                     return_tensors='pt').to(model.device)
                 with torch.inference_mode():
-                    generated = model.generate(**encoded, max_new_tokens=256, do_sample=False,
+                    generated = model.generate(**encoded, max_new_tokens=512, do_sample=False,
                                                pad_token_id=tokenizer.pad_token_id)
                 for row, tokens in zip(to_explain, generated[:, encoded.input_ids.shape[1]:]):
                     text = tokenizer.decode(tokens, skip_special_tokens=True).strip()
