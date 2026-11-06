@@ -3,6 +3,7 @@
 #include "json.h"
 #include "hash.h"
 #include "review.h"
+#include "batch.h"
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -12,7 +13,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/* One explicit file at two resolved commits. No shell or working-tree reads. */
+/* Literal changed paths at two resolved commits. No shell or working-tree reads. */
 #define CAP 262144
 static char *git_read(const char *repo,const char *const args[],size_t *length) {
     const char *argv[32]={"git","--no-pager","--no-replace-objects","--literal-pathspecs","-C",repo};
@@ -59,15 +60,34 @@ static char *select_lines(const char *text,size_t n,int first,int *last) {
     line=first;for(size_t i=start;i<n;i++)if(text[i]=='\n' && line++==*last){end=i+1;break;}
     char*out=malloc(end-start+1);if(out){memcpy(out,text+start,end-start);out[end-start]=0;}return out;
 }
+typedef struct {
+    char *file,*diff,*context;
+    char id[65],diff_hash[65];
+} packed;
+static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules) {
+    size_t n;char *stat=NULL;int rc=1;
+    if(path_kind(repo,base,p->file)<0 || path_kind(repo,head,p->file)<0)goto done;
+    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--numstat","-z",base,head,"--",p->file,NULL},&n);
+    if(!stat)goto done;
+    if(n && (stat[0]=='-' || (strchr(stat,'\t') && strchr(stat,'\t')[1]=='-'))){fprintf(stderr,"Binary change: %s\n",p->file);goto done;}
+    p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--unified=8",base,head,"--",p->file,NULL},&n);
+    if(!p->diff || !n || memchr(p->diff,0,n) || hash_bytes(p->diff,n,p->diff_hash))goto done;
+    if(am_set_var_text("source_file",p->file) || am_set_var_text("source_rules",rules) || am_set_var_text("source_diff",p->diff) || am_exec_file("aml/git-context.aml"))goto done;
+    const char*ctx=am_get_var_text("review_context");
+    if(!ctx || !strstr(ctx,p->file) || !strstr(ctx,rules) || !strstr(ctx,p->diff) || !(p->context=strdup(ctx)) || hash_bytes(ctx,strlen(ctx),p->id))goto done;
+    rc=0;
+done:
+    free(stat);if(rc)fprintf(stderr,"Could not capture text change: %s\n",p->file);return rc;
+}
 int main(int argc,char **argv) {
-    if(argc!=6 && argc!=8){fprintf(stderr,"Usage: %s REPO BASE HEAD RULES_PATH FILE [FIRST_LINE LAST_LINE]\n",argv[0]);return 2;}
-    int rc=1,first=1,last=0;size_t n=0,rules_len=0;const char *repo=argv[1],*rules_path=argv[4],*file=argv[5];
-    char *base=NULL,*head=NULL,*spec=NULL,*blob=NULL,*rules=NULL,*selected=NULL,*diff=NULL,*stat=NULL;
+    if(argc!=6 && argc!=8){fprintf(stderr,"Usage: %s REPO BASE HEAD RULES_PATH FILE [FIRST LAST]\n       %s --all REPO BASE HEAD RULES_PATH [FIRST LAST]\n",argv[0],argv[0]);return 2;}
+    int all=!strcmp(argv[1],"--all"),rc=1,first=1,last=0,count=0;size_t n=0,rules_len=0;
+    const char *repo=argv[1+all],*rules_path=argv[4+all];
+    char *base=NULL,*head=NULL,*spec=NULL,*blob=NULL,*rules=NULL,*selected=NULL,*list=NULL;
+    packed records[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES]={{0}};FILE*out=NULL;
     if(argc==8 && (integer(argv[6],&first) || integer(argv[7],&last)))goto done;
-    if(!*rules_path || !*file || !(base=resolve(repo,argv[2])) || !(head=resolve(repo,argv[3])))goto done;
-    if(path_kind(repo,base,rules_path)!=1 || path_kind(repo,base,file)<0 || path_kind(repo,head,file)<0){
-        fprintf(stderr,"Select a regular rules file and one explicit changed path\n");goto done;
-    }
+    if(!*rules_path || !(base=resolve(repo,argv[2+all])) || !(head=resolve(repo,argv[3+all])))goto done;
+    if(path_kind(repo,base,rules_path)!=1)goto done;
     spec=malloc(strlen(base)+strlen(rules_path)+2);if(!spec)goto done;sprintf(spec,"%s:%s",base,rules_path);
     blob=git_read(repo,(const char*[]){"rev-parse","--verify","--end-of-options",spec,NULL},&n);
     if(!blob)goto done;
@@ -75,31 +95,44 @@ int main(int argc,char **argv) {
     if(memchr(blob,0,n) || !oid(blob))goto done;
     rules=git_read(repo,(const char*[]){"cat-file","blob",blob,NULL},&rules_len);
     if(!rules || !rules_len || memchr(rules,0,rules_len) || !(selected=select_lines(rules,rules_len,first,&last)))goto done;
-    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--numstat","-z",base,head,"--",file,NULL},&n);
-    if(!stat)goto done;
-    if(n && (stat[0]=='-' || (strchr(stat,'\t') && strchr(stat,'\t')[1]=='-'))){fprintf(stderr,"Binary changes require a separate review path\n");goto done;}
-    diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--unified=8",base,head,"--",file,NULL},&n);
-    if(!diff || !n || memchr(diff,0,n)){fprintf(stderr,"No text diff for the selected path\n");goto done;}
-    char rh[65],dh[65];if(hash_bytes(selected,strlen(selected),rh) || hash_bytes(diff,n,dh))goto done;
-    am_init();am_persistent_mode(1);
-    if(am_set_var_text("source_file",file) || am_set_var_text("source_rules",selected) || am_set_var_text("source_diff",diff) || am_exec_file("aml/git-context.aml")){
-        fprintf(stderr,"AML: %s\n",am_get_error());goto done;
+    if(all) {
+        list=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--name-only","-z",base,head,NULL},&n);
+        if(!list || !n || list[n-1]!=0)goto done;
+        for(size_t at=0;at<n;) {
+            const char*end=memchr(list+at,0,n-at);if(!end || end==list+at || count==JOV_BATCH_MAX_FILES)goto done;
+            records[count].file=strdup(list+at);if(!records[count].file)goto done;count++;at=(size_t)(end-list)+1;
+        }
+    }else {
+        if(!*argv[5] || !(records[0].file=strdup(argv[5])))goto done;
+        count=1;
     }
-    const char *context=am_get_var_text("review_context");
-    if(!context || !strstr(context,file) || !strstr(context,selected) || !strstr(context,diff))goto done;
-    char id[65];if(hash_bytes(context,strlen(context),id))goto done;
-    jov_source source={base,head,rules_path,blob,rh,dh,first,last};
-    if(jov_source_validate(&source))goto done;
-    /* Buffer the complete record before publishing it. */
-    FILE*out=tmpfile();if(!out)goto done;
-    fputc('{',out);json_field(out,"id",id);fputc(',',out);json_field(out,"file",file);fputc(',',out);
-    json_field(out,"context",context);fputc(',',out);json_field(out,"rule_excerpt",selected);fputc(',',out);
-    json_field(out,"change_excerpt",diff);fputs(",\"source\":",out);jov_source_json(out,&source);fputs("}\n",out);
-    long size=ftell(out);
-    if(ferror(out) || size<1 || size>1048576 || fseek(out,0,SEEK_SET)){fclose(out);goto done;}
+    char rh[65],batch_id[65];if(hash_bytes(selected,strlen(selected),rh))goto done;
+    am_init();am_persistent_mode(1);
+    size_t total=0;
+    for(int i=0;i<count;i++) {
+        if(prepare(records+i,repo,base,head,selected))goto done;
+        total+=strlen(records[i].context)+strlen(records[i].diff);
+        if(total>JOV_BATCH_MAX_BYTES)goto done;
+        items[i]=(jov_batch_item){records[i].file,records[i].id,{base,head,rules_path,blob,rh,records[i].diff_hash,first,last}};
+        if(jov_source_validate(&items[i].source))goto done;
+    }
+    if(all && jov_batch_digest(items,count,batch_id))goto done;
+    out=tmpfile();if(!out)goto done;
+    for(int i=0;i<count;i++) {
+        packed*p=records+i;long start=ftell(out);
+        fputc('{',out);json_field(out,"id",p->id);fputc(',',out);json_field(out,"file",p->file);fputc(',',out);
+        json_field(out,"context",p->context);fputc(',',out);json_field(out,"rule_excerpt",selected);fputc(',',out);
+        json_field(out,"change_excerpt",p->diff);fputs(",\"source\":",out);jov_source_json(out,&items[i].source);
+        if(all){fputs(",\"batch\":{\"schema\":\"jovovich.git-batch/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"id",batch_id);fprintf(out,",\"index\":%d,\"count\":%d}",i,count);}
+        fputs("}\n",out);long end=ftell(out);
+        if(start<0 || end<start || end-start>1048576 || (unsigned long)end>JOV_BATCH_MAX_BYTES || ferror(out))goto done;
+    }
+    if(fseek(out,0,SEEK_SET))goto done;
     char chunk[8192];size_t got;while((got=fread(chunk,1,sizeof(chunk),out)))if(fwrite(chunk,1,got,stdout)!=got)break;
-    rc=ferror(out) || ferror(stdout) || fflush(stdout);if(fclose(out))rc=1;
+    rc=ferror(out) || ferror(stdout) || fflush(stdout);
 done:
-    if(rc)fprintf(stderr,"Could not pack the selected Git review (no truncation; each Git read is limited to %d bytes)\n",CAP);
-    am_persistent_mode(0);free(base);free(head);free(spec);free(blob);free(rules);free(selected);free(diff);free(stat);return rc?1:0;
+    if(rc)fprintf(stderr,"Could not pack Git review (no truncation; 256 KiB per Git read, 64 paths, 16 MiB total)\n");
+    if(out && fclose(out))rc=1;
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);}
+    am_persistent_mode(0);free(base);free(head);free(spec);free(blob);free(rules);free(selected);free(list);return rc?1:0;
 }

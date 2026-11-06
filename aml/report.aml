@@ -1,0 +1,8 @@
+# Whole-change policy: every listed file must be present before this runs.
+reviewed_files = len(file_concerns)
+assert(reviewed_files > 0, "empty review report")
+concern_files = sum(file_concerns)
+clean_files = reviewed_files - concern_files
+report_verdict = "CLEAN"
+if concern_files > 0:
+    report_verdict = "CONCERN"

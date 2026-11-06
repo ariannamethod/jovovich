@@ -107,7 +107,10 @@ static void markdown_char(FILE *out, unsigned char c) {
 static void markdown_text(FILE *out, const char *s, int quote) {
     if (quote) fputs("> ", out);
     for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
-        if (*p == '\n') fputs(quote ? "\n> " : " ", out);
+        if (*p == '\n') {
+            fputs(quote ? "\n>" : " ", out);
+            if (quote && p[1] && p[1] != '\n' && p[1] != '\r') fputc(' ', out);
+        }
         else if (*p != '\r') markdown_char(out, *p);
     }
 }

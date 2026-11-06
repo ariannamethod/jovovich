@@ -2,6 +2,28 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-06 — Complete multi-file review
+
+Added `jovovich-pack --all` to capture every changed path between two commits
+and `jovovich-report` to validate the complete result before emitting Markdown
+or JSON. The ordered batch digest, indexes, counts, source fields and exact
+input-row hashes bind every answer to its packed input. Duplicate JSON keys
+are rejected: a regression fixture reproduced a conflicting duplicate `choice`
+that the original narrow lookup read differently from last-key-wins consumers.
+
+AML now owns the aggregate rule: any CONCERN makes the report CONCERN; all CLEAN
+makes it CLEAN. Per-file probabilities remain intact. A live NoTorch run over
+the controlled two-file Git fixture selected CLEAN 77.5977% for the unchanged
+square calculation and CONCERN 84.5038% for a prohibited libcurl dependency.
+The report contains both answers and a CONCERN summary; all records are in
+`examples/batch-20261106`.
+
+The existing 941 saved/AML checks and 80 Git evidence checks pass. New checks
+cover three aggregate cases, 14 refused reports, Markdown output, the 64/65-file
+boundary and a binary-file batch refusal. The batch checks pass for both Git
+object formats. A deliberate AML `> 1` threshold mutation fails the mixed-case
+gate. Commands and contracts are in [docs/batch-review.md](docs/batch-review.md).
+
 ## 2026-11-06 — Real Git input through AML
 
 Added a native Git packer for one changed path at two resolved commits. It

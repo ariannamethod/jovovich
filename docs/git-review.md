@@ -30,7 +30,8 @@ one-based line numbers:
 ```
 
 The selected range is explicit in the output. The caller chooses the rules and
-file scope; invoke the packer again for another path. Diff capture uses eight
+file scope. Use [`--all` and the batch report](batch-review.md) to review every
+changed path together. Diff capture uses eight
 context lines and disables rename detection, so additions and deletions are
 reviewable at their individual paths. The output contains the supplied rules
 and the actual patch. Rules changed by the proposed commit do not replace the

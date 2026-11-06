@@ -111,3 +111,12 @@ path, and baseline repository rules. AML assembles the context. Its optional
 `source` object records commit IDs, the rules blob/path/line range and exact
 rule/patch hashes. The live host verifies those content hashes before inference
 and retains the source in JSON; Markdown shows the commit pair and rules scope.
+
+## Whole-change report
+
+[`jovovich-report`](batch-review.md) validates every per-file answer against an
+ordered Git batch and writes a complete Markdown or JSON report. The AML policy
+selects CONCERN when any file has that verdict, and CLEAN when every file is
+CLEAN. The summary contains exact counts; each file keeps its own probabilities,
+evidence and execution record. Incomplete or inconsistent batches produce an
+error before any report is emitted.

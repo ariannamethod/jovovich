@@ -1,0 +1,26 @@
+{
+  "fixture": "controlled two-file Git repository from tests/check_batch.sh",
+  "git_object_format": "sha1",
+  "base_commit": "022baf3856c49d8e4712370a703c1e4dc4596545",
+  "head_commit": "cf0b0eef5ca77a39f328c01bbc92502e8e34284c",
+  "batch_id": "3bc5d827eb873c8d3ee9bb94b6e6a7a09ed52b273e58f2f8ec9f29c74042aea1",
+  "rules_path": "RULES.md",
+  "rule_first_line": 1,
+  "rule_last_line": 2,
+  "expected_verdicts": {
+    "math.c": "CLEAN",
+    "status.c": "CONCERN"
+  },
+  "model_id": "OmniJev/OneJev-0.8B",
+  "model_revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+  "weights_sha256": "b587ecb42b7d022f782ea72c8b84e94b8292ae3f5aa67e1364851b4d4e32b7e6",
+  "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+  "notorch_commit": "560a6e186b58bea79c47b2571e844a35ae541244",
+  "aml_commit": "8f577e8c0d6171012ae056b55b813443ab3ef9d2",
+  "arithmetic": "float32",
+  "native_chunk_size": 32,
+  "blas_threads": 4,
+  "attention_threads": 4,
+  "generated_tokens": 0,
+  "training_updates": 0
+}
