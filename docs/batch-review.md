@@ -21,6 +21,11 @@ changed-path list, with rename detection disabled; a rename contributes its
 deleted and added paths. The model loads once for the JSONL input and starts
 each file with a fresh inference cache.
 
+Changed submodule pins are included even when the reviewed repository has
+`diff.ignoreSubmodules=all` or a per-submodule ignore setting. Their patches
+use the short format with full old/new commit IDs, independent of
+`diff.submodule`. This captures the dependency pin change at its Git path.
+
 ## Complete input and output
 
 Each packed input retains the [Git source contract](git-review.md) and adds:

@@ -39,12 +39,17 @@ build/check-git: tests/check_git.c src/hash.h native-deps | build
 build/batch-fixture: tests/batch_fixture.c src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-check: build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture
+build/score-quality: tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/score_quality.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+check: build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality
 	./build/check-review
 	./build/review-demo --json all > build/reviews.jsonl
 	./build/check-pipeline
 	sh tests/check_git.sh
 	sh tests/check_batch.sh
+	sh tests/check_submodules.sh
+	sh tests/check_quality.sh
 
 clean:
 	rm -rf build

@@ -38,6 +38,10 @@ and the actual patch. Rules changed by the proposed commit do not replace the
 selected baseline rules. Working-tree edits, external diff commands and
 textconv output do not enter the record.
 
+All diff reads explicitly include submodule changes. Gitlink patches use the
+short format and retain full old/new commit IDs even when local Git settings
+ignore submodules or request the log-style display.
+
 ## Source contract
 
 The optional `source` object is retained in live JSON answers:

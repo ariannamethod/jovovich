@@ -1,0 +1,11 @@
+{
+  "cases": 38,
+  "development": 14,
+  "transfer": 24,
+  "candidate": "condition-and-counterexample question; all other template text unchanged",
+  "decision": "Promote only if development accuracy improves and transfer accuracy does not fall; require no newly missed known concern.",
+  "inputs_sha256": "38d84994ba7ce8df35ec2f8937cc51e4aa574de034f1850ac115fb4135be5c91",
+  "expected_sha256": "b1f9d666b55f8780a988b00b448c613001b0f0b1ce8fa083bc9b7ca7ad8ad9de",
+  "baseline_prompt_sha256": "410776df9fdd36a7a30af78ae083033e716e4a3051bd0e899ceda4f1bdf0c0b3",
+  "candidate_prompt_sha256": "58bf64c5d81fb6e12a650833ceeb64d68aecfe27f4bcd2025605d4f5ac90823d"
+}

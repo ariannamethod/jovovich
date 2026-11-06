@@ -26,6 +26,10 @@ the same 2e-4 probability tolerance. The score is 12/14: 5/7 defect cases and
 7/7 clean cases. `accept-boundary-False` and `accept-disabled-False` remain the
 two measured misses. Both references and the renderer preserve them.
 
+The subsequent [38-case quality experiment](review-quality.md) retains these
+14 cases and adds 24 transfer cases. It records a comparison of two AML
+questions, every native answer and the measured semantic errors.
+
 ## Reproduce the consumer gates
 
 ```sh

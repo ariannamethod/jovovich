@@ -67,10 +67,10 @@ typedef struct {
 static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules) {
     size_t n;char *stat=NULL;int rc=1;
     if(path_kind(repo,base,p->file)<0 || path_kind(repo,head,p->file)<0)goto done;
-    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--numstat","-z",base,head,"--",p->file,NULL},&n);
+    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--ignore-submodules=none","--numstat","-z",base,head,"--",p->file,NULL},&n);
     if(!stat)goto done;
     if(n && (stat[0]=='-' || (strchr(stat,'\t') && strchr(stat,'\t')[1]=='-'))){fprintf(stderr,"Binary change: %s\n",p->file);goto done;}
-    p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--unified=8",base,head,"--",p->file,NULL},&n);
+    p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--ignore-submodules=none","--submodule=short","--unified=8",base,head,"--",p->file,NULL},&n);
     if(!p->diff || !n || memchr(p->diff,0,n) || hash_bytes(p->diff,n,p->diff_hash))goto done;
     if(am_set_var_text("source_file",p->file) || am_set_var_text("source_rules",rules) || am_set_var_text("source_diff",p->diff) || am_exec_file("aml/git-context.aml"))goto done;
     const char*ctx=am_get_var_text("review_context");
@@ -96,7 +96,7 @@ int main(int argc,char **argv) {
     rules=git_read(repo,(const char*[]){"cat-file","blob",blob,NULL},&rules_len);
     if(!rules || !rules_len || memchr(rules,0,rules_len) || !(selected=select_lines(rules,rules_len,first,&last)))goto done;
     if(all) {
-        list=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--name-only","-z",base,head,NULL},&n);
+        list=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--ignore-submodules=none","--name-only","-z",base,head,NULL},&n);
         if(!list || !n || list[n-1]!=0)goto done;
         for(size_t at=0;at<n;) {
             const char*end=memchr(list+at,0,n-at);if(!end || end==list+at || count==JOV_BATCH_MAX_FILES)goto done;

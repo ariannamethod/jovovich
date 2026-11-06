@@ -1,0 +1,60 @@
+{
+  "model_id": "OmniJev/OneJev-0.8B",
+  "model_revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+  "weights_sha256": "b587ecb42b7d022f782ea72c8b84e94b8292ae3f5aa67e1364851b4d4e32b7e6",
+  "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+  "notorch_commit": "560a6e186b58bea79c47b2571e844a35ae541244",
+  "aml_commit": "8f577e8c0d6171012ae056b55b813443ab3ef9d2",
+  "arithmetic": "float32",
+  "blas_threads": 4,
+  "attention_threads": 4,
+  "native_chunk_size": 32,
+  "generated_tokens": 0,
+  "training_updates": 0,
+  "promote_candidate": false,
+  "regressions": [
+    "transfer-001",
+    "transfer-009"
+  ],
+  "repairs": [],
+  "baseline": {
+    "all": {
+      "total": 38,
+      "correct": 30,
+      "missed_concern": 6,
+      "false_concern": 2
+    },
+    "development": {
+      "total": 14,
+      "correct": 12,
+      "missed_concern": 2,
+      "false_concern": 0
+    },
+    "transfer": {
+      "total": 24,
+      "correct": 18,
+      "missed_concern": 4,
+      "false_concern": 2
+    }
+  },
+  "candidate": {
+    "all": {
+      "total": 38,
+      "correct": 28,
+      "missed_concern": 6,
+      "false_concern": 4
+    },
+    "development": {
+      "total": 14,
+      "correct": 12,
+      "missed_concern": 2,
+      "false_concern": 0
+    },
+    "transfer": {
+      "total": 24,
+      "correct": 16,
+      "missed_concern": 4,
+      "false_concern": 4
+    }
+  }
+}
