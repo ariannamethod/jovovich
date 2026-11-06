@@ -54,7 +54,7 @@ OmniJev/OneJev-0.8B
 c02e305b430b56c1e82f9675ba8c293a22646891
 ```
 
-The run used original BF16 weights, the `qev-labels-v2` prompt, disabled thinking,
+The recorded demo run used original BF16 weights, the `qev-labels-v2` prompt, disabled thinking,
 and FP32 softmax over the A/B output-head rows. It performed zero training
 updates. The complete original records, including prompts, expected labels and
 timings, are in [`examples/onejev-20261106`](../examples/onejev-20261106/).
@@ -86,14 +86,20 @@ control characters, quotes and backslashes.
 Use the C numeric locale when calling the serializers; the demo sets it
 explicitly. Check the stream's flush/close result as well as the serializer's
 return code. `make check` verifies saved-run parity, quote preservation,
-invalid-input rejection, near ties, exact ties and escaping. Python is used by
-this development check; the formatter and demo are C.
+invalid-input rejection, near ties, exact ties and escaping. The checks run in C and AML.
 
-## Next integration
+## Native execution
 
-Add Qwen3.5 text inference to NoTorch and verify its tokenizer and A/B logits
-against the saved reference before connecting live decisions to this output.
-Then JOVOVICH can depend on NoTorch for review decisions. The separate
-Hugging Face repository `ataeff/jovovich` is private and currently contains only
-`.gitattributes` (checked 2026-11-06); new weights and training data can go there
-as those stages produce them.
+The live reviewer builds its prompt in `aml/prepare.aml`, calculates A/B
+probabilities in NoTorch, and runs `aml/answer.aml` to select the answer and
+construct a `janus.instant/1` timestamp. It uses F32 arithmetic; the recorded
+demo above preserves the original BF16 run. Native F32 results and verification
+commands are in [native-validation.md](native-validation.md).
+
+Live JSON adds an `execution` object with `engine`, `language`, `arithmetic`,
+`input_sha256`, `weights_sha256`, `tokenizer_sha256` and `reviewed_at`. Input SHA
+covers the exact JSONL row bytes, including its newline if present. The timestamp
+contains `schema`, `time_scale`, `unix_day`, `second` and `millisecond`, constructed
+by AML's calendar from the host clock. It dates this execution. Source facts keep
+their own supplied text and provenance. Offline recorded output omits execution
+metadata because it performs no new model evaluation.

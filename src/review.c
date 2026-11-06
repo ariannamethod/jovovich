@@ -5,6 +5,11 @@
 
 static int present(const char *s) { return s && *s; }
 
+static int hash_string(const char *s) {
+    if (!s || strlen(s) != 64) return 0;
+    return strspn(s, "0123456789abcdef") == 64;
+}
+
 int jov_review_validate(const jov_review *r) {
     if (!r || !present(r->id) || !present(r->model) || !present(r->revision) ||
         !present(r->question) || !present(r->file) || !present(r->context) ||
@@ -14,6 +19,12 @@ int jov_review_validate(const jov_review *r) {
         fabs(r->concern + r->clean - 1.0) > 1e-6) return JOV_INVALID;
     if (!strstr(r->context, r->file) || !strstr(r->context, r->rule_excerpt) ||
         !strstr(r->context, r->change_excerpt)) return JOV_INVALID;
+    if (r->execution) {
+        const jov_execution *e = r->execution;
+        if (!hash_string(e->input_sha256) || !hash_string(e->weights_sha256) ||
+            !hash_string(e->tokenizer_sha256) || e->second < 0 || e->second >= 86400 ||
+            e->millisecond < 0 || e->millisecond >= 1000) return JOV_INVALID;
+    }
     return JOV_OK;
 }
 
@@ -67,8 +78,18 @@ int jov_review_json(FILE *out, const jov_review *r) {
     json_field(out, "change_excerpt", r->change_excerpt);
     fputs("},\"choice\":{", out);
     json_field(out, "verdict", jov_review_verdict(r));
-    fprintf(out, ",\"probabilities\":{\"CONCERN\":%.17g,\"CLEAN\":%.17g}}}\n",
+    fprintf(out, ",\"probabilities\":{\"CONCERN\":%.17g,\"CLEAN\":%.17g}}",
             r->concern, r->clean);
+    if (r->execution) {
+        const jov_execution *e = r->execution;
+        fputs(",\"execution\":{\"engine\":\"NoTorch\",\"language\":\"AML\",\"arithmetic\":\"float32\",", out);
+        json_field(out, "input_sha256", e->input_sha256); fputc(',', out);
+        json_field(out, "weights_sha256", e->weights_sha256); fputc(',', out);
+        json_field(out, "tokenizer_sha256", e->tokenizer_sha256);
+        fprintf(out, ",\"reviewed_at\":{\"schema\":\"janus.instant/1\",\"time_scale\":\"posix\",\"unix_day\":%d,\"second\":%d,\"millisecond\":%d}}",
+                e->unix_day, e->second, e->millisecond);
+    }
+    fputs("}\n", out);
     return ferror(out) ? JOV_IO_ERROR : JOV_OK;
 }
 

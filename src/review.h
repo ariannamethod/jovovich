@@ -3,6 +3,11 @@
 
 #include <stdio.h>
 
+typedef struct {
+    const char *input_sha256, *weights_sha256, *tokenizer_sha256;
+    int unix_day, second, millisecond;
+} jov_execution;
+
 /* Strings are UTF-8 and owned by the caller. Evidence is copied from context. */
 typedef struct {
     const char *id;
@@ -15,6 +20,7 @@ typedef struct {
     const char *change_excerpt;
     double concern;
     double clean;
+    const jov_execution *execution; /* optional for historical recorded demos */
 } jov_review;
 
 enum { JOV_OK = 0, JOV_INVALID = 1, JOV_IO_ERROR = 2 };
