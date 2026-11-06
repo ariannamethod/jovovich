@@ -2,6 +2,14 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-06 — Pin the NoTorch head-offset fix
+
+NoTorch PR #188 widens two Qwen3.5 tensor offsets before multiplication,
+resolving the CodeQL findings on the original native integration. Pin the
+corrected engine commit. The rebuilt engine passes 1,214 frozen-reference
+checks; the live AML consumer passes all 1,340 checks over 14 review cases.
+Every emitted probability pair is exactly unchanged from the preceding run.
+
 ## 2026-11-06 — Original OneJev, NoTorch arithmetic, AML language
 
 The live reviewer now executes original OmniJev/OneJev-0.8B with native
