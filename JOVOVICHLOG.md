@@ -2,6 +2,29 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-06 — Dependency coverage and paired decision quality
+
+Reproduced the PR #45 finding: `diff.ignoreSubmodules=all` made a two-path
+change produce a one-file batch. All diff reads now force submodule inclusion;
+patches use the short format with full old/new commit IDs. The new regression
+test fails on the preceding packer and passes with this fix in both Git object
+formats, with 40 evidence assertions per run. It covers batch and single-path
+input under global and per-submodule ignore settings and log-style formatting.
+
+Expanded decision measurement to 38 cases: the existing 14 plus 24 fixed,
+paired transfer cases. Both native runs use original OneJev with NoTorch and
+AML, zero generated tokens and zero training updates. The current question
+scores 12/14 + 18/24 = 30/38. A candidate asking for condition-by-condition and
+counterexample checks scores 12/14 + 16/24 = 28/38. It repairs no decisions and
+introduces two false concerns, so it is not promoted.
+
+Added a C scorer, a shell live runner and both complete measured runs. The
+scorer checks correspondence, provenance, probabilities and the exact AML
+question, then reports per-case results and separate error counts. Stored
+scores replay exactly; incomplete answers, swapped expectations and altered
+verdicts are rejected. Details and the eight current error cases are in
+[docs/review-quality.md](docs/review-quality.md).
+
 ## 2026-11-06 — Complete multi-file review
 
 Added `jovovich-pack --all` to capture every changed path between two commits
