@@ -8,6 +8,12 @@ typedef struct {
     int unix_day, second, millisecond;
 } jov_execution;
 
+typedef struct {
+    const char *base, *head, *rules_path, *rules_blob;
+    const char *rules_sha256, *diff_sha256;
+    int first_line, last_line;
+} jov_source;
+
 /* Strings are UTF-8 and owned by the caller. Evidence is copied from context. */
 typedef struct {
     const char *id;
@@ -21,6 +27,7 @@ typedef struct {
     double concern;
     double clean;
     const jov_execution *execution; /* optional for historical recorded demos */
+    const jov_source *source; /* optional commit-resolved Git evidence */
 } jov_review;
 
 enum { JOV_OK = 0, JOV_INVALID = 1, JOV_IO_ERROR = 2 };
@@ -31,5 +38,7 @@ int jov_review_validate(const jov_review *review);
 /* Invalid records return JOV_INVALID before writing anything. */
 int jov_review_markdown(FILE *out, const jov_review *review);
 int jov_review_json(FILE *out, const jov_review *review);
+int jov_source_validate(const jov_source *source);
+int jov_source_json(FILE *out, const jov_source *source);
 
 #endif

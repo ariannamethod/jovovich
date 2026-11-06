@@ -103,3 +103,11 @@ contains `schema`, `time_scale`, `unix_day`, `second` and `millisecond`, constru
 by AML's calendar from the host clock. It dates this execution. Source facts keep
 their own supplied text and provenance. Offline recorded output omits execution
 metadata because it performs no new model evaluation.
+
+## Git review input
+
+[`jovovich-pack`](git-review.md) reads an explicit commit pair, one changed
+path, and baseline repository rules. AML assembles the context. Its optional
+`source` object records commit IDs, the rules blob/path/line range and exact
+rule/patch hashes. The live host verifies those content hashes before inference
+and retains the source in JSON; Markdown shows the commit pair and rules scope.

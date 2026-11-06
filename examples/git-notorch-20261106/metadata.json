@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/ariannamethod/notorch",
+  "base_commit": "a3ac4b57f79feb92bb88ed9fc7cf1f472a945b8d",
+  "head_commit": "560a6e186b58bea79c47b2571e844a35ae541244",
+  "file": "harness/arch_qwen35.c",
+  "rules_path": "AGENTS.md",
+  "rule_first_line": 65,
+  "rule_last_line": 67,
+  "model_id": "OmniJev/OneJev-0.8B",
+  "model_revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+  "notorch_commit": "560a6e186b58bea79c47b2571e844a35ae541244",
+  "aml_commit": "8f577e8c0d6171012ae056b55b813443ab3ef9d2",
+  "arithmetic": "float32",
+  "native_chunk_size": 32,
+  "blas_threads": 4,
+  "attention_threads": 4,
+  "generated_tokens": 0
+}
