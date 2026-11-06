@@ -1,0 +1,124 @@
+#include "review.h"
+
+#include <math.h>
+#include <string.h>
+
+static int present(const char *s) { return s && *s; }
+
+int jov_review_validate(const jov_review *r) {
+    if (!r || !present(r->id) || !present(r->model) || !present(r->revision) ||
+        !present(r->question) || !present(r->file) || !present(r->context) ||
+        !present(r->rule_excerpt) || !present(r->change_excerpt)) return JOV_INVALID;
+    if (!isfinite(r->concern) || !isfinite(r->clean) ||
+        r->concern < 0 || r->concern > 1 || r->clean < 0 || r->clean > 1 ||
+        fabs(r->concern + r->clean - 1.0) > 1e-6) return JOV_INVALID;
+    if (!strstr(r->context, r->file) || !strstr(r->context, r->rule_excerpt) ||
+        !strstr(r->context, r->change_excerpt)) return JOV_INVALID;
+    return JOV_OK;
+}
+
+const char *jov_review_verdict(const jov_review *r) {
+    if (jov_review_validate(r) != JOV_OK) return NULL;
+    return r->concern >= r->clean ? "CONCERN" : "CLEAN";
+}
+
+static void json_string(FILE *out, const char *s) {
+    fputc('"', out);
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
+        switch (*p) {
+        case '"': fputs("\\\"", out); break;
+        case '\\': fputs("\\\\", out); break;
+        case '\b': fputs("\\b", out); break;
+        case '\f': fputs("\\f", out); break;
+        case '\n': fputs("\\n", out); break;
+        case '\r': fputs("\\r", out); break;
+        case '\t': fputs("\\t", out); break;
+        default:
+            if (*p < 0x20) fprintf(out, "\\u%04x", (unsigned)*p);
+            else fputc(*p, out);
+        }
+    }
+    fputc('"', out);
+}
+
+static void json_field(FILE *out, const char *key, const char *value) {
+    json_string(out, key);
+    fputc(':', out);
+    json_string(out, value);
+}
+
+int jov_review_json(FILE *out, const jov_review *r) {
+    if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
+    fputs("{\"schema_version\":1,", out);
+    json_field(out, "id", r->id);
+    fputs(",\"model\":{", out);
+    json_field(out, "id", r->model);
+    fputc(',', out);
+    json_field(out, "revision", r->revision);
+    fputs("},", out);
+    json_field(out, "question", r->question);
+    fputs(",\"scope\":{", out);
+    json_field(out, "file", r->file);
+    fputs("},\"input\":{", out);
+    json_field(out, "context", r->context);
+    fputc(',', out);
+    json_field(out, "rule_excerpt", r->rule_excerpt);
+    fputc(',', out);
+    json_field(out, "change_excerpt", r->change_excerpt);
+    fputs("},\"choice\":{", out);
+    json_field(out, "verdict", jov_review_verdict(r));
+    fprintf(out, ",\"probabilities\":{\"CONCERN\":%.17g,\"CLEAN\":%.17g}}}\n",
+            r->concern, r->clean);
+    return ferror(out) ? JOV_IO_ERROR : JOV_OK;
+}
+
+/* Keep supplied text literal in Markdown, including HTML and Markdown syntax. */
+static void markdown_char(FILE *out, unsigned char c) {
+    if (c == '&') fputs("&amp;", out);
+    else if (c == '<') fputs("&lt;", out);
+    else if (c == '>') fputs("&gt;", out);
+    else {
+        if (strchr("\\`*_{}[]()#+-.!|~", c)) fputc('\\', out);
+        fputc(c, out);
+    }
+}
+
+static void markdown_text(FILE *out, const char *s, int quote) {
+    if (quote) fputs("> ", out);
+    for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
+        if (*p == '\n') fputs(quote ? "\n> " : " ", out);
+        else if (*p != '\r') markdown_char(out, *p);
+    }
+}
+
+static void fence(FILE *out, size_t length) {
+    for (size_t i = 0; i < length; ++i) fputc('`', out);
+}
+
+static void code_block(FILE *out, const char *s) {
+    size_t longest = 0, run = 0;
+    for (const char *p = s; *p; ++p) {
+        run = *p == '`' ? run + 1 : 0;
+        if (run > longest) longest = run;
+    }
+    size_t length = longest >= 3 ? longest + 1 : 3;
+    fence(out, length);
+    fputs("text\n", out);
+    fputs(s, out);
+    if (s[strlen(s) - 1] != '\n') fputc('\n', out);
+    fence(out, length);
+    fputc('\n', out);
+}
+
+int jov_review_markdown(FILE *out, const jov_review *r) {
+    if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
+    fprintf(out, "**JOVOVICH · %s**\n\n**Reviewed file:** ", jov_review_verdict(r));
+    markdown_text(out, r->file, 0);
+    fputs("\n\n**Rule supplied for review**\n\n", out);
+    markdown_text(out, r->rule_excerpt, 1);
+    fputs("\n\n**Change under review**\n\n", out);
+    code_block(out, r->change_excerpt);
+    fprintf(out, "\n**Choice probabilities:** CONCERN %.1f%% · CLEAN %.1f%%\n",
+            100 * r->concern, 100 * r->clean);
+    return ferror(out) ? JOV_IO_ERROR : JOV_OK;
+}
