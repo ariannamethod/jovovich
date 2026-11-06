@@ -1,4 +1,4 @@
-# jovovich
+# jovovich (readme will be rewritten. Janus)
 Juror Of Versioned Ontology, Vigilance, Integrity, Code &amp; Heresy
 
 JOVOVICH reviews a change against the repository's stated rules. Its English
