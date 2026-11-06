@@ -48,6 +48,28 @@ int main(void) {
     r = sample(); r.context = NULL; invalid(r);
     r = sample(); r.model = ""; invalid(r);
 
+    jov_source source={
+        "1111111111111111111111111111111111111111",
+        "2222222222222222222222222222222222222222",
+        "RULES.md", "3333333333333333333333333333333333333333",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "4444444444444444444444444444444444444444444444444444444444444444",1,3
+    };
+    assert(jov_source_validate(NULL)==JOV_INVALID);
+    assert(jov_source_validate(&source)==JOV_OK);
+    assert(jov_source_json(NULL,&source)==JOV_INVALID);
+    r=sample();r.source=&source;
+    source.first_line=0;invalid(r);source.first_line=1;
+    source.last_line=0;invalid(r);source.last_line=3;
+    const char *saved=source.head;source.head="fake";invalid(r);source.head=saved;
+    saved=source.diff_sha256;source.diff_sha256="not a digest";invalid(r);source.diff_sha256=saved;
+    saved=source.rules_path;source.rules_path=NULL;invalid(r);source.rules_path=saved;
+    assert(jov_review_validate(&r)==JOV_OK);
+    FILE *source_out=fopen("build/source.json","w");
+    assert(source_out && jov_review_json(source_out,&r)==JOV_OK && fclose(source_out)==0);
+    source_out=fopen("build/source.md","w");
+    assert(source_out && jov_review_markdown(source_out,&r)==JOV_OK && fclose(source_out)==0);
+
     r = sample();
     FILE *f = fopen("build/escaping.json", "w");
     assert(f && jov_review_json(f, &r) == JOV_OK && fclose(f) == 0);

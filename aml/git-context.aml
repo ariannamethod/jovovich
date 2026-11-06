@@ -1,0 +1,6 @@
+# Caller supplies exact Git evidence; AML owns its English presentation.
+review_context = text_concat("Reviewed file: ", source_file)
+review_context = text_concat(review_context, "\nRepository rules from the base commit:\n")
+review_context = text_concat(review_context, source_rules)
+review_context = text_concat(review_context, "\nChange under review (git diff):\n")
+review_context = text_concat(review_context, source_diff)

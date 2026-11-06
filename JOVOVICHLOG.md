@@ -2,6 +2,23 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-06 — Real Git input through AML
+
+Added a native Git packer for one changed path at two resolved commits. It
+reads rules from the base commit, captures the literal patch with eight context
+lines, and gives both to AML for English context assembly. Live answers retain
+commit IDs, the baseline rules blob and selected lines, and rule/patch hashes.
+The host verifies those content hashes before inference. Existing saved inputs
+remain supported. README's maintainer note about its later literary rewrite
+is preserved; commands and the new contract are in [docs/git-review.md](docs/git-review.md).
+
+The real-Git fixture passes 80 evidence assertions and nine rejection cases;
+the saved/AML gate still passes 941 checks. A deliberate HEAD-for-BASE rules
+substitution fails. The actual NoTorch head-offset fix was packed from its
+commits and reviewed live: CLEAN 59.7870%, CONCERN 40.2130%. All 28 live-source
+checks pass; an altered patch hash is refused before a second decision.
+The exact input, answer and run metadata are in `examples/git-notorch-20261106`.
+
 ## 2026-11-06 — Pin the NoTorch head-offset fix
 
 NoTorch PR #188 widens two Qwen3.5 tensor offsets before multiplication,

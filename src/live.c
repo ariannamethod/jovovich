@@ -4,7 +4,8 @@
 #include "harness/arch.h"
 #include "examples/bpe.h"
 #include "tools/narrow_json.h"
-#include "sha256.h"
+#include "hash.h"
+#include <limits.h>
 #include <fcntl.h>
 #include <math.h>
 #include <stdint.h>
@@ -13,11 +14,6 @@
 #include <time.h>
 #include <unistd.h>
 
-static int hash_bytes(const void *bytes,size_t n,char out[65]) {
-    unsigned char h[32];if(nt_sha256(bytes,n,h))return 1;
-    for(int i=0;i<32;i++)snprintf(out+2*i,3,"%02x",h[i]);
-    return 0;
-}
 static int hash_file(const char *path,char out[65]) {
     int fd=open(path,O_RDONLY);struct stat st;int rc=1;
     if(fd>=0 && !fstat(fd,&st) && st.st_size>0) {
@@ -58,7 +54,27 @@ int main(int argc,char **argv) {
         jov_review r={.id=id,.model=model_id,.revision=revision,.question="pending",
             .file=file,.context=context,.rule_excerpt=rule,.change_excerpt=change,.concern=.5,.clean=.5};
         int status=1,*ids=NULL;kv_cache *kv=NULL;
+        char *origin[6]={0};jov_source source={0};
+        const char *raw_source=nj_get(line,"source");
+        if(raw_source) {
+            const char *keys[]={"base_commit","head_commit","rules_path","rules_blob","rules_sha256","diff_sha256"};
+            for(int i=0;i<6;i++)origin[i]=nj_string(nj_get(raw_source,keys[i]));
+            long long first=0,last=0;
+            if(!nj_is(nj_get(raw_source,"kind"),"git") ||
+                nj_int(nj_get(raw_source,"rule_first_line"),&first) ||
+                nj_int(nj_get(raw_source,"rule_last_line"),&last) ||
+                first<1 || last<first || last>INT_MAX)goto row_done;
+            source=(jov_source){origin[0],origin[1],origin[2],origin[3],origin[4],origin[5],(int)first,(int)last};
+            r.source=&source;
+        }
         if(jov_review_validate(&r) || hash_bytes(line,(size_t)bytes,ih))goto row_done;
+        if(r.source) {
+            char rule_hash[65],diff_hash[65];
+            if(hash_bytes(rule,strlen(rule),rule_hash) || hash_bytes(change,strlen(change),diff_hash) ||
+                strcmp(rule_hash,source.rules_sha256) || strcmp(diff_hash,source.diff_sha256)) {
+                fprintf(stderr,"Git evidence hash mismatch\n");goto row_done;
+            }
+        }
         if(am_set_var_text("review_context",context) || run("aml/prepare.aml"))goto row_done;
         const char *prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
         if(!prompt || !r.question)goto row_done;
@@ -90,6 +106,7 @@ int main(int argc,char **argv) {
 row_done:
         if(kv)nt_arch_qwen35.kv_free(m,kv);
         free(ids);free(id);free(file);free(context);free(rule);free(change);
+        for(int i=0;i<6;i++)free(origin[i]);
         if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}seen++;
     }
     rc=ferror(stdin) || !seen;
