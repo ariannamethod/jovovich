@@ -17,4 +17,6 @@ reject "$cases/expected.jsonl" build/quality-short.jsonl
 reject build/quality-wrong-order.jsonl "$cases/baseline-answers.jsonl"
 sed 's/"verdict":"CLEAN"/"verdict":"CONCERN"/g' "$cases/baseline-answers.jsonl" > build/quality-wrong-verdict.jsonl
 reject "$cases/expected.jsonl" build/quality-wrong-verdict.jsonl
+sed '1s/"execution":{/"execution":{"readout_sha256":"000000000000000000000000000000000000000000000000000000000000000a",/' "$cases/baseline-answers.jsonl" > build/quality-mixed-readout.jsonl
+reject "$cases/expected.jsonl" build/quality-mixed-readout.jsonl
 printf 'Quality scoring: both complete 38-case native runs verified; truncation, swapped expectations and altered verdicts refused\n'

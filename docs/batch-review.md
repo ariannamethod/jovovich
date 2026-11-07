@@ -46,7 +46,8 @@ digest and requires every position exactly once.
 For each answer, the report verifies the corresponding file, context, excerpts,
 Git metadata, pinned model and revision, weight/tokenizer hashes, exact input-row
 hash, AML question, probability pair, verdict and execution timestamp. It also
-checks JSON syntax and rejects duplicate keys. Missing, extra, repeated,
+checks JSON syntax and rejects duplicate keys. For adapter runs, it verifies
+one readout digest across all answers and includes it in the JSON report. Missing, extra, repeated,
 reordered or inconsistent answers cause a nonzero exit with no report bytes
 written. A model run that stops partway leaves a partial answer stream which
 the report refuses. The final report is buffered until all checks pass.
