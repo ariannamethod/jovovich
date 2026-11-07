@@ -35,12 +35,12 @@ static void add(int kind,int policy,int limit,int form,int split,int broken) {
     }
     if(hash_bytes(s->code,strlen(s->code),s->hash))die("code hash failed");
 }
-static void enumerate(void) {
+static void enumerate(int direct_boundary) {
     const int train[]={-5,-3,-1,1,3,5},holdout[]={-6,-2,2,6};
     for(int split=0;split<2;split++) {
         for(int op=0;op<4;op++)for(int l=0;l<(split?4:6);l++)
             for(int f=split?2:0;f<(split?3:2);f++)for(int bad=0;bad<2;bad++)
-                add(0,op,split?holdout[l]:train[l],f,split,bad);
+                add(0,op,split?holdout[l]:train[l],split && direct_boundary?0:f,split,bad);
         for(int policy=0;policy<4;policy++)for(int f=split?4:0;f<(split?8:4);f++)
             for(int bad=0;bad<2;bad++)add(1,policy,0,f,split,bad);
     }
@@ -151,8 +151,11 @@ static void pack(const char*proof_path,const char*dir) {
     fputs("}}\n",m);close_output(m);am_persistent_mode(0);
 }
 int main(int argc,char**argv) {
-    enumerate();
+    const char *program=argv[0];
+    int direct=argc>1 && !strcmp(argv[1],"--direct-boundary");
+    if(direct){argc--;argv++;}
+    enumerate(direct);
     if(argc==2 && !strcmp(argv[1],"source")){source();return ferror(stdout) || fflush(stdout);}
     if(argc==4 && !strcmp(argv[1],"pack")){pack(argv[2],argv[3]);return 0;}
-    fprintf(stderr,"Usage: %s source | pack PROOFS.jsonl OUTPUT_DIRECTORY\n",argv[0]);return 2;
+    fprintf(stderr,"Usage: %s [--direct-boundary] source | pack PROOFS.jsonl OUTPUT_DIRECTORY\n",program);return 2;
 }

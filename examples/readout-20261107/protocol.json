@@ -1,0 +1,14 @@
+{
+  "base_manifest": "models/onejev-0.8b.json",
+  "training_manifest": "examples/semantic-20261107/manifest.json",
+  "training_rows": 128,
+  "feature": "L2-normalized final decoder residual of the last prompt token",
+  "transform": "subtract the training mean, divide by the RMS centered training norm",
+  "margin": "base logit A minus B plus the linear readout and bias",
+  "loss": "mean binary cross entropy on A/B plus 0.5 * l2 * squared weight norm",
+  "optimizer": "full-batch SGD, zero initialization, fixed order",
+  "steps": 400,
+  "learning_rate": 1,
+  "l2": 0.005,
+  "promotion": "More correct on semantic transfer; at least as many correct on legacy; retain every previously correct legacy CONCERN."
+}

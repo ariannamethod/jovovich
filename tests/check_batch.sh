@@ -63,6 +63,14 @@ sed 's/"CLEAN":0/"CLEAN":00/g' build/batch-clean.jsonl > build/answers-number.js
 reject build/batch-input.jsonl build/answers-number.jsonl
 sed 's/"scope":"all_changed_paths","id":"./"scope":"all_changed_paths","id":"x/' build/batch-input.jsonl > build/batch-digest.jsonl
 reject build/batch-digest.jsonl build/batch-clean.jsonl
+readout=000000000000000000000000000000000000000000000000000000000000000a
+sed 's/"execution":{/"execution":{"readout_sha256":"'"$readout"'",/' build/batch-clean.jsonl > build/answers-readout.jsonl
+./build/jovovich-report build/batch-input.jsonl build/answers-readout.jsonl --json > build/report-readout.json
+grep -Fq '"readout_sha256":"'"$readout"'","summary"' build/report-readout.json
+sed '1s/"execution":{/"execution":{"readout_sha256":"bad",/' build/batch-clean.jsonl > build/answers-readout.jsonl
+reject build/batch-input.jsonl build/answers-readout.jsonl
+sed '1s/"execution":{/"execution":{"readout_sha256":"'"$readout"'",/' build/batch-clean.jsonl > build/answers-readout.jsonl
+reject build/batch-input.jsonl build/answers-readout.jsonl
 # The boundary accepts all 64 paths and refuses the 65th before emitting rows.
 i=1
 while test "$i" -le 62; do
@@ -85,4 +93,4 @@ git -C "$work" add z.bin
 git -C "$work" commit -qm binary
 if ./build/jovovich-pack --all "$work" "$base" HEAD RULES.md > build/batch-binary.jsonl 2> build/batch-binary.log; then exit 1; fi
 test ! -s build/batch-binary.jsonl
-printf 'Batch checks: 3 aggregate cases, 14 report refusals, 64/65-file boundary and whole-batch binary refusal passed\n'
+printf 'Batch checks: 3 aggregate cases, 16 report refusals, 64/65-file boundary and whole-batch binary refusal passed\n'

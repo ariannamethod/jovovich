@@ -64,18 +64,19 @@ int main(int argc,char**argv) {
     if(argc!=5){fprintf(stderr,"Usage: %s EXPECTED.jsonl INPUTS.jsonl ANSWERS.jsonl PREPARE.aml\n",argv[0]);return 2;}
     FILE*g=fopen(argv[1],"rb"),*i=fopen(argv[2],"rb"),*a=fopen(argv[3],"rb");
     char*manifest=nj_load("models/onejev-0.8b.json",NULL),*gold=NULL,*input=NULL,*answer=NULL;size_t gc=0,ic=0,ac=0;
-    char gold_hash[65],input_hash[65],prepare_hash[65];
+    char gold_hash[65],input_hash[65],prepare_hash[65], readout[65]={0};
     result rows[MAX_CASES]={{0}};tally all={0},development={0},transfer={0};int rc=1,n=0,read;
     if(!g || !i || !a || !manifest || file_hash(argv[1],gold_hash) || file_hash(argv[2],input_hash) || file_hash(argv[4],prepare_hash))goto done;
     am_init();am_persistent_mode(1);
     while((read=line(g,&gold,&gc))==1) {
-        if(n==MAX_CASES || line(i,&input,&ic)!=1 || line(a,&answer,&ac)!=1 || validate(rows+n,gold,input,answer,manifest,argv[4]))goto done;
+        if(n==MAX_CASES || line(i,&input,&ic)!=1 || line(a,&answer,&ac)!=1 || report_readout(answer,n,readout) || validate(rows+n,gold,input,answer,manifest,argv[4]))goto done;
         for(int j=0;j<n;j++)if(!strcmp(rows[n].id,rows[j].id))goto done;
         count(&all,rows+n);count(!strcmp(rows[n].split,"development")?&development:&transfer,rows+n);n++;
     }
     if(read<0 || !n || line(i,&input,&ic)!=0 || line(a,&answer,&ac)!=0)goto done;
     fputs("{\"schema\":\"jovovich.quality-score/1\",",stdout);json_field(stdout,"inputs_sha256",input_hash);fputc(',',stdout);
     json_field(stdout,"expected_sha256",gold_hash);fputc(',',stdout);json_field(stdout,"prepare_sha256",prepare_hash);
+    if(*readout){fputc(',',stdout);json_field(stdout,"readout_sha256",readout);}
     fputs(",\"all\":",stdout);totals(stdout,&all);
     fputs(",\"development\":",stdout);totals(stdout,&development);fputs(",\"transfer\":",stdout);totals(stdout,&transfer);
     fputs(",\"cases\":[",stdout);

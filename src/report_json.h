@@ -56,4 +56,17 @@ static const char *report_json_end(const char *p,int depth) {
     }
     return p;
 }
+
+/* A batch or quality score carries one readout identity for every answer. */
+static inline int report_readout(const char *answer, int index, char digest[65]) {
+    const char *raw=nj_get(nj_get(answer,"execution"),"readout_sha256");
+    char current[65]={0};
+    if (raw) {
+        char *s=nj_string(raw);
+        if (!s || strlen(s)!=64 || strspn(s,"0123456789abcdef")!=64) {free(s);return 1;}
+        memcpy(current,s,65);free(s);
+    }
+    if (index==0) memcpy(digest,current,sizeof(current));
+    return strcmp(current,digest)!=0;
+}
 #endif

@@ -21,8 +21,8 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/live.c src/review.c src/review.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+build/jovovich: src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/review.c src/readout.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/jovovich-pack: src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -45,10 +45,13 @@ build/score-quality: tests/score_quality.c src/report_json.h src/review.c src/re
 build/semantic-corpus: tools/semantic_corpus.c src/report_json.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/semantic_corpus.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
+build/jovovich-readout: tools/semantic_readout.c src/readout.c src/readout.h src/report_json.h src/hash.h src/json.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tools/semantic_readout.c src/readout.c $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-review
 	./build/review-demo --json all > build/reviews.jsonl
 	./build/check-pipeline
@@ -57,6 +60,7 @@ check: build/review-demo build/check-review build/check-pipeline build/jovovich-
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
 	sh tests/check_corpus.sh
+	sh tests/check_readout.sh
 
 clean:
 	rm -rf build

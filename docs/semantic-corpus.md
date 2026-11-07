@@ -90,8 +90,8 @@ IDs, labels, oracle receipts and counterexamples belong to corpus metadata and
 are excluded from the prompt. Shuffle training rows; evaluation files remain
 reserved for evaluation.
 
-This stage produces the executed training corpus. Model training and the
-subsequent native accuracy comparison are the next stage.
+The [readout experiment](semantic-readout.md) uses this corpus to train and
+evaluate the one-token decision on the pinned OneJev text backbone.
 
 ## Failure gates
 

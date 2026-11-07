@@ -85,7 +85,7 @@ int main(int argc,char **argv) {
     if((argc!=3 && argc!=4) || (argc==4 && !json)){fprintf(stderr,"Usage: %s BATCH.jsonl ANSWERS.jsonl [--json]\n",argv[0]);return 2;}
     int rc=1,count=0,bad=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load("models/onejev-0.8b.json",NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
-    input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65];
+    input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
     if(!batch || !answers || !manifest)goto done;
     for(;;) {
         char*s=row(batch,&total,&bad);if(!s)break;
@@ -100,7 +100,7 @@ int main(int argc,char **argv) {
     am_init();am_persistent_mode(1);total=0;
     for(int i=0;i<count;i++) {
         results[i]=row(answers,&total,&bad);
-        if(bad || !results[i] || answer(results[i],inputs+i,manifest,flags+i))goto done;
+        if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i))goto done;
     }
     extra=row(answers,&total,&bad);if(extra || bad)goto done;
     if(am_set_var_array("file_concerns",flags,count) || am_exec_file("aml/report.aml"))goto done;
@@ -112,6 +112,7 @@ int main(int argc,char **argv) {
     if(json) {
     fputs("{\"schema\":\"jovovich.review-report/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"batch_id",digest);
     fputc(',',out);json_field(out,"base_commit",inputs[0].origin[0]);fputc(',',out);json_field(out,"head_commit",inputs[0].origin[1]);
+    if(*readout){fputc(',',out);json_field(out,"readout_sha256",readout);}
     fputs(",\"summary\":{",out);json_field(out,"verdict",verdict);
     fprintf(out,",\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},\"reviews\":[",count,concern,count-concern);
     for(int i=0;i<count;i++){if(i)fputc(',',out);fputs(results[i],out);}fputs("]}\n",out);
