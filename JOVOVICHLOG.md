@@ -2,6 +2,29 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — Executed semantic training pairs
+
+Added a reproducible C + AML corpus builder targeting comparison boundaries
+and the conditions controlling side effects. AML owns the English requirements,
+review contexts and A/B training targets. The C builder compiles the exact
+candidate bodies and compares their execution with separate bound and Boolean
+reference calculations. All 192 functions produced 2,432 native observations.
+
+The corpus contains 128 training rows and 64 evaluation rows, balanced by label.
+Both members of each pair stay together. Evaluation uses separate code forms
+and bound thresholds; exact code never crosses splits, every context is unique,
+and no code/context exactly repeats the existing 38-case suite. Sixty-four
+same-code/opposite-contract pairs make the repository rule essential to the
+decision. CONCERN records retain an executed counterexample.
+
+The output includes one-token A/B supervision, native evaluation inputs,
+separate expected labels, audit receipts and frozen hashes. Full reconstruction
+matches the committed manifest. Truncated receipts, reduced domain coverage,
+wrong code hashes and two compiled mutations all fail; existing output is
+preserved. The complete earlier test suite also passes. Training and new model
+measurements follow this corpus stage. Commands and contracts are in
+[docs/semantic-corpus.md](docs/semantic-corpus.md).
+
 ## 2026-11-06 — Dependency coverage and paired decision quality
 
 Reproduced the PR #45 finding: `diff.ignoreSubmodules=all` made a two-path

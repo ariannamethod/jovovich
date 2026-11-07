@@ -42,7 +42,13 @@ build/batch-fixture: tests/batch_fixture.c src/review.c src/review.h src/json.h 
 build/score-quality: tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/score_quality.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-check: build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality
+build/semantic-corpus: tools/semantic_corpus.c src/report_json.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/semantic_corpus.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
+
+check: build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-review
 	./build/review-demo --json all > build/reviews.jsonl
 	./build/check-pipeline
@@ -50,6 +56,7 @@ check: build/review-demo build/check-review build/check-pipeline build/jovovich-
 	sh tests/check_batch.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
+	sh tests/check_corpus.sh
 
 clean:
 	rm -rf build
