@@ -1,0 +1,11 @@
+{
+  "base_commit": "080e92a0ea7628000e90e99be89faf0eadc36525",
+  "question": "Does an executed witness transfer to callback order and multiplicity in functions that return no value?",
+  "system": "Frozen original OneJev-0.8B on the production NoTorch + AML JSON CLI, default A/B decision, no adapter or canonicalizer. Every arm is an independent live forward. No fitting or prompt selection.",
+  "domain": "mode is 0 or 1. Test both modes. Four order APIs use callback pairs scan/paint, read_tag/write_tag, pack/seal and mark/send. Four count APIs count pulse, stamp, tick and flush, with an additional unconstrained callback. The distinguishing mode alternates 1,0,1,0 within each family.",
+  "cases": "For each API cross two source bodies with two requirements. The source bodies agree at the control input and differ at the distinguishing input. The two requirements exchange the expected order (A B versus B A) or target count (one versus two) at the distinguishing input. Each source is CLEAN under one rule and CONCERN under the other. This yields 32 cases, 16 same-rule mutation pairs, 16 same-code rule pairs and eight distinct API fixtures.",
+  "arms": ["source alone", "source + required and observed order/count at the shared control input", "source + observed order/count alone at the distinguishing input", "source + required and observed order/count at the distinguishing input"],
+  "oracle": "Instrument compiled calls in the exact bodies shown for review. Compare both modes with the independent requirement table to assign ground truth. Order uses the full callback sequence; count uses occurrences of the named callback. Supply neutral English observations without verdict labels.",
+  "primary": "Count correctly classified same-rule mutation pairs per family and overall. Transfer criterion: the full witness solves at least 7/8 pairs in each family (at least 14/16 total) and strictly exceeds both source-only and control on total complete pairs.",
+  "secondary": "Report correct /32, missed violations, false alarms, complete same-source rule pairs /16, complete four-way fixtures /8, and verdict flips versus source for every arm. Show full witness versus observed-only. No production-default change."
+}

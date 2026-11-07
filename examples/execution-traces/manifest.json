@@ -1,0 +1,19 @@
+{
+  "protocol_commit": "390e13b11c0e9285c68af1f66710dd63fb7946e2",
+  "api_fixtures": 8,
+  "different_source_bodies": 16,
+  "source_rule_reviews": 32,
+  "domain": [
+    0,
+    1
+  ],
+  "expected_sha256": "48f2ec11e7cb0c2eaaf35f3707c0cdea05ce1fd9cb160eeedd223dbd62a080b6",
+  "prepare_sha256": "410776df9fdd36a7a30af78ae083033e716e4a3051bd0e899ceda4f1bdf0c0b3",
+  "receipts_sha256": "14823f6dffa0db8e2e172033e6748e7bc2d69f17ae18303f2903c253da5b0f1b",
+  "inputs_sha256": {
+    "source": "691e5fee3259a9134b8caef112c00ddc849c4849d6c4bb26580e0346507ca3af",
+    "control": "37fdadd326275f818a465e230589c143266f457b6f5a9089667d4d6400b67887",
+    "observed": "f805c07a086c543f11ea052306c938e1b358c9540e66dfec9c13e5ac4aaa0641",
+    "witness": "00064330a2c2bad217e51e1ccc9867e3aabc223b02966df96800d57c612cba27"
+  }
+}
