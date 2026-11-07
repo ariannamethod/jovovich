@@ -81,3 +81,6 @@ For an independent check, all eight live predictions in the first evaluation
 group matched the paired head's cached probabilities at F32 precision. A
 separate F64 implementation reproduced both fitted parameter vectors with a
 maximum absolute discrepancy below 2.1e−7.
+
+The [boundary observation experiment](boundary-observations.md) reuses these
+96 reviews with frozen weights, normalized comparisons and an executed test.

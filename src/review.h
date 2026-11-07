@@ -4,9 +4,15 @@
 #include <stdio.h>
 
 typedef struct {
+    const char *code; /* NULL when the original view passed through. */
+    const char *prompt_sha256;
+} jov_boundary_receipt;
+
+typedef struct {
     const char *input_sha256, *weights_sha256, *tokenizer_sha256;
     int unix_day, second, millisecond;
     const char *readout_sha256; /* Present when an output adapter was active. */
+    const jov_boundary_receipt *boundary;
 } jov_execution;
 
 typedef struct {
@@ -38,6 +44,7 @@ const char *jov_review_verdict(const jov_review *review);
 int jov_review_validate(const jov_review *review);
 /* Invalid records return JOV_INVALID before writing anything. */
 int jov_review_markdown(FILE *out, const jov_review *review);
+int jov_review_markdown_view(FILE *out, const jov_review *review, const char *model_code);
 int jov_review_json(FILE *out, const jov_review *review);
 int jov_source_validate(const jov_source *source);
 int jov_source_json(FILE *out, const jov_source *source);

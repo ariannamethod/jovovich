@@ -2,6 +2,17 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — Showing OneJev the return at equality
+
+The frozen base scored 55/96 on the original comparisons, 51/96 with a
+test at the neighboring integer and 86/96 with a test at equality. The
+equality run repaired 31 errors and kept every previously correct verdict.
+Canonicalizing the code gave 56/96 on its own. With the equality run it
+gave 24/24 distinct correct decisions across all four spellings. The
+[experiment](docs/boundary-observations.md) includes the paired head,
+compiled observations and per-case probabilities. The new native
+`--canonical-boundaries` review option retains the original evidence.
+
 ## 2026-11-07 — Equivalent boundary forms and operand order
 
 On 96 fresh reviews the base and paired readout both gave 55 correct

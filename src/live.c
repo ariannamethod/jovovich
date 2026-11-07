@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
+#include "boundary.h"
 #include "ariannamethod.h"
 #include "harness/arch.h"
 #include "examples/bpe.h"
@@ -60,13 +61,16 @@ static int write_features(const final_state *state, const char *id, const char *
 }
 
 int main(int argc,char **argv) {
-    int json=argc>=4 && !strcmp(argv[3],"--json");
-    int features=argc==4 && !strcmp(argv[3],"--features");
-    const char *adapter=NULL;
-    int rest=3+json;
-    if(argc==rest+2 && !strcmp(argv[rest],"--readout"))adapter=argv[rest+1];
-    if(argc<3 || (!features && !adapter && argc!=rest)) {
-        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--features | [--json] [--readout ADAPTER.json]] < reviews.jsonl\n",argv[0]);return 2;
+    int json=0,features=0,canonical=0,valid=argc>=3;const char *adapter=NULL;
+    for(int i=3;i<argc && valid;i++) {
+        if(!strcmp(argv[i],"--json") && !json)json=1;
+        else if(!strcmp(argv[i],"--features") && !features)features=1;
+        else if(!strcmp(argv[i],"--canonical-boundaries") && !canonical)canonical=1;
+        else if(!strcmp(argv[i],"--readout") && !adapter && i+1<argc)adapter=argv[++i];
+        else valid=0;
+    }
+    if(!valid || (features && (json || adapter || canonical))) {
+        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
     }
     char *manifest=nj_load("models/onejev-0.8b.json",NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -95,6 +99,8 @@ int main(int argc,char **argv) {
         char *change=nj_string(nj_get(line,"change_excerpt"));char ih[65];
         jov_review r={.id=id,.model=model_id,.revision=revision,.question="pending",
             .file=file,.context=context,.rule_excerpt=rule,.change_excerpt=change,.concern=.5,.clean=.5};
+        char code[JOV_BOUNDARY_CODE_SIZE],ph[65],*model_context=NULL;
+        jov_boundary_receipt receipt={NULL,ph};
         int status=1,*ids=NULL;kv_cache *kv=NULL;
         char *origin[6]={0};jov_source source={0};
         const char *raw_source=nj_get(line,"source");
@@ -117,7 +123,12 @@ int main(int argc,char **argv) {
                 fprintf(stderr,"Git evidence hash mismatch\n");goto row_done;
             }
         }
-        if(am_set_var_text("review_context",context) || run("aml/prepare.aml"))goto row_done;
+        if(canonical) {
+            int matched=jov_boundary_context(context,rule,change,code,&model_context);
+            if(matched<0)goto row_done;
+            if(matched)receipt.code=code;
+        }
+        if(am_set_var_text("review_context",model_context?model_context:context) || run("aml/prepare.aml"))goto row_done;
         const char *prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
         if(!prompt || !r.question)goto row_done;
         if(features && nj_get(line,"prompt")) {
@@ -125,7 +136,7 @@ int main(int argc,char **argv) {
             int same=stored && !strcmp(stored,prompt);free(stored);
             if(!same){fprintf(stderr,"Training prompt differs from AML output\n");goto row_done;}
         }
-        size_t len=strlen(prompt);if(len>1048576)goto row_done;
+        size_t len=strlen(prompt);if(len>1048576 || (canonical && hash_bytes(prompt,len,ph)))goto row_done;
         for(const unsigned char *p=(const unsigned char*)prompt;*p;p++)if(*p>=128) {
             fprintf(stderr,"Native text input currently requires ASCII; Unicode uses verified token IDs\n");goto row_done;
         }
@@ -156,13 +167,13 @@ int main(int argc,char **argv) {
         r.concern=probs[0];r.clean=probs[1];
         const char *verdict=am_get_var_text("verdict"),*chosen=jov_review_verdict(&r);
         if(!verdict || !chosen || strcmp(verdict,chosen) || !am_get_var_record("reviewed_at"))goto row_done;
-        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL};r.execution=&execution;
+        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
         if(kv)nt_arch_qwen35.kv_free(m,kv);
-        free(ids);free(id);free(file);free(context);free(rule);free(change);
+        free(model_context);free(ids);free(id);free(file);free(context);free(rule);free(change);
         for(int i=0;i<6;i++)free(origin[i]);
         if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}seen++;
     }
