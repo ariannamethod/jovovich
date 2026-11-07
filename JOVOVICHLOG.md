@@ -2,6 +2,15 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — Review operating rules and first-answer latency
+
+The [operating rules](docs/operating-rules.md) specify how the host selects
+an execution, how a passing repair enters the prompt, and how OneJev's two
+probabilities become a file verdict. The [latency benchmark](docs/review-latency.md)
+replayed the archived Git repair six times with the pinned F32 model. On
+Linux x86_64 the first answer took 12.952 s and the five resident reviews
+had a median of 5.236 s. All six reproduced mode 1 and 69.0% CLEAN.
+
 ## 2026-11-07 — Selecting an execution before review
 
 The frozen base chose the distinguishing input across both option orders and

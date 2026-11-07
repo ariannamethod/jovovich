@@ -1,0 +1,1 @@
+{"schema":"jovovich.review-latency/1","system":"Linux","release":"6.18.57","arch":"x86_64","reference":"examples/run-selection/git-answer.jsonl","reference_sha256":"41d5f499b10f6f714fe3bdf16b291d5ae813f3aa3028907f2d7f9b5767955513","requested_threads":4,"first_answer_ms":12951.606,"resident_ms":[5857.025,5281.746,4928.774,5236.122,4984.936],"resident_median_ms":5236.122}

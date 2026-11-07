@@ -19,9 +19,10 @@ A harness runs both revisions on the same input under the same setup and
 supplies the required effect from an independent contract oracle. It attaches
 the two observations to the review using `trace_evidence`. The native host
 compares the contract-visible effect. For sequence rules it compares callbacks
-in order. For count rules it counts occurrences of the named callback. The host inspects every
-supplied mode and selects the **smallest integer mode with a differing
-effect**. This rule is independent of input order and of which version passes.
+in order. For count rules it counts occurrences of the named callback. The
+host inspects every supplied mode and selects the **smallest integer mode
+with a differing effect**. This rule is independent of input order and of
+which version passes.
 [Trace schema and bindings](trace-evidence.md)
 
 | What the host finds | What enters the review prompt |
@@ -62,3 +63,5 @@ repair **69.0% CLEAN**. Across the eight callback APIs in the selection study,
 comparing both modes produced 32/32 correct reviews. The blind selector found
 the distinguishing input under all four presentations for 2/8 APIs.
 [Recorded Git answer](../examples/run-selection/git-answer.jsonl) · [Paired results](../examples/run-selection/results.json)
+
+The [review latency benchmark](review-latency.md) replays this same repair.
