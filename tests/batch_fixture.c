@@ -27,7 +27,7 @@ int main(int argc,char**argv) {
         jov_source source={o[0],o[1],o[2],o[3],o[4],o[5],num(s,"rule_first_line"),num(s,"rule_last_line")};
         char ih[65];assert(!hash_bytes(line,(size_t)n,ih));
         if(i==1 && !strcmp(argv[3],"badhash"))ih[0]=ih[0]=='0'?'1':'0';
-        jov_execution e={ih,wh,th,20763,1,0,NULL,NULL};
+        jov_execution e={ih,wh,th,20763,1,0,NULL,NULL,NULL};
         double a=i==1 && !strcmp(argv[3],"mixed")?.9:i==1 && !strcmp(argv[3],"tie")?.5:.1;
         assert(!am_set_var_text("review_context",context) && !am_exec_file("aml/prepare.aml"));
         jov_review r={.id=id,.model=model,.revision=revision,.question=am_get_var_text("question"),.file=file,.context=context,

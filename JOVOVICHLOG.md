@@ -2,6 +2,16 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — Selecting an execution before review
+
+The frozen base chose the distinguishing input across both option orders and
+both source orders for 2/8 APIs. The predeclared presentation chose it for
+3/8. With that choice, the reviewer scored 22/32. The host compared both
+modes on the contract-relevant effect, found all eight distinguishing runs
+and scored 32/32. The [experiment](docs/run-selection.md) records 32 blind
+choices and 64 downstream reviews. The ordinary CLI now accepts
+[paired execution traces](docs/trace-evidence.md) from a harness.
+
 ## 2026-11-07 — Reviewing callback order and counts
 
 Frozen OneJev reviewed 32 source/contract combinations across eight APIs.

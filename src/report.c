@@ -68,7 +68,7 @@ static int answer(const char*j,const input*p,const char*manifest,float*flag,int 
        !eq(src,"kind","git") || number(src,"rule_first_line",&first) || number(src,"rule_last_line",&last) ||
        first!=p->item.source.first_line || last!=p->item.source.last_line)goto done;
     for(int i=0;i<6;i++)if(!eq(src,source_keys[i],p->origin[i]))goto done;
-    if(jov_verify_boundary_view(j,p->context,p->rule,p->change,"aml/prepare.aml",index,policy) || !eq(j,"question",am_get_var_text("question")))goto done;
+    if(jov_verify_boundary_view(j,p->row,p->id,p->context,p->rule,p->change,"aml/prepare.aml",index,policy) || !eq(j,"question",am_get_var_text("question")))goto done;
     if(nj_number(nj_get(prob,"CONCERN"),&concern) || nj_number(nj_get(prob,"CLEAN"),&clean) ||
        !isfinite(concern) || !isfinite(clean) || concern<0 || clean<0 || concern>1 || clean>1 || fabs(concern+clean-1)>1e-6 ||
        !eq(choice,"verdict",concern>=clean?"CONCERN":"CLEAN"))goto done;
@@ -130,8 +130,12 @@ int main(int argc,char **argv) {
                 const char *view=nj_get(nj_get(results[i],"execution"),"boundary_view");
                 const char *listed=nj_get(view,"code");
                 char *code=nj_string(listed);
-                fputs("\n---\n\n",out);failed=(listed && !code) || jov_review_markdown_view(out,&r,code);
-                free(code);
+                const char *trace=nj_get(nj_get(results[i],"execution"),"trace_witness");
+                const char *raw_obs=nj_get(trace,"observation");
+                char *obs=nj_string(raw_obs);
+                fputs("\n---\n\n",out);failed=(listed && !code) || (raw_obs && !obs) ||
+                    jov_review_markdown_evidence(out,&r,code,obs);
+                free(code);free(obs);
             }
             free(model_id);free(revision);free(question);if(failed)goto done;
         }

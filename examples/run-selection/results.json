@@ -1,0 +1,16 @@
+{"schema":"jovovich.run-selection-score/1","fixtures":[
+{"index":0,"witness_mode":1,"selected_modes":[1,0,0,0]},
+{"index":1,"witness_mode":0,"selected_modes":[1,0,0,0]},
+{"index":2,"witness_mode":1,"selected_modes":[1,1,1,1]},
+{"index":3,"witness_mode":0,"selected_modes":[1,0,1,0]},
+{"index":4,"witness_mode":1,"selected_modes":[1,1,1,1]},
+{"index":5,"witness_mode":0,"selected_modes":[1,0,1,0]},
+{"index":6,"witness_mode":1,"selected_modes":[0,0,0,0]},
+{"index":7,"witness_mode":0,"selected_modes":[1,0,1,0]}
+],"layout_correct":[3,6,3,6],"robust_order":1,"robust_count":1,"stable_apis":3,"letter_a":8,"option_swap_mode_changes":8,"body_swap_mode_changes":2,"binary_brier":0.2389965087,"passes_selector_criterion":false,
+"downstream":[
+{"name":"source","correct":17,"pairs":1,"false_alarms":3,"misses":12},
+{"name":"selector_unfiltered","correct":22,"pairs":6,"false_alarms":0,"misses":10},
+{"name":"selector_gated","correct":22,"pairs":6,"false_alarms":3,"misses":7},
+{"name":"mechanical","correct":32,"pairs":16,"false_alarms":0,"misses":0}
+]}
