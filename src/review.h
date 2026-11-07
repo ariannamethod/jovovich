@@ -6,6 +6,7 @@
 typedef struct {
     const char *input_sha256, *weights_sha256, *tokenizer_sha256;
     int unix_day, second, millisecond;
+    const char *readout_sha256; /* Present when an output adapter was active. */
 } jov_execution;
 
 typedef struct {

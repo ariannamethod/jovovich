@@ -46,7 +46,7 @@ int jov_review_validate(const jov_review *r) {
     if (r->execution) {
         const jov_execution *e = r->execution;
         if (!hash_string(e->input_sha256) || !hash_string(e->weights_sha256) ||
-            !hash_string(e->tokenizer_sha256) || e->second < 0 || e->second >= 86400 ||
+            !hash_string(e->tokenizer_sha256) || (e->readout_sha256 && !hash_string(e->readout_sha256)) || e->second < 0 || e->second >= 86400 ||
             e->millisecond < 0 || e->millisecond >= 1000) return JOV_INVALID;
     }
     return JOV_OK;
@@ -86,6 +86,7 @@ int jov_review_json(FILE *out, const jov_review *r) {
         json_field(out, "input_sha256", e->input_sha256); fputc(',', out);
         json_field(out, "weights_sha256", e->weights_sha256); fputc(',', out);
         json_field(out, "tokenizer_sha256", e->tokenizer_sha256);
+        if(e->readout_sha256){fputc(',',out);json_field(out,"readout_sha256",e->readout_sha256);}
         fprintf(out, ",\"reviewed_at\":{\"schema\":\"janus.instant/1\",\"time_scale\":\"posix\",\"unix_day\":%d,\"second\":%d,\"millisecond\":%d}}",
                 e->unix_day, e->second, e->millisecond);
     }

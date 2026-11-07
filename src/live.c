@@ -5,6 +5,8 @@
 #include "examples/bpe.h"
 #include "tools/narrow_json.h"
 #include "hash.h"
+#include "json.h"
+#include "readout.h"
 #include <limits.h>
 #include <fcntl.h>
 #include <math.h>
@@ -25,10 +27,46 @@ static int hash_file(const char *path,char out[65]) {
 }
 static int run(const char *path){int rc=am_exec_file(path);if(rc)fprintf(stderr,"AML: %s\n",am_get_error());return rc;}
 
+typedef struct {
+    int last_layer, captured;
+    float unit[JOV_WIDTH];
+} final_state;
+
+static int capture_final(void *user, int layer, int pos, int n, int width, float *residual) {
+    (void)pos;
+    final_state *state = user;
+    if (layer != state->last_layer) return 0;
+    if (width != JOV_WIDTH || n < 1) return 1;
+    const float *last = residual + (size_t)(n-1) * width;
+    double sum = 0;
+    for (int i = 0; i < width; ++i) sum += (double)last[i] * last[i];
+    if (!(sum > 0) || !isfinite(sum)) return 1;
+    double norm = sqrt(sum);
+    for (int i = 0; i < width; ++i) state->unit[i] = (float)(last[i]/norm);
+    state->captured = 1;
+    return 0;
+}
+
+static int write_features(const final_state *state, const char *id, const char *input_hash,
+                          const char *weights, const char *tokenizer, const float *logits) {
+    if (!state->captured || !isfinite(logits[32]) || !isfinite(logits[33])) return 1;
+    fputs("{\"schema\":\"jovovich.features/1\",",stdout);
+    json_field(stdout,"id",id);
+    printf(",\"input_sha256\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",
+           input_hash,weights,tokenizer);
+    printf("\"logit_a\":%.9g,\"logit_b\":%.9g,\"hidden\":[",logits[32],logits[33]);
+    for (int i=0; i<JOV_WIDTH; ++i) printf(i?",%.9g":"%.9g",state->unit[i]);
+    return fputs("]}\n",stdout)==EOF || fflush(stdout);
+}
+
 int main(int argc,char **argv) {
-    int json=argc==4 && !strcmp(argv[3],"--json");
-    if(argc<3 || argc>4 || (argc==4 && !json)) {
-        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--json] < reviews.jsonl\n",argv[0]);return 2;
+    int json=argc>=4 && !strcmp(argv[3],"--json");
+    int features=argc==4 && !strcmp(argv[3],"--features");
+    const char *adapter=NULL;
+    int rest=3+json;
+    if(argc==rest+2 && !strcmp(argv[rest],"--readout"))adapter=argv[rest+1];
+    if(argc<3 || (!features && !adapter && argc!=rest)) {
+        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--features | [--json] [--readout ADAPTER.json]] < reviews.jsonl\n",argv[0]);return 2;
     }
     char *manifest=nj_load("models/onejev-0.8b.json",NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -38,6 +76,10 @@ int main(int argc,char **argv) {
     if(!model_id || !revision || !want_weights || !want_tokenizer || hash_file(argv[1],wh) || hash_file(argv[2],th) ||
        strcmp(wh,want_weights) || strcmp(th,want_tokenizer)) {
         fprintf(stderr,"Model/tokenizer bytes do not match models/onejev-0.8b.json\n");goto done;
+    }
+    jov_readout head;char adapter_hash[65];
+    if(adapter && jov_readout_load(&head,adapter,wh,th,adapter_hash)) {
+        fprintf(stderr,"Invalid readout or mismatched base model\n");goto done;
     }
     g=gguf_open(argv[1]);m=g?nt_arch_qwen35.load(g,&dims):NULL;tok=bpe_load(argv[2]);
     if(!m || !tok || bpe_token_id(tok,"A")!=32 || bpe_token_id(tok,"B")!=33)goto done;
@@ -78,6 +120,11 @@ int main(int argc,char **argv) {
         if(am_set_var_text("review_context",context) || run("aml/prepare.aml"))goto row_done;
         const char *prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
         if(!prompt || !r.question)goto row_done;
+        if(features && nj_get(line,"prompt")) {
+            char *stored=nj_string(nj_get(line,"prompt"));
+            int same=stored && !strcmp(stored,prompt);free(stored);
+            if(!same){fprintf(stderr,"Training prompt differs from AML output\n");goto row_done;}
+        }
         size_t len=strlen(prompt);if(len>1048576)goto row_done;
         for(const unsigned char *p=(const unsigned char*)prompt;*p;p++)if(*p>=128) {
             fprintf(stderr,"Native text input currently requires ASCII; Unicode uses verified token IDs\n");goto row_done;
@@ -85,12 +132,22 @@ int main(int argc,char **argv) {
         ids=malloc((len+1)*sizeof(int));if(!ids)goto row_done;
         int n=bpe_encode_special(tok,prompt,ids,(int)len+1);
         if(n<1 || n>8192 || !(kv=nt_arch_qwen35.kv_new(m,n)))goto row_done;
+        final_state state={.last_layer=dims.n_layers-1};
         for(int pos=0;pos<n;pos+=32) {
             int take=n-pos<32?n-pos:32;
-            int result=nt_arch_qwen35.forward(m,kv,ids+pos,take,pos,pos+take==n?logits:NULL);
+            int result;
+            if((features || adapter) && pos+take==n)
+                result=nt_arch_qwen35.forward_residual(m,kv,ids+pos,take,pos,logits,capture_final,&state);
+            else result=nt_arch_qwen35.forward(m,kv,ids+pos,take,pos,pos+take==n?logits:NULL);
             if(result){fprintf(stderr,"NoTorch: %s\n",nt_strerror(result));goto row_done;}
         }
-        float probs[2]={logits[32],logits[33]};softmax(probs,2);
+        if(features) {status=write_features(&state,id,ih,wh,th,logits);goto row_done;}
+        float probs[2]={logits[32],logits[33]};
+        if(adapter) {
+            if(!state.captured || jov_readout_margin(&head,state.unit,probs[0]-probs[1],&probs[0]))goto row_done;
+            probs[1]=0;
+        }
+        softmax(probs,2);
         struct timespec now;if(clock_gettime(CLOCK_REALTIME,&now))goto row_done;
         int day=(int)(now.tv_sec/86400),sec=(int)(now.tv_sec%86400),ms=(int)(now.tv_nsec/1000000);
         if(sec<0){day--;sec+=86400;}
@@ -99,7 +156,7 @@ int main(int argc,char **argv) {
         r.concern=probs[0];r.clean=probs[1];
         const char *verdict=am_get_var_text("verdict"),*chosen=jov_review_verdict(&r);
         if(!verdict || !chosen || strcmp(verdict,chosen) || !am_get_var_record("reviewed_at"))goto row_done;
-        jov_execution execution={ih,wh,th,day,sec,ms};r.execution=&execution;
+        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
         if(fflush(stdout))status=JOV_IO_ERROR;
