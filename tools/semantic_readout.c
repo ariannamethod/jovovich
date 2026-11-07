@@ -89,7 +89,29 @@ static double probability(double margin) {
     return margin>=0 ? 1/(1+e) : e/(1+e);
 }
 
-static void fit(jov_readout *head, example *rows) {
+/* First 96 pinned rows are 24 groups of direct clean/broken and negated clean/broken.
+ * Derivatives are accumulated in margin space. Each difference cancels the bias. */
+static void paired_gradient(const example *rows, const float *margin, float *grad) {
+    const float coefficient=0.25f/48;
+    for (int group=0; group<96; group+=4) {
+        float d[4]={0};
+        const float *z=margin+group;
+        for (int clean=0; clean<=2; clean+=2) {
+            float g=(float)(coefficient*probability(z[clean]-z[clean+1]));
+            d[clean]+=g;
+            d[clean+1]-=g;
+        }
+        for (int label=0; label<2; label++) {
+            float g=coefficient*(z[label]-z[label+2]);
+            d[label]+=g;
+            d[label+2]-=g;
+        }
+        for (int i=0; i<4; i++)
+            for (int j=0; j<JOV_WIDTH; j++) grad[j]+=d[i]*rows[group+i].unit[j];
+    }
+}
+
+static void fit(jov_readout *head, example *rows, int paired) {
     double sum=0;
     for (int j=0; j<JOV_WIDTH; j++) {
         double center=0;
@@ -106,7 +128,7 @@ static void fit(jov_readout *head, example *rows) {
         for (int j=0; j<JOV_WIDTH; j++) rows[i].unit[j]=(rows[i].unit[j]-head->center[j])/head->scale;
 
     for (int step=0; step<=STEPS; step++) {
-        float grad[JOV_WIDTH+1]={0}, next[JOV_WIDTH+1];
+        float grad[JOV_WIDTH+1]={0}, next[JOV_WIDTH+1], margins[TRAIN_ROWS];
         double loss=0;
         int correct=0;
         for (int k=0; k<TRAIN_ROWS; k++) {
@@ -116,6 +138,7 @@ static void fit(jov_readout *head, example *rows) {
             if (nt_linear_values(head->weight,head->weight+JOV_WIDTH,r->unit,1,JOV_WIDTH,&delta))
                 fail("NoTorch projected a non-finite training value");
             float z=r->base+delta;
+            margins[(size_t)(r-rows)]=z;
             double signed_margin=r->concern?z:-z;
             loss+=fmax(0,-signed_margin)+log1p(exp(-fabs(signed_margin)));
             correct+=(z>=0)==r->concern;
@@ -126,6 +149,7 @@ static void fit(jov_readout *head, example *rows) {
         if (step==0 || step==STEPS)
             fprintf(stderr,"step=%d mean_cross_entropy=%.9f correct=%d/%d\n",step,loss/TRAIN_ROWS,correct,TRAIN_ROWS);
         if (step==STEPS) break;
+        if (paired) paired_gradient(rows,margins,grad);
         for (int j=0; j<JOV_WIDTH; j++) grad[j]+=l2*head->weight[j];
         if (nt_sgd_values(head->weight,grad,JOV_WIDTH+1,learning_rate,next)) fail("NoTorch SGD failed");
         memcpy(head->weight,next,sizeof(next));
@@ -139,9 +163,10 @@ static void vector(const float *v) {
 }
 
 static void write_adapter(const jov_readout *head, const char *weights, const char *tokenizer,
-                          const char *train_hash, const char *features_hash) {
+                          const char *train_hash, const char *features_hash, const char *objective) {
     printf("{\"schema\":\"jovovich.readout/1\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",weights,tokenizer);
     printf("\"train_sha256\":\"%s\",\"train_features_sha256\":\"%s\",",train_hash,features_hash);
+    if (objective) {json_field(stdout,"objective",objective);putchar(',');}
     printf("\"steps\":%d,\"learning_rate\":%.9g,\"l2\":%.9g,\"scale\":%.9g,\"bias\":%.9g,",
            STEPS,learning_rate,l2,head->scale,head->weight[JOV_WIDTH]);
     fputs("\"center\":",stdout);vector(head->center);
@@ -329,11 +354,93 @@ static int audit_method(const char *corpus, const char *dir, const char *swapped
     return fflush(stdout)==EOF;
 }
 
+typedef struct {
+    int correct, correct_by_form[4], mutation_pairs, ranked, stable, complete, false_alarms, misses;
+} form_score;
+
+/* Each group contains four clean/broken pairs ordered by the pinned corpus manifest. */
+static int score_forms(example *rows, int n, const lines *inputs, const lines *features,
+                       const lines *expected, char **paths, const char *weights, const char *tokenizer) {
+    char *manifest=nj_load("examples/equivalent-boundaries/manifest.json",NULL);
+    char *v1=nj_load("examples/semantic-20261107/manifest.json",NULL);
+    const char *pins=nj_get(manifest,"sha256");
+    if (n!=96 || !nj_is(nj_get(pins,"eval-inputs.jsonl"),inputs->hash) ||
+        !nj_is(nj_get(pins,"eval-expected.jsonl"),expected->hash)) fail("Expected the pinned 96-form evaluation");
+    jov_readout heads[3];
+    char digests[3][65];
+    for (int i=0; i<3; i++) {
+        char *training=nj_string(nj_get(i?pins:nj_get(v1,"sha256"),"train.jsonl"));
+        size_t size;char meta_hash[65];
+        char *meta=nj_load(paths[i],&size);
+        if (!meta || !training || !nj_is(nj_get(meta,"train_sha256"),training) ||
+            (i && !nj_is(nj_get(meta,"objective"),i==1?"bce":"bce-ranking-equivalence")) ||
+            hash_bytes(meta,size,meta_hash) || jov_readout_load(heads+i,paths[i],weights,tokenizer,digests[i]) ||
+            strcmp(meta_hash,digests[i])) fail("Wrong checkpoint for form score");
+        free(meta);free(training);
+    }
+    form_score scores[4]={0};
+    float probabilities[96][4];
+    for (int model=0; model<4; model++) {
+        form_score *s=scores+model;
+        for (int g=0; g<n; g+=8) {
+            int decision[8], correct=0;
+            float margin[8];
+            for (int i=0; i<8; i++) {
+                example *r=rows+g+i;
+                margin[i]=r->base;
+                if (model && jov_readout_margin(heads+model-1,r->unit,r->base,margin+i)) fail("Invalid form projection");
+                float probs[]={margin[i],0};
+                softmax(probs,2);
+                probabilities[g+i][model]=probs[0];
+                decision[i]=probs[0]>=probs[1];
+                int ok=decision[i]==r->concern;
+                correct+=ok;
+                s->correct_by_form[i/2]+=ok;
+                s->false_alarms+=!ok && !r->concern;
+                s->misses+=!ok && r->concern;
+            }
+            for (int i=0; i<8; i+=2) {
+                s->mutation_pairs+=!decision[i] && decision[i+1];
+                s->ranked+=margin[i+1]>margin[i];
+            }
+            for (int i=0; i<2; i++)
+                s->stable+=decision[i]==decision[i+2] && decision[i]==decision[i+4] && decision[i]==decision[i+6];
+            s->complete+=correct==8;
+            s->correct+=correct;
+        }
+    }
+    printf("{\"schema\":\"jovovich.equivalent-score/1\",\"inputs_sha256\":\"%s\",\"features_sha256\":\"%s\","
+           "\"expected_sha256\":\"%s\",\n",inputs->hash,features->hash,expected->hash);
+    printf("\"forms\":[\"direct\",\"negated\",\"reversed\",\"negated_reversed\"],\"systems\":[\n");
+    const char *names[]={"base","previous","bce","paired"};
+    for (int m=0; m<4; m++) {
+        form_score *s=scores+m;
+        printf("{\"name\":\"%s\",",names[m]);
+        if (m) printf("\"readout_sha256\":\"%s\",",digests[m-1]);
+        printf("\"correct\":%d,\"by_form\":[%d,%d,%d,%d],\"correct_mutation_pairs\":%d,\"ranked_pairs\":%d,"
+               "\"stable_cases\":%d,\"complete_groups\":%d,\"false_alarms\":%d,\"misses\":%d}%s\n",
+               s->correct,s->correct_by_form[0],s->correct_by_form[1],s->correct_by_form[2],s->correct_by_form[3],
+               s->mutation_pairs,s->ranked,s->stable,s->complete,s->false_alarms,s->misses,m==3?"":",");
+    }
+    puts("],\"cases\":[");
+    for (int i=0; i<n; i++) {
+        float *p=probabilities[i];
+        putchar('{');json_field(stdout,"id",rows[i].id);
+        printf(",\"expected\":\"%s\",\"p_concern\":[%.9g,%.9g,%.9g,%.9g]}%s\n",
+               rows[i].concern?"CONCERN":"CLEAN",p[0],p[1],p[2],p[3],i+1==n?"":",");
+    }
+    puts("]}");free(manifest);free(v1);
+    return fflush(stdout)==EOF;
+}
+
 int main(int argc, char **argv) {
-    int training=argc==4 && !strcmp(argv[1],"fit");
+    int equivalent=argc==4 && (!strcmp(argv[1],"fit-equivalent") || !strcmp(argv[1],"fit-paired"));
+    int paired=equivalent && !strcmp(argv[1],"fit-paired");
+    int training=equivalent || (argc==4 && !strcmp(argv[1],"fit"));
     int audit=argc==6 && !strcmp(argv[1],"audit");
-    if (!training && !audit && !(argc==6 && !strcmp(argv[1],"score")))
-        fail("Usage: jovovich-readout fit TRAIN FEATURES | score INPUTS FEATURES EXPECTED ADAPTER | audit CORPUS_DIR RUN_DIR SWAPPED_FEATURES ADAPTER");
+    int forms=argc==8 && !strcmp(argv[1],"score-forms");
+    if (!forms && !training && !audit && !(argc==6 && !strcmp(argv[1],"score")))
+        fail("Usage: jovovich-readout fit|fit-equivalent|fit-paired TRAIN FEATURES | score INPUTS FEATURES EXPECTED ADAPTER | audit CORPUS_DIR RUN_DIR SWAPPED_FEATURES ADAPTER | score-forms INPUTS FEATURES EXPECTED PREVIOUS BCE PAIRED");
     char *model=nj_load("models/onejev-0.8b.json",NULL);
     char *weights=nj_string(nj_get(model,"weights_sha256")), *tokenizer=nj_string(nj_get(model,"tokenizer_sha256"));
     if (!weights || !tokenizer) fail("Cannot read OneJev manifest");
@@ -345,20 +452,23 @@ int main(int argc, char **argv) {
     jov_readout head={0};
     char digest[65];
     if (training) {
-        char *manifest=nj_load("examples/semantic-20261107/manifest.json",NULL);
+        const char *path=equivalent?"examples/equivalent-boundaries/manifest.json":"examples/semantic-20261107/manifest.json";
+        char *manifest=nj_load(path,NULL);
         if (!nj_is(nj_get(nj_get(manifest,"sha256"),"train.jsonl"),inputs.hash)) fail("Expected the pinned training split");
         free(manifest);
     } else {
         expected=open_lines(argv[4]);
-        if (jov_readout_load(&head,argv[5],weights,tokenizer,digest)) fail("Cannot load compatible readout");
+        if (!forms && jov_readout_load(&head,argv[5],weights,tokenizer,digest)) fail("Cannot load compatible readout");
     }
     example *rows=calloc(MAX_ROWS,sizeof(*rows));
     if (!rows) fail("Cannot allocate examples");
     int n=load_examples(rows,&inputs,&features,training?NULL:&expected,weights,tokenizer);
     if (training) {
         if (n!=TRAIN_ROWS) fail("Wrong training size");
-        fit(&head,rows);
-        write_adapter(&head,weights,tokenizer,inputs.hash,features.hash);
+        fit(&head,rows,paired);
+        write_adapter(&head,weights,tokenizer,inputs.hash,features.hash,equivalent?(paired?"bce-ranking-equivalence":"bce"):NULL);
+    } else if (forms) {
+        if (score_forms(rows,n,&inputs,&features,&expected,argv+5,weights,tokenizer)) fail("Cannot write form scores");
     } else compare(rows,n,&head,digest,&inputs,&features,&expected);
     for (int i=0; i<n; i++) {free(rows[i].id);free(rows[i].family);}
     free(rows);free(model);free(weights);free(tokenizer);

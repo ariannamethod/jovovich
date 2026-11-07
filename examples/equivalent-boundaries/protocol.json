@@ -1,0 +1,11 @@
+{
+  "base_commit": "f7bed8f1ce4e8976be4fd7870c1bf18840a9ca30",
+  "train": "128 rows. Replace the 48 if-return boundary rows with equivalent negated comparisons. Retain the 48 direct comparisons and 32 guards.",
+  "new_evaluation": "Four requirements times three new thresholds (-7, 0, 7), each with a compliant implementation and an equality-only defect written four ways: direct, negated, reversed operands, negated reversed operands. 96 decisions.",
+  "native_oracle": "Execute all functions over the full input domain. Each defective boundary implementation must disagree only at equality. Each rewrite must implement the same truth table as its direct partner.",
+  "systems": ["OneJev base", "PR 48 frozen readout", "BCE on the replacement training corpus", "BCE plus ranking and equivalence losses on the same training corpus"],
+  "optimizer": "Zero initialization, 400 full-batch steps, learning rate 1, L2 coefficient 0.005, identical preprocessing across the two new heads.",
+  "extra_loss": "0.25 * mean softplus(-(broken_margin - clean_margin)) across 48 boundary mutation pairs + 0.25 * mean 0.5*(direct_margin - negated_margin)^2 across 48 same-label rewrites.",
+  "primary": "Number of requirement/threshold groups with all eight hard verdicts correct, out of 12. Also report correct decisions, correctly flipped mutation pairs out of 48, violations ranked higher, and cases with one verdict across all four equivalent spellings out of 24.",
+  "promotion": "Consider only the paired-loss candidate. It must exceed base on complete groups and correct mutation pairs, reach at least the base accuracy on both previous suites (64 and 38), and retain each legacy CONCERN the base correctly caught. Historical evaluation labels are never used to fit the heads."
+}

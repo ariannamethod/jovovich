@@ -1,0 +1,62 @@
+{
+  "schema": "jovovich.equivalent-run/1",
+  "protocol_commit": "756551bb64d24f9b926ddaced04471751d64398a",
+  "corpus_manifest_sha256": "53ac1238a6144f1f0df747a33251d6c722386aa6db752b27f973c2fc2675742a",
+  "source_model": {
+    "model_id": "OmniJev/OneJev-0.8B",
+    "revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+    "weights_sha256": "b587ecb42b7d022f782ea72c8b84e94b8292ae3f5aa67e1364851b4d4e32b7e6",
+    "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+    "conversion": "NoTorch qwen35_to_gguf; source-layout version 1",
+    "arithmetic": "float32",
+    "text_boundary": "ASCII; explicit token IDs support the full vocabulary"
+  },
+  "heads": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "revision": "463d67b1ae377f687a2f0362089975fdc537c72f",
+    "files": {
+      "experiments/equivalent-boundaries-20261107/equivalent.json": "f3777f0a9968867f3c3437c8bb38723ac4726342cce3627b9c5d3f0f3dee8977",
+      "experiments/equivalent-boundaries-20261107/paired.json": "82366a7c0c5a87ea83da89ce7b64ea67608eccd5ec3baf89afaed940613bb7f7"
+    }
+  },
+  "training_feature_sha256": "97671c7ab4ecc008ad750c098a14c6cc6d0484fe44915737bbb29844f8f3e49a",
+  "extraction": {
+    "reused_byte_identical_training_rows": 80,
+    "new_training_rows": 48,
+    "fresh_evaluation_rows": 96,
+    "openblas_threads": 4,
+    "attention_threads": 4
+  },
+  "cross_entropy": {
+    "base": 0.684494001,
+    "bce": 0.598872038,
+    "paired": 0.612657852
+  },
+  "training_correct": {
+    "base": 74,
+    "bce": 88,
+    "paired": 89
+  },
+  "training_size": 128,
+  "compiled_oracle": {
+    "comparisons_against_requirement": 3392,
+    "same_behavior_across_spelling_checks": 2040,
+    "mutation_differs_only_at_equality_checks": 1632
+  },
+  "verification": {
+    "float64_reference_max_absolute_weight_error": {
+      "bce": 2.08814e-07,
+      "paired": 1.95872e-07
+    },
+    "live_first_group_verdict_and_probability_matches": 8
+  },
+  "promotion": "declined",
+  "recorded_outputs": {
+    "equivalent-legacy.json": "4b9b75998cda3802022e3b2b5569a0dbbe3009ef9ff4d2042fb63dbb2189f94d",
+    "equivalent-transfer.json": "7ce7735981bd7d6ab736de58838807674a9f9d2dfa77d279164bd43f27b6c65e",
+    "fresh-score.json": "e984d581598f8eee5d06758d5afdca929c7ae9d30b37fced6201e9b82e2605a9",
+    "paired-legacy.json": "9ba2b9ee75bf4dd5b07f8768159f53dee3aed4e04950c123260a3f3bbf1c98b9",
+    "paired-transfer.json": "a96f11ed5884231ed9a0c3c2ea2f423b784a746e9943f4caa3a03890be9bead5"
+  }
+}

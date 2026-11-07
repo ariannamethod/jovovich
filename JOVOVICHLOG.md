@@ -2,6 +2,16 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — Equivalent boundary forms and operand order
+
+On 96 fresh reviews the base and paired readout both gave 55 correct
+verdicts. The paired head agreed across the trained direct/negated rewrite
+on 18/24 cases and across direct/reversed operands on 6/24. All 24 direct
+reversed comparisons received CONCERN. The earlier review suite scored
+27/38 against the base's 30/38. The two new heads are archived privately.
+The [experiment](docs/equivalent-boundaries.md) records the executed corpus,
+the BCE control, the paired objective and all four systems' decisions.
+
 ## 2026-11-07 — First supervised A/B readout on OneJev
 
 Trained 1,025 output parameters on the 128 executed examples with a frozen
