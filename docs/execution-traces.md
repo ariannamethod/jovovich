@@ -101,3 +101,6 @@ input and model, and reproduces the [result table](../examples/execution-traces/
 The [receipts](../examples/execution-traces/receipts.jsonl) record both
 executions for each review. The [manifest](../examples/execution-traces/manifest.json)
 binds the evidence conditions to the exact input and prompt-template digests.
+
+The [run-selection study](run-selection.md) asks the model to choose the input
+before execution and compares that choice with a native trace diff.

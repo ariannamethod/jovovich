@@ -1,0 +1,13 @@
+# Only a run whose two contract-visible effects differ reaches this program.
+observation = text_concat("Execution at mode = ", gate_mode)
+observation = text_concat(observation, ". Required ")
+observation = text_concat(observation, gate_metric)
+observation = text_concat(observation, " = ")
+observation = text_concat(observation, gate_required)
+observation = text_concat(observation, ". Observed ")
+observation = text_concat(observation, gate_metric)
+observation = text_concat(observation, " = ")
+observation = text_concat(observation, gate_observed)
+observation = text_concat(observation, ".")
+review_context = text_concat(review_context, "\n")
+review_context = text_concat(review_context, observation)

@@ -1,0 +1,20 @@
+# Both source bodies and candidate inputs are available before either run.
+metric = "ordered sequence of callbacks"
+if select_count[0] == 1:
+    metric = text_concat("number of calls to ", count_target)
+state = text_concat("Two C implementations accept mode 0 or 1. Compare their ", metric)
+state = text_concat(state, ".\nFirst implementation:\n```c\n")
+state = text_concat(state, first_body)
+state = text_concat(state, "\n```\nSecond implementation:\n```c\n")
+state = text_concat(state, second_body)
+state = text_concat(state, "\n```")
+question = "Which input will make the two implementations differ on this measured effect?"
+prompt = "<|im_start|>system\nApply the question to the state. Choose exactly one of the listed options. Respond with only its uppercase letter, with no explanation or reasoning.<|im_end|>\n<|im_start|>user\n<state>\n"
+prompt = text_concat(prompt, state)
+prompt = text_concat(prompt, "\n</state>\n\nQuestion: ")
+prompt = text_concat(prompt, question)
+prompt = text_concat(prompt, "\n\nOptions:\nA. Run with mode = ")
+prompt = text_concat(prompt, option_a)
+prompt = text_concat(prompt, ".\nB. Run with mode = ")
+prompt = text_concat(prompt, option_b)
+prompt = text_concat(prompt, ".\n\nAnswer with one letter: A, B.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n")

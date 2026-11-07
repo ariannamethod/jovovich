@@ -91,3 +91,6 @@ diff hash was refused before another decision, with `Git evidence hash mismatch`
 
 The original model, weights, arithmetic and A/B question are unchanged in this
 stage. Python remains absent from the repository's build, tests and runtime.
+
+A harness with executions at both commits can [attach paired callback traces](trace-evidence.md)
+to the packed input before running the reviewer.

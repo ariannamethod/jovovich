@@ -45,6 +45,9 @@ int jov_review_validate(const jov_review *r) {
     if(r->source && jov_source_validate(r->source))return JOV_INVALID;
     if (r->execution) {
         const jov_execution *e = r->execution;
+        if (e->trace && (!hash_string(e->trace->prompt_sha256) || e->trace->runs<0 ||
+            e->trace->differing<0 || e->trace->differing>e->trace->runs ||
+            (e->trace->differing!=0)!=present(e->trace->observation)))return JOV_INVALID;
         if (e->boundary && (!hash_string(e->boundary->prompt_sha256) ||
             (e->boundary->code && !present(e->boundary->code))))return JOV_INVALID;
         if (!hash_string(e->input_sha256) || !hash_string(e->weights_sha256) ||
@@ -88,6 +91,17 @@ int jov_review_json(FILE *out, const jov_review *r) {
         json_field(out, "input_sha256", e->input_sha256); fputc(',', out);
         json_field(out, "weights_sha256", e->weights_sha256); fputc(',', out);
         json_field(out, "tokenizer_sha256", e->tokenizer_sha256);
+        if(e->trace) {
+            const jov_trace_receipt *t=e->trace;
+            fprintf(out,",\"trace_witness\":{\"policy\":\"paired-trace-diff/1\",\"runs\":%d,\"differing\":%d,",
+                    t->runs,t->differing);
+            json_field(out,"prompt_sha256",t->prompt_sha256);
+            if(t->differing) {
+                fprintf(out,",\"selected_mode\":%d,",t->selected_mode);
+                json_field(out,"observation",t->observation);
+            }
+            fputc('}',out);
+        }
         if(e->boundary) {
             fputs(",\"boundary_view\":{\"policy\":\"signed-int-comparison/1\",",out);
             json_field(out,"prompt_sha256",e->boundary->prompt_sha256);
@@ -149,6 +163,11 @@ int jov_review_markdown(FILE *out, const jov_review *r) {
 }
 
 int jov_review_markdown_view(FILE *out, const jov_review *r, const char *code) {
+    const char *obs = r && r->execution && r->execution->trace ? r->execution->trace->observation : NULL;
+    return jov_review_markdown_evidence(out,r,code,obs);
+}
+
+int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *code, const char *observation) {
     if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
     fprintf(out, "**JOVOVICH · %s**\n\n**Reviewed file:** ", jov_review_verdict(r));
     markdown_text(out, r->file, 0);
@@ -165,6 +184,10 @@ int jov_review_markdown_view(FILE *out, const jov_review *r, const char *code) {
     if(code && strcmp(code,r->change_excerpt)) {
         fputs("\n**Comparison supplied to the model**\n\n",out);
         code_block(out,code);
+    }
+    if(observation && *observation) {
+        fputs("\n**Execution supplied to the model**\n\n",out);
+        markdown_text(out,observation,1);fputc('\n',out);
     }
     fprintf(out, "\n**Choice probabilities:** CONCERN %.1f%% · CLEAN %.1f%%\n",
             100 * r->concern, 100 * r->clean);

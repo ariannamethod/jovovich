@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
 #include "boundary.h"
+#include "run_selection.h"
 #include "ariannamethod.h"
 #include "harness/arch.h"
 #include "examples/bpe.h"
@@ -60,17 +61,60 @@ static int write_features(const final_state *state, const char *id, const char *
     return fputs("]}\n",stdout)==EOF || fflush(stdout);
 }
 
+/* Both tasks use the same text encoding, fresh cache, and A/B output logits. */
+static int forward_prompt(void *model,bpe_tokenizer *tok,const char *prompt,float *logits,final_state *capture) {
+    if(!prompt || strlen(prompt)>1048576)return 1;
+    for(const unsigned char *p=(const unsigned char*)prompt;*p;p++)if(*p>=128) {
+        fprintf(stderr,"Native text input currently requires ASCII; Unicode uses verified token IDs\n");return 1;
+    }
+    size_t len=strlen(prompt);
+    int *ids=malloc((len+1)*sizeof(*ids));if(!ids)return 1;
+    int n=bpe_encode_special(tok,prompt,ids,(int)len+1);
+    kv_cache *kv=n>=1 && n<=8192 ? nt_arch_qwen35.kv_new(model,n) : NULL;
+    int rc=kv?0:1;
+    for(int pos=0;!rc && pos<n;pos+=32) {
+        int take=n-pos<32?n-pos:32;
+        if(capture && pos+take==n)
+            rc=nt_arch_qwen35.forward_residual(model,kv,ids+pos,take,pos,logits,capture_final,capture);
+        else rc=nt_arch_qwen35.forward(model,kv,ids+pos,take,pos,pos+take==n?logits:NULL);
+        if(rc)fprintf(stderr,"NoTorch: %s\n",nt_strerror(rc));
+    }
+    if(kv)nt_arch_qwen35.kv_free(model,kv);
+    free(ids);return rc;
+}
+
+static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
+                      float *logits,const char *weights,const char *tokenizer) {
+    int mode_a;
+    if(jov_prepare_selection(line,&mode_a))return 1;
+    const char *prompt=am_get_var_text("prompt");
+    char ih[65],ph[65];
+    if(!prompt || hash_bytes(line,bytes,ih) || hash_bytes(prompt,strlen(prompt),ph) ||
+       forward_prompt(model,tok,prompt,logits,NULL))return 1;
+    char *id=nj_string(nj_get(line,"id"));if(!id || !*id){free(id);return 1;}
+    float p[2]={logits[32],logits[33]};
+    softmax(p,2);
+    if(!isfinite(p[0]) || !isfinite(p[1])){free(id);return 1;}
+    int a=p[0]>=p[1];
+    fputs("{\"schema\":\"jovovich.run-choice/1\",",stdout);json_field(stdout,"id",id);free(id);
+    printf(",\"input_sha256\":\"%s\",\"prompt_sha256\":\"%s\",\"weights_sha256\":\"%s\","
+           "\"tokenizer_sha256\":\"%s\",\"p_a\":%.17g,\"p_b\":%.17g,\"letter\":\"%s\",\"selected_mode\":%d}\n",
+           ih,ph,weights,tokenizer,p[0],p[1],a?"A":"B",a?mode_a:1-mode_a);
+    return fflush(stdout)==EOF || ferror(stdout);
+}
+
 int main(int argc,char **argv) {
-    int json=0,features=0,canonical=0,valid=argc>=3;const char *adapter=NULL;
+    int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL;
     for(int i=3;i<argc && valid;i++) {
         if(!strcmp(argv[i],"--json") && !json)json=1;
+        else if(!strcmp(argv[i],"--select-run") && !select)select=1;
         else if(!strcmp(argv[i],"--features") && !features)features=1;
         else if(!strcmp(argv[i],"--canonical-boundaries") && !canonical)canonical=1;
         else if(!strcmp(argv[i],"--readout") && !adapter && i+1<argc)adapter=argv[++i];
         else valid=0;
     }
-    if(!valid || (features && (json || adapter || canonical))) {
-        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
+    if(!valid || ((features || select) && (json || adapter || canonical)) || (features && select)) {
+        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
     }
     char *manifest=nj_load("models/onejev-0.8b.json",NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -94,6 +138,10 @@ int main(int argc,char **argv) {
         if(memchr(line,0,(size_t)bytes) || bytes>1048576){fprintf(stderr,"Invalid input row size/NUL\n");goto done;}
         const char *end=nj_skip(line,0);
         if(!end || *nj_ws(end)){fprintf(stderr,"Invalid JSON row\n");goto done;}
+        if(select) {
+            if(select_run(line,(size_t)bytes,m,tok,logits,wh,th)){fprintf(stderr,"Invalid run selection at row %d\n",seen+1);goto done;}
+            seen++;continue;
+        }
         char *id=nj_string(nj_get(line,"id")),*file=nj_string(nj_get(line,"file"));
         char *context=nj_string(nj_get(line,"context")),*rule=nj_string(nj_get(line,"rule_excerpt"));
         char *change=nj_string(nj_get(line,"change_excerpt"));char ih[65];
@@ -101,7 +149,7 @@ int main(int argc,char **argv) {
             .file=file,.context=context,.rule_excerpt=rule,.change_excerpt=change,.concern=.5,.clean=.5};
         char code[JOV_BOUNDARY_CODE_SIZE],ph[65],*model_context=NULL;
         jov_boundary_receipt receipt={NULL,ph};
-        int status=1,*ids=NULL;kv_cache *kv=NULL;
+        int status=1;
         char *origin[6]={0};jov_source source={0};
         const char *raw_source=nj_get(line,"source");
         if(raw_source) {
@@ -128,7 +176,10 @@ int main(int argc,char **argv) {
             if(matched<0)goto row_done;
             if(matched)receipt.code=code;
         }
-        if(am_set_var_text("review_context",model_context?model_context:context) || run("aml/prepare.aml"))goto row_done;
+        jov_trace_receipt trace={0};
+        int has_trace=nj_get(line,"trace_evidence")!=NULL;
+        if(am_set_var_text("review_context",model_context?model_context:context) ||
+           (has_trace && jov_apply_trace_gate(line,id,rule,change,&trace)) || run("aml/prepare.aml"))goto row_done;
         const char *prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
         if(!prompt || !r.question)goto row_done;
         if(features && nj_get(line,"prompt")) {
@@ -136,22 +187,10 @@ int main(int argc,char **argv) {
             int same=stored && !strcmp(stored,prompt);free(stored);
             if(!same){fprintf(stderr,"Training prompt differs from AML output\n");goto row_done;}
         }
-        size_t len=strlen(prompt);if(len>1048576 || (canonical && hash_bytes(prompt,len,ph)))goto row_done;
-        for(const unsigned char *p=(const unsigned char*)prompt;*p;p++)if(*p>=128) {
-            fprintf(stderr,"Native text input currently requires ASCII; Unicode uses verified token IDs\n");goto row_done;
-        }
-        ids=malloc((len+1)*sizeof(int));if(!ids)goto row_done;
-        int n=bpe_encode_special(tok,prompt,ids,(int)len+1);
-        if(n<1 || n>8192 || !(kv=nt_arch_qwen35.kv_new(m,n)))goto row_done;
+        size_t len=strlen(prompt);if(len>1048576 || ((canonical || has_trace) && hash_bytes(prompt,len,ph)))goto row_done;
+        if(has_trace)memcpy(trace.prompt_sha256,ph,sizeof(ph));
         final_state state={.last_layer=dims.n_layers-1};
-        for(int pos=0;pos<n;pos+=32) {
-            int take=n-pos<32?n-pos:32;
-            int result;
-            if((features || adapter) && pos+take==n)
-                result=nt_arch_qwen35.forward_residual(m,kv,ids+pos,take,pos,logits,capture_final,&state);
-            else result=nt_arch_qwen35.forward(m,kv,ids+pos,take,pos,pos+take==n?logits:NULL);
-            if(result){fprintf(stderr,"NoTorch: %s\n",nt_strerror(result));goto row_done;}
-        }
+        if(forward_prompt(m,tok,prompt,logits,features || adapter ? &state : NULL))goto row_done;
         if(features) {status=write_features(&state,id,ih,wh,th,logits);goto row_done;}
         float probs[2]={logits[32],logits[33]};
         if(adapter) {
@@ -167,13 +206,12 @@ int main(int argc,char **argv) {
         r.concern=probs[0];r.clean=probs[1];
         const char *verdict=am_get_var_text("verdict"),*chosen=jov_review_verdict(&r);
         if(!verdict || !chosen || strcmp(verdict,chosen) || !am_get_var_record("reviewed_at"))goto row_done;
-        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL};r.execution=&execution;
+        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL,has_trace?&trace:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
-        if(kv)nt_arch_qwen35.kv_free(m,kv);
-        free(model_context);free(ids);free(id);free(file);free(context);free(rule);free(change);
+        free(model_context);free(id);free(file);free(context);free(rule);free(change);
         for(int i=0;i<6;i++)free(origin[i]);
         if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}seen++;
     }

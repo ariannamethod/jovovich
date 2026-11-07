@@ -45,7 +45,7 @@ static int validate(result*r,const char*expected,const char*input,const char*ans
     char hash[65];int bad=jov_review_validate(&review) || !same(nj_get(answer,"scope"),"file",file) || !same(m,"id",model) ||
         !same(m,"revision",revision) || !same(e,"engine","NoTorch") || !same(e,"language","AML") || !same(e,"arithmetic","float32") ||
         !same(e,"weights_sha256",wh) || !same(e,"tokenizer_sha256",th) || hash_bytes(input,strlen(input),hash) || !same(e,"input_sha256",hash);
-    if(!bad)bad=jov_verify_boundary_view(answer,ctx,rule,change,prepare,index,policy) || !same(answer,"question",am_get_var_text("question"));
+    if(!bad)bad=jov_verify_boundary_view(answer,input,r->id,ctx,rule,change,prepare,index,policy) || !same(answer,"question",am_get_var_text("question"));
     free(file);free(ctx);free(rule);free(change);free(model);free(revision);free(wh);free(th);return bad;
 }
 static void count(tally*t,const result*r) {
