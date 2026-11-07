@@ -56,6 +56,10 @@ These cases define the next semantic work: distinguish strict/inclusive
 comparisons and the polarity of conditions controlling side effects. Their
 paired correct and incorrect implementations stay visible in the suite.
 
+The next [executed semantic corpus](semantic-corpus.md) supplies training pairs
+for those comparisons and guarded calls, with native counterexamples and a
+separate evaluation split.
+
 ## Reproduce
 
 Build from the repository root with the pinned dependencies:

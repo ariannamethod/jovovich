@@ -1,0 +1,35 @@
+# Native execution supplies policy, threshold, source code and mismatch count.
+# English requirements and the supervised next-token target live in AML.
+file = "gate.c"
+relation = "less than "
+if case_config[1] == 1:
+    relation = "less than or equal to "
+if case_config[1] == 2:
+    relation = "greater than "
+if case_config[1] == 3:
+    relation = "greater than or equal to "
+rule = text_concat("For integer inputs from -8 through 8 inclusive, accepts(value) must return 1 exactly when value is ", relation)
+rule = text_concat(rule, limit_text)
+rule = text_concat(rule, ", and 0 otherwise.")
+if case_config[0] == 1:
+    file = "publish.c"
+    condition = "enabled is 1"
+    if case_config[1] == 1:
+        condition = "enabled is 0"
+    if case_config[1] == 2:
+        condition = "both enabled and ready are 1"
+    if case_config[1] == 3:
+        condition = "at least one of enabled and ready is 1"
+    rule = text_concat("enabled and ready are each either 0 or 1. apply(enabled, ready) must call emit() exactly once when ", condition)
+    rule = text_concat(rule, ", and must not call emit() otherwise.")
+review_context = text_concat("File: ", file)
+review_context = text_concat(review_context, "\nRepository requirement: ")
+review_context = text_concat(review_context, rule)
+review_context = text_concat(review_context, "\nProposed complete function:\n```c\n")
+review_context = text_concat(review_context, source_code)
+review_context = text_concat(review_context, "\n```")
+completion = "B"
+expected = "CLEAN"
+if case_config[2] > 0:
+    completion = "A"
+    expected = "CONCERN"
