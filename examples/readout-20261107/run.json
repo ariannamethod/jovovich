@@ -1,0 +1,54 @@
+{
+  "schema": "jovovich.readout-run/1",
+  "training_protocol_git_commit": "38523601f852411d1abc68984e923db0365a8498",
+  "prepare_sha256": "410776df9fdd36a7a30af78ae083033e716e4a3051bd0e899ceda4f1bdf0c0b3",
+  "base_manifest_sha256": "9f490f766afaf43aa5a1e9b7d58d54ee1a03f0ca00e8abb14c396d288f4234f3",
+  "training_corpus_manifest_sha256": "04d6c7d51ea6eb772cda2b9204da2e351beb99ba1d7ac4f359253295b750220e",
+  "archive": {
+    "repo": "ataeff/jovovich",
+    "private": true,
+    "revision": "f6c6c9c6206d2b583b90f2b7c5b3e680be9d218e",
+    "path": "experiments/semantic-readout-20261107/adapter.json",
+    "sha256": "c7fe106b4d51f5e5233444e37d489ee60356130b32e6351266159e104368d5a9"
+  },
+  "trainable_parameters": 1025,
+  "backbone_updates": 0,
+  "training_examples": 128,
+  "training_features_sha256": "cc2c890e6e368e8481b3a28d5c7fd7cf884694e452483299c4c6c8799f8637c8",
+  "training_correct": [
+    73,
+    90
+  ],
+  "training_mean_cross_entropy": [
+    0.684390521,
+    0.562440752
+  ],
+  "promotion": "declined",
+  "controls": {
+    "base_ablation": "train-only scalar intercept",
+    "swapped_prompt_sha256": "5c3b18126ea9676aee7429d10760aee784c3fa16b49f6fa2192cf8ec0ae71b2d",
+    "boundary_return_values_compared": 544
+  },
+  "verification": {
+    "model_threads": {
+      "OPENBLAS_NUM_THREADS": 4,
+      "NT_ATTN_THREADS": 4
+    },
+    "live_semantic_replay_same_verdict_and_f32_probability": 4,
+    "historical_legacy_choices_reproduced": 38,
+    "live_legacy_threads": {
+      "OPENBLAS_NUM_THREADS": 3,
+      "NT_ATTN_THREADS": 2
+    },
+    "live_legacy_verdicts_matching_cached": 38,
+    "live_legacy_max_absolute_concern_probability_difference": 2.1458432464815935e-06
+  },
+  "sha256": {
+    "protocol.json": "a8d6576a744737ea15c5d0e49c73e8c9cdfff7c6968dedaa2e8d81f644b90233",
+    "transfer-score.json": "dcc9563515705f41f93dbe41ac15e20324418bb839f1a69683413f54096d2ab2",
+    "legacy-score.json": "fa19dfc3875d722df266b8530cc1cdf9b74c1532e93c0677865abe3813d1ec52",
+    "live-replay.jsonl": "4488c329ca729be26273e083de00371755b6c154ff4ca37b6684cdba7817814c",
+    "diagnostics.json": "ced6d9f1baa43f4415d877107da22850a00a4a41852c1a395d69f718d4a601de",
+    "boundary-direct-score.json": "b683833deee8f088709bfffb51836e4d11ad88e57ec802be8b55896ce7142ab1"
+  }
+}

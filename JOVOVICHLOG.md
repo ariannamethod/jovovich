@@ -2,6 +2,23 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — First supervised A/B readout on OneJev
+
+Trained 1,025 output parameters on the 128 executed examples with a frozen
+OneJev text backbone. Training accuracy rose from 73 to 90 correct. On the
+64 held-out examples, both heads answered 34 correctly. On the earlier 38
+reviews, accuracy fell from 30 to 27. The learned head found two previously
+missed violations and introduced four false alarms. One previously detected
+violation received CLEAN.
+
+The checkpoint is archived in the private model repository. Native review
+accepts it with `--readout`, and JSON results record its exact digest. The
+[experiment](docs/semantic-readout.md) includes the protocol committed before
+fitting, the per-case results and instructions for replay. On held-out guards,
+the learned head ranked the violation higher in 16/16 pairs. Rewriting the
+32 held-out boundary functions from negated to equivalent direct comparisons
+raised its accuracy from 16/32 to 23/32. All 544 compiled return values matched.
+
 ## 2026-11-07 — Executed semantic training pairs
 
 Added a reproducible C + AML corpus builder targeting comparison boundaries
