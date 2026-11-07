@@ -1,0 +1,10 @@
+{
+  "base_commit": "8df4b6f381df77fac2ce01c5467d264c54526ec9",
+  "corpus": "The same 96 executed equivalent-boundary reviews as PR 49. Within-item intervention on known cases.",
+  "design": "Cross raw or canonical code with no observation, one observation at the threshold, or one at threshold minus one.",
+  "canonicalization": "Recognize complete single-return signed int comparison functions. Put the variable on the left, reverse a comparison if operands switch, and complement it for simple logical negation. Preserve the original review evidence.",
+  "observation": "For every clean and defective function, supply the input, required return and compiled actual return in identical neutral wording. Derive required return from the rule oracle. Derive actual return by running the function. Adjacent observations agree for both members.",
+  "systems": "Frozen OneJev base is primary. Also score the frozen PR 49 paired adapter. No fitting, new threshold or production-default change.",
+  "metrics": "Correct /96, correct clean/defect pairs /48, same verdict across spellings /24, all eight correct /12, false alarms and misses. Report error-to-correct and correct-to-error flips. Canonical rows represent 24 unique semantic prompts per evidence arm, repeated across four spellings.",
+  "comparison": "Compare threshold against no evidence and adjacent evidence within each spelling mode. Verify canonical prompt identity across all four originals and preservation of every function output on -8 through 8. Track paired margins on matching vs mismatching observed/required returns."
+}
