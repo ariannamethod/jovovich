@@ -2,6 +2,15 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-07 — Reviewing callback order and counts
+
+Frozen OneJev reviewed 32 source/contract combinations across eight APIs.
+It scored 17/32 on code and 16/32 with the shared passing execution.
+The distinguishing execution alone gave 27/32. Supplying both required
+and observed effects gave 32/32 and solved 16/16 same-rule mutation pairs.
+The [transfer experiment](docs/execution-traces.md) passed its preregistered
+criterion. All four conditions used the ordinary JSON reviewer.
+
 ## 2026-11-07 — Showing OneJev the return at equality
 
 The frozen base scored 55/96 on the original comparisons, 51/96 with a

@@ -105,3 +105,6 @@ The recorded run reused the 96 unmodified PR 49 feature rows and evaluated
 192 new observation prompts. The reproduction script evaluates all 288 raw
 prompts and eight live canonical reviews. `make check` rebuilds the compiled
 observations and regenerates the result table from the recorded scores.
+
+The [callback transfer experiment](execution-traces.md) tests the same witness
+idea on ordered effects and callback counts.

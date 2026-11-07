@@ -1,0 +1,32 @@
+{"id":"trace-00","executions":[{"mode":0,"calls":["scan","paint"],"required":"scan then paint","observed":"scan then paint"},{"mode":1,"calls":["scan","paint"],"required":"scan then paint","observed":"scan then paint"}]}
+{"id":"trace-01","executions":[{"mode":0,"calls":["scan","paint"],"required":"scan then paint","observed":"scan then paint"},{"mode":1,"calls":["paint","scan"],"required":"scan then paint","observed":"paint then scan"}]}
+{"id":"trace-02","executions":[{"mode":0,"calls":["scan","paint"],"required":"scan then paint","observed":"scan then paint"},{"mode":1,"calls":["scan","paint"],"required":"paint then scan","observed":"scan then paint"}]}
+{"id":"trace-03","executions":[{"mode":0,"calls":["scan","paint"],"required":"scan then paint","observed":"scan then paint"},{"mode":1,"calls":["paint","scan"],"required":"paint then scan","observed":"paint then scan"}]}
+{"id":"trace-04","executions":[{"mode":0,"calls":["read_tag","write_tag"],"required":"read_tag then write_tag","observed":"read_tag then write_tag"},{"mode":1,"calls":["write_tag","read_tag"],"required":"write_tag then read_tag","observed":"write_tag then read_tag"}]}
+{"id":"trace-05","executions":[{"mode":0,"calls":["write_tag","read_tag"],"required":"read_tag then write_tag","observed":"write_tag then read_tag"},{"mode":1,"calls":["write_tag","read_tag"],"required":"write_tag then read_tag","observed":"write_tag then read_tag"}]}
+{"id":"trace-06","executions":[{"mode":0,"calls":["read_tag","write_tag"],"required":"write_tag then read_tag","observed":"read_tag then write_tag"},{"mode":1,"calls":["write_tag","read_tag"],"required":"write_tag then read_tag","observed":"write_tag then read_tag"}]}
+{"id":"trace-07","executions":[{"mode":0,"calls":["write_tag","read_tag"],"required":"write_tag then read_tag","observed":"write_tag then read_tag"},{"mode":1,"calls":["write_tag","read_tag"],"required":"write_tag then read_tag","observed":"write_tag then read_tag"}]}
+{"id":"trace-08","executions":[{"mode":0,"calls":["seal","pack"],"required":"seal then pack","observed":"seal then pack"},{"mode":1,"calls":["pack","seal"],"required":"pack then seal","observed":"pack then seal"}]}
+{"id":"trace-09","executions":[{"mode":0,"calls":["seal","pack"],"required":"seal then pack","observed":"seal then pack"},{"mode":1,"calls":["seal","pack"],"required":"pack then seal","observed":"seal then pack"}]}
+{"id":"trace-10","executions":[{"mode":0,"calls":["seal","pack"],"required":"seal then pack","observed":"seal then pack"},{"mode":1,"calls":["pack","seal"],"required":"seal then pack","observed":"pack then seal"}]}
+{"id":"trace-11","executions":[{"mode":0,"calls":["seal","pack"],"required":"seal then pack","observed":"seal then pack"},{"mode":1,"calls":["seal","pack"],"required":"seal then pack","observed":"seal then pack"}]}
+{"id":"trace-12","executions":[{"mode":0,"calls":["mark","send"],"required":"mark then send","observed":"mark then send"},{"mode":1,"calls":["mark","send"],"required":"mark then send","observed":"mark then send"}]}
+{"id":"trace-13","executions":[{"mode":0,"calls":["send","mark"],"required":"mark then send","observed":"send then mark"},{"mode":1,"calls":["mark","send"],"required":"mark then send","observed":"mark then send"}]}
+{"id":"trace-14","executions":[{"mode":0,"calls":["mark","send"],"required":"send then mark","observed":"mark then send"},{"mode":1,"calls":["mark","send"],"required":"mark then send","observed":"mark then send"}]}
+{"id":"trace-15","executions":[{"mode":0,"calls":["send","mark"],"required":"send then mark","observed":"send then mark"},{"mode":1,"calls":["mark","send"],"required":"mark then send","observed":"mark then send"}]}
+{"id":"trace-16","executions":[{"mode":0,"calls":["pulse","idle"],"required":"1","observed":"1"},{"mode":1,"calls":["pulse","idle"],"required":"1","observed":"1"}]}
+{"id":"trace-17","executions":[{"mode":0,"calls":["pulse","idle"],"required":"1","observed":"1"},{"mode":1,"calls":["pulse","pulse"],"required":"1","observed":"2"}]}
+{"id":"trace-18","executions":[{"mode":0,"calls":["pulse","idle"],"required":"1","observed":"1"},{"mode":1,"calls":["pulse","idle"],"required":"2","observed":"1"}]}
+{"id":"trace-19","executions":[{"mode":0,"calls":["pulse","idle"],"required":"1","observed":"1"},{"mode":1,"calls":["pulse","pulse"],"required":"2","observed":"2"}]}
+{"id":"trace-20","executions":[{"mode":0,"calls":["pause_job","stamp"],"required":"1","observed":"1"},{"mode":1,"calls":["stamp","stamp"],"required":"2","observed":"2"}]}
+{"id":"trace-21","executions":[{"mode":0,"calls":["stamp","stamp"],"required":"1","observed":"2"},{"mode":1,"calls":["stamp","stamp"],"required":"2","observed":"2"}]}
+{"id":"trace-22","executions":[{"mode":0,"calls":["pause_job","stamp"],"required":"2","observed":"1"},{"mode":1,"calls":["stamp","stamp"],"required":"2","observed":"2"}]}
+{"id":"trace-23","executions":[{"mode":0,"calls":["stamp","stamp"],"required":"2","observed":"2"},{"mode":1,"calls":["stamp","stamp"],"required":"2","observed":"2"}]}
+{"id":"trace-24","executions":[{"mode":0,"calls":["tick","tick"],"required":"2","observed":"2"},{"mode":1,"calls":["tick","wait_step"],"required":"1","observed":"1"}]}
+{"id":"trace-25","executions":[{"mode":0,"calls":["tick","tick"],"required":"2","observed":"2"},{"mode":1,"calls":["tick","tick"],"required":"1","observed":"2"}]}
+{"id":"trace-26","executions":[{"mode":0,"calls":["tick","tick"],"required":"2","observed":"2"},{"mode":1,"calls":["tick","wait_step"],"required":"2","observed":"1"}]}
+{"id":"trace-27","executions":[{"mode":0,"calls":["tick","tick"],"required":"2","observed":"2"},{"mode":1,"calls":["tick","tick"],"required":"2","observed":"2"}]}
+{"id":"trace-28","executions":[{"mode":0,"calls":["flush","poll_io"],"required":"1","observed":"1"},{"mode":1,"calls":["flush","poll_io"],"required":"1","observed":"1"}]}
+{"id":"trace-29","executions":[{"mode":0,"calls":["flush","flush"],"required":"1","observed":"2"},{"mode":1,"calls":["flush","poll_io"],"required":"1","observed":"1"}]}
+{"id":"trace-30","executions":[{"mode":0,"calls":["flush","poll_io"],"required":"2","observed":"1"},{"mode":1,"calls":["flush","poll_io"],"required":"1","observed":"1"}]}
+{"id":"trace-31","executions":[{"mode":0,"calls":["flush","flush"],"required":"2","observed":"2"},{"mode":1,"calls":["flush","poll_io"],"required":"1","observed":"1"}]}
