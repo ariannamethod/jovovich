@@ -1,0 +1,8 @@
+# All three decimal fields come from the compiled observation receipt.
+review_context = text_concat(review_context, "\nExecution at value = ")
+review_context = text_concat(review_context, observation_x)
+review_context = text_concat(review_context, ". Required return = ")
+review_context = text_concat(review_context, observation_expected)
+review_context = text_concat(review_context, ". Observed return = ")
+review_context = text_concat(review_context, observation_actual)
+review_context = text_concat(review_context, ".")

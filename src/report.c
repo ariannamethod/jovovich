@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "batch.h"
+#include "boundary_view.h"
 #include "json.h"
 #include "hash.h"
 #include "report_json.h"
@@ -56,7 +57,7 @@ static int same_policy(const input*a,const input*b) {
     for(int i=0;i<5;i++)if(strcmp(a->origin[i],b->origin[i]))return 0;
     return a->item.source.first_line==b->item.source.first_line && a->item.source.last_line==b->item.source.last_line;
 }
-static int answer(const char*j,const input*p,const char*manifest,float*flag) {
+static int answer(const char*j,const input*p,const char*manifest,float*flag,int index,int *policy) {
     const char*model=nj_get(j,"model"),*choice=nj_get(j,"choice"),*prob=nj_get(choice,"probabilities"),*in=nj_get(j,"input");
     const char*src=nj_get(j,"source"),*e=nj_get(j,"execution"),*time=nj_get(e,"reviewed_at");
     int version,first,last,day,sec,ms;double concern,clean;char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -67,7 +68,7 @@ static int answer(const char*j,const input*p,const char*manifest,float*flag) {
        !eq(src,"kind","git") || number(src,"rule_first_line",&first) || number(src,"rule_last_line",&last) ||
        first!=p->item.source.first_line || last!=p->item.source.last_line)goto done;
     for(int i=0;i<6;i++)if(!eq(src,source_keys[i],p->origin[i]))goto done;
-    if(am_set_var_text("review_context",p->context) || am_exec_file("aml/prepare.aml") || !eq(j,"question",am_get_var_text("question")))goto done;
+    if(jov_verify_boundary_view(j,p->context,p->rule,p->change,"aml/prepare.aml",index,policy) || !eq(j,"question",am_get_var_text("question")))goto done;
     if(nj_number(nj_get(prob,"CONCERN"),&concern) || nj_number(nj_get(prob,"CLEAN"),&clean) ||
        !isfinite(concern) || !isfinite(clean) || concern<0 || clean<0 || concern>1 || clean>1 || fabs(concern+clean-1)>1e-6 ||
        !eq(choice,"verdict",concern>=clean?"CONCERN":"CLEAN"))goto done;
@@ -83,7 +84,7 @@ done:
 int main(int argc,char **argv) {
     int json=argc==4 && !strcmp(argv[3],"--json");
     if((argc!=3 && argc!=4) || (argc==4 && !json)){fprintf(stderr,"Usage: %s BATCH.jsonl ANSWERS.jsonl [--json]\n",argv[0]);return 2;}
-    int rc=1,count=0,bad=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
+    int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load("models/onejev-0.8b.json",NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
     if(!batch || !answers || !manifest)goto done;
@@ -100,7 +101,7 @@ int main(int argc,char **argv) {
     am_init();am_persistent_mode(1);total=0;
     for(int i=0;i<count;i++) {
         results[i]=row(answers,&total,&bad);
-        if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i))goto done;
+        if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i,i,&policy))goto done;
     }
     extra=row(answers,&total,&bad);if(extra || bad)goto done;
     if(am_set_var_array("file_concerns",flags,count) || am_exec_file("aml/report.aml"))goto done;
@@ -112,6 +113,7 @@ int main(int argc,char **argv) {
     if(json) {
     fputs("{\"schema\":\"jovovich.review-report/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"batch_id",digest);
     fputc(',',out);json_field(out,"base_commit",inputs[0].origin[0]);fputc(',',out);json_field(out,"head_commit",inputs[0].origin[1]);
+    if(policy){fputc(',',out);json_field(out,"boundary_policy","signed-int-comparison/1");}
     if(*readout){fputc(',',out);json_field(out,"readout_sha256",readout);}
     fputs(",\"summary\":{",out);json_field(out,"verdict",verdict);
     fprintf(out,",\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},\"reviews\":[",count,concern,count-concern);
@@ -125,7 +127,11 @@ int main(int argc,char **argv) {
             if(!failed) {
                 jov_review r={.id=p->id,.model=model_id,.revision=revision,.question=question,.file=p->file,.context=p->context,
                     .rule_excerpt=p->rule,.change_excerpt=p->change,.concern=a,.clean=b,.source=&p->item.source};
-                fputs("\n---\n\n",out);failed=jov_review_markdown(out,&r);
+                const char *view=nj_get(nj_get(results[i],"execution"),"boundary_view");
+                const char *listed=nj_get(view,"code");
+                char *code=nj_string(listed);
+                fputs("\n---\n\n",out);failed=(listed && !code) || jov_review_markdown_view(out,&r,code);
+                free(code);
             }
             free(model_id);free(revision);free(question);if(failed)goto done;
         }

@@ -2,6 +2,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
 #include "json.h"
+#include "boundary_view.h"
 #include "hash.h"
 #include "report_json.h"
 #include "ariannamethod.h"
@@ -24,7 +25,7 @@ static int line(FILE*f,char**s,size_t*cap) {
     if(n>1048576 || memchr(*s,0,(size_t)n))return -1;
     const char*end=report_json_end(*s,0);return end && !*nj_ws(end)?1:-1;
 }
-static int validate(result*r,const char*expected,const char*input,const char*answer,const char*manifest,const char*prepare) {
+static int validate(result*r,const char*expected,const char*input,const char*answer,const char*manifest,const char*prepare,int index,int *policy) {
     r->id=field(expected,"id");r->split=field(expected,"split");r->family=field(expected,"family");r->expected=field(expected,"expected");
     const char*p=nj_get(nj_get(answer,"choice"),"probabilities"),*in=nj_get(answer,"input"),*e=nj_get(answer,"execution"),*m=nj_get(answer,"model");
     r->predicted=field(nj_get(answer,"choice"),"verdict");
@@ -44,7 +45,7 @@ static int validate(result*r,const char*expected,const char*input,const char*ans
     char hash[65];int bad=jov_review_validate(&review) || !same(nj_get(answer,"scope"),"file",file) || !same(m,"id",model) ||
         !same(m,"revision",revision) || !same(e,"engine","NoTorch") || !same(e,"language","AML") || !same(e,"arithmetic","float32") ||
         !same(e,"weights_sha256",wh) || !same(e,"tokenizer_sha256",th) || hash_bytes(input,strlen(input),hash) || !same(e,"input_sha256",hash);
-    if(!bad)bad=am_set_var_text("review_context",ctx) || am_exec_file(prepare) || !same(answer,"question",am_get_var_text("question"));
+    if(!bad)bad=jov_verify_boundary_view(answer,ctx,rule,change,prepare,index,policy) || !same(answer,"question",am_get_var_text("question"));
     free(file);free(ctx);free(rule);free(change);free(model);free(revision);free(wh);free(th);return bad;
 }
 static void count(tally*t,const result*r) {
@@ -65,17 +66,18 @@ int main(int argc,char**argv) {
     FILE*g=fopen(argv[1],"rb"),*i=fopen(argv[2],"rb"),*a=fopen(argv[3],"rb");
     char*manifest=nj_load("models/onejev-0.8b.json",NULL),*gold=NULL,*input=NULL,*answer=NULL;size_t gc=0,ic=0,ac=0;
     char gold_hash[65],input_hash[65],prepare_hash[65], readout[65]={0};
-    result rows[MAX_CASES]={{0}};tally all={0},development={0},transfer={0};int rc=1,n=0,read;
+    result rows[MAX_CASES]={{0}};tally all={0},development={0},transfer={0};int rc=1,n=0,read,policy=0;
     if(!g || !i || !a || !manifest || file_hash(argv[1],gold_hash) || file_hash(argv[2],input_hash) || file_hash(argv[4],prepare_hash))goto done;
     am_init();am_persistent_mode(1);
     while((read=line(g,&gold,&gc))==1) {
-        if(n==MAX_CASES || line(i,&input,&ic)!=1 || line(a,&answer,&ac)!=1 || report_readout(answer,n,readout) || validate(rows+n,gold,input,answer,manifest,argv[4]))goto done;
+        if(n==MAX_CASES || line(i,&input,&ic)!=1 || line(a,&answer,&ac)!=1 || report_readout(answer,n,readout) || validate(rows+n,gold,input,answer,manifest,argv[4],n,&policy))goto done;
         for(int j=0;j<n;j++)if(!strcmp(rows[n].id,rows[j].id))goto done;
         count(&all,rows+n);count(!strcmp(rows[n].split,"development")?&development:&transfer,rows+n);n++;
     }
     if(read<0 || !n || line(i,&input,&ic)!=0 || line(a,&answer,&ac)!=0)goto done;
     fputs("{\"schema\":\"jovovich.quality-score/1\",",stdout);json_field(stdout,"inputs_sha256",input_hash);fputc(',',stdout);
     json_field(stdout,"expected_sha256",gold_hash);fputc(',',stdout);json_field(stdout,"prepare_sha256",prepare_hash);
+    if(policy){fputc(',',stdout);json_field(stdout,"boundary_policy","signed-int-comparison/1");}
     if(*readout){fputc(',',stdout);json_field(stdout,"readout_sha256",readout);}
     fputs(",\"all\":",stdout);totals(stdout,&all);
     fputs(",\"development\":",stdout);totals(stdout,&development);fputs(",\"transfer\":",stdout);totals(stdout,&transfer);

@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "ariannamethod.h"
 #include "hash.h"
+#include "boundary.h"
 #include "json.h"
 #include "report_json.h"
 #include <limits.h>
@@ -179,12 +180,79 @@ static void pack(const char*proof_path,const char*dir,int equivalent) {
     for(int i=0;i<6;i++){char h[65];file_hash(dir,names[i],h);if(i)fputc(',',m);json_field(m,names[i],h);}
     fputs("}}\n",m);close_output(m);am_persistent_mode(0);
 }
+/* Compile beside the pinned equivalent corpus's oracle.c. The driver calls
+ * the reviewed function and the independent rule oracle on both inputs. */
+static void observation_driver(void) {
+    puts("#define main full_domain_oracle\n#include \"oracle.c\"\n#undef main");
+    for(int i=0;i<used;i++)if(samples[i].split) {
+        char code[JOV_BOUNDARY_CODE_SIZE];
+        if(!jov_boundary_code(samples[i].code,code))die("unsupported equivalent case");
+        printf("#define accepts canonical_%d\n%s\n#undef accepts\n",i,code);
+    }
+    puts("int main(void){");
+    for(int i=0;i<used;i++) {
+        const sample *s=samples+i;
+        if(!s->split)continue;
+        printf("for(int v=-8;v<=8;v++)if(case_%d(v)!=canonical_%d(v))return 1;\n",i,i);
+        printf("{int x=%d;printf(\"{\\\"id\\\":\\\"equiv-%03d\\\",\\\"code_sha256\\\":\\\"%s\\\","
+               "\\\"x\\\":%%d,\\\"required\\\":%%d,\\\"returned\\\":%%d,"
+               "\\\"adjacent_required\\\":%%d,\\\"adjacent_returned\\\":%%d}\\n\","
+               "x,bound(%d,x,x),case_%d(x),bound(%d,x-1,x),case_%d(x-1));}\n",
+               s->limit,i,s->hash,s->policy,i,s->policy,i);
+    }
+    puts("return ferror(stdout)||fflush(stdout);}");
+}
+
+static void observed_inputs(const char *receipts,int adjacent) {
+    FILE *f=fopen(receipts,"rb");
+    if(!f)die("cannot open observation receipts");
+    char *line=NULL;size_t cap=0;
+    am_init();am_persistent_mode(1);
+    for(int i=0;i<used;i++) {
+        const sample *s=samples+i;
+        if(!s->split)continue;
+        ssize_t n=getline(&line,&cap,f);
+        const char *end=n>0 && n<1024 && !memchr(line,0,(size_t)n)?report_json_end(line,0):NULL;
+        char id[32];snprintf(id,sizeof(id),"equiv-%03d",i);
+        if(!end || *nj_ws(end) || !nj_is(nj_get(line,"id"),id) ||
+           !nj_is(nj_get(line,"code_sha256"),s->hash) || number(line,"x")!=s->limit)
+            die("observation receipt differs from the compiled case");
+        int x=s->limit-adjacent;
+        int expected=number(line,adjacent?"adjacent_required":"required");
+        int actual=number(line,adjacent?"adjacent_returned":"returned");
+        int reference=s->policy==0?x<s->limit:s->policy==1?x<=s->limit:s->policy==2?x>s->limit:x>=s->limit;
+        if(expected!=reference || (actual!=0 && actual!=1) || ((expected!=actual)!=(!adjacent && i%2)))
+            die("observation is inconsistent with the verified mutation");
+        char limit[24],at[24];snprintf(limit,sizeof(limit),"%d",s->limit);snprintf(at,sizeof(at),"%d",x);
+        float config[]={0,(float)s->policy,0};
+        if(am_set_var_array("case_config",config,3) || am_set_var_text("limit_text",limit) ||
+           am_set_var_text("source_code",s->code) || am_exec_file("aml/corpus.aml") ||
+           am_set_var_text("observation_x",at) || am_set_var_text("observation_expected",expected?"1":"0") ||
+           am_set_var_text("observation_actual",actual?"1":"0") || am_exec_file("aml/boundary-observation.aml"))
+            die(am_get_error());
+        const char *file=am_get_var_text("file"), *context=am_get_var_text("review_context"), *rule=am_get_var_text("rule");
+        if(!file || !context || !rule)die("missing observation context");
+        fputc('{',stdout);json_field(stdout,"id",id);fputc(',',stdout);json_field(stdout,"file",file);
+        fputc(',',stdout);json_field(stdout,"context",context);fputc(',',stdout);json_field(stdout,"rule_excerpt",rule);
+        fputc(',',stdout);json_field(stdout,"change_excerpt",s->code);puts("}");
+    }
+    if(getline(&line,&cap,f)>=0 || ferror(f))die("extra observation receipts");
+    free(line);fclose(f);am_persistent_mode(0);
+}
+
 int main(int argc,char**argv) {
     const char *program=argv[0];
     int direct=argc>1 && !strcmp(argv[1],"--direct-boundary");
     int equivalent=argc>1 && !strcmp(argv[1],"--equivalent-forms");
     if(direct || equivalent){argc--;argv++;}
     enumerate(direct,equivalent);
+    if(equivalent && argc==2 && !strcmp(argv[1],"observation-driver")) {
+        observation_driver();return ferror(stdout) || fflush(stdout);
+    }
+    if(equivalent && argc==4 && !strcmp(argv[1],"observe") &&
+       (!strcmp(argv[3],"boundary") || !strcmp(argv[3],"adjacent"))) {
+        observed_inputs(argv[2],!strcmp(argv[3],"adjacent"));return ferror(stdout) || fflush(stdout);
+    }
     if(argc==2 && !strcmp(argv[1],"source")){source(equivalent);return ferror(stdout) || fflush(stdout);}
     if(argc==4 && !strcmp(argv[1],"pack")){pack(argv[2],argv[3],equivalent);return 0;}
     fprintf(stderr,"Usage: %s [--direct-boundary|--equivalent-forms] source | pack PROOFS.jsonl OUTPUT_DIRECTORY\n",program);return 2;

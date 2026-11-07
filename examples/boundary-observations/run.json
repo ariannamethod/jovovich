@@ -1,0 +1,29 @@
+{
+  "schema": "jovovich.boundary-observation-run/1",
+  "protocol_commit": "bba6c42a141ad4e35fa6a8910467da024683c74e",
+  "model": {
+    "model_id": "OmniJev/OneJev-0.8B",
+    "revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+    "weights_sha256": "b587ecb42b7d022f782ea72c8b84e94b8292ae3f5aa67e1364851b4d4e32b7e6",
+    "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+    "conversion": "NoTorch qwen35_to_gguf; source-layout version 1",
+    "arithmetic": "float32",
+    "text_boundary": "ASCII; explicit token IDs support the full vocabulary"
+  },
+  "paired_head_sha256": "82366a7c0c5a87ea83da89ce7b64ea67608eccd5ec3baf89afaed940613bb7f7",
+  "raw_feature_rows_reused": 96,
+  "raw_observation_feature_rows_computed": 192,
+  "verified_canonical_mappings": 288,
+  "distinct_canonical_prompts_per_arm": 24,
+  "live_canonical_boundary_reviews": 8,
+  "original_vs_canonical_executions_compared": 1632,
+  "files_sha256": {
+    "adjacent-score.json": "6107743d465c51556cb68b7473e4ee6602689f48fa3e85e76365ca1f5c76822e",
+    "boundary-score.json": "34803c66061f261250b4594cc8d364f18719c91b9518cdd97e6b43ceb9580add",
+    "canonical-live.jsonl": "d8692b19864df56f03c33269d5c5c6fa14edea05181eaa482612bded8a755357",
+    "none-score.json": "4c4703c36800ea0f7c0422a3a9801a583dbc8bbe11bdc5ff67725b8d8591f610",
+    "protocol.json": "76264142a8ae1c10665e3fe6df5c56f5056b5d44440508ca4de33da4f2579d97",
+    "receipts.jsonl": "c27917211e04c84c87d0f76d5adbd2c1c1a890e7dbc9a46dae761a448a06afdd",
+    "results.json": "beafa00be84ce0b8664d4bfb6f2e4ce10634c03e4d1bf3ff3d3fe9de939bea4d"
+  }
+}
