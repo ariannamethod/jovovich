@@ -1,0 +1,25 @@
+# The host checks Git ancestry, newest matching case first.
+parts = list_new()
+list_push(parts, repository_name)
+list_push(parts, fact_key)
+list_push(parts, case_file)
+list_push(parts, harness_sha)
+stream = list_key(parts)
+matches = list_new()
+dirty = 0
+writing = text_bytes(capture_row) > 0
+seen = 0
+i = 0
+while i < count:
+    if text_equal(list_get(record_get(journal, "streams"), i), stream):
+        previous = list_get(record_get(journal, "rows"), i)
+        list_push(matches, previous)
+        if text_equal(previous, capture_row):
+            seen = 1
+    i = i + 1
+if writing and seen == 0:
+    assert(count < 256, "counterexample memory is full")
+    assert(text_bytes(capture_row) <= 65536, "counterexample exceeds 64 KiB")
+    list_push(record_get(journal, "streams"), stream)
+    list_push(record_get(journal, "rows"), capture_row)
+    dirty = 1

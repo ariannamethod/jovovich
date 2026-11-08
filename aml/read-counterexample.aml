@@ -1,0 +1,10 @@
+# Return the exact historical JSONL bytes named by a replay receipt.
+original = ""
+i = 0
+while i < count:
+    entry = list_get(record_get(journal, "rows"), i)
+    if text_equal(text_hash_sha256(entry), requested_sha):
+        original = entry
+        break
+    i = i + 1
+assert(text_bytes(original) > 0, "unknown counterexample input digest")

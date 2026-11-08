@@ -48,6 +48,20 @@ int jov_fact_valid(const jov_fact *f) {
         digits(t + 11, 2) < 24 && digits(t + 14, 2) < 60 && digits(t + 17, 2) < 60;
 }
 
+void jov_replay_ref_json(FILE *out, const jov_replay_ref *r) {
+    fprintf(out, "{\"schema\":\"jovovich.replayed-mode/1\",\"mode\":%d,", r->mode);
+    json_field(out, "base_commit", r->base); fputc(',', out);
+    json_field(out, "head_commit", r->head); fputc(',', out);
+    json_field(out, "input_sha256", r->source_sha); fputc(',', out);
+    json_field(out, "harness_sha256", r->harness_sha); fputc('}', out);
+}
+
+void jov_replay_ref_markdown(FILE *out, const jov_replay_ref *r) {
+    if (r->source_sha[0])
+        fprintf(out, "\n**Replayed counterexample** Mode %d from review `%s` → `%s`. Original input `%s`.\n",
+                r->mode, r->base, r->head, r->source_sha);
+}
+
 void jov_fact_origin_json(FILE *out, const jov_fact *f) {
     fputc('{', out);
     json_field(out, "base_commit", f->base);
@@ -169,6 +183,9 @@ int jov_review_json(FILE *out, const jov_review *r) {
             fprintf(out,",\"trace_witness\":{\"policy\":\"paired-trace-diff/1\",\"runs\":%d,\"differing\":%d,",
                     t->runs,t->differing);
             json_field(out,"prompt_sha256",t->prompt_sha256);
+            if (t->replay.source_sha[0]) {
+                fputs(",\"replayed_from\":", out); jov_replay_ref_json(out, &t->replay);
+            }
             if(t->differing) {
                 fprintf(out,",\"selected_mode\":%d,",t->selected_mode);
                 json_field(out,"observation",t->observation);
@@ -268,6 +285,7 @@ int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *cod
         fputs("\n**Comparison supplied to the model**\n\n",out);
         code_block(out,code);
     }
+    if (r->execution && r->execution->trace) jov_replay_ref_markdown(out, &r->execution->trace->replay);
     if(observation && *observation) {
         fputs("\n**Execution supplied to the model**\n\n",out);
         markdown_text(out,observation,1);fputc('\n',out);
