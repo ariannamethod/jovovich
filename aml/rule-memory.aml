@@ -1,0 +1,56 @@
+# One append-only journal. The ordinal is when an assertion became known.
+# Its Git source names the world in which the rule was observed.
+memory_write = memory_args[0]
+known_through = memory_args[1]
+expected_parent = memory_args[2]
+journal = record_new()
+if file_exists(memory_path):
+    journal = checkpoint_load(memory_path)
+else:
+    assert(memory_write == 1, "fact memory does not exist")
+    record_set(journal, "schema", "jovovich.rule-memory/1")
+    record_set(journal, "streams", list_new())
+    record_set(journal, "origins", list_new())
+    record_set(journal, "clocks", list_new())
+
+assert(text_equal(record_get(journal, "schema"), "jovovich.rule-memory/1"), "fact memory schema")
+size = list_len(record_get(journal, "streams"))
+assert(size <= 256, "fact memory capacity")
+assert(list_len(record_get(journal, "origins")) == size, "fact origins")
+assert(list_len(record_get(journal, "clocks")) == size, "fact clocks")
+assert(known_through == -1 or known_through <= size, "unknown knowledge revision")
+parts = list_new()
+list_push(parts, repository_name)
+list_push(parts, fact_key)
+stream = list_key(parts)
+limit = size
+if known_through >= 0:
+    limit = known_through
+revision = 0
+predecessor = 0
+i = 0
+while i < limit:
+    if text_equal(list_get(record_get(journal, "streams"), i), stream):
+        predecessor = revision
+        revision = i + 1
+    i = i + 1
+
+dirty = 0
+if memory_write == 1:
+    retry = 0
+    if revision > 0:
+        same = text_equal(list_get(record_get(journal, "origins"), revision - 1), new_origin)
+        retry = same and (expected_parent == predecessor or expected_parent == revision)
+    if retry == 0:
+        assert(expected_parent == revision, "fact changed; name its current revision with --supersedes")
+        assert(size < 256, "fact memory is full")
+        list_push(record_get(journal, "streams"), stream)
+        list_push(record_get(journal, "origins"), new_origin)
+        list_push(record_get(journal, "clocks"), recorded_utc)
+        predecessor = revision
+        revision = size + 1
+        dirty = 1
+
+assert(revision > 0, "no fact for that repository and key at this revision")
+fact_origin = list_get(record_get(journal, "origins"), revision - 1)
+fact_clock = list_get(record_get(journal, "clocks"), revision - 1)

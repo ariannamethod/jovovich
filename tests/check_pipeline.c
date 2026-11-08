@@ -75,6 +75,15 @@ int main(int argc,char **argv){
     while(getline(&c,&cc,cases)>=0){CHECK(nj_is(nj_get(c,"expected"),"IDENTITY"));identity++;}
     CHECK(identity==2);
     if(live){CHECK(getline(&ref,&rc,refs)<0 && getline(&input,&ic,inputs)<0);fclose(refs);fclose(inputs);}
+    /* Locked draw repair logits; the second case checks a large common offset. */
+    const float pairs[][2] = {{10.7241526f,11.5221119f},{10000,10000},{-10000,10000}};
+    const float clean[] = {0.6895378232f,0.5f,1.0f};
+    for(size_t i=0;i<sizeof(clean)/sizeof(*clean);i++) {
+        CHECK(!am_set_var_array("choice_logits",pairs[i],2) && !am_exec_file("aml/score-choices.aml"));
+        int n=0;const float *scored=am_get_var_array("probabilities",&n);
+        CHECK(scored && n==2 && fabsf(scored[1]-clean[i])<0.000002f);
+    }
+    CHECK(!am_set_var_array("choice_logits",pairs[0],1) && am_exec_file("aml/score-choices.aml")!=0);
     float tie[2]={.5,.5},clock[3]={-1,86399,1};
     CHECK(!am_set_var_array("probabilities",tie,2) && !am_set_var_array("clock_parts",clock,3));
     CHECK(!am_exec_file("aml/answer.aml"));equal(am_get_var_text("verdict"),"CONCERN");clock_check(-1,86399,1);

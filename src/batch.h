@@ -8,5 +8,6 @@ typedef struct {
     jov_source source;
 } jov_batch_item;
 /* Domain-separated digest of ordered paths, context IDs and source records. */
+int jov_batch_digest_fact(const jov_batch_item *items, int count, const jov_fact *fact, char out[65]);
 int jov_batch_digest(const jov_batch_item *items,int count,char out[65]);
 #endif

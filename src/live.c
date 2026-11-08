@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
+#include "facts.h"
 #include "boundary.h"
 #include "run_selection.h"
 #include "ariannamethod.h"
@@ -9,6 +10,7 @@
 #include "hash.h"
 #include "json.h"
 #include "readout.h"
+#include "report_json.h"
 #include <limits.h>
 #include <fcntl.h>
 #include <math.h>
@@ -83,6 +85,16 @@ static int forward_prompt(void *model,bpe_tokenizer *tok,const char *prompt,floa
     free(ids);return rc;
 }
 
+static int score_choices(float pair[2]) {
+    if (!isfinite(pair[0]) || !isfinite(pair[1]) ||
+        am_set_var_array("choice_logits", pair, 2) || run("aml/score-choices.aml")) return 1;
+    int count = 0;
+    const float *p = am_get_var_array("probabilities", &count);
+    if (!p || count != 2) return 1;
+    memcpy(pair, p, 2 * sizeof(*p));
+    return 0;
+}
+
 static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
                       float *logits,const char *weights,const char *tokenizer) {
     int mode_a;
@@ -137,6 +149,7 @@ int main(int argc,char **argv) {
     while((bytes=getline(&line,&cap,stdin))>=0) {
         if(memchr(line,0,(size_t)bytes) || bytes>1048576){fprintf(stderr,"Invalid input row size/NUL\n");goto done;}
         const char *end=nj_skip(line,0);
+        if(end && nj_get(line,"fact"))end=report_json_end(line,0);
         if(!end || *nj_ws(end)){fprintf(stderr,"Invalid JSON row\n");goto done;}
         if(select) {
             if(select_run(line,(size_t)bytes,m,tok,logits,wh,th)){fprintf(stderr,"Invalid run selection at row %d\n",seen+1);goto done;}
@@ -150,6 +163,7 @@ int main(int argc,char **argv) {
         char code[JOV_BOUNDARY_CODE_SIZE],ph[65],*model_context=NULL;
         jov_boundary_receipt receipt={NULL,ph};
         int status=1;
+        jov_fact *fact = NULL;
         char *origin[6]={0};jov_source source={0};
         const char *raw_source=nj_get(line,"source");
         if(raw_source) {
@@ -163,6 +177,8 @@ int main(int argc,char **argv) {
             source=(jov_source){origin[0],origin[1],origin[2],origin[3],origin[4],origin[5],(int)first,(int)last};
             r.source=&source;
         }
+        if (jov_fact_decode(nj_get(line, "fact"), &fact)) goto row_done;
+        r.fact = fact;
         if(jov_review_validate(&r) || hash_bytes(line,(size_t)bytes,ih))goto row_done;
         if(r.source) {
             char rule_hash[65],diff_hash[65];
@@ -197,12 +213,12 @@ int main(int argc,char **argv) {
             if(!state.captured || jov_readout_margin(&head,state.unit,probs[0]-probs[1],&probs[0]))goto row_done;
             probs[1]=0;
         }
-        softmax(probs,2);
+        if(score_choices(probs))goto row_done;
         struct timespec now;if(clock_gettime(CLOCK_REALTIME,&now))goto row_done;
         int day=(int)(now.tv_sec/86400),sec=(int)(now.tv_sec%86400),ms=(int)(now.tv_nsec/1000000);
         if(sec<0){day--;sec+=86400;}
         float parts[3]={(float)day,(float)sec,(float)ms};
-        if(am_set_var_array("probabilities",probs,2) || am_set_var_array("clock_parts",parts,3) || run("aml/answer.aml"))goto row_done;
+        if(am_set_var_array("clock_parts",parts,3) || run("aml/answer.aml"))goto row_done;
         r.concern=probs[0];r.clean=probs[1];
         const char *verdict=am_get_var_text("verdict"),*chosen=jov_review_verdict(&r);
         if(!verdict || !chosen || strcmp(verdict,chosen) || !am_get_var_record("reviewed_at"))goto row_done;
@@ -211,6 +227,7 @@ int main(int argc,char **argv) {
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
+        jov_fact_free(fact);
         free(model_context);free(id);free(file);free(context);free(rule);free(change);
         for(int i=0;i<6;i++)free(origin[i]);
         if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}seen++;

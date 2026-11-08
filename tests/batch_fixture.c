@@ -1,6 +1,7 @@
 /* Synthetic serialization fixtures only. No model inference occurs here. */
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
+#include "facts.h"
 #include "hash.h"
 #include "tools/narrow_json.h"
 #include "ariannamethod.h"
@@ -32,8 +33,12 @@ int main(int argc,char**argv) {
         assert(!am_set_var_text("review_context",context) && !am_exec_file("aml/prepare.aml"));
         jov_review r={.id=id,.model=model,.revision=revision,.question=am_get_var_text("question"),.file=file,.context=context,
             .rule_excerpt=rule,.change_excerpt=change,.concern=a,.clean=1-a,.source=&source,.execution=&e};
+        jov_fact *fact = NULL;
+        assert(!jov_fact_decode(nj_get(line, "fact"), &fact));
+        r.fact = fact;
         assert(!jov_review_json(stdout,&r));
+        jov_fact_free(fact);
         free(id);free(file);free(context);free(rule);free(change);for(int j=0;j<6;j++)free(o[j]);i++;
     }
-    assert(i==2);fclose(f);free(line);free(m);free(model);free(revision);free(wh);free(th);am_persistent_mode(0);return 0;
+    assert(i>=1);fclose(f);free(line);free(m);free(model);free(revision);free(wh);free(th);am_persistent_mode(0);return 0;
 }

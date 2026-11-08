@@ -1,10 +1,10 @@
 # Native baseline — 2026-11-06
 
-The live executable runs the original OneJev checkpoint pinned in
-[models/onejev-0.8b.json](../models/onejev-0.8b.json). The question and prompt
-live in [AML](../aml/prepare.aml); selection and timestamp construction live in
-[answer.aml](../aml/answer.aml). The C host runs NoTorch on chunks of 32 tokens,
-then calculates a two-way softmax over output IDs 32 and 33.
+The live executable runs the original OneJev checkpoint pinned in the model
+manifest. NoTorch prefills in chunks of 32 and returns the A and B logits
+at vocabulary IDs 32 and 33. AML assembles the question, applies the two-way
+softmax, selects the verdict and constructs its timestamp.
+[Manifest](../models/onejev-0.8b.json) · [Prompt](../aml/prepare.aml) · [Readout](../aml/score-choices.aml) · [Answer](../aml/answer.aml)
 
 ## Independent reference
 

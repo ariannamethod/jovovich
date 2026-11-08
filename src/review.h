@@ -23,6 +23,19 @@ typedef struct {
     int first_line, last_line;
 } jov_source;
 
+/* A remembered repository rule and the Git review that first supplied this revision. */
+typedef struct {
+    char *repository, *key, *recorded_at;
+    int sequence, supersedes;
+    char *base, *head, *path, *quote;
+    int first, last;
+} jov_fact;
+
+int jov_fact_valid(const jov_fact *fact);
+void jov_fact_origin_json(FILE *out, const jov_fact *fact);
+void jov_fact_json(FILE *out, const jov_fact *fact);
+int jov_fact_same(const jov_fact *left, const jov_fact *right);
+
 /* Strings are UTF-8 and owned by the caller. Evidence is copied from context. */
 typedef struct {
     const char *id;
@@ -37,6 +50,7 @@ typedef struct {
     double clean;
     const jov_execution *execution; /* optional for historical recorded demos */
     const jov_source *source; /* optional commit-resolved Git evidence */
+    const jov_fact *fact; /* optional receipt for the selected rule */
 } jov_review;
 
 enum { JOV_OK = 0, JOV_INVALID = 1, JOV_IO_ERROR = 2 };

@@ -1,4 +1,4 @@
-# NoTorch supplies the measured choices. AML selects the answer and dates it.
+# AML selects the verdict from the measured A/B probabilities and dates it.
 assert(probabilities[0] >= 0 and probabilities[0] <= 1, "CONCERN probability")
 assert(probabilities[1] >= 0 and probabilities[1] <= 1, "CLEAN probability")
 assert(abs(probabilities[0] + probabilities[1] - 1) < 0.000001, "probability sum")

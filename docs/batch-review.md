@@ -58,6 +58,11 @@ streams have the same row and total byte bounds. Binary changes or an exceeded
 bound abort the entire pack before any row is written. The native model keeps
 its ASCII English and 8,192-token input limits.
 
+A batch that selected an AML rule fact also binds its complete receipt into the
+batch digest. Every file uses that receipt and the report checks it against
+each answer. Saved packs and answers carry everything needed to replay this
+check. [Rule memory](fact-memory.md)
+
 ## Output
 
 Markdown starts with the overall verdict and exact file counts, followed by the

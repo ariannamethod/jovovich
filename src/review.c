@@ -16,6 +16,71 @@ static int git_oid(const char *s) {
     return strspn(s,"0123456789abcdef")==strlen(s);
 }
 
+static int fact_name(const char *s) {
+    return present(s) && strlen(s) <= 128 &&
+        strspn(s, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./_-") == strlen(s);
+}
+
+static int digits(const char *s, int n) {
+    int value = 0;
+    for (int i = 0; i < n; i++) value = 10 * value + (s[i] - '0');
+    return value;
+}
+
+int jov_fact_valid(const jov_fact *f) {
+    if (!f || !fact_name(f->repository) || !fact_name(f->key) ||
+        f->sequence < 1 || f->sequence > 256 || f->supersedes < 0 || f->supersedes >= f->sequence ||
+        !git_oid(f->base) || !git_oid(f->head) || strlen(f->base) != strlen(f->head) ||
+        !present(f->path) || !present(f->quote) || strlen(f->quote) > 16384 ||
+        f->first < 1 || f->last < f->first || !f->recorded_at) return 0;
+    const char *pattern = "dddd-dd-ddTdd:dd:dd.dddZ";
+    if (strlen(f->recorded_at) != strlen(pattern)) return 0;
+    for (size_t i = 0; pattern[i]; ++i) {
+        char c = f->recorded_at[i];
+        if (pattern[i] == 'd' ? (c < '0' || c > '9') : c != pattern[i]) return 0;
+    }
+    const char *t = f->recorded_at;
+    int year = digits(t, 4), month = digits(t + 5, 2), day = digits(t + 8, 2);
+    static const int days[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    if (year < 1 || month < 1 || month > 12) return 0;
+    int leap = month == 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    return day > 0 && day <= days[month] + leap &&
+        digits(t + 11, 2) < 24 && digits(t + 14, 2) < 60 && digits(t + 17, 2) < 60;
+}
+
+void jov_fact_origin_json(FILE *out, const jov_fact *f) {
+    fputc('{', out);
+    json_field(out, "base_commit", f->base);
+    fputc(',', out);
+    json_field(out, "head_commit", f->head);
+    fputc(',', out);
+    json_field(out, "rules_path", f->path);
+    fprintf(out, ",\"rule_first_line\":%d,\"rule_last_line\":%d,", f->first, f->last);
+    json_field(out, "rule_excerpt", f->quote);
+    fputc('}', out);
+}
+
+void jov_fact_json(FILE *out, const jov_fact *f) {
+    fputs("{\"schema\":\"jovovich.rule-fact/1\",", out);
+    json_field(out, "repository", f->repository);
+    fputc(',', out);
+    json_field(out, "key", f->key);
+    fprintf(out, ",\"sequence\":%d,\"supersedes\":%d,", f->sequence, f->supersedes);
+    json_field(out, "recorded_at", f->recorded_at);
+    fputs(",\"origin\":", out);
+    jov_fact_origin_json(out, f);
+    fputc('}', out);
+}
+
+int jov_fact_same(const jov_fact *a, const jov_fact *b) {
+    if (!a || !b) return a == b;
+    return a->sequence == b->sequence && a->supersedes == b->supersedes &&
+        a->first == b->first && a->last == b->last && !strcmp(a->repository, b->repository) &&
+        !strcmp(a->key, b->key) && !strcmp(a->recorded_at, b->recorded_at) &&
+        !strcmp(a->base, b->base) && !strcmp(a->head, b->head) &&
+        !strcmp(a->path, b->path) && !strcmp(a->quote, b->quote);
+}
+
 int jov_source_validate(const jov_source *s) {
     return s && git_oid(s->base) && git_oid(s->head) && git_oid(s->rules_blob) &&
         strlen(s->base)==strlen(s->head) && strlen(s->base)==strlen(s->rules_blob) &&
@@ -43,6 +108,10 @@ int jov_review_validate(const jov_review *r) {
     if (!strstr(r->context, r->file) || !strstr(r->context, r->rule_excerpt) ||
         !strstr(r->context, r->change_excerpt)) return JOV_INVALID;
     if(r->source && jov_source_validate(r->source))return JOV_INVALID;
+    if (r->fact && (!jov_fact_valid(r->fact) || !r->source ||
+        strcmp(r->fact->quote, r->rule_excerpt) || strcmp(r->fact->path, r->source->rules_path) ||
+        r->fact->first != r->source->first_line || r->fact->last != r->source->last_line))
+        return JOV_INVALID;
     if (r->execution) {
         const jov_execution *e = r->execution;
         if (e->trace && (!hash_string(e->trace->prompt_sha256) || e->trace->runs<0 ||
@@ -85,6 +154,10 @@ int jov_review_json(FILE *out, const jov_review *r) {
     fprintf(out, ",\"probabilities\":{\"CONCERN\":%.17g,\"CLEAN\":%.17g}}",
             r->concern, r->clean);
     if(r->source){fputs(",\"source\":",out);jov_source_json(out,r->source);}
+    if (r->fact) {
+        fputs(",\"fact\":", out);
+        jov_fact_json(out, r->fact);
+    }
     if (r->execution) {
         const jov_execution *e = r->execution;
         fputs(",\"execution\":{\"engine\":\"NoTorch\",\"language\":\"AML\",\"arithmetic\":\"float32\",", out);
@@ -176,6 +249,16 @@ int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *cod
         fprintf(out,"\n\n**Git scope:** `%s` → `%s`\n\n**Rules source:** ",s->base,s->head);
         markdown_text(out,s->rules_path,0);
         fprintf(out," (lines %d–%d)",s->first_line,s->last_line);
+    }
+    if (r->fact) {
+        const jov_fact *f = r->fact;
+        fputs("\n\n**Remembered rule** ", out);
+        markdown_text(out, f->repository, 0);
+        fputs(" / ", out);
+        markdown_text(out, f->key, 0);
+        fprintf(out, " (receipt %d", f->sequence);
+        if (f->supersedes) fprintf(out, ", supersedes %d", f->supersedes);
+        fprintf(out, "). Recorded %s from review `%s` → `%s`.", f->recorded_at, f->base, f->head);
     }
     fputs("\n\n**Rule supplied for review**\n\n", out);
     markdown_text(out, r->rule_excerpt, 1);
