@@ -104,6 +104,17 @@ static int project(const char *value, metric_kind kind, const char *target, int 
     return effect(value,target,out);
 }
 
+/* -1 means the driver supplied an invalid value for this metric. */
+int jov_trace_meets(const char *oracle,const char *observed) {
+    metric_kind kind=metric(oracle);
+    char *target=nj_string(nj_get(oracle,"target"));
+    char got[EFFECT_BYTES], needed[EFFECT_BYTES];
+    int invalid=kind==INVALID || (kind==COUNT && !identifier(target)) ||
+        project(observed,kind,target,0,got) || project(nj_get(oracle,"required"),kind,target,1,needed);
+    free(target);
+    return invalid ? -1 : !strcmp(got,needed);
+}
+
 int jov_trace_write_change(FILE *out, const char *gate, const jov_trace_measurement *measurement,
                            const char *file, int json) {
     metric_kind kind = metric(gate);

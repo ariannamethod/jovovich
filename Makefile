@@ -48,7 +48,7 @@ build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h
 build/jovovich-pack: src/git_snapshot.h src/git_command.h src/git_context.h src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-replay: src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
+build/jovovich-replay: src/hunk_trial.h src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/batch.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/jovovich-report: src/git_context.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
@@ -109,6 +109,7 @@ check: build/check-receipts build/check-prompt-tokens build/check-model-cancel b
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
 	sh tests/check_counterexamples.sh
+	sh tests/check_findings.sh
 	sh tests/check_driver_sources.sh
 	sh tests/check_onejev16.sh
 	sh tests/check_submodules.sh
