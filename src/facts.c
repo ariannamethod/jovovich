@@ -80,6 +80,29 @@ static int lock_writer(const char *path) {
     return -1;
 }
 
+/* Names are fixed by the two journal implementations. */
+int jov_journal_open(const char *directory, const char *name, int writing, int *writer) {
+    char *root = realpath(directory, NULL);
+    if (!root) { perror(directory); return 1; }
+    size_t capacity = strlen(root) + strlen(name) + sizeof("/.checkpoint");
+    char *path = malloc(capacity);
+    int failed = 1;
+    if (!path) goto done;
+    if (writing) {
+        snprintf(path, capacity, "%s/%s.lock", root, name);
+        *writer = lock_writer(path);
+        if (*writer < 0) { perror(path); goto done; }
+    }
+    snprintf(path, capacity, "%s/%s.checkpoint", root, name);
+    struct stat info;
+    if (lstat(path, &info) == 0 ? !S_ISREG(info.st_mode) : errno != ENOENT) goto done;
+    failed = am_set_var_text("memory_path", path);
+done:
+    free(path);
+    free(root);
+    return failed;
+}
+
 static int stage_origin(const jov_fact *origin) {
     struct timespec now;
     struct tm utc;
@@ -106,23 +129,10 @@ int jov_memory_select(const char *directory, const char *repository, const char 
                       int known_through, int expected_parent, const jov_fact *origin,
                       jov_fact **result, int *writer) {
     *result = NULL;
-    char *root = realpath(directory, NULL);
-    if (!root) { perror(directory); return 1; }
-    size_t capacity = strlen(root) + sizeof("/rules.checkpoint");
-    char *path = malloc(capacity);
     int failed = 1;
-    if (!path) goto done;
-    if (origin) {
-        snprintf(path, capacity, "%s/rules.lock", root);
-        *writer = lock_writer(path);
-        if (*writer < 0) { perror(path); goto done; }
-        if (stage_origin(origin)) goto done;
-    }
-    snprintf(path, capacity, "%s/rules.checkpoint", root);
-    struct stat info;
-    if (lstat(path, &info) == 0 ? !S_ISREG(info.st_mode) : errno != ENOENT) goto done;
+    if (jov_journal_open(directory, "rules", origin != NULL, writer) || (origin && stage_origin(origin))) return 1;
     float args[] = {origin != NULL, (float)known_through, (float)expected_parent};
-    if (am_set_var_text("memory_path", path) || am_set_var_text("repository_name", repository) ||
+    if (am_set_var_text("repository_name", repository) ||
         am_set_var_text("fact_key", key) || am_set_var_array("memory_args", args, 3) ||
         am_exec_file("aml/rule-memory.aml")) {
         fprintf(stderr, "AML fact memory: %s\n", am_get_error());
@@ -144,8 +154,6 @@ int jov_memory_select(const char *directory, const char *repository, const char 
     *result = f;
     failed = 0;
 done:
-    free(path);
-    free(root);
     return failed;
 }
 

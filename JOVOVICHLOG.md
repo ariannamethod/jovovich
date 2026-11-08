@@ -2,6 +2,23 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — A body on the Hub and a counterexample across reviews
+
+Published the native `jovovich.gguf` (2,013,370,016 bytes) and its tokenizer
+(10,927,776 bytes) in the private model repository. Downloaded both from the
+release revision and verified their full SHA-256 values against the runtime
+manifest. That pair reproduced **68.9538% CLEAN** on the archived Git repair.
+The three trained readout candidates are preserved under `experiments/`.
+[GGUF release](https://huggingface.co/ataeff/jovovich/tree/0eac460171f26a9582d2d25dc86a96350c2a4dca)
+
+A new AML journal retained mode 1 from a landed callback-order repair. On a
+later regression the independent driver ran the new base, head and contract
+oracle. Both the recalled and manual probes gave **87.8961% CONCERN**. The
+subsequent repair gave **68.9538% CLEAN**. A later comment-only change was a
+source-only false alarm at **66.4016% CONCERN**, reproduced with the same
+prompt after the remembered probe found equal effects. All six file answers
+passed whole-change reporting. [Reproduction and paired votes](docs/counterexamples.md)
+
 ## 2026-11-08 — She remembers the agreement
 
 A fresh process packed a second Git review using a rule saved by the first.

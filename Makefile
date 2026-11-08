@@ -6,7 +6,7 @@ BLAS_FLAGS ?=
 BLAS_LIBS ?=
 
 .PHONY: all check clean native-deps
-all: build/review-demo build/jovovich build/jovovich-pack build/jovovich-report
+all: build/jovovich-replay build/review-demo build/jovovich build/jovovich-pack build/jovovich-report
 
 build:
 	mkdir -p build
@@ -27,8 +27,11 @@ build/jovovich: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/ru
 build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h $(NOTORCH_ROOT)/tools/narrow_json.h $(NOTORCH_ROOT)/sha256.c $(NOTORCH_ROOT)/sha256.h | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-build/jovovich-pack: src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
+build/jovovich-pack: src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+build/jovovich-replay: src/replay.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/jovovich-report: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -72,7 +75,7 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-boundary
 	./build/check-trace-gate
 	./build/check-review
@@ -81,6 +84,7 @@ check: build/bench-review build/check-trace-gate build/score-run-selection build
 	sh tests/check_git.sh
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
+	sh tests/check_counterexamples.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
 	sh tests/check_corpus.sh

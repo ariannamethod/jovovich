@@ -37,7 +37,13 @@ pinned dependencies with `git submodule update --init`. Optional BLAS builds
 take `BLAS_FLAGS` and `BLAS_LIBS`. Clean the dependency objects when changing
 backends.
 
-For live inference, download
+The private JOVOVICH release contains the ready-to-run `jovovich.gguf` and
+`tokenizer.gguf`. From this checkout, run
+`./build/jovovich /path/to/jovovich.gguf /path/to/tokenizer.gguf < examples/reviews.jsonl`.
+Both downloads reproduce the hashes in the runtime manifest.
+[Native release](https://huggingface.co/ataeff/jovovich/tree/0eac460171f26a9582d2d25dc86a96350c2a4dca)
+
+To build those files from the source checkpoint, download
 `config.json`, `model.safetensors` and `tokenizer.json` from the pinned
 **OmniJev/OneJev-0.8B** snapshot. NoTorch's C converter prepares the text
 weights and the tokenizer. The executable checks both file hashes at startup.
@@ -97,6 +103,12 @@ The next review fetches the named rule and checks its exact quotation against
 its own base commit. Its answer carries the earlier source beside the current
 patch. You can still ask what she knew at receipt 1 after receipt 2 arrived.
 [Fact memory and corrections](docs/fact-memory.md)
+
+She can also remember which input exposed a previous bug. If a later patch
+touches the same file under the same named rule, the replay host takes that
+input back to the bench. It runs the new base and head and asks the current
+contract what should have happened. The report names the review where she
+first saw the case. [Remember and replay a counterexample](docs/counterexamples.md)
 
 ## Chain of custody
 

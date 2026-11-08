@@ -73,3 +73,9 @@ source against the new base, compare the exact quotation and attach the
 knowledge receipt to the answer. A correction names its predecessor. The
 model receives the usual rule and current patch, with the same mechanical
 selection for paired traces. [Fact memory](fact-memory.md)
+
+A remembered counterexample supplies a mode to try on the new Git pair. The
+replay host measures both revisions and obtains the expectation from the
+current base. Only a current differential observation enters the question.
+The earlier review is cited in the execution receipt, including when the
+repeated mode has become uninformative. [Counterexample replay](counterexamples.md)

@@ -6,6 +6,28 @@
 
 enum { MAX_RUNS=64, MAX_CALLS=32, NAME_BYTES=64, EFFECT_BYTES=MAX_CALLS*(NAME_BYTES+6) };
 
+static int hex_field(const char *json, const char *key, int git_id, char out[65]) {
+    char *s = nj_string(nj_get(json, key));
+    size_t n = s ? strlen(s) : 0;
+    int ok = (n == 64 || (git_id && n == 40)) && strspn(s, "0123456789abcdef") == n;
+    if (ok) memcpy(out, s, n + 1);
+    free(s);
+    return ok;
+}
+
+int jov_replay_ref_read(const char *json, jov_replay_ref *r) {
+    memset(r, 0, sizeof(*r));
+    if (!json) return 0;
+    long long mode;
+    if (!nj_is(nj_get(json, "schema"), "jovovich.replayed-mode/1") ||
+        !hex_field(json, "base_commit", 1, r->base) || !hex_field(json, "head_commit", 1, r->head) ||
+        strlen(r->base) != strlen(r->head) || !hex_field(json, "input_sha256", 0, r->source_sha) ||
+        !hex_field(json, "harness_sha256", 0, r->harness_sha) ||
+        nj_int(nj_get(json, "mode"), &mode) || mode < INT_MIN || mode > INT_MAX) return 1;
+    r->mode = (int)mode;
+    return 0;
+}
+
 static int identifier(const char *s) {
     const char *letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
     if(!s || !*s || !strchr(letters,*s) || strlen(s)>=NAME_BYTES)return 0;
@@ -40,6 +62,30 @@ static int expected_effect(const char *value,const char *target,char text[EFFECT
     long long count;
     if(nj_int(value,&count) || count<0 || count>INT_MAX)return 1;
     snprintf(text,EFFECT_BYTES,"%lld",count);return 0;
+}
+
+/* The capture rechecks both complete callback sequences, including callbacks
+ * outside a count metric, and re-reads the expected effect from the old base. */
+int jov_trace_reproduced(const char *gate, int mode, const char *base, const char *head, const char *oracle) {
+    int count = nj_is(nj_get(gate, "metric"), "count");
+    if (!nj_is(nj_get(oracle, "metric"), count ? "count" : "sequence")) return 0;
+    char *target = nj_string(nj_get(gate, "target"));
+    int ok = count ? identifier(target) && nj_is(nj_get(oracle, "target"), target) : !nj_get(oracle, "target");
+    int bad = 0, found = 0;
+    const char *runs = nj_get(gate, "runs");
+    for (const char *v=nj_first(runs,&bad); ok && v; v=nj_next(v,']',&bad)) {
+        long long m;
+        if (nj_int(nj_get(v,"mode"),&m)) { bad=1; break; }
+        if (m != mode) continue;
+        char recorded[EFFECT_BYTES], observed[EFFECT_BYTES];
+        found = !effect(nj_get(v,"base"),NULL,recorded) && !effect(base,NULL,observed) && !strcmp(recorded,observed) &&
+            !effect(nj_get(v,"head"),NULL,recorded) && !effect(head,NULL,observed) && !strcmp(recorded,observed) &&
+            !expected_effect(nj_get(v,"required"),target,recorded) && !expected_effect(nj_get(oracle,"required"),target,observed) &&
+            !strcmp(recorded,observed);
+        break;
+    }
+    free(target);
+    return ok && !bad && found;
 }
 
 static int bound_to_review(const char *row,const char *g,const char *id,const char *rule,const char *change) {
@@ -86,6 +132,13 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
         }
         r->differing++;
     }
+    const char *prior = nj_get(g, "replayed_from");
+    char harness[65];
+    if (nj_get(g, "harness_sha256") && !hex_field(g, "harness_sha256", 0, harness)) bad = 1;
+    if (prior && (jov_replay_ref_read(prior, &r->replay) || r->runs != 1 ||
+        r->replay.mode != seen[0] || !nj_is(nj_get(g, "harness_sha256"), r->replay.harness_sha) ||
+        !nj_is(nj_get(nj_get(row, "fact"), "schema"), "jovovich.rule-fact/1") ||
+        !nj_is(nj_get(nj_get(row, "source"), "kind"), "git"))) bad = 1;
     if(!bad && r->differing) {
         char metric[96],mode[32];
         if(target)snprintf(metric,sizeof(metric),"number of calls to %s",target);
@@ -108,6 +161,11 @@ int jov_verify_trace_receipt(const char *listed,const jov_trace_receipt *r,const
        hash_bytes(prompt,strlen(prompt),h) || !nj_is(nj_get(listed,"prompt_sha256"),h) ||
        nj_int(nj_get(listed,"runs"),&n) || n!=r->runs ||
        nj_int(nj_get(listed,"differing"),&n) || n!=r->differing)return 1;
+    jov_replay_ref prior;
+    if (jov_replay_ref_read(nj_get(listed, "replayed_from"), &prior) ||
+        strcmp(prior.base, r->replay.base) || strcmp(prior.head, r->replay.head) ||
+        strcmp(prior.source_sha, r->replay.source_sha) || strcmp(prior.harness_sha, r->replay.harness_sha) ||
+        prior.mode != r->replay.mode) return 1;
     const char *mode=nj_get(listed,"selected_mode"),*obs=nj_get(listed,"observation");
     if(!r->differing)return mode || obs;
     return nj_int(mode,&n) || n!=r->selected_mode || !nj_is(obs,r->observation);

@@ -5,6 +5,7 @@
 #include "review.h"
 #include "batch.h"
 #include "facts.h"
+#include "process.h"
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -21,17 +22,10 @@ static char *git_read(const char *repo,const char *const args[],size_t *length) 
     size_t a=6;
     for(size_t i=0;args[i];i++){if(a>=31)return NULL;argv[a++]=args[i];}
     argv[a]=NULL;
-    int pipefd[2];if(pipe(pipefd))return NULL;
-    pid_t pid=fork();
-    if(pid==0){close(pipefd[0]);if(dup2(pipefd[1],STDOUT_FILENO)<0)_exit(126);close(pipefd[1]);execvp("git",(char *const*)argv);_exit(127);}
-    close(pipefd[1]);if(pid<0){close(pipefd[0]);return NULL;}
-    char *buf=malloc(CAP+1);size_t n=0;int bad=!buf;
-    while(!bad){ssize_t got=read(pipefd[0],buf+n,CAP+1-n);if(got<0 && errno==EINTR)continue;
-        if(got<0){bad=1;break;}if(!got)break;n+=(size_t)got;if(n>CAP){bad=1;break;}}
-    close(pipefd[0]);if(bad)kill(pid,SIGTERM);
-    int status=0;pid_t waited;do{waited=waitpid(pid,&status,0);}while(waited<0 && errno==EINTR);
-    if(bad || waited<0 || !WIFEXITED(status) || WEXITSTATUS(status)){free(buf);return NULL;}
-    buf[n]=0;*length=n;return buf;
+    int code;
+    char *data = jov_command(argv, CAP, length, &code);
+    if (data && code) { free(data); return NULL; }
+    return data;
 }
 static int oid(const char *s){size_t n=strlen(s);return (n==40 || n==64) && strspn(s,"0123456789abcdef")==n;}
 static char *resolve(const char *repo,const char *ref) {

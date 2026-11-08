@@ -9,6 +9,7 @@ void jov_fact_free(jov_fact *fact);
 
 /* The caller owns the writer descriptor through staging and commit.
  * Readers open one immutable checkpoint snapshot and need no lock. */
+int jov_journal_open(const char *directory, const char *name, int writing, int *writer);
 int jov_memory_select(const char *directory, const char *repository, const char *key,
                       int known_through, int expected_parent, const jov_fact *origin,
                       jov_fact **result, int *writer);

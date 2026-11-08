@@ -57,6 +57,17 @@ static const char *report_json_end(const char *p,int depth) {
     return p;
 }
 
+static inline char *report_json_row(FILE*f,size_t*total,int*bad,size_t limit,size_t total_limit) {
+    char*p=malloc(limit+1);if(!p){*bad=1;return NULL;}size_t n=0;int c;
+    while((c=fgetc(f))!=EOF) {
+        if(!c || n==limit){*bad=1;free(p);return NULL;}p[n++]=(char)c;if(c=='\n')break;
+    }
+    if(ferror(f) || *total+n>total_limit){*bad=1;free(p);return NULL;}
+    if(!n){free(p);return NULL;}p[n]=0;*total+=n;
+    const char*end=report_json_end(p,0);if(!end || *nj_ws(end)){*bad=1;free(p);return NULL;}
+    char*small=realloc(p,n+1);return small?small:p;
+}
+
 /* A batch or quality score carries one readout identity for every answer. */
 static inline int report_readout(const char *answer, int index, char digest[65]) {
     const char *raw=nj_get(nj_get(answer,"execution"),"readout_sha256");

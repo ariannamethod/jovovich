@@ -1,0 +1,11 @@
+# One checkpoint snapshot for every row of a replay batch.
+journal = record_new()
+if file_exists(memory_path):
+    journal = checkpoint_load(memory_path)
+else:
+    record_set(journal, "schema", "jovovich.counterexamples/1")
+    record_set(journal, "streams", list_new())
+    record_set(journal, "rows", list_new())
+assert(text_equal(record_get(journal, "schema"), "jovovich.counterexamples/1"), "case journal schema")
+count = list_len(record_get(journal, "streams"))
+assert(count == list_len(record_get(journal, "rows")) and count <= 256, "case journal length")

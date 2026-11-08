@@ -27,16 +27,6 @@ static int number(const char*obj,const char*key,int*value) {
     long long v;if(nj_int(nj_get(obj,key),&v) || v<INT_MIN || v>INT_MAX)return 1;
     *value=(int)v;return 0;
 }
-static char *row(FILE*f,size_t*total,int*bad) {
-    char*p=malloc(ROW_LIMIT+1);if(!p){*bad=1;return NULL;}size_t n=0;int c;
-    while((c=fgetc(f))!=EOF) {
-        if(!c || n==ROW_LIMIT){*bad=1;free(p);return NULL;}p[n++]=(char)c;if(c=='\n')break;
-    }
-    if(ferror(f) || *total+n>JOV_BATCH_MAX_BYTES){*bad=1;free(p);return NULL;}
-    if(!n){free(p);return NULL;}p[n]=0;*total+=n;
-    const char*end=report_json_end(p,0);if(!end || *nj_ws(end)){*bad=1;free(p);return NULL;}
-    char*small=realloc(p,n+1);return small?small:p;
-}
 static int parse(input*p,int index) {
     p->id=nj_string(nj_get(p->row,"id"));p->file=nj_string(nj_get(p->row,"file"));
     p->context=nj_string(nj_get(p->row,"context"));p->rule=nj_string(nj_get(p->row,"rule_excerpt"));p->change=nj_string(nj_get(p->row,"change_excerpt"));
@@ -96,7 +86,7 @@ int main(int argc,char **argv) {
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
     if(!batch || !answers || !manifest)goto done;
     for(;;) {
-        char*s=row(batch,&total,&bad);if(!s)break;
+        char*s=report_json_row(batch,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);if(!s)break;
         if(count==JOV_BATCH_MAX_FILES){free(s);bad=1;break;}
         input*p=inputs+count;p->row=s;
         if(parse(p,count))goto done;
@@ -107,10 +97,10 @@ int main(int argc,char **argv) {
     if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
     am_init();am_persistent_mode(1);total=0;
     for(int i=0;i<count;i++) {
-        results[i]=row(answers,&total,&bad);
+        results[i]=report_json_row(answers,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);
         if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i,i,&policy))goto done;
     }
-    extra=row(answers,&total,&bad);if(extra || bad)goto done;
+    extra=report_json_row(answers,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);if(extra || bad)goto done;
     if(am_set_var_array("file_concerns",flags,count) || am_exec_file("aml/report.aml"))goto done;
     const char*verdict=am_get_var_text("report_verdict");float raw_concern=am_get_var_float("concern_files");
     if(!isfinite(raw_concern) || raw_concern<0 || raw_concern>count || raw_concern!=truncf(raw_concern))goto done;
@@ -142,6 +132,9 @@ int main(int argc,char **argv) {
                 char *obs=nj_string(raw_obs);
                 fputs("\n---\n\n",out);failed=(listed && !code) || (raw_obs && !obs) ||
                     jov_review_markdown_evidence(out,&r,code,obs);
+                jov_replay_ref prior;
+                if (jov_replay_ref_read(nj_get(trace, "replayed_from"), &prior)) failed = 1;
+                else jov_replay_ref_markdown(out, &prior);
                 free(code);free(obs);
             }
             free(model_id);free(revision);free(question);if(failed)goto done;
