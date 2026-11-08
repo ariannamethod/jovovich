@@ -5,6 +5,7 @@
 #include "json.h"
 #include "hash.h"
 #include "report_json.h"
+#include "model_manifest.h"
 #include "tools/narrow_json.h"
 #include "ariannamethod.h"
 #include <limits.h>
@@ -79,10 +80,11 @@ done:
     free(model_id);free(revision);free(wh);free(th);return rc;
 }
 int main(int argc,char **argv) {
+    const char *manifest_path = jov_manifest_option(&argc, argv);
     int json=argc==4 && !strcmp(argv[3],"--json");
-    if((argc!=3 && argc!=4) || (argc==4 && !json)){fprintf(stderr,"Usage: %s BATCH.jsonl ANSWERS.jsonl [--json]\n",argv[0]);return 2;}
+    if(!manifest_path || (argc!=3 && argc!=4) || (argc==4 && !json)){fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH.jsonl ANSWERS.jsonl [--json]\n",argv[0]);return 2;}
     int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
-    char*manifest=nj_load("models/onejev-0.8b.json",NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
+    char*manifest=nj_load(manifest_path,NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
     if(!batch || !answers || !manifest)goto done;
     for(;;) {

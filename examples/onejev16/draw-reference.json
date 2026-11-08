@@ -1,0 +1,26 @@
+{
+  "schema": "jovovich.f32-reference/1",
+  "transformers": "5.17.0",
+  "torch": "2.13.0+cpu",
+  "model_revision": "c89933c277629b707895bff752c61d2b0664c85e",
+  "flide_revision": "ea93bfaf8e8109aad444d9f548957a519212a70a",
+  "prompt_sha256": "4ec2df5574258e5ad90031056196e4e9b8133d14b2145e9fa6b70f437b57ef1d",
+  "input_tokens": 305,
+  "slot_ids": [
+    32,
+    33
+  ],
+  "slot_logits": [
+    6.340003490447998,
+    7.7975311279296875
+  ],
+  "probabilities": [
+    0.18884573876857758,
+    0.8111541867256165
+  ],
+  "notorch_slot_logits": [
+    6.34000492,
+    7.79753113
+  ],
+  "release_p_concern": 0.18884599208831787
+}

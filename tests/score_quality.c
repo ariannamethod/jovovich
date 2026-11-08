@@ -5,6 +5,7 @@
 #include "boundary_view.h"
 #include "hash.h"
 #include "report_json.h"
+#include "model_manifest.h"
 #include "ariannamethod.h"
 #include <math.h>
 
@@ -62,9 +63,10 @@ static int file_hash(const char*path,char hash[65]) {
     int bad=hash_bytes(s,n,hash);free(s);return bad;
 }
 int main(int argc,char**argv) {
-    if(argc!=5){fprintf(stderr,"Usage: %s EXPECTED.jsonl INPUTS.jsonl ANSWERS.jsonl PREPARE.aml\n",argv[0]);return 2;}
+    const char *manifest_path = jov_manifest_option(&argc, argv);
+    if(!manifest_path || argc!=5){fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] EXPECTED.jsonl INPUTS.jsonl ANSWERS.jsonl PREPARE.aml\n",argv[0]);return 2;}
     FILE*g=fopen(argv[1],"rb"),*i=fopen(argv[2],"rb"),*a=fopen(argv[3],"rb");
-    char*manifest=nj_load("models/onejev-0.8b.json",NULL),*gold=NULL,*input=NULL,*answer=NULL;size_t gc=0,ic=0,ac=0;
+    char*manifest=nj_load(manifest_path,NULL),*gold=NULL,*input=NULL,*answer=NULL;size_t gc=0,ic=0,ac=0;
     char gold_hash[65],input_hash[65],prepare_hash[65], readout[65]={0};
     result rows[MAX_CASES]={{0}};tally all={0},development={0},transfer={0};int rc=1,n=0,read,policy=0;
     if(!g || !i || !a || !manifest || file_hash(argv[1],gold_hash) || file_hash(argv[2],input_hash) || file_hash(argv[4],prepare_hash))goto done;

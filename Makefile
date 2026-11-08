@@ -21,7 +21,7 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+build/jovovich: src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h $(NOTORCH_ROOT)/tools/narrow_json.h $(NOTORCH_ROOT)/sha256.c $(NOTORCH_ROOT)/sha256.h | build
@@ -33,7 +33,7 @@ build/jovovich-pack: src/process.h src/facts.c src/facts.h src/pack.c src/batch.
 build/jovovich-replay: src/replay.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-report: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+build/jovovich-report: src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/check-pipeline: tests/check_pipeline.c native-deps | build
@@ -45,7 +45,7 @@ build/check-git: tests/check_git.c src/hash.h native-deps | build
 build/batch-fixture: src/facts.c src/facts.h tests/batch_fixture.c src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/score-quality: src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/trace_gate.c src/boundary.c tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+build/score-quality: src/model_manifest.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/trace_gate.c src/boundary.c tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c tests/score_quality.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/semantic-corpus: src/boundary.h src/boundary.c tools/semantic_corpus.c src/report_json.h src/json.h src/hash.h native-deps | build
@@ -56,6 +56,9 @@ build/jovovich-readout: tools/semantic_readout.c src/readout.c src/readout.h src
 
 build/boundary-observations: tools/boundary_observations.c src/boundary.c src/boundary.h src/report_json.h src/hash.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/boundary_observations.c src/boundary.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+build/compare-comment-pairs: tools/compare_comment_pairs.c src/report_json.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tools/compare_comment_pairs.c -lm -o $@
 
 build/score-run-selection: tools/score_run_selection.c src/run_selection.c src/run_selection.h src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/score_run_selection.c src/run_selection.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -75,7 +78,7 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-boundary
 	./build/check-trace-gate
 	./build/check-review
@@ -85,6 +88,7 @@ check: build/jovovich-replay build/bench-review build/check-trace-gate build/sco
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
 	sh tests/check_counterexamples.sh
+	sh tests/check_onejev16.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
 	sh tests/check_corpus.sh

@@ -11,6 +11,7 @@
 #include "json.h"
 #include "readout.h"
 #include "report_json.h"
+#include "model_manifest.h"
 #include <limits.h>
 #include <fcntl.h>
 #include <math.h>
@@ -116,6 +117,7 @@ static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *t
 }
 
 int main(int argc,char **argv) {
+    const char *manifest_path = jov_manifest_option(&argc, argv);
     int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL;
     for(int i=3;i<argc && valid;i++) {
         if(!strcmp(argv[i],"--json") && !json)json=1;
@@ -125,17 +127,17 @@ int main(int argc,char **argv) {
         else if(!strcmp(argv[i],"--readout") && !adapter && i+1<argc)adapter=argv[++i];
         else valid=0;
     }
-    if(!valid || ((features || select) && (json || adapter || canonical)) || (features && select)) {
-        fprintf(stderr,"Usage: %s MODEL.gguf TOKENIZER.gguf [--select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
+    if(!manifest_path || !valid || ((features || select) && (json || adapter || canonical)) || (features && select)) {
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] MODEL.gguf TOKENIZER.gguf [--select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
     }
-    char *manifest=nj_load("models/onejev-0.8b.json",NULL);if(!manifest)return 1;
+    char *manifest=nj_load(manifest_path,NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
     char *want_weights=nj_string(nj_get(manifest,"weights_sha256")),*want_tokenizer=nj_string(nj_get(manifest,"tokenizer_sha256"));
     char wh[65],th[65];int rc=1,seen=0;gguf_file *g=NULL;void *m=NULL;bpe_tokenizer *tok=NULL;
     float *logits=NULL;char *line=NULL;size_t cap=0;ssize_t bytes;nt_dims dims={0};
     if(!model_id || !revision || !want_weights || !want_tokenizer || hash_file(argv[1],wh) || hash_file(argv[2],th) ||
        strcmp(wh,want_weights) || strcmp(th,want_tokenizer)) {
-        fprintf(stderr,"Model/tokenizer bytes do not match models/onejev-0.8b.json\n");goto done;
+        fprintf(stderr,"Model/tokenizer bytes do not match %s\n",manifest_path);goto done;
     }
     jov_readout head;char adapter_hash[65];
     if(adapter && jov_readout_load(&head,adapter,wh,th,adapter_hash)) {
