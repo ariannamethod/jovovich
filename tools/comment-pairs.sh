@@ -3,6 +3,8 @@
 set -eu
 test "$#" -eq 1 || { echo 'Usage: sh tools/comment-pairs.sh NEW_DIRECTORY' >&2; exit 2; }
 export LC_ALL=C GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
+export GIT_AUTHOR_NAME=fixture GIT_COMMITTER_NAME=fixture
+export GIT_AUTHOR_EMAIL=fixture@example.invalid GIT_COMMITTER_EMAIL=fixture@example.invalid
 export GIT_AUTHOR_DATE='2026-11-08T00:00:00Z' GIT_COMMITTER_DATE='2026-11-08T00:00:00Z'
 mkdir "$1"
 out=$(cd "$1" && pwd)
@@ -10,9 +12,7 @@ work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT HUP INT TERM
 repo="$work/repo"
 driver="$PWD/tests/fixtures/draw-driver.sh"
-git init -q --object-format=sha1 -b main "$repo"
-git -C "$repo" config user.name fixture
-git -C "$repo" config user.email fixture@example.invalid
+git init -q --template= --object-format=sha1 -b main "$repo"
 commit() {
     git -C "$repo" add -- RULES.md draw.c
     git -C "$repo" commit -qm "$1"

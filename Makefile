@@ -57,6 +57,9 @@ build/jovovich-readout: tools/semantic_readout.c src/readout.c src/readout.h src
 build/boundary-observations: tools/boundary_observations.c src/boundary.c src/boundary.h src/report_json.h src/hash.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/boundary_observations.c src/boundary.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
+build/compare-comment-pairs: tools/compare_comment_pairs.c src/report_json.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tools/compare_comment_pairs.c -lm -o $@
+
 build/score-run-selection: tools/score_run_selection.c src/run_selection.c src/run_selection.h src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tools/score_run_selection.c src/run_selection.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
@@ -75,7 +78,7 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-boundary
 	./build/check-trace-gate
 	./build/check-review
@@ -85,6 +88,7 @@ check: build/jovovich-replay build/bench-review build/check-trace-gate build/sco
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
 	sh tests/check_counterexamples.sh
+	sh tests/check_onejev16.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
 	sh tests/check_corpus.sh

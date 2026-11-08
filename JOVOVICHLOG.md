@@ -2,6 +2,21 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — OneJev 1.6 gets the comment back
+
+Eight correct functions each received two Git patches. One added a comment.
+The other added the same comment and broke one supported input. With the
+paired execution the original release got both heads right in 4/8 pairs and
+raised four false alarms. The opt-in 1.6 body got 8/8 pairs and kept 32/32
+archived judgments. On source alone it missed six regressions. PR #55's
+comment moved from 66.40% CONCERN to 57.99% CLEAN.
+
+Published the converted candidate alongside the original in the private
+model repository. The downloaded GGUF and its shared tokenizer reproduced
+the 305-token repair. Its native slot logits matched the independent F32
+reference within 0.000002. The candidate qualifies for the wider trial.
+[Protocol and results](docs/onejev16.md) · [Candidate GGUF](https://huggingface.co/ataeff/jovovich/blob/68cd85536e8d1c46cbf62849d08515d25c97a6ec/candidates/onejev1.6/jovovich.gguf)
+
 ## 2026-11-08 — A body on the Hub and a counterexample across reviews
 
 Published the native `jovovich.gguf` (2,013,370,016 bytes) and its tokenizer

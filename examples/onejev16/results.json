@@ -1,0 +1,15 @@
+{"schema":"jovovich.checkpoint-comparison/1","arms":[
+{"model":"original","arm":"source","both_correct":2,"false_alarms":4,"misses":5,"brier":0.254603025},
+{"model":"original","arm":"gated","both_correct":4,"false_alarms":4,"misses":0,"brier":0.128038557},
+{"model":"onejev1.6","arm":"source","both_correct":2,"false_alarms":0,"misses":6,"brier":0.216628315},
+{"model":"onejev1.6","arm":"gated","both_correct":8,"false_alarms":0,"misses":0,"brier":0.065974134}
+],"gated_pairs":[
+{"pair":1,"family":"order","original":[0.486534297,0.871502578],"onejev1.6":[0.283323467,0.855106473]},
+{"pair":2,"family":"order","original":[0.59023267,0.880497396],"onejev1.6":[0.373831958,0.611774445]},
+{"pair":3,"family":"order","original":[0.516819298,0.896464467],"onejev1.6":[0.254987478,0.830268323]},
+{"pair":4,"family":"order","original":[0.294251233,0.830177546],"onejev1.6":[0.104309075,0.642577708]},
+{"pair":5,"family":"count","original":[0.547930658,0.868679881],"onejev1.6":[0.337906659,0.880700409]},
+{"pair":6,"family":"count","original":[0.535571694,0.956106842],"onejev1.6":[0.399620324,0.878335655]},
+{"pair":7,"family":"count","original":[0.457523465,0.905326545],"onejev1.6":[0.250005722,0.909360409]},
+{"pair":8,"family":"count","original":[0.462151587,0.962885559],"onejev1.6":[0.229317874,0.928063452]}
+],"anchor_p_concern":[0.664016306,0.420108378],"draw_repair_p_concern":[0.310462207,0.188845992],"carryover_correct":[32,32],"qualifies_for_wider_trial":true}

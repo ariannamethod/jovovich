@@ -62,6 +62,11 @@ and performs the F32 forward pass. AML asks the question, scores the final A
 and B logits, picks the verdict and dates it with JANUS.CALENDAR. Zero tokens
 generated. Both probabilities fit on the page. [Native validation](docs/native-validation.md)
 
+The opt-in OneJev 1.6 checkpoint uses the same tokenizer and AML prompt.
+On eight pairs of comment-only edits and real regressions, it got both heads
+right in all eight with paired execution evidence. The original got four.
+[Run 1.6 and reproduce the comparison](docs/onejev16.md)
+
 ## Live review
 
 Bring a diff. Bring the rule that gives her jurisdiction over it. For a whole
