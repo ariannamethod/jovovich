@@ -1,0 +1,10 @@
+{
+  "model_id": "OmniJev/OneJev1.6-0.8B",
+  "revision": "c89933c277629b707895bff752c61d2b0664c85e",
+  "weights_sha256": "f86b75036f189857972508efcfaad0eb7d50915ecb72a8ce9fd9a8b260574a31",
+  "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+  "source_safetensors_sha256": "eae610deade88d06af4be8e94ede49a72bba1fff61495128f92bd3947975cc18",
+  "conversion": "NoTorch qwen35_to_gguf; source-layout version 1",
+  "arithmetic": "float32",
+  "text_boundary": "ASCII; explicit token IDs support the full vocabulary"
+}
