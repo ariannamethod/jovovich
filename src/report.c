@@ -85,7 +85,7 @@ int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
     report_options opts={0};
     if (!manifest_path || report_arguments(argc,argv,&opts)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE]\n",argv[0]);
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json]\n",argv[0]);
         return 2;
     }
     int json=opts.json;

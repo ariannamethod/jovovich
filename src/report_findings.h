@@ -2,30 +2,41 @@
 #define JOV_REPORT_FINDINGS_H
 #include "process.h"
 
-/* Each job names an operator-supplied driver. A NULL file requests execution
- * localization on the complete batch; a named file requests a snapshot. */
-typedef struct { const char *repo,*driver,*file; } finding_job;
+/* Each job uses an operator-supplied driver for execution localization, an
+ * explicit snapshot, or all snapshot paths selected by a repository policy. */
+typedef struct { const char *repo,*driver,*file,*routes; } finding_job;
 typedef struct { int json,count; const char *memory; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
 
 static int report_arguments(int argc,char **argv,report_options *opts) {
     if (argc<3) return 1;
-    int has_locate=0;
+    int has_locate=0,has_manual=0;
+    finding_job automatic={0};
     for (int i=3;i<argc;) {
         const char *flag=argv[i++];
         if (!strcmp(flag,"--json") && !opts->json) { opts->json=1; continue; }
         if (!strcmp(flag,"--memory") && !opts->memory && i<argc) { opts->memory=argv[i++]; continue; }
+        if (!strcmp(flag,"--auto-snapshots")) {
+            if (automatic.routes || argc-i<3) return 1;
+            automatic=(finding_job){.repo=argv[i],.driver=argv[i+1],.routes=argv[i+2]};
+            i+=3;
+            continue;
+        }
         int snapshot=!strcmp(flag,"--snapshot");
         if ((!snapshot && strcmp(flag,"--locate")) || argc-i<2+snapshot || opts->count>=JOV_BATCH_MAX_FILES+1) return 1;
-        finding_job job={argv[i],argv[i+1],snapshot ? argv[i+2] : NULL};
+        finding_job job={.repo=argv[i],.driver=argv[i+1],.file=snapshot ? argv[i+2] : NULL};
         for (int j=0;j<opts->count;j++) {
             const char *file=opts->jobs[j].file;
             if ((!file && !job.file) || (file && job.file && !strcmp(file,job.file))) return 1;
         }
-        if (!snapshot) has_locate=1;
+        if (snapshot) has_manual=1; else has_locate=1;
         opts->jobs[opts->count++]=job;
         i+=2+snapshot;
     }
-    return opts->memory && !has_locate;
+    if (automatic.routes) {
+        if (has_manual || !opts->memory) return 1;
+        opts->jobs[opts->count++]=automatic;
+    }
+    return opts->memory && !has_locate && !automatic.routes;
 }
 
 /* Replay receives the bytes already authenticated against the model answers.
@@ -43,7 +54,8 @@ static char *run_finding_job(const finding_job *job,const input inputs[],int cou
     if (!n || fseek(rows,0,SEEK_SET)) goto done;
     const char *args[]={"build/jovovich-replay",job->file ? "snapshot" : "locate",job->repo,job->driver,
                         !job->file && memory ? "--memory" : NULL,memory,NULL};
-    result=jov_command_input(args,fileno(rows),limit,size,&status);
+    const char *routed[]={"build/jovovich-replay","snapshots",job->repo,job->driver,job->routes,"--memory",memory,NULL};
+    result=jov_command_input(job->routes ? routed : args,fileno(rows),limit,size,&status);
     if (result && (status || memchr(result,0,*size))) { free(result); result=NULL; }
 done:
     fclose(rows);
@@ -150,10 +162,47 @@ static int snapshot_markdown(FILE *out,const char *f,const input *p) {
     return ferror(out);
 }
 
+static int finding_input(const char *entry,const input inputs[],int count) {
+    char *file=nj_string(nj_get(entry,"file"));
+    int i=0;
+    while (i<count && (!file || strcmp(inputs[i].file,file))) i++;
+    free(file);
+    return i;
+}
+
+/* Check that every path is either rendered once or explicitly accounted for. */
+static int snapshot_coverage(FILE *out,const char *line,int json,const input inputs[],int count,
+                             int seen[],int matched,int mismatched) {
+    long long a,b;
+    const char *skips=nj_get(line,"skipped");
+    if (!inputs[0].fact || !nj_is(nj_get(line,"repository"),inputs[0].fact->repository) ||
+        nj_int(nj_get(line,"matched"),&a) || nj_int(nj_get(line,"mismatched"),&b) ||
+        a!=matched || b!=mismatched || !skips || *skips!='[') return 1;
+    if (!json) fprintf(out,"\n**Snapshot checks:** %d matched, %d mismatched, %d skipped.\n",matched,mismatched,count-matched-mismatched);
+    int bad=0,n=matched+mismatched;
+    for (const char *s=nj_first(skips,&bad); s && !bad; s=nj_next(s,']',&bad)) {
+        int i=finding_input(s,inputs,count);
+        const char *r=nj_get(s,"reason"),*reason=NULL;
+        if (nj_is(r,"no_matching_rule")) reason="no matching snapshot rule";
+        else if (nj_is(r,"deleted")) reason="deleted in head";
+        else if (nj_is(r,"non_regular_head")) reason="head entry is not a regular file";
+        if (i==count || seen[i] || !reason) return 1;
+        seen[i]=1; n++;
+        if (!json) {
+            fputs("\n- ",out); jov_markdown_text(out,inputs[i].file,0);
+            fprintf(out," — %s",reason);
+        }
+    }
+    if (bad || n!=count) return 1;
+    if (json) { fputs("],\"snapshot_coverage\":",out); fputs(line,out); }
+    else fputc('\n',out);
+    return ferror(out);
+}
+
 static int report_findings(FILE *out,const report_options *opts,const input inputs[],int count) {
     if (!opts->count) return 0;
     fputs(opts->json ? ",\"verified_findings\":[" : "\n### Verified checks\n",out);
-    int written=0;
+    int written=0,covered=0;
     size_t total=0;
     for (int j=0;j<opts->count;j++) {
         const finding_job *job=&opts->jobs[j];
@@ -161,29 +210,42 @@ static int report_findings(FILE *out,const report_options *opts,const input inpu
         char *data=run_finding_job(job,inputs,count,opts->memory,JOV_BATCH_MAX_BYTES-total,&size);
         if (!data) return 1;
         total+=size;
-        int failed=0;
+        int failed=0,seen[JOV_BATCH_MAX_FILES]={0},matched=0,mismatched=0;
         for (char *line=data; *line && !failed;) {
             char *nl=strchr(line,'\n');
             if (!nl) { failed=1; break; }
             *nl=0;
             const char *end=report_json_end(line,0);
-            if (!end || *end || !nj_is(nj_get(line,"schema"),"jovovich.finding/1") ||
-                !nj_is(nj_get(line,"kind"),job->file ? "snapshot" : "execution")) { failed=1; break; }
-            int i=0;
-            while (i<count && !nj_is(nj_get(line,"file"),inputs[i].file)) i++;
+            if (!end || *end) { failed=1; break; }
+            if (job->routes && nj_is(nj_get(line,"schema"),"jovovich.snapshot-coverage/1")) {
+                failed=nl[1]!=0 || snapshot_coverage(out,line,opts->json,inputs,count,seen,matched,mismatched);
+                covered=!failed;
+                break;
+            }
+            if (!nj_is(nj_get(line,"schema"),"jovovich.finding/1") ||
+                !nj_is(nj_get(line,"kind"),(job->file || job->routes) ? "snapshot" : "execution")) { failed=1; break; }
+            int i=finding_input(line,inputs,count);
             if (i==count || (job->file && strcmp(job->file,inputs[i].file)) ||
                 !nj_is(nj_get(line,"base_commit"),inputs[i].origin[0]) ||
                 !nj_is(nj_get(line,"head_commit"),inputs[i].origin[1])) { failed=1; break; }
+            if (job->routes) {
+                if (seen[i]) { failed=1; break; }
+                seen[i]=1;
+                if (nj_is(nj_get(line,"status"),"met")) matched++;
+                else if (nj_is(nj_get(line,"status"),"mismatch")) mismatched++;
+                else { failed=1; break; }
+            }
             if (opts->json) {
                 if (written) fputc(',',out);
                 fputs(line,out);
-            } else if (job->file) failed=snapshot_markdown(out,line,inputs+i);
+            } else if (job->file || job->routes) failed=snapshot_markdown(out,line,inputs+i);
             else failed=execution_markdown(out,line,inputs+i) || history_markdown(out,line,inputs+i);
             written++; line=nl+1;
         }
         free(data);
-        if (failed) return 1;
+        if (failed || (job->routes && !covered)) return 1;
     }
+    if (covered) return ferror(out);
     if (opts->json) fputc(']',out);
     else if (!written) fputs("\nNo recorded executions in this batch.\n",out);
     return ferror(out);

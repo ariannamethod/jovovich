@@ -34,7 +34,8 @@ case "$1" in
   expect) printf '{"metric":"text","required":"0"}\n' ;;
   observe) git -C "$2" show "$3:$4" > "$2/input"
     awk '/^[01]$/ {n+=$1} END {printf "\"%d\"\n",n%2}' "$2/input" ;;
-  render) printf '%s' "${GENERATED-pass}"; if test -z "${NO_LF:-}"; then printf '\n'; fi ;;
+  render) if test -n "${RENDER_LOG:-}"; then printf '%s\n' "$4" >> "$RENDER_LOG"; fi
+    printf '%s' "${GENERATED-pass}"; if test -z "${NO_LF:-}"; then printf '\n'; fi ;;
   *) exit 2 ;;
 esac
 DRIVER
@@ -172,6 +173,53 @@ record_pr "$repo" studio/one "$work/six-valid" < "$work/a" > /dev/null
     [.pull_requests[].number]==[6,7] and [.pull_requests[].observations]==[1,2]' >/dev/null
 "$tool" history "$memory" studio/two | jq -e '.pull_requests==[{number:7,created_at:"2025-01-01T00:00:00Z",observations:1}]' >/dev/null
 "$tool" history "$memory" studio/other | jq -e '.pull_requests==[]' >/dev/null
+# The same reusable renderer policy runs on whole, authenticated Git batches.
+sha=$(shasum -a 256 < "$work/driver" | awk '{print $1}')
+jq -n --arg sha "$sha" '{schema:"jovovich.snapshot-routes/1",repository:"studio/one",
+    harness_sha256:$sha, paths:["output","out*","snapshots/*.txt"]}' > "$work/policy"
+auto() { build/jovovich-report "$1" "$2" --auto-snapshots "$3" "$work/driver" "$4" --memory "$memory" --json; }
+build/batch-fixture emit "$work/a" clean > "$work/a-answers"
+export RENDER_LOG="$work/render-calls"
+: > "$RENDER_LOG"
+GENERATED=wrong auto "$work/a" "$work/a-answers" "$repo" "$work/policy" > "$work/auto"
+jq -e '.snapshot_coverage.matched==1 and .snapshot_coverage.mismatched==0 and
+    .snapshot_coverage.skipped==[{file:"flags with spaces",reason:"no_matching_rule"}] and
+    [.verified_findings[].file]==["output"]' "$work/auto" >/dev/null
+test "$(cat "$RENDER_LOG")" = output
+auto "$work/a" "$work/a-answers" "$repo" "$work/policy" | jq -e '.snapshot_coverage.mismatched==1 and
+    .verified_findings[0].line==1 and .verified_findings[0].byte_column==1' >/dev/null
+: > "$RENDER_LOG"
+build/batch-fixture emit "$work/b" clean > "$work/b-answers"
+reject auto "$work/b" "$work/b-answers" "$work/fork" "$work/policy"
+jq '.harness_sha256=("0"*64)' "$work/policy" > "$work/wrong-renderer"
+reject auto "$work/a" "$work/a-answers" "$repo" "$work/wrong-renderer"
+reject "$tool" snapshots "$repo" "$work/driver" "$work/policy" --memory "$memory" < "$work/incomplete"
+reject "$tool" snapshots "$repo" "$work/driver" "$work/policy" --memory "$memory" < "$work/batch"
+jq '.paths=["missing/*"]' "$work/policy" > "$work/no-match"
+auto "$work/a" "$work/a-answers" "$repo" "$work/no-match" | jq -e '.verified_findings==[] and
+    .snapshot_coverage.matched==0 and (.snapshot_coverage.skipped|length)==2' >/dev/null
+test ! -s "$RENDER_LOG"
+
+# Removed files, symlinks, hidden entries and nested paths stay out of the renderer.
+fork="$work/fork"
+git -C "$fork" checkout -q --detach "$one"
+mkdir -p "$fork/snapshots/nested"
+rm "$fork/output"
+for f in 'out"1.txt' nested/deep.txt .hidden.txt; do printf 'pass\n' > "$fork/snapshots/$f"; done
+ln -s ../RULES "$fork/snapshots/link.txt"
+git -C "$fork" add -A
+git -C "$fork" -c user.name=Fixture -c user.email=fixture@localhost commit -qm 'routed path kinds'
+fork_head=$(git -C "$fork" rev-parse HEAD)
+build/jovovich-pack --recall "$memory" studio/two parity --all "$fork" "$one" "$fork_head" > "$work/kinds"
+build/batch-fixture emit "$work/kinds" clean > "$work/kinds-answers"
+jq '.repository="studio/two"' "$work/policy" > "$work/fork-policy"
+auto "$work/kinds" "$work/kinds-answers" "$fork" "$work/fork-policy" > "$work/kinds-report"
+jq -e '.snapshot_coverage.matched==1 and .snapshot_coverage.mismatched==0 and
+    (.snapshot_coverage.skipped|map({key:.file,value:.reason})|from_entries)==
+      {"output":"deleted","snapshots/link.txt":"non_regular_head","snapshots/.hidden.txt":"no_matching_rule",
+       "snapshots/nested/deep.txt":"no_matching_rule"} and
+    [.verified_findings[].file]==["snapshots/out\"1.txt"]' "$work/kinds-report" >/dev/null
+test "$(cat "$RENDER_LOG")" = 'snapshots/out"1.txt'
 git -C "$repo" count-objects -v > "$work/objects-after"
 cmp "$work/objects-before" "$work/objects-after"
 git -C "$repo" diff --quiet

@@ -126,3 +126,34 @@ refusal of a batch containing a binary change. These protocol checks use
 explicitly synthetic probability fixtures. The same checks pass with SHA-256
 Git objects. Changing the AML threshold from `> 0` to `> 1` makes the mixed-case
 verification fail.
+
+## Select snapshot checks for a repository
+
+Keep a local policy with the operator's renderer. Set its repository to the
+same owner/name used to pack the AML rule. For example, a policy for inih
+matches its expected test outputs with one shell-style path pattern.
+
+```sh
+renderer_sha=$(shasum -a 256 < "$renderer" | awk '{print $1}')
+jq -n --arg sha "$renderer_sha" '{
+  schema: "jovovich.snapshot-routes/1", repository: "benhoyt/inih",
+  harness_sha256: $sha, paths: ["tests/baseline_*.txt"]
+}' > "$policy"
+build/jovovich-report batch.jsonl answers.jsonl --memory "$memory" \
+  --auto-snapshots "$checkout" "$renderer" "$policy"
+```
+
+Reuse this policy for later PRs. The report authenticates the named rule in
+AML memory and checks the complete changed-path list against Git. Patterns
+match whole paths, are case-sensitive, and keep wildcards within one path
+component. A leading dot in a component must be matched explicitly. Multiple
+patterns can select the same file. It receives one snapshot check.
+
+The renderer is pinned by SHA-256 before execution. Each chosen regular file
+is regenerated against the reviewed head. A reproducible mismatch includes
+the file, line, byte column and differing text. JSON retains the model votes
+and includes `snapshot_coverage` with match counts, the policy and renderer
+digests, and every skipped path with its reason. Deleted paths, non-regular
+head entries and paths outside the policy are identified separately. Add
+`--locate "$checkout" "$execution_driver"` to reproduce execution findings
+in the same report.

@@ -48,14 +48,6 @@ static int tree_path(const char *s) {
 }
 
 static int integer(const char*s,int*out){char*end;errno=0;long x=strtol(s,&end,10);if(errno || end==s || *end || x<1 || x>INT_MAX)return 1;*out=(int)x;return 0;}
-/* 0 absent; 1 regular blob; 2 symlink/gitlink; 3 tree; -1 failure. */
-static int path_kind(const char *repo,const char *commit,const char *path) {
-    size_t n;char *s=git_read(repo,(const char*[]){"ls-tree","--full-name","--format=%(objectmode)",commit,"--",path,NULL},&n);
-    if(!s)return -1;
-    int kind=n==0?0:!strcmp(s,"100644\n") || !strcmp(s,"100755\n")?1:
-        !strcmp(s,"120000\n") || !strcmp(s,"160000\n")?2:!strcmp(s,"040000\n")?3:-1;
-    free(s);return kind;
-}
 static char *select_lines(const char *text,size_t n,int first,int *last) {
     int lines=0;for(size_t i=0;i<n;i++)if(text[i]=='\n')lines++;
     if(n && text[n-1]!='\n')lines++;
@@ -96,7 +88,7 @@ static void abbreviate_index(char *patch,size_t width) {
 static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules) {
     size_t n;char *stat=NULL;int rc=1;
     if(!tree_path(p->file))goto done;
-    int before=path_kind(repo,base,p->file),after=path_kind(repo,head,p->file);
+    int before=jov_git_path_kind(repo,base,p->file),after=jov_git_path_kind(repo,head,p->file);
     if(before<0 || after<0 || ((before==0 || before==3) && (after==0 || after==3)))goto done;
     /* A tree-to-file change adds this exact leaf and deletes its descendants.
      * The reverse removes the leaf. Descendants get their own manifest rows. */
