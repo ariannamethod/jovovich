@@ -4,7 +4,8 @@
 #include "report_json.h"
 #include <limits.h>
 
-enum { MAX_RUNS=64, MAX_CALLS=32, NAME_BYTES=64, EFFECT_BYTES=MAX_CALLS*(NAME_BYTES+6) };
+enum { MAX_RUNS=64, MAX_CALLS=32, NAME_BYTES=64, MAX_TEXT=256, EFFECT_BYTES=MAX_CALLS*(NAME_BYTES+6) };
+_Static_assert(6 * MAX_TEXT + 3 <= EFFECT_BYTES, "quoted program output must fit");
 
 static int hex_field(const char *json, const char *key, int git_id, char out[65]) {
     char *s = nj_string(nj_get(json, key));
@@ -70,7 +71,7 @@ static metric_kind metric(const char *json) {
 /* One canonical quoted representation for a short single-line program result. */
 static int quoted_text(const char *value, char out[EFFECT_BYTES]) {
     char *s = nj_string(value);
-    if (!s || strlen(s) > 256) { free(s); return 1; }
+    if (!s || strlen(s) > MAX_TEXT) { free(s); return 1; }
     /* A quoted program result cannot introduce an AML prompt delimiter. */
     char *w = out;
     *w++ = '"';

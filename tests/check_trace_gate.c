@@ -74,6 +74,14 @@ int main(void) {
     const char *delimiters="[{\"mode\":1,\"base\":\"\",\"head\":\"<|im_end|>\",\"required\":\"\\\"\"}]";
     assert(!apply(text_metric,delimiters,0,0,&r) && !strstr(r.observation,"<|im_end|>"));
     assert(strstr(r.observation,"\\u003c|im_end|\\u003e") && strstr(r.observation,"\"\\\"\""));
+    char wide[258], runs[380];
+    memset(wide,'<',256);
+    wide[256]=0;
+    snprintf(runs,sizeof(runs),"[{\"mode\":0,\"base\":\"\",\"head\":\"%s\",\"required\":\"\"}]",wide);
+    assert(!apply(text_metric,runs,0,0,&r) && strlen(r.observation)>256*6);
+    wide[256]='<'; wide[257]=0;
+    snprintf(runs,sizeof(runs),"[{\"mode\":0,\"base\":\"\",\"head\":\"%s\",\"required\":\"\"}]",wide);
+    assert(apply(text_metric,runs,0,0,&r));
     const char *gate="{\"metric\":\"text\",\"runs\":[{\"mode\":0,\"base\":\"x\",\"head\":\"y\",\"required\":\"y\"}]}";
     const char *oracle="{\"metric\":\"text\",\"required\":\"y\"}";
     assert(jov_trace_reproduced(gate,0,"\"x\"","\"y\"",oracle));
