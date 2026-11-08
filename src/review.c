@@ -186,6 +186,10 @@ int jov_review_json(FILE *out, const jov_review *r) {
             if (t->replay.source_sha[0]) {
                 fputs(",\"replayed_from\":", out); jov_replay_ref_json(out, &t->replay);
             }
+            if (t->measurement.unchanged_replay) {
+                fputc(',',out);
+                json_field(out,"recheck_result",t->measurement.meets_requirement ? "met" : "failed");
+            }
             if(t->differing) {
                 fprintf(out,",\"selected_mode\":%d,",t->selected_mode);
                 json_field(out,"observation",t->observation);
@@ -260,7 +264,7 @@ int jov_review_markdown_view(FILE *out, const jov_review *r, const char *code) {
 int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *code, const char *observation) {
     if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
     fprintf(out, "**JOVOVICH · %s**%s\n\n**Reviewed file:** ", jov_review_verdict(r),
-            observation && *observation ? " (model vote)" : "");
+            r->fact || (observation && *observation) ? " (model vote)" : "");
     markdown_text(out, r->file, 0);
     if(r->source) {
         const jov_source *s=r->source;

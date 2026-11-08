@@ -124,14 +124,20 @@ int main(int argc,char **argv) {
     fputs(",\"summary\":{",out);json_field(out,"verdict",verdict);
     fprintf(out,",\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},\"reviews\":[",count,concern,count-concern);
     for(int i=0;i<count;i++){if(i)fputc(',',out);fputs(results[i],out);}fputc(']',out);
-    int measured=0;
-    for(int i=0;i<count;i++) {
-        input *p=&inputs[i];
-        if(!p->measurement.run)continue;
-        fputs(measured++ ? "," : ",\"execution_changes\":[",out);
-        if(jov_trace_write_change(out,nj_get(p->row,"trace_evidence"),&p->measurement,p->file,1))goto done;
+    const char *groups[] = {"execution_changes","execution_rechecks"};
+    for (int recheck=0; recheck<=1; recheck++) {
+        int started=0;
+        for(int i=0;i<count;i++) {
+            input *p=&inputs[i];
+            if (!p->measurement.run || p->measurement.unchanged_replay!=recheck) continue;
+            if (started) fputc(',',out);
+            else fprintf(out,",\"%s\":[",groups[recheck]);
+            started=1;
+            if(jov_trace_write_change(out,nj_get(p->row,"trace_evidence"),&p->measurement,p->file,1))goto done;
+        }
+        if (started) fputc(']',out);
     }
-    if(measured)fprintf(out,"],\"execution_summary\":{\"selected_runs\":%d,\"met\":%d,\"failed\":%d}",
+    if(checked_runs)fprintf(out,",\"execution_summary\":{\"selected_runs\":%d,\"met\":%d,\"failed\":%d}",
                         checked_runs,checked_runs-failed_runs,failed_runs);
     fputs("}\n",out);
     }else {

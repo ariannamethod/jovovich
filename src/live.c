@@ -218,7 +218,7 @@ int main(int argc,char **argv) {
         jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL,has_trace?&trace:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
-        if (!status && !json && trace.differing)
+        if (!status && !json && trace.measurement.run)
             status=jov_trace_write_change(stdout,nj_get(line,"trace_evidence"),&trace.measurement,file,0);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
