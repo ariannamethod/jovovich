@@ -2,6 +2,15 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — Which line was the error on?
+
+We registered four new voice pairs before inference. The stock OneJev spotted
+an error on line two where the parser owed us line one, then began the sentence
+again. On another fix she took a probability for a software version. All eight
+takes hit the 32-token limit. We have the full recordings and 24 training
+references ready for the first last-block LoRA.
+[Paired audition](docs/voice-audition.md#generating-a-remark-about-a-fix-and-its-rollback)
+
 ## 2026-11-08 — Every other update, an entirely different woman
 
 A second voice SFT fitted 66 coefficients on paired authored remarks, with

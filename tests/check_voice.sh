@@ -40,3 +40,17 @@ jq -e --slurpfile original "$tmp/run" '
   all(.optimizer_tail[]; (.heldout_p_a|length)==24 and all(.heldout_p_a[]; type=="number" and .>=0 and .<=1)) and
   .optimizer_tail[3].heldout_p_a==($original[0].audition|map(.fitted))' "$tmp/stability" > /dev/null
 echo 'Verified original and fitted voice receipts, both selector orders and 64 Liquid choices'
+
+paired=examples/paired-voice
+sh "$paired/packets.sh" "$tmp/paired"
+test "$(hash "$tmp/paired/train.jsonl")" = e1cd6c0fc5c70ee90e91b2cd0108c77a5e09e4412f41278a679ba6e762f2d459
+jq -e --slurpfile h "$tmp/paired/heldout.jsonl" --slurpfile model models/onejev-0.8b.json \
+  --arg held "$(hash "$tmp/paired/heldout.jsonl")" --arg aml "$(hash aml/voice-prompt.aml)" '
+  .schema=="jovovich.voice-baseline/1" and .heldout_sha256==$held and .prompt_policy_sha256==$aml
+  and .weights_sha256==$model[0].weights_sha256 and .tokenizer_sha256==$model[0].tokenizer_sha256
+  and (.audition|map(.id))==($h|map(.id))
+  and all(.audition[].base; (.utf8_hex|test("^([0-9a-f]{2})*$")) and
+      (.token_ids|all(.[]; type=="number" and .==floor and .>=0)) and
+      (if .stop=="cap" then (.token_ids|length)==32 else .stop=="eog" and (.token_ids|length|.>=1 and .<=32) end))
+' "$paired/base.json" >/dev/null
+echo 'Rebuilt the paired voice corpus and bound each frozen generation to its review'

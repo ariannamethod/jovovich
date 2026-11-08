@@ -185,3 +185,28 @@ Keep the insertion order of the criteria. The reference run used torch
 2.13.0+cpu, transformers 5.17.0 and three intra-op threads.
 The source safetensors SHA-256 was
 `0713bb05270c2685ad106522f4092bceeeb3a93cf79b401f399a712296c911e1`.
+
+## Generating a remark about a fix and its rollback
+
+The [paired voice protocol](../examples/paired-voice/protocol.md) registers
+24 English training references and eight target-free auditions from inih and
+node-semver. Run the frozen voice with `build/voice-pilot --baseline` before
+fitting the last-block LoRA.
+
+The original reached the 32-token cap on every take. Zero of eight remarks
+passed the registered completion and grounding requirements, closing zero of
+four pairs. In inih #188 the rollback really did report line 2 for an error
+on line 1. Jovovich said so in her first sentence and then started over.
+On the repaired node-semver #872 she said that the prerelease satisfied the
+range, although both the requirement and the observed result said false.
+
+| Case | What the stock voice said about the repair | What it said about the rollback |
+| --- | --- | --- |
+| inih #140 | Named the correct handler value, `Hi World`, then started another sentence. | Noticed the semicolon and `c2`, stopped mid-explanation. |
+| inih #188 | Reported line 1 and repeated “The output is correct.” | Contrasted actual 2 with expected 1 and repeated the comparison. |
+| node-semver #867 | Began to describe the correct subset, truncating the second range. | Treated P(CLEAN) as the value of the subset. |
+| node-semver #872 | Asserted membership despite the observed `false`. | Called P(CLEAN) a version. |
+
+The [native output](../examples/paired-voice/base.json) preserves every byte,
+token ID, stop reason, and the hashes of both input artifacts, the packet and
+the AML policy. This run used the original voice with no fitted coefficients.

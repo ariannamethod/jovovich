@@ -42,7 +42,7 @@ static int ascii_field(const char *s) {
     return 1;
 }
 
-static int read_rows(const char *path, packet *rows, engine *e) {
+static int read_rows(const char *path, packet *rows, engine *e, int blind) {
     FILE *f=fopen(path,"rb");
     if (!f) fail("cannot open packets");
     size_t total=0;
@@ -53,10 +53,16 @@ static int read_rows(const char *path, packet *rows, engine *e) {
         packet *p=&rows[n++];
         p->id=nj_string(nj_get(s,"id"));
         p->state=nj_string(nj_get(s,"state"));
-        p->target=nj_string(nj_get(s,"target"));
         if (!p->id || strlen(p->id)!=64 || strspn(p->id,"0123456789abcdef")!=64 ||
-            !ascii_field(p->state) || !ascii_field(p->target) || strchr(p->target,'\n'))
+            !ascii_field(p->state))
             fail("invalid packet");
+        if (blind) {
+            if (nj_get(s,"target") || nj_get(s,"references")) fail("audition expects target-free packets");
+            free(s);
+            continue;
+        }
+        p->target=nj_string(nj_get(s,"target"));
+        if (!ascii_field(p->target) || strchr(p->target,'\n')) fail("invalid target");
         int k=bpe_encode_raw(e->tokenizer,p->target,p->tokens,MAX_TARGET);
         if (k<1 || k>=MAX_TARGET) fail("reference outside token bounds");
         if (e->selecting) {
@@ -247,23 +253,38 @@ static void digest(const char *path,char out[65]) {
     if (jov_model_file_hash(path,out)) fail("cannot hash a required file");
 }
 
+static void baseline(FILE *out,engine *e,const packet *rows,int n,
+                     const char *wh,const char *th,const char *test_hash,const char *aml_hash) {
+    fprintf(out,"{\"schema\":\"jovovich.voice-baseline/1\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",wh,th);
+    fprintf(out,"\"heldout_sha256\":\"%s\",\"prompt_policy_sha256\":\"%s\",\"audition\":[",test_hash,aml_hash);
+    for (int i=0;i<n;i++) {
+        fprintf(out,"%s{\"id\":\"%s\",\"base\":",i?",":"",rows[i].id);
+        generate(out,e,NULL,rows+i);
+        fputc('}',out);
+    }
+    fputs("]}\n",out);
+}
+
 int main(int argc,char **argv) {
+    int frozen=argc==5 && !strcmp(argv[1],"--baseline");
     int diagnosing=argc==6 && !strcmp(argv[1],"--select-stability");
     int selecting=diagnosing || (argc==6 && !strcmp(argv[1],"--select"));
     if (selecting) { argv++; argc--; }
-    if (argc!=5) {fprintf(stderr,"Usage: voice-pilot [--select|--select-stability] ORIGINAL.gguf TOKENIZER.gguf TRAIN.jsonl HELDOUT.jsonl\n");return 2;}
+    if (argc!=5) {fprintf(stderr,"Usage: voice-pilot [--select|--select-stability] ORIGINAL.gguf TOKENIZER.gguf TRAIN.jsonl HELDOUT.jsonl\n       voice-pilot --baseline ORIGINAL.gguf TOKENIZER.gguf HELDOUT.jsonl\n");return 2;}
     const char *policy=selecting?"aml/voice-select.aml":"aml/voice-prompt.aml";
     char wh[65],th[65],train_hash[65],test_hash[65],aml_hash[65];
-    digest(argv[1],wh);digest(argv[2],th);digest(argv[3],train_hash);digest(argv[4],test_hash);
+    const char *weights=argv[frozen?2:1], *tokenizer=argv[frozen?3:2];
+    digest(weights,wh);digest(tokenizer,th);digest(argv[4],test_hash);
+    if (!frozen) digest(argv[3],train_hash);
     digest(policy,aml_hash);
     char *manifest=nj_load("models/onejev-0.8b.json",NULL);
     if (!manifest || !nj_is(nj_get(manifest,"weights_sha256"),wh) || !nj_is(nj_get(manifest,"tokenizer_sha256"),th))
         fail("model or tokenizer differs from the original release");
     free(manifest);
-    gguf_file *gg=gguf_open(argv[1]);
+    gguf_file *gg=gguf_open(weights);
     engine e={.policy=policy,.selecting=selecting};
     e.model=gg?nt_arch_qwen35.load(gg,&e.dims):NULL;
-    e.tokenizer=bpe_load(argv[2]);
+    e.tokenizer=bpe_load(tokenizer);
     if (!e.model || !e.tokenizer || e.dims.vocab<=0) fail("cannot open native model and tokenizer");
     e.end=bpe_token_id(e.tokenizer,"<|im_end|>");
     e.logits=malloc((size_t)e.dims.vocab*sizeof(float));
@@ -272,7 +293,8 @@ int main(int argc,char **argv) {
     if (!e.logits || !a.index || e.end<0 || e.end>=e.dims.vocab) fail("invalid model shape");
     for (int i=0;i<e.dims.vocab;i++) a.index[i]=-1;
     packet train[MAX_ROWS]={0},test[MAX_ROWS]={0};
-    int nt=read_rows(argv[3],train,&e),nv=read_rows(argv[4],test,&e);
+    int nt=frozen?0:read_rows(argv[3],train,&e,0);
+    int nv=read_rows(argv[4],test,&e,frozen);
     for (int i=0;i<nt+nv;i++) {
         const packet *p=i<nt?train+i:test+i-nt;
         for (int j=0;j<i;j++) {
@@ -288,6 +310,13 @@ int main(int argc,char **argv) {
             }
         }
     }
+    FILE *out=tmpfile();
+    if (!out) fail("cannot buffer audition");
+    am_init();am_persistent_mode(1);
+    if (frozen) {
+        baseline(out,&e,test,nv,wh,th,test_hash,aml_hash);
+        goto finish;
+    }
     int index_a=-1,index_b=-1;
     if (selecting) {
         int token_a=bpe_token_id(e.tokenizer,"A"), token_b=bpe_token_id(e.tokenizer,"B");
@@ -298,13 +327,10 @@ int main(int argc,char **argv) {
     }
     position *training=calloc((size_t)nt*MAX_TARGET,sizeof(*training)),*held=calloc((size_t)nv*MAX_TARGET,sizeof(*held));
     if (!training || !held) fail("training allocation");
-    am_init();am_persistent_mode(1);
     int n=collect(&e,&a,train,nt,training), m=collect(&e,&a,test,nv,held);
     double train_before=nll(&a,training,n,NULL),held_before=nll(&a,held,m,NULL);
     fit(&a,training,n,0.25f,NULL);
     double train_after=nll(&a,training,n,NULL),held_after=nll(&a,held,m,NULL);
-    FILE *out=tmpfile();
-    if (!out) fail("cannot buffer audition");
     fprintf(out,"{\"schema\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",selecting?"jovovich.voice-selection/1":"jovovich.voice-pilot/1",wh,th);
     fprintf(out,"\"train_sha256\":\"%s\",\"heldout_sha256\":\"%s\",\"prompt_policy_sha256\":\"%s\",",train_hash,test_hash,aml_hash);
     fprintf(out,"\"train_tokens\":%d,\"heldout_tokens\":%d,\"train_nll\":[%.12g,%.12g],\"heldout_nll\":[%.12g,%.12g],",n,m,train_before,train_after,held_before,held_after);
@@ -328,6 +354,8 @@ int main(int argc,char **argv) {
     fputc(']',out);
     if (diagnosing) stability(out,&a,training,n,held,m,index_a,index_b);
     fputs("}\n",out);
+    free(training);free(held);
+finish:
     if (ferror(out) || fseek(out,0,SEEK_SET)) fail("cannot finish audition");
     char buf[8192];size_t got;
     while ((got=fread(buf,1,sizeof(buf),out))) if(fwrite(buf,1,got,stdout)!=got) fail("write failed");
@@ -337,7 +365,7 @@ int main(int argc,char **argv) {
         packet *p=i<nt?train+i:test+i-nt;
         free(p->id);free(p->state);free(p->target);
     }
-    free(training);free(held);free(a.index);free(e.logits);
+    free(a.index);free(e.logits);
     am_persistent_clear();am_persistent_mode(0);bpe_free(e.tokenizer);nt_arch_qwen35.free(e.model);gguf_close(gg);
     return 0;
 }
