@@ -1,0 +1,8 @@
+1	DaveGamble/cJSON	810	f66cbab4bfb3926ffd4c5e13f9fb6d506ee0241d	cJSON.c	cJSON.h	241	242
+2	vercel/ms	111	2669f23e99be0bb6b65d365151884de52434301c	index.js	readme.md	46	48
+3	jashkenas/underscore	3018	db2025c3c55b3e0cac2b46dd01ee103d4c9e7b1a	modules/max.js	test/collections.js	581	583
+4	jashkenas/underscore	3026	de1c627286567216c1dbbd44f5ba7a871210bdba	modules/toArray.js	index.html	1164	1165
+5	mholt/PapaParse	1124	a51bdc77cbd12cbfd7bc42d1379d0518338beb4d	papaparse.js	docs/docs.html	296	298
+6	mholt/PapaParse	1128	4eb7eaf0ef10aa0f4edd4306a4dd91bc4b60d998	papaparse.js	docs/docs.html	474	474
+7	npm/ini	123	5b5c9b777209bae480f62fb80149008350d37bc5	lib/ini.js	README.md	3	4
+8	npm/ini	252	858cc82dff7eac9ff9a56181132d66d0e09a803c	lib/ini.js	README.md	149	155
