@@ -1,6 +1,6 @@
 # Attach comparable execution traces to a review
 
-A test harness can send paired callback traces from the base and head revisions
+A test harness can send paired callback traces or short program outputs from the base and head revisions
 alongside a review. The native host forwards one observation about the head
 when the two executions differ on the effect specified by the contract. An
 unchanged effect leaves the entire model prompt byte-identical to a source-only
@@ -19,14 +19,18 @@ context are preserved literally.
 | `review_id` | The enclosing review's `id` |
 | `rule_sha256`, `change_sha256` | SHA-256 of the exact rule and change excerpts |
 | `base_commit`, `head_commit` | Required for Git-packed inputs, from their `source` |
-| `metric` | `sequence` for the ordered list of callbacks, or `count` for occurrences of one callback |
+| `metric` | `sequence` for the ordered list of callbacks, `count` for occurrences of one callback, or `text` for a single-line output |
 | `target` | Callback name for `count` |
 | `runs` | Up to 64 distinct signed 32-bit integer modes. Each holds `mode`, `base`, `head` and `required` |
 
-Both `base` and `head` are arrays of up to 32 callback names for every metric.
+For the two callback metrics, `base` and `head` are arrays of up to 32 callback names.
 Names are ASCII identifiers of up to 63 characters. For `sequence`, `required`
 is another such array. For `count`, it is a nonnegative signed 32-bit integer.
-The harness takes this value from the requirement oracle. On packed Git rows,
+For `text`, all three values are JSON strings of up to 256 printable ASCII bytes.
+The host compares decoded bytes and quotes the strings in the AML observation.
+Quotes, backslashes and angle brackets are escaped within the observation.
+An empty string is a valid output.
+The harness takes the expected value from the requirement oracle. On packed Git rows,
 the two excerpt hashes are available as `source.rules_sha256` and
 `source.diff_sha256`.
 

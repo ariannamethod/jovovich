@@ -57,31 +57,74 @@ static int effect(const char *calls,const char *target,char text[EFFECT_BYTES]) 
     return bad;
 }
 
-static int expected_effect(const char *value,const char *target,char text[EFFECT_BYTES]) {
-    if(!target)return effect(value,NULL,text);
-    long long count;
-    if(nj_int(value,&count) || count<0 || count>INT_MAX)return 1;
-    snprintf(text,EFFECT_BYTES,"%lld",count);return 0;
+typedef enum { INVALID, SEQUENCE, COUNT, TEXT } metric_kind;
+
+static metric_kind metric(const char *json) {
+    const char *kind = nj_get(json, "metric");
+    if (nj_is(kind, "sequence")) return SEQUENCE;
+    if (nj_is(kind, "count")) return COUNT;
+    if (nj_is(kind, "text")) return TEXT;
+    return INVALID;
 }
 
-/* The capture rechecks both complete callback sequences, including callbacks
- * outside a count metric, and re-reads the expected effect from the old base. */
+/* One canonical quoted representation for a short single-line program result. */
+static int quoted_text(const char *value, char out[EFFECT_BYTES]) {
+    char *s = nj_string(value);
+    if (!s || strlen(s) > 256) { free(s); return 1; }
+    /* A quoted program result cannot introduce an AML prompt delimiter. */
+    char *w = out;
+    *w++ = '"';
+    for (const unsigned char *p = (const unsigned char *)s; *p; p++) {
+        if (*p < 32 || *p > 126) { free(s); return 1; }
+        if (*p == '<' || *p == '>') {
+            memcpy(w, *p == '<' ? "\\u003c" : "\\u003e", 6);
+            w += 6;
+            continue;
+        }
+        if (*p == '"' || *p == '\\') *w++ = '\\';
+        *w++ = (char)*p;
+    }
+    *w++ = '"';
+    *w = 0;
+    free(s);
+    return 0;
+}
+
+static int project(const char *value, metric_kind kind, const char *target, int required,
+                   char out[EFFECT_BYTES]) {
+    if (kind == TEXT) return quoted_text(value, out);
+    if (kind == COUNT && required) {
+        long long count;
+        if (nj_int(value,&count) || count<0 || count>INT_MAX) return 1;
+        snprintf(out,EFFECT_BYTES,"%lld",count);
+        return 0;
+    }
+    return effect(value,target,out);
+}
+
+static int same_effect(const char *saved, const char *fresh, metric_kind kind,
+                       const char *target, int required) {
+    char a[EFFECT_BYTES], b[EFFECT_BYTES];
+    return !project(saved,kind,target,required,a) && !project(fresh,kind,target,required,b) && !strcmp(a,b);
+}
+
+/* On count metrics, capture rechecks the complete sequence, including calls
+ * outside the projection. Every capture re-reads the requirement oracle. */
 int jov_trace_reproduced(const char *gate, int mode, const char *base, const char *head, const char *oracle) {
-    int count = nj_is(nj_get(gate, "metric"), "count");
-    if (!nj_is(nj_get(oracle, "metric"), count ? "count" : "sequence")) return 0;
+    metric_kind kind = metric(gate), raw = kind == TEXT ? TEXT : SEQUENCE;
+    if (kind == INVALID || kind != metric(oracle)) return 0;
     char *target = nj_string(nj_get(gate, "target"));
-    int ok = count ? identifier(target) && nj_is(nj_get(oracle, "target"), target) : !nj_get(oracle, "target");
+    int ok = kind == COUNT ? identifier(target) && nj_is(nj_get(oracle, "target"), target)
+                           : !nj_get(gate, "target") && !nj_get(oracle, "target");
     int bad = 0, found = 0;
     const char *runs = nj_get(gate, "runs");
     for (const char *v=nj_first(runs,&bad); ok && v; v=nj_next(v,']',&bad)) {
         long long m;
         if (nj_int(nj_get(v,"mode"),&m)) { bad=1; break; }
         if (m != mode) continue;
-        char recorded[EFFECT_BYTES], observed[EFFECT_BYTES];
-        found = !effect(nj_get(v,"base"),NULL,recorded) && !effect(base,NULL,observed) && !strcmp(recorded,observed) &&
-            !effect(nj_get(v,"head"),NULL,recorded) && !effect(head,NULL,observed) && !strcmp(recorded,observed) &&
-            !expected_effect(nj_get(v,"required"),target,recorded) && !expected_effect(nj_get(oracle,"required"),target,observed) &&
-            !strcmp(recorded,observed);
+        found = same_effect(nj_get(v,"base"),base,raw,NULL,0) &&
+                same_effect(nj_get(v,"head"),head,raw,NULL,0) &&
+                same_effect(nj_get(v,"required"),nj_get(oracle,"required"),kind,target,1);
         break;
     }
     free(target);
@@ -110,10 +153,11 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
     if(!g)return 0;
     const char *end=report_json_end(row,0);
     if(!end || *nj_ws(end) || !bound_to_review(row,g,id,rule,change))return 1;
-    const char *kind=nj_get(g,"metric"),*raw_target=nj_get(g,"target"),*runs=nj_get(g,"runs");
+    metric_kind kind = metric(g);
+    const char *raw_target=nj_get(g,"target"),*runs=nj_get(g,"runs");
     char *target=nj_string(raw_target);
-    int count=nj_is(kind,"count"),bad=0,seen[MAX_RUNS];
-    if(!runs || *runs!='[' || (count?!identifier(target):(!nj_is(kind,"sequence") || raw_target))) {
+    int bad=0,seen[MAX_RUNS];
+    if(!runs || *runs!='[' || kind == INVALID || (kind == COUNT ? !identifier(target) : raw_target != NULL)) {
         free(target);return 1;
     }
     char required[EFFECT_BYTES],head[EFFECT_BYTES],selected_required[EFFECT_BYTES],selected_head[EFFECT_BYTES];
@@ -121,8 +165,8 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
     for(const char *v=nj_first(runs,&bad);v;v=nj_next(v,']',&bad)) {
         long long mode;char base[EFFECT_BYTES];
         if(r->runs>=MAX_RUNS || nj_int(nj_get(v,"mode"),&mode) || mode<INT_MIN || mode>INT_MAX ||
-           effect(nj_get(v,"base"),target,base) || effect(nj_get(v,"head"),target,head) ||
-           expected_effect(nj_get(v,"required"),target,required)){bad=1;break;}
+           project(nj_get(v,"base"),kind,target,0,base) || project(nj_get(v,"head"),kind,target,0,head) ||
+           project(nj_get(v,"required"),kind,target,1,required)){bad=1;break;}
         for(int i=0;i<r->runs;i++)if(seen[i]==(int)mode)bad=1;
         if(bad)break;
         seen[r->runs++]=(int)mode;
@@ -142,7 +186,7 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
     if(!bad && r->differing) {
         char metric[96],mode[32];
         if(target)snprintf(metric,sizeof(metric),"number of calls to %s",target);
-        else strcpy(metric,"callback sequence");
+        else strcpy(metric,kind == TEXT ? "output text" : "callback sequence");
         snprintf(mode,sizeof(mode),"%d",r->selected_mode);
         bad=am_set_var_text("gate_mode",mode) || am_set_var_text("gate_metric",metric) ||
             am_set_var_text("gate_required",selected_required) || am_set_var_text("gate_observed",selected_head) ||
@@ -168,5 +212,8 @@ int jov_verify_trace_receipt(const char *listed,const jov_trace_receipt *r,const
         prior.mode != r->replay.mode) return 1;
     const char *mode=nj_get(listed,"selected_mode"),*obs=nj_get(listed,"observation");
     if(!r->differing)return mode || obs;
-    return nj_int(mode,&n) || n!=r->selected_mode || !nj_is(obs,r->observation);
+    char *shown = nj_string(obs);
+    int bad = nj_int(mode,&n) || n!=r->selected_mode || !shown || strcmp(shown,r->observation);
+    free(shown);
+    return bad;
 }

@@ -140,6 +140,26 @@ test "$(cat "$work/damaged/cases.checkpoint")" = torn
 reject replay < "$work/broken-batch"
 build/jovovich-pack --remember "$memory" another/project order --all "$repo" "$root" "$repair" RULES.md 2 2 > "$work/namespace"
 replay < "$work/namespace" > "$work/unchanged"; cmp "$work/namespace" "$work/unchanged"
+# A text-returning executable can probe, remember and remeasure a later patch.
+text_driver="$work/text-driver"
+export JOV_DRAW_DRIVER="$driver"
+cat > "$text_driver" <<'DRIVER'
+#!/bin/sh
+set -eu
+json=$("$JOV_DRAW_DRIVER" "$@")
+case "$json" in
+    '["paint","scan"]') echo '"paint scan"' ;;
+    '["scan","paint"]') echo '"scan paint"' ;;
+    '{"metric":"sequence","required":["scan","paint"]}') echo '{"metric":"text","required":"scan paint"}' ;;
+    *) exit 1 ;;
+esac
+DRIVER
+chmod +x "$text_driver"
+build/jovovich-replay probe "$repo" "$text_driver" 1 < "$work/first" > "$work/text-origin"
+build/jovovich-replay remember "$memory" "$repo" "$text_driver" < "$work/text-origin" > "$work/text-receipt"
+build/jovovich-replay run "$memory" "$repo" "$text_driver" < "$work/regression" > "$work/text-replay"
+grep -Fq '"replayed_from":' "$work/text-replay"
+grep -Fq '"base":"scan paint","head":"paint scan","required":"scan paint"' "$work/text-replay"
 echo 'Counterexample capture, fresh paired replay, current oracle, branch and harness scope passed'
 
 if test -n "${JOV_MEMORY_MODEL:-}"; then

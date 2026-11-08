@@ -173,11 +173,11 @@ static int recall(const char *repo, const packed_row *p, const char *sha, jov_re
 }
 
 /* A pretty-printed runner reply must still fit one packed JSONL row. */
-static char *runner_json(const char *const argv[], char kind) {
+static char *runner_json(const char *const argv[], const char *kinds) {
     char *s = command(argv,16384);
     if (!s) return NULL;
     const char *v = nj_ws(s), *end = report_json_end(v,0);
-    if (!end || *nj_ws(end) || *v != kind) { free(s); return NULL; }
+    if (!end || *nj_ws(end) || !strchr(kinds,*v)) { free(s); return NULL; }
     char *out = s;
     while (v < end) {
         if (*v == '"') {
@@ -204,10 +204,10 @@ static int run_sample(const char *repo, const char *runner, const char *sha, con
     char arg[16], first[16], last[16];
     snprintf(arg,sizeof(arg),"%d",mode);
     snprintf(first,sizeof(first),"%d",p->first); snprintf(last,sizeof(last),"%d",p->last);
-    x->base = runner_json((const char *[]){runner,"observe",repo,p->base,p->file,arg,NULL},'[');
-    x->head = x->base ? runner_json((const char *[]){runner,"observe",repo,p->head,p->file,arg,NULL},'[') : NULL;
+    x->base = runner_json((const char *[]){runner,"observe",repo,p->base,p->file,arg,NULL},"[\"");
+    x->head = x->base ? runner_json((const char *[]){runner,"observe",repo,p->head,p->file,arg,NULL},"[\"") : NULL;
     x->oracle = x->head ? runner_json((const char *[]){runner,"expect",repo,p->base,p->file,arg,
-                                      p->path,first,last,NULL},'{') : NULL;
+                                      p->path,first,last,NULL},"{") : NULL;
     char check[65];
     return !x->oracle || file_digest(runner,check) || strcmp(check,sha);
 }
