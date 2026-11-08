@@ -1,0 +1,352 @@
+{
+  "original_050": {
+    "threshold": 0.5,
+    "source": {
+      "both_correct": 0,
+      "correct": 5,
+      "false_alarms": 1,
+      "misses": 6
+    },
+    "execution": {
+      "both_correct": 6,
+      "correct": 12,
+      "false_alarms": 0,
+      "misses": 0
+    },
+    "controls_correct": 32,
+    "anchor_p_clean": 0.68953782320022583
+  },
+  "original_060": {
+    "threshold": 0.6,
+    "source": {
+      "both_correct": 0,
+      "correct": 6,
+      "false_alarms": 0,
+      "misses": 6
+    },
+    "execution": {
+      "both_correct": 3,
+      "correct": 9,
+      "false_alarms": 0,
+      "misses": 3
+    },
+    "controls_correct": 32,
+    "anchor_p_clean": 0.68953782320022583
+  },
+  "candidate_050": {
+    "threshold": 0.5,
+    "source": {
+      "both_correct": 0,
+      "correct": 6,
+      "false_alarms": 0,
+      "misses": 6
+    },
+    "execution": {
+      "both_correct": 4,
+      "correct": 10,
+      "false_alarms": 0,
+      "misses": 2
+    },
+    "controls_correct": 32,
+    "anchor_p_clean": 0.8111540675163269
+  },
+  "criteria": {
+    "execution_pairs": false,
+    "execution_misses": false,
+    "source_correct": true,
+    "source_misses": true,
+    "controls": true,
+    "anchor": true
+  },
+  "cases": [
+    {
+      "project": "inih",
+      "pr": 140,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "ef9da8f4f75daad714c6a539785d3979824d2cf6",
+      "head_commit": "bd798c53775a4aefaf8ac42091bface3e876d190",
+      "input_sha256": "0939fca7f720d599454574968146351f18c06fd9abffec4d202f750f0410eff2",
+      "prompt_sha256": "af39db9e3eee2920b38bff115b568eca2f72c59a6e49d68b3120c152aa9cbab2",
+      "original_p_concern": 0.47100749611854553,
+      "candidate_p_concern": 0.38561299443244934
+    },
+    {
+      "project": "inih",
+      "pr": 140,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "ef9da8f4f75daad714c6a539785d3979824d2cf6",
+      "head_commit": "bd798c53775a4aefaf8ac42091bface3e876d190",
+      "input_sha256": "c41334289d529e480a1ebb55bb3ead4cd5697382a6b47eced1c249a2d1c00135",
+      "prompt_sha256": "b609ef78183bb2228bdef4653197c0f1cf51c840a5dc8db5c756773e080ba3e1",
+      "original_p_concern": 0.40095344185829163,
+      "candidate_p_concern": 0.29237693548202515
+    },
+    {
+      "project": "inih",
+      "pr": 140,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "bd798c53775a4aefaf8ac42091bface3e876d190",
+      "head_commit": "ef9da8f4f75daad714c6a539785d3979824d2cf6",
+      "input_sha256": "7cf805e080fac8fddae377becc707ad3a4cd99046fe4d7e49eef6897f7b8eff4",
+      "prompt_sha256": "f0c363a6dc4e810dc492e03e9d6e91849ad8e91a7844d3f82ba05f9c4a519171",
+      "original_p_concern": 0.45807948708534241,
+      "candidate_p_concern": 0.46077603101730347
+    },
+    {
+      "project": "inih",
+      "pr": 140,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "bd798c53775a4aefaf8ac42091bface3e876d190",
+      "head_commit": "ef9da8f4f75daad714c6a539785d3979824d2cf6",
+      "input_sha256": "ae730b5c3037fba41d82de4cf8019b3a79a23fa44d3c4f00e4102497aac416ff",
+      "prompt_sha256": "c5f763c1e116813fe83a781bbe0542421a1421af00e8070f983875d79d56e3d3",
+      "original_p_concern": 0.53307467699050903,
+      "candidate_p_concern": 0.46875286102294922
+    },
+    {
+      "project": "inih",
+      "pr": 188,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "7914ad7f4f4320ae42bb0f9588a3a8be4fb9679e",
+      "head_commit": "23acf2dd5af5287b0f170908c607560ab3995dae",
+      "input_sha256": "3c0b26b6e340dcaf90e694c753a9d875c884d93d952fa81b052fa42373dc6b16",
+      "prompt_sha256": "ffdbef5ee02fff4455569cb21b14770f90eac3355ac5e0550c4d7b227dc6559d",
+      "original_p_concern": 0.50849074125289917,
+      "candidate_p_concern": 0.44200780987739563
+    },
+    {
+      "project": "inih",
+      "pr": 188,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "7914ad7f4f4320ae42bb0f9588a3a8be4fb9679e",
+      "head_commit": "23acf2dd5af5287b0f170908c607560ab3995dae",
+      "input_sha256": "f8fd06dfc12747a0bde10baab948043cc686a5e830f8971f4ad39124020e3f87",
+      "prompt_sha256": "ba6539bb7d2d17bdcda1dfbab795cab03d004c9dc191f70dd1b8babb96d89b4d",
+      "original_p_concern": 0.44803500175476074,
+      "candidate_p_concern": 0.31258770823478699
+    },
+    {
+      "project": "inih",
+      "pr": 188,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "23acf2dd5af5287b0f170908c607560ab3995dae",
+      "head_commit": "7914ad7f4f4320ae42bb0f9588a3a8be4fb9679e",
+      "input_sha256": "497a01497e74fc74d8603f78f0099f5199e8ba806af955ac3a65d8f956e1ae9b",
+      "prompt_sha256": "ac3cb294e10b6f03f40216b9fcda051131e7c1a06db6d747a91408723cf195c1",
+      "original_p_concern": 0.49775126576423645,
+      "candidate_p_concern": 0.38614749908447266
+    },
+    {
+      "project": "inih",
+      "pr": 188,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "23acf2dd5af5287b0f170908c607560ab3995dae",
+      "head_commit": "7914ad7f4f4320ae42bb0f9588a3a8be4fb9679e",
+      "input_sha256": "0bb66290b94e7eb203e65e80c0696fcfa3f5f3719065eda3eb3661baad94ed9b",
+      "prompt_sha256": "3683a380627099f5992ae4ba6cae91564b46b3bcb6fbde64b08e1ee53312c6e2",
+      "original_p_concern": 0.63866293430328369,
+      "candidate_p_concern": 0.60357004404067993
+    },
+    {
+      "project": "inih",
+      "pr": 197,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "57188e8acd8051b39a503faa30d27c50b94d8770",
+      "head_commit": "498f34b78610cf9e42197d22730c91f942431ea4",
+      "input_sha256": "bd0c6c5d2c9b3ab834062e3eee88790b08de06ffe835b4a6a3ef967b724e1e97",
+      "prompt_sha256": "f38b0ae9a443c21d1d211391e430cc557fe97179c5fa12da4b3ce619e447aa22",
+      "original_p_concern": 0.46360170841217041,
+      "candidate_p_concern": 0.35985499620437622
+    },
+    {
+      "project": "inih",
+      "pr": 197,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "57188e8acd8051b39a503faa30d27c50b94d8770",
+      "head_commit": "498f34b78610cf9e42197d22730c91f942431ea4",
+      "input_sha256": "ea9ec52da0aa1a9b9f02dc0767fe73d712eb6ecc9876441dd188a26f089a1651",
+      "prompt_sha256": "1da4db821b94907251b103dfc8fd44dcf4fc0dec404dbbbb8a0e2fd4faa0b466",
+      "original_p_concern": 0.40312275290489197,
+      "candidate_p_concern": 0.29262235760688782
+    },
+    {
+      "project": "inih",
+      "pr": 197,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "498f34b78610cf9e42197d22730c91f942431ea4",
+      "head_commit": "57188e8acd8051b39a503faa30d27c50b94d8770",
+      "input_sha256": "d6e0c03da08a7db792e4a5f04d260a76cbbb469ce904037422847d416002d0dc",
+      "prompt_sha256": "6278bd4717ff36080d7b08a074239680d85f8859afb900c64c6469cf5a4f1388",
+      "original_p_concern": 0.45423290133476257,
+      "candidate_p_concern": 0.37442639470100403
+    },
+    {
+      "project": "inih",
+      "pr": 197,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "498f34b78610cf9e42197d22730c91f942431ea4",
+      "head_commit": "57188e8acd8051b39a503faa30d27c50b94d8770",
+      "input_sha256": "0997051655c15ce0d314c162258488f309df13a653c83d4b27f2dfee5d84a852",
+      "prompt_sha256": "b2d76b567b0a075a4e51941c169099b441e3cbf3f2567710cc0a9b5820d18053",
+      "original_p_concern": 0.52078217267990112,
+      "candidate_p_concern": 0.469687819480896
+    },
+    {
+      "project": "node-semver",
+      "pr": 867,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "efa4be6096c1f9b77d9d27d6132f6220c43b4e31",
+      "head_commit": "5f3ca133e040210b6ea80c350a1d61d9da02e722",
+      "input_sha256": "94c9207cffb1631ee4972f184a88c58b8d43cacaa4369c1b564d99e11d8e3422",
+      "prompt_sha256": "1dd079b7b62202d28396c8faa220555e797b5ad3df2ff630a55fae253fa776a8",
+      "original_p_concern": 0.38904568552970886,
+      "candidate_p_concern": 0.38896611332893372
+    },
+    {
+      "project": "node-semver",
+      "pr": 867,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "efa4be6096c1f9b77d9d27d6132f6220c43b4e31",
+      "head_commit": "5f3ca133e040210b6ea80c350a1d61d9da02e722",
+      "input_sha256": "af5b051b05c9836527a73c46fde4507e7eda2ac5c105103ed5666196314f0e2a",
+      "prompt_sha256": "41fb1475ca188261cac91781cef7b6d4da1e68d6a91837805148e751b6d0bf9e",
+      "original_p_concern": 0.24840526282787323,
+      "candidate_p_concern": 0.27564412355422974
+    },
+    {
+      "project": "node-semver",
+      "pr": 867,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "5f3ca133e040210b6ea80c350a1d61d9da02e722",
+      "head_commit": "efa4be6096c1f9b77d9d27d6132f6220c43b4e31",
+      "input_sha256": "509456e453783c4e3f12cf8415696caf6a40430984d2871754a99e9e4c714506",
+      "prompt_sha256": "c1f389031581dbe3f050405bc965b1159b83acca2571e92b0f13a09ea2dd59dd",
+      "original_p_concern": 0.36787241697311401,
+      "candidate_p_concern": 0.37945899367332458
+    },
+    {
+      "project": "node-semver",
+      "pr": 867,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "5f3ca133e040210b6ea80c350a1d61d9da02e722",
+      "head_commit": "efa4be6096c1f9b77d9d27d6132f6220c43b4e31",
+      "input_sha256": "f6f23b1ffbe605c846e77f49164e2434dc2255fb41782f1ebfd5c0cc865e7dca",
+      "prompt_sha256": "a8ff7939c1177177950228a0410048ffe846ee9ffa171a2831ddc9e95a5c1591",
+      "original_p_concern": 0.70471197366714478,
+      "candidate_p_concern": 0.72411882877349854
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "76416081a8413383cf6e24c82cafa438bd076d41",
+      "head_commit": "bea6028694a75e840f48b288ac019e9644cfe6e8",
+      "input_sha256": "0a59277adbbe69aeac6108ab772aa8729a9224e628ac6986cf2201b55d48ee3c",
+      "prompt_sha256": "8a6270e1dbdeac2cdbab184e1b1a33f7e875420a2d0edd777362e9fe0ee0022b",
+      "original_p_concern": 0.29751697182655334,
+      "candidate_p_concern": 0.3299751877784729
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "76416081a8413383cf6e24c82cafa438bd076d41",
+      "head_commit": "bea6028694a75e840f48b288ac019e9644cfe6e8",
+      "input_sha256": "aa0c426c236216691fbbecb0dc90d52860c1235c0fb8dae8580657d82b00df64",
+      "prompt_sha256": "a945713a72a2b2b0b24e520adcbba2568de07a2d0f6e2a6fecde6ef15d56b310",
+      "original_p_concern": 0.29384893178939819,
+      "candidate_p_concern": 0.18458788096904755
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "bea6028694a75e840f48b288ac019e9644cfe6e8",
+      "head_commit": "76416081a8413383cf6e24c82cafa438bd076d41",
+      "input_sha256": "1b3c067e5f9aaaf14954cf59b2c423a014ad0d72e73c0e892971f0db77cfc25c",
+      "prompt_sha256": "bab42bcee06dce6c59ce513d60552eacff447976bc92436527e4e37815477a0e",
+      "original_p_concern": 0.35168865323066711,
+      "candidate_p_concern": 0.42101439833641052
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "bea6028694a75e840f48b288ac019e9644cfe6e8",
+      "head_commit": "76416081a8413383cf6e24c82cafa438bd076d41",
+      "input_sha256": "f8ded98e1c9c0e994bd7a625a71014f013a257b776385c05ba66bda0b057cab2",
+      "prompt_sha256": "56db7a3ff27854285509337f21e8138f87fecf7d185cfea4d595d3b22445b0d6",
+      "original_p_concern": 0.60535937547683716,
+      "candidate_p_concern": 0.6363031268119812
+    },
+    {
+      "project": "node-semver",
+      "pr": 872,
+      "direction": "repair",
+      "view": "source",
+      "base_commit": "efafcf8d029faa3d1ab74b5ec98d620112af859d",
+      "head_commit": "046da7f527cc72a482b5dea8cb59392be65bf186",
+      "input_sha256": "ab3f24073632876ff4786300db4abebbe8db7355ccdb3b152d8e1aa8c6263faf",
+      "prompt_sha256": "c8c0301ed183c429433e73d8d2a931d0fbbfb0f66355e0bfff7e15325b4014bf",
+      "original_p_concern": 0.47718963027000427,
+      "candidate_p_concern": 0.27079102396965027
+    },
+    {
+      "project": "node-semver",
+      "pr": 872,
+      "direction": "repair",
+      "view": "execution",
+      "base_commit": "efafcf8d029faa3d1ab74b5ec98d620112af859d",
+      "head_commit": "046da7f527cc72a482b5dea8cb59392be65bf186",
+      "input_sha256": "d44f9e3ae6a82bbb159c27443bab5adaca74a05fc14ce7a0c4dba18edf2385e5",
+      "prompt_sha256": "46aae2618b1c9214f88ab9c6282f7b025428b56bd4dff1cfda642828e68cbe24",
+      "original_p_concern": 0.45205184817314148,
+      "candidate_p_concern": 0.28999426960945129
+    },
+    {
+      "project": "node-semver",
+      "pr": 872,
+      "direction": "reverse",
+      "view": "source",
+      "base_commit": "046da7f527cc72a482b5dea8cb59392be65bf186",
+      "head_commit": "efafcf8d029faa3d1ab74b5ec98d620112af859d",
+      "input_sha256": "66ad0e79aa8c4e3f1c286d0fd70ea07e8ea74410ba510132a2deb0bb2cc5b2dc",
+      "prompt_sha256": "97dbc2673853c99ea24cbe6cc5e501acec1bded56d02725db5a2c89f1f91d648",
+      "original_p_concern": 0.49093776941299438,
+      "candidate_p_concern": 0.34815064072608948
+    },
+    {
+      "project": "node-semver",
+      "pr": 872,
+      "direction": "reverse",
+      "view": "execution",
+      "base_commit": "046da7f527cc72a482b5dea8cb59392be65bf186",
+      "head_commit": "efafcf8d029faa3d1ab74b5ec98d620112af859d",
+      "input_sha256": "b96e4fe0f8a9355df5bda495250fdc19752cca819b0283a9ae631e22130edb68",
+      "prompt_sha256": "b18906d8fc0aa28bf74e5294151e78264a743ecb1244f497a16c883c4871ea4d",
+      "original_p_concern": 0.58843421936035156,
+      "candidate_p_concern": 0.65094172954559326
+    }
+  ],
+  "promote": false
+}

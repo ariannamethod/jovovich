@@ -2,6 +2,20 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — The original keeps the chair
+
+Six merged changes from inih and node-semver went through the native Git
+review in both directions. On the actual program output the original at
+0.50 caught all six reversals and cleared all six repairs. Version 1.6
+cleared the repairs and missed two inih reversals. Raising the original's
+threshold to 0.60 missed three. All three points missed every reversal when
+given the source alone. The preregistered release gate keeps the private
+`jovovich.gguf` and the default CLI profile on the original checkpoint.
+
+The AML review can now receive a short text result from both revisions
+through the differential gate. Counterexample memory remeasures that
+result when the case returns. [Trial, observations and replay](docs/upstream-release-trial.md)
+
 ## 2026-11-08 — OneJev 1.6 gets the comment back
 
 Eight correct functions each received two Git patches. One added a comment.

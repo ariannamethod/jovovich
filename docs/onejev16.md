@@ -28,8 +28,8 @@ On the PR #55 comment-only anchor, P(CONCERN) moved from 66.40% to 42.01%.
 The original 305-token repair drew 68.95% CLEAN from the release and 81.12%
 CLEAN from 1.6. Both bodies also passed all 32 archived reviews with
 mechanically selected evidence. Version 1.6 met all four conditions for a
-wider trial. The next comparison should use independent repository rules
-and held-out change families. [Preregistered protocol](../examples/onejev16/protocol.md) ·
+wider trial. The [subsequent default trial](upstream-release-trial.md) used six upstream
+fixes and their reversals from inih and node-semver. [Preregistered protocol](../examples/onejev16/protocol.md) ·
 [Scores and individual pairs](../examples/onejev16/results.json)
 
 ### A threshold check after scoring

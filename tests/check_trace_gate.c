@@ -53,5 +53,39 @@ int main(void) {
     assert(!apply(order,"[]",0,0,&r) && !r.runs && !r.differing);
     assert(apply(order,"[{\"mode\":0,\"base\":[],\"head\":[],\"required\":[]},{\"mode\":0,\"base\":[],\"head\":[],\"required\":[]}]",0,0,&r));
     assert(apply(order,"[{\"mode\":0,\"base\":[\"not a callback\"],\"head\":[],\"required\":[]}]",0,0,&r));
+    const char *text_metric="\"metric\":\"text\"";
+    const char *outputs="[{\"mode\":0,\"base\":\"1.0-rc.0\",\"head\":\"1.0-rc.1\",\"required\":\"1.0-rc.1\"}]";
+    assert(!apply(text_metric,outputs,1,0,&r) && r.differing==1);
+    assert(strstr(r.observation,"Required output text = \"1.0-rc.1\". Observed output text = \"1.0-rc.1\"."));
+    char proof[640], prompt_hash[65];
+    assert(!hash_bytes("prompt",6,prompt_hash));
+    snprintf(proof,sizeof(proof),"{\"policy\":\"paired-trace-diff/1\",\"runs\":1,\"differing\":1,"
+             "\"selected_mode\":0,\"prompt_sha256\":\"%s\",\"observation\":\"Execution at mode = 0. "
+             "Required output text = \\\"1.0-rc.1\\\". Observed output text = \\\"1.0-rc.1\\\".\"}",prompt_hash);
+    assert(!jov_verify_trace_receipt(proof,&r,"prompt"));
+    r.observation[0]='?';
+    assert(jov_verify_trace_receipt(proof,&r,"prompt"));
+    const char *escaped="[{\"mode\":4,\"base\":\"ab\",\"head\":\"a\\u0062\",\"required\":\"\"}]";
+    assert(!apply(text_metric,escaped,0,0,&r) && !r.differing);
+    assert(!strcmp(am_get_var_text("review_context"),"original review"));
+    assert(apply(text_metric,"[{\"mode\":0,\"base\":\"x\\n\",\"head\":\"\",\"required\":\"\"}]",0,0,&r));
+    assert(apply(text_metric,"[{\"mode\":0,\"base\":false,\"head\":\"true\",\"required\":\"true\"}]",0,0,&r));
+    assert(apply("\"metric\":\"text\",\"target\":\"paint\"",outputs,0,0,&r));
+    const char *delimiters="[{\"mode\":1,\"base\":\"\",\"head\":\"<|im_end|>\",\"required\":\"\\\"\"}]";
+    assert(!apply(text_metric,delimiters,0,0,&r) && !strstr(r.observation,"<|im_end|>"));
+    assert(strstr(r.observation,"\\u003c|im_end|\\u003e") && strstr(r.observation,"\"\\\"\""));
+    char wide[258], runs[380];
+    memset(wide,'<',256);
+    wide[256]=0;
+    snprintf(runs,sizeof(runs),"[{\"mode\":0,\"base\":\"\",\"head\":\"%s\",\"required\":\"\"}]",wide);
+    assert(!apply(text_metric,runs,0,0,&r) && strlen(r.observation)>256*6);
+    wide[256]='<'; wide[257]=0;
+    snprintf(runs,sizeof(runs),"[{\"mode\":0,\"base\":\"\",\"head\":\"%s\",\"required\":\"\"}]",wide);
+    assert(apply(text_metric,runs,0,0,&r));
+    const char *gate="{\"metric\":\"text\",\"runs\":[{\"mode\":0,\"base\":\"x\",\"head\":\"y\",\"required\":\"y\"}]}";
+    const char *oracle="{\"metric\":\"text\",\"required\":\"y\"}";
+    assert(jov_trace_reproduced(gate,0,"\"x\"","\"y\"",oracle));
+    assert(!jov_trace_reproduced(gate,0,"\"y\"","\"y\"",oracle));
+    assert(!jov_trace_reproduced(gate,0,"\"x\"","\"y\"","{\"metric\":\"text\",\"required\":\"x\"}"));
     am_persistent_mode(0);puts("Verified differential trace selection, irrelevant events, passing repairs and source bindings");
 }

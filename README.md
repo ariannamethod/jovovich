@@ -65,7 +65,9 @@ generated. Both probabilities fit on the page. [Native validation](docs/native-v
 The opt-in OneJev 1.6 checkpoint uses the same tokenizer and AML prompt.
 On eight pairs of comment-only edits and real regressions, it got both heads
 right in all eight with paired execution evidence. The original got four.
-[Run 1.6 and reproduce the comparison](docs/onejev16.md)
+With execution on six upstream fixes and their reversals, the original got
+all six pairs right. Version 1.6 got four. The original remains the default.
+[Run 1.6](docs/onejev16.md) · [Upstream release trial](docs/upstream-release-trial.md)
 
 ## Live review
 

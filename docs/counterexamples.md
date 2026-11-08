@@ -70,8 +70,8 @@ external fixtures, tools or a container owns the versioning of that setup.
 
 | Invocation after the driver path | JSON on stdout |
 | --- | --- |
-| `observe REPO COMMIT FILE MODE` | Ordered callback array, for example `["scan","paint"]`. Called once for the base and once for the head. |
-| `expect REPO BASE FILE MODE RULES_PATH FIRST LAST` | The current contract's effect, for example `{"metric":"sequence","required":["scan","paint"]}` or `{"metric":"count","target":"paint","required":2}`. |
+| `observe REPO COMMIT FILE MODE` | Ordered callback array or single-line text result, for example `["scan","paint"]` or `"3.0.0-alpha.beta.5.5"`. Called once for the base and once for the head. |
+| `expect REPO BASE FILE MODE RULES_PATH FIRST LAST` | The current contract's effect, for example `{"metric":"sequence","required":["scan","paint"]}` or `{"metric":"count","target":"paint","required":2}`. Use `{"metric":"text","required":"3.0.0-alpha.beta.5.5"}` for text. |
 
 Each call returns one JSON value of at most 16 KiB and exits successfully.
 Malformed outputs, a changed executable or a failed run stop the batch.
