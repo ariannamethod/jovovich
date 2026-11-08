@@ -48,8 +48,9 @@ callback study favored 1.6 on four comment-only patches that the original
 flagged. These six upstream PRs favor the original on two witnessed regressions.
 
 The original keeps the root `jovovich.gguf` and the CLI default. Version 1.6
-retains its named profile and private candidate path. A later threshold trial
-can use separate calibration data and a fresh set of upstream changes.
+retains its named profile and private candidate path. The subsequent
+[threshold trial](threshold-transfer.md) used these six pairs for calibration
+and tested on eight new upstream fixes from five other repositories.
 [Individual probabilities and criteria](../examples/release-trial/results.json) ·
 [Previous eight-pair study](onejev16.md)
 

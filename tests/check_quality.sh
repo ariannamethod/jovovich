@@ -19,4 +19,17 @@ sed 's/"verdict":"CLEAN"/"verdict":"CONCERN"/g' "$cases/baseline-answers.jsonl" 
 reject "$cases/expected.jsonl" build/quality-wrong-verdict.jsonl
 sed '1s/"execution":{/"execution":{"readout_sha256":"000000000000000000000000000000000000000000000000000000000000000a",/' "$cases/baseline-answers.jsonl" > build/quality-mixed-readout.jsonl
 reject "$cases/expected.jsonl" build/quality-mixed-readout.jsonl
+for invalid in NaN inf -0.01 1.01 0.5junk; do
+    if ./build/score-quality --text-threshold "$invalid" "$cases/expected.jsonl" "$cases/inputs.jsonl" "$cases/baseline-answers.jsonl" "$cases/baseline-prepare.aml" > build/quality-rejected.json 2> build/quality-rejected.log; then
+        echo "Invalid threshold accepted: $invalid" >&2; exit 1
+    fi
+    test ! -s build/quality-rejected.json
+done
+# A zero threshold would flag everything if the policy escaped its text gate.
+./build/score-quality --text-threshold 0 "$cases/expected.jsonl" "$cases/inputs.jsonl" "$cases/baseline-answers.jsonl" "$cases/baseline-prepare.aml" > build/quality-source-threshold.json
+test "$(grep -o '"threshold_applied":false' build/quality-source-threshold.json | wc -l)" -eq 38
+fixture=examples/run-selection
+printf '%s\n' '{"id":"fa54d44aeecaad16ce1b97dd3111e012ae020e792d8f9872307f014cedc3373c","split":"transfer","family":"callback","expected":"CLEAN"}' > build/quality-callback-label.jsonl
+./build/score-quality --text-threshold 0 build/quality-callback-label.jsonl "$fixture/git-input.jsonl" "$fixture/git-answer.jsonl" aml/prepare.aml > build/quality-callback-threshold.json
+grep -q '"predicted":"CLEAN","raw_predicted":"CLEAN","threshold_applied":false' build/quality-callback-threshold.json
 printf 'Quality scoring: both complete 38-case native runs verified; truncation, swapped expectations and altered verdicts refused\n'

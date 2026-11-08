@@ -1,0 +1,7 @@
+# A verified, differing program output reaches this evaluation policy.
+assert(len(text_point) == 2, "expected P(CONCERN) and a threshold")
+assert(text_point[0] >= 0 and text_point[0] <= 1, "invalid P(CONCERN)")
+assert(text_point[1] >= 0 and text_point[1] <= 1, "invalid threshold")
+text_verdict = "CLEAN"
+if text_point[0] >= text_point[1]:
+    text_verdict = "CONCERN"

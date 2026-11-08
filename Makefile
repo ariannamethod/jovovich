@@ -42,8 +42,8 @@ build/check-pipeline: tests/check_pipeline.c native-deps | build
 build/check-git: tests/check_git.c src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_git.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-build/batch-fixture: src/facts.c src/facts.h tests/batch_fixture.c src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/batch-fixture: src/facts.c src/facts.h tests/batch_fixture.c src/review.c src/review.h src/trace_gate.c src/trace_gate.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c src/facts.c src/trace_gate.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/score-quality: src/model_manifest.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/trace_gate.c src/boundary.c tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c tests/score_quality.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@

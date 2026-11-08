@@ -66,8 +66,11 @@ The opt-in OneJev 1.6 checkpoint uses the same tokenizer and AML prompt.
 On eight pairs of comment-only edits and real regressions, it got both heads
 right in all eight with paired execution evidence. The original got four.
 With execution on six upstream fixes and their reversals, the original got
-all six pairs right. Version 1.6 got four. The original remains the default.
-[Run 1.6](docs/onejev16.md) · [Upstream release trial](docs/upstream-release-trial.md)
+all six pairs right. Version 1.6 got four. On eight further fixes from five
+other projects, the original cleared all eight repairs and caught all eight
+reversals. Version 1.6 caught five reversals at 50% and seven at a threshold
+fitted on the earlier six pairs. The original keeps the chair.
+[Run 1.6](docs/onejev16.md) · [First upstream trial](docs/upstream-release-trial.md) · [Threshold transfer](docs/threshold-transfer.md)
 
 ## Live review
 

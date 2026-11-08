@@ -3,6 +3,7 @@
 #include "ariannamethod.h"
 #include "hash.h"
 #include <assert.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -87,5 +88,13 @@ int main(void) {
     assert(jov_trace_reproduced(gate,0,"\"x\"","\"y\"",oracle));
     assert(!jov_trace_reproduced(gate,0,"\"y\"","\"y\"",oracle));
     assert(!jov_trace_reproduced(gate,0,"\"x\"","\"y\"","{\"metric\":\"text\",\"required\":\"x\"}"));
+    /* Adjacent float32 values straddle the inclusive decision boundary. */
+    float cut = 0.3906702995300293f;
+    float values[] = {nextafterf(cut, 0), cut, nextafterf(cut, 1)};
+    for (int i = 0; i < 3; i++) {
+        float point[] = {values[i], cut};
+        assert(!am_set_var_array("text_point", point, 2) && !am_exec_file("aml/text-threshold.aml"));
+        assert(!strcmp(am_get_var_text("text_verdict"), i == 0 ? "CLEAN" : "CONCERN"));
+    }
     am_persistent_mode(0);puts("Verified differential trace selection, irrelevant events, passing repairs and source bindings");
 }
