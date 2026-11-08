@@ -2,6 +2,26 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — Every other update, an entirely different woman
+
+A second voice SFT fitted 66 coefficients on paired authored remarks, with
+24 A and 24 B training targets. At step 200 she picked A for all 24 held-out
+presentations. At step 199 she had picked B on every one of them. The same
+alternation appeared on steps 197 and 198. Reducing the step size from 0.25
+to 0.025 stabilized her choices, giving 3/6 factual cases correct in both
+orders and 0/6 for taste. The ordinary OneJev got 4/6 and 1/6 respectively.
+[Selections, both letter orders and optimizer traces](docs/voice-audition.md#a-second-light-sft)
+
+## 2026-11-08 — A voice audition and a second judge
+
+Eighteen original English lines went into a separate voice experiment. A
+3,498-parameter fit on twelve lines taught the original OneJev to end a
+remark. On six Method reviews it produced three distinct remarks and zero
+grounded ones. The ordinary judge scored five of the six, including a false
+alarm on the AML fix. Liquid d1 closed one of eight witnessed upstream
+pairs with CONCERN first and zero with CLEAN first. The original closed
+all eight. [The audition, raw lines and replay](docs/voice-audition.md)
+
 ## 2026-11-08 — Eight more reversals for the original
 
 The original cleared and caught both sides of eight fresh upstream fixes

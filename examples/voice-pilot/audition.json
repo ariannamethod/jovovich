@@ -1,0 +1,86 @@
+[
+  {
+    "id": "04a2f3afd7a2979be1f3241538df55f2f71a2490a71b4f129c017de0cb28dfa0",
+    "project": "ariannamethod/notorch",
+    "direction": "repair",
+    "verdict": "CLEAN",
+    "base": {
+      "text": "P(CLEAN) is 0.53197425603866577, P(CONCERN) is",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The room went quiet. The room went quiet.",
+      "stop": "eog"
+    }
+  },
+  {
+    "id": "7b8eb7e6189ff592a58902a7f9dba6e1a11d5fd3a69347a9c0c845d5fd9d8f57",
+    "project": "ariannamethod/notorch",
+    "direction": "reverse",
+    "verdict": "CONCERN",
+    "base": {
+      "text": "The code is attempting to test a specific edge case for the text encoder, but the output is \"prefix encoded\" instead of \"row refused\", which is a",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The room went quiet. The room went quiet.",
+      "stop": "eog"
+    }
+  },
+  {
+    "id": "bf3b60bd9ad85d18fb73dfd1d78f79026536bb140ff3ba3043009c8325c0c224",
+    "project": "ariannamethod/ariannamethod.ai",
+    "direction": "repair",
+    "verdict": "CONCERN",
+    "base": {
+      "text": "The AML compiler is refusing to link the standard library, which is a critical issue. The P(CLEAN) is lower than P(CONCERN), indicating",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The clock runs on a clock.",
+      "stop": "eog"
+    }
+  },
+  {
+    "id": "ba99e2505c2c48d85b700f63ba2d12046a0799e25603be54e1e9c58f5afd9eda",
+    "project": "ariannamethod/ariannamethod.ai",
+    "direction": "reverse",
+    "verdict": "CONCERN",
+    "base": {
+      "text": "P(CLEAN) is the correct verdict. The AML compiler is not a compiler, it is a tool. The AML compiler is a tool, not",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The clock runs on a clock.",
+      "stop": "eog"
+    }
+  },
+  {
+    "id": "b7c164671f900129422cc3b33ed70c6b5f7d7bae1b8758fd2ff72e2e35b2338e",
+    "project": "ariannamethod/jovovich",
+    "direction": "repair",
+    "verdict": "CLEAN",
+    "base": {
+      "text": "The clean state is confirmed. The clean state is 0.63647603988647461.\n",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The room went quiet. The room went quiet.",
+      "stop": "eog"
+    }
+  },
+  {
+    "id": "988ebfae91342d2df4296561d28ae1c6d59fcf627ad80b2a30f72b30247823e2",
+    "project": "ariannamethod/jovovich",
+    "direction": "reverse",
+    "verdict": "CONCERN",
+    "base": {
+      "text": "The a.c file is missing a submodule pin, which is a critical issue. The clean version has the pin, but the current version is missing it. This",
+      "stop": "cap"
+    },
+    "fitted": {
+      "text": "The missing a.c and a.",
+      "stop": "eog"
+    }
+  }
+]

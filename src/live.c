@@ -7,29 +7,18 @@
 #include "harness/arch.h"
 #include "examples/bpe.h"
 #include "tools/narrow_json.h"
-#include "hash.h"
+#include "model_bytes.h"
+#include "prompt_text.h"
 #include "json.h"
 #include "readout.h"
 #include "report_json.h"
 #include "model_manifest.h"
 #include <limits.h>
-#include <fcntl.h>
 #include <math.h>
 #include <stdint.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
 
-static int hash_file(const char *path,char out[65]) {
-    int fd=open(path,O_RDONLY);struct stat st;int rc=1;
-    if(fd>=0 && !fstat(fd,&st) && st.st_size>0) {
-        void *p=mmap(NULL,(size_t)st.st_size,PROT_READ,MAP_PRIVATE,fd,0);
-        if(p!=MAP_FAILED){rc=hash_bytes(p,(size_t)st.st_size,out);munmap(p,(size_t)st.st_size);}
-    }
-    if(fd>=0)close(fd);
-    return rc;
-}
 static int run(const char *path){int rc=am_exec_file(path);if(rc)fprintf(stderr,"AML: %s\n",am_get_error());return rc;}
 
 typedef struct {
@@ -67,12 +56,10 @@ static int write_features(const final_state *state, const char *id, const char *
 /* Both tasks use the same text encoding, fresh cache, and A/B output logits. */
 static int forward_prompt(void *model,bpe_tokenizer *tok,const char *prompt,float *logits,final_state *capture) {
     if(!prompt || strlen(prompt)>1048576)return 1;
-    for(const unsigned char *p=(const unsigned char*)prompt;*p;p++)if(*p>=128) {
-        fprintf(stderr,"Native text input currently requires ASCII; Unicode uses verified token IDs\n");return 1;
-    }
     size_t len=strlen(prompt);
     int *ids=malloc((len+1)*sizeof(*ids));if(!ids)return 1;
-    int n=bpe_encode_special(tok,prompt,ids,(int)len+1);
+    int n=jov_prompt_ids(tok,prompt,ids,(int)len+1);
+    if (!n) fprintf(stderr,"Prompt uses text outside the native tokenizer coverage\n");
     kv_cache *kv=n>=1 && n<=8192 ? nt_arch_qwen35.kv_new(model,n) : NULL;
     int rc=kv?0:1;
     for(int pos=0;!rc && pos<n;pos+=32) {
@@ -135,7 +122,7 @@ int main(int argc,char **argv) {
     char *want_weights=nj_string(nj_get(manifest,"weights_sha256")),*want_tokenizer=nj_string(nj_get(manifest,"tokenizer_sha256"));
     char wh[65],th[65];int rc=1,seen=0;gguf_file *g=NULL;void *m=NULL;bpe_tokenizer *tok=NULL;
     float *logits=NULL;char *line=NULL;size_t cap=0;ssize_t bytes;nt_dims dims={0};
-    if(!model_id || !revision || !want_weights || !want_tokenizer || hash_file(argv[1],wh) || hash_file(argv[2],th) ||
+    if(!model_id || !revision || !want_weights || !want_tokenizer || jov_model_file_hash(argv[1],wh) || jov_model_file_hash(argv[2],th) ||
        strcmp(wh,want_weights) || strcmp(th,want_tokenizer)) {
         fprintf(stderr,"Model/tokenizer bytes do not match %s\n",manifest_path);goto done;
     }

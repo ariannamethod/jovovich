@@ -1,0 +1,4 @@
+voice_prompt = "<|im_start|>system\nChoose exactly one of the two remarks. Answer with its uppercase letter.<|im_end|>\n<|im_start|>user\n"
+voice_prompt = text_concat(voice_prompt, "You are Jovovich. Pick a remark you would sign. It must fit what actually happened. For equally faithful lines choose dry, specific wit in your own voice.\n\n")
+voice_prompt = text_concat(voice_prompt, voice_state)
+voice_prompt = text_concat(voice_prompt, "\nAnswer with one letter: A, B.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n")
