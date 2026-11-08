@@ -650,7 +650,7 @@ static char *render_snapshot(const char *repo,const char *runner,const packed_ro
     return result;
 }
 
-static int snapshot_check(FILE *out,const char *repo,const char *runner,const packed_row *p,const char *sha) {
+static int snapshot_check(FILE *out,const char *repo,const char *runner,const packed_row *p,const char *sha,int *matched) {
     char *view=NULL, *oid=NULL, *gold=NULL, *actual=NULL;
     int failed=1;
     if (jov_git_snapshot(repo,p->head,&view)) goto done;
@@ -665,6 +665,7 @@ static int snapshot_check(FILE *out,const char *repo,const char *runner,const pa
         if (gold[i++]=='\n') { line++; start=i; }
     }
     int equal=gold[i]==actual[i];
+    if (matched) *matched=equal;
     char generated_sha[65];
     if (hash_bytes(actual,strlen(actual),generated_sha)) goto done;
     fputc(',',out); json_field(out,"expected_blob",oid);
@@ -686,6 +687,8 @@ done:
     return jov_remove_git_snapshot(view) || failed;
 }
 
+#include "snapshot_routes.h"
+
 static int parse_mode(const char *s, int *mode) {
     char *end; errno=0;
     long long n=strtoll(s,&end,10);
@@ -706,10 +709,11 @@ int main(int argc, char **argv) {
     int locating=(recording || argc==4 || (argc==6 && !strcmp(argv[4],"--memory"))) && !strcmp(argv[1],"locate");
     const char *memory=locating && argc>=6 ? argv[5] : NULL;
     int snapshot=argc==4 && !strcmp(argv[1],"snapshot");
-    int direct=probe || locating || snapshot;
+    int routed=argc==7 && !strcmp(argv[1],"snapshots") && !strcmp(argv[5],"--memory");
+    int direct=probe || locating || snapshot || routed;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
@@ -734,9 +738,10 @@ int main(int argc, char **argv) {
     const char *batch=count ? nj_get(lines[0],"batch") : NULL;
     long long members=0;
     int whole_single=count==1 && batch && !nj_int(nj_get(batch,"count"),&members) && members==1;
-    int full_batch=recording || replay || (locating && (count>1 || whole_single));
+    int full_batch=routed || recording || replay || (locating && (count>1 || whole_single));
     if (!count || bad_input || ferror(stdin) || (!full_batch && count!=1) ||
         (full_batch && verify_batch(lines,inputs,count))) goto done;
+    if (routed && (!batch || !inputs[0].fact || verify_receipt(argv[6],inputs[0].fact))) goto done;
     if (recording && (!batch || jov_pr_read(&pr,argv[6],argv[7],inputs[0].base,inputs[0].head,inputs[0].fact) ||
         verify_receipt(memory,inputs[0].fact))) {
         fputs("PR metadata, repository rule or commit pair differs from the checked batch.\n",stderr);
@@ -744,13 +749,14 @@ int main(int argc, char **argv) {
     }
     if (replay && inputs[0].fact && verify_receipt(dir,inputs[0].fact)) goto done;
     if (verify_git(repo,inputs,count,full_batch && batch,full_batch ? NULL : batch)) goto done;
-    for (int i=0;i<count;i++) {
+    if (routed && route_snapshots(out,repo,fdpath,sha,argv[4],inputs,count)) goto done;
+    for (int i=0;!routed && i<count;i++) {
         at=i+1; packed_row *p=inputs+i; const char *line=lines[i];
         jov_replay_ref ref={0}; int bad=0;
         if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref,NULL,NULL);
         if (locating && (!full_batch || nj_get(line,"trace_evidence")))
             bad=locate(out,repo,fdpath,line,p,sha,memory);
-        if (snapshot) bad=snapshot_check(out,repo,fdpath,p,sha);
+        if (snapshot) bad=snapshot_check(out,repo,fdpath,p,sha,NULL);
         if (!bad && capture) bad=remember(out,dir,repo,fdpath,line,p,sha);
         if (!bad && (probe || ref.source_sha[0]))
             bad=measure(out,repo,fdpath,sha,line,p,probe?mode:ref.mode,probe?NULL:&ref);

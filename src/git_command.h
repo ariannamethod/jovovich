@@ -30,6 +30,25 @@ static inline char *jov_git_command(const char *repo, const char *attr_commit,
     return data;
 }
 
+/* Query a literal root-relative leaf. 0 absent, 1 regular, 2 symlink or
+ * gitlink, 3 tree, -1 when Git cannot answer. */
+static inline int jov_git_path_kind(const char *repo,const char *commit,const char *path) {
+    size_t n;
+    int code;
+    const char *args[]={"ls-tree","--full-tree","--format=%(objectmode)",commit,"--",path,NULL};
+    char *mode=jov_git_command(repo,NULL,args,32,&n,&code);
+    if (!mode) return -1;
+    int kind=-1;
+    if (!code) {
+        if (!n) kind=0;
+        else if (!strcmp(mode,"100644\n") || !strcmp(mode,"100755\n")) kind=1;
+        else if (!strcmp(mode,"120000\n") || !strcmp(mode,"160000\n")) kind=2;
+        else if (!strcmp(mode,"040000\n")) kind=3;
+    }
+    free(mode);
+    return kind;
+}
+
 /* A symlink is also stored as a blob. Bind the exact rule path, tree mode
  * and object ID before reading any historical quote. The -z listing uses
  * actual filename bytes, including tabs and newlines. */
