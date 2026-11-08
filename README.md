@@ -22,6 +22,9 @@ The dependency-free recorded demo is available with `make build/review-demo`.
 
 ## Live review
 
+The [operating rules](docs/operating-rules.md) define which executions enter
+a review and how JOVOVICH reaches a verdict.
+
 Download `config.json`, `model.safetensors` and `tokenizer.json` from
 [`OmniJev/OneJev-0.8B` at c02e305](https://huggingface.co/OmniJev/OneJev-0.8B/tree/c02e305b430b56c1e82f9675ba8c293a22646891)
 into a local snapshot directory. Convert the original text tensors and tokenizer

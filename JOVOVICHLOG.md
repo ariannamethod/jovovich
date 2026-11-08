@@ -2,6 +2,28 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — The 305-token repair on Apple Silicon
+
+On Neo's A18 Pro CPU, the full resident Git review took 1.47 s and 1.50 s
+in two five-request medians. Fable measured llama.cpp F16 `pp305` at 4.085 s
+on the same CPU and 352 ms with Metal. The Mac mini M4 Pro gave 271 ms on
+CPU and 85 ms on Metal. The [benchmark record](docs/review-latency.md#apple-silicon-measurements)
+preserves both timed workloads and the **2.72–2.78×** Neo CPU ratio.
+
+Captured all 305 IDs from the real review and replayed them directly through
+NoTorch. Last-position logits A = 10.72415 and B = 11.52211 reproduced
+68.9538% CLEAN. The [fixture](examples/review-latency/draw-replay.jsonl)
+pins the actual input for the next same-token comparison.
+
+## 2026-11-08 — Review operating rules and first-answer latency
+
+The [operating rules](docs/operating-rules.md) specify how the host selects
+an execution, how a passing repair enters the prompt, and how OneJev's two
+probabilities become a file verdict. The [latency benchmark](docs/review-latency.md)
+replayed the archived Git repair six times with the pinned F32 model. On
+Linux x86_64 the first answer took 12.952 s and the five resident reviews
+had a median of 5.236 s. All six reproduced mode 1 and 69.0% CLEAN.
+
 ## 2026-11-07 — Selecting an execution before review
 
 The frozen base chose the distinguishing input across both option orders and
