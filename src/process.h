@@ -7,15 +7,15 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/* Capture bounded stdout. The child receives argv literally and cannot consume
- * the review stream on stdin. A normal nonzero exit is reported separately. */
-static inline char *jov_command(const char *const argv[], size_t limit, size_t *length, int *code) {
+/* Capture bounded stdout and pass argv literally. An explicit descriptor supplies
+ * stdin; otherwise the child reads /dev/null. Return the exit status separately. */
+static inline char *jov_command_input(const char *const argv[], int fd, size_t limit, size_t *length, int *code) {
     int output[2];
     if (pipe(output)) return NULL;
     pid_t pid = fork();
     if (pid == 0) {
         close(output[0]);
-        int input = open("/dev/null", O_RDONLY);
+        int input = fd < 0 ? open("/dev/null", O_RDONLY) : fd;
         if (input < 0 || dup2(input, STDIN_FILENO) < 0 || dup2(output[1], STDOUT_FILENO) < 0) _exit(126);
         if (input != STDIN_FILENO) close(input);
         if (output[1] != STDOUT_FILENO) close(output[1]);
@@ -43,5 +43,8 @@ static inline char *jov_command(const char *const argv[], size_t limit, size_t *
     *length = n;
     data[n] = 0;
     return data;
+}
+static inline char *jov_command(const char *const argv[], size_t limit, size_t *length, int *code) {
+    return jov_command_input(argv,-1,limit,length,code);
 }
 #endif

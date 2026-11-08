@@ -293,7 +293,8 @@ static int origin_ref(const char *row, const packed_row *p, const char *sha, jov
 }
 
 /* Retain each original row while validating it against the new Git base. */
-static int recall(const char *dir, const char *repo, const packed_row *p, const char *sha, jov_replay_ref *r) {
+static int recall(const char *dir, const char *repo, const packed_row *p, const char *sha, jov_replay_ref *r,
+                  const char *requested,AM_String **original) {
     if (journal(p,sha,"")) return 1;
     const AM_List *matches = am_get_var_list("matches");
     if (!matches) return 1;
@@ -301,6 +302,11 @@ static int recall(const char *dir, const char *repo, const packed_row *p, const 
     int failed = 0;
     for (int i=matches->len-1; i>=0; i--) {
         AM_String *saved = am_list_get(matches,i);
+        if (requested && saved) {
+            char digest[65];
+            if (hash_bytes(saved->data,strlen(saved->data),digest)) { am_string_free(saved); return 1; }
+            if (strcmp(requested,digest)) { am_string_free(saved); continue; }
+        }
         packed_row old = {0};
         failed = !saved || parse(saved->data,&old) || !old.fact || strcmp(old.file,p->file) ||
             strcmp(old.fact->repository,p->fact->repository) || strcmp(old.fact->key,p->fact->key);
@@ -330,7 +336,9 @@ static int recall(const char *dir, const char *repo, const packed_row *p, const 
         failed = failed || (!jov_fact_same(p->fact,old.fact) && verify_receipt(dir,old.fact)) || origin_ref(chosen->data,&old,sha,r);
         release(&old);
     }
-    am_string_free(chosen);
+    if (requested && !chosen) failed=1;
+    if (!failed && original) *original=chosen;
+    else am_string_free(chosen);
     return failed;
 }
 
@@ -534,12 +542,15 @@ static const char *isolate_run(FILE *out,const char *repo,const char *runner,con
         hunk h=hunks[i];
         sample pair=test_hunk(work,path,runner,p,&base,&head,h,arg);
         const char *restored=pair.base,*introduced=pair.head;
+        int complete=restored && introduced && jov_trace_meets(oracle,restored)>=0 && jov_trace_meets(oracle,introduced)>=0;
+        int match=complete && jov_trace_reproduced(gate,mode,restored,introduced,oracle);
+        if (!complete) unknown++;
+        if (match) { matched++; selected=i; }
         if (i) fputc(',',out);
         fprintf(out,"{\"base_start\":%d,\"base_lines\":%d,\"head_start\":%d,\"head_lines\":%d,"
-                "\"after_revert\":%s,\"after_introduction\":%s}",h.base.start,h.base.count,
-                h.head.start,h.head.count,restored ? restored : "null",introduced ? introduced : "null");
-        if (!restored || !introduced || jov_trace_meets(oracle,restored)<0 || jov_trace_meets(oracle,introduced)<0) unknown++;
-        else if (jov_trace_reproduced(gate,mode,restored,introduced,oracle)) { matched++; selected=i; }
+                "\"after_revert\":%s,\"after_introduction\":%s,\"matches_original_pair\":%s}",h.base.start,h.base.count,
+                h.head.start,h.head.count,restored ? restored : "null",introduced ? introduced : "null",
+                complete ? (match ? "true" : "false") : "null");
         free_sample(&pair);
     }
     fputc(']',out);
@@ -559,8 +570,29 @@ done:
     return jov_remove_git_snapshot(work) ? NULL : status;
 }
 
+static int write_history(FILE *out,const char *original,int mode) {
+    const char *gate=nj_get(original,"trace_evidence");
+    int bad=0;
+    for (const char *run=nj_first(nj_get(gate,"runs"),&bad); run; run=nj_next(run,']',&bad)) {
+        long long m;
+        if (nj_int(nj_get(run,"mode"),&m)) return 1;
+        if (m!=mode) continue;
+        fputs(",\"historical_observation\":{\"fact\":",out);
+        if (raw_value(out,nj_get(original,"fact"))) return 1;
+        fputs(",\"metric\":",out);
+        if (raw_value(out,nj_get(gate,"metric"))) return 1;
+        if (nj_get(gate,"target")) {
+            fputs(",\"target\":",out);
+            if (raw_value(out,nj_get(gate,"target"))) return 1;
+        }
+        fputs(",\"run\":",out);
+        return raw_value(out,run) || fputc('}',out)==EOF;
+    }
+    return 1;
+}
+
 static int locate_mode(FILE *out,const char *repo,const char *runner,const packed_row *p,
-                       const char *sha,const char *gate,int mode) {
+                       const char *sha,const char *gate,int mode,const char *history) {
     sample x={0};
     int failed=1;
     if (run_sample(repo,runner,p,mode,&x) ||
@@ -569,6 +601,12 @@ static int locate_mode(FILE *out,const char *repo,const char *runner,const packe
     if (before<0 || after<0 || finding_start(out,p,sha,"execution")) goto done;
     fprintf(out,",\"mode\":%d,\"before\":%s,\"after\":%s,\"oracle\":%s,",mode,x.base,x.head,x.oracle);
     json_field(out,"review_id",p->id);
+    const char *origin=nj_get(gate,"replayed_from");
+    if (origin) {
+        fputs(",\"replayed_from\":",out);
+        if (raw_value(out,origin)) goto done;
+    }
+    if (history && write_history(out,history,mode)) goto done;
     const char *status=after ? "met" : before ? isolate_run(out,repo,runner,p,gate,mode,x.oracle) : "already_failing";
     if (!status) goto done;
     fputc(',',out); json_field(out,"status",status); failed=fputs("}\n",out)==EOF;
@@ -577,15 +615,27 @@ done:
     return failed;
 }
 
-static int locate(FILE *out,const char *repo,const char *runner,const char *row,const packed_row *p,const char *sha) {
+static int locate(FILE *out,const char *repo,const char *runner,const char *row,const packed_row *p,const char *sha,const char *memory) {
     const char *gate=nj_get(row,"trace_evidence");
     jov_trace_receipt receipt={0};
     if (!gate || !nj_is(nj_get(gate,"harness_sha256"),sha) || witness(row,p,&receipt) || !receipt.runs) return 1;
+    AM_String *original=NULL;
+    const jov_replay_ref *prior=&receipt.replay;
+    if (memory && prior->source_sha[0]) {
+        jov_replay_ref known={0};
+        if (!p->fact || verify_receipt(memory,p->fact) ||
+            recall(memory,repo,p,sha,&known,prior->source_sha,&original)) return 1;
+        if (known.mode!=prior->mode || strcmp(known.base,prior->base) || strcmp(known.head,prior->head)) {
+            am_string_free(original); return 1;
+        }
+    }
     int bad=0;
     for (const char *run=nj_first(nj_get(gate,"runs"),&bad); run; run=nj_next(run,']',&bad)) {
         long long mode;
-        if (nj_int(nj_get(run,"mode"),&mode) || locate_mode(out,repo,runner,p,sha,gate,(int)mode)) return 1;
+        if (nj_int(nj_get(run,"mode"),&mode) ||
+            locate_mode(out,repo,runner,p,sha,gate,(int)mode,original ? original->data : NULL)) { bad=1; break; }
     }
+    am_string_free(original);
     return bad;
 }
 
@@ -648,12 +698,13 @@ int main(int argc, char **argv) {
     int probe=argc==5 && !strcmp(argv[1],"probe");
     int capture=argc==5 && !strcmp(argv[1],"remember");
     int replay=argc==5 && !strcmp(argv[1],"run");
-    int locating=argc==4 && !strcmp(argv[1],"locate");
+    int locating=(argc==4 || (argc==6 && !strcmp(argv[4],"--memory"))) && !strcmp(argv[1],"locate");
+    const char *memory=locating && argc==6 ? argv[5] : NULL;
     int snapshot=argc==4 && !strcmp(argv[1],"snapshot");
     int direct=probe || locating || snapshot;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS < measured.jsonl\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
@@ -665,15 +716,15 @@ int main(int argc, char **argv) {
     int count=0, at=0, failed=1;
     FILE *out=tmpfile();
     if (!repo || !runner || access(runner,X_OK) || (driverfd=snapshot_driver(runner,fdpath,sha))<0 ||
-        driver_environment(repo,runner) || !out) goto done;
+        driver_environment(repo,runner) || !out || fcntl(fileno(out),F_SETFD,FD_CLOEXEC)<0) goto done;
     am_init(); am_persistent_mode(1);
-    if (replay && open_cases(dir,0,&writer)) goto done;
+    if ((memory || replay) && open_cases(memory ? memory : dir,0,&writer)) goto done;
     for (;;) {
         char *row=report_json_row(stdin,&bytes,&bad_input,ROW_LIMIT,JOV_BATCH_MAX_BYTES);
         if (!row) break;
         if (count==JOV_BATCH_MAX_FILES) { free(row); goto done; }
         at=count+1; lines[count++]=row;
-        if (parse(row,inputs+count-1) || (!capture && !locating && nj_get(row,"trace_evidence"))) goto done;
+        if (parse(row,inputs+count-1) || ((probe || replay) && nj_get(row,"trace_evidence"))) goto done;
     }
     const char *batch=count ? nj_get(lines[0],"batch") : NULL;
     long long members=0;
@@ -686,9 +737,9 @@ int main(int argc, char **argv) {
     for (int i=0;i<count;i++) {
         at=i+1; packed_row *p=inputs+i; const char *line=lines[i];
         jov_replay_ref ref={0}; int bad=0;
-        if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref);
+        if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref,NULL,NULL);
         if (locating && (!full_batch || nj_get(line,"trace_evidence")))
-            bad=locate(out,repo,fdpath,line,p,sha);
+            bad=locate(out,repo,fdpath,line,p,sha,memory);
         if (snapshot) bad=snapshot_check(out,repo,fdpath,p,sha);
         if (!bad && capture) bad=remember(out,dir,repo,fdpath,line,p,sha);
         if (!bad && (probe || ref.source_sha[0]))

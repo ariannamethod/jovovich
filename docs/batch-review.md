@@ -82,6 +82,28 @@ patch and both probabilities. JSON uses `jovovich.review-report/1`:
 The aggregate has a verdict and counts. Probabilities belong to the individual
 file decisions and are preserved without averaging.
 
+## Include verified findings in the PR comment
+
+Give the report the project repository and the driver that measured the batch.
+It reproduces the checks after validating all model answers. A located
+regression includes its head line range, quoted rule and observations. Deleted
+lines use base coordinates. Ambiguous results list the qualifying ranges.
+
+```sh
+build/jovovich-report replayed.jsonl answers.jsonl --locate "$repo" "$driver" --memory "$memory"
+```
+
+With `--memory DIR`, a cited case is read from the AML journal by its original
+input digest under the repository, rule, file and driver used for this review.
+The comment includes the earlier measurement and its own rule receipt, including
+when a newer receipt supersedes it. An unavailable or conflicting citation stops
+the report. Omit the memory option to report fresh execution with its recorded reference.
+
+Add `--snapshot REPO RENDER_DRIVER FILE` for each expected output to regenerate.
+Markdown puts verified checks above the file votes and diffs. JSON retains all
+findings, including successful checks, in `verified_findings`. These commands
+write the comment to stdout.
+
 ## Recorded native run
 
 [`examples/batch-20261106`](../examples/batch-20261106/) contains an actual

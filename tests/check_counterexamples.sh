@@ -131,6 +131,19 @@ replay < "$work/new-rule" > "$work/corrected"
 grep -Fq '"required":["paint","scan"]' "$work/corrected"
 grep -Fq '"supersedes":1' "$work/corrected"
 
+# The reporter resolves the original replay receipt even after the rule is corrected.
+build/batch-fixture emit "$work/corrected" clean > "$work/history-answer"
+history() { JOV_CASE_CALLS="$work/history-calls" build/jovovich-report "$@" --locate "$repo" "$driver" --memory "$memory"; }
+history "$work/corrected" "$work/history-answer" --json > "$work/history-json"
+jq -e '.reviews[0].fact.sequence==2 and (.verified_findings[0] |
+    .historical_observation.fact.sequence==1 and .historical_observation.run.required==["scan","paint"]
+    and .oracle.required==["paint","scan"] and .replayed_from.mode==1)' "$work/history-json" >/dev/null
+history "$work/corrected" "$work/history-answer" > "$work/history-comment"
+grep -Fq 'Earlier AML observation' "$work/history-comment"
+grep -Fq 'Earlier rule (current receipt 2)' "$work/history-comment"
+jq -c '.trace_evidence.replayed_from.input_sha256=("0"*64)' "$work/corrected" > "$work/swapped-case"
+build/batch-fixture emit "$work/swapped-case" clean > "$work/swapped-vote"
+reject history "$work/swapped-case" "$work/swapped-vote"
 cp "$driver" "$work/other-driver"; chmod +x "$work/other-driver"; printf '\n# another harness\n' >> "$work/other-driver"
 build/jovovich-replay run "$memory" "$repo" "$work/other-driver" < "$work/regression" > "$work/other"
 cmp "$work/other" "$work/regression"
@@ -141,6 +154,13 @@ unset JOV_CASE_FAIL
 # A memory round trip retains every signed integer bit of the selected mode.
 probe 16777217 < "$work/first" > "$work/large"
 capture < "$work/large" > "$work/large-receipt"
+# A later capture of this rule and file does not replace the cited observation.
+history "$work/corrected" "$work/history-answer" --json > "$work/history-after-write"
+cmp "$work/history-json" "$work/history-after-write"
+jq -c --slurpfile newer "$work/large-receipt" '.trace_evidence.replayed_from.input_sha256=$newer[0].input_sha256' \
+    "$work/corrected" > "$work/wrong-mode"
+build/batch-fixture emit "$work/wrong-mode" clean > "$work/wrong-mode-vote"
+reject history "$work/wrong-mode" "$work/wrong-mode-vote"
 replay < "$work/repair" > "$work/large-replay"
 grep -Fq '"mode":16777217' "$work/large-replay"
 # A newer capture on a sibling branch cannot hide an earlier landed case.
