@@ -1,5 +1,9 @@
 # How long does one review take?
 
+These timings were recorded before the host began copying both GGUFs to a
+private directory during startup. Cold-start results for the current loader
+require a new measurement. The resident series uses one loaded process.
+
 This benchmark submits the recorded [`draw.c` repair](../examples/run-selection/git-input.jsonl)
 to the ordinary JSON reviewer. Model, tokenizer, input and prompt are pinned
 by the [recorded answer](../examples/run-selection/git-answer.jsonl).

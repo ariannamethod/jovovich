@@ -53,7 +53,7 @@ static void read_arm(int arm,const char *corpus,const char *run,const char *gold
         char *context=field(input,"context"),*rule=field(input,"rule_excerpt"),*change=field(input,"change_excerpt");
         if(n%8<2){free(direct[n%2]);direct[n%2]=strdup(context);if(!direct[n%2])fail("allocation");}
         char code[JOV_BOUNDARY_CODE_SIZE],*view=NULL;
-        if(jov_boundary_context(context,rule,change,code,&view)!=1 || strcmp(view,direct[n%2]))
+        if(jov_boundary_context(NULL,context,rule,change,code,&view)!=1 || strcmp(view,direct[n%2]))
             fail("canonical context differs from its direct representative");
         prompt_hash(context,rows[n].prompt);
         char canonical_prompt[65];prompt_hash(view,canonical_prompt);

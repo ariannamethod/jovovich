@@ -61,48 +61,59 @@ static void enumerate(int direct_boundary,int equivalent) {
     for(int i=0;i<used;i++)for(int j=0;j<i;j++)
         if(samples[i].split!=samples[j].split && !strcmp(samples[i].hash,samples[j].hash))die("code crosses split");
 }
-static void source(int equivalent) {
-    puts("/* Generated trusted snippets, compiled exactly as shown; macros rename symbols only. */\n#include <stdio.h>\nstatic int calls;\nstatic void emit(void){calls++;}");
+static void source_line(FILE *out,const char *s) {
+    fputs(s,out);
+    fputc('\n',out);
+}
+static void source(FILE *out,int equivalent) {
+    source_line(out,"/* Generated trusted snippets, compiled exactly as shown; macros rename symbols only. */\n#include <stdio.h>\nstatic int calls;\nstatic void emit(void){calls++;}");
     for(int i=0;i<used;i++) {
         const char*name=samples[i].kind?"apply":"accepts";
-        printf("#define %s case_%d\n%s\n#undef %s\n",name,i,samples[i].code,name);
+        fprintf(out,"#define %s case_%d\n%s\n#undef %s\n",name,i,samples[i].code,name);
     }
-    puts("typedef struct {int checked,failures,x,y,expected,actual;} proof;\n"
+    source_line(out,"typedef struct {int checked,failures,x,y,expected,actual;} proof;\n"
          "static int bound(int policy,int value,int limit){switch(policy){case 0:return value<limit;case 1:return value<=limit;case 2:return value>limit;default:return value>=limit;}}\n"
          "static int guard(int policy,int enabled,int ready){const unsigned masks[]={12,3,8,14};return (masks[policy]>>(2*enabled+ready))&1;}\n"
          "static void observe(proof*p,int x,int y,int expected,int actual){p->checked++;if(expected!=actual){if(!p->failures){p->x=x;p->y=y;p->expected=expected;p->actual=actual;}p->failures++;}}\n"
          "static void write_proof(int id,const char*hash,const proof*p){printf(\"{\\\"case\\\":%d,\\\"code_sha256\\\":\\\"%s\\\",\\\"checked\\\":%d,\\\"failures\\\":%d,\\\"x\\\":%d,\\\"y\\\":%d,\\\"expected\\\":%d,\\\"actual\\\":%d}\\n\",id,hash,p->checked,p->failures,p->x,p->y,p->expected,p->actual);}\n"
          "int main(void){");
     for(int i=0;i<used;i++) {
-        sample*s=samples+i;puts("{ proof p={0,0,-99,-99,-1,-1};");
-        if(!s->kind)printf("for(int x=-8;x<=8;x++)observe(&p,x,0,bound(%d,x,%d),case_%d(x));\n",s->policy,s->limit,i);
-        else printf("for(int x=0;x<=1;x++)for(int y=0;y<=1;y++){calls=0;case_%d(x,y);observe(&p,x,y,guard(%d,x,y),calls);}\n",i,s->policy);
-        printf("write_proof(%d,\"%s\",&p);}\n",i,s->hash);
+        sample*s=samples+i;source_line(out,"{ proof p={0,0,-99,-99,-1,-1};");
+        if(!s->kind)fprintf(out,"for(int x=-8;x<=8;x++)observe(&p,x,0,bound(%d,x,%d),case_%d(x));\n",s->policy,s->limit,i);
+        else fprintf(out,"for(int x=0;x<=1;x++)for(int y=0;y<=1;y++){calls=0;case_%d(x,y);observe(&p,x,y,guard(%d,x,y),calls);}\n",i,s->policy);
+        fprintf(out,"write_proof(%d,\"%s\",&p);}\n",i,s->hash);
     }
     if(equivalent) {
         for(int first=0;first<used;) {
             sample *s=samples+first;
             if(s->kind){first++;continue;}
             int group=s->split?8:4;
-            puts("for(int x=-8;x<=8;x++){");
+            source_line(out,"for(int x=-8;x<=8;x++){");
             for(int j=0;j<group;j+=2) {
                 int clean=first+j;
-                printf("if((case_%d(x)!=case_%d(x))!=(x==%d))return 1;\n",clean,clean+1,s->limit);
+                fprintf(out,"if((case_%d(x)!=case_%d(x))!=(x==%d))return 1;\n",clean,clean+1,s->limit);
                 if(j)for(int b=0;b<2;b++)
-                    printf("if(case_%d(x)!=case_%d(x))return 1;\n",clean+b,first+b);
+                    fprintf(out,"if(case_%d(x)!=case_%d(x))return 1;\n",clean+b,first+b);
             }
-            puts("}");first+=group;
+            source_line(out,"}");first+=group;
         }
     }
-    puts("return ferror(stdout) || fflush(stdout);}");
+    source_line(out,"return ferror(stdout) || fflush(stdout);}");
 }
 static int number(const char*j,const char*k) {
     long long n;if(nj_int(nj_get(j,k),&n) || n<INT_MIN || n>INT_MAX)die("invalid proof integer");return (int)n;
 }
-static void read_proofs(const char*path,proof proofs[MAX_CASES]) {
-    FILE*f=fopen(path,"rb");if(!f)die("missing native proofs");char*line=NULL;size_t cap=0;
+static void read_proofs(const char*path,proof proofs[MAX_CASES],char digest[65]) {
+    size_t size;
+    char *data=nj_load(path,&size);
+    if(!data || size>2048*MAX_CASES || hash_bytes(data,size,digest))die("invalid native proofs");
+    char *cursor=data;
     for(int i=0;i<used;i++) {
-        ssize_t n=getline(&line,&cap,f);if(n<1 || n>2048 || memchr(line,0,(size_t)n))die("incomplete proof stream");
+        char *line=cursor,*nl=strchr(line,'\n');
+        size_t n=nl?(size_t)(nl-line):strlen(line);
+        if(!n || n>2048)die("incomplete proof stream");
+        cursor=line+n;
+        if(nl)*cursor++=0;
         const char*end=report_json_end(line,0);if(!end || *nj_ws(end))die("invalid proof JSON");
         char*h=nj_string(nj_get(line,"code_sha256"));
         if(number(line,"case")!=i || !h || strcmp(h,samples[i].hash))die("proof does not match source");
@@ -110,6 +121,13 @@ static void read_proofs(const char*path,proof proofs[MAX_CASES]) {
         proof*p=proofs+i;*p=(proof){number(line,"checked"),number(line,"failures"),number(line,"x"),number(line,"y"),number(line,"expected"),number(line,"actual")};
         sample*s=samples+i;
         if(p->checked!=(s->kind?4:17) || p->failures<0 || p->failures>p->checked)die("incomplete domain coverage");
+        /* Adjacent rows come from the explicitly generated compliant/mutated
+         * bodies. The off-by-one mutation changes only equality; negating a
+         * Boolean guard changes all four outcomes, starting at (0,0). */
+        int failures=(i%2)*(s->kind?4:1);
+        if(p->failures!=failures ||
+           (failures && (p->x!=(s->kind?0:s->limit) || p->y!=0)))
+            die("receipt disagrees with the generated mutation or its first witness");
         if(p->failures) {
             int expected;
             if(!s->kind) {
@@ -121,10 +139,9 @@ static void read_proofs(const char*path,proof proofs[MAX_CASES]) {
             }
             if(p->expected!=expected || p->actual==expected || p->actual<0 || p->actual>1)die("invalid counterexample");
         }else if(p->x!= -99 || p->y!= -99 || p->expected!= -1 || p->actual!= -1)die("clean case has a witness");
-        if(i%2 && (!!proofs[i-1].failures+!!p->failures!=1))die("pair must contain one clean and one broken function");
     }
-    if(getline(&line,&cap,f)>=0 || ferror(f))die("extra proof records");
-    free(line);fclose(f);
+    if(*cursor)die("extra proof records");
+    free(data);
 }
 static FILE *open_output(const char*dir,const char*name) {
     char path[4096];if(snprintf(path,sizeof(path),"%s/%s",dir,name)>=(int)sizeof(path))die("output path too long");
@@ -136,15 +153,27 @@ static void file_hash(const char*dir,const char*name,char out[65]) {
     size_t n;char*s=nj_load(path,&n);if(!s || hash_bytes(s,n,out))die("file hash failed");free(s);
 }
 static void pack(const char*proof_path,const char*dir,int equivalent) {
-    proof proofs[MAX_CASES];read_proofs(proof_path,proofs);
+    proof proofs[MAX_CASES];
+    char proofs_hash[65],source_hash[65],staged[65];
+    read_proofs(proof_path,proofs,proofs_hash);
+    file_hash(dir,"proofs.jsonl",staged);
+    if(strcmp(staged,proofs_hash))die("staged proofs differ from the validated input");
+    char *generated=NULL;
+    size_t size=0;
+    FILE *oracle=open_memstream(&generated,&size);
+    if(!oracle)die("cannot render the oracle source");
+    source(oracle,equivalent);
+    close_output(oracle);
+    if(hash_bytes(generated,size,source_hash))die("cannot hash the oracle source");
+    free(generated);
+    file_hash(dir,"oracle.c",staged);
+    if(strcmp(staged,source_hash))die("staged oracle differs from the generated source");
     FILE*train=open_output(dir,"train.jsonl"),*eval=open_output(dir,"eval-inputs.jsonl"),*gold=open_output(dir,"eval-expected.jsonl"),*audit=open_output(dir,"audit.jsonl");
     char contexts[MAX_CASES][65];int counts[2][2]={{0}},checked=0;
     am_init();am_persistent_mode(1);
     for(int i=0;i<used;i++) {
         sample*s=samples+i;proof*p=proofs+i;char threshold[24],id[32],pair[32];
         snprintf(threshold,sizeof(threshold),"%d",s->limit);snprintf(id,sizeof(id),equivalent && (s->split || (!s->kind && s->form==2))?"equiv-%03d":"semantic-%03d",i);snprintf(pair,sizeof(pair),"pair-%03d",i/2);
-        if(equivalent && !s->kind && (p->failures!=i%2 || (p->failures && p->x!=s->limit)))
-            die("expected the only disagreement at equality");
         float config[3]={(float)s->kind,(float)s->policy,(float)p->failures};
         if(am_set_var_array("case_config",config,3) || am_set_var_text("limit_text",threshold) || am_set_var_text("source_code",s->code) ||
            am_exec_file("aml/corpus.aml") || am_exec_file("aml/prepare.aml"))die(am_get_error());
@@ -177,7 +206,14 @@ static void pack(const char*proof_path,const char*dir,int equivalent) {
     FILE*m=open_output(dir,"manifest.json");
     fprintf(m,"{\"schema\":\"%s\",\"train\":128,\"eval\":%d,\"native_checks\":%d,\"train_clean\":64,\"train_concern\":64,\"eval_clean\":%d,\"eval_concern\":%d,\"sha256\":{",equivalent?"jovovich.equivalent-corpus/1":"jovovich.semantic-corpus/1",used-128,checked,counts[1][0],counts[1][1]);
     const char*names[]={"train.jsonl","eval-inputs.jsonl","eval-expected.jsonl","audit.jsonl","oracle.c","proofs.jsonl"};
-    for(int i=0;i<6;i++){char h[65];file_hash(dir,names[i],h);if(i)fputc(',',m);json_field(m,names[i],h);}
+    for(int i=0;i<6;i++){
+        char h[65];
+        if(i==4)strcpy(h,source_hash);
+        else if(i==5)strcpy(h,proofs_hash);
+        else file_hash(dir,names[i],h);
+        if(i)fputc(',',m);
+        json_field(m,names[i],h);
+    }
     fputs("}}\n",m);close_output(m);am_persistent_mode(0);
 }
 /* Compile beside the pinned equivalent corpus's oracle.c. The driver calls
@@ -253,7 +289,7 @@ int main(int argc,char**argv) {
        (!strcmp(argv[3],"boundary") || !strcmp(argv[3],"adjacent"))) {
         observed_inputs(argv[2],!strcmp(argv[3],"adjacent"));return ferror(stdout) || fflush(stdout);
     }
-    if(argc==2 && !strcmp(argv[1],"source")){source(equivalent);return ferror(stdout) || fflush(stdout);}
+    if(argc==2 && !strcmp(argv[1],"source")){source(stdout,equivalent);return ferror(stdout) || fflush(stdout);}
     if(argc==4 && !strcmp(argv[1],"pack")){pack(argv[2],argv[3],equivalent);return 0;}
     fprintf(stderr,"Usage: %s [--direct-boundary|--equivalent-forms] source | pack PROOFS.jsonl OUTPUT_DIRECTORY\n",program);return 2;
 }

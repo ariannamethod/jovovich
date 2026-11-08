@@ -6,7 +6,10 @@ ref=examples/onejev16
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT HUP INT TERM
 corpus="$tmp/pairs"
-sh tools/comment-pairs.sh "$corpus"
+mkdir -p "$tmp/xdg/git"
+printf '%s\n' 'draw.c working-tree-encoding=UTF-16' > "$tmp/xdg/git/attributes"
+printf '%s\n' 'RULES.md' > "$tmp/xdg/git/ignore"
+XDG_CONFIG_HOME="$tmp/xdg" sh tools/comment-pairs.sh "$corpus"
 build/trace-corpus paired > "$tmp/carryover"
 build/trace-corpus expected > "$tmp/labels"
 if test "$#" -eq 0; then
@@ -52,3 +55,5 @@ if test "$#" -eq 0; then
 else
     cat "$tmp/results"
 fi
+
+sh tests/check_trial_labels.sh

@@ -1,11 +1,18 @@
 #define _POSIX_C_SOURCE 200809L
-#include "ariannamethod.h"
-#include "tools/narrow_json.h"
+#include "../src/git_context.h"
+#include "../src/report_json.h"
 #include "sha256.h"
 #include <math.h>
 
 static int checks;
 #define CHECK(x) do { checks++; if(!(x)){fprintf(stderr,"FAIL line %d: %s; AML: %s\n",__LINE__,#x,am_get_error());exit(1);} } while(0)
+static ssize_t record(FILE *f,char **line,size_t *capacity) {
+    ssize_t n=getline(line,capacity,f);
+    if(n<0){CHECK(!ferror(f));return n;}
+    const char *end=memchr(*line,0,(size_t)n)?NULL:report_json_end(*line,0);
+    CHECK(end && !*nj_ws(end));
+    return n;
+}
 static char *str(const char *obj,const char *key){char *s=nj_string(nj_get(obj,key));CHECK(s);return s;}
 static double num(const char *obj,const char *key){double v;CHECK(!nj_number(nj_get(obj,key),&v));return v;}
 static void equal(const char *a,const char *b){CHECK(a && b && !strcmp(a,b));}
@@ -33,8 +40,16 @@ int main(int argc,char **argv){
     char sha[65];digest(raw,size,sha);char*expected_sha=str(meta,"cases_sha256");equal(sha,expected_sha);free(raw);free(expected_sha);
     char*a=NULL,*b=NULL,*c=NULL,*ref=NULL,*input=NULL;size_t ac=0,bc=0,cc=0,rc=0,ic=0;int count=0,misses=0;
     am_init();am_persistent_mode(1);
-    while(getline(&a,&ac,out)>=0){
-        CHECK(getline(&b,&bc,answers)>0 && getline(&c,&cc,cases)>0);count++;
+    /* Both the digest and the reconstructed AML context must agree. */
+    const char *frame="Reviewed file: f.c\nRepository rules from the base commit:\nrule\nChange under review (git diff):\ndiff";
+    char frame_id[65],modified_id[65],modified[256];
+    snprintf(modified,sizeof(modified),"%s\nextra instruction",frame);
+    CHECK(!hash_bytes(frame,strlen(frame),frame_id) && !hash_bytes(modified,strlen(modified),modified_id));
+    CHECK(jov_git_context_matches("f.c","rule","diff",frame,frame_id));
+    CHECK(!jov_git_context_matches("f.c","rule","diff",modified,frame_id));
+    CHECK(!jov_git_context_matches("f.c","rule","diff",modified,modified_id));
+    while(record(out,&a,&ac)>=0){
+        CHECK(record(answers,&b,&bc)>0 && record(cases,&c,&cc)>0);count++;
         field_equal(a,b,"id");field_equal(a,c,"id");CHECK(num(a,"schema_version")==1);
         const char*choice=nj_get(a,"choice"),*prob=nj_get(choice,"probabilities");
         char*verdict=str(choice,"verdict"),*predicted=str(b,"predicted");equal(verdict,predicted);
@@ -42,9 +57,9 @@ int main(int argc,char **argv){
         CHECK(isfinite(p[0]) && isfinite(p[1]) && p[0]>=0 && p[1]>=0 && fabs(p[0]+p[1]-1)<1e-6);
         if(!live){const char*q=nj_get(b,"probabilities");CHECK(p[0]==num(q,"CONCERN") && p[1]==num(q,"CLEAN"));}
         else{
-            CHECK(getline(&ref,&rc,refs)>0);field_equal(a,ref,"id");const char*q=nj_get(ref,"probabilities");
+            CHECK(record(refs,&ref,&rc)>0);field_equal(a,ref,"id");const char*q=nj_get(ref,"probabilities");
             CHECK(fabs(p[0]-num(q,"CONCERN"))<=2e-4 && fabs(p[1]-num(q,"CLEAN"))<=2e-4);
-            ssize_t n=getline(&input,&ic,inputs);CHECK(n>0);digest(input,(size_t)n,sha);
+            ssize_t n=record(inputs,&input,&ic);CHECK(n>0);digest(input,(size_t)n,sha);
             const char*e=nj_get(a,"execution");char*s=str(e,"input_sha256");equal(s,sha);free(s);
             s=str(e,"engine");equal(s,"NoTorch");free(s);s=str(e,"language");equal(s,"AML");free(s);
             char*manifest=nj_load("models/onejev-0.8b.json",NULL);CHECK(manifest);
@@ -68,13 +83,13 @@ int main(int argc,char **argv){
         CHECK(!am_exec_file("aml/answer.aml"));equal(am_get_var_text("verdict"),verdict);clock_check(20763,86399,999);
         free(context);free(verdict);free(predicted);free(expected);free(id);
     }
-    CHECK(count==14 && misses==2);CHECK(getline(&b,&bc,answers)<0);
+    CHECK(count==14 && misses==2);CHECK(record(answers,&b,&bc)<0);
     /* The original acceptance file also contains two generative identity
        prompts. OneJev's binary review protocol evaluated the 14 review rows. */
     int identity=0;
-    while(getline(&c,&cc,cases)>=0){CHECK(nj_is(nj_get(c,"expected"),"IDENTITY"));identity++;}
+    while(record(cases,&c,&cc)>=0){CHECK(nj_is(nj_get(c,"expected"),"IDENTITY"));identity++;}
     CHECK(identity==2);
-    if(live){CHECK(getline(&ref,&rc,refs)<0 && getline(&input,&ic,inputs)<0);fclose(refs);fclose(inputs);}
+    if(live){CHECK(record(refs,&ref,&rc)<0 && record(inputs,&input,&ic)<0);fclose(refs);fclose(inputs);}
     /* Locked draw repair logits; the second case checks a large common offset. */
     const float pairs[][2] = {{10.7241526f,11.5221119f},{10000,10000},{-10000,10000}};
     const float clean[] = {0.6895378232f,0.5f,1.0f};

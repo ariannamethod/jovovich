@@ -8,7 +8,19 @@
 static const char *report_string_end(const char *p) {
     const char *end=nj_str_end(p);
     if(!end)return NULL;
-    for(const char*q=p+1;q<end-1;q++)if((unsigned char)*q<0x20)return NULL;
+    /* JSON strings on the wire must contain Unicode scalar values in UTF-8.
+     * The decoder below checks escapes, including surrogate pairs. */
+    const unsigned char *q=(const unsigned char*)p+1, *stop=(const unsigned char*)end-1;
+    while(q<stop) {
+        unsigned c=*q++;
+        if(c<0x20)return NULL;
+        if(c<0x80)continue;
+        int n=c>=0xc2 && c<=0xdf ? 1 : c>=0xe0 && c<=0xef ? 2 : c>=0xf0 && c<=0xf4 ? 3 : 0;
+        if(!n || stop-q<n)return NULL;
+        if((c==0xe0 && q[0]<0xa0) || (c==0xed && q[0]>0x9f) ||
+           (c==0xf0 && q[0]<0x90) || (c==0xf4 && q[0]>0x8f))return NULL;
+        while(n--)if((*q++ & 0xc0)!=0x80)return NULL;
+    }
     char*s=nj_string(p);if(!s)return NULL;free(s);return end;
 }
 static const char *report_json_end(const char *p,int depth) {

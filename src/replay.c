@@ -1,10 +1,11 @@
+#define _GNU_SOURCE
 #define _XOPEN_SOURCE 700
-#include "ariannamethod.h"
+#include "git_context.h"
 #include "batch.h"
 #include "facts.h"
 #include "hash.h"
 #include "json.h"
-#include "process.h"
+#include "git_snapshot.h"
 #include "report_json.h"
 #include <limits.h>
 #include <stdint.h>
@@ -44,7 +45,8 @@ static int parse(const char *row, packed_row *p) {
     jov_review r = {.id=p->id,.model="input",.revision="input",.question="input",.file=p->file,
         .context=p->context,.rule_excerpt=p->rule,.change_excerpt=p->change,.source=&source,.fact=p->fact,.concern=.5,.clean=.5};
     char digest[65];
-    return jov_review_validate(&r) || hash_bytes(p->context, strlen(p->context), digest) || strcmp(digest,p->id) ||
+    /* Parsing also runs while recall holds a borrowed AML list. Keep it free of AML execution. */
+    return jov_review_validate(&r) || hash_bytes(p->context,strlen(p->context),digest) || strcmp(digest,p->id) ||
         hash_bytes(p->rule, strlen(p->rule), digest) || strcmp(digest,p->rule_sha) ||
         hash_bytes(p->change, strlen(p->change), digest) || strcmp(digest,p->diff_sha);
 }
@@ -62,45 +64,198 @@ static int landed(const char *repo, const char *old_head, const char *base) {
     size_t n; int code;
     char spec[80];
     snprintf(spec,sizeof(spec),"%s^{commit}",old_head);
-    char *s = jov_command((const char *[]){"git","--no-replace-objects","-C",repo,"rev-parse","--verify",
+    char *s = jov_git_command(repo,NULL,(const char *[]){"rev-parse","--verify",
                           "--quiet",spec,NULL}, 128, &n, &code);
     if (!s) return -1;
     free(s);
     if (code) return code == 1 ? 0 : -1;
-    s = jov_command((const char *[]){"git","--no-replace-objects","-C",repo,"merge-base","--is-ancestor",
+    s = jov_git_command(repo,NULL,(const char *[]){"merge-base","--is-ancestor",
                     old_head,base,NULL}, 128, &n, &code);
     if (!s) return -1;
     free(s);
     return code == 0 ? 1 : code == 1 ? 0 : -1;
 }
 
-static int verify_git(const char *repo, const packed_row *p) {
-    char first[16], last[16];
-    snprintf(first,sizeof(first),"%d",p->first); snprintf(last,sizeof(last),"%d",p->last);
-    char *actual = command((const char *[]){"build/jovovich-pack",repo,p->base,p->head,p->path,p->file,first,last,NULL},ROW_LIMIT);
-    if (!actual) return 1;
-    const char *src = nj_get(actual,"source");
-    int ok = nj_is(nj_get(actual,"id"),p->id) && nj_is(nj_get(src,"base_commit"),p->base) &&
-        nj_is(nj_get(src,"head_commit"),p->head) && nj_is(nj_get(src,"rules_blob"),p->blob) &&
-        nj_is(nj_get(src,"rules_sha256"),p->rule_sha) && nj_is(nj_get(src,"diff_sha256"),p->diff_sha);
-    free(actual);
-    return !ok || (p->fact && landed(repo,p->fact->base,p->base) != 1);
-}
-
-static int file_digest(const char *path, char digest[65]) {
-    int fd = open(path,O_RDONLY);
-    if (fd < 0) return 1;
-    int failed = 1;
-    struct stat st;
-    if (!fstat(fd,&st) && S_ISREG(st.st_mode) && st.st_size > 0 && (uintmax_t)st.st_size <= SIZE_MAX) {
-        void *data = mmap(NULL,(size_t)st.st_size,PROT_READ,MAP_PRIVATE,fd,0);
-        if (data != MAP_FAILED) {
-            failed = hash_bytes(data,(size_t)st.st_size,digest);
-            munmap(data,(size_t)st.st_size);
+/* A rule can survive a rebase of its original head. Its recorded base is
+ * required to remain in ancestry and still contains the quoted bytes. */
+static int verify_origin_rule(const char *repo, const jov_fact *f) {
+    char *oid=jov_git_rule_blob(repo,f->base,f->path);
+    if (!oid) return 1;
+    size_t size=0;
+    int code=0;
+    char *blob=jov_git_command(repo,NULL,(const char *[]){"cat-file","blob",oid,NULL},
+                               262144,&size,&code);
+    free(oid);
+    int bad=1;
+    if (blob && !code && !memchr(blob,0,size)) {
+        size_t pos=0, first=0;
+        for (int line=1;pos<size;line++) {
+            if (line==f->first) first=pos;
+            const char *nl=memchr(blob+pos,'\n',size-pos);
+            pos=nl?(size_t)(nl-blob)+1:size;
+            if (line==f->last) {
+                bad=pos-first!=strlen(f->quote) || memcmp(blob+first,f->quote,pos-first);
+                break;
+            }
         }
     }
-    close(fd);
-    return failed;
+    free(blob); return bad;
+}
+
+static jov_batch_item batch_item(const packed_row *p) {
+    return (jov_batch_item){p->file,p->id,{p->base,p->head,p->path,p->blob,
+                                           p->rule_sha,p->diff_sha,p->first,p->last}};
+}
+
+static int matches_git_row(const char *row, const packed_row *expected) {
+    const char *src=nj_get(row,"source");
+    char *file=nj_string(nj_get(row,"file")), *context=nj_string(nj_get(row,"context"));
+    int matches=file && !strcmp(file,expected->file) && context && !strcmp(context,expected->context) &&
+        nj_is(nj_get(row,"id"),expected->id) && nj_is(nj_get(src,"base_commit"),expected->base) &&
+        nj_is(nj_get(src,"head_commit"),expected->head) && nj_is(nj_get(src,"rules_blob"),expected->blob) &&
+        nj_is(nj_get(src,"rules_sha256"),expected->rule_sha) && nj_is(nj_get(src,"diff_sha256"),expected->diff_sha);
+    free(file); free(context);
+    return matches;
+}
+
+/* A single member can be captured on its own. Recover the ordered siblings
+ * from Git and bind the digest to the rule receipt supplied with the member. */
+static int verify_member(char *lines, const char *batch, const packed_row *member) {
+    long long index,count;
+    if (!nj_is(nj_get(batch,"schema"),"jovovich.git-batch/1") ||
+        !nj_is(nj_get(batch,"scope"),"all_changed_paths") ||
+        nj_int(nj_get(batch,"count"),&count) || count<1 || count>JOV_BATCH_MAX_FILES ||
+        nj_int(nj_get(batch,"index"),&index) || index<0 || index>=count) return 1;
+
+    packed_row siblings[JOV_BATCH_MAX_FILES]={0};
+    jov_batch_item items[JOV_BATCH_MAX_FILES];
+    char digest[65];
+    int n=0, bad=1;
+    for (;n<count;n++) {
+        char *end=strchr(lines,'\n');
+        if (!end) goto done;
+        *end=0;
+        if (parse(lines,&siblings[n]) || (n==index && !matches_git_row(lines,member))) goto done;
+        items[n]=batch_item(&siblings[n]);
+        lines=end+1;
+    }
+    bad=*lines || jov_batch_digest_fact(items,n,member->fact,digest) || !nj_is(nj_get(batch,"id"),digest);
+done:
+    for (int i=0;i<count;i++) release(&siblings[i]);
+    return bad;
+}
+
+/* Repack with the same isolated Git configuration, attributes and ordering
+ * as the producer. Compare decoded text so literal tabs, quotes and LF work. */
+static int verify_git(const char *repo, packed_row *p, int count, int all, const char *member_batch) {
+    char first[16],last[16];
+    snprintf(first,sizeof(first),"%d",p->first); snprintf(last,sizeof(last),"%d",p->last);
+    const char *single[]={"build/jovovich-pack",repo,p->base,p->head,p->path,p->file,first,last,NULL};
+    const char *batch[]={"build/jovovich-pack","--all",repo,p->base,p->head,p->path,first,last,NULL};
+    int full=all || member_batch;
+    char *actual=command(full?batch:single,full?JOV_BATCH_MAX_BYTES:ROW_LIMIT);
+    if (!actual) return 1;
+    int bad=0;
+    if (member_batch) bad=verify_member(actual,member_batch,p);
+    else {
+        char *line=actual;
+        for (int i=0;i<count;i++) {
+            char *end=strchr(line,'\n');
+            if (!end) { bad=1; break; }
+            *end=0;
+            if (!matches_git_row(line,&p[i])) { bad=1; break; }
+            line=end+1;
+        }
+        if (*line) bad=1;
+    }
+    free(actual);
+    return bad || (p->fact && strcmp(p->fact->base,p->base) &&
+                   (landed(repo,p->fact->base,p->base)!=1 || verify_origin_rule(repo,p->fact)));
+}
+
+/* Keep the case checkpoint in this process. A separate AML reader authenticates
+ * the exact historical receipt, including its ordinal, predecessor and clock. */
+static int verify_receipt(const char *dir, const jov_fact *f) {
+    char seq[16]; snprintf(seq,sizeof(seq),"%d",f->sequence);
+    char *json=command((const char *[]){"build/jovovich-pack","--fact",dir,f->repository,f->key,
+                                      "--as-of",seq,NULL},ROW_LIMIT);
+    jov_fact *known=NULL;
+    int bad=!json || jov_fact_decode(json,&known) || !jov_fact_same(f,known);
+    jov_fact_free(known); free(json);
+    if (bad) fputs("Rule receipt differs from the named journal entry.\n",stderr);
+    return bad;
+}
+
+/* A private copy, closed for writing before execution. Every call opens the
+ * same descriptor via /dev/fd, including shebang scripts. No call resolves
+ * the mutable operator path a second time. */
+static int snapshot_driver(const char *path, char fdpath[64], char sha[65]) {
+    int src=open(path,O_RDONLY|O_NONBLOCK|O_NOCTTY), wr=-1, rd=-1, failed=1;
+    struct stat st;
+
+    if (src<0 || fstat(src,&st) || !S_ISREG(st.st_mode) || st.st_size<=0 ||
+        (uintmax_t)st.st_size>SIZE_MAX) goto done;
+#ifdef __linux__
+    wr=memfd_create("jovovich-driver",MFD_ALLOW_SEALING);
+    if (wr<0) goto done;
+    snprintf(fdpath,64,"/dev/fd/%d",wr);
+    rd=open(fdpath,O_RDONLY);
+    if (rd<0) goto done;
+#else
+    const char *dir=getenv("TMPDIR"); if (!dir || !*dir) dir="/tmp";
+    size_t n=strlen(dir)+sizeof("/jov-driver-XXXXXX");
+    char *tmp=malloc(n); if (!tmp) goto done;
+    snprintf(tmp,n,"%s/jov-driver-XXXXXX",dir);
+    wr=mkstemp(tmp);
+    if (wr>=0) { rd=open(tmp,O_RDONLY); if (unlink(tmp)) { free(tmp); goto done; } }
+    free(tmp);
+    if (rd<0) goto done;
+#endif
+    char block[65536]; size_t total=0;
+    for (;;) {
+        ssize_t got=read(src,block,sizeof(block));
+        if (got<0 && errno==EINTR) continue;
+        if (got<0 || (size_t)got>(size_t)st.st_size-total) goto done;
+        if (!got) break;
+        for (ssize_t off=0;off<got;) {
+            ssize_t w=write(wr,block+off,(size_t)(got-off));
+            if (w<0 && errno==EINTR) continue;
+            if (w<=0) goto done;
+            off+=w;
+        }
+        total+=(size_t)got;
+    }
+    if (total!=(size_t)st.st_size || fchmod(wr,0500)) goto done;
+#ifdef __linux__
+    if (fcntl(wr,F_ADD_SEALS,F_SEAL_WRITE|F_SEAL_GROW|F_SEAL_SHRINK|F_SEAL_SEAL)) goto done;
+#endif
+    void *bytes=mmap(NULL,total,PROT_READ,MAP_PRIVATE,rd,0);
+    if (bytes==MAP_FAILED) goto done;
+    failed=hash_bytes(bytes,total,sha);
+    munmap(bytes,total);
+    snprintf(fdpath,64,"/dev/fd/%d",rd);
+done:
+    if (wr>=0 && close(wr)) failed=1;
+    if (src>=0) close(src);
+    if (failed && rd>=0) { close(rd); rd=-1; }
+    return rd;
+}
+
+/* Git membership and ordering are checked separately by the real packer. */
+static int verify_batch(char **rows, packed_row *p, int count) {
+    if (!nj_get(rows[0],"batch")) return count!=1;
+    jov_batch_item items[JOV_BATCH_MAX_FILES]; char digest[65];
+    for (int i=0;i<count;i++) {
+        const char *b=nj_get(rows[i],"batch"); long long index,n;
+        if (!nj_is(nj_get(b,"schema"),"jovovich.git-batch/1") || !nj_is(nj_get(b,"scope"),"all_changed_paths") ||
+            nj_int(nj_get(b,"index"),&index) || index!=i || nj_int(nj_get(b,"count"),&n) || n!=count ||
+            strcmp(p[i].base,p[0].base) || strcmp(p[i].head,p[0].head) || strcmp(p[i].path,p[0].path) ||
+            p[i].first!=p[0].first || p[i].last!=p[0].last || !jov_fact_same(p[i].fact,p[0].fact)) return 1;
+        items[i]=batch_item(&p[i]);
+    }
+    if (jov_batch_digest_fact(items,count,p[0].fact,digest)) return 1;
+    for (int i=0;i<count;i++) if (!nj_is(nj_get(nj_get(rows[i],"batch"),"id"),digest)) return 1;
+    return 0;
 }
 
 static int witness(const char *row, const packed_row *p, jov_trace_receipt *r) {
@@ -129,7 +284,8 @@ static int origin_ref(const char *row, const packed_row *p, const char *sha, jov
     jov_trace_receipt t = {0};
     const char *g = nj_get(row,"trace_evidence");
     const char *stamped = nj_get(g,"harness_sha256");
-    if (!g || (stamped && !nj_is(stamped,sha)) || witness(row,p,&t) || !t.differing ||
+    if (!g || (stamped && !nj_is(stamped,sha)) ||
+        !jov_git_context_matches(p->file,p->rule,p->change,p->context,p->id) || witness(row,p,&t) || !t.differing ||
         hash_bytes(row,strlen(row),r->source_sha)) return 1;
     strcpy(r->base,p->base); strcpy(r->head,p->head); strcpy(r->harness_sha,sha);
     r->mode = t.selected_mode;
@@ -137,7 +293,7 @@ static int origin_ref(const char *row, const packed_row *p, const char *sha, jov
 }
 
 /* Retain each original row while validating it against the new Git base. */
-static int recall(const char *repo, const packed_row *p, const char *sha, jov_replay_ref *r) {
+static int recall(const char *dir, const char *repo, const packed_row *p, const char *sha, jov_replay_ref *r) {
     if (journal(p,sha,"")) return 1;
     const AM_List *matches = am_get_var_list("matches");
     if (!matches) return 1;
@@ -165,11 +321,44 @@ static int recall(const char *repo, const packed_row *p, const char *sha, jov_re
     }
     if (!failed && chosen) {
         packed_row old = {0};
-        failed = parse(chosen->data,&old) || origin_ref(chosen->data,&old,sha,r);
+        failed = parse(chosen->data,&old);
+        const char *batch=nj_get(chosen->data,"batch");
+        if (!failed && batch) {
+            int available=landed(repo,old.head,old.head);
+            failed=available<0 || (available && verify_git(repo,&old,1,0,batch));
+        }
+        failed = failed || (!jov_fact_same(p->fact,old.fact) && verify_receipt(dir,old.fact)) || origin_ref(chosen->data,&old,sha,r);
         release(&old);
     }
     am_string_free(chosen);
     return failed;
+}
+
+/* Preserve the operator's compiler, libraries and fixture variables while
+ * giving every driver the same Git object lookup as pack and replay. */
+extern char **environ;
+static int driver_environment(const char *repo,const char *runner) {
+    for (size_t i=0;environ[i];) {
+        const char *entry=environ[i], *equal=strchr(entry,'=');
+        if (strncmp(entry,"GIT_",4) || !equal) { i++; continue; }
+        char *name=strndup(entry,(size_t)(equal-entry));
+        if (!name) return 1;
+        int bad=unsetenv(name);
+        free(name);
+        if (bad) return 1;
+    }
+    const char *vars[][2]={
+        {"GIT_NO_REPLACE_OBJECTS","1"},{"GIT_GRAFT_FILE","/dev/null"},{"GIT_SHALLOW_FILE",""},
+        {"GIT_NO_LAZY_FETCH","1"},{"GIT_CONFIG_NOSYSTEM","1"},{"GIT_CONFIG_GLOBAL","/dev/null"},
+        {"GIT_ATTR_NOSYSTEM","1"},{"GIT_CONFIG_COUNT","3"},
+        {"GIT_CONFIG_KEY_0","core.commitGraph"},{"GIT_CONFIG_VALUE_0","false"},
+        {"GIT_CONFIG_KEY_1","advice.graftFileDeprecated"},{"GIT_CONFIG_VALUE_1","false"},
+        {"GIT_CONFIG_KEY_2","core.attributesFile"},{"GIT_CONFIG_VALUE_2","/dev/null"},
+        {"JOV_REPOSITORY_PATH",repo},{"JOV_DRIVER_PATH",runner}
+    };
+    for (size_t i=0;i<sizeof(vars)/sizeof(*vars);i++)
+        if (setenv(vars[i][0],vars[i][1],1)) return 1;
+    return 0;
 }
 
 /* A pretty-printed runner reply must still fit one packed JSONL row. */
@@ -199,27 +388,40 @@ typedef struct { char *base, *head, *oracle; } sample;
 
 static void free_sample(sample *x) { free(x->base); free(x->head); free(x->oracle); }
 
-static int run_sample(const char *repo, const char *runner, const char *sha, const packed_row *p,
+/* The base, head and oracle each start with a fresh object view. A driver may
+ * create refs or a worktree while running without altering the next call. */
+static char *run_callback(const char *source,const char *argv[],const char *kinds) {
+    char *view=NULL, *result=NULL;
+    if (!jov_git_snapshot(source,argv[3],&view)) {
+        argv[2]=view;
+        result=runner_json(argv,kinds);
+    }
+    if (jov_remove_git_snapshot(view)) { free(result); return NULL; }
+    return result;
+}
+
+static int run_sample(const char *repo, const char *runner, const packed_row *p,
                       int mode, sample *x) {
     char arg[16], first[16], last[16];
     snprintf(arg,sizeof(arg),"%d",mode);
     snprintf(first,sizeof(first),"%d",p->first); snprintf(last,sizeof(last),"%d",p->last);
-    x->base = runner_json((const char *[]){runner,"observe",repo,p->base,p->file,arg,NULL},"[\"");
-    x->head = x->base ? runner_json((const char *[]){runner,"observe",repo,p->head,p->file,arg,NULL},"[\"") : NULL;
-    x->oracle = x->head ? runner_json((const char *[]){runner,"expect",repo,p->base,p->file,arg,
-                                      p->path,first,last,NULL},"{") : NULL;
-    char check[65];
-    return !x->oracle || file_digest(runner,check) || strcmp(check,sha);
+    x->base=run_callback(repo,(const char *[]){runner,"observe",NULL,p->base,p->file,arg,NULL},"[\"");
+    if (x->base)
+        x->head=run_callback(repo,(const char *[]){runner,"observe",NULL,p->head,p->file,arg,NULL},"[\"");
+    if (x->head)
+        x->oracle=run_callback(repo,(const char *[]){runner,"expect",NULL,p->base,p->file,arg,
+                               p->path,first,last,NULL},"{");
+    return !x->oracle;
 }
 
 static int remember(FILE *out, const char *dir, const char *repo, const char *runner, const char *row, const packed_row *p, const char *sha) {
     jov_replay_ref ref = {0};
-    if (!p->fact || strlen(row) > 65536 || origin_ref(row,p,sha,&ref)) {
+    if (!p->fact || strlen(row) > 65536 || verify_receipt(dir,p->fact) || origin_ref(row,p,sha,&ref)) {
         fputs("Capture needs a named Git rule and a differing run from this harness.\n",stderr);
         return 1;
     }
     sample x = {0};
-    int matches = !run_sample(repo,runner,sha,p,ref.mode,&x) &&
+    int matches = !run_sample(repo,runner,p,ref.mode,&x) &&
         jov_trace_reproduced(nj_get(row,"trace_evidence"),ref.mode,x.base,x.head,x.oracle);
     free_sample(&x);
     if (!matches) { fputs("The original execution or requirement did not reproduce.\n",stderr); return 1; }
@@ -235,7 +437,7 @@ static int measure(FILE *out, const char *repo, const char *runner, const char *
                    const char *row, const packed_row *p, int mode, const jov_replay_ref *ref) {
     sample x = {0};
     char *line = NULL; size_t size = 0; int failed = 1;
-    if (run_sample(repo,runner,sha,p,mode,&x)) goto done;
+    if (run_sample(repo,runner,p,mode,&x)) goto done;
     FILE *f = open_memstream(&line,&size);
     if (!f) goto done;
     const char *end=report_json_end(row,0);
@@ -294,39 +496,47 @@ int main(int argc, char **argv) {
     const char *dir = probe?NULL:argv[2];
     char *repo = realpath(argv[probe?2:3],NULL);
     char *runner = realpath(argv[probe?3:4],NULL);
-    char sha[65], *line=NULL; size_t bytes=0; int bad_input=0, writer=-1;
-    int count=0, failed=1;
+    char sha[65], fdpath[64], *lines[JOV_BATCH_MAX_FILES]={0};
+    packed_row inputs[JOV_BATCH_MAX_FILES]={0};
+    size_t bytes=0; int bad_input=0, writer=-1, driverfd=-1;
+    int count=0, at=0, failed=1;
     FILE *out=tmpfile();
-    if (!repo || !runner || access(runner,X_OK) || file_digest(runner,sha) || !out) goto done;
+    if (!repo || !runner || access(runner,X_OK) || (driverfd=snapshot_driver(runner,fdpath,sha))<0 ||
+        driver_environment(repo,runner) || !out) goto done;
     am_init(); am_persistent_mode(1);
     if (replay && open_cases(dir,0,&writer)) goto done;
-    while ((line=report_json_row(stdin,&bytes,&bad_input,ROW_LIMIT,JOV_BATCH_MAX_BYTES))) {
-        if (++count>JOV_BATCH_MAX_FILES) goto done;
-        size_t length=strlen(line);
-        if ((capture || probe) && (fgetc(stdin)!=EOF || ferror(stdin))) goto done;
-        packed_row p={0}; jov_replay_ref ref={0};
-        int bad=parse(line,&p);
-        if (!bad && !capture && nj_get(line,"trace_evidence")) {
-            fputs("Supply a fresh Git pack before attaching executions.\n",stderr); bad=1;
-        }
-        if (!bad && (capture || probe || p.fact)) bad=verify_git(repo,&p);
-        if (!bad && capture) bad=remember(out,dir,repo,runner,line,&p,sha);
-        if (!bad && replay && p.fact) bad=recall(repo,&p,sha,&ref);
-        if (!bad && (probe || ref.source_sha[0]))
-            bad=measure(out,repo,runner,sha,line,&p,probe?mode:ref.mode,probe?NULL:&ref);
-        else if (!bad && replay) bad=fwrite(line,1,(size_t)length,out)!=(size_t)length;
-        release(&p); free(line); line=NULL;
-        if (bad) goto done;
-        long staged=ftell(out);
-        if (staged<0 || (unsigned long)staged>JOV_BATCH_MAX_BYTES) goto done;
+    for (;;) {
+        char *row=report_json_row(stdin,&bytes,&bad_input,ROW_LIMIT,JOV_BATCH_MAX_BYTES);
+        if (!row) break;
+        if (count==JOV_BATCH_MAX_FILES) { free(row); goto done; }
+        at=count+1; lines[count++]=row;
+        if (parse(row,inputs+count-1) || (!capture && nj_get(row,"trace_evidence"))) goto done;
     }
-    if (!count || bad_input || ferror(stdin) || fseek(out,0,SEEK_SET)) goto done;
+    if (!count || bad_input || ferror(stdin) || (!replay && count!=1) ||
+        (replay && verify_batch(lines,inputs,count))) goto done;
+    if (replay && inputs[0].fact && verify_receipt(dir,inputs[0].fact)) goto done;
+    const char *batch=nj_get(lines[0],"batch");
+    if (verify_git(repo,inputs,count,replay && batch,replay ? NULL : batch)) goto done;
+    for (int i=0;i<count;i++) {
+        at=i+1; packed_row *p=inputs+i; const char *line=lines[i];
+        jov_replay_ref ref={0}; int bad=0;
+        if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref);
+        if (!bad && capture) bad=remember(out,dir,repo,fdpath,line,p,sha);
+        if (!bad && (probe || ref.source_sha[0]))
+            bad=measure(out,repo,fdpath,sha,line,p,probe?mode:ref.mode,probe?NULL:&ref);
+        else if (!bad && replay) bad=fputs(line,out)==EOF;
+        long staged=ftell(out);
+        if (bad || staged<0 || (unsigned long)staged>JOV_BATCH_MAX_BYTES) goto done;
+    }
+    if (fseek(out,0,SEEK_SET)) goto done;
     char block[8192]; size_t n;
     while ((n=fread(block,1,sizeof(block),out))) if (fwrite(block,1,n,stdout)!=n) goto done;
     failed=ferror(out) || fflush(stdout);
 done:
-    if (failed) fprintf(stderr,"Counterexample %s failed at row %d.\n",argv[1],count);
+    if (failed) fprintf(stderr,"Counterexample %s failed at row %d.\n",argv[1],at);
     if (out && fclose(out)) failed=1;
-    free(repo); free(runner); free(line); am_persistent_mode(0);
+    for (int i=0;i<count;i++) { release(inputs+i); free(lines[i]); }
+    if (driverfd>=0) close(driverfd);
+    free(repo); free(runner); am_persistent_mode(0);
     return failed?1:0;
 }

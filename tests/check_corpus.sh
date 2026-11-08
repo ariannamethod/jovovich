@@ -7,10 +7,13 @@ sh tools/build_corpus.sh "$work/good"
 cmp "$work/good/manifest.json" examples/semantic-20261107/manifest.json
 reject() {
     mkdir "$work/rejected"
+    cp "${2:-$work/good/oracle.c}" "$work/rejected/oracle.c"
+    cp "${3:-$1}" "$work/rejected/proofs.jsonl"
     if ./build/semantic-corpus pack "$1" "$work/rejected" > "$work/error.out" 2> "$work/error.log"; then
         echo 'FAIL: invalid oracle receipts accepted' >&2;exit 1
     fi
     test ! -e "$work/rejected/train.jsonl"
+    rm "$work/rejected/oracle.c" "$work/rejected/proofs.jsonl"
     rmdir "$work/rejected"
 }
 head -n 191 "$work/good/proofs.jsonl" > "$work/cut.jsonl"
@@ -19,6 +22,18 @@ sed 's/"checked":17/"checked":16/g' "$work/good/proofs.jsonl" > "$work/coverage.
 reject "$work/coverage.jsonl"
 sed 's/"code_sha256":"./"code_sha256":"x/' "$work/good/proofs.jsonl" > "$work/hash.jsonl"
 reject "$work/hash.jsonl"
+# These swapped observations keep both source hashes and a balanced pair.
+awk 'NR==1 {clean=$0;next}
+     NR==2 {broken=$0; a=clean; b=broken;
+            sub(/"failures".*/, "", a); sub(/^.*"failures"/, "\"failures\"", broken);
+            sub(/"failures".*/, "", b); sub(/^.*"failures"/, "\"failures\"", clean);
+            print a broken;print b clean;next} {print}' "$work/good/proofs.jsonl" > "$work/swapped.jsonl"
+reject "$work/swapped.jsonl"
+sed '2s/"failures":1/"failures":2/' "$work/good/proofs.jsonl" > "$work/wrong-total.jsonl"
+reject "$work/wrong-total.jsonl"
+printf 'int main(void) { return 7; }\n' > "$work/foreign.c"
+reject "$work/good/proofs.jsonl" "$work/foreign.c"
+reject "$work/good/proofs.jsonl" "$work/good/oracle.c" "$work/wrong-total.jsonl"
 # Change actual compiled behavior while leaving the receipt schema intact.
 sed 's/return value < -5;/return value <= -5;/g' "$work/good/oracle.c" > "$work/mutant.c"
 "${CC:-cc}" -std=c11 -O2 -Wall -Wextra -Werror "$work/mutant.c" -o "$work/mutant"

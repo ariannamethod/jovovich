@@ -2,9 +2,23 @@
 # Compile the audition material from native review receipts, keeping targets separate in each row.
 set -eu
 test "$#" = 5 || { echo 'Usage: sh examples/voice-pilot/packets.sh UPSTREAM_DIR UPSTREAM_ANSWERS METHOD_DIR METHOD_ANSWERS NEW_OUTPUT_DIR' >&2; exit 2; }
-up=$1 old=$2 method=$3 fresh=$4 out=$5
-mkdir "$out"
+out=$5
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+trap 'exit 1' HUP INT TERM
+up=$tmp/up method=$tmp/method fresh=$tmp/fresh old=$tmp/old
+mkdir "$up" "$method"
+cat < "$1/index.jsonl" > "$up/index.jsonl"
+cat < "$1/inputs.jsonl" > "$up/inputs.jsonl"
+cat < "$3/index.jsonl" > "$method/index.jsonl"
+cat < "$3/inputs.jsonl" > "$method/inputs.jsonl"
+cat < "$2" > "$old"
+cat < "$4" > "$fresh"
+sh tools/check_receipts.sh "$old" "$fresh"
 dir=examples/voice-pilot
+sh examples/release-trial/check-panel.sh examples/threshold-transfer/cases.tsv 3 "$up"
+sh examples/release-trial/check-panel.sh "$dir/method.tsv" 1 "$method"
+mkdir "$out"
 awk '(NR-1)%3==2' "$up/inputs.jsonl" > "$out/up-input"
 awk '(NR-1)%3==2' "$old" > "$out/up-answer"
 for split in train heldout; do

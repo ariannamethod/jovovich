@@ -3,7 +3,7 @@
 #include "facts.h"
 #include "boundary.h"
 #include "run_selection.h"
-#include "ariannamethod.h"
+#include "git_context.h"
 #include "harness/arch.h"
 #include "examples/bpe.h"
 #include "tools/narrow_json.h"
@@ -54,11 +54,11 @@ static int write_features(const final_state *state, const char *id, const char *
 }
 
 /* Both tasks use the same text encoding, fresh cache, and A/B output logits. */
-static int forward_prompt(void *model,bpe_tokenizer *tok,const char *prompt,float *logits,final_state *capture) {
+static int forward_prompt(void *model,bpe_tokenizer *tok,const char *prompt,const char *state,float *logits,final_state *capture) {
     if(!prompt || strlen(prompt)>1048576)return 1;
     size_t len=strlen(prompt);
     int *ids=malloc((len+1)*sizeof(*ids));if(!ids)return 1;
-    int n=jov_prompt_ids(tok,prompt,ids,(int)len+1);
+    int n=jov_framed_prompt_ids(tok,prompt,state,ids,(int)len+1);
     if (!n) fprintf(stderr,"Prompt uses text outside the native tokenizer coverage\n");
     kv_cache *kv=n>=1 && n<=8192 ? nt_arch_qwen35.kv_new(model,n) : NULL;
     int rc=kv?0:1;
@@ -90,7 +90,7 @@ static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *t
     const char *prompt=am_get_var_text("prompt");
     char ih[65],ph[65];
     if(!prompt || hash_bytes(line,bytes,ih) || hash_bytes(prompt,strlen(prompt),ph) ||
-       forward_prompt(model,tok,prompt,logits,NULL))return 1;
+       forward_prompt(model,tok,prompt,am_get_var_text("state"),logits,NULL))return 1;
     char *id=nj_string(nj_get(line,"id"));if(!id || !*id){free(id);return 1;}
     float p[2]={logits[32],logits[33]};
     softmax(p,2);
@@ -121,28 +121,31 @@ int main(int argc,char **argv) {
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
     char *want_weights=nj_string(nj_get(manifest,"weights_sha256")),*want_tokenizer=nj_string(nj_get(manifest,"tokenizer_sha256"));
     char wh[65],th[65];int rc=1,seen=0;gguf_file *g=NULL;void *m=NULL;bpe_tokenizer *tok=NULL;
-    float *logits=NULL;char *line=NULL;size_t cap=0;ssize_t bytes;nt_dims dims={0};
-    if(!model_id || !revision || !want_weights || !want_tokenizer || jov_model_file_hash(argv[1],wh) || jov_model_file_hash(argv[2],th) ||
-       strcmp(wh,want_weights) || strcmp(th,want_tokenizer)) {
-        fprintf(stderr,"Model/tokenizer bytes do not match %s\n",manifest_path);goto done;
+    float *logits=NULL;char *line=NULL;nt_dims dims={0};
+    if(!model_id || !revision || !want_weights || !want_tokenizer || jov_model_verified_pair(argv[1],argv[2],
+       want_weights,want_tokenizer,wh,th,&g,&tok)) {
+        fprintf(stderr,"Cannot snapshot, verify or load model/tokenizer for %s (check inputs and TMPDIR)\n",manifest_path);goto done;
     }
     jov_readout head;char adapter_hash[65];
     if(adapter && jov_readout_load(&head,adapter,wh,th,adapter_hash)) {
         fprintf(stderr,"Invalid readout or mismatched base model\n");goto done;
     }
-    g=gguf_open(argv[1]);m=g?nt_arch_qwen35.load(g,&dims):NULL;tok=bpe_load(argv[2]);
+    m=nt_arch_qwen35.load(g,&dims);
     if(!m || !tok || bpe_token_id(tok,"A")!=32 || bpe_token_id(tok,"B")!=33)goto done;
     logits=malloc((size_t)dims.vocab*sizeof(float));if(!logits)goto done;
     am_init();
     am_persistent_mode(1);
-    while((bytes=getline(&line,&cap,stdin))>=0) {
-        if(memchr(line,0,(size_t)bytes) || bytes>1048576){fprintf(stderr,"Invalid input row size/NUL\n");goto done;}
-        const char *end=nj_skip(line,0);
-        if(end && nj_get(line,"fact"))end=report_json_end(line,0);
-        if(!end || *nj_ws(end)){fprintf(stderr,"Invalid JSON row\n");goto done;}
+    for (;;) {
+        size_t bytes=0;
+        int bad=0;
+        line=report_json_row(stdin,&bytes,&bad,1048576,1048576);
+        if (!line) {
+            if (bad) { fprintf(stderr,"Invalid JSON or oversized input at row %d\n",seen+1); goto done; }
+            break;
+        }
         if(select) {
             if(select_run(line,(size_t)bytes,m,tok,logits,wh,th)){fprintf(stderr,"Invalid run selection at row %d\n",seen+1);goto done;}
-            seen++;continue;
+            free(line);line=NULL;seen++;continue;
         }
         char *id=nj_string(nj_get(line,"id")),*file=nj_string(nj_get(line,"file"));
         char *context=nj_string(nj_get(line,"context")),*rule=nj_string(nj_get(line,"rule_excerpt"));
@@ -171,13 +174,14 @@ int main(int argc,char **argv) {
         if(jov_review_validate(&r) || hash_bytes(line,(size_t)bytes,ih))goto row_done;
         if(r.source) {
             char rule_hash[65],diff_hash[65];
-            if(hash_bytes(rule,strlen(rule),rule_hash) || hash_bytes(change,strlen(change),diff_hash) ||
+            if(!jov_git_context_matches(file,rule,change,context,id) ||
+               hash_bytes(rule,strlen(rule),rule_hash) || hash_bytes(change,strlen(change),diff_hash) ||
                 strcmp(rule_hash,source.rules_sha256) || strcmp(diff_hash,source.diff_sha256)) {
                 fprintf(stderr,"Git evidence hash mismatch\n");goto row_done;
             }
         }
         if(canonical) {
-            int matched=jov_boundary_context(context,rule,change,code,&model_context);
+            int matched=jov_boundary_context(r.source?file:NULL,context,rule,change,code,&model_context);
             if(matched<0)goto row_done;
             if(matched)receipt.code=code;
         }
@@ -195,7 +199,7 @@ int main(int argc,char **argv) {
         size_t len=strlen(prompt);if(len>1048576 || ((canonical || has_trace) && hash_bytes(prompt,len,ph)))goto row_done;
         if(has_trace)memcpy(trace.prompt_sha256,ph,sizeof(ph));
         final_state state={.last_layer=dims.n_layers-1};
-        if(forward_prompt(m,tok,prompt,logits,features || adapter ? &state : NULL))goto row_done;
+        if(forward_prompt(m,tok,prompt,am_get_var_text("review_context"),logits,features || adapter ? &state : NULL))goto row_done;
         if(features) {status=write_features(&state,id,ih,wh,th,logits);goto row_done;}
         float probs[2]={logits[32],logits[33]};
         if(adapter) {
@@ -214,12 +218,15 @@ int main(int argc,char **argv) {
         jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL,has_trace?&trace:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
+        if (!status && !json && trace.differing)
+            status=jov_trace_write_change(stdout,nj_get(line,"trace_evidence"),&trace.measurement,file,0);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
         jov_fact_free(fact);
         free(model_context);free(id);free(file);free(context);free(rule);free(change);
         for(int i=0;i<6;i++)free(origin[i]);
-        if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}seen++;
+        if(status){fprintf(stderr,"Review failed at input row %d\n",seen+1);goto done;}
+        free(line);line=NULL;seen++;
     }
     rc=ferror(stdin) || !seen;
 done:

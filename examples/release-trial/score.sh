@@ -2,10 +2,14 @@
 # Verify native receipts for each presentation before applying the frozen thresholds.
 set -eu
 test "$#" -eq 1 || test "$#" -eq 3 || { echo 'Usage: sh examples/release-trial/score.sh CORPUS_DIR [ORIGINAL.jsonl CANDIDATE.jsonl]' >&2; exit 2; }
-corpus=$1
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 trap 'exit 1' HUP INT TERM
+corpus=$tmp/corpus
+mkdir "$corpus"
+cat < "$1/index.jsonl" > "$corpus/index.jsonl"
+cat < "$1/inputs.jsonl" > "$corpus/inputs.jsonl"
+sh examples/release-trial/check-panel.sh examples/release-trial/cases.tsv 2 "$corpus"
 jq -c '{id,split:"transfer",family:.project,expected:(if .direction=="repair" then "CLEAN" else "CONCERN" end)}' "$corpus/index.jsonl" > "$tmp/labels"
 test "$(wc -l < "$tmp/labels")" -eq 12
 build/trace-corpus expected > "$tmp/control-labels"
@@ -16,14 +20,17 @@ if test "$#" -eq 1; then
     cat "$corpus/inputs.jsonl" "$tmp/controls" examples/run-selection/git-input.jsonl > "$tmp/all"
     for profile in onejev onejev1.6; do
         gzip -dc "examples/release-trial/$profile.jsonl.gz" > "$tmp/receipts"
+        sh tools/check_receipts.sh "$tmp/receipts"
         jq -cn --slurpfile inputs "$tmp/all" --slurpfile receipts "$tmp/receipts" '
             if ($inputs|length) != 57 or ($receipts|length) != 57 then error("missing rows") else
             range(0;57) as $i | $receipts[$i] + {input:($inputs[$i] | {context,rule_excerpt,change_excerpt})} end' > "$tmp/$profile"
     done
-    original=$tmp/onejev candidate=$tmp/onejev1.6
 else
-    original=$2 candidate=$3
+    cat < "$2" > "$tmp/onejev"
+    cat < "$3" > "$tmp/onejev1.6"
 fi
+original=$tmp/onejev candidate=$tmp/onejev1.6
+sh tools/check_receipts.sh "$original" "$candidate"
 for profile in onejev onejev1.6; do
     case "$profile" in onejev) file=$original ;; onejev1.6) file=$candidate ;; esac
     test "$(wc -l < "$file")" -eq 57

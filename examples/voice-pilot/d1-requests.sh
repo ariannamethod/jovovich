@@ -6,8 +6,11 @@ dir=examples/threshold-transfer
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 trap 'exit 1' HUP INT TERM
+cp "$1/index.jsonl" "$1/inputs.jsonl" "$tmp/"
+sh examples/release-trial/check-panel.sh "$dir/cases.tsv" 3 "$tmp"
 gzip -dc "$dir/onejev.jsonl.gz" > "$tmp/receipts"
-jq -cn --slurpfile index "$1/index.jsonl" --slurpfile inputs "$1/inputs.jsonl" --slurpfile answer "$tmp/receipts" '
+sh tools/check_receipts.sh "$tmp/receipts"
+jq -cn --slurpfile index "$tmp/index.jsonl" --slurpfile inputs "$tmp/inputs.jsonl" --slurpfile answer "$tmp/receipts" '
   if ($index|length)!=16 or ($inputs|length)!=48 or ($answer|length)!=48 then error("incomplete transfer panel") else . end |
   range(0;16) as $j | $index[$j] as $case | ($j*3) as $i |
   if $inputs[$i].context!=$inputs[$i+1].context or $inputs[$i].context!=$inputs[$i+2].context or

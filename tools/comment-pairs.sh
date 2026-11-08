@@ -2,10 +2,21 @@
 # Generate single-file Git reviews. Labels stay in the separate index.
 set -eu
 test "$#" -eq 1 || { echo 'Usage: sh tools/comment-pairs.sh NEW_DIRECTORY' >&2; exit 2; }
-export LC_ALL=C GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
+export LC_ALL=C
+# The fixture creates commits and also runs an independent oracle directly.
+# Keep both away from any Git repository or index selected by the caller.
+# Only variable names matching the Git prefix are expanded here. Compiler and
+# loader settings (including library search paths) belong to the caller.
+for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done
+export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null GIT_NO_REPLACE_OBJECTS=1
+export GIT_ATTR_NOSYSTEM=1 GIT_GRAFT_FILE=/dev/null GIT_SHALLOW_FILE=
+export GIT_CONFIG_COUNT=3
+export GIT_CONFIG_KEY_0=core.attributesFile GIT_CONFIG_VALUE_0=/dev/null
+export GIT_CONFIG_KEY_1=core.excludesFile GIT_CONFIG_VALUE_1=/dev/null
+export GIT_CONFIG_KEY_2=advice.graftFileDeprecated GIT_CONFIG_VALUE_2=false
 export GIT_AUTHOR_NAME=fixture GIT_COMMITTER_NAME=fixture
 export GIT_AUTHOR_EMAIL=fixture@example.invalid GIT_COMMITTER_EMAIL=fixture@example.invalid
-export GIT_AUTHOR_DATE='2026-11-08T00:00:00Z' GIT_COMMITTER_DATE='2026-11-08T00:00:00Z'
+export GIT_AUTHOR_DATE=2026-11-08T00:00:00Z GIT_COMMITTER_DATE=2026-11-08T00:00:00Z
 mkdir "$1"
 out=$(cd "$1" && pwd)
 work=$(mktemp -d)

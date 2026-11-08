@@ -70,6 +70,8 @@ OPENBLAS_NUM_THREADS=4 NT_ATTN_THREADS=4 sh tests/run_quality.sh \
   /path/to/model.gguf /path/to/tokenizer.gguf /path/to/results
 ```
 
+Use a new output path for each run. A successful run publishes both sets of answers and both scores together. A failed run leaves the output path available for a retry. Existing results, empty directories and symlinks are preserved.
+
 The runner uses a temporary working directory for each question configuration
 and the same native executable. It saves all answers and independently scores
 them. The production AML files are read as dependencies; the experiment's

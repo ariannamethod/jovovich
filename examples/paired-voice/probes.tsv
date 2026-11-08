@@ -1,0 +1,4 @@
+inih	140	Parse foo = bar followed by an indented Hi World ;c2 and inspect the final handler value.
+inih	188	With INI_MAX_LINE=16, parse key=abcdefghijklmnopqrstu and a newline. Report the first error line.
+node-semver	867	Is ^10.2.0-beta.2 a subset of ^10.2.0-beta.1?
+node-semver	872	Does 0.0.3-alpha satisfy ^0.0.3 with includePrerelease?

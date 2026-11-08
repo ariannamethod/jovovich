@@ -96,7 +96,10 @@ evaluate the one-token decision on the pinned OneJev text backbone.
 ## Failure gates
 
 Tests reject truncated receipts, incomplete domain counts and changed code
-hashes. Two compiled mutations also fail: changing a valid strict comparison
+hashes. Receipt validation checks the expected mismatch count and the first
+failing input against the mutation used to generate each pair. Swapping the
+observations between the two functions fails before export. Two compiled
+mutations also fail: changing a valid strict comparison
 to an inclusive one, and changing the reference comparison itself. The first
 breaks pair consistency; the second fails counterexample validation. An
 existing output directory is refused and remains intact. All earlier native
