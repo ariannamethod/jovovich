@@ -1,0 +1,290 @@
+{
+  "heldout_loss": [
+    {
+      "version": "base",
+      "full_vocabulary": 3.12570321447,
+      "within_letters": 0.960114303665964,
+      "geometric_mean_letter_mass": 0.11468237701567932
+    },
+    {
+      "version": "fitted",
+      "full_vocabulary": 2.07323496452,
+      "within_letters": 2.0715851500683895,
+      "geometric_mean_letter_mass": 0.9983515457441254
+    }
+  ],
+  "results": [
+    {
+      "axis": "grounding",
+      "original": {
+        "correct": 9,
+        "presentations": 12,
+        "both_orders": 4,
+        "letter_changes_meaning": 1
+      },
+      "fitted": {
+        "correct": 6,
+        "presentations": 12,
+        "both_orders": 0,
+        "letter_changes_meaning": 6
+      }
+    },
+    {
+      "axis": "taste",
+      "original": {
+        "correct": 4,
+        "presentations": 12,
+        "both_orders": 1,
+        "letter_changes_meaning": 2
+      },
+      "fitted": {
+        "correct": 6,
+        "presentations": 12,
+        "both_orders": 0,
+        "letter_changes_meaning": 6
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "project": "jashkenas/underscore",
+      "pr": 3026,
+      "direction": "repair",
+      "axis": "grounding",
+      "wanted": "An empty box, inventoried down to its last zero items. You may close the lid.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.39773553432606279,
+          "fitted_p_a": 0.97989883460529958
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.53521159208564895,
+          "fitted_p_a": 0.9825205550725824
+        }
+      ]
+    },
+    {
+      "project": "jashkenas/underscore",
+      "pr": 3026,
+      "direction": "repair",
+      "axis": "taste",
+      "wanted": "An empty box, inventoried down to its last zero items. You may close the lid.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.1476371313434155,
+          "fitted_p_a": 0.94809294501710184
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.77596626990749307,
+          "fitted_p_a": 0.98695078824754645
+        }
+      ]
+    },
+    {
+      "project": "jashkenas/underscore",
+      "pr": 3026,
+      "direction": "reverse",
+      "axis": "grounding",
+      "wanted": "I ordered an empty array. Null appears to have signed for the parcel.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.62379525488653065,
+          "fitted_p_a": 0.9870994768469743
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.23401699890629796,
+          "fitted_p_a": 0.97306954574667448
+        }
+      ]
+    },
+    {
+      "project": "jashkenas/underscore",
+      "pr": 3026,
+      "direction": "reverse",
+      "axis": "taste",
+      "wanted": "I ordered an empty array. Null appears to have signed for the parcel.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.5041667450468782,
+          "fitted_p_a": 0.98486814184069582
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.49334660704281408,
+          "fitted_p_a": 0.98280117223611829
+        }
+      ]
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "repair",
+      "axis": "grounding",
+      "wanted": "Four goes to five. The rest of the family gets to keep its surname.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.77796592959992983,
+          "fitted_p_a": 0.99171514693372798
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.33483217295825468,
+          "fitted_p_a": 0.97996895962665242
+        }
+      ]
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "repair",
+      "axis": "taste",
+      "wanted": "Four goes to five. The rest of the family gets to keep its surname.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.1793826824007968,
+          "fitted_p_a": 0.95660810169489563
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.48069721639745,
+          "fitted_p_a": 0.97925916729350038
+        }
+      ]
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "reverse",
+      "axis": "grounding",
+      "wanted": "We were counting past four. Who put a zero in charge of the guest list?",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.60763020153332326,
+          "fitted_p_a": 0.98838017363851627
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.44359806687215164,
+          "fitted_p_a": 0.98392978264349829
+        }
+      ]
+    },
+    {
+      "project": "node-semver",
+      "pr": 870,
+      "direction": "reverse",
+      "axis": "taste",
+      "wanted": "We were counting past four. Who put a zero in charge of the guest list?",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.17198951083637193,
+          "fitted_p_a": 0.96548732938245452
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.75403981481875071,
+          "fitted_p_a": 0.98980609791495133
+        }
+      ]
+    },
+    {
+      "project": "npm/ini",
+      "pr": 123,
+      "direction": "repair",
+      "axis": "grounding",
+      "wanted": "A space trailed the section home. The key still answered its door.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.72990386903077187,
+          "fitted_p_a": 0.98968729630763863
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.23558910499258215,
+          "fitted_p_a": 0.97467272617495937
+        }
+      ]
+    },
+    {
+      "project": "npm/ini",
+      "pr": 123,
+      "direction": "repair",
+      "axis": "taste",
+      "wanted": "A space trailed the section home. The key still answered its door.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.32391285363056993,
+          "fitted_p_a": 0.97563833382250764
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.4325729159200446,
+          "fitted_p_a": 0.97855158280378218
+        }
+      ]
+    },
+    {
+      "project": "npm/ini",
+      "pr": 123,
+      "direction": "reverse",
+      "axis": "grounding",
+      "wanted": "One space after the bracket and suddenly nobody lives at this address.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.34229215552910414,
+          "fitted_p_a": 0.98325228953181709
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.4610044569331459,
+          "fitted_p_a": 0.98621752009524311
+        }
+      ]
+    },
+    {
+      "project": "npm/ini",
+      "pr": 123,
+      "direction": "reverse",
+      "axis": "taste",
+      "wanted": "One space after the bracket and suddenly nobody lives at this address.",
+      "fitted_both": false,
+      "presentations": [
+        {
+          "target": "A",
+          "base_p_a": 0.081026068167183371,
+          "fitted_p_a": 0.9400240979351645
+        },
+        {
+          "target": "B",
+          "base_p_a": 0.87533822457549726,
+          "fitted_p_a": 0.99349095868594717
+        }
+      ]
+    }
+  ]
+}

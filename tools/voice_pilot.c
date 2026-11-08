@@ -29,7 +29,8 @@ typedef struct {
     bpe_tokenizer *tokenizer;
     nt_dims dims;
     float *logits, feature[WIDTH];
-    int end, captured;
+    int end, captured, selecting;
+    const char *policy;
 } engine;
 
 static void fail(const char *s) { fprintf(stderr,"Voice pilot: %s\n",s); exit(1); }
@@ -58,7 +59,13 @@ static int read_rows(const char *path, packet *rows, engine *e) {
             fail("invalid packet");
         int k=bpe_encode_raw(e->tokenizer,p->target,p->tokens,MAX_TARGET);
         if (k<1 || k>=MAX_TARGET) fail("reference outside token bounds");
-        p->tokens[k]=e->end; p->length=k+1;
+        if (e->selecting) {
+            if (k!=1 || (strcmp(p->target,"A") && strcmp(p->target,"B"))) fail("expected one A/B label");
+            p->length=1;
+        } else {
+            p->tokens[k]=e->end;
+            p->length=k+1;
+        }
         free(s);
     }
     if (bad || !n || ferror(f)) fail("incomplete packet stream");
@@ -95,7 +102,7 @@ static void read_logits(engine *e,kv_cache *kv,int *ids,int n,int pos) {
 }
 
 static kv_cache *start(engine *e,const packet *p,int *pos,int room) {
-    if (am_set_var_text("voice_state",p->state) || am_exec_file("aml/voice-prompt.aml")) fail("AML voice prompt");
+    if (am_set_var_text("voice_state",p->state) || am_exec_file(e->policy)) fail("AML voice prompt");
     const char *prompt=am_get_var_text("voice_prompt");
     int ids[MAX_PROMPT];
     int n=prompt?bpe_encode_special(e->tokenizer,prompt,ids,MAX_PROMPT):0;
@@ -166,7 +173,7 @@ static double nll(const adapter *a,const position *data,int n,float *grad) {
     return loss/n;
 }
 
-static void fit(adapter *a,const position *data,int n) {
+static void fit(adapter *a,const position *data,int n,float rate,adapter *last_four) {
     int size=a->n*WIDTH;
     float *g=calloc((size_t)size,sizeof(*g)),*next=malloc((size_t)size*sizeof(*next));
     if (!g || !next) fail("optimizer allocation");
@@ -174,8 +181,9 @@ static void fit(adapter *a,const position *data,int n) {
         memset(g,0,(size_t)size*sizeof(*g));
         nll(a,data,n,g);
         for (int j=0;j<size;j++) g[j]+=0.002f*a->params[j];
-        if (nt_sgd_values(a->params,g,size,0.25f,next)) fail("NoTorch SGD");
+        if (nt_sgd_values(a->params,g,size,rate,next)) fail("NoTorch SGD");
         memcpy(a->params,next,(size_t)size*sizeof(*next));
+        if (last_four && step>=STEPS-4) last_four[step-(STEPS-4)]=*a;
     }
     free(g);free(next);
 }
@@ -208,21 +216,52 @@ static void generate(FILE *out,engine *e,const adapter *a,const packet *p) {
     fputs("]}",out);
 }
 
+static double letter_probability(const position *p,const adapter *a,int index_a,int index_b) {
+    double margin=(double)p->base[index_a]-p->base[index_b];
+    if (a) margin+=offset(a,index_a,p->feature)-offset(a,index_b,p->feature);
+    return 1.0/(1.0+exp(-margin));
+}
+
+/* A same-panel diagnostic requested after the registered selector chose A on every row. */
+static void stability(FILE *out,adapter *a,const position *train,int n,const position *held,int m,int ia,int ib) {
+    const float rates[]={0.25f,0.025f};
+    adapter *tail=calloc(4,sizeof(*tail));
+    if (!tail) fail("optimizer trace allocation");
+    fputs(",\"optimizer_tail\":[",out);
+    for (int r=0;r<2;r++) {
+        memset(a->params,0,sizeof(a->params));
+        fit(a,train,n,rates[r],tail);
+        for (int k=0;k<4;k++) {
+            int chose_a=0;
+            for (int i=0;i<n;i++) chose_a+=letter_probability(train+i,&tail[k],ia,ib)>=0.5;
+            fprintf(out,"%s{\"rate\":%.4g,\"step\":%d,\"train_nll\":%.12g,\"train_chose_a\":%d,\"heldout_p_a\":[",
+                    r || k?",":"",rates[r],STEPS-3+k,nll(&tail[k],train,n,NULL),chose_a);
+            for (int i=0;i<m;i++) fprintf(out,i?",%.17g":"%.17g",letter_probability(held+i,&tail[k],ia,ib));
+            fputs("]}",out);
+        }
+    }
+    fputc(']',out); free(tail);
+}
+
 static void digest(const char *path,char out[65]) {
     if (jov_model_file_hash(path,out)) fail("cannot hash a required file");
 }
 
 int main(int argc,char **argv) {
-    if (argc!=5) {fprintf(stderr,"Usage: %s ORIGINAL.gguf TOKENIZER.gguf TRAIN.jsonl HELDOUT.jsonl\n",argv[0]);return 2;}
+    int diagnosing=argc==6 && !strcmp(argv[1],"--select-stability");
+    int selecting=diagnosing || (argc==6 && !strcmp(argv[1],"--select"));
+    if (selecting) { argv++; argc--; }
+    if (argc!=5) {fprintf(stderr,"Usage: voice-pilot [--select|--select-stability] ORIGINAL.gguf TOKENIZER.gguf TRAIN.jsonl HELDOUT.jsonl\n");return 2;}
+    const char *policy=selecting?"aml/voice-select.aml":"aml/voice-prompt.aml";
     char wh[65],th[65],train_hash[65],test_hash[65],aml_hash[65];
     digest(argv[1],wh);digest(argv[2],th);digest(argv[3],train_hash);digest(argv[4],test_hash);
-    digest("aml/voice-prompt.aml",aml_hash);
+    digest(policy,aml_hash);
     char *manifest=nj_load("models/onejev-0.8b.json",NULL);
     if (!manifest || !nj_is(nj_get(manifest,"weights_sha256"),wh) || !nj_is(nj_get(manifest,"tokenizer_sha256"),th))
         fail("model or tokenizer differs from the original release");
     free(manifest);
     gguf_file *gg=gguf_open(argv[1]);
-    engine e={0};
+    engine e={.policy=policy,.selecting=selecting};
     e.model=gg?nt_arch_qwen35.load(gg,&e.dims):NULL;
     e.tokenizer=bpe_load(argv[2]);
     if (!e.model || !e.tokenizer || e.dims.vocab<=0) fail("cannot open native model and tokenizer");
@@ -249,16 +288,24 @@ int main(int argc,char **argv) {
             }
         }
     }
+    int index_a=-1,index_b=-1;
+    if (selecting) {
+        int token_a=bpe_token_id(e.tokenizer,"A"), token_b=bpe_token_id(e.tokenizer,"B");
+        if (a.n!=2 || token_a<0 || token_b<0 || token_a>=e.dims.vocab || token_b>=e.dims.vocab)
+            fail("selector requires both A and B training labels");
+        index_a=a.index[token_a]; index_b=a.index[token_b];
+        if (index_a<0 || index_b<0) fail("selector label mismatch");
+    }
     position *training=calloc((size_t)nt*MAX_TARGET,sizeof(*training)),*held=calloc((size_t)nv*MAX_TARGET,sizeof(*held));
     if (!training || !held) fail("training allocation");
     am_init();am_persistent_mode(1);
     int n=collect(&e,&a,train,nt,training), m=collect(&e,&a,test,nv,held);
     double train_before=nll(&a,training,n,NULL),held_before=nll(&a,held,m,NULL);
-    fit(&a,training,n);
+    fit(&a,training,n,0.25f,NULL);
     double train_after=nll(&a,training,n,NULL),held_after=nll(&a,held,m,NULL);
     FILE *out=tmpfile();
     if (!out) fail("cannot buffer audition");
-    fprintf(out,"{\"schema\":\"jovovich.voice-pilot/1\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",wh,th);
+    fprintf(out,"{\"schema\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",selecting?"jovovich.voice-selection/1":"jovovich.voice-pilot/1",wh,th);
     fprintf(out,"\"train_sha256\":\"%s\",\"heldout_sha256\":\"%s\",\"prompt_policy_sha256\":\"%s\",",train_hash,test_hash,aml_hash);
     fprintf(out,"\"train_tokens\":%d,\"heldout_tokens\":%d,\"train_nll\":[%.12g,%.12g],\"heldout_nll\":[%.12g,%.12g],",n,m,train_before,train_after,held_before,held_after);
     fprintf(out,"\"steps\":%d,\"learned_parameters\":%d,\"adapter\":[",STEPS,a.n*WIDTH);
@@ -270,9 +317,17 @@ int main(int argc,char **argv) {
     fputs("],\"audition\":[",out);
     for (int i=0;i<nv;i++) {
         fprintf(out,"%s{\"id\":\"%s\",\"base\":",i?",":"",test[i].id);
-        generate(out,&e,NULL,test+i);fputs(",\"fitted\":",out);generate(out,&e,&a,test+i);fputc('}',out);
+        if (selecting) {
+            fprintf(out,"%.17g,\"fitted\":%.17g",letter_probability(held+i,NULL,index_a,index_b),
+                    letter_probability(held+i,&a,index_a,index_b));
+        } else {
+            generate(out,&e,NULL,test+i); fputs(",\"fitted\":",out); generate(out,&e,&a,test+i);
+        }
+        fputc('}',out);
     }
-    fputs("]}\n",out);
+    fputc(']',out);
+    if (diagnosing) stability(out,&a,training,n,held,m,index_a,index_b);
+    fputs("}\n",out);
     if (ferror(out) || fseek(out,0,SEEK_SET)) fail("cannot finish audition");
     char buf[8192];size_t got;
     while ((got=fread(buf,1,sizeof(buf),out))) if(fwrite(buf,1,got,stdout)!=got) fail("write failed");

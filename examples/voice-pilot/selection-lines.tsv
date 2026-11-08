@@ -1,0 +1,9 @@
+DaveGamble/cJSON	810	The array now contains one, two and three in order.	The two is absent from the resulting array.
+vercel/ms	111	The duration was parsed to the expected number of milliseconds.	Parsing minus ten and a half hours returned undefined.
+jashkenas/underscore	3018	Calling max on null returned negative infinity.	Calling max on null raised a TypeError.
+mholt/PapaParse	1124	The plus character was used to escape the embedded plus.	The embedded plus was escaped using double quotes.
+mholt/PapaParse	1128	The parser selected the semicolon delimiter.	The parser selected a comma from inside a quoted field.
+npm/ini	252	The two entries were returned as an array.	The parser returned a string containing only the first entry.
+jashkenas/underscore	3026	The boxed empty string produced an empty array.	The boxed empty string produced null.	An empty box, inventoried down to its last zero items. You may close the lid.	I ordered an empty array. Null appears to have signed for the parcel.
+npm/ini	123	The value remained accessible under its section after the trailing space.	The lookup returned undefined for the key in the section with a trailing space.	A space trailed the section home. The key still answered its door.	One space after the bracket and suddenly nobody lives at this address.
+node-semver	870	The last prerelease component increased from four to five.	The prerelease suffix was reset to zero.	Four goes to five. The rest of the family gets to keep its surname.	We were counting past four. Who put a zero in charge of the guest list?

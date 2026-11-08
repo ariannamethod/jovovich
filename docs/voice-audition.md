@@ -59,6 +59,68 @@ whose remarks were identical. The fitted coefficients stay in the research
 archive. The ordinary review uses its existing decision and renderer.
 [Every decoded line](../examples/voice-pilot/audition.json) · [Native outputs and adapter](../examples/voice-pilot/voice.json.gz)
 
+## A second light SFT
+
+The second fit has 66 parameters, the A and B output rows alone. On each
+presentation it sees the frozen official verdict, the filename, the execution
+and two authored lines. Taste asks it to pick between an accurate dry line
+and an accurate plain line. Grounding asks it to pick between two dry lines
+written for opposite outcomes. The instruction stays the same across the two
+tasks. Every pair appears with both letter assignments. The six external
+training fixes supply 48 supervised letters. Underscore #3026, npm/ini
+#123 and node-semver #870 supply 24 held-out letters. Each was new to the
+voice experiments. Both probabilities come from the native A/B logits. The
+wording in this experiment is authored, and the style preferences are Astra's.
+[Protocol before fitting](../examples/voice-pilot/selection-protocol.md) · [Fresh lines and plain alternatives](../examples/voice-pilot/selection-lines.tsv)
+
+| What the two remarks differ on | Original, correct / 12 | Fitted, correct / 12 | Original, both orders / 6 | Fitted, both orders / 6 |
+| --- | ---: | ---: | ---: | ---: |
+| What the code did | 9 | 6 | 4 | 0 |
+| Voice, with the same facts | 4 | 6 | 1 | 0 |
+
+The fitted head chose A on all 24 presentations, with P(A) between 94.00%
+and 99.35%. An apparent gain from 4 to 6 on taste came entirely from order.
+Full-vocabulary NLL nevertheless fell from 3.071 to 2.051 on train and
+3.126 to 2.073 on held-out. Scored within A and B alone, held-out loss rose
+from 0.960 to 2.072. The two losses give a geometric mean vocabulary mass
+on the letters of 11.47% before and 99.84% after fitting. The optimizer made
+letter answers likely even as it grew worse at choosing the intended one.
+All 48 training presentations were balanced,
+24 targets per letter. The registered selector missed the gate on both tasks.
+[Every paired choice](../examples/voice-pilot/selection-results.json) · [Native probabilities and weights](../examples/voice-pilot/selection.json.gz)
+
+### Why all A?
+
+After seeing the registered result, we replayed the same 72 inputs at the
+registered SGD step and a tenfold smaller step, reading out the last four
+updates. The original run reproduced exactly, including all 24 probabilities.
+This same-panel diagnostic exposes the optimization dynamics.
+
+| SGD step size | Training choices of A / 48, steps 197–200 | Held-out choices of A / 24, same steps | Grounding correct in both orders, step 200 | Taste correct in both orders, step 200 |
+| --- | --- | --- | ---: | ---: |
+| 0.25 | 0, 48, 0, 48 | 0, 24, 0, 24 | 0/6 | 0/6 |
+| 0.025 | 25, 25, 25, 25 | 13, 13, 13, 13 | 3/6 | 0/6 |
+
+The all-A outcome at update 200 was the even phase of a two-letter oscillation.
+At 0.025 the held-out predictions stayed fixed across all four updates.
+The smaller step got 7/12 factual presentations and 2/12 style presentations
+right. The frozen original had 9/12 and 4/12. Both adapters stay archived.
+The next generative question is whether a line can keep a concrete detail
+from the witness while changing its judgment with the execution. That calls
+for paired spoken references and a fresh listener's preferences.
+[All eight optimizer snapshots](../examples/voice-pilot/selection-stability.json.gz)
+
+To reproduce the second fit and each individual choice:
+
+```sh
+dir=examples/voice-pilot
+sh "$dir/selection.sh" build/voice-selection
+./build/voice-pilot --select /path/to/jovovich.gguf /path/to/tokenizer.gguf \
+  build/voice-selection/train.jsonl build/voice-selection/heldout.jsonl > selection.json
+sh "$dir/selection-score.sh" build/voice-selection selection.json
+# Replace --select with --select-stability to reproduce both optimizer tails.
+```
+
 ## Liquid in the decision chair
 
 Liquid's 587M multimodal checkpoint exposes a named choice through

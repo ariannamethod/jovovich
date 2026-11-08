@@ -29,7 +29,7 @@ static void check_math(void) {
         a.params[i]=saved;
         if (fabs((plus-minus)/(2*step)-gradient[i])>5e-5) fail("gradient mismatch");
     }
-    fit(&a,rows,2);
+    fit(&a,rows,2,0.25f,NULL);
     if (nll(&a,rows,2,NULL)>=value) fail("SGD failed to reduce loss");
 }
 

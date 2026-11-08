@@ -104,6 +104,7 @@ check: build/check-voice build/compare-comment-pairs build/jovovich-replay build
 	sh tests/check_execution_traces.sh
 	sh tests/check_run_selection.sh
 	sh tests/check_bench_review.sh
+	sh tests/check_voice.sh
 
 clean:
 	rm -rf build
