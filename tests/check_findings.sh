@@ -107,6 +107,71 @@ if test -e "$JOV_DRIVER_PATH.once"; then printf 'second'; else touch "$JOV_DRIVE
 DRIVER
 chmod +x "$work/unstable"
 reject "$tool" snapshot "$repo" "$work/unstable" < "$work/text"
+# Both repositories have the same Git objects and PR number, with independent rules.
+memory="$work/pr-memory"
+mkdir "$memory"
+git -c advice.detachedHead=false clone -q "$repo" "$work/fork"
+prepare_pr() {
+    build/jovovich-pack --remember "$memory" "$1" parity --all "$2" "$base" "$one" RULES > "$work/pr-pack"
+    sed -n '1p' "$work/pr-pack" | "$tool" probe "$2" "$work/driver" -2 > "$3"
+    sed -n '2p' "$work/pr-pack" >> "$3"
+}
+pr_metadata() {
+    jq -n --arg url "https://github.com/$1/pull/7" --arg date "$2" --arg base "$base" --arg head "$3" \
+        '{number:7,url:$url,createdAt:$date,baseRefOid:$base,headRefOid:$head}'
+}
+record_pr() { "$tool" locate "$1" "$work/driver" --record-pr "$memory" "$2" "$3"; }
+history() { "$tool" history "$memory" "$1" 7 "$2"; }
+prepare_pr Studio/One "$repo" "$work/a"
+prepare_pr studio/two "$work/fork" "$work/b"
+pr_metadata Studio/One 2024-02-29T23:59:59Z "$one" > "$work/a-meta"
+pr_metadata studio/two 2025-01-01T00:00:00Z "$one" > "$work/b-meta"
+record_pr "$repo" studio/one "$work/a-meta" < "$work/a" > "$work/a-findings" &
+pid=$!
+record_pr "$repo" studio/one "$work/a-meta" < "$work/a" > "$work/a-retry"
+wait "$pid"
+cmp "$work/a-findings" "$work/a-retry"
+history STUDIO/ONE "$one" > "$work/a-history"
+jq -e '.status=="checked" and .repository=="studio/one" and .number==7 and (.observations|length)==1
+    and .observations[0].opened_at=={schema:"janus.instant/1",time_scale:"posix",unix_day:19782,second:86399,millisecond:0}
+    and .observations[0].checked_at.schema=="janus.instant/1" and .observations[0].evidence.findings[0].location.head_start==2' "$work/a-history" >/dev/null
+history studio/two "$one" | jq -e '.status=="unverified" and .created_at==null' >/dev/null
+record_pr "$work/fork" studio/two "$work/b-meta" < "$work/b" > /dev/null
+history studio/two "$one" | jq -e '.created_at=="2025-01-01T00:00:00Z" and .observations[0].evidence.fact.repository=="studio/two"' >/dev/null
+history studio/one "$three" | jq -e '.status=="unverified" and .created_at=="2024-02-29T23:59:59Z" and .observations==[]' >/dev/null
+reject record_pr "$repo" studio/one "$work/b-meta" < "$work/a"
+reject record_pr "$repo" studio/one "$work/a-meta" < "$work/b"
+pr_metadata studio/one 2024-02-29T23:59:59Z "$three" > "$work/wrong"
+reject record_pr "$repo" studio/one "$work/wrong" < "$work/a"
+for bad_date in 2023-02-29T00:00:00Z 2024-03-01T00:00:00Z 9999-12-30T00:00:00Z; do
+    pr_metadata studio/one "$bad_date" "$one" > "$work/wrong"
+    reject record_pr "$repo" studio/one "$work/wrong" < "$work/a"
+done
+reject record_pr "$repo" studio/one "$work/a-meta" < "$work/pr-pack"
+sed -n '1p' "$work/a" > "$work/incomplete"
+reject record_pr "$repo" studio/one "$work/a-meta" < "$work/incomplete"
+record_pr "$repo" studio/one "$work/a-meta" < "$work/a" > /dev/null
+history studio/one "$one" > "$work/reread"
+cmp "$work/a-history" "$work/reread"
+# A new head adds another observation to the PR; the earlier head stays readable.
+build/jovovich-pack --recall "$memory" Studio/One parity --all "$repo" "$base" "$three" > "$work/updated-pack"
+sed -n '1p' "$work/updated-pack" | probe > "$work/updated"
+sed -n '2p' "$work/updated-pack" >> "$work/updated"
+pr_metadata Studio/One 2024-02-29T23:59:59Z "$three" > "$work/updated-meta"
+record_pr "$repo" studio/one "$work/updated-meta" < "$work/updated" > /dev/null
+history studio/one "$three" | jq -e '(.observations|length)==1 and .observations[0].evidence.findings[0].status=="ambiguous"' >/dev/null
+history studio/one "$one" > "$work/reread"
+cmp "$work/a-history" "$work/reread"
+"$tool" history "$memory" studio/one 7 | jq -e '(.observations|length)==2' >/dev/null
+
+jq '.number=6 | .url="https://github.com/Studio/One/pull/6" | .createdAt="9999-12-30T00:00:00Z"' "$work/a-meta" > "$work/six"
+reject record_pr "$repo" studio/one "$work/six" < "$work/a"
+jq '.createdAt="2023-12-31T00:00:00Z"' "$work/six" > "$work/six-valid"
+record_pr "$repo" studio/one "$work/six-valid" < "$work/a" > /dev/null
+"$tool" history "$memory" studio/one | jq -e '.repository=="studio/one" and
+    [.pull_requests[].number]==[6,7] and [.pull_requests[].observations]==[1,2]' >/dev/null
+"$tool" history "$memory" studio/two | jq -e '.pull_requests==[{number:7,created_at:"2025-01-01T00:00:00Z",observations:1}]' >/dev/null
+"$tool" history "$memory" studio/other | jq -e '.pull_requests==[]' >/dev/null
 git -C "$repo" count-objects -v > "$work/objects-after"
 cmp "$work/objects-before" "$work/objects-after"
 git -C "$repo" diff --quiet
