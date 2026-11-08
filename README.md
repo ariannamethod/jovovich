@@ -2,6 +2,8 @@
 
 **Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy**
 
+> **Read the [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) first.** This repository is governed by it; every instruction here, `CLAUDE.md` included, is subordinate to it.
+
 > The implementation works. I am less convinced that it belongs here.
 
 You opened a pull request. A woman with 0.8 billion parameters has opinions
