@@ -7,11 +7,14 @@
 #include "report_json.h"
 #include "model_manifest.h"
 #include "ariannamethod.h"
+#include <errno.h>
 #include <math.h>
 
 #define MAX_CASES 256
 typedef struct {
     char *id,*split,*family,*expected,*predicted;
+    const char *scored;
+    int threshold_applied;
     double concern,clean;
 } result;
 typedef struct {int total,correct,missed_concern,false_concern;} tally;
@@ -51,7 +54,7 @@ static int validate(result*r,const char*expected,const char*input,const char*ans
 }
 static void count(tally*t,const result*r) {
     t->total++;
-    if(!strcmp(r->expected,r->predicted))t->correct++;
+    if(!strcmp(r->expected,r->scored))t->correct++;
     else if(!strcmp(r->expected,"CONCERN"))t->missed_concern++;
     else t->false_concern++;
 }
@@ -62,17 +65,50 @@ static int file_hash(const char*path,char hash[65]) {
     size_t n=0;char*s=nj_load(path,&n);if(!s)return 1;
     int bad=hash_bytes(s,n,hash);free(s);return bad;
 }
+
+/* The ordinary receipt is verified first. Only its admitted text witness
+ * can activate this alternative decision in the evaluation report. */
+static int score_threshold(result *r, const char *input, const char *answer, float threshold) {
+    r->scored = r->predicted;
+    if (threshold < 0) return 0;
+    const char *metric = nj_get(nj_get(input, "trace_evidence"), "metric");
+    const char *witness = nj_get(nj_get(answer, "execution"), "trace_witness");
+    if (!nj_is(metric, "text") || !nj_get(witness, "selected_mode")) return 0;
+    float point[] = {(float)r->concern, threshold};
+    if (am_set_var_array("text_point", point, 2) || am_exec_file("aml/text-threshold.aml")) return 1;
+    const char *decision = am_get_var_text("text_verdict");
+    if (!choice(decision)) return 1;
+    r->scored = !strcmp(decision, "CONCERN") ? "CONCERN" : "CLEAN";
+    r->threshold_applied = 1;
+    return 0;
+}
+
 int main(int argc,char**argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
-    if(!manifest_path || argc!=5){fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] EXPECTED.jsonl INPUTS.jsonl ANSWERS.jsonl PREPARE.aml\n",argv[0]);return 2;}
+    float threshold = -1;
+    if (argc >= 3 && !strcmp(argv[1], "--text-threshold")) {
+        char *end;
+        errno = 0;
+        double value = strtod(argv[2], &end);
+        if (errno || end == argv[2] || *end || !isfinite(value) || value < 0 || value > 1) {
+            fputs("Text threshold must be a finite probability from 0 to 1.\n",stderr);
+            return 2;
+        }
+        threshold = (float)value;
+        memmove(argv+1,argv+3,(size_t)(argc-2)*sizeof(*argv));
+        argc -= 2;
+    }
+    if(!manifest_path || argc!=5){fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] [--text-threshold P] EXPECTED.jsonl INPUTS.jsonl ANSWERS.jsonl PREPARE.aml\n",argv[0]);return 2;}
     FILE*g=fopen(argv[1],"rb"),*i=fopen(argv[2],"rb"),*a=fopen(argv[3],"rb");
     char*manifest=nj_load(manifest_path,NULL),*gold=NULL,*input=NULL,*answer=NULL;size_t gc=0,ic=0,ac=0;
-    char gold_hash[65],input_hash[65],prepare_hash[65], readout[65]={0};
+    char gold_hash[65],input_hash[65],prepare_hash[65],threshold_hash[65],readout[65]={0};
     result rows[MAX_CASES]={{0}};tally all={0},development={0},transfer={0};int rc=1,n=0,read,policy=0;
     if(!g || !i || !a || !manifest || file_hash(argv[1],gold_hash) || file_hash(argv[2],input_hash) || file_hash(argv[4],prepare_hash))goto done;
+    if(threshold >= 0 && file_hash("aml/text-threshold.aml",threshold_hash))goto done;
     am_init();am_persistent_mode(1);
     while((read=line(g,&gold,&gc))==1) {
         if(n==MAX_CASES || line(i,&input,&ic)!=1 || line(a,&answer,&ac)!=1 || report_readout(answer,n,readout) || validate(rows+n,gold,input,answer,manifest,argv[4],n,&policy))goto done;
+        if(score_threshold(rows+n,input,answer,threshold))goto done;
         for(int j=0;j<n;j++)if(!strcmp(rows[n].id,rows[j].id))goto done;
         count(&all,rows+n);count(!strcmp(rows[n].split,"development")?&development:&transfer,rows+n);n++;
     }
@@ -81,13 +117,21 @@ int main(int argc,char**argv) {
     json_field(stdout,"expected_sha256",gold_hash);fputc(',',stdout);json_field(stdout,"prepare_sha256",prepare_hash);
     if(policy){fputc(',',stdout);json_field(stdout,"boundary_policy","signed-int-comparison/1");}
     if(*readout){fputc(',',stdout);json_field(stdout,"readout_sha256",readout);}
+    if(threshold >= 0) {
+        fprintf(stdout,",\"text_threshold\":%.17g,", (double)threshold);
+        json_field(stdout,"threshold_policy_sha256",threshold_hash);
+    }
     fputs(",\"all\":",stdout);totals(stdout,&all);
     fputs(",\"development\":",stdout);totals(stdout,&development);fputs(",\"transfer\":",stdout);totals(stdout,&transfer);
     fputs(",\"cases\":[",stdout);
     for(int j=0;j<n;j++) {
         result*r=rows+j;if(j)fputc(',',stdout);fputc('{',stdout);
         json_field(stdout,"id",r->id);fputc(',',stdout);json_field(stdout,"split",r->split);fputc(',',stdout);json_field(stdout,"family",r->family);
-        fputc(',',stdout);json_field(stdout,"expected",r->expected);fputc(',',stdout);json_field(stdout,"predicted",r->predicted);
+        fputc(',',stdout);json_field(stdout,"expected",r->expected);fputc(',',stdout);json_field(stdout,"predicted",r->scored);
+        if(threshold >= 0) {
+            fputc(',',stdout);json_field(stdout,"raw_predicted",r->predicted);
+            fprintf(stdout,",\"threshold_applied\":%s",r->threshold_applied ? "true" : "false");
+        }
         fprintf(stdout,",\"probabilities\":{\"CONCERN\":%.17g,\"CLEAN\":%.17g}}",r->concern,r->clean);
     }
     fputs("]}\n",stdout);rc=ferror(stdout) || fflush(stdout);

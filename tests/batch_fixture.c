@@ -30,7 +30,17 @@ int main(int argc,char**argv) {
         if(i==1 && !strcmp(argv[3],"badhash"))ih[0]=ih[0]=='0'?'1':'0';
         jov_execution e={ih,wh,th,20763,1,0,NULL,NULL,NULL};
         double a=i==1 && !strcmp(argv[3],"mixed")?.9:i==1 && !strcmp(argv[3],"tie")?.5:.1;
-        assert(!am_set_var_text("review_context",context) && !am_exec_file("aml/prepare.aml"));
+        assert(!am_set_var_text("review_context",context));
+        jov_trace_receipt trace={0};
+        if (nj_get(line,"trace_evidence")) {
+            assert(!jov_apply_trace_gate(line,id,rule,change,&trace));
+            e.trace=&trace;
+        }
+        assert(!am_exec_file("aml/prepare.aml"));
+        if (e.trace) {
+            const char *prompt=am_get_var_text("prompt");
+            assert(prompt && !hash_bytes(prompt,strlen(prompt),trace.prompt_sha256));
+        }
         jov_review r={.id=id,.model=model,.revision=revision,.question=am_get_var_text("question"),.file=file,.context=context,
             .rule_excerpt=rule,.change_excerpt=change,.concern=a,.clean=1-a,.source=&source,.execution=&e};
         jov_fact *fact = NULL;

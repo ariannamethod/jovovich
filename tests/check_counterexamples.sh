@@ -160,6 +160,17 @@ build/jovovich-replay remember "$memory" "$repo" "$text_driver" < "$work/text-or
 build/jovovich-replay run "$memory" "$repo" "$text_driver" < "$work/regression" > "$work/text-replay"
 grep -Fq '"replayed_from":' "$work/text-replay"
 grep -Fq '"base":"scan paint","head":"paint scan","required":"scan paint"' "$work/text-replay"
+# Both synthetic receipts have a raw CLEAN vote. Only the differing result
+# admits the zero text threshold. The shared run exercises the same Git pair.
+build/jovovich-replay probe "$repo" "$text_driver" 0 < "$work/first" > "$work/text-shared"
+review_id=$(sed -n 's/^{"id":"\([^"]*\)".*/\1/p' "$work/text-origin")
+printf '{"id":"%s","split":"transfer","family":"text","expected":"CLEAN"}\n' "$review_id" > "$work/text-label"
+for packet in text-origin text-shared; do
+    build/batch-fixture emit "$work/$packet" clean > "$work/fixture-answer"
+    build/score-quality --text-threshold 0 "$work/text-label" "$work/$packet" "$work/fixture-answer" aml/prepare.aml > "$work/$packet-score"
+done
+grep -Fq '"predicted":"CONCERN","raw_predicted":"CLEAN","threshold_applied":true' "$work/text-origin-score"
+grep -Fq '"predicted":"CLEAN","raw_predicted":"CLEAN","threshold_applied":false' "$work/text-shared-score"
 echo 'Counterexample capture, fresh paired replay, current oracle, branch and harness scope passed'
 
 if test -n "${JOV_MEMORY_MODEL:-}"; then

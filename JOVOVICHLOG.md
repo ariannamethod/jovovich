@@ -2,6 +2,20 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — Eight more reversals for the original
+
+The original cleared and caught both sides of eight fresh upstream fixes
+at 50%. Version 1.6 closed five pairs at 50% and seven at the 39.07% text
+threshold fixed on the preceding six pairs. It recovered PapaParse #1124
+and npm/ini #123. On npm/ini #252 the reverse returned one string where the
+contract wanted two values in an array. Its 36.58% CONCERN still cleared
+that reversal. Both checkpoints ranked all eight witnessed reversals above
+their repairs. Every common-input prompt and vote reproduced source alone.
+
+The original remains the default. The AML threshold runs in the offline
+quality scorer on admitted text witnesses. Each scored row keeps its raw
+vote and both probabilities. [Protocol, individual PRs and replay](docs/threshold-transfer.md)
+
 ## 2026-11-08 — The original keeps the chair
 
 Six merged changes from inih and node-semver went through the native Git
