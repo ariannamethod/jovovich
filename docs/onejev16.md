@@ -32,6 +32,16 @@ wider trial. The next comparison should use independent repository rules
 and held-out change families. [Preregistered protocol](../examples/onejev16/protocol.md) ·
 [Scores and individual pairs](../examples/onejev16/results.json)
 
+### A threshold check after scoring
+
+With paired execution, the original's highest P(CONCERN) on the eight
+comments was 0.5902 and its lowest on the eight regressions was 0.8302.
+A threshold of 0.60, chosen after seeing those ranges, classifies all 16
+new heads and all 32 archive cases correctly. It still flags the PR #55
+anchor at 0.6640. Version 1.6 clears that anchor at its ordinary 0.50.
+Carry the original with 0.60 forward as a fixed comparator on fresh rules.
+The table above uses the preregistered 0.50 for both models.
+
 ## Run the candidate
 
 The default profile uses the original release. Select `onejev1.6` on both
