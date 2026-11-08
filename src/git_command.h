@@ -33,7 +33,7 @@ static inline char *jov_git_command(const char *repo, const char *attr_commit,
 /* A symlink is also stored as a blob. Bind the exact rule path, tree mode
  * and object ID before reading any historical quote. The -z listing uses
  * actual filename bytes, including tabs and newlines. */
-static inline char *jov_git_rule_blob(const char *repo, const char *commit, const char *path) {
+static inline char *jov_git_regular_blob(const char *repo, const char *commit, const char *path, char *mode) {
     const char *args[]={"ls-tree","--full-tree","-z",commit,"--",path,NULL};
     size_t len=0, width=strlen(commit), path_len=strlen(path);
     int status=1;
@@ -46,8 +46,12 @@ static inline char *jov_git_rule_blob(const char *repo, const char *commit, cons
         free(entry);
         return NULL;
     }
+    if (mode) { memcpy(mode,entry,6); mode[6]=0; }
     memmove(entry,entry+prefix,width);
     entry[width]=0;
     return entry;
+}
+static inline char *jov_git_rule_blob(const char *repo,const char *commit,const char *path) {
+    return jov_git_regular_blob(repo,commit,path,NULL);
 }
 #endif

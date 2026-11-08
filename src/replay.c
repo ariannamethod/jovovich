@@ -5,7 +5,7 @@
 #include "facts.h"
 #include "hash.h"
 #include "json.h"
-#include "git_snapshot.h"
+#include "hunk_trial.h"
 #include "report_json.h"
 #include <limits.h>
 #include <stdint.h>
@@ -475,6 +475,166 @@ static int show(const char *dir, const char *digest) {
     return failed;
 }
 
+/* All coordinates below come from Git. Only the reviewed program's driver
+ * supplies observations and the expected effect. */
+static int finding_start(FILE *out,const packed_row *p,const char *sha,const char *kind) {
+    fputs("{\"schema\":\"jovovich.finding/1\",",out);
+    json_field(out,"kind",kind); fputc(',',out); json_field(out,"file",p->file);
+    fputc(',',out); json_field(out,"base_commit",p->base); fputc(',',out); json_field(out,"head_commit",p->head);
+    fputc(',',out); json_field(out,"harness_sha256",sha); fputc(',',out); json_field(out,"rules_path",p->path);
+    fprintf(out,",\"rule_first_line\":%d,\"rule_last_line\":%d,",p->first,p->last);
+    json_field(out,"rule_excerpt",p->rule);
+    return ferror(out);
+}
+
+static char *trial_observe(const char *repo,const char *runner,const char *rev,const char *file,const char *mode) {
+    if (!rev) return NULL;
+    return run_callback(repo,(const char *[]){runner,"observe",NULL,rev,file,mode,NULL},"[\"");
+}
+
+static char *control_observe(const char *repo,const char *runner,const char *rev,const char *file,const char *mode) {
+    char spec[80]; snprintf(spec,sizeof(spec),"%s^{tree}",rev);
+    char *tree=trial_oid(repo,(const char *[]){"rev-parse","--verify",spec,NULL},strlen(rev));
+    char *commit=tree ? trial_commit(repo,tree,rev) : NULL;
+    char *result=trial_observe(repo,runner,commit,file,mode);
+    free(tree); free(commit);
+    return result;
+}
+
+static sample test_hunk(const char *work,const char *path,const char *runner,const packed_row *p,
+                        const trial_blob *base,const trial_blob *head,hunk h,const char *mode) {
+    char *reverse=spliced_commit(work,p->head,p->file,path,head,h.head,base,h.base);
+    char *forward=spliced_commit(work,p->base,p->file,path,base,h.base,head,h.head);
+    sample observed={
+        .base=trial_observe(work,runner,reverse,p->file,mode),
+        .head=trial_observe(work,runner,forward,p->file,mode)
+    };
+    free(reverse); free(forward);
+    return observed;
+}
+
+static const char *isolate_run(FILE *out,const char *repo,const char *runner,const packed_row *p,
+                               const char *gate,int mode,const char *oracle) {
+    char arg[16];
+    snprintf(arg,sizeof(arg),"%d",mode);
+    char *work=NULL, *path=NULL, *control_base=NULL, *control_head=NULL;
+    trial_blob base={0},head={0}; hunk hunks[MAX_TRIAL_HUNKS];
+    const char *status="unresolved";
+    if (jov_git_snapshot(repo,p->head,&work) || !(path=snapshot_path(work,"/trial-blob")) ||
+        load_trial_blob(work,p->base,p->file,&base) || load_trial_blob(work,p->head,p->file,&head)) goto done;
+    int n=trial_hunks(work,&base,&head,hunks);
+    if (n<1) goto done;
+    control_base=control_observe(work,runner,p->base,p->file,arg);
+    control_head=control_observe(work,runner,p->head,p->file,arg);
+    if (!control_base || !control_head || !jov_trace_reproduced(gate,mode,control_base,control_head,oracle)) goto done;
+
+    int matched=0, unknown=0, selected=0;
+    fputs(",\"trials\":[",out);
+    for (int i=0;i<n;i++) {
+        hunk h=hunks[i];
+        sample pair=test_hunk(work,path,runner,p,&base,&head,h,arg);
+        const char *restored=pair.base,*introduced=pair.head;
+        if (i) fputc(',',out);
+        fprintf(out,"{\"base_start\":%d,\"base_lines\":%d,\"head_start\":%d,\"head_lines\":%d,"
+                "\"after_revert\":%s,\"after_introduction\":%s}",h.base.start,h.base.count,
+                h.head.start,h.head.count,restored ? restored : "null",introduced ? introduced : "null");
+        if (!restored || !introduced || jov_trace_meets(oracle,restored)<0 || jov_trace_meets(oracle,introduced)<0) unknown++;
+        else if (jov_trace_reproduced(gate,mode,restored,introduced,oracle)) { matched++; selected=i; }
+        free_sample(&pair);
+    }
+    fputc(']',out);
+    if (!unknown && matched==1) {
+        hunk h=hunks[selected];
+        sample repeat=test_hunk(work,path,runner,p,&base,&head,h,arg);
+        int reproduced=repeat.base && repeat.head && jov_trace_reproduced(gate,mode,repeat.base,repeat.head,oracle);
+        free_sample(&repeat);
+        if (!reproduced) goto done;
+        fprintf(out,",\"location\":{\"base_start\":%d,\"base_lines\":%d,\"head_start\":%d,\"head_lines\":%d}",
+                h.base.start,h.base.count,h.head.start,h.head.count);
+        status="located";
+    } else if (matched>1) status="ambiguous";
+done:
+    free(control_base); free(control_head); free(path);
+    free(base.oid); free(base.text); free(head.oid); free(head.text);
+    return jov_remove_git_snapshot(work) ? NULL : status;
+}
+
+static int locate_mode(FILE *out,const char *repo,const char *runner,const packed_row *p,
+                       const char *sha,const char *gate,int mode) {
+    sample x={0};
+    int failed=1;
+    if (run_sample(repo,runner,p,mode,&x) ||
+        !jov_trace_reproduced(gate,mode,x.base,x.head,x.oracle)) goto done;
+    int before=jov_trace_meets(x.oracle,x.base), after=jov_trace_meets(x.oracle,x.head);
+    if (before<0 || after<0 || finding_start(out,p,sha,"execution")) goto done;
+    fprintf(out,",\"mode\":%d,\"before\":%s,\"after\":%s,\"oracle\":%s,",mode,x.base,x.head,x.oracle);
+    json_field(out,"review_id",p->id);
+    const char *status=after ? "met" : before ? isolate_run(out,repo,runner,p,gate,mode,x.oracle) : "already_failing";
+    if (!status) goto done;
+    fputc(',',out); json_field(out,"status",status); failed=fputs("}\n",out)==EOF;
+done:
+    free_sample(&x);
+    return failed;
+}
+
+static int locate(FILE *out,const char *repo,const char *runner,const char *row,const packed_row *p,const char *sha) {
+    const char *gate=nj_get(row,"trace_evidence");
+    jov_trace_receipt receipt={0};
+    if (!gate || !nj_is(nj_get(gate,"harness_sha256"),sha) || witness(row,p,&receipt) || !receipt.runs) return 1;
+    int bad=0;
+    for (const char *run=nj_first(nj_get(gate,"runs"),&bad); run; run=nj_next(run,']',&bad)) {
+        long long mode;
+        if (nj_int(nj_get(run,"mode"),&mode) || locate_mode(out,repo,runner,p,sha,gate,(int)mode)) return 1;
+    }
+    return bad;
+}
+
+/* The driver emits the regenerated snapshot bytes on stdout. The expected
+ * bytes always come from the regular blob in the reviewed head. */
+static char *render_snapshot(const char *repo,const char *runner,const packed_row *p) {
+    char *view=NULL,*result=NULL;
+    if (!jov_git_snapshot(repo,p->head,&view))
+        result=command((const char *[]){runner,"render",view,p->head,p->file,NULL},TRIAL_BYTES);
+    if (jov_remove_git_snapshot(view)) { free(result); return NULL; }
+    return result;
+}
+
+static int snapshot_check(FILE *out,const char *repo,const char *runner,const packed_row *p,const char *sha) {
+    char *view=NULL, *oid=NULL, *gold=NULL, *actual=NULL;
+    int failed=1;
+    if (jov_git_snapshot(repo,p->head,&view)) goto done;
+    oid=jov_git_rule_blob(view,p->head,p->file);
+    if (!oid || !(gold=trial_git(view,(const char *[]){"cat-file","blob",oid,NULL}))) goto done;
+    actual=render_snapshot(repo,runner,p);
+    if (!actual || !report_utf8((unsigned char *)actual,(unsigned char *)actual+strlen(actual),0) ||
+        !report_utf8((unsigned char *)gold,(unsigned char *)gold+strlen(gold),0) ||
+        finding_start(out,p,sha,"snapshot")) goto done;
+    size_t i=0,start=0,line=1;
+    while (gold[i] && gold[i]==actual[i]) {
+        if (gold[i++]=='\n') { line++; start=i; }
+    }
+    int equal=gold[i]==actual[i];
+    char generated_sha[65];
+    if (hash_bytes(actual,strlen(actual),generated_sha)) goto done;
+    fputc(',',out); json_field(out,"expected_blob",oid);
+    fputc(',',out); json_field(out,"observed_sha256",generated_sha);
+    if (!equal) {
+        char *again=render_snapshot(repo,runner,p);
+        int reproduced=again && !strcmp(again,actual);
+        free(again);
+        if (!reproduced) { fputs("Snapshot mismatch did not reproduce.\n",stderr); goto done; }
+        char *a=strchr(actual+start,'\n'), *g=strchr(gold+start,'\n');
+        if (a) a[1]=0;
+        if (g) g[1]=0;
+        fprintf(out,",\"line\":%zu,\"byte_column\":%zu,",line,i-start+1);
+        json_field(out,"expected",gold+start); fputc(',',out); json_field(out,"observed",actual+start);
+    }
+    fputc(',',out); json_field(out,"status",equal ? "met" : "mismatch"); failed=fputs("}\n",out)==EOF;
+done:
+    free(oid); free(gold); free(actual);
+    return jov_remove_git_snapshot(view) || failed;
+}
+
 static int parse_mode(const char *s, int *mode) {
     char *end; errno=0;
     long long n=strtoll(s,&end,10);
@@ -488,14 +648,17 @@ int main(int argc, char **argv) {
     int probe=argc==5 && !strcmp(argv[1],"probe");
     int capture=argc==5 && !strcmp(argv[1],"remember");
     int replay=argc==5 && !strcmp(argv[1],"run");
+    int locating=argc==4 && !strcmp(argv[1],"locate");
+    int snapshot=argc==4 && !strcmp(argv[1],"snapshot");
+    int direct=probe || locating || snapshot;
     int mode=0;
-    if ((!probe && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+    if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS < measured.jsonl\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
-    const char *dir = probe?NULL:argv[2];
-    char *repo = realpath(argv[probe?2:3],NULL);
-    char *runner = realpath(argv[probe?3:4],NULL);
+    const char *dir = direct ? NULL : argv[2];
+    char *repo = realpath(argv[direct?2:3],NULL);
+    char *runner = realpath(argv[direct?3:4],NULL);
     char sha[65], fdpath[64], *lines[JOV_BATCH_MAX_FILES]={0};
     packed_row inputs[JOV_BATCH_MAX_FILES]={0};
     size_t bytes=0; int bad_input=0, writer=-1, driverfd=-1;
@@ -510,17 +673,23 @@ int main(int argc, char **argv) {
         if (!row) break;
         if (count==JOV_BATCH_MAX_FILES) { free(row); goto done; }
         at=count+1; lines[count++]=row;
-        if (parse(row,inputs+count-1) || (!capture && nj_get(row,"trace_evidence"))) goto done;
+        if (parse(row,inputs+count-1) || (!capture && !locating && nj_get(row,"trace_evidence"))) goto done;
     }
-    if (!count || bad_input || ferror(stdin) || (!replay && count!=1) ||
-        (replay && verify_batch(lines,inputs,count))) goto done;
+    const char *batch=count ? nj_get(lines[0],"batch") : NULL;
+    long long members=0;
+    int whole_single=count==1 && batch && !nj_int(nj_get(batch,"count"),&members) && members==1;
+    int full_batch=replay || (locating && (count>1 || whole_single));
+    if (!count || bad_input || ferror(stdin) || (!full_batch && count!=1) ||
+        (full_batch && verify_batch(lines,inputs,count))) goto done;
     if (replay && inputs[0].fact && verify_receipt(dir,inputs[0].fact)) goto done;
-    const char *batch=nj_get(lines[0],"batch");
-    if (verify_git(repo,inputs,count,replay && batch,replay ? NULL : batch)) goto done;
+    if (verify_git(repo,inputs,count,full_batch && batch,full_batch ? NULL : batch)) goto done;
     for (int i=0;i<count;i++) {
         at=i+1; packed_row *p=inputs+i; const char *line=lines[i];
         jov_replay_ref ref={0}; int bad=0;
         if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref);
+        if (locating && (!full_batch || nj_get(line,"trace_evidence")))
+            bad=locate(out,repo,fdpath,line,p,sha);
+        if (snapshot) bad=snapshot_check(out,repo,fdpath,p,sha);
         if (!bad && capture) bad=remember(out,dir,repo,fdpath,line,p,sha);
         if (!bad && (probe || ref.source_sha[0]))
             bad=measure(out,repo,fdpath,sha,line,p,probe?mode:ref.mode,probe?NULL:&ref);

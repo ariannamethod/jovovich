@@ -35,6 +35,7 @@ int jov_apply_trace_gate_source(const char *row,const char *id,const char *rule,
 /* Render the selected execution from an already verified input/answer pair. */
 int jov_trace_write_change(FILE *out,const char *gate,const jov_trace_measurement *measurement,
                            const char *file,int json);
+int jov_trace_meets(const char *oracle,const char *observed);
 int jov_trace_reproduced(const char *gate, int mode, const char *base, const char *head, const char *oracle);
 int jov_verify_trace_receipt(const char *listed,const jov_trace_receipt *receipt,const char *prompt);
 #endif

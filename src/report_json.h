@@ -5,22 +5,23 @@
 /* Reports retain answer JSON verbatim. Validate its syntax first and reject
  * duplicate keys, so every consumer reads the same decision. Protocol keys
  * use literal spellings, matching narrow_json's lookup contract. */
-static const char *report_string_end(const char *p) {
-    const char *end=nj_str_end(p);
-    if(!end)return NULL;
-    /* JSON strings on the wire must contain Unicode scalar values in UTF-8.
-     * The decoder below checks escapes, including surrogate pairs. */
-    const unsigned char *q=(const unsigned char*)p+1, *stop=(const unsigned char*)end-1;
+static int report_utf8(const unsigned char *q,const unsigned char *stop,int quoted) {
     while(q<stop) {
         unsigned c=*q++;
-        if(c<0x20)return NULL;
+        if(quoted && c<0x20)return 0;
         if(c<0x80)continue;
         int n=c>=0xc2 && c<=0xdf ? 1 : c>=0xe0 && c<=0xef ? 2 : c>=0xf0 && c<=0xf4 ? 3 : 0;
-        if(!n || stop-q<n)return NULL;
+        if(!n || stop-q<n)return 0;
         if((c==0xe0 && q[0]<0xa0) || (c==0xed && q[0]>0x9f) ||
-           (c==0xf0 && q[0]<0x90) || (c==0xf4 && q[0]>0x8f))return NULL;
-        while(n--)if((*q++ & 0xc0)!=0x80)return NULL;
+           (c==0xf0 && q[0]<0x90) || (c==0xf4 && q[0]>0x8f))return 0;
+        while(n--)if((*q++ & 0xc0)!=0x80)return 0;
     }
+    return 1;
+}
+
+static const char *report_string_end(const char *p) {
+    const char *end=nj_str_end(p);
+    if(!end || !report_utf8((const unsigned char *)p+1,(const unsigned char *)end-1,1))return NULL;
     char*s=nj_string(p);if(!s)return NULL;free(s);return end;
 }
 static const char *report_json_end(const char *p,int depth) {

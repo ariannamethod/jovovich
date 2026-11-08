@@ -98,6 +98,42 @@ The project's fixture driver extracts `draw.c` from each named Git object,
 compiles it and records the actual calls. Its oracle reads the selected Git
 rule. [Fixture driver](../tests/fixtures/draw-driver.sh) · [Trace contract](trace-evidence.md)
 
+## Locate a failure and check a snapshot
+
+From the repository root, pass a measured row or a complete replay batch to
+the same driver used for its measurement.
+
+```sh
+build/jovovich-replay locate "$repo" "$driver" < replayed.jsonl
+```
+
+For each recorded mode the host reruns the base, head and oracle. A failing
+head with a passing base starts two trials per Git hunk. One restores that hunk
+on the head. The other introduces it on the base. The host repeats both trials
+for a unique qualifying hunk. Reproducing both original observations again
+yields `located` and its base and head line ranges.
+A zero line count represents a gap after the indicated line. The JSON includes
+the quoted rule and trial outputs. A passing head yields `met`, and an earlier
+failure still present yields `already_failing`. Multiple qualifying hunks yield
+`ambiguous`. Incomplete or inconclusive trials yield `unresolved`. The search
+covers regular text blobs up to 1 MiB and at most 16 hunks per file. Each trial
+uses a private Git object store. Unmeasured files in a complete batch are skipped.
+
+For a changed text snapshot, provide a fresh packed file row and a driver that
+implements `render REPO HEAD FILE`. Its stdout must contain the raw regenerated
+bytes. The driver should generate the output from the program and its inputs.
+The host reads the expected bytes from the head's Git blob.
+
+```sh
+build/jovovich-replay snapshot "$repo" "$driver" < snapshot-row.jsonl
+```
+
+Equal bytes yield `met`. A mismatch is rendered again in a fresh Git view.
+If it reproduces, the result names the first differing line and byte column
+(both one-based) and gives both lines including their endings. The limit is
+1 MiB of UTF-8 text per output. A failed driver or unstable mismatch stops the
+command before publication.
+
 ## Six live answers
 
 These reviews used the two GGUFs downloaded from the pinned JOVOVICH release.
