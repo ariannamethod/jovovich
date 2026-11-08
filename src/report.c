@@ -22,6 +22,7 @@ typedef struct {
     jov_batch_item item;
     jov_fact *fact;
 } input;
+#include "report_findings.h"
 static int eq(const char*obj,const char*key,const char*want) {
     char*s=nj_string(nj_get(obj,key));int ok=s && want && !strcmp(s,want);free(s);return ok;
 }
@@ -82,8 +83,12 @@ done:
 }
 int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
-    int json=argc==4 && !strcmp(argv[3],"--json");
-    if(!manifest_path || (argc!=3 && argc!=4) || (argc==4 && !json)){fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH.jsonl ANSWERS.jsonl [--json]\n",argv[0]);return 2;}
+    report_options opts={0};
+    if (!manifest_path || report_arguments(argc,argv,&opts)) {
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE]\n",argv[0]);
+        return 2;
+    }
+    int json=opts.json;
     int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load(manifest_path,NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
@@ -115,10 +120,11 @@ int main(int argc,char **argv) {
     if(!isfinite(raw_concern) || raw_concern<0 || raw_concern>count || raw_concern!=truncf(raw_concern))goto done;
     int concern=(int)raw_concern;
     if(!verdict || (strcmp(verdict,"CLEAN") && strcmp(verdict,"CONCERN")) || am_get_var_float("reviewed_files")!=count || concern<0 || concern>count)goto done;
-    out=tmpfile();if(!out)goto done;
+    out=tmpfile();if(!out || fcntl(fileno(out),F_SETFD,FD_CLOEXEC)<0)goto done;
     if(json) {
     fputs("{\"schema\":\"jovovich.review-report/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"batch_id",digest);
     fputc(',',out);json_field(out,"base_commit",inputs[0].origin[0]);fputc(',',out);json_field(out,"head_commit",inputs[0].origin[1]);
+    if(report_findings(out,&opts,inputs,count))goto done;
     if(policy){fputc(',',out);json_field(out,"boundary_policy","signed-int-comparison/1");}
     if(*readout){fputc(',',out);json_field(out,"readout_sha256",readout);}
     fputs(",\"summary\":{",out);json_field(out,"verdict",verdict);
@@ -142,9 +148,11 @@ int main(int argc,char **argv) {
     fputs("}\n",out);
     }else {
         fprintf(out,"**JOVOVICH · %s**%s\n\nReviewed files: %d · CONCERN: %d · CLEAN: %d\n\nBatch: `%s`\n",
-                verdict,checked_runs?" (model vote)":"",count,concern,count-concern,digest);
+                verdict,(checked_runs || opts.count)?" (model vote)":"",count,concern,count-concern,digest);
         if (checked_runs) fprintf(out,"\n**Execution checks:** %d met, %d failed across %d selected run%s.\n",
                                   checked_runs-failed_runs,failed_runs,checked_runs,checked_runs==1?"":"s");
+        if(report_findings(out,&opts,inputs,count))goto done;
+        if (opts.count) fputs("\n<details><summary>Model votes and reviewed diffs</summary>\n",out);
         for(int i=0;i<count;i++) {
             input*p=inputs+i;const char*prob=nj_get(nj_get(results[i],"choice"),"probabilities");double a,b;
             char*model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision")),*question=nj_string(nj_get(results[i],"question"));
@@ -169,6 +177,7 @@ int main(int argc,char **argv) {
             }
             free(model_id);free(revision);free(question);if(failed)goto done;
         }
+        if (opts.count) fputs("\n</details>\n",out);
     }
     if(ferror(out) || fseek(out,0,SEEK_SET))goto done;
     char buf[8192];size_t n;while((n=fread(buf,1,sizeof(buf),out)))if(fwrite(buf,1,n,stdout)!=n)break;

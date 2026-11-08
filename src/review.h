@@ -59,6 +59,7 @@ enum { JOV_OK = 0, JOV_INVALID = 1, JOV_IO_ERROR = 2 };
 const char *jov_review_verdict(const jov_review *review);
 int jov_review_validate(const jov_review *review);
 /* Invalid records return JOV_INVALID before writing anything. */
+void jov_markdown_text(FILE *out,const char *s,int quote);
 int jov_review_markdown(FILE *out, const jov_review *review);
 int jov_review_markdown_view(FILE *out, const jov_review *review, const char *model_code);
 int jov_review_markdown_evidence(FILE *out, const jov_review *review, const char *model_code, const char *observation);

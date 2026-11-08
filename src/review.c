@@ -221,7 +221,7 @@ static void markdown_char(FILE *out, unsigned char c) {
     }
 }
 
-static void markdown_text(FILE *out, const char *s, int quote) {
+void jov_markdown_text(FILE *out, const char *s, int quote) {
     if (quote) fputs("> ", out);
     for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
         if (*p == '\n') {
@@ -265,25 +265,25 @@ int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *cod
     if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
     fprintf(out, "**JOVOVICH · %s**%s\n\n**Reviewed file:** ", jov_review_verdict(r),
             r->fact || (observation && *observation) ? " (model vote)" : "");
-    markdown_text(out, r->file, 0);
+    jov_markdown_text(out, r->file, 0);
     if(r->source) {
         const jov_source *s=r->source;
         fprintf(out,"\n\n**Git scope:** `%s` → `%s`\n\n**Rules source:** ",s->base,s->head);
-        markdown_text(out,s->rules_path,0);
+        jov_markdown_text(out,s->rules_path,0);
         fprintf(out," (lines %d–%d)",s->first_line,s->last_line);
     }
     if (r->fact) {
         const jov_fact *f = r->fact;
         fputs("\n\n**Remembered rule** ", out);
-        markdown_text(out, f->repository, 0);
+        jov_markdown_text(out, f->repository, 0);
         fputs(" / ", out);
-        markdown_text(out, f->key, 0);
+        jov_markdown_text(out, f->key, 0);
         fprintf(out, " (receipt %d", f->sequence);
         if (f->supersedes) fprintf(out, ", supersedes %d", f->supersedes);
         fprintf(out, "). Recorded %s from review `%s` → `%s`.", f->recorded_at, f->base, f->head);
     }
     fputs("\n\n**Rule supplied for review**\n\n", out);
-    markdown_text(out, r->rule_excerpt, 1);
+    jov_markdown_text(out, r->rule_excerpt, 1);
     fputs("\n\n**Change under review**\n\n", out);
     code_block(out, r->change_excerpt);
     if(code && strcmp(code,r->change_excerpt)) {
@@ -293,7 +293,7 @@ int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *cod
     if (r->execution && r->execution->trace) jov_replay_ref_markdown(out, &r->execution->trace->replay);
     if(observation && *observation) {
         fputs("\n**Execution supplied to the model**\n\n",out);
-        markdown_text(out,observation,1);fputc('\n',out);
+        jov_markdown_text(out,observation,1);fputc('\n',out);
     }
     fprintf(out, "\n**Choice probabilities:** CONCERN %.1f%% · CLEAN %.1f%%\n",
             100 * r->concern, 100 * r->clean);

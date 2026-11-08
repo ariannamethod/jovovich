@@ -59,6 +59,26 @@ sed -n '1p' "$work/batch" | probe > "$work/first"
 sed -n '2p' "$work/batch" > "$work/second"
 cat "$work/first" "$work/second" > "$work/full"
 locate < "$work/full" | jq -se 'length==1 and .[0].location.head_start==2' >/dev/null
+# The ordinary report recomputes findings against its own validated model inputs.
+build/batch-fixture emit "$work/full" clean > "$work/answers"
+report() { build/jovovich-report "$work/full" "$work/answers" "$@"; }
+report --locate "$repo" "$work/driver" --snapshot "$repo" "$work/driver" output > "$work/comment"
+grep -Fq '**Verified regression** · flags with spaces:2' "$work/comment"
+grep -Fq 'Parity must be even' "$work/comment"
+grep -Fq '**Snapshot mismatch** · output:1 · byte 1' "$work/comment"
+report --json --locate "$repo" "$work/driver" --snapshot "$repo" "$work/driver" output > "$work/report"
+jq -e '.summary.verdict=="CLEAN" and [.verified_findings[].status]==["located","mismatch"] and
+    .verified_findings[0].location.head_start==2 and .verified_findings[1].observed=="pass\n"' "$work/report" >/dev/null
+reject report --locate "$repo" "$work/driver" --snapshot "$repo" "$work/driver" missing
+reject report --snapshot "$repo" "$work/driver" output --snapshot "$repo" "$work/driver" output
+reject report --memory "$work"
+build/jovovich-pack --all "$repo" "$base" "$three" RULES > "$work/amb-batch"
+sed -n '1p' "$work/amb-batch" | probe > "$work/amb"
+sed -n '2p' "$work/amb-batch" >> "$work/amb"
+build/batch-fixture emit "$work/amb" clean > "$work/amb-votes"
+build/jovovich-report "$work/amb" "$work/amb-votes" --locate "$repo" "$work/driver" > "$work/amb-comment"
+grep -Fq 'Matching changes: flags with spaces:2, flags with spaces:4, flags with spaces:6' "$work/amb-comment"
+if grep -Fq '**Verified regression**' "$work/amb-comment"; then exit 1; fi
 cat "$work/second" "$work/first" > "$work/reordered"
 reject locate < "$work/reordered"
 pack "$one" "$base" > "$work/row"; probe < "$work/row" > "$work/repair"
