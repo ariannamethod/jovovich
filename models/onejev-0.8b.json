@@ -5,5 +5,5 @@
   "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
   "conversion": "NoTorch qwen35_to_gguf; source-layout version 1",
   "arithmetic": "float32",
-  "text_boundary": "ASCII; explicit token IDs support the full vocabulary"
+  "text_boundary": "ASCII and U+2014 between single spaces flanked by printable non-space ASCII in the review CLI. The NoTorch reference runner also accepts explicit IDs."
 }

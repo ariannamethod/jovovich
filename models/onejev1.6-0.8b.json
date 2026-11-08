@@ -6,5 +6,5 @@
   "source_safetensors_sha256": "eae610deade88d06af4be8e94ede49a72bba1fff61495128f92bd3947975cc18",
   "conversion": "NoTorch qwen35_to_gguf; source-layout version 1",
   "arithmetic": "float32",
-  "text_boundary": "ASCII; explicit token IDs support the full vocabulary"
+  "text_boundary": "ASCII and U+2014 between single spaces flanked by printable non-space ASCII in the review CLI. The NoTorch reference runner also accepts explicit IDs."
 }

@@ -57,8 +57,8 @@ make -C deps/notorch qwen35_to_gguf
 ```
 
 Run these commands from this repository's root. The live text path uses the
-original unabliterated OneJev base. NoTorch encodes the English ASCII prompt
-and performs the F32 forward pass. AML asks the question, scores the final A
+original unabliterated OneJev base. The host tokenizes the English prompt and NoTorch performs the F32 forward
+pass. AML asks the question, scores the final A
 and B logits, picks the verdict and dates it with JANUS.CALENDAR. Zero tokens
 generated. Both probabilities fit on the page. [Native validation](docs/native-validation.md)
 
@@ -71,6 +71,10 @@ other projects, the original cleared all eight repairs and caught all eight
 reversals. Version 1.6 caught five reversals at 50% and seven at a threshold
 fitted on the earlier six pairs. The original keeps the chair.
 [Run 1.6](docs/onejev16.md) · [First upstream trial](docs/upstream-release-trial.md) · [Threshold transfer](docs/threshold-transfer.md)
+
+Jovovich has also auditioned for the speaking part. She was given a swallowed
+NUL and a missing submodule and informed us that the room had gone quiet.
+The casting notes include every take. [First voice audition and Liquid decision screen](docs/voice-audition.md)
 
 ## Live review
 

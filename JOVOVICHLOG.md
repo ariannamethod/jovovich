@@ -2,6 +2,16 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — A voice audition and a second judge
+
+Eighteen original English lines went into a separate voice experiment. A
+3,498-parameter fit on twelve lines taught the original OneJev to end a
+remark. On six Method reviews it produced three distinct remarks and zero
+grounded ones. The ordinary judge scored five of the six, including a false
+alarm on the AML fix. Liquid d1 closed one of eight witnessed upstream
+pairs with CONCERN first and zero with CLEAN first. The original closed
+all eight. [The audition, raw lines and replay](docs/voice-audition.md)
+
 ## 2026-11-08 — Eight more reversals for the original
 
 The original cleared and caught both sides of eight fresh upstream fixes

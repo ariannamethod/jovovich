@@ -1,0 +1,9 @@
+train	DaveGamble/cJSON	810	Insert two between one and three in the array.	One, two, three. Look at that, everybody kept their seat.	I sent three numbers in. Who signed for two?
+train	vercel/ms	111	Parse minus ten and a half hours as milliseconds.	The clock can account for all ten and a half hours. Carry on.	Ten and a half hours went missing. Undefined is a curious alibi.
+train	jashkenas/underscore	3018	Ask for the maximum of null with numeric iteratee zero.	Minus infinity has the floor. The room is empty, after all.	I asked for the maximum of an empty room and a TypeError volunteered.
+train	mholt/PapaParse	1124	Quote the CSV field x+y using plus as the quote character.	The plus signs are quoting each other. Finally, some manners.	Who invited the double quotes? The invitation said plus one.
+train	mholt/PapaParse	1128	Detect the delimiter outside quoted multiline JSON in a semicolon CSV.	The commas put on quite a show. The semicolon still runs the place.	A comma inside quotation marks just promoted itself to delimiter.
+train	npm/ini	252	Read two entries for the same key, with bracketedArray disabled.	Both names made it into the book. You may keep the pen.	Two names on the booking and a room key for one. Charming.
+heldout	ariannamethod/notorch	185	Feed the text encoder the bytes ab, a NUL, then c in a single row.	A zero tried to cut the line. You sent the whole line home.	You read up to the zero and called it a day. The c would like a word.
+heldout	ariannamethod/ariannamethod.ai	45	Give the AML compiler the linker flag -lm; in emit-C mode.	That semicolon tried to pass as punctuation on official business. Nice catch.	That semicolon sailed through on a linker flag's passport.
+heldout	ariannamethod/jovovich	46	Review a changed a.c and a changed lib submodule pin with Git set to hide submodules.	There you are, lib. For a moment I thought only a.c had signed in.	I can see a.c from here. Somebody turn the light back on for lib.
