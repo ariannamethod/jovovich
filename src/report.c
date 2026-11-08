@@ -7,7 +7,7 @@
 #include "report_json.h"
 #include "model_manifest.h"
 #include "tools/narrow_json.h"
-#include "ariannamethod.h"
+#include "git_context.h"
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
@@ -18,6 +18,7 @@ static const char *source_keys[]={"base_commit","head_commit","rules_path","rule
 typedef struct {
     char *row,*id,*file,*context,*rule,*change,*origin[6],*batch;
     char row_hash[65];int count;
+    jov_trace_measurement measurement;
     jov_batch_item item;
     jov_fact *fact;
 } input;
@@ -43,7 +44,7 @@ static int parse(input*p,int index) {
     jov_review r={.fact=p->fact,.id=p->id,.model="input",.revision="input",.question="input",.file=p->file,.context=p->context,
         .rule_excerpt=p->rule,.change_excerpt=p->change,.concern=.5,.clean=.5,.source=&p->item.source};
     char h[65];
-    return !p->batch || jov_review_validate(&r) || hash_bytes(p->context,strlen(p->context),h) || strcmp(h,p->id) ||
+    return !p->batch || jov_review_validate(&r) || !jov_git_context_matches(p->file,p->rule,p->change,p->context,p->id) ||
         hash_bytes(p->rule,strlen(p->rule),h) || strcmp(h,p->origin[4]) ||
         hash_bytes(p->change,strlen(p->change),h) || strcmp(h,p->origin[5]) || hash_bytes(p->row,strlen(p->row),p->row_hash);
 }
@@ -52,7 +53,7 @@ static int same_policy(const input*a,const input*b) {
     for(int i=0;i<5;i++)if(strcmp(a->origin[i],b->origin[i]))return 0;
     return a->item.source.first_line==b->item.source.first_line && a->item.source.last_line==b->item.source.last_line;
 }
-static int answer(const char*j,const input*p,const char*manifest,float*flag,int index,int *policy) {
+static int answer(const char*j,input*p,const char*manifest,float*flag,int index,int *policy) {
     const char*model=nj_get(j,"model"),*choice=nj_get(j,"choice"),*prob=nj_get(choice,"probabilities"),*in=nj_get(j,"input");
     const char*src=nj_get(j,"source"),*e=nj_get(j,"execution"),*time=nj_get(e,"reviewed_at");
     int version,first,last,day,sec,ms;double concern,clean;char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -65,7 +66,7 @@ static int answer(const char*j,const input*p,const char*manifest,float*flag,int 
        !eq(src,"kind","git") || number(src,"rule_first_line",&first) || number(src,"rule_last_line",&last) ||
        first!=p->item.source.first_line || last!=p->item.source.last_line)goto done;
     for(int i=0;i<6;i++)if(!eq(src,source_keys[i],p->origin[i]))goto done;
-    if(jov_verify_boundary_view(j,p->row,p->id,p->context,p->rule,p->change,"aml/prepare.aml",index,policy) || !eq(j,"question",am_get_var_text("question")))goto done;
+    if(jov_verify_boundary_view(j,p->row,p->id,p->context,p->rule,p->change,"aml/prepare.aml",index,policy,&p->measurement) || !eq(j,"question",am_get_var_text("question")))goto done;
     if(nj_number(nj_get(prob,"CONCERN"),&concern) || nj_number(nj_get(prob,"CLEAN"),&clean) ||
        !isfinite(concern) || !isfinite(clean) || concern<0 || clean<0 || concern>1 || clean>1 || fabs(concern+clean-1)>1e-6 ||
        !eq(choice,"verdict",concern>=clean?"CONCERN":"CLEAN"))goto done;
@@ -86,6 +87,7 @@ int main(int argc,char **argv) {
     int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load(manifest_path,NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
+    am_init();am_persistent_mode(1);
     if(!batch || !answers || !manifest)goto done;
     for(;;) {
         char*s=report_json_row(batch,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);if(!s)break;
@@ -97,10 +99,15 @@ int main(int argc,char **argv) {
         items[count]=p->item;count++;
     }
     if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
-    am_init();am_persistent_mode(1);total=0;
+    total=0;
+    int checked_runs=0,failed_runs=0;
     for(int i=0;i<count;i++) {
         results[i]=report_json_row(answers,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);
         if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i,i,&policy))goto done;
+        if (inputs[i].measurement.run) {
+            checked_runs++;
+            failed_runs+=!inputs[i].measurement.meets_requirement;
+        }
     }
     extra=report_json_row(answers,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);if(extra || bad)goto done;
     if(am_set_var_array("file_concerns",flags,count) || am_exec_file("aml/report.aml"))goto done;
@@ -116,9 +123,22 @@ int main(int argc,char **argv) {
     if(*readout){fputc(',',out);json_field(out,"readout_sha256",readout);}
     fputs(",\"summary\":{",out);json_field(out,"verdict",verdict);
     fprintf(out,",\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},\"reviews\":[",count,concern,count-concern);
-    for(int i=0;i<count;i++){if(i)fputc(',',out);fputs(results[i],out);}fputs("]}\n",out);
+    for(int i=0;i<count;i++){if(i)fputc(',',out);fputs(results[i],out);}fputc(']',out);
+    int measured=0;
+    for(int i=0;i<count;i++) {
+        input *p=&inputs[i];
+        if(!p->measurement.run)continue;
+        fputs(measured++ ? "," : ",\"execution_changes\":[",out);
+        if(jov_trace_write_change(out,nj_get(p->row,"trace_evidence"),&p->measurement,p->file,1))goto done;
+    }
+    if(measured)fprintf(out,"],\"execution_summary\":{\"selected_runs\":%d,\"met\":%d,\"failed\":%d}",
+                        checked_runs,checked_runs-failed_runs,failed_runs);
+    fputs("}\n",out);
     }else {
-        fprintf(out,"**JOVOVICH · %s**\n\nReviewed files: %d · CONCERN: %d · CLEAN: %d\n\nBatch: `%s`\n",verdict,count,concern,count-concern,digest);
+        fprintf(out,"**JOVOVICH · %s**%s\n\nReviewed files: %d · CONCERN: %d · CLEAN: %d\n\nBatch: `%s`\n",
+                verdict,checked_runs?" (model vote)":"",count,concern,count-concern,digest);
+        if (checked_runs) fprintf(out,"\n**Execution checks:** %d met, %d failed across %d selected run%s.\n",
+                                  checked_runs-failed_runs,failed_runs,checked_runs,checked_runs==1?"":"s");
         for(int i=0;i<count;i++) {
             input*p=inputs+i;const char*prob=nj_get(nj_get(results[i],"choice"),"probabilities");double a,b;
             char*model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision")),*question=nj_string(nj_get(results[i],"question"));
@@ -134,6 +154,8 @@ int main(int argc,char **argv) {
                 char *obs=nj_string(raw_obs);
                 fputs("\n---\n\n",out);failed=(listed && !code) || (raw_obs && !obs) ||
                     jov_review_markdown_evidence(out,&r,code,obs);
+                if(!failed && p->measurement.run)
+                    failed=jov_trace_write_change(out,nj_get(p->row,"trace_evidence"),&p->measurement,p->file,0);
                 jov_replay_ref prior;
                 if (jov_replay_ref_read(nj_get(trace, "replayed_from"), &prior)) failed = 1;
                 else jov_replay_ref_markdown(out, &prior);

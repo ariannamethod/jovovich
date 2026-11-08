@@ -6,13 +6,16 @@ BLAS_FLAGS ?=
 BLAS_LIBS ?=
 
 .PHONY: all check clean native-deps
-all: build/jovovich-replay build/review-demo build/jovovich build/jovovich-pack build/jovovich-report
+all: build/check-receipts build/jovovich-replay build/review-demo build/jovovich build/jovovich-pack build/jovovich-report
 
 build:
 	mkdir -p build
 
 build/review-demo: src/review.c src/review.h src/trace_gate.h src/json.h examples/review_demo.c examples/review_fixtures.h | build
 	$(CC) $(CFLAGS) -Isrc src/review.c examples/review_demo.c -lm -o $@
+
+build/check-receipts: tools/check_receipts.c src/report_json.h $(NOTORCH_ROOT)/tools/narrow_json.h | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< -o $@
 
 build/check-review: src/review.c src/review.h src/trace_gate.h src/json.h tests/check_review.c | build
 	$(CC) $(CFLAGS) -Isrc src/review.c tests/check_review.c -lm -o $@
@@ -21,28 +24,37 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+build/jovovich: src/git_context.h src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/voice-pilot: tools/voice_pilot.c src/model_bytes.h src/hash.h src/report_json.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
+build/check-prompt-tokens: tests/check_prompt_tokens.c src/prompt_text.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+
 build/check-voice: tests/check_voice.c tools/voice_pilot.c src/prompt_text.h src/model_bytes.h src/hash.h src/report_json.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+
+build/check-model-cancel: tests/check_model_cancel.c src/model_bytes.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< $(NOTORCH_ROOT)/sha256.c -lm -o $@
+
+build/check-model-bytes: tests/check_model_bytes.c src/model_bytes.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h $(NOTORCH_ROOT)/tools/narrow_json.h $(NOTORCH_ROOT)/sha256.c $(NOTORCH_ROOT)/sha256.h | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-build/jovovich-pack: src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
+build/jovovich-pack: src/git_snapshot.h src/git_command.h src/git_context.h src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-replay: src/replay.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/jovovich-replay: src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/batch.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-report: src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+build/jovovich-report: src/git_context.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/check-pipeline: tests/check_pipeline.c native-deps | build
+build/check-pipeline: tests/check_pipeline.c src/git_context.h src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/check-git: tests/check_git.c src/hash.h native-deps | build
@@ -84,7 +96,9 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/check-receipts build/check-prompt-tokens build/check-model-cancel build/check-model-bytes build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+	./build/check-model-cancel
+	./build/check-model-bytes
 	./build/check-voice
 	./build/check-boundary
 	./build/check-trace-gate
@@ -95,9 +109,11 @@ check: build/check-voice build/compare-comment-pairs build/jovovich-replay build
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
 	sh tests/check_counterexamples.sh
+	sh tests/check_driver_sources.sh
 	sh tests/check_onejev16.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
+	sh tests/check_quality_publication.sh
 	sh tests/check_corpus.sh
 	sh tests/check_readout.sh
 	sh tests/check_boundary_observations.sh
@@ -105,6 +121,7 @@ check: build/check-voice build/compare-comment-pairs build/jovovich-replay build
 	sh tests/check_run_selection.sh
 	sh tests/check_bench_review.sh
 	sh tests/check_voice.sh
+	sh tests/check_paired_voice.sh
 
 clean:
 	rm -rf build

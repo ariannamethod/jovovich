@@ -1,11 +1,12 @@
-# Run with jq -n --slurpfile rows RECEIPTS --slurpfile panel THRESHOLD_RESULTS -f THIS_FILE
+# Use sh examples/voice-pilot/d1-score.sh RECEIPTS to score the original bytes.
 def panelkey: [.project,.pr,.direction,.view];
 def expected: if .direction=="repair" then "CLEAN" else "CONCERN" end;
 def vote: .answers.review.choice;
 def p: .answers.review.probabilities.CONCERN;
 def valid:
     . as $r | .answers.review as $a | $a.probabilities as $p |
-    ($p|keys)==["CLEAN","CONCERN"] and ($a.type=="choice") and
+    ($p|keys_unsorted)==(if .order=="concern-first" then ["CONCERN","CLEAN"]
+                         elif .order=="clean-first" then ["CLEAN","CONCERN"] else [] end) and ($a.type=="choice") and
     ([$p[]]|all(.[]; type=="number" and .>=0 and .<=1)) and ((($p|add)-1)|fabs)<0.000001 and
     ($a.choice=="CONCERN" or $a.choice=="CLEAN") and $a.confidence==$p[$a.choice] and
     $a.confidence==([$p[]]|max) and ($r.state_sha256|test("^[0-9a-f]{64}$")) and

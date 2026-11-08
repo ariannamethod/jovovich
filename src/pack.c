@@ -1,11 +1,11 @@
-#define _POSIX_C_SOURCE 200809L
-#include "ariannamethod.h"
+#define _XOPEN_SOURCE 700
+#include "git_context.h"
 #include "json.h"
 #include "hash.h"
 #include "review.h"
 #include "batch.h"
 #include "facts.h"
-#include "process.h"
+#include "git_snapshot.h"
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -17,13 +17,10 @@
 
 /* Literal changed paths at two resolved commits. No shell or working-tree reads. */
 #define CAP 262144
+static const char *attr_commit;
 static char *git_read(const char *repo,const char *const args[],size_t *length) {
-    const char *argv[32]={"git","--no-pager","--no-replace-objects","--literal-pathspecs","-C",repo};
-    size_t a=6;
-    for(size_t i=0;args[i];i++){if(a>=31)return NULL;argv[a++]=args[i];}
-    argv[a]=NULL;
     int code;
-    char *data = jov_command(argv, CAP, length, &code);
+    char *data = jov_git_command(repo,attr_commit,args,CAP,length,&code);
     if (data && code) { free(data); return NULL; }
     return data;
 }
@@ -36,13 +33,27 @@ static char *resolve(const char *repo,const char *ref) {
     if(len && out[len-1]=='\n')out[--len]=0;
     if(memchr(out,0,len) || !oid(out)){free(out);return NULL;}return out;
 }
+/* Canonical Git tree paths have no empty, "." or ".." component. */
+static int tree_path(const char *s) {
+    /* The full path is emitted as JSON, even when it is only rules metadata. */
+    AM_String *name=am_string_new(s);
+    if (!name) return 0;
+    am_string_free(name);
+    do {
+        size_t n=strcspn(s,"/");
+        if(!n || (n==1 && *s=='.') || (n==2 && s[0]=='.' && s[1]=='.')) return 0;
+        s+=n;
+    } while(*s++);
+    return 1;
+}
+
 static int integer(const char*s,int*out){char*end;errno=0;long x=strtol(s,&end,10);if(errno || end==s || *end || x<1 || x>INT_MAX)return 1;*out=(int)x;return 0;}
-/* 0 absent; 1 regular blob; 2 symlink/gitlink; -1 directory or failure. */
+/* 0 absent; 1 regular blob; 2 symlink/gitlink; 3 tree; -1 failure. */
 static int path_kind(const char *repo,const char *commit,const char *path) {
     size_t n;char *s=git_read(repo,(const char*[]){"ls-tree","--full-name","--format=%(objectmode)",commit,"--",path,NULL},&n);
     if(!s)return -1;
     int kind=n==0?0:!strcmp(s,"100644\n") || !strcmp(s,"100755\n")?1:
-        !strcmp(s,"120000\n") || !strcmp(s,"160000\n")?2:-1;
+        !strcmp(s,"120000\n") || !strcmp(s,"160000\n")?2:!strcmp(s,"040000\n")?3:-1;
     free(s);return kind;
 }
 static char *select_lines(const char *text,size_t n,int first,int *last) {
@@ -59,16 +70,47 @@ typedef struct {
     char *file,*diff,*context;
     char id[65],diff_hash[65];
 } packed;
+/* Retain the historical seven-hex patch display, without allowing unrelated
+ * objects added to the store to lengthen the two abbreviations. Only Git's
+ * index headers match: hunk payload lines always start with a marker. */
+static void abbreviate_index(char *patch,size_t width) {
+    char *write=patch;
+    for (const char *p=patch; *p;) {
+        size_t len=strcspn(p,"\n");
+        const char *old=p+((len>=6)?6:0);
+        if(len>=6+2*width+2 && !memcmp(p,"index ",6) &&
+           strspn(old,"0123456789abcdef")==width && !memcmp(old+width,"..",2) &&
+           strspn(old+width+2,"0123456789abcdef")==width &&
+           (len==6+2*width+2 || old[2*width+2]==' ')) {
+            memmove(write,p,6+7); write+=6+7;
+            memmove(write,old+width,2+7); write+=2+7;
+            p=old+2*width+2;
+            len=strcspn(p,"\n");
+        }
+        if(p[len]=='\n')len++;
+        memmove(write,p,len); write+=len; p+=len;
+    }
+    *write=0;
+}
+
 static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules) {
     size_t n;char *stat=NULL;int rc=1;
-    if(path_kind(repo,base,p->file)<0 || path_kind(repo,head,p->file)<0)goto done;
-    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--ignore-submodules=none","--numstat","-z",base,head,"--",p->file,NULL},&n);
-    if(!stat)goto done;
-    if(n && (stat[0]=='-' || (strchr(stat,'\t') && strchr(stat,'\t')[1]=='-'))){fprintf(stderr,"Binary change: %s\n",p->file);goto done;}
-    p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--ignore-submodules=none","--submodule=short","--unified=8",base,head,"--",p->file,NULL},&n);
-    if(!p->diff || !n || memchr(p->diff,0,n) || hash_bytes(p->diff,n,p->diff_hash))goto done;
-    if(am_set_var_text("source_file",p->file) || am_set_var_text("source_rules",rules) || am_set_var_text("source_diff",p->diff) || am_exec_file("aml/git-context.aml"))goto done;
-    const char*ctx=am_get_var_text("review_context");
+    if(!tree_path(p->file))goto done;
+    int before=path_kind(repo,base,p->file),after=path_kind(repo,head,p->file);
+    if(before<0 || after<0 || ((before==0 || before==3) && (after==0 || after==3)))goto done;
+    /* A tree-to-file change adds this exact leaf and deletes its descendants.
+     * The reverse removes the leaf. Descendants get their own manifest rows. */
+    const char *filter=before==3?"--diff-filter=A":after==3?"--diff-filter=D":"--diff-filter=ADMT";
+    stat=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-renames","--ignore-submodules=none",filter,"--numstat","-z",base,head,"--",p->file,NULL},&n);
+    if(!stat || !n || stat[n-1] || strlen(stat)+1!=n)goto done;
+    const char *first=strchr(stat,'\t'), *second=first?strchr(first+1,'\t'):NULL;
+    if(!second || strcmp(second+1,p->file))goto done;
+    if(stat[0]=='-' || first[1]=='-'){fprintf(stderr,"Binary change: %s\n",p->file);goto done;}
+    p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--ignore-submodules=none","--submodule=short",filter,"--full-index","--unified=8",base,head,"--",p->file,NULL},&n);
+    if(!p->diff || !n || memchr(p->diff,0,n))goto done;
+    abbreviate_index(p->diff,strlen(base));
+    if(hash_bytes(p->diff,strlen(p->diff),p->diff_hash))goto done;
+    const char *ctx=jov_git_context(p->file,rules,p->diff);
     if(!ctx || !strstr(ctx,p->file) || !strstr(ctx,rules) || !strstr(ctx,p->diff) || !(p->context=strdup(ctx)) || hash_bytes(ctx,strlen(ctx),p->id))goto done;
     rc=0;
 done:
@@ -112,7 +154,7 @@ int main(int argc,char **argv) {
     int rc=1,first=1,last=0,count=0,writer=-1;size_t n=0,rules_len=0;
     const char *repo = fact_only ? NULL : args[0];
     const char *rules_path = recall || fact_only ? NULL : args[3];
-    char *base=NULL,*head=NULL,*spec=NULL,*blob=NULL,*rules=NULL,*selected=NULL,*list=NULL;
+    char *private_repo=NULL,*base=NULL,*head=NULL,*blob=NULL,*rules=NULL,*selected=NULL,*list=NULL;
     packed records[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES]={{0}};FILE*out=NULL;
     jov_fact *fact = NULL;
     am_init(); am_persistent_mode(1);
@@ -126,18 +168,16 @@ int main(int argc,char **argv) {
         rules_path = fact->path; first = fact->first; last = fact->last;
     }
     if(nargs == required + 2 && (integer(args[required],&first) || integer(args[required+1],&last)))goto done;
-    if(!*rules_path || !(base=resolve(repo,args[1])) || !(head=resolve(repo,args[2])))goto done;
+    if(!tree_path(rules_path) || !(base=resolve(repo,args[1])) || !(head=resolve(repo,args[2])))goto done;
+    if(jov_git_snapshot(repo,base,&private_repo))goto done;
+    repo=private_repo; attr_commit=base;
     if (recall) {
         char *ancestor = git_read(repo, (const char *[]){"merge-base", "--is-ancestor", fact->base, base, NULL}, &n);
         if (!ancestor) { fputs("Remembered rule comes from a different Git history.\n", stderr); goto done; }
         free(ancestor);
     }
-    if(path_kind(repo,base,rules_path)!=1)goto done;
-    spec=malloc(strlen(base)+strlen(rules_path)+2);if(!spec)goto done;sprintf(spec,"%s:%s",base,rules_path);
-    blob=git_read(repo,(const char*[]){"rev-parse","--verify","--end-of-options",spec,NULL},&n);
+    blob=jov_git_rule_blob(repo,base,rules_path);
     if(!blob)goto done;
-    if(n && blob[n-1]=='\n')blob[--n]=0;
-    if(memchr(blob,0,n) || !oid(blob))goto done;
     rules=git_read(repo,(const char*[]){"cat-file","blob",blob,NULL},&rules_len);
     if(!rules || !rules_len || memchr(rules,0,rules_len) || !(selected=select_lines(rules,rules_len,first,&last)))goto done;
     if (recall && strcmp(selected, fact->quote)) {
@@ -191,9 +231,10 @@ int main(int argc,char **argv) {
     rc=ferror(out) || ferror(stdout) || fflush(stdout);
 done:
     if(rc && !fact_only)fprintf(stderr,"Could not pack Git review (256 KiB per Git read, 64 paths, 16 MiB total)\n");
+    if (jov_remove_git_snapshot(private_repo))rc=1;
     if (writer >= 0) close(writer);
     jov_fact_free(fact);
     if(out && fclose(out))rc=1;
     for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);}
-    am_persistent_mode(0);free(base);free(head);free(spec);free(blob);free(rules);free(selected);free(list);return rc?1:0;
+    am_persistent_mode(0);free(base);free(head);free(blob);free(rules);free(selected);free(list);return rc?1:0;
 }

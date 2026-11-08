@@ -1,4 +1,5 @@
 #include "trace_gate.h"
+#include "json.h"
 #include "ariannamethod.h"
 #include "hash.h"
 #include "report_json.h"
@@ -103,6 +104,53 @@ static int project(const char *value, metric_kind kind, const char *target, int 
     return effect(value,target,out);
 }
 
+int jov_trace_write_change(FILE *out, const char *gate, const jov_trace_measurement *measurement,
+                           const char *file, int json) {
+    metric_kind kind = metric(gate);
+    const char *run = measurement->run;
+    long long mode;
+    if (!run || nj_int(nj_get(run, "mode"), &mode)) return 1;
+    char *target = nj_string(nj_get(gate, "target"));
+    if (kind == COUNT && !target) return 1;
+    int failed = 1;
+    const char *keys[] = {"base", "head", "required"};
+    char values[3][EFFECT_BYTES];
+    const char *raw[3], *end[3];
+    for (int i = 0; i < 3; i++) {
+        raw[i] = nj_get(run, keys[i]);
+        if (!raw[i] || !(end[i] = report_json_end(raw[i], 0)) ||
+            project(raw[i], kind, target, i == 2, values[i])) goto done;
+    }
+    int matches = measurement->meets_requirement;
+    if (json) {
+        fputc('{', out);
+        json_field(out, "file", file);
+        fprintf(out, ",\"mode\":%d,", (int)mode);
+        json_field(out, "metric", kind == COUNT ? "count" : kind == TEXT ? "text" : "sequence");
+        if (target) {
+            fputc(',', out);
+            json_field(out, "target", target);
+        }
+        for (int i = 0; i < 3; i++) {
+            fprintf(out, ",\"%s\":", keys[i]);
+            if (kind == COUNT) fputs(values[i], out);
+            else fwrite(raw[i], 1, (size_t)(end[i] - raw[i]), out);
+        }
+        fprintf(out, ",\"head_matches_required\":%s}", matches ? "true" : "false");
+    } else {
+        fprintf(out, "\n**Measured change** (mode %d, ", (int)mode);
+        if (target) fprintf(out, "calls to `%s`", target);
+        else fputs(kind == TEXT ? "output text" : "callback sequence", out);
+        fprintf(out, ")\n\n```text\nBefore: %s\nAfter: %s\nRequired: %s\n```\n\n"
+                     "This run %s the measured requirement.\n",
+                values[0], values[1], values[2], matches ? "meets" : "fails");
+    }
+    failed = ferror(out);
+done:
+    free(target);
+    return failed;
+}
+
 static int same_effect(const char *saved, const char *fresh, metric_kind kind,
                        const char *target, int required) {
     char a[EFFECT_BYTES], b[EFFECT_BYTES];
@@ -148,8 +196,8 @@ static int bound_to_review(const char *row,const char *g,const char *id,const ch
     return 1;
 }
 
-int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const char *change,
-                         jov_trace_receipt *r) {
+int jov_apply_trace_gate_source(const char *row,const char *id,const char *rule,const char *change,
+                                jov_trace_receipt *r,const char *source) {
     const char *g=nj_get(row,"trace_evidence");
     if(!g)return 0;
     const char *end=report_json_end(row,0);
@@ -173,6 +221,7 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
         seen[r->runs++]=(int)mode;
         if(!strcmp(base,head))continue;
         if(!r->differing || mode<r->selected_mode) {
+            r->measurement=(jov_trace_measurement){v,!strcmp(head,required)};
             r->selected_mode=(int)mode;strcpy(selected_required,required);strcpy(selected_head,head);
         }
         r->differing++;
@@ -191,12 +240,17 @@ int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const c
         snprintf(mode,sizeof(mode),"%d",r->selected_mode);
         bad=am_set_var_text("gate_mode",mode) || am_set_var_text("gate_metric",metric) ||
             am_set_var_text("gate_required",selected_required) || am_set_var_text("gate_observed",selected_head) ||
-            am_exec_file("aml/trace-witness.aml");
+            (source ? am_exec_source(source,"aml/trace-witness.aml") : am_exec_file("aml/trace-witness.aml"));
         const char *obs=am_get_var_text("observation");
         if(!obs || strlen(obs)>=sizeof(r->observation))bad=1;
         else strcpy(r->observation,obs);
     }
     free(target);return bad;
+}
+
+int jov_apply_trace_gate(const char *row,const char *id,const char *rule,const char *change,
+                         jov_trace_receipt *receipt) {
+    return jov_apply_trace_gate_source(row,id,rule,change,receipt,NULL);
 }
 
 int jov_verify_trace_receipt(const char *listed,const jov_trace_receipt *r,const char *prompt) {

@@ -31,16 +31,16 @@ driver=/absolute/path/to/your/test-driver
 ```
 
 `probe` takes a fresh single-file row and a signed 32-bit mode. `remember`
-takes one named Git row with paired traces. If the original input contains a
+takes one named Git row with paired traces. For a row selected from a multi-file pack, both commands reconstruct the ordered file list from Git and check the position, size and digest before calling the driver. When replay selects an existing journal entry whose Git head is available, it repeats that membership check. If the original input contains a
 driver digest, it must match. An earlier trace without that field can still be
 captured by reproducing the original run with the supplied driver. The host verifies
 the Git source, applies the ordinary trace selector, and independently repeats
-both original executions and the old oracle before saving. If the historical
+both original executions and the old oracle before saving. Capture checks the full named rule receipt against the rules checkpoint at its recorded sequence; keep that checkpoint with the case store when importing a legacy trace. If the historical
 callbacks or requirement differ from the repeat, capture fails. Shared effects
 supply no case. An identical capture returns the original receipt.
 
-`run` accepts a fresh file row or a complete Git batch. One checkpoint snapshot
-applies to the whole batch. The lookup matches repository name, rule key,
+`run` accepts a fresh file row or a complete Git batch. One case checkpoint snapshot
+applies to the whole batch. Before executing, the host checks the full ordered set of paths against Git, the batch digest, and each row’s source. Every named input must match its rule journal entry, even when the case journal is empty. A selected historical case’s rule receipt must match its own journal entry too. The lookup matches repository name, rule key,
 changed file and driver digest. It requires the
 original base to be in the current base's ancestry and skips the identical
 commit pair. It prefers the newest case whose head has already landed. When
@@ -64,9 +64,28 @@ local to the configured memory directory. [AML journal](../aml/counterexamples.a
 The replay host invokes a driver chosen by the operator. Arguments are passed
 literally. Its working interface uses Git object IDs, repository-relative
 file names and decimal modes. The two `observe` calls share the same driver
-and input. Run each revision in the test environment appropriate for that
-repository. The digest identifies the executable file. A driver that loads
-external fixtures, tools or a container owns the versioning of that setup.
+and input. Each call receives a fresh bare Git repository as `REPO`, with
+`HEAD` detached at the requested commit. Read files with
+`git -C "$repo" show "$commit:$file"` or `git archive`. To build in a checkout,
+create a temporary worktree with `git -C "$repo" worktree add --detach "$work" "$commit"`.
+`JOV_REPOSITORY_PATH` gives the absolute path supplied by the operator for
+auxiliary fixtures. The host clears inherited Git settings and disables
+replacement refs, grafts and shallow markers. The operator's compiler,
+library paths and other driver variables remain available. The digest identifies a private executable snapshot taken once for
+the whole command. All three calls use those same bytes. A script can use
+`JOV_DRIVER_PATH` to locate files next to its original installation.
+
+On Linux the dynamic linker opens the snapshot under `/dev/fd`. If a native
+driver uses `$ORIGIN` to find a sibling shared library, supply the absolute
+library directory when starting replay, for example:
+
+```sh
+LD_LIBRARY_PATH=/opt/review/lib build/jovovich-replay probe "$repo" "$driver" 1 < original.jsonl
+```
+
+An absolute RUNPATH or a statically linked driver works directly. The driver
+digest covers its executable. The operator versions its shared libraries,
+fixtures, tools and container separately.
 
 | Invocation after the driver path | JSON on stdout |
 | --- | --- |
@@ -74,7 +93,7 @@ external fixtures, tools or a container owns the versioning of that setup.
 | `expect REPO BASE FILE MODE RULES_PATH FIRST LAST` | The current contract's effect, for example `{"metric":"sequence","required":["scan","paint"]}` or `{"metric":"count","target":"paint","required":2}`. Use `{"metric":"text","required":"3.0.0-alpha.beta.5.5"}` for text. |
 
 Each call returns one JSON value of at most 16 KiB and exits successfully.
-Malformed outputs, a changed executable or a failed run stop the batch.
+Malformed outputs or a failed run stop the batch. Replacing the installed driver takes effect on the next invocation.
 The project's fixture driver extracts `draw.c` from each named Git object,
 compiles it and records the actual calls. Its oracle reads the selected Git
 rule. [Fixture driver](../tests/fixtures/draw-driver.sh) · [Trace contract](trace-evidence.md)

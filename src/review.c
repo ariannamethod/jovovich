@@ -259,7 +259,8 @@ int jov_review_markdown_view(FILE *out, const jov_review *r, const char *code) {
 
 int jov_review_markdown_evidence(FILE *out, const jov_review *r, const char *code, const char *observation) {
     if (!out || jov_review_validate(r) != JOV_OK) return JOV_INVALID;
-    fprintf(out, "**JOVOVICH · %s**\n\n**Reviewed file:** ", jov_review_verdict(r));
+    fprintf(out, "**JOVOVICH · %s**%s\n\n**Reviewed file:** ", jov_review_verdict(r),
+            observation && *observation ? " (model vote)" : "");
     markdown_text(out, r->file, 0);
     if(r->source) {
         const jov_source *s=r->source;

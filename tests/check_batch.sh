@@ -25,6 +25,17 @@ for mode in clean mixed tie; do
     if test "$mode" = clean; then concerns=0; fi
     ./build/batch-fixture check "build/report-$mode.json" "$concerns"
 done
+# Two files can reach different outcomes under the same rule and raw model vote.
+jq -c '. + {trace_evidence: {schema:"jovovich.paired-traces/1",review_id:.id,
+    base_commit:.source.base_commit,head_commit:.source.head_commit,
+    rule_sha256:.source.rules_sha256,change_sha256:.source.diff_sha256,metric:"text",
+    runs:[{mode:0,base:"old",head:.file,required:(if .batch.index==0 then .file else "old" end)}]}}' \
+    build/batch-input.jsonl > build/batch-executions.jsonl
+./build/batch-fixture emit build/batch-executions.jsonl clean > build/batch-execution-votes.jsonl
+./build/jovovich-report build/batch-executions.jsonl build/batch-execution-votes.jsonl --json > build/batch-execution-report.json
+jq -e '.summary.verdict=="CLEAN" and .execution_summary=={selected_runs:2,met:1,failed:1}
+    and [.execution_changes[].head_matches_required]==[true,false]
+    and all(.execution_changes[]; .head==.file)' build/batch-execution-report.json >/dev/null
 ./build/jovovich-report build/batch-input.jsonl build/batch-mixed.jsonl > build/report-mixed.md
 grep -q 'Reviewed files: 2' build/report-mixed.md
 grep -q 'CONCERN 90.0%' build/report-mixed.md
@@ -94,3 +105,16 @@ git -C "$work" commit -qm binary
 if ./build/jovovich-pack --all "$work" "$base" HEAD RULES.md > build/batch-binary.jsonl 2> build/batch-binary.log; then exit 1; fi
 test ! -s build/batch-binary.jsonl
 printf 'Batch checks: 3 aggregate cases, 16 report refusals, 64/65-file boundary and whole-batch binary refusal passed\n'
+# Reports retain unknown fields verbatim. Validate their bytes as carefully as
+# known fields, including Unicode's scalar boundaries. POSIX printf %b emits
+# these fixtures independent of the shell's locale.
+unicode_answer() {
+    { printf '{"annotation":"'; printf '%b' "$1"; printf '",'; cut -c 2- build/batch-clean.jsonl | sed -n '1p'; sed -n '2p' build/batch-clean.jsonl; } > build/answers-unicode.jsonl
+}
+unicode_answer '\0302\0200\0337\0277\0340\0240\0200\0355\0237\0277\0356\0200\0200\0357\0277\0277\0360\0220\0200\0200\0364\0217\0277\0277'
+./build/jovovich-report build/batch-input.jsonl build/answers-unicode.jsonl --json > build/report-unicode.json
+for bytes in '\0000' '\0300\0200' '\0340\0237\0277' '\0355\0240\0200' '\0360\0217\0277\0277' '\0364\0220\0200\0200' '\0377' '\0200' '\0342\0202' '\0342X\0200'; do
+    unicode_answer "$bytes"
+    reject build/batch-input.jsonl build/answers-unicode.jsonl
+done
+printf 'UTF-8 boundaries accepted; malformed, overlong, surrogate, out-of-range, truncated and NUL strings refused\n'

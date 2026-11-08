@@ -21,7 +21,8 @@ Refactoring them is outside the scope of this PR.
 
 ## Assemble the body
 
-Git, Make and a C compiler. The two pinned dependencies are NoTorch and
+Make, a C compiler and Git with `--attr-source` support. The checks also use
+`jq` and the OpenSSL command-line tools. The two pinned dependencies are NoTorch and
 Arianna Method Language (AML). The dependency tree has already been questioned.
 
 ```sh
@@ -40,7 +41,10 @@ backends.
 The private JOVOVICH release contains the ready-to-run `jovovich.gguf` and
 `tokenizer.gguf`. From this checkout, run
 `./build/jovovich /path/to/jovovich.gguf /path/to/tokenizer.gguf < examples/reviews.jsonl`.
-Both downloads reproduce the hashes in the runtime manifest.
+At startup the CLI copies both GGUFs into a private temporary directory,
+checks their hashes against the manifest and loads those copies. Set
+`TMPDIR` to a trusted location with room for both files (about 2 GB for the
+original release). Temporary storage is released automatically when the loader or its process exits.
 [Native release](https://huggingface.co/ataeff/jovovich/tree/0eac460171f26a9582d2d25dc86a96350c2a4dca)
 
 To build those files from the source checkpoint, download

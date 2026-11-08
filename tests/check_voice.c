@@ -48,6 +48,15 @@ static void check_tokens(const char *path) {
 }
 
 int main(int argc,char **argv) {
+    if (argc==3 && !strcmp(argv[1],"--blind")) {
+        packet rows[MAX_ROWS]={0};
+        char sha[65];
+        int n=read_rows(argv[2],rows,NULL,1,sha);
+        check_unique(NULL,0,rows,n);
+        for (int i=0;i<n;i++) { free(rows[i].id); free(rows[i].state); }
+        puts(sha);
+        return 0;
+    }
     if (argc>2) return 2;
     check_math();
     am_init(); am_persistent_mode(1);

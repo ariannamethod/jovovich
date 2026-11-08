@@ -33,7 +33,7 @@ static void read_score(const char *path,int decisions[CASES],char input_sha[65],
     }
     int n=0,bad=0;
     for(const char *row=nj_first(nj_get(score,"cases"),&bad);row;row=nj_next(row,']',&bad)) {
-        char id[16];
+        char id[32];
         snprintf(id,sizeof(id),"trace-%02d",n);
         int violation=n%4==1 || n%4==2;
         if(n>=CASES || !nj_is(nj_get(row,"id"),id) || !nj_is(nj_get(row,"expected"),violation?"CONCERN":"CLEAN") ||

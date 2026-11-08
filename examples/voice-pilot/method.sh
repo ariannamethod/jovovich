@@ -12,7 +12,7 @@ while read -r mode slug pr fixed file rules first last; do
         ariannamethod/jovovich) repo=. ;;
         *) exit 2 ;;
     esac
-    parent=$(git --no-replace-objects -C "$repo" rev-parse "$fixed^1")
+    parent=$fixed^1
     for direction in repair reverse; do
         case "$direction" in repair) base=$parent head=$fixed ;; reverse) base=$fixed head=$parent ;; esac
         build/jovovich-pack "$repo" "$base" "$head" "$rules" "$file" "$first" "$last" > "$out/source"

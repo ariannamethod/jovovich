@@ -2,6 +2,14 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — The rollback borrowed the repair's voice
+
+The first archive test let two PR answers trade places and still passed.
+We ran the upstream code again and had the original OneJev review all twenty
+changes. Each of the eight held-out takes is now checked against its own
+decoded text and exact token stream. Jovovich still hears the parser report
+line two for line one. She still starts her sentence again. The [replay and recorded takes](docs/voice-audition.md#paired-audition-from-executed-git-patches) include the exact token stream for each review.
+
 ## 2026-11-08 — Every other update, an entirely different woman
 
 A second voice SFT fitted 66 coefficients on paired authored remarks, with

@@ -69,14 +69,63 @@ int jov_boundary_code(const char *source,char code[JOV_BOUNDARY_CODE_SIZE]) {
     return len>=0 && len<JOV_BOUNDARY_CODE_SIZE;
 }
 
-int jov_boundary_context(const char *context,const char *rule,const char *change,
+static int c_source_path(const char *path) {
+    if (!path) return 0;
+    const char *leaf=path;
+    for (;;) {
+        size_t n=strcspn(leaf,"/");
+        if (!n || (n==1 && *leaf=='.') || (n==2 && !strncmp(leaf,"..",2))) return 0;
+        if (!leaf[n]) return n>2 && leaf[n-2]=='.' && (leaf[n-1]=='c' || leaf[n-1]=='h');
+        leaf+=n+1;
+    }
+}
+
+/* Match a Git path against the independently supplied, decoded review scope.
+ * Its known length disambiguates unquoted paths containing spaces or " b/". */
+static int git_path(const char **cursor, char side, const char *file) {
+    const char *p=*cursor;
+    int quoted=*p=='"';
+    if (quoted) p++;
+    if (p[0]!=side || p[1]!='/') return 0;
+    p+=2;
+    for (const unsigned char *name=(const unsigned char *)file;*name;name++) {
+        unsigned char c=(unsigned char)*p++;
+        if (!c || c=='\n' || c=='\t' || c=='"') return 0;
+        if (c=='\\') {
+            if (!quoted) return 0;
+            c=(unsigned char)*p++;
+            if (!c) return 0;
+            if (c>='0' && c<='3' && p[0]>='0' && p[0]<='7' && p[1]>='0' && p[1]<='7') {
+                c=(unsigned char)((c-'0')*64+(p[0]-'0')*8+(p[1]-'0')); p+=2;
+            } else {
+                const char *escapes="abtnvfr\\\"", *decoded="\a\b\t\n\v\f\r\\\"";
+                const char *escape=strchr(escapes,c);
+                if (!escape) return 0;
+                c=(unsigned char)decoded[escape-escapes];
+            }
+        }
+        if (c!=*name) return 0;
+    }
+    if (quoted && *p++!='"') return 0;
+    *cursor=p;
+    return 1;
+}
+
+static int literal(const char **cursor,const char *text) {
+    size_t n=strlen(text);
+    if (strncmp(*cursor,text,n)) return 0;
+    *cursor+=n; return 1;
+}
+
+int jov_boundary_context(const char *git_file,const char *context,const char *rule,const char *change,
                          char code[JOV_BOUNDARY_CODE_SIZE],char **model_context) {
     *model_context=NULL;
     const char *start=strstr(context,change);
     if(!start || !*change || strstr(start+1,change))return 0;
     const char *end=start+strlen(change);
     const char *index_line=NULL,*after_index=NULL;
-    if(jov_boundary_code(change,code)) {
+    if(!git_file) {
+        if(!jov_boundary_code(change,code))return 0;
         const char fence[]="```c\n";
         size_t prefix=(size_t)(start-context);
         if(prefix<sizeof(fence)-1 || memcmp(start-(sizeof(fence)-1),fence,sizeof(fence)-1) ||
@@ -85,20 +134,25 @@ int jov_boundary_context(const char *context,const char *rule,const char *change
     } else {
         /* The new blob's ID changes with spelling. Omit that index line only
          * from the model view. The receipt keeps every original diff byte. */
-        const char marker[]="\n@@ -0,0 +1 @@\n+";
-        const char *hunk=strstr(change,marker);
-        if(*end || strncmp(change,"diff --git ",11) || !hunk || !strstr(change,"\n--- /dev/null\n+++ ") ||
-           strstr(change,"\ndiff --git ") || strstr(change,"\n@@ ")!=hunk)return 0;
-        const char *index=strstr(change,"\nindex ");
-        if(index) {
-            const char *old=index+7,*dots=old+strspn(old,"0");
-            if(dots==old || strncmp(dots,"..",2))return 0;
-            const char *new_id=dots+2,*stop=new_id+strspn(new_id,"0123456789abcdef");
-            if(stop==new_id || strncmp(stop,"\n--- /dev/null\n",15) || stop>hunk)return 0;
-            index_line=start+(index+1-change);
-            after_index=start+(stop+1-change);
+        const char *p=change;
+        if (*end || !c_source_path(git_file) || !literal(&p,"diff --git ") ||
+            !git_path(&p,'a',git_file) || !literal(&p," ") || !git_path(&p,'b',git_file) ||
+            (!literal(&p,"\nnew file mode 100644\n") && !literal(&p,"\nnew file mode 100755\n"))) return 0;
+        const char *index=p;
+        if (literal(&p,"index ")) {
+            size_t zeros=strspn(p,"0");
+            if (!zeros) return 0;
+            p+=zeros; if (!literal(&p,"..")) return 0;
+            size_t digits=strspn(p,"0123456789abcdef");
+            if (!digits) return 0;
+            p+=digits; if (!literal(&p,"\n")) return 0;
+            index_line=start+(index-change);
+            after_index=start+(p-change);
         }
-        const char *body=hunk+sizeof(marker)-1,*newline=strchr(body,'\n');
+        if (!literal(&p,"--- /dev/null\n+++ ") || !git_path(&p,'b',git_file)) return 0;
+        if (*p=='\t') p++; /* Git appends a tab after an unquoted path containing spaces. */
+        if (!literal(&p,"\n@@ -0,0 +1 @@\n+")) return 0;
+        const char *body=p,*newline=strchr(body,'\n');
         if((newline && newline[1]) || !jov_boundary_code(body,code))return 0;
         start+=body-change;
         if(newline)end=start+(newline-body);

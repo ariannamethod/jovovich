@@ -53,6 +53,31 @@ cmp "$work/first" "$work/retried"
 recall --all "$repo" "$base2" "$head2" > "$work/second"
 grep -Fq "$head1" "$work/second"
 grep -Fq "$head2" "$work/second"
+# A repository-local view of history cannot create a parent for an orphan
+# or hide a real parent that is present in the object store.
+orphan=$(git -C "$repo" -c commit.gpgSign=false commit-tree "$base1^{tree}" -m 'separate history')
+orphan_head=$(git -C "$repo" -c commit.gpgSign=false commit-tree "$head1^{tree}" -p "$orphan" -m 'separate fix')
+reject recall --all "$repo" "$orphan" "$orphan_head"
+printf '%s %s\n' "$orphan" "$base1" > "$repo/.git/info/grafts"
+git -C "$repo" -c advice.graftFileDeprecated=false merge-base --is-ancestor "$base1" "$orphan"
+reject recall --all "$repo" "$orphan" "$orphan_head"
+reject pack "$repo" "$orphan^" "$head1" RULES.md draw.c
+recall --all "$repo" "$base2" "$head2" > "$work/with-graft"
+cmp "$work/second" "$work/with-graft"
+rm "$repo/.git/info/grafts"
+printf '%s\n' "$base2" > "$repo/.git/shallow"
+if git -C "$repo" merge-base --is-ancestor "$base1" "$base2"; then exit 1; fi
+recall --all "$repo" "$base2" "$head2" > "$work/with-shallow-boundary"
+cmp "$work/second" "$work/with-shallow-boundary"
+pack "$repo" "$base2^" "$base2" RULES.md draw.c > "$work/parent-expression"
+jq -e --arg parent "$head1" '.source.base_commit==$parent' "$work/parent-expression" >/dev/null
+rm "$repo/.git/shallow"
+# A real shallow clone can review the available pair, and cannot authenticate
+# a named fact whose origin lies beyond its available history.
+git -C "$repo" branch local-pair "$head2"
+git clone -q --no-local --depth=2 --branch local-pair "$repo" "$work/shallow"
+pack "$work/shallow" "$base2" "$head2" RULES.md draw.c > "$work/available-pair"
+reject recall --all "$work/shallow" "$base2" "$head2"
 reject pack --fact "$store" unrelated/render draw-order
 reject pack --fact "$store" fixture/render missing-key
 reject recall --all "$repo" "$base3" "$head3"

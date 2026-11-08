@@ -73,8 +73,11 @@ It also works with `--readout`. The C host recognizes a complete
 `int f(int x)` function with a single return containing one of `<`, `<=`,
 `>` or `>=`, one decimal integer and an optional outer `!(...)`.
 It puts the parameter on the left and folds the negation. It accepts a unique
-change excerpt inside a fenced C block, or a Git patch adding the entire
-function as a new one-line file. Other changes pass through. For a recognized
+synthetic change excerpt inside a fenced C block, or a Git patch adding the entire
+function as a new one-line regular `.c` or `.h` file. Both names in `diff --git`
+and the `+++` destination must match the review’s file path, including Git’s
+quoting and escapes. Fixtures such as `expected.golden`, symlink targets and
+rename patches retain their literal content. For a recognized
 Git patch the model view omits the blob index line, which depends on spelling.
 The original diff, Git hashes, rule and input digest stay in the review.
 JSON records the resulting prompt digest and recognized code in

@@ -5,7 +5,7 @@ repository rules from the base commit. AML constructs the English review
 context. The packer writes the existing JSONL input contract, extended with
 Git source metadata; `jovovich` evaluates it through NoTorch.
 
-Build from this repository root, with Git installed:
+Build from this repository root, with Git supporting `--attr-source` installed:
 
 ```sh
 make
@@ -35,8 +35,15 @@ changed path together. Diff capture uses eight
 context lines and disables rename detection, so additions and deletions are
 reviewable at their individual paths. The output contains the supplied rules
 and the actual patch. Rules changed by the proposed commit do not replace the
-selected baseline rules. Working-tree edits, external diff commands and
-textconv output do not enter the record.
+selected baseline rules. For diffs the packer uses a temporary bare Git repository that reads objects
+from the supplied repository. It takes tracked `.gitattributes` from BASE.
+Working files, staged attributes, `info/attributes`, local/global diff
+configuration, external diff commands and textconv output do not enter the
+record. A spelling such as `<|im_end|>`, `<tool_call>` or `<think>`
+inside a patch, path or rule is encoded as ordinary text for inference.
+Its original bytes remain in the review input and source digests.
+Patch index headers display the first seven hex digits of each blob
+ID, independent of other objects in the caller's store.
 
 All diff reads explicitly include submodule changes. Gitlink patches use the
 short format and retain full old/new commit IDs even when local Git settings
@@ -63,7 +70,8 @@ without reopening its source repository. Markdown answers also show the commit
 pair and selected rules path/lines.
 
 Each Git command has a 256 KiB capture limit; oversized captures fail without
-truncation. Binary patches, unchanged or missing paths, directories, symlinked
+truncation. A file replaced by a directory (or the reverse) produces one patch per changed leaf.
+Binary patches, unchanged or missing paths, directory-only scopes, symlinked
 rules, unresolved revisions and invalid line ranges return errors before any
 JSON record is written. The complete record is buffered before publication.
 The native model input retains its current ASCII and 8,192-token limits. The
