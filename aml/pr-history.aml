@@ -1,0 +1,30 @@
+# Each checkpoint belongs to one repository and PR number. Reopening it checks both.
+journal = record_new()
+if file_exists(memory_path):
+    journal = checkpoint_load(memory_path)
+else:
+    record_set(journal, "schema", "jovovich.pr-history/1")
+    record_set(journal, "repository", repository_name)
+    record_set(journal, "number", pr_number)
+    record_set(journal, "opened", opened_utc)
+    record_set(journal, "keys", list_new())
+    record_set(journal, "observations", list_new())
+
+assert(text_equal(record_get(journal, "schema"), "jovovich.pr-history/1"), "PR history schema")
+assert(text_equal(record_get(journal, "repository"), repository_name), "PR repository")
+assert(text_equal(record_get(journal, "number"), pr_number), "PR number")
+keys = record_get(journal, "keys")
+observations = record_get(journal, "observations")
+opened = record_get(journal, "opened")
+assert(list_len(keys) == list_len(observations) and list_len(keys) <= 256, "PR history length")
+dirty = 0
+if pr_mode[0] == 1:
+    assert(text_equal(opened, opened_utc), "GitHub opening time changed")
+    event = calendar_instant(open_clock[0], open_clock[1], open_clock[2])
+    checked = calendar_instant(check_clock[0], check_clock[1], check_clock[2])
+    assert(calendar_compare(event, checked) <= 0, "execution predates PR opening")
+    if list_find(keys, observation_key) < 0:
+        assert(list_len(keys) < 256, "PR history is full")
+        list_push(record_get(journal, "keys"), observation_key)
+        list_push(record_get(journal, "observations"), observation)
+        dirty = 1

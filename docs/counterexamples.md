@@ -134,6 +134,28 @@ If it reproduces, the result names the first differing line and byte column
 1 MiB of UTF-8 text per output. A failed driver or unstable mismatch stops the
 command before publication.
 
+## When a pull request opened and which revisions were checked
+
+Supply metadata from the base repository on GitHub and a complete measured batch
+packed with its named AML rule. Run from the Jovovich checkout.
+
+```sh
+gh api "repos/$owner_repo/pulls/$number" --jq \
+  '{number, url: .html_url, createdAt: .created_at, baseRefOid: .base.sha, headRefOid: .head.sha}' > pr.json
+build/jovovich-replay locate "$checkout" "$driver" --record-pr "$memory" "$owner_repo" pr.json < measured.jsonl
+build/jovovich-replay history "$memory" "$owner_repo" "$number" "$head_sha"
+```
+
+The URL, rule receipt, and both Git commit IDs must match. The driver reruns
+the measured cases. Each observation retains those results, the AML rule, the
+batch ID, and two JANUS instants. GitHub supplies the opening time. The local
+clock supplies the time verification finished. Replaying identical evidence
+retains the first observation. A changed base, head, rule or result can add an
+observation. With only the memory directory and repository, `history` lists
+its checked PRs in GitHub opening order. Omit the head argument to read all checks for that PR. A revision
+with no recorded execution returns `unverified`. Each repository and PR
+number has a separate locked AML checkpoint, with up to 256 observations.
+
 ## Six live answers
 
 These reviews used the two GGUFs downloaded from the pinned JOVOVICH release.

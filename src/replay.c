@@ -3,6 +3,7 @@
 #include "git_context.h"
 #include "batch.h"
 #include "facts.h"
+#include "pr_history.h"
 #include "hash.h"
 #include "json.h"
 #include "hunk_trial.h"
@@ -695,16 +696,20 @@ static int parse_mode(const char *s, int *mode) {
 
 int main(int argc, char **argv) {
     if (argc==4 && !strcmp(argv[1],"show")) return show(argv[2],argv[3]);
+    if (argc>=4 && argc<=6 && !strcmp(argv[1],"history"))
+        return jov_pr_history(argv[2],argv[3],argc>=5 ? argv[4] : NULL,argc==6 ? argv[5] : NULL);
+    jov_pr pr={0};
+    int recording=argc==8 && !strcmp(argv[1],"locate") && !strcmp(argv[4],"--record-pr");
     int probe=argc==5 && !strcmp(argv[1],"probe");
     int capture=argc==5 && !strcmp(argv[1],"remember");
     int replay=argc==5 && !strcmp(argv[1],"run");
-    int locating=(argc==4 || (argc==6 && !strcmp(argv[4],"--memory"))) && !strcmp(argv[1],"locate");
-    const char *memory=locating && argc==6 ? argv[5] : NULL;
+    int locating=(recording || argc==4 || (argc==6 && !strcmp(argv[4],"--memory"))) && !strcmp(argv[1],"locate");
+    const char *memory=locating && argc>=6 ? argv[5] : NULL;
     int snapshot=argc==4 && !strcmp(argv[1],"snapshot");
     int direct=probe || locating || snapshot;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
@@ -729,9 +734,14 @@ int main(int argc, char **argv) {
     const char *batch=count ? nj_get(lines[0],"batch") : NULL;
     long long members=0;
     int whole_single=count==1 && batch && !nj_int(nj_get(batch,"count"),&members) && members==1;
-    int full_batch=replay || (locating && (count>1 || whole_single));
+    int full_batch=recording || replay || (locating && (count>1 || whole_single));
     if (!count || bad_input || ferror(stdin) || (!full_batch && count!=1) ||
         (full_batch && verify_batch(lines,inputs,count))) goto done;
+    if (recording && (!batch || jov_pr_read(&pr,argv[6],argv[7],inputs[0].base,inputs[0].head,inputs[0].fact) ||
+        verify_receipt(memory,inputs[0].fact))) {
+        fputs("PR metadata, repository rule or commit pair differs from the checked batch.\n",stderr);
+        goto done;
+    }
     if (replay && inputs[0].fact && verify_receipt(dir,inputs[0].fact)) goto done;
     if (verify_git(repo,inputs,count,full_batch && batch,full_batch ? NULL : batch)) goto done;
     for (int i=0;i<count;i++) {
@@ -747,6 +757,12 @@ int main(int argc, char **argv) {
         else if (!bad && replay) bad=fputs(line,out)==EOF;
         long staged=ftell(out);
         if (bad || staged<0 || (unsigned long)staged>JOV_BATCH_MAX_BYTES) goto done;
+    }
+    if (recording) {
+        char *id=nj_string(nj_get(batch,"id"));
+        int bad=!id || jov_pr_record(memory,&pr,inputs[0].fact,id,inputs[0].base,inputs[0].head,out);
+        free(id);
+        if (bad) { fprintf(stderr,"Could not record verified PR outcomes: %s\n",am_get_error()); goto done; }
     }
     if (fseek(out,0,SEEK_SET)) goto done;
     char block[8192]; size_t n;
