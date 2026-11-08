@@ -15,6 +15,7 @@ void jov_replay_ref_markdown(FILE *out, const jov_replay_ref *ref);
 typedef struct {
     const char *run;
     int meets_requirement;
+    int unchanged_replay;
 } jov_trace_measurement;
 
 /* Bounded display for two sequences of up to 32 callback identifiers. */

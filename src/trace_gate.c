@@ -138,7 +138,8 @@ int jov_trace_write_change(FILE *out, const char *gate, const jov_trace_measurem
         }
         fprintf(out, ",\"head_matches_required\":%s}", matches ? "true" : "false");
     } else {
-        fprintf(out, "\n**Measured change** (mode %d, ", (int)mode);
+        const char *title = measurement->unchanged_replay ? "Replayed check (same result on both revisions)" : "Measured change";
+        fprintf(out, "\n**%s** (mode %d, ", title, (int)mode);
         if (target) fprintf(out, "calls to `%s`", target);
         else fputs(kind == TEXT ? "output text" : "callback sequence", out);
         fprintf(out, ")\n\n```text\nBefore: %s\nAfter: %s\nRequired: %s\n```\n\n"
@@ -210,6 +211,7 @@ int jov_apply_trace_gate_source(const char *row,const char *id,const char *rule,
         free(target);return 1;
     }
     char required[EFFECT_BYTES],head[EFFECT_BYTES],selected_required[EFFECT_BYTES],selected_head[EFFECT_BYTES];
+    const char *prior = nj_get(g, "replayed_from");
     memset(r,0,sizeof(*r));
     for(const char *v=nj_first(runs,&bad);v;v=nj_next(v,']',&bad)) {
         long long mode;char base[EFFECT_BYTES];
@@ -219,14 +221,18 @@ int jov_apply_trace_gate_source(const char *row,const char *id,const char *rule,
         for(int i=0;i<r->runs;i++)if(seen[i]==(int)mode)bad=1;
         if(bad)break;
         seen[r->runs++]=(int)mode;
-        if(!strcmp(base,head))continue;
+        if (!strcmp(base,head)) {
+            /* A remembered input supplies one mode. Report its fresh outcome
+             * even when there is no difference to add to the model prompt. */
+            if (prior) r->measurement=(jov_trace_measurement){v,!strcmp(head,required),1};
+            continue;
+        }
         if(!r->differing || mode<r->selected_mode) {
-            r->measurement=(jov_trace_measurement){v,!strcmp(head,required)};
+            r->measurement=(jov_trace_measurement){v,!strcmp(head,required),0};
             r->selected_mode=(int)mode;strcpy(selected_required,required);strcpy(selected_head,head);
         }
         r->differing++;
     }
-    const char *prior = nj_get(g, "replayed_from");
     char harness[65];
     if (nj_get(g, "harness_sha256") && !hex_field(g, "harness_sha256", 0, harness)) bad = 1;
     if (prior && (jov_replay_ref_read(prior, &r->replay) || r->runs != 1 ||
@@ -266,6 +272,9 @@ int jov_verify_trace_receipt(const char *listed,const jov_trace_receipt *r,const
         strcmp(prior.source_sha, r->replay.source_sha) || strcmp(prior.harness_sha, r->replay.harness_sha) ||
         prior.mode != r->replay.mode) return 1;
     const char *mode=nj_get(listed,"selected_mode"),*obs=nj_get(listed,"observation");
+    const char *recheck=nj_get(listed,"recheck_result");
+    if (recheck && (!r->measurement.unchanged_replay ||
+        !nj_is(recheck,r->measurement.meets_requirement ? "met" : "failed"))) return 1;
     if(!r->differing)return mode || obs;
     char *shown = nj_string(obs);
     int bad = nj_int(mode,&n) || n!=r->selected_mode || !shown || strcmp(shown,r->observation);

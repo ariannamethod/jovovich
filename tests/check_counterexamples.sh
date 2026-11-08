@@ -20,6 +20,7 @@ rules 'draw must call scan then paint at both modes, 0 and 1.'
 draw "$broken"; root=$(commit initial)
 draw "$fixed"; repair=$(commit repair)
 draw "$broken"; regression=$(commit regression)
+printf '\n' >> "$repo/draw.c"; still_broken=$(commit "same failing callbacks")
 draw "$fixed"; fixed_again=$(commit 'second repair')
 printf '\n/* shared callback effect */\n' >> "$repo/draw.c"; neutral=$(commit 'comment only')
 rules 'draw must call paint then scan at both modes, 0 and 1.'
@@ -118,6 +119,8 @@ rm "$repo/.git/info/grafts"
 probe 1 < "$work/regression" > "$work/manual"
 replay < "$work/repair" > "$work/repair-replayed"
 grep -Fq '"base":["paint","scan"],"head":["scan","paint"]' "$work/repair-replayed"
+pack "$regression" "$still_broken" > "$work/still-broken"
+replay < "$work/still-broken" > "$work/still-broken-replayed"
 replay < "$work/neutral" > "$work/neutral-replayed"
 grep -Fq '"base":["scan","paint"],"head":["scan","paint"]' "$work/neutral-replayed"
 record --supersedes 1 --all "$repo" "$newbase" "$newhead" RULES.md 2 2 > "$work/new-rule"
@@ -266,6 +269,26 @@ for packet in regression-replayed text-replay; do
     build/jovovich-report "$work/$packet" "$work/fixture-answer" > "$work/change-comment"
     grep -Fq '**Execution checks:** 0 met, 1 failed' "$work/change-comment"
     grep -Fq 'This run fails the measured requirement.' "$work/change-comment"
+done
+# A case recalled by AML is checked even when both revisions do the same thing.
+for packet in neutral-replayed still-broken-replayed; do
+    case "$packet" in neutral-replayed) result=met ;; *) result=failed ;; esac
+    build/batch-fixture emit "$work/$packet" clean > "$work/shared-answer"
+    jq -e --arg result "$result" '.execution.trace_witness |
+        .differing==0 and .recheck_result==$result and .observation==null' "$work/shared-answer" >/dev/null
+    build/jovovich-report "$work/$packet" "$work/shared-answer" --json > "$work/shared-report"
+    jq -e --arg result "$result" '.summary.verdict=="CLEAN" and .execution_changes==null and
+        .execution_summary.selected_runs==1 and .execution_summary[$result]==1 and
+        (.execution_rechecks | length==1 and .[0].base==.[0].head and
+        .[0].head_matches_required==($result=="met"))' "$work/shared-report" >/dev/null
+    build/jovovich-report "$work/$packet" "$work/shared-answer" > "$work/shared-comment"
+    grep -Fq '**JOVOVICH · CLEAN** (model vote)' "$work/shared-comment"
+    grep -Fq 'Replayed check (same result on both revisions)' "$work/shared-comment"
+    jq -c '.execution.trace_witness.recheck_result="invalid"' "$work/shared-answer" > "$work/forged"
+    reject build/jovovich-report "$work/$packet" "$work/forged"
+    jq -c 'del(.execution.trace_witness.recheck_result)' "$work/shared-answer" > "$work/legacy"
+    build/jovovich-report "$work/$packet" "$work/legacy" --json | jq -e --arg result "$result" \
+        '.execution_summary[$result]==1' >/dev/null
 done
 build/batch-fixture emit "$work/count-replayed" clean > "$work/count-answer"
 build/jovovich-report "$work/count-replayed" "$work/count-answer" --json > "$work/count-report"
