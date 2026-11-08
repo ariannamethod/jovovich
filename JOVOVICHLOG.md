@@ -2,6 +2,25 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-08 — She remembers the agreement
+
+A fresh process packed a second Git review using a rule saved by the first.
+The AML journal retained its original base, head, quotation and receipt time.
+Correcting `draw-order` created receipt 2. Reopening the prior Git pair at
+receipt 1 reproduced its packed bytes. Two competing corrections to the same
+receipt produced one successor.
+
+On the pinned OneJev base, the recalled `scan → paint` agreement and manual
+selection gave the same **68.9538% CLEAN**. Under the corrected
+`paint → scan` agreement, the same patch and callback executions gave
+**96.4336% CONCERN**. All three native answers passed whole-change reporting.
+AML now normalizes both logits after the NoTorch forward pass. The original
+14 reviews reproduced all 14 reference choices and passed the existing F32
+probability gate. [Memory and reproduction](docs/fact-memory.md)
+
+The README has its original epigraph, freckles and chain of custody back,
+with the commands for the body that actually runs today.
+
 ## 2026-11-08 — The 305-token repair on Apple Silicon
 
 On Neo's A18 Pro CPU, the full resident Git review took 1.47 s and 1.50 s

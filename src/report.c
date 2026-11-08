@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "batch.h"
+#include "facts.h"
 #include "boundary_view.h"
 #include "json.h"
 #include "hash.h"
@@ -17,6 +18,7 @@ typedef struct {
     char *row,*id,*file,*context,*rule,*change,*origin[6],*batch;
     char row_hash[65];int count;
     jov_batch_item item;
+    jov_fact *fact;
 } input;
 static int eq(const char*obj,const char*key,const char*want) {
     char*s=nj_string(nj_get(obj,key));int ok=s && want && !strcmp(s,want);free(s);return ok;
@@ -46,7 +48,8 @@ static int parse(input*p,int index) {
        number(b,"index",&position) || position!=index || number(b,"count",&p->count) || p->count<1 || p->count>JOV_BATCH_MAX_FILES)return 1;
     p->batch=nj_string(nj_get(b,"id"));
     p->item=(jov_batch_item){p->file,p->id,{p->origin[0],p->origin[1],p->origin[2],p->origin[3],p->origin[4],p->origin[5],first,last}};
-    jov_review r={.id=p->id,.model="input",.revision="input",.question="input",.file=p->file,.context=p->context,
+    if (jov_fact_decode(nj_get(p->row, "fact"), &p->fact)) return 1;
+    jov_review r={.fact=p->fact,.id=p->id,.model="input",.revision="input",.question="input",.file=p->file,.context=p->context,
         .rule_excerpt=p->rule,.change_excerpt=p->change,.concern=.5,.clean=.5,.source=&p->item.source};
     char h[65];
     return !p->batch || jov_review_validate(&r) || hash_bytes(p->context,strlen(p->context),h) || strcmp(h,p->id) ||
@@ -54,6 +57,7 @@ static int parse(input*p,int index) {
         hash_bytes(p->change,strlen(p->change),h) || strcmp(h,p->origin[5]) || hash_bytes(p->row,strlen(p->row),p->row_hash);
 }
 static int same_policy(const input*a,const input*b) {
+    if (!jov_fact_same(a->fact, b->fact)) return 0;
     for(int i=0;i<5;i++)if(strcmp(a->origin[i],b->origin[i]))return 0;
     return a->item.source.first_line==b->item.source.first_line && a->item.source.last_line==b->item.source.last_line;
 }
@@ -62,6 +66,8 @@ static int answer(const char*j,const input*p,const char*manifest,float*flag,int 
     const char*src=nj_get(j,"source"),*e=nj_get(j,"execution"),*time=nj_get(e,"reviewed_at");
     int version,first,last,day,sec,ms;double concern,clean;char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
     char *wh=nj_string(nj_get(manifest,"weights_sha256")),*th=nj_string(nj_get(manifest,"tokenizer_sha256"));int rc=1;
+    jov_fact *fact = NULL;
+    if (jov_fact_decode(nj_get(j, "fact"), &fact) || !jov_fact_same(fact, p->fact)) goto done;
     if(!model_id || !revision || !wh || !th || number(j,"schema_version",&version) || version!=1 || !eq(j,"id",p->id) ||
        !eq(model,"id",model_id) || !eq(model,"revision",revision) || !eq(nj_get(j,"scope"),"file",p->file) ||
        !eq(in,"context",p->context) || !eq(in,"rule_excerpt",p->rule) || !eq(in,"change_excerpt",p->change) ||
@@ -79,6 +85,7 @@ static int answer(const char*j,const input*p,const char*manifest,float*flag,int 
        sec<0 || sec>=86400 || ms<0 || ms>=1000)goto done;
     *flag=concern>=clean?1:0;rc=0;
 done:
+    jov_fact_free(fact);
     free(model_id);free(revision);free(wh);free(th);return rc;
 }
 int main(int argc,char **argv) {
@@ -97,7 +104,7 @@ int main(int argc,char **argv) {
         for(int i=0;i<count;i++)if(!strcmp(p->file,inputs[i].file))goto done;
         items[count]=p->item;count++;
     }
-    if(bad || !count || count!=inputs[0].count || jov_batch_digest(items,count,digest) || strcmp(digest,inputs[0].batch))goto done;
+    if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
     am_init();am_persistent_mode(1);total=0;
     for(int i=0;i<count;i++) {
         results[i]=row(answers,&total,&bad);
@@ -125,7 +132,7 @@ int main(int argc,char **argv) {
             char*model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision")),*question=nj_string(nj_get(results[i],"question"));
             int failed=!model_id || !revision || !question || nj_number(nj_get(prob,"CONCERN"),&a) || nj_number(nj_get(prob,"CLEAN"),&b);
             if(!failed) {
-                jov_review r={.id=p->id,.model=model_id,.revision=revision,.question=question,.file=p->file,.context=p->context,
+                jov_review r={.fact=p->fact,.id=p->id,.model=model_id,.revision=revision,.question=question,.file=p->file,.context=p->context,
                     .rule_excerpt=p->rule,.change_excerpt=p->change,.concern=a,.clean=b,.source=&p->item.source};
                 const char *view=nj_get(nj_get(results[i],"execution"),"boundary_view");
                 const char *listed=nj_get(view,"code");
@@ -148,6 +155,6 @@ done:
     if(batch)fclose(batch);
     if(answers)fclose(answers);
     if(out && fclose(out))rc=1;
-    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;jov_fact_free(p->fact);free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
     free(manifest);free(extra);am_persistent_mode(0);return rc?1:0;
 }

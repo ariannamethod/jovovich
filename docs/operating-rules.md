@@ -65,3 +65,11 @@ the distinguishing input under all four presentations for 2/8 APIs.
 [Recorded Git answer](../examples/run-selection/git-answer.jsonl) · [Paired results](../examples/run-selection/results.json)
 
 The [review latency benchmark](review-latency.md) replays this same repair.
+
+## Carry a rule between reviews
+
+A named AML fact can supply the rule for the next Git review. Resolve its
+source against the new base, compare the exact quotation and attach the
+knowledge receipt to the answer. A correction names its predecessor. The
+model receives the usual rule and current patch, with the same mechanical
+selection for paired traces. [Fact memory](fact-memory.md)

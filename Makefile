@@ -21,17 +21,17 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+build/jovovich: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h $(NOTORCH_ROOT)/tools/narrow_json.h $(NOTORCH_ROOT)/sha256.c $(NOTORCH_ROOT)/sha256.h | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) $< $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-build/jovovich-pack: src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/jovovich-pack: src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-report: src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/batch.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/jovovich-report: src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/check-pipeline: tests/check_pipeline.c native-deps | build
 	$(CC) $(CFLAGS) -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -39,8 +39,8 @@ build/check-pipeline: tests/check_pipeline.c native-deps | build
 build/check-git: tests/check_git.c src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_git.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-build/batch-fixture: tests/batch_fixture.c src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/batch-fixture: src/facts.c src/facts.h tests/batch_fixture.c src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/batch_fixture.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/score-quality: src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/trace_gate.c src/boundary.c tests/score_quality.c src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c tests/score_quality.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -80,6 +80,7 @@ check: build/bench-review build/check-trace-gate build/score-run-selection build
 	./build/check-pipeline
 	sh tests/check_git.sh
 	sh tests/check_batch.sh
+	sh tests/check_rule_memory.sh
 	sh tests/check_submodules.sh
 	sh tests/check_quality.sh
 	sh tests/check_corpus.sh

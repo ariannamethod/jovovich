@@ -1,83 +1,114 @@
-# jovovich (readme will be rewritten. Janus)
-Juror Of Versioned Ontology, Vigilance, Integrity, Code &amp; Heresy
+# JOVOVICH
 
-JOVOVICH reviews a change against the repository's stated rules. Its English
-answer starts with **CONCERN** or **CLEAN**, quotes the exact rule and changed
-code, and shows both choice probabilities. JOVOVICH reviews. JOVOVICH does not rule.
+**Juror Of Versioned Ontology, Vigilance, Integrity, Code & Heresy**
 
-The live path runs original **OmniJev/OneJev-0.8B** through **NoTorch**, with
-**Arianna Method Language (AML)** assembling the question, selecting the answer
-and recording its time through JANUS.CALENDAR. C handles model I/O and output
-serialization. There is no Python dependency in JOVOVICH's build, tests or runtime.
+> The implementation works. I am less convinced that it belongs here.
+
+You opened a pull request. A woman with 0.8 billion parameters has opinions
+about your dependency tree.
+
+JOVOVICH is a small local review agent for Arianna Method. She reads a change
+alongside the repository's own rules. She has seen markdown breeding in the
+ventilation system. She would like to know who invited the seventh abstraction
+layer. Sometimes the answer is perfectly good. She can say that too.
+
+**JOVOVICH reviews. JOVOVICH does not rule.**
+
+The merge button remains yours. The freckles are a checksum.
+Refactoring them is outside the scope of this PR.
+
+## Assemble the body
+
+Git, Make and a C compiler. The two pinned dependencies are NoTorch and
+Arianna Method Language (AML). The dependency tree has already been questioned.
 
 ```sh
-git submodule update --init
+git clone --recurse-submodules https://github.com/ariannamethod/jovovich.git
+cd jovovich
 make
 make check
+./build/review-demo
 ```
 
-The two dependencies are pinned in `deps/notorch` and `deps/aml`. Existing
-checkouts can be used with `NOTORCH_ROOT=/path/to/notorch AML_ROOT=/path/to/aml`.
-The dependency-free recorded demo is available with `make build/review-demo`.
+The demo plays back a recorded review. An existing checkout can initialize the
+pinned dependencies with `git submodule update --init`. Optional BLAS builds
+take `BLAS_FLAGS` and `BLAS_LIBS`. Clean the dependency objects when changing
+backends.
 
-## Live review
-
-The [operating rules](docs/operating-rules.md) define which executions enter
-a review and how JOVOVICH reaches a verdict.
-
-Download `config.json`, `model.safetensors` and `tokenizer.json` from
-[`OmniJev/OneJev-0.8B` at c02e305](https://huggingface.co/OmniJev/OneJev-0.8B/tree/c02e305b430b56c1e82f9675ba8c293a22646891)
-into a local snapshot directory. Convert the original text tensors and tokenizer
-using NoTorch's C tools:
+For live inference, download
+`config.json`, `model.safetensors` and `tokenizer.json` from the pinned
+**OmniJev/OneJev-0.8B** snapshot. NoTorch's C converter prepares the text
+weights and the tokenizer. The executable checks both file hashes at startup.
+[Model snapshot](https://huggingface.co/OmniJev/OneJev-0.8B/tree/c02e305b430b56c1e82f9675ba8c293a22646891) · [Manifest](models/onejev-0.8b.json)
 
 ```sh
 make -C deps/notorch qwen35_to_gguf
 ./deps/notorch/qwen35_to_gguf /path/to/snapshot model.gguf
 ./deps/notorch/qwen35_to_gguf --tokenizer /path/to/snapshot/tokenizer.json tokenizer.gguf
-./build/jovovich model.gguf tokenizer.gguf --json < examples/reviews.jsonl
+./build/jovovich model.gguf tokenizer.gguf < examples/reviews.jsonl
 ```
 
-Run from this repository's root so AML scripts and the model manifest can be
-found. Omit `--json` for Markdown output. Inputs are JSONL with `id`, `file`,
-`context`, `rule_excerpt` and `change_excerpt`; the supplied excerpts and file
-must occur in the context. The example file contains all 14 review cases.
-Model and tokenizer bytes must match [the pinned manifest](models/onejev-0.8b.json).
-All diagnostics go to stderr; consumers must check the exit code.
+Run these commands from this repository's root. The live text path uses the
+original unabliterated OneJev base. NoTorch encodes the English ASCII prompt
+and performs the F32 forward pass. AML asks the question, scores the final A
+and B logits, picks the verdict and dates it with JANUS.CALENDAR. Zero tokens
+generated. Both probabilities fit on the page. [Native validation](docs/native-validation.md)
 
-The first native path uses F32 CPU arithmetic and ASCII English input. It
-prefills in chunks of 32, reads the A/B logits and generates zero tokens. The
-chat template closes the thinking section before scoring. The original model
-is unabliterated and has had zero training updates in this restart. Its source
-checkpoint retains vision components; the current executable consumes text.
+## Live review
 
-An optional BLAS backend is selected with `BLAS_FLAGS` and `BLAS_LIBS` at build
-time. Build the dependencies with the same flags; when switching backends,
-clean their compiled objects first. The first implementation expands matrix
-weights to F32. Speed and memory optimization come after this parity baseline.
-
-## Recorded decisions and verification
+Bring a diff. Bring the rule that gives her jurisdiction over it. For a whole
+change, choose the rule file at the base commit and let Git supply every
+changed path. This example reviews against lines 1–3 of that file.
 
 ```sh
-./build/review-demo
-./build/review-demo --json all
-./build/check-pipeline --live live-answers.jsonl
+set -e
+./build/jovovich-pack --all /path/to/repo BASE HEAD RULES.md 1 3 > batch.jsonl
+./build/jovovich model.gguf tokenizer.gguf --json < batch.jsonl > answers.jsonl
+./build/jovovich-report batch.jsonl answers.jsonl
 ```
 
-The demo preserves the original BF16 reference answers, while the live pipeline
-uses the separately recorded F32 reference. Both selected 12/14 correct
-verdicts: 5/7 concerns, 7/7 clean changes. Both missed the index boundary and
-disabled writer. Every live choice matches its reference; probabilities meet
-the 2e-4 gate. NoTorch additionally passed all-layer and full-vocabulary logit
-comparisons. [Validation details](docs/native-validation.md).
+Her English answer opens with **CONCERN** or **CLEAN** and quotes the rule and
+the patch. When two executions differ, the host can show her the required
+effect and what the new code actually did. In the recorded `draw.c` repair,
+both versions behaved at mode 0. At mode 1 the patch restored `scan → paint`.
+Her vote was **CLEAN 69.0% · CONCERN 31.0%**.
+[Recorded answer](examples/run-selection/git-answer.jsonl) · [Operating rules](docs/operating-rules.md) · [Whole-change reports](docs/batch-review.md)
 
-`make check` verifies saved answers, exact AML prompts, calendar fields, ties,
-invalid probabilities, literal evidence and output escaping in C + AML.
-JSON output includes the input/model/tokenizer hashes and a split POSIX
-`janus.instant/1` execution timestamp. This follows the provenance discipline
-used by LALO and Amos 2. A review timestamp records when the review ran.
+## She remembers the rule
 
-The [answer contract](docs/review-output.md) describes the English output.
-The new [JOVOVICHLOG](JOVOVICHLOG.md) starts from measured behavior. Next stages
-are JOVOVICH's own voice, training, the vision path and matched llama.cpp speed
-measurements. The model repository [`ataeff/jovovich`](https://huggingface.co/ataeff/jovovich)
-remains private.
+LALO has been under the laundry, examining the plumbing. Some of it is here
+now. Give a rule a name in one review and she can bring it to the next. Every
+receipt keeps the exact words, the Git review they came from and when she
+learned them. A correction points to the receipt it supersedes.
+
+```sh
+mkdir -p build/memory
+./build/jovovich-pack --remember build/memory studio/render draw-order \
+  --all /path/to/repo FIRST_BASE FIRST_HEAD RULES.md 2 2 > first.jsonl
+./build/jovovich-pack --recall build/memory studio/render draw-order \
+  --all /path/to/repo NEXT_BASE NEXT_HEAD > next.jsonl
+./build/jovovich model.gguf tokenizer.gguf --json < next.jsonl > next-answers.jsonl
+./build/jovovich-report next.jsonl next-answers.jsonl
+```
+
+The next review fetches the named rule and checks its exact quotation against
+its own base commit. Its answer carries the earlier source beside the current
+patch. You can still ask what she knew at receipt 1 after receipt 2 arrived.
+[Fact memory and corrections](docs/fact-memory.md)
+
+## Chain of custody
+
+Oleg Ataeff and Sol invented this during a conversation about Milla Jovovich,
+freckles, LALO Salamanca, and GitHub reviews. Astra received the resulting brief.
+This is the provenance. It has survived peer review by everyone in the room.
+
+The freckles became the checksum of the repository, the Method, and eventually
+the universe. Then Oleg noticed **GGUF → ГГУФ → ГУФ → גוף → body**.
+The file extension had been participating in the plot the whole time.
+
+SERGE may smoke in the logs. `AMODEI requested changes` nearly won the naming contest.
+
+The log is singular. She is watching.
+[JOVOVICHLOG](JOVOVICHLOG.md) · [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) · [305-token speed measurements](docs/review-latency.md)
+
+*Methodologically clean. Mild heresy.*

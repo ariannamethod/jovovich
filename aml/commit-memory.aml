@@ -1,0 +1,4 @@
+# The host has staged the complete Git pack and holds the writer lock.
+save_status = 1
+if dirty == 1:
+    save_status = checkpoint_save(journal, memory_path)

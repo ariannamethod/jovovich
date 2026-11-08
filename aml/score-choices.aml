@@ -1,0 +1,5 @@
+# NoTorch returns the final A and B logits. Both live tasks use this readout.
+assert(len(choice_logits) == 2, "expected A and B logits")
+probabilities = softmax(choice_logits)
+assert(probabilities[0] >= 0 and probabilities[0] <= 1, "invalid A score")
+assert(probabilities[1] >= 0 and probabilities[1] <= 1, "invalid B score")

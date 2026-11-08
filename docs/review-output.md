@@ -90,11 +90,11 @@ invalid-input rejection, near ties, exact ties and escaping. The checks run in C
 
 ## Native execution
 
-The live reviewer builds its prompt in `aml/prepare.aml`, calculates A/B
-probabilities in NoTorch, and runs `aml/answer.aml` to select the answer and
-construct a `janus.instant/1` timestamp. It uses F32 arithmetic; the recorded
-demo above preserves the original BF16 run. Native F32 results and verification
-commands are in [native-validation.md](native-validation.md).
+The live reviewer builds its prompt in `aml/prepare.aml`. NoTorch returns
+the last-position A and B logits. `aml/score-choices.aml` normalizes them,
+and `aml/answer.aml` selects the answer and constructs a `janus.instant/1`
+timestamp. The native forward path uses F32 arithmetic. The recorded demo
+above preserves the original BF16 run. [Native validation](native-validation.md)
 
 Live JSON adds an `execution` object with `engine`, `language`, `arithmetic`,
 `input_sha256`, `weights_sha256`, `tokenizer_sha256` and `reviewed_at`. Input SHA
@@ -120,3 +120,8 @@ selects CONCERN when any file has that verdict, and CLEAN when every file is
 CLEAN. The summary contains exact counts; each file keeps its own probabilities,
 evidence and execution record. Incomplete or inconsistent batches produce an
 error before any report is emitted.
+
+A review packed with a named rule also carries its `jovovich.rule-fact/1`
+receipt. Markdown shows its repository, key, sequence, predecessor if present,
+UTC time and original Git review. The cited rule text is verified against the
+current base. [Fact memory](fact-memory.md)
