@@ -30,8 +30,10 @@ static int commit_available(const char *repo, const char *head) {
     const char *args[] = {"rev-parse", "--verify", "--quiet", name, NULL};
     char *out = jov_git_command(repo, NULL, args, 65, &size, &status);
     if (!out) return -1;
+    size_t width = strlen(head);
+    int exact = size == width+1 && !memcmp(out, head, width) && out[width] == '\n';
     free(out);
-    return status == 0 ? 1 : status == 1 ? 0 : -1;
+    return status == 0 ? exact : status == 1 ? 0 : -1;
 }
 
 /* Follow first parents while they contain the historical mismatch. At the

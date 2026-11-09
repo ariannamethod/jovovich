@@ -760,6 +760,16 @@ int main(int argc, char **argv) {
         return jov_pr_history(argv[2],argv[3],argc>=5 ? argv[4] : NULL,argc==6 ? argv[5] : NULL,NULL,NULL);
     if (argc==9 && !strcmp(argv[1],"history") && !strcmp(argv[5],"--snapshot"))
         return jov_pr_history(argv[2],argv[3],argv[4],argv[7],argv[6],argv[8]);
+    if ((argc==12 || argc==14 || argc==16) && !strcmp(argv[1],"history") &&
+        !strcmp(argv[5],"--snapshot") && !strcmp(argv[9],"--compare-known-at")) {
+        const char *first=NULL, *last=NULL;
+        for (int i=12;i<argc;i+=2) {
+            if (!first && !strcmp(argv[i],"--from-journal")) first=argv[i+1];
+            else if (!last && !strcmp(argv[i],"--through")) last=argv[i+1];
+            else return 1;
+        }
+        return jov_pr_compare_history(argv[2],argv[3],argv[4],argv[7],argv[6],argv[8],argv[10],argv[11],first,last);
+    }
     jov_pr pr={0};
     int recording=argc==8 && !strcmp(argv[1],"locate") && !strcmp(argv[4],"--record-pr");
     int probe=argc==5 && !strcmp(argv[1],"probe");
@@ -773,7 +783,7 @@ int main(int argc, char **argv) {
     int direct=probe || locating || snapshot || routed || landing;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE [--compare-known-at FROM_UTC TO_UTC [--from-journal FIRST_HEAD] [--through LAST_HEAD]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
