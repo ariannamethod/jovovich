@@ -29,6 +29,9 @@ int jov_pr_recall_snapshots(FILE *out, int json, const char *directory, const jo
 /* A missing number lists checked PRs in the selected repository. */
 int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                    const char *checkout, const char *file);
+/* Record or check a spore fingerprint against one verified observation. */
+int jov_pr_spore(const char *directory, const char *scope, const char *number,
+                 const char *observation, const char *file, int write);
 /* Compare the observations available at two knowledge cutoffs for one exact SHA. */
 int jov_pr_compare_history(const char *directory, const char *scope, const char *number, const char *head,
                            const char *checkout, const char *file, const char *from, const char *to,

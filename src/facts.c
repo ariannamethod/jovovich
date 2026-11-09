@@ -80,7 +80,7 @@ static int lock_writer(const char *path) {
     return -1;
 }
 
-/* Names are fixed by the two journal implementations. */
+/* Journal callers construct checkpoint names from validated inputs. */
 int jov_journal_open(const char *directory, const char *name, int writing, int *writer) {
     char *root = realpath(directory, NULL);
     if (!root) { perror(directory); return 1; }

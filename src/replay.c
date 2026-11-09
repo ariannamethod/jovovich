@@ -755,6 +755,8 @@ static int parse_mode(const char *s, int *mode) {
 }
 
 int main(int argc, char **argv) {
+    if ((argc==7 || (argc==8 && !strcmp(argv[7],"--record"))) && !strcmp(argv[1],"spore"))
+        return jov_pr_spore(argv[2],argv[3],argv[4],argv[5],argv[6],argc==8);
     if (argc==4 && !strcmp(argv[1],"show")) return show(argv[2],argv[3]);
     if (argc>=4 && argc<=6 && !strcmp(argv[1],"history"))
         return jov_pr_history(argv[2],argv[3],argc>=5 ? argv[4] : NULL,argc==6 ? argv[5] : NULL,NULL,NULL);
@@ -783,7 +785,7 @@ int main(int argc, char **argv) {
     int direct=probe || locating || snapshot || routed || landing;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE [--compare-known-at FROM_UTC TO_UTC [--from-journal FIRST_HEAD] [--through LAST_HEAD]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay spore DIR OWNER/REPO NUMBER OBSERVATION_ID FILE [--record]\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE [--compare-known-at FROM_UTC TO_UTC [--from-journal FIRST_HEAD] [--through LAST_HEAD]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];

@@ -97,3 +97,46 @@ and the same observed executions.
 The manually selected and recalled votes matched at float32 precision. The
 correction supplied both the revised requirement and its corresponding
 expected execution. All three reports passed the ordinary provenance checks.
+
+## Rehearse a verified fact
+
+A saved DOE generation can carry a receipt for the PR observation that was
+rehearsed. Take the observation ID from `new_checks[].id` in a
+[knowledge-cutoff comparison](batch-review.md). Register the completed spore
+and check the bytes again before restoring it.
+
+```sh
+./build/jovovich-replay spore "$memory" "$repository" "$number" "$observation" "$spore" --record
+./build/jovovich-replay spore "$memory" "$repository" "$number" "$observation" "$spore"
+```
+
+AML records the file’s SHA-256 alongside the observation in a separate
+repository/PR checkpoint. Recording the same pair again is idempotent.
+Different generations can cite the same observation. Verification reads
+the file supplied on that invocation. NoTorch checks the host and native
+expert tensors when opening the generation. For a restore from mutable storage,
+copy the spore to a private path, verify that copy and open it with NoTorch.
+
+`make check-fact-sleep MODEL=/path/to/jovovich.gguf` runs the original OneJev
+with its manifest-matched `tokenizer.gguf`. Two Git repositories share PR 7
+and the same original SHA. Only one changes its signal rule from blue to red.
+AML rehearses each verified receipt, consolidates asynchronously and saves
+the expert state. NoTorch runs a private dream capped at two tokens. Fresh processes
+repeat the same questions with both A/B orders, first from the spore alone
+and then with the current Git quotation. The output includes both option logits,
+the SHA-256 of the AML checkpoint containing all 248,320 float32 logits, and
+the selected color in each order. Each restart also compares the checkpoint bytes.
+
+On the manifest-pinned original OneJev-0.8B (CPU F32, OpenBLAS), each of the
+three dreams took two tokens. The table gives the selected color first with
+blue as A, then with red as A.
+
+| Final PR rule | Spore after sleep | Spore and Git quote | Git quote alone |
+| --- | --- | --- | --- |
+| `east#7`, corrected to red | red / blue | red / red | red / red |
+| `west#7`, still blue | red / blue | blue / blue | blue / blue |
+
+The spore-only probe picked B in both orders, as it did before rehearsal.
+All six process restarts reproduced the full saved logits byte for byte.
+The earlier east receipt still returned blue, and all fact and PR journal
+bytes matched their respective pre-sleep snapshots.
