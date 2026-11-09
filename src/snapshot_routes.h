@@ -50,47 +50,45 @@ static int load_routes(const char *path,const char *repository,const char *sha,s
 }
 
 static int route_snapshots(FILE *out,const char *repo,const char *runner,const char *sha,
-                           const char *policy,const packed_row inputs[],int count) {
-    snapshot_routes routes={0};
-    const char *skip[JOV_BATCH_MAX_FILES]={0},*repository=inputs[0].fact->repository;
+                           const snapshot_routes *routes,packed_row revision,char *const paths[],int count,char **coverage) {
+    const char *skip[JOV_BATCH_MAX_FILES]={0},*repository=revision.fact->repository;
     char *view=NULL;
     int failed=1,matched=0,mismatched=0;
-    if (load_routes(policy,repository,sha,&routes)) {
-        fputs("Snapshot routes must match the repository receipt and renderer digest.\n",stderr);
-        goto done;
-    }
-    if (jov_git_snapshot(repo,inputs[0].head,&view)) goto done;
+    if (jov_git_snapshot(repo,revision.head,&view)) goto done;
     for (int i=0;i<count;i++) {
-        const packed_row *p=inputs+i;
+        revision.file=paths[i];
         int j=0;
-        while (j<routes.count && fnmatch(routes.patterns[j],p->file,FNM_PATHNAME|FNM_PERIOD)!=0) j++;
-        if (j==routes.count) { skip[i]="no_matching_rule"; continue; }
-        int kind=jov_git_path_kind(view,p->head,p->file);
+        while (j<routes->count && fnmatch(routes->patterns[j],revision.file,FNM_PATHNAME|FNM_PERIOD)!=0) j++;
+        if (j==routes->count) { skip[i]="no_matching_rule"; continue; }
+        int kind=jov_git_path_kind(view,revision.head,revision.file);
         if (kind<0) goto done;
         if (kind!=1) { skip[i]=kind==0 ? "deleted" : "non_regular_head"; continue; }
         int equal=0;
-        if (snapshot_check(out,repo,runner,p,sha,&equal)) goto done;
+        if (snapshot_check(out,repo,runner,&revision,sha,&equal)) goto done;
         if (equal) matched++; else mismatched++;
         long size=ftell(out);
         if (size<0 || (unsigned long)size>JOV_BATCH_MAX_BYTES) goto done;
     }
-    fputs("{\"schema\":\"jovovich.snapshot-coverage/1\",",out);
-    json_field(out,"repository",repository); fputc(',',out);
-    json_field(out,"routes_sha256",routes.digest); fputc(',',out);
-    json_field(out,"harness_sha256",sha);
-    fprintf(out,",\"matched\":%d,\"mismatched\":%d,\"skipped\":[",matched,mismatched);
+    size_t length=0;
+    FILE *summary=open_memstream(coverage,&length);
+    if (!summary) goto done;
+    fputs("{\"schema\":\"jovovich.snapshot-coverage/1\",",summary);
+    json_field(summary,"repository",repository); fputc(',',summary);
+    json_field(summary,"routes_sha256",routes->digest); fputc(',',summary);
+    json_field(summary,"harness_sha256",sha);
+    fprintf(summary,",\"matched\":%d,\"mismatched\":%d,\"skipped\":[",matched,mismatched);
     int skipped=0;
     for (int i=0;i<count;i++) {
         if (!skip[i]) continue;
-        if (skipped++) fputc(',',out);
-        fputc('{',out); json_field(out,"file",inputs[i].file);
-        fputc(',',out); json_field(out,"reason",skip[i]); fputc('}',out);
+        if (skipped++) fputc(',',summary);
+        fputc('{',summary); json_field(summary,"file",paths[i]);
+        fputc(',',summary); json_field(summary,"reason",skip[i]); fputc('}',summary);
     }
-    fputs("]}\n",out);
+    fputs("]}",summary);
+    int bad=fclose(summary);
     long total=ftell(out);
-    failed=ferror(out) || total<0 || (unsigned long)total>JOV_BATCH_MAX_BYTES;
+    failed=bad || ferror(out) || total<0 || (unsigned long)total+length+1>JOV_BATCH_MAX_BYTES;
 done:
-    for (int i=0;i<routes.count;i++) free(routes.patterns[i]);
     return jov_remove_git_snapshot(view) || failed;
 }
 #endif

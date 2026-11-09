@@ -5,7 +5,8 @@
 
 typedef struct {
     int number, expected_byte, observed_byte;
-    char mismatch[65], recovery[65];
+    char mismatch[65], recovery[65], landing[65], source_head[65];
+    const char *landing_status, *source_status;
     long long line, column;
 } snapshot_citation;
 
@@ -101,6 +102,87 @@ static int mismatch_byte(const char *result, const char *field, long long column
     return invalid;
 }
 
+static int cite_mismatch(snapshot_citation *citation, int number, const snapshot_point *p, const char *fix) {
+    if (nj_int(nj_get(p->result, "line"), &citation->line) || citation->line < 1 ||
+        nj_int(nj_get(p->result, "byte_column"), &citation->column) || citation->column < 1) return 1;
+    if (mismatch_byte(p->result, "expected", citation->column, &citation->expected_byte) ||
+        mismatch_byte(p->result, "observed", citation->column, &citation->observed_byte) ||
+        citation->expected_byte == citation->observed_byte) return 1;
+    if (*fix && (strlen(fix)!=strlen(p->head) || strspn(fix,"0123456789abcdef")!=strlen(p->head))) return 1;
+    citation->number = number;
+    strcpy(citation->mismatch, p->head);
+    strcpy(citation->recovery, fix);
+    return 0;
+}
+
+/* Reconstruct the source PR from the measured Git order saved at integration.
+ * Use the current immutable observations for those SHAs, including corrections
+ * learned after the merge. The landing is the last, independently measured point. */
+static int recall_landing(snapshot_point *points, int count, const char *repo, const char *base,
+                          int number, snapshot_citation *citation) {
+    const char *proof=NULL;
+    char commit[65]={0};
+    for (int i=0;i<count;i++) {
+        const char *landing=nj_get(nj_get(points[i].entry,"evidence"),"landing");
+        if (!landing) continue;
+        if (!nj_is(nj_get(landing,"schema"),"jovovich.pr-landing/1") ||
+            !nj_is(nj_get(landing,"merge_commit"),points[i].head) || (*commit && strcmp(commit,points[i].head))) return 1;
+        strcpy(commit,points[i].head);
+        proof=landing; /* Later receipts can include previously unmeasured source revisions. */
+    }
+    if (!proof || strlen(commit)!=strlen(base)) return 0;
+    int reachable=commit_available(repo,commit);
+    if (reachable==1) reachable=ancestor_of(repo,commit,base);
+    if (reachable<=0) return reachable<0;
+
+    char *source=nj_string(nj_get(proof,"source_head"));
+    if (!source || strlen(source)!=strlen(base) || strspn(source,"0123456789abcdef")!=strlen(base)) { free(source); return 1; }
+    strcpy(citation->source_head,source); free(source);
+    int bad=0, sources=0, final_seen=0;
+    /* Negative ranks here mark absence. Give the newest source SHA distance 1
+     * after reading the oldest-first list, leaving zero for the landed SHA. */
+    for (const char *v=nj_first(nj_get(proof,"source_history"),&bad); v && !bad; v=nj_next(v,']',&bad)) {
+        char *head=nj_string(v);
+        if (!head || strlen(head)!=strlen(base) || strspn(head,"0123456789abcdef")!=strlen(base) || final_seen || ++sources>256) { free(head); return 1; }
+        final_seen=!strcmp(citation->source_head,head);
+        for (int i=0;i<count;i++) if (!strcmp(points[i].head,head)) points[i].distance=sources;
+        free(head);
+    }
+    if (bad || !final_seen) return 1;
+    int used=0;
+    for (int i=0;i<count;i++) {
+        snapshot_point p=points[i];
+        if (!strcmp(p.head,commit)) p.distance=0;
+        else if (p.distance>0) p.distance=sources+1-p.distance;
+        else continue;
+        points[used++]=p;
+    }
+    qsort(points,(size_t)used,sizeof(*points),oldest_first);
+    if (!used || resolve_snapshots(points,used)) return 1;
+    const AM_List *states=am_get_var_list("states"),*fixes=am_get_var_list("recoveries");
+    if (!states || !fixes || states->len!=used || fixes->len!=used) return 1;
+    int source_mismatch=-1, landed_mismatch=-1;
+    citation->source_status="unverified"; citation->landing_status="unverified";
+    for (int i=0;i<used;i++) {
+        const snapshot_point *p=points+i;
+        const char *state=states->items[used-1-i]->data;
+        if (!p->outcome) continue;
+        const char *status=!strcmp(state,"conflicting") ? "conflicting" : p->outcome==1 ? "met" : "mismatch";
+        if (!p->distance) citation->landing_status=status;
+        if (!strcmp(p->head,citation->source_head)) citation->source_status=status;
+        if (!strcmp(status,"mismatch")) {
+            if (!p->distance) landed_mismatch=i;
+            else source_mismatch=i;
+        }
+    }
+    int i=source_mismatch>=0 ? source_mismatch : landed_mismatch;
+    if (i>=0) {
+        if (cite_mismatch(citation,number,points+i,fixes->items[used-1-i]->data)) return 1;
+        strcpy(citation->landing,commit);
+    }
+    return 0;
+}
+
 /* Resolve the old PR's checks using the same AML program as an explicit
  * history query. Keep the closest unambiguous mismatch on the selected route. */
 static int recall_path(const AM_List *rows, const char *file, const char *stream, const char *repo,
@@ -111,8 +193,11 @@ static int recall_path(const AM_List *rows, const char *file, const char *stream
         snapshot_point p = {.ordinal=count};
         int read = read_snapshot_point(&p, rows->items[i]->data, file);
         if (read < 0) return 1;
-        if (read && p.outcome && !strcmp(p.stream, stream)) source[count++] = p;
+        if (read && !strcmp(p.stream, stream)) source[count++] = p;
     }
+    memcpy(route,source,(size_t)count*sizeof(*route));
+    if (recall_landing(route,count,repo,base,number,citation)) return 1;
+    if (citation->number) return 0;
     int visited[256] = {0};
     long closest = LONG_MAX;
     for (int i = 0; i < count; i++) {
@@ -135,16 +220,7 @@ static int recall_path(const AM_List *rows, const char *file, const char *stream
             visited[p->ordinal] = 1;
             if (strcmp(states->items[n-1-j]->data, "mismatch") || p->distance > closest ||
                 (p->distance == closest && strcmp(p->head, citation->mismatch) >= 0)) continue;
-            if (nj_int(nj_get(p->result, "line"), &citation->line) || citation->line < 1 ||
-                nj_int(nj_get(p->result, "byte_column"), &citation->column) || citation->column < 1) return 1;
-            if (mismatch_byte(p->result, "expected", citation->column, &citation->expected_byte) ||
-                mismatch_byte(p->result, "observed", citation->column, &citation->observed_byte) ||
-                citation->expected_byte == citation->observed_byte) return 1;
-            const char *fix = fixes->items[n-1-j]->data;
-            if (*fix && (strlen(fix)!=strlen(base) || strspn(fix,"0123456789abcdef")!=strlen(base))) return 1;
-            citation->number = number;
-            strcpy(citation->mismatch, p->head);
-            strcpy(citation->recovery, fix);
+            if (cite_mismatch(citation, number, p, fixes->items[n-1-j]->data)) return 1;
             closest = p->distance;
         }
     }
@@ -179,6 +255,12 @@ static void write_citations(FILE *out, int json, const char *repository, const c
             fputc(',', out); json_field(out, "mismatch_commit", c->mismatch);
             fputs(",\"first_checked_match\":", out);
             if (*c->recovery) json_string(out, c->recovery); else fputs("null", out);
+            if (*c->landing) {
+                fputs(",\"landing\":{",out); json_field(out,"source_head",c->source_head);
+                fputc(',',out); json_field(out,"source_status",c->source_status);
+                fputc(',',out); json_field(out,"commit",c->landing);
+                fputc(',',out); json_field(out,"status",c->landing_status); fputc('}',out);
+            }
             fputc('}', out);
         } else {
             if (!written) fputs("\n### Earlier snapshot checks\n\n", out);
@@ -191,6 +273,9 @@ static void write_citations(FILE *out, int json, const char *repository, const c
             if (*c->recovery) fprintf(out, " · first checked match [`%.12s`](https://github.com/%s/commit/%s)",
                                       c->recovery, repository, c->recovery);
             else fputs(" · no later match verified in that PR through this base", out);
+            if (*c->landing) fprintf(out," · source [`%.12s`](https://github.com/%s/commit/%s) %s"
+                " · landed [`%.12s`](https://github.com/%s/commit/%s) %s",
+                c->source_head,repository,c->source_head,c->source_status,c->landing,repository,c->landing,c->landing_status);
             fputc('\n', out);
         }
         written++;

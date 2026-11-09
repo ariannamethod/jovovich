@@ -18,11 +18,18 @@ observations = record_get(journal, "observations")
 opened = record_get(journal, "opened")
 assert(list_len(keys) == list_len(observations) and list_len(keys) <= 256, "PR history length")
 dirty = 0
-if pr_mode[0] == 1:
+if pr_mode[0] > 0:
     assert(text_equal(opened, opened_utc), "GitHub opening time changed")
     event = calendar_instant(open_clock[0], open_clock[1], open_clock[2])
     checked = calendar_instant(check_clock[0], check_clock[1], check_clock[2])
     assert(calendar_compare(event, checked) <= 0, "execution predates PR opening")
+    if pr_mode[0] == 2:
+        merged = calendar_instant(merge_clock[0], merge_clock[1], merge_clock[2])
+        assert(calendar_compare(event, merged) <= 0 and calendar_compare(merged, checked) <= 0, "PR merge clock")
+        if record_has(journal, "merge"):
+            assert(text_equal(record_get(journal, "merge"), merge_identity), "PR merge identity changed")
+        else:
+            record_set(journal, "merge", merge_identity)
     if list_find(keys, observation_key) < 0:
         assert(list_len(keys) < 256, "PR history is full")
         list_push(record_get(journal, "keys"), observation_key)
