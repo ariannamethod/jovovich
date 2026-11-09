@@ -30,8 +30,10 @@ out=$(JOV_WAKE_DRY=1 sh "$here/wake-claude.sh" "$q")
 printf '%s' "$out" | grep -q 'claude -p'                       || { echo "FAIL: no claude -p"; exit 1; }
 printf '%s' "$out" | grep -qF "$q"                             || { echo "FAIL: queue path missing"; exit 1; }
 printf '%s' "$out" | grep -q 'pr-42'                           || { echo "FAIL: PR missing"; exit 1; }
-printf '%s' "$out" | grep -q -- '--allowedTools Read,Grep,Glob' || { echo "FAIL: read-only allow-list missing"; exit 1; }
-printf '%s' "$out" | grep -q -- '--permission-prompts none'    || { echo "FAIL: permission lockdown missing"; exit 1; }
+printf '%s' "$out" | grep -q -- '--restricted'                 || { echo "FAIL: restricted mode missing"; exit 1; }
+printf '%s' "$out" | grep -q -- '--tools Read,Grep,Glob'       || { echo "FAIL: fail-closed tool set missing"; exit 1; }
+printf '%s' "$out" | grep -q -- '--strict-mcp-config'          || { echo "FAIL: ambient MCP not disabled"; exit 1; }
+printf '%s' "$out" | grep -q -- '--permission-prompts none'    || { echo "FAIL: prompt-deny layer missing"; exit 1; }
 printf '%s' "$out" | grep -qi 'untrusted'                      || { echo "FAIL: untrusted framing missing"; exit 1; }
 if printf '%s' "$out" | grep -q 'Bash'; then echo "FAIL: Bash reachable by woken reviewer"; exit 1; fi
 

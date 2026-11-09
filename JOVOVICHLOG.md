@@ -25,9 +25,17 @@ surface, and reading it turned up a worse sibling: `notify-on-concern.sh` wrote
 escaped the queue directory. The woken reviewer is now locked to read-only tools
 (`--allowedTools Read,Grep,Glob --permission-prompts none`) with the PR content
 framed as untrusted, the queue is created mode 700, and a non-hex id is refused
-before it can become a filename or a prompt token. `notify-selftest.sh` now also
+before it can become a filename or a prompt token. A second review then flagged
+that first attempt's `--allowedTools` as a fail-open pre-approval rather than a
+restriction, so the available tool set is now pinned fail-closed with
+`--restricted --tools Read,Grep,Glob --strict-mcp-config --permission-prompts
+none --add-dir <queue>` — Bash and the other code tools, WebFetch, ambient
+settings and MCP servers are gone by construction, and reads are confined to the
+queue. (Two review claims did not hold for this binary: `--permission-prompts`
+exists and `--permission-mode default` is not a valid choice.) `notify-selftest.sh`
 drives a `../../pwned` id — zero tags, nothing written outside the queue — and
-asserts the read-only flags are present and that Bash is not reachable.
+asserts the restricted, pinned-tool and MCP-off flags are present and that Bash
+is not reachable. The live sandbox behaviour of the flags is validated at deploy.
 
 ## 2026-11-08 — The rollback borrowed the repair's voice
 
