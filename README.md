@@ -128,6 +128,13 @@ input back to the bench. It runs the new base and head and asks the current
 contract what should have happened. The report names the review where she
 first saw the case. [Remember and replay a counterexample](docs/counterexamples.md)
 
+## Autonomous watch
+
+On neo she wakes the second reader herself. A CONCERN verdict is tagged into a
+queue; a launchd watch hands the tagged ids to a headless Claude Code run for a
+slower read before a human arrives. Scribe stays out of this path — jovovich
+tags, Claude reviews, the tag is the whole handshake. [How it is wired](deploy/README.md)
+
 ## Chain of custody
 
 Oleg Ataeff and Sol invented this during a conversation about Milla Jovovich,

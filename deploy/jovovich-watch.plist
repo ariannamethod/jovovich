@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.ariannamethod.jovovich.watch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>__JOVOVICH_ROOT__/deploy/wake-claude.sh</string>
+    <string>__QUEUE__</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>__QUEUE__</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/Users/ataeff/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>__JOVOVICH_ROOT__/deploy/watch.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__JOVOVICH_ROOT__/deploy/watch.err.log</string>
+</dict>
+</plist>

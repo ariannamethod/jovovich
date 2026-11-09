@@ -2,6 +2,23 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-09 — She wakes the second reader herself
+
+A CONCERN now leaves the building on its own. `deploy/notify-on-concern.sh`
+reads a `--json` answers stream and drops one tag per CONCERN verdict into a
+queue; `deploy/wake-claude.sh`, fired by a launchd WatchPaths job, hands those
+ids to a headless `claude -p` for a slower second read and moves the tags aside
+so the watch does not loop. The juror stays a juror — Scribe is deliberately out
+of this path; jovovich tags, Claude from Claude Code reviews, the tag is the
+whole handshake. The wiring is sh and jq; the C core and the pinned weights are
+untouched. `deploy/notify-selftest.sh` reports PASS: the recorded CLEAN
+`git-answer.jsonl` drops zero tags, a crafted CONCERN drops exactly one carrying
+its id and 0.82 concern probability, and the wake dry-run prints the `claude -p`
+invocation naming the queue and the PR without spawning a session. Flipping the
+verdict filter to CLEAN makes that same clean row drop a tag, so the filter is
+load-bearing. `plutil -lint` passes the launchd template, which ships with
+placeholder paths and `RunAtLoad` false, loaded only at deploy on neo.
+
 ## 2026-11-08 — The rollback borrowed the repair's voice
 
 The first archive test let two PR answers trade places and still passed.
