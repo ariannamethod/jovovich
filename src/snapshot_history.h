@@ -22,6 +22,20 @@ static int json_digest(const char *value, char digest[65]) {
     return !end || hash_bytes(value, (size_t)(end - value), digest);
 }
 
+static int snapshot_stream(const char *fact, const char *coverage, char stream[65]) {
+    char *policy = nj_string(nj_get(coverage, "routes_sha256"));
+    char *driver = nj_string(nj_get(coverage, "harness_sha256"));
+    char parts[3*64];
+    int failed = !policy || strlen(policy)!=64 || strspn(policy,"0123456789abcdef")!=64 ||
+        !driver || strlen(driver)!=64 || strspn(driver,"0123456789abcdef")!=64 || json_digest(fact,parts);
+    if (!failed) {
+        memcpy(parts+64,policy,64); memcpy(parts+128,driver,64);
+        failed = hash_bytes(parts,sizeof(parts),stream);
+    }
+    free(policy); free(driver);
+    return failed;
+}
+
 /* Return one observation of this path, or zero for a legacy execution record
  * or a PR update which did not touch it. */
 static int read_snapshot_point(snapshot_point *p, const char *entry, const char *file) {
@@ -49,18 +63,10 @@ static int read_snapshot_point(snapshot_point *p, const char *entry, const char 
     p->entry = entry;
     p->fact = nj_get(e,"fact");
     char *head = nj_string(nj_get(e,"head_commit"));
-    char *policy = nj_string(nj_get(p->coverage,"routes_sha256"));
-    char *driver = nj_string(nj_get(p->coverage,"harness_sha256"));
-    char parts[3*64];
     if (!head || (strlen(head)!=40 && strlen(head)!=64) || strspn(head,"0123456789abcdef")!=strlen(head) ||
-        !policy || strlen(policy)!=64 || strspn(policy,"0123456789abcdef")!=64 ||
-        !driver || strlen(driver)!=64 || strspn(driver,"0123456789abcdef")!=64 || json_digest(p->fact,parts)) bad=1;
-    else {
-        memcpy(parts+64,policy,64); memcpy(parts+128,driver,64);
-        bad=hash_bytes(parts,sizeof(parts),p->stream);
-        strcpy(p->head,head);
-    }
-    free(head); free(policy); free(driver);
+        snapshot_stream(p->fact,p->coverage,p->stream)) bad=1;
+    else strcpy(p->head,head);
+    free(head);
     p->distance = -1;
     return bad ? -1 : 1;
 }
@@ -113,18 +119,24 @@ static int push_text(AM_List *list,const char *text) {
 }
 
 static int resolve_snapshots(snapshot_point *points,int n) {
-    AM_List *heads=am_list_new(),*streams=am_list_new();
+    AM_List *heads=am_list_new(),*streams=am_list_new(),*outputs=am_list_new();
     float outcomes[256];
     int failed=1;
-    if (!heads || !streams || n<1 || n>256) goto done;
+    if (!heads || !streams || !outputs || n<1 || n>256) goto done;
     for (int i=0;i<n;i++) {
         if (push_text(heads,points[i].head) || push_text(streams,points[i].stream)) goto done;
+        char *sha = points[i].outcome ? nj_string(nj_get(points[i].result,"observed_sha256")) : NULL;
+        int bad = (points[i].outcome && (!sha || strlen(sha)!=64 || strspn(sha,"0123456789abcdef")!=64)) ||
+            push_text(outputs,sha ? sha : "");
+        free(sha);
+        if (bad) goto done;
         outcomes[i]=(float)points[i].outcome;
     }
     failed=am_set_var_list("history_heads",heads) || am_set_var_list("history_streams",streams) ||
-        am_set_var_array("history_outcomes",outcomes,n) || am_exec_file("aml/snapshot-history.aml");
+        am_set_var_list("history_outputs",outputs) || am_set_var_array("history_outcomes",outcomes,n) ||
+        am_exec_file("aml/snapshot-history.aml");
 done:
-    am_list_free(heads); am_list_free(streams);
+    am_list_free(heads); am_list_free(streams); am_list_free(outputs);
     return failed;
 }
 
@@ -159,7 +171,7 @@ static int snapshot_history(const jov_pr *pr,const AM_List *rows,const char *rep
     for (int i=0;i<count;i++) {
         const snapshot_point *p=points+i;
         const char *state=states->items[count-1-i]->data,*fix=fixes->items[count-1-i]->data;
-        if (!p->distance) tip_status |= p->outcome;
+        if (!p->distance) tip_status |= !strcmp(state,"conflicting") ? 3 : p->outcome;
         if (i) fputc(',',stdout);
         fputc('{',stdout); json_field(stdout,"head_commit",p->head); fputc(',',stdout); json_field(stdout,"status",state);
         if (write_member(stdout,"checked_at",nj_get(p->entry,"checked_at")) ||

@@ -88,3 +88,96 @@ build/jovovich-replay history "$memory" other/demo 7 --snapshot "$repo" "$tip" e
     jq -e '.checks==[] and .status_at_head=="unverified"' >/dev/null
 reject history 0000000000000000000000000000000000000000
 printf 'Snapshot history: first-parent recovery, skipped and conflicting evidence, scoped rules, atomic retries and restart passed\n'
+
+# A new PR starts from a normal merge. The old PR received an unmeasured final
+# edit. Its own merge also contains a passing second parent, and its first
+# checked fix has since acquired a conflicting observation (above).
+old_head=$(git -C "$repo" commit-tree "$tip^{tree}" -p "$tip" -m 'untested final edit')
+integrated=$(git -C "$repo" commit-tree "$tip^{tree}" -p "$base" -p "$old_head" -m 'merge old PR')
+git -C "$repo" checkout -q --detach "$integrated"
+printf 'current\n' > "$repo/expected"; current=$(commit 'change expected output again')
+new_packet() {
+    scope=$1; action=$2; key=$3; start=$4; end=$5; shift 5
+    build/jovovich-pack "$action" "$memory" "$scope" "$key" --all "$repo" "$start" "$end" "$@" > "$work/new.batch"
+    build/batch-fixture emit "$work/new.batch" clean > "$work/new.answers"
+    jq -n --arg b "$start" --arg h "$end" --arg scope "$scope" '{number:21,
+        url:("https://github.com/"+$scope+"/pull/21"), createdAt:"2025-02-01T00:00:00Z",
+        baseRefOid:$b, headRefOid:$h}' > "$work/new.pr"
+}
+new_report() {
+    scope=$1; routes=$2; shift 2
+    build/jovovich-report "$work/new.batch" "$work/new.answers" --memory "$memory" \
+        --auto-snapshots "$repo" "$work/driver" "$work/$routes" --record-pr "$scope" "$work/new.pr" "$@"
+}
+# Same commit graph, paths and PR number, in an independent repository.
+jq '.repository="other/demo"' "$work/policy" > "$work/foreign-policy"
+new_packet other/demo --remember standard "$integrated" "$current" RULES
+new_report other/demo foreign-policy --json | jq -e '.prior_snapshot_cases==[]' >/dev/null
+
+new_packet fixture/demo --recall standard "$integrated" "$current"
+new_report fixture/demo policy --json > "$work/new.json"
+jq -e --arg bad "$bad" --arg tip "$tip" --arg current "$current" '
+  [.verified_findings[]|[.status,.head_commit,.expected]]==[["mismatch",$current,"current\n"]] and
+  .prior_snapshot_cases==[{repository:"fixture/demo",number:7,file:"expected",line:1,byte_column:1,expected_byte:119,observed_byte:111,
+    mismatch_commit:$bad,first_checked_match:$tip}]' "$work/new.json" >/dev/null
+new_report fixture/demo policy > "$work/new.md"
+sed -n '/^### Earlier snapshot checks/,/^<details>/p' "$work/new.md" > "$work/citations"
+for value in "/fixture/demo/pull/7" "/commit/$bad" "/commit/$tip" 'line 1, byte 1'; do
+    grep -F "$value" "$work/citations" >/dev/null
+done
+if grep -Eq "$fix|$side|other/demo|/pull/21" "$work/citations"; then exit 1; fi
+new_report fixture/demo other-policy --json | jq -e '.prior_snapshot_cases==[]' >/dev/null
+new_report fixture/demo skip-policy --json | jq -e '.prior_snapshot_cases==[] and .verified_findings==[]' >/dev/null
+new_packet fixture/demo --recall revised "$integrated" "$current"
+new_report fixture/demo policy --json | jq -e '.prior_snapshot_cases==[]' >/dev/null
+# A new branch based on the unverified gap never treats the side or current
+# PR's verification as the historical fix. Squashed-away heads are unrelated.
+new_packet fixture/demo --recall standard "$gap" "$current"
+new_report fixture/demo policy --json | jq -e --arg bad "$bad" '
+  .prior_snapshot_cases==[{repository:"fixture/demo",number:7,file:"expected",line:1,byte_column:1,expected_byte:119,observed_byte:111,
+    mismatch_commit:$bad,first_checked_match:null}]' >/dev/null
+new_packet fixture/demo --recall standard "$base" "$current"
+new_report fixture/demo policy --json | jq -e '.prior_snapshot_cases==[]' >/dev/null
+
+# Neither of two different failing renders can supply a single historical
+# location for the same revision. The old observations remain queryable.
+GENERATED=another record bad policy > /dev/null
+history "$bad" | jq -e --arg bad "$bad" '
+    .status_at_head=="mixed" and [.checks[] | select(.head_commit==$bad) | .status]==["conflicting","conflicting"]' >/dev/null
+new_packet fixture/demo --recall standard "$integrated" "$current"
+new_report fixture/demo policy --json | jq -e '.prior_snapshot_cases==[]' >/dev/null
+
+# Record other PRs in the same namespace. Only the most recent eligible PR
+# may supply the citation. Recording and opening order can differ.
+prior_number() {
+    jq --argjson n "$1" --arg date "$2" '.number=$n|.url=("https://github.com/fixture/demo/pull/"+($n|tostring))|
+        .createdAt=$date' "$work/bad.pr" > "$work/number.pr"
+    build/jovovich-report "$work/bad.batch" "$work/bad.answers" --memory "$memory" \
+        --auto-snapshots "$repo" "$work/driver" "$work/policy" --record-pr fixture/demo "$work/number.pr" >/dev/null
+}
+prior_number 25 2025-03-01T00:00:00Z
+prior_number 10 2025-03-01T00:00:00Z
+prior_number 9 2025-01-02T00:00:00Z
+new_report fixture/demo policy --json | jq -e --arg bad "$bad" '
+    [.prior_snapshot_cases[]|[.number,.mismatch_commit,.first_checked_match]]==[[9,$bad,null]]' >/dev/null
+# Failure while reading historical evidence publishes no comment or new PR checkpoint.
+jq '.number=20|.url="https://github.com/fixture/demo/pull/20"' "$work/new.pr" > "$work/20.pr"
+cp "$work/20.pr" "$work/new.pr"
+for checkpoint in "$memory"/pr-*-9.checkpoint; do printf damaged > "$checkpoint"; done
+reject new_report fixture/demo policy --json
+for checkpoint in "$memory"/pr-*-20.checkpoint; do test ! -e "$checkpoint"; done
+# An otherwise identical snapshot ending before the regenerated newline has
+# no expected byte at the reported column.
+git -C "$repo" checkout -q --detach "$base"
+printf ok > "$repo/expected"; short=$(commit 'missing newline')
+printf 'ok\n' > "$repo/expected"; newline=$(commit 'restore newline')
+jq '.repository="fixture/eof"' "$work/policy" > "$work/eof-policy"
+new_packet fixture/eof --remember standard "$base" "$short" RULES
+jq '.number=2|.url="https://github.com/fixture/eof/pull/2"' "$work/new.pr" > "$work/2.pr"
+cp "$work/2.pr" "$work/new.pr"
+new_report fixture/eof eof-policy > /dev/null
+new_packet fixture/eof --recall standard "$short" "$newline"
+new_report fixture/eof eof-policy --json | jq -e --arg sha "$short" '
+    [.prior_snapshot_cases[]|[.number,.mismatch_commit,.byte_column,.expected_byte,.observed_byte,.first_checked_match]]
+    ==[[2,$sha,3,null,10,null]] and .verified_findings[0].status=="met"' >/dev/null
+printf 'PR comment: automatic cross-PR recall, real merge ancestry, exact scope, separate current results and replay passed\n'
