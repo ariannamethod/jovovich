@@ -29,4 +29,8 @@ int jov_pr_recall_snapshots(FILE *out, int json, const char *directory, const jo
 /* A missing number lists checked PRs in the selected repository. */
 int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                    const char *checkout, const char *file);
+/* Compare the observations available at two knowledge cutoffs for one exact SHA. */
+int jov_pr_compare_history(const char *directory, const char *scope, const char *number, const char *head,
+                           const char *checkout, const char *file, const char *from, const char *to,
+                           const char *from_journal, const char *through);
 #endif

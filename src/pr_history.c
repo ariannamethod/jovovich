@@ -351,9 +351,10 @@ int jov_pr_prepare_landing(const char *directory, jov_pr *pr, const char *repo, 
 }
 
 #include "snapshot_recall.h"
+#include "snapshot_compare.h"
 
-int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
-                   const char *checkout, const char *file) {
+static int read_pr_history(const char *directory, const char *scope, const char *number, const char *head,
+                           const char *checkout, const char *file, const history_window *window) {
     jov_pr pr = {0};
     if (repository_name(scope, pr.repository) ||
         (number && !valid_number(number, strlen(number))) ||
@@ -369,7 +370,11 @@ int jov_pr_history(const char *directory, const char *scope, const char *number,
     if (file) {
         /* The AML resolution program executes while the JSON views are in use. */
         AM_List *snapshot = am_list_clone(rows);
-        if (snapshot) failed = snapshot_history(&pr, snapshot, checkout, head, file);
+        if (snapshot && window) {
+            AM_List *keys = am_list_clone(am_get_var_list("keys"));
+            if (keys) failed = compare_snapshots(&pr, snapshot, keys, checkout, head, file, window);
+            am_list_free(keys);
+        } else if (snapshot) failed = snapshot_history(&pr, snapshot, checkout, head, file);
         am_list_free(snapshot);
         goto done;
     }
@@ -397,4 +402,16 @@ done:
     if (failed) fprintf(stderr, "Cannot read PR history: %s\n", am_get_error());
     am_persistent_mode(0);
     return failed;
+}
+
+int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
+                   const char *checkout, const char *file) {
+    return read_pr_history(directory, scope, number, head, checkout, file, NULL);
+}
+
+int jov_pr_compare_history(const char *directory, const char *scope, const char *number, const char *head,
+                           const char *checkout, const char *file, const char *from, const char *to,
+                           const char *from_journal, const char *through) {
+    history_window window = {from, to, from_journal, through};
+    return read_pr_history(directory, scope, number, head, checkout, file, &window);
 }

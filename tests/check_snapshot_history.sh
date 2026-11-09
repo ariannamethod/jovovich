@@ -79,8 +79,57 @@ record fix policy --json > /dev/null
 cmp "$memory"/pr-*.checkpoint "$work/checkpoint"
 FAIL_FILE=note reject record fix policy
 cmp "$memory"/pr-*.checkpoint "$work/checkpoint"
+# A saved view of the exact fix stays reproducible after a new receipt arrives.
+compare() { build/jovovich-replay history "$memory" fixture/demo 7 --snapshot "$repo" "$fix" expected --compare-known-at "$@"; }
+past=2000-01-01T00:00:00Z; future=2099-01-01T00:00:00Z
+compare "$past" "$future" > "$work/first-view"
+jq -e --arg fix "$fix" '.head_commit==$fix and (.streams|length)==1 and
+ .streams[0] as $s | $s.before=={status:"unverified",receipt_ids:[]} and $s.after.status=="met" and
+ $s.verdict_changed and [$s.new_checks[].id]==$s.after.receipt_ids' "$work/first-view" >/dev/null
+cursor=$(jq -r .journal_head "$work/first-view")
+stamp() {
+    python3 -c 'import datetime as d, json, sys
+x=json.load(sys.stdin)["streams"][0]["new_checks"][-1]["checked_at"]
+t=d.datetime(1970,1,1)+d.timedelta(days=x["unix_day"],seconds=x["second"],milliseconds=x["millisecond"]+int(sys.argv[1]))
+print(t.isoformat(timespec="milliseconds")+"Z")' "$1"
+}
+first=$(stamp 0 < "$work/first-view")
+one_ms_before=$(stamp -1 < "$work/first-view")
+compare "$one_ms_before" "$one_ms_before" | jq -e '.streams==[]' >/dev/null
+compare "$first" "$first" | jq -e '.streams[0] | .before==.after and (.verdict_changed|not) and .new_checks==[]' >/dev/null
 # Conflicting renderings on one SHA withdraw it as an unambiguous match.
 GENERATED=different record fix policy > /dev/null
+compare "$past" "$future" --through "$cursor" > "$work/pinned-view"
+cmp "$work/first-view" "$work/pinned-view"
+compare "$first" "$future" > "$work/later-view"
+jq -e --arg cursor "$cursor" '.journal_head!=$cursor and .streams[0] as $s |
+ $s.before.status=="met" and $s.after.status=="conflicting" and $s.verdict_changed and
+ ($s.new_checks|length)==1 and $s.new_checks[0].result.status=="mismatch" and
+ $s.new_checks[0].result.byte_column==1 and $s.after.receipt_ids==($s.before.receipt_ids+[$s.new_checks[0].id])' "$work/later-view" >/dev/null
+# A newly appended receipt can fall inside a previously read time window.
+# Pin the old answer and ask about that very same instant on the new journal.
+compare "$future" "$future" --from-journal "$cursor" > "$work/saved-vs-now"
+jq -e --slurpfile old "$work/first-view" '.streams[0] as $s |
+ .from_journal==$old[0].journal_head and $s.before==$old[0].streams[0].after and
+ $s.after.status=="conflicting" and $s.verdict_changed and ($s.new_checks|length)==1' "$work/saved-vs-now" >/dev/null
+last=$(jq -r .journal_head "$work/saved-vs-now")
+compare "$future" "$future" --through "$last" --from-journal "$cursor" | cmp - "$work/saved-vs-now"
+reject compare "$future" "$future" --from-journal "$last" --through "$cursor"
+second=$(stamp 0 < "$work/later-view")
+compare "$first" "$second" | jq -e '.streams[0].after.status=="conflicting"' >/dev/null
+git -C "$repo" tag -a compared -m 'tag naming the same commit' "$fix"
+tag=$(git -C "$repo" rev-parse refs/tags/compared)
+reject build/jovovich-replay history "$memory" fixture/demo 7 --snapshot "$repo" "$tag" expected --compare-known-at "$first" "$second"
+if [ "${#fix}" -eq 64 ]; then
+    prefix=$(printf '%.40s' "$fix")
+    reject build/jovovich-replay history "$memory" fixture/demo 7 --snapshot "$repo" "$prefix" expected --compare-known-at "$first" "$second"
+fi
+reject compare "$second" "$first"
+reject compare 2025-02-29T00:00:00Z "$future"
+reject compare "$first" "$future" --through deadbeef
+reject build/jovovich-replay history "$memory" other/demo 7 --snapshot "$repo" "$fix" expected --compare-known-at "$first" "$future" --through "$cursor"
+build/jovovich-replay history "$memory" fixture/demo 7 --snapshot "$repo" "$merge" expected --compare-known-at "$past" "$future" |
+    jq -e '(.streams|length)==3 and ([.streams[].after.status]|sort)==["met","met","unverified"]' >/dev/null
 history "$tip" | jq -e --arg bad "$bad" --arg fix "$fix" --arg tip "$tip" '
     [.checks[]|select(.head_commit==$bad)|.first_checked_match]==[$tip] and
     [.checks[]|select(.head_commit==$fix)|.status]==["conflicting","conflicting"]' >/dev/null

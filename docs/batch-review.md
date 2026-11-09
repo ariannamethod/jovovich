@@ -237,3 +237,26 @@ includes `landing.source_head`, `source_status`, `commit` and `status`.
 For example, a source fix can be `met` and its landing `mismatch`. An earlier
 source mismatch can also have the squash commit as its first verified match.
 Without a recorded landing, the usual Git ancestry search applies.
+
+### Compare what was known about the same commit
+
+Run the query for one repository, PR, full commit SHA and path. The two UTC
+cutoffs include observations through the specified millisecond. A whole
+second denotes its start. Both views use the original JANUS `checked_at`.
+
+```sh
+build/jovovich-replay history "$memory" "$owner_repo" "$number" \
+  --snapshot "$checkout" "$commit" "$file" --compare-known-at "$from" "$to"
+```
+
+Each rule, routing policy and renderer has its own stream. Its `before` and
+`after` contain the verdict and exact receipt IDs. `new_checks` gives the
+timestamps and results added in the interval, including byte-level findings
+or skip reasons. Conflicting observations on the same SHA remain visible.
+An empty stream list means there were no checks of this file by the second
+cutoff. Pass `--through JOURNAL_HEAD` with the returned `journal_head` to
+repeat a reading against the same prefix after more observations arrive.
+To compare a saved answer to the current journal, use its ending cutoff as
+`from` and pass its `journal_head` as `--from-journal`. A receipt added later
+can then appear in `new_checks` even when its check time falls inside the
+earlier window. Both journal identities are included in the result.
