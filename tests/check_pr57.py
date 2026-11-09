@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path
 import shlex
@@ -29,12 +30,14 @@ NEW_RULE = (
     "number. Keep labels, PR URLs and scorer metadata out of the prompt.\n"
 )
 REJECTED = "text input rejected"
-FORWARDED = ('Execution at mode = 0. Required output text = "1.0-rc.2". '
-             'Observed output text = "1.0-rc.1".')
+FORWARDED = "text input accepted with expected and observed values in AML"
+RECEIPT = ('Execution at mode = 0. Required output text = "1.0-rc.2". '
+           'Observed output text = "1.0-rc.1".')
 PROBE = r'''
 #define main archived_selftest
 #include "tests/check_trace_gate.c"
 #undef main
+#include "json.h"
 int main(void) {
     jov_trace_receipt r;
     am_init();
@@ -44,17 +47,21 @@ int main(void) {
     assert(!apply("\"metric\":\"sequence\"",control,1,0,&r));
     assert(r.differing == 1 && strstr(am_get_var_text("review_context"),r.observation));
     const char *input = "[{\"mode\":0,\"base\":\"1.0-rc.0\",\"head\":\"1.0-rc.1\",\"required\":\"1.0-rc.2\"}]";
+    memset(&r,0,sizeof(r));
     int rejected = apply("\"metric\":\"text\"",input,1,0,&r);
     if (rejected) {
         assert(!strcmp(am_get_var_text("review_context"),"original review"));
-        puts("text input rejected");
     } else {
         assert(r.differing == 1);
         assert(strstr(r.observation,"Required output text = \"1.0-rc.2\"."));
         assert(strstr(r.observation,"Observed output text = \"1.0-rc.1\"."));
         assert(strstr(am_get_var_text("review_context"),r.observation));
-        puts(r.observation);
     }
+    printf("{\"accepted\":%s,\"observation\":",rejected ? "false" : "true");
+    json_string(stdout,r.observation);
+    fputs(",\"context\":",stdout);
+    json_string(stdout,am_get_var_text("review_context"));
+    puts("}");
     am_persistent_mode(0);
 }
 '''
@@ -102,12 +109,64 @@ def driver():
         archive(repo, revision, source, "src", "aml", "tests/check_trace_gate.c")
         (source / "probe.c").write_text(PROBE)
         compiler = shlex.split(os.environ.get("CC", "cc"))
-        command([*compiler, "-O2", "-std=c11", "-I", source, "-I", source / "src",
+        command([*compiler, "-O2", "-std=c11", "-UNDEBUG", "-I", source, "-I", source / "src",
                  "-I", aml / "core", "-I", notorch, source / "probe.c",
                  source / FILE, aml / "libaml.a", notorch / "sha256.c",
                  "-lm", "-pthread", "-o", source / "probe"])
-        observed = command([source / "probe"], cwd=source).decode().strip()
+        proof = json.loads(command([source / "probe"], cwd=source))
+        # Project the gate's delivery contract after checking its literal AML output.
+        if proof["accepted"]:
+            assert proof["observation"] == RECEIPT and proof["context"] == "original review\n" + RECEIPT
+            observed = FORWARDED
+        else:
+            assert proof["observation"] == "" and proof["context"] == "original review"
+            observed = REJECTED
+        evidence = work / f"{revision}.json"
+        if evidence.exists():
+            assert json.loads(evidence.read_text()) == proof
+        evidence.write_text(json.dumps(proof, indent=2) + "\n")
         print(json.dumps(observed))
+
+
+def check_answers(root, work, inputs):
+    manifest = json.loads((root / "models/onejev-0.8b.json").read_text())
+    lines = (work / "inputs.jsonl").read_bytes().splitlines(keepends=True)
+    answers = [json.loads(line) for line in (work / "answers.jsonl").read_text().splitlines()]
+    assert len(answers) == len(inputs)
+    measured_verdicts = []
+    results = []
+    for row, line, answer in zip(inputs, lines, answers):
+        assert answer["id"] == row["id"] and answer["scope"]["file"] == FILE
+        assert answer["source"] == row["source"] and answer["fact"] == row["fact"]
+        for key in ("context", "rule_excerpt", "change_excerpt"):
+            assert answer["input"][key] == row[key]
+        execution = answer["execution"]
+        assert execution["input_sha256"] == hashlib.sha256(line).hexdigest()
+        for key in ("weights_sha256", "tokenizer_sha256"):
+            assert execution[key] == manifest[key]
+        assert execution["arithmetic"] == "float32" and "readout_sha256" not in execution
+        probabilities = answer["choice"]["probabilities"]
+        concern, clean = probabilities["CONCERN"], probabilities["CLEAN"]
+        assert all(math.isfinite(p) and 0 <= p <= 1 for p in (concern, clean))
+        assert abs(concern + clean - 1) < 1e-6
+        verdict = "CONCERN" if concern >= clean else "CLEAN"
+        assert answer["choice"]["verdict"] == verdict
+        if "trace_evidence" in row:
+            witness = execution["trace_witness"]
+            assert witness["runs"] == witness["differing"] == 1 and witness["selected_mode"] == 0
+            run = row["trace_evidence"]["runs"][0]
+            observation = (f'Execution at mode = 0. Required output text = {json.dumps(run["required"])}. '
+                           f'Observed output text = {json.dumps(run["head"])}.')
+            assert witness["observation"] == observation
+            measured_verdicts.append(verdict)
+        else:
+            assert "trace_witness" not in execution
+        results.append({"receipt": row["fact"]["sequence"],
+                        "measured": "trace_evidence" in row,
+                        "expected": "CONCERN" if row["fact"]["sequence"] == 1 else "CLEAN",
+                        **answer["choice"]})
+    print(json.dumps(results, indent=2), flush=True)
+    assert measured_verdicts == ["CONCERN", "CLEAN"], "measured reviews failed the recorded requirements"
 
 
 def main():
@@ -176,11 +235,7 @@ def main():
         subprocess.run([str(args.reviewer.resolve()), str(args.model.resolve()),
                         str(args.tokenizer.resolve()), "--json"], cwd=root,
                        input=(work / "inputs.jsonl").read_bytes(), stdout=output, check=True)
-    answers = [json.loads(line) for line in (work / "answers.jsonl").read_text().splitlines()]
-    assert len(answers) == len(inputs)
-    for row, answer in zip(inputs, answers):
-        assert answer["source"] == row["source"] and answer["fact"] == row["fact"]
-    print(json.dumps(answers, indent=2))
+    check_answers(root, work, inputs)
 
 
 if __name__ == "__main__":

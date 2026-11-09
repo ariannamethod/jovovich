@@ -98,6 +98,63 @@ The manually selected and recalled votes matched at float32 precision. The
 correction supplied both the revised requirement and its corresponding
 expected execution. All three reports passed the ordinary provenance checks.
 
+## Replay the requirement change in PR 57
+
+`tests/check_pr57.py` uses the merged [PR 57](https://github.com/ariannamethod/jovovich/pull/57).
+Receipt 1 quotes `docs/trace-evidence.md` line 26 at `a99d18b`, requiring arrays
+for every metric. Receipt 2 supersedes it with `examples/release-trial/protocol.md`
+lines 23–27 at `d7276be`, requiring the expected and observed text to reach AML.
+That second commit changes only the written protocol, before the implementation.
+
+Both recalled reviews use base `d7276be`, head `d34fce8` and the same complete
+`src/trace_gate.c` diff. The test compiles the archived gate with its archived
+AML and NoTorch dependencies and supplies the same string input to both versions.
+A valid callback-array control must pass first. The text input uses distinct
+expected and observed strings, and the probe checks both the native receipt and
+AML's actual review context. Its observation reports rejection or verified delivery
+of both values. The literal receipt and AML context are saved under the source
+revision's SHA. `jovovich-replay probe` authenticates the Git sources and attaches
+the measured execution. Applying receipt 2 to the earlier base must fail with
+empty stdout.
+
+Run from a full clone with the historical submodule objects available. Python
+3.12+, a C compiler and the normal native build are required. Omitting the two
+weight arguments runs the provenance and execution checks alone.
+
+```sh
+make -j2 all
+python3 tests/check_pr57.py --work build/pr57 \
+  --model /path/to/jovovich.gguf --tokenizer /path/to/tokenizer.gguf
+```
+
+The optional live run submits four ordinary reviews, each rule with and without
+execution. It preserves the original A/B prompt and 0.50 decision boundary,
+prints all four scores and requires the two measured reviews to select `CONCERN`
+for receipt 1 and `CLEAN` for receipt 2. Exact inputs, AML receipts and raw native
+answers remain in the chosen new work directory. The reviewed scope is
+`src/trace_gate.c`.
+
+Original OneJev, native F32, OpenBLAS with one thread gave these results.
+
+| Receipt | Presentation | CONCERN | CLEAN | Expected |
+| --- | --- | ---: | ---: | --- |
+| 1 | Source only | 49.4838% | **50.5162%** | CONCERN |
+| 1 | Verified text delivery | **50.2653%** | 49.7347% | CONCERN |
+| 2 | Source only | **58.2110%** | 41.7890% | CLEAN |
+| 2 | Verified text delivery | 38.7691% | **61.2309%** | CLEAN |
+
+Both source-only answers are incorrect. The measured old-rule decision is close
+to the boundary. The new-rule decision matches the observed delivery of both values.
+
+The [initial driver](https://github.com/ariannamethod/jovovich/blob/7ad4dd69e8d49ea247f8ed8d4ce8b9b2130782a5/tests/check_pr57.py)
+passed the literal inner AML comparison into the outer observation. Its witnessed
+CONCERN probabilities were 54.0898% and 63.9754% for the old and new requirements,
+respectively, leaving the new requirement misclassified. Source-only votes reproduced
+exactly across both trials.
+The current driver projects the tested delivery contract after checking the raw
+values and AML context. The code diff, quotations, checkpoint, question and decision
+boundary are identical between these trials.
+
 ## Rehearse a verified fact
 
 A saved DOE generation can carry a receipt for the PR observation that was
