@@ -179,6 +179,8 @@ static int snapshot_history(const jov_pr *pr,const AM_List *rows,const char *rep
             write_member(stdout,"routes_sha256",nj_get(p->coverage,"routes_sha256")) ||
             write_member(stdout,"harness_sha256",nj_get(p->coverage,"harness_sha256")) ||
             write_member(stdout,"result",p->result)) return 1;
+        const char *landing=nj_get(nj_get(p->entry,"evidence"),"landing");
+        if (landing && write_member(stdout,"landing",landing)) return 1;
         if (p->outcome==2) {
             fputs(",\"first_checked_match\":",stdout);
             if (*fix) json_string(stdout,fix); else fputs("null",stdout);

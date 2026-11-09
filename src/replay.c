@@ -689,6 +689,63 @@ done:
 
 #include "snapshot_routes.h"
 
+/* The caller supplies the integration event SHA independently of the GitHub PR
+ * projection. Check the actual single parent and the rule at that revision.
+ * A squash can contain different bytes from the reviewed PR head. */
+static int verify_landing(const char *repo, jov_pr *pr, const packed_row *source) {
+    const char *sha=pr->landing.commit;
+    const char *args[]={"rev-list","--parents","--max-count=1",sha,"--",NULL};
+    size_t n, width=strlen(sha);
+    int code;
+    char *line=jov_git_command(repo,NULL,args,262144,&n,&code);
+    int bad=!line || code || n!=2*width+2 || memcmp(line,sha,width) ||
+        line[width]!=' ' || strspn(line+width+1,"0123456789abcdef")!=width || line[n-1]!='\n';
+    if (!bad) memcpy(pr->landing.parent,line+width+1,width);
+    free(line);
+    if (bad || landed(repo,source->base,pr->landing.parent)!=1 || landed(repo,source->head,sha)!=0) return 1;
+    jov_fact rule=*source->fact;
+    rule.base=pr->landing.parent;
+    rule.path=source->path; rule.first=source->first; rule.last=source->last; rule.quote=source->rule;
+    return verify_origin_rule(repo,&rule);
+}
+
+static int routed_checks(FILE *out,const char *repo,const char *runner,const char *driver_sha,
+                         const char *policy,const char *memory,const packed_row inputs[],int count,
+                         const char *batch,char *const landing_args[]) {
+    snapshot_routes routes={0};
+    jov_pr pr={0};
+    packed_row revision=inputs[0];
+    char *paths[JOV_BATCH_MAX_FILES],*id=NULL,*coverage=NULL;
+    int path_count=count, failed=1;
+    for (int i=0;i<count;i++) paths[i]=inputs[i].file;
+    if (load_routes(policy,revision.fact->repository,driver_sha,&routes)) {
+        fputs("Snapshot routes must match the repository receipt and renderer digest.\n",stderr);
+        goto done;
+    }
+    if (landing_args) {
+        id=nj_string(nj_get(batch,"id"));
+        if (!id || jov_pr_read(&pr,landing_args[0],landing_args[1],revision.base,revision.head,
+                               revision.fact,landing_args[2]) || verify_landing(repo,&pr,&revision)) {
+            fputs("GitHub metadata, expected landing SHA or Git ancestry differs from the reviewed PR.\n",stderr);
+            goto done;
+        }
+        if (jov_pr_prepare_landing(memory,&pr,repo,id,revision.fact,routes.digest,driver_sha,paths,&path_count)) {
+            fputs("Cannot bind the final source batch to its recorded rule, routes and renderer.\n",stderr);
+            goto done;
+        }
+        revision.base=pr.landing.parent; revision.head=pr.landing.commit;
+    }
+    if (route_snapshots(out,repo,runner,driver_sha,&routes,revision,paths,path_count,&coverage)) goto done;
+    if (landing_args && (jov_pr_record(memory,&pr,revision.fact,id,revision.base,revision.head,out,coverage) ||
+        fseek(out,0,SEEK_END))) goto done;
+    failed=fprintf(out,"%s\n",coverage)<0;
+done:
+    for (int i=0;i<routes.count;i++) free(routes.patterns[i]);
+    for (int i=count;i<path_count;i++) free(paths[i]);
+    free(pr.landing.proof); free(id); free(coverage);
+    return failed;
+}
+
 static int parse_mode(const char *s, int *mode) {
     char *end; errno=0;
     long long n=strtoll(s,&end,10);
@@ -711,11 +768,12 @@ int main(int argc, char **argv) {
     int locating=(recording || argc==4 || (argc==6 && !strcmp(argv[4],"--memory"))) && !strcmp(argv[1],"locate");
     const char *memory=locating && argc>=6 ? argv[5] : NULL;
     int snapshot=argc==4 && !strcmp(argv[1],"snapshot");
+    int landing=argc==10 && !strcmp(argv[1],"land") && !strcmp(argv[5],"--record-pr");
     int routed=argc==7 && !strcmp(argv[1],"snapshots") && !strcmp(argv[5],"--memory");
-    int direct=probe || locating || snapshot || routed;
+    int direct=probe || locating || snapshot || routed || landing;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
@@ -740,19 +798,20 @@ int main(int argc, char **argv) {
     const char *batch=count ? nj_get(lines[0],"batch") : NULL;
     long long members=0;
     int whole_single=count==1 && batch && !nj_int(nj_get(batch,"count"),&members) && members==1;
-    int full_batch=routed || recording || replay || (locating && (count>1 || whole_single));
+    int full_batch=routed || landing || recording || replay || (locating && (count>1 || whole_single));
     if (!count || bad_input || ferror(stdin) || (!full_batch && count!=1) ||
         (full_batch && verify_batch(lines,inputs,count))) goto done;
-    if (routed && (!batch || !inputs[0].fact || verify_receipt(argv[6],inputs[0].fact))) goto done;
-    if (recording && (!batch || jov_pr_read(&pr,argv[6],argv[7],inputs[0].base,inputs[0].head,inputs[0].fact) ||
+    if ((routed || landing) && (!batch || !inputs[0].fact || verify_receipt(argv[6],inputs[0].fact))) goto done;
+    if (recording && (!batch || jov_pr_read(&pr,argv[6],argv[7],inputs[0].base,inputs[0].head,inputs[0].fact,NULL) ||
         verify_receipt(memory,inputs[0].fact))) {
         fputs("PR metadata, repository rule or commit pair differs from the checked batch.\n",stderr);
         goto done;
     }
     if (replay && inputs[0].fact && verify_receipt(dir,inputs[0].fact)) goto done;
     if (verify_git(repo,inputs,count,full_batch && batch,full_batch ? NULL : batch)) goto done;
-    if (routed && route_snapshots(out,repo,fdpath,sha,argv[4],inputs,count)) goto done;
-    for (int i=0;!routed && i<count;i++) {
+    if ((routed || landing) && routed_checks(out,repo,fdpath,sha,argv[4],argv[6],inputs,count,batch,
+                                             landing ? argv+7 : NULL)) goto done;
+    for (int i=0;!routed && !landing && i<count;i++) {
         at=i+1; packed_row *p=inputs+i; const char *line=lines[i];
         jov_replay_ref ref={0}; int bad=0;
         if (replay && p->fact) bad=recall(dir,repo,p,sha,&ref,NULL,NULL);

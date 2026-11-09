@@ -111,6 +111,7 @@ check: build/check-receipts build/check-prompt-tokens build/check-model-cancel b
 	sh tests/check_counterexamples.sh
 	sh tests/check_findings.sh
 	sh tests/check_snapshot_history.sh
+	sh tests/check_squash_history.sh
 	sh tests/check_driver_sources.sh
 	sh tests/check_onejev16.sh
 	sh tests/check_submodules.sh

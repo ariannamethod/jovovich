@@ -197,7 +197,43 @@ A null byte field denotes end of file. Measurements which disagree on the regene
 The new PR's base bounds the history search. Git follows first parents when
 they contain the cited mismatch. At the merge that introduced the mismatch,
 the search follows its source branch. An untested merge tip can therefore
-lead back to a tested repair. An original commit removed by a squash or
-rebase needs to be reachable from the new base to qualify. A null recovery
-leaves the old mismatch open in the cited observations. Current checks stay
-in `verified_findings`, and the journal records only the new PR's own evidence.
+lead back to a tested repair. A null recovery leaves the old mismatch open
+in the cited observations. Current checks stay in `verified_findings`, and
+the journal records the new PR's own evidence.
+
+### Remember a squash merge
+
+After the merge, fetch the merged GitHub PR metadata. Supply the landing
+SHA from the integration event separately. Run this while both the source
+head and the landed commit are available locally. Reuse the final batch
+previously recorded for that PR, its AML memory, policy and renderer.
+
+```sh
+gh pr view "$number" --repo "$owner_repo" \
+  --json number,url,createdAt,baseRefOid,headRefOid,state,mergedAt,mergeCommit > merged.json
+build/jovovich-replay land "$checkout" "$renderer" "$policy" \
+  --record-pr "$memory" "$owner_repo" merged.json "$landing_sha" < final-source-batch.jsonl
+build/jovovich-replay history "$memory" "$owner_repo" "$number" "$landing_sha"
+```
+
+The command binds the repository, PR, reviewed base/head and event SHA to
+the supplied GitHub record. Git must show a single-parent integration
+on a descendant of the reviewed base, with the source head outside its
+ancestry and the rule still applicable at its parent. The renderer checks
+the final batch's routed snapshots on the landed tree. It also rechecks
+earlier mismatches on the source's first-parent line, including files
+reverted out of the final diff. The combined path limit is 64. Missing and
+non-regular files retain their coverage reasons.
+
+The resulting AML observation keeps the original check identifiers and
+source Git order. JANUS records GitHub's merge instant in
+`evidence.landing.merged_at` and the actual verification instant in
+`checked_at`. A repeat of the same evidence reuses the original observation.
+A new source observation recorded during rendering requires a retry.
+
+A later PR can cite these checks when its base includes the landed SHA,
+even in a fresh clone after the source branch was removed. Its citation
+includes `landing.source_head`, `source_status`, `commit` and `status`.
+For example, a source fix can be `met` and its landing `mismatch`. An earlier
+source mismatch can also have the squash commit as its first verified match.
+Without a recorded landing, the usual Git ancestry search applies.

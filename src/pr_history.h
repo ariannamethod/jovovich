@@ -5,11 +5,20 @@
 typedef struct {
     char repository[142], number[24], opened_at[21];
     int opened[3];
+    struct {
+        char commit[65], parent[65], source_base[65], source_head[65], merged_at[21];
+        int clock[3];
+        char source_version[65], *proof;
+    } landing;
 } jov_pr;
 
-/* Decode the five-field GitHub projection and bind it to the checked batch. */
+/* Bind GitHub metadata to the batch and, on landing, the event's independent SHA. */
 int jov_pr_read(jov_pr *pr, const char *scope, const char *metadata,
-                const char *base, const char *head, const jov_fact *fact);
+                const char *base, const char *head, const jov_fact *fact, const char *landing_sha);
+/* Add previously mismatched source paths and capture their verified first-parent order.
+ * The caller owns the appended paths and landing.proof. */
+int jov_pr_prepare_landing(const char *directory, jov_pr *pr, const char *repo, const char *batch,
+                           const jov_fact *fact, const char *policy, const char *driver, char *paths[], int *count);
 /* The caller has completed Git and driver verification for every emitted finding. */
 int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
                   const char *batch, const char *base, const char *head, FILE *findings, const char *coverage);

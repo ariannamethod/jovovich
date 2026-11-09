@@ -107,7 +107,7 @@ int main(int argc,char **argv) {
     }
     if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
     if (opts.pr_metadata) {
-        if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact) ||
+        if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact,NULL) ||
             !(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0) goto done;
     }
     total=0;
