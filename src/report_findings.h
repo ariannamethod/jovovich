@@ -203,10 +203,12 @@ static int snapshot_coverage(FILE *out,const char *line,int json,const input inp
     return ferror(out);
 }
 
-static int report_findings(FILE *out,report_options *opts,const input inputs[],int count) {
+static int report_findings(FILE *out,report_options *opts,const input inputs[],int count,const jov_pr *pr) {
     if (!opts->count) return 0;
     fputs(opts->json ? ",\"verified_findings\":[" : "\n### Verified checks\n",out);
     int written=0,covered=0;
+    const char *checked_files[JOV_BATCH_MAX_FILES], *checkout=NULL;
+    int checked_count=0;
     size_t total=0;
     for (int j=0;j<opts->count;j++) {
         const finding_job *job=&opts->jobs[j];
@@ -224,6 +226,7 @@ static int report_findings(FILE *out,report_options *opts,const input inputs[],i
             if (job->routes && nj_is(nj_get(line,"schema"),"jovovich.snapshot-coverage/1")) {
                 failed=nl[1]!=0 || snapshot_coverage(out,line,opts->json,inputs,count,seen,matched,mismatched);
                 if (!failed && opts->archive && !(opts->coverage=strdup(line))) failed=1;
+                checkout=job->repo;
                 covered=!failed;
                 break;
             }
@@ -236,6 +239,7 @@ static int report_findings(FILE *out,report_options *opts,const input inputs[],i
             if (job->routes) {
                 if (seen[i]) { failed=1; break; }
                 seen[i]=1;
+                checked_files[checked_count++]=inputs[i].file;
                 if (nj_is(nj_get(line,"status"),"met")) matched++;
                 else if (nj_is(nj_get(line,"status"),"mismatch")) mismatched++;
                 else { failed=1; break; }
@@ -251,6 +255,9 @@ static int report_findings(FILE *out,report_options *opts,const input inputs[],i
         free(data);
         if (failed || (job->routes && !covered)) return 1;
     }
+    if (covered && opts->archive)
+        return jov_pr_recall_snapshots(out,opts->json,opts->memory,pr,inputs[0].fact,checkout,inputs[0].origin[0],
+                                       opts->coverage,checked_files,checked_count);
     if (covered) return ferror(out);
     if (opts->json) fputc(']',out);
     else if (!written) fputs("\nNo recorded executions in this batch.\n",out);

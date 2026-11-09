@@ -1,15 +1,17 @@
-# The host supplies observed file checks in first-parent Git order.
+# The host supplies observed file checks in Git order along the selected history.
 # Stream keys identify the same AML rule, routing policy and renderer.
-passes = map_new()
-failures = map_new()
+samples = map_new()
+conflicts = map_new()
 size = list_len(history_heads)
 i = 0
 while i < size:
     key = text_concat(list_get(history_streams, i), list_get(history_heads, i))
-    if history_outcomes[i] == 1:
-        map_set(passes, key, 1)
-    if history_outcomes[i] == 2:
-        map_set(failures, key, 1)
+    if history_outcomes[i] > 0:
+        if map_has(samples, key):
+            j = map_get(samples, key)
+            if history_outcomes[i] != history_outcomes[j] or text_equal(list_get(history_outputs, i), list_get(history_outputs, j)) == 0:
+                map_set(conflicts, key, 1)
+        map_set(samples, key, i)
     i = i + 1
 
 # Reverse order makes the closest later match available at each mismatch.
@@ -25,13 +27,13 @@ while i >= 0:
     state = "skipped"
     if history_outcomes[i] == 1:
         state = "met"
-        if map_has(failures, key) == 0:
+        if map_has(conflicts, key) == 0:
             map_set(nearest, stream, i)
     if history_outcomes[i] == 2:
         state = "mismatch"
         if map_has(nearest, stream):
             recovery = list_get(history_heads, map_get(nearest, stream))
-    if history_outcomes[i] > 0 and map_has(passes, key) and map_has(failures, key):
+    if history_outcomes[i] > 0 and map_has(conflicts, key):
         state = "conflicting"
     list_push(recoveries, recovery)
     list_push(states, state)

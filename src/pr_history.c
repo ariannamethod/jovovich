@@ -163,35 +163,47 @@ static int valid_number(const char *s, size_t n) {
 
 /* Open only checkpoint names belonging to this repository; concurrent additions
  * can appear on the next listing. Every opened checkpoint is a complete snapshot. */
-static int list_prs(const char *directory, jov_pr *pr) {
+static int checkpoint_numbers(const char *directory, const char *repository, int **numbers, size_t *count) {
     char prefix[69];
-    if (history_prefix(pr->repository, prefix)) return 1;
+    if (history_prefix(repository, prefix)) return 1;
     DIR *dir = opendir(directory);
     if (!dir) return 1;
-    pr_summary *list = NULL;
-    size_t count = 0, capacity = 0;
-    int writer = -1, failed = 1;
+    size_t capacity = 0;
+    int failed = 1;
     for (;;) {
         errno = 0;
         struct dirent *entry = readdir(dir);
-        if (!entry) { if (errno) goto done; break; }
+        if (!entry) { failed = errno != 0; break; }
         if (strncmp(entry->d_name, prefix, strlen(prefix))) continue;
         const char *number = entry->d_name + strlen(prefix);
         size_t n = strspn(number, "0123456789");
         if (strcmp(number + n, ".checkpoint") || !valid_number(number, n)) continue;
-        memcpy(pr->number, number, n); pr->number[n] = 0;
+        if (*count == capacity) {
+            capacity = capacity ? capacity * 2 : 16;
+            int *grown = realloc(*numbers, capacity * sizeof(**numbers));
+            if (!grown) break;
+            *numbers = grown;
+        }
+        (*numbers)[(*count)++] = atoi(number);
+    }
+    closedir(dir);
+    return failed;
+}
+
+static int list_prs(const char *directory, jov_pr *pr) {
+    int *numbers = NULL, writer = -1, failed = 1;
+    size_t count = 0;
+    pr_summary *list = NULL;
+    if (checkpoint_numbers(directory, pr->repository, &numbers, &count)) goto done;
+    if (count && !(list = calloc(count, sizeof(*list)))) goto done;
+    for (size_t i = 0; i < count; i++) {
+        snprintf(pr->number, sizeof(pr->number), "%d", numbers[i]);
         if (journal(directory, pr, 0, &writer)) goto done;
         const char *opened = am_get_var_text("opened");
         const AM_List *rows = am_get_var_list("observations");
         if (!rows || !opened || strlen(opened) != 20) goto done;
-        if (count == capacity) {
-            capacity = capacity ? capacity * 2 : 16;
-            pr_summary *grown = realloc(list, capacity * sizeof(*list));
-            if (!grown) goto done;
-            list = grown;
-        }
-        list[count] = (pr_summary){.number=atoi(pr->number), .checks=rows->len};
-        memcpy(list[count++].opened, opened, 21);
+        list[i] = (pr_summary){.number=numbers[i], .checks=rows->len};
+        memcpy(list[i].opened, opened, 21);
     }
     if (count > 1) qsort(list, count, sizeof(*list), opening_order);
     printf("{\"schema\":\"jovovich.repository-prs/1\",\"repository\":\"%s\",\"pull_requests\":[", pr->repository);
@@ -204,11 +216,12 @@ static int list_prs(const char *directory, jov_pr *pr) {
     puts("]}");
     failed = ferror(stdout) || fflush(stdout);
 done:
-    free(list); closedir(dir);
+    free(numbers); free(list);
     return failed;
 }
 
 #include "snapshot_history.h"
+#include "snapshot_recall.h"
 
 int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                    const char *checkout, const char *file) {
