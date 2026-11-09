@@ -1,0 +1,20 @@
+name: Native dependency checks
+on:
+  pull_request:
+    paths:
+      - deps/aml
+      - deps/notorch
+      - .gitmodules
+      - .github/dependabot.yml
+      - .github/workflows/native-dependencies.yml
+permissions:
+  contents: read
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - run: make -j2 all check
