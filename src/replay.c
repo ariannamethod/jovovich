@@ -700,7 +700,9 @@ static int parse_mode(const char *s, int *mode) {
 int main(int argc, char **argv) {
     if (argc==4 && !strcmp(argv[1],"show")) return show(argv[2],argv[3]);
     if (argc>=4 && argc<=6 && !strcmp(argv[1],"history"))
-        return jov_pr_history(argv[2],argv[3],argc>=5 ? argv[4] : NULL,argc==6 ? argv[5] : NULL);
+        return jov_pr_history(argv[2],argv[3],argc>=5 ? argv[4] : NULL,argc==6 ? argv[5] : NULL,NULL,NULL);
+    if (argc==9 && !strcmp(argv[1],"history") && !strcmp(argv[5],"--snapshot"))
+        return jov_pr_history(argv[2],argv[3],argv[4],argv[7],argv[6],argv[8]);
     jov_pr pr={0};
     int recording=argc==8 && !strcmp(argv[1],"locate") && !strcmp(argv[4],"--record-pr");
     int probe=argc==5 && !strcmp(argv[1],"probe");
@@ -713,7 +715,7 @@ int main(int argc, char **argv) {
     int direct=probe || locating || snapshot || routed;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];
@@ -766,7 +768,7 @@ int main(int argc, char **argv) {
     }
     if (recording) {
         char *id=nj_string(nj_get(batch,"id"));
-        int bad=!id || jov_pr_record(memory,&pr,inputs[0].fact,id,inputs[0].base,inputs[0].head,out);
+        int bad=!id || jov_pr_record(memory,&pr,inputs[0].fact,id,inputs[0].base,inputs[0].head,out,NULL);
         free(id);
         if (bad) { fprintf(stderr,"Could not record verified PR outcomes: %s\n",am_get_error()); goto done; }
     }

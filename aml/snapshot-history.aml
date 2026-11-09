@@ -1,0 +1,38 @@
+# The host supplies observed file checks in first-parent Git order.
+# Stream keys identify the same AML rule, routing policy and renderer.
+passes = map_new()
+failures = map_new()
+size = list_len(history_heads)
+i = 0
+while i < size:
+    key = text_concat(list_get(history_streams, i), list_get(history_heads, i))
+    if history_outcomes[i] == 1:
+        map_set(passes, key, 1)
+    if history_outcomes[i] == 2:
+        map_set(failures, key, 1)
+    i = i + 1
+
+# Reverse order makes the closest later match available at each mismatch.
+nearest = map_new()
+recoveries = list_new()
+states = list_new()
+i = size - 1
+while i >= 0:
+    stream = list_get(history_streams, i)
+    head = list_get(history_heads, i)
+    key = text_concat(stream, head)
+    recovery = ""
+    state = "skipped"
+    if history_outcomes[i] == 1:
+        state = "met"
+        if map_has(failures, key) == 0:
+            map_set(nearest, stream, i)
+    if history_outcomes[i] == 2:
+        state = "mismatch"
+        if map_has(nearest, stream):
+            recovery = list_get(history_heads, map_get(nearest, stream))
+    if history_outcomes[i] > 0 and map_has(passes, key) and map_has(failures, key):
+        state = "conflicting"
+    list_push(recoveries, recovery)
+    list_push(states, state)
+    i = i - 1

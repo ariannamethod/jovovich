@@ -5,7 +5,7 @@
 /* Each job uses an operator-supplied driver for execution localization, an
  * explicit snapshot, or all snapshot paths selected by a repository policy. */
 typedef struct { const char *repo,*driver,*file,*routes; } finding_job;
-typedef struct { int json,count; const char *memory; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
+typedef struct { int json,count; const char *memory,*pr_scope,*pr_metadata; FILE *archive; char *coverage; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
 
 static int report_arguments(int argc,char **argv,report_options *opts) {
     if (argc<3) return 1;
@@ -15,6 +15,10 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
         const char *flag=argv[i++];
         if (!strcmp(flag,"--json") && !opts->json) { opts->json=1; continue; }
         if (!strcmp(flag,"--memory") && !opts->memory && i<argc) { opts->memory=argv[i++]; continue; }
+        if (!strcmp(flag,"--record-pr") && !opts->pr_metadata && argc-i>=2) {
+            opts->pr_scope=argv[i++]; opts->pr_metadata=argv[i++];
+            continue;
+        }
         if (!strcmp(flag,"--auto-snapshots")) {
             if (automatic.routes || argc-i<3) return 1;
             automatic=(finding_job){.repo=argv[i],.driver=argv[i+1],.routes=argv[i+2]};
@@ -36,7 +40,7 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
         if (has_manual || !opts->memory) return 1;
         opts->jobs[opts->count++]=automatic;
     }
-    return opts->memory && !has_locate && !automatic.routes;
+    return (opts->pr_metadata && !automatic.routes) || (opts->memory && !has_locate && !automatic.routes);
 }
 
 /* Replay receives the bytes already authenticated against the model answers.
@@ -199,7 +203,7 @@ static int snapshot_coverage(FILE *out,const char *line,int json,const input inp
     return ferror(out);
 }
 
-static int report_findings(FILE *out,const report_options *opts,const input inputs[],int count) {
+static int report_findings(FILE *out,report_options *opts,const input inputs[],int count) {
     if (!opts->count) return 0;
     fputs(opts->json ? ",\"verified_findings\":[" : "\n### Verified checks\n",out);
     int written=0,covered=0;
@@ -219,6 +223,7 @@ static int report_findings(FILE *out,const report_options *opts,const input inpu
             if (!end || *end) { failed=1; break; }
             if (job->routes && nj_is(nj_get(line,"schema"),"jovovich.snapshot-coverage/1")) {
                 failed=nl[1]!=0 || snapshot_coverage(out,line,opts->json,inputs,count,seen,matched,mismatched);
+                if (!failed && opts->archive && !(opts->coverage=strdup(line))) failed=1;
                 covered=!failed;
                 break;
             }
@@ -240,6 +245,7 @@ static int report_findings(FILE *out,const report_options *opts,const input inpu
                 fputs(line,out);
             } else if (job->file || job->routes) failed=snapshot_markdown(out,line,inputs+i);
             else failed=execution_markdown(out,line,inputs+i) || history_markdown(out,line,inputs+i);
+            if (opts->archive && fprintf(opts->archive,"%s\n",line)<0) failed=1;
             written++; line=nl+1;
         }
         free(data);

@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "batch.h"
 #include "facts.h"
+#include "pr_history.h"
 #include "boundary_view.h"
 #include "json.h"
 #include "hash.h"
@@ -85,9 +86,10 @@ int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
     report_options opts={0};
     if (!manifest_path || report_arguments(argc,argv,&opts)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json]\n",argv[0]);
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json] [--record-pr OWNER/REPO PR.json]\n",argv[0]);
         return 2;
     }
+    jov_pr pr={0};
     int json=opts.json;
     int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load(manifest_path,NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
@@ -104,6 +106,10 @@ int main(int argc,char **argv) {
         items[count]=p->item;count++;
     }
     if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
+    if (opts.pr_metadata) {
+        if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact) ||
+            !(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0) goto done;
+    }
     total=0;
     int checked_runs=0,failed_runs=0;
     for(int i=0;i<count;i++) {
@@ -180,10 +186,14 @@ int main(int argc,char **argv) {
         if (opts.count) fputs("\n</details>\n",out);
     }
     if(ferror(out) || fseek(out,0,SEEK_SET))goto done;
+    if (opts.archive && (!opts.coverage || ferror(opts.archive) ||
+        jov_pr_record(opts.memory,&pr,inputs[0].fact,digest,inputs[0].origin[0],inputs[0].origin[1],opts.archive,opts.coverage))) goto done;
     char buf[8192];size_t n;while((n=fread(buf,1,sizeof(buf),out)))if(fwrite(buf,1,n,stdout)!=n)break;
     rc=ferror(out) || ferror(stdout) || fflush(stdout);
 done:
     if(rc)fprintf(stderr,"Incomplete or inconsistent batch: no review report published\n");
+    if(opts.archive)fclose(opts.archive);
+    free(opts.coverage);
     if(batch)fclose(batch);
     if(answers)fclose(answers);
     if(out && fclose(out))rc=1;

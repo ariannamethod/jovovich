@@ -93,9 +93,9 @@ static void instant(FILE *out, const int parts[3]) {
             "\"second\":%d,\"millisecond\":%d}", parts[0], parts[1], parts[2]);
 }
 
-static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, const char *base, const char *head) {
+static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, const char *base, const char *head, const char *coverage) {
     long length = ftell(findings);
-    if (length <= 0 || length > AM_MAX_STRING_BYTES || fseek(findings, 0, SEEK_SET)) return NULL;
+    if (length < 0 || length > AM_MAX_STRING_BYTES || fseek(findings, 0, SEEK_SET)) return NULL;
     char *data = NULL, *line = NULL;
     size_t size = 0, cap = 0;
     FILE *out = open_memstream(&data, &size);
@@ -112,19 +112,21 @@ static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, c
         if (count++) fputc(',', out);
         fwrite(line, 1, (size_t)n - (line[n-1] == '\n'), out);
     }
-    fputs("]}", out);
-    int failed = ferror(findings) || !count;
+    fputc(']', out);
+    if (coverage) fprintf(out, ",\"snapshot_coverage\":%s", coverage);
+    fputc('}', out);
+    int failed = ferror(findings) || (!count && !coverage);
     free(line);
     if (fclose(out) || failed) { free(data); return NULL; }
     return data;
 }
 
 int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
-                  const char *batch, const char *base, const char *head, FILE *findings) {
+                  const char *batch, const char *base, const char *head, FILE *findings, const char *coverage) {
     struct timespec now;
     if (clock_gettime(CLOCK_REALTIME, &now) || now.tv_sec < 0) return 1;
     int checked[] = {(int)(now.tv_sec / 86400), (int)(now.tv_sec % 86400), (int)(now.tv_nsec / 1000000)};
-    char *result = evidence(findings, fact, batch, base, head), *row = NULL;
+    char *result = evidence(findings, fact, batch, base, head, coverage), *row = NULL;
     char key[65];
     int failed = 1, writer = -1;
     if (!result || hash_bytes(result, strlen(result), key)) goto done;
@@ -206,7 +208,10 @@ done:
     return failed;
 }
 
-int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head) {
+#include "snapshot_history.h"
+
+int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
+                   const char *checkout, const char *file) {
     jov_pr pr = {0};
     if (repository_name(scope, pr.repository) ||
         (number && !valid_number(number, strlen(number))) ||
@@ -219,21 +224,32 @@ int jov_pr_history(const char *directory, const char *scope, const char *number,
     const AM_List *rows = am_get_var_list("observations");
     const char *opened = am_get_var_text("opened");
     if (!rows || !opened) goto done;
+    if (file) {
+        /* The AML resolution program executes while the JSON views are in use. */
+        AM_List *snapshot = am_list_clone(rows);
+        if (snapshot) failed = snapshot_history(&pr, snapshot, checkout, head, file);
+        am_list_free(snapshot);
+        goto done;
+    }
     printf("{\"schema\":\"jovovich.pr-history/1\",\"repository\":\"%s\",\"number\":%s,\"created_at\":", pr.repository, number);
     if (*opened) json_string(stdout, opened); else fputs("null", stdout);
     fputs(",\"requested_head\":", stdout);
     if (head) json_string(stdout, head); else fputs("null", stdout);
     fputs(",\"observations\":[", stdout);
+    int measured = 0;
     for (int i = 0; i < rows->len; i++) {
         AM_String *row = am_list_get(rows, i);
         if (!row) goto done;
         if (!head || nj_is(nj_get(nj_get(row->data, "evidence"), "head_commit"), head)) {
+            int bad = 0;
+            if (nj_first(nj_get(nj_get(row->data, "evidence"), "findings"), &bad)) measured++;
+            if (bad) { am_string_free(row); goto done; }
             if (count++) fputc(',', stdout);
             fputs(row->data, stdout);
         }
         am_string_free(row);
     }
-    printf("],\"status\":\"%s\"}\n", count ? "checked" : "unverified");
+    printf("],\"status\":\"%s\"}\n", measured ? "checked" : "unverified");
     failed = ferror(stdout) || fflush(stdout);
 done:
     if (failed) fprintf(stderr, "Cannot read PR history: %s\n", am_get_error());
