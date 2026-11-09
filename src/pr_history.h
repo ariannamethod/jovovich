@@ -12,7 +12,8 @@ int jov_pr_read(jov_pr *pr, const char *scope, const char *metadata,
                 const char *base, const char *head, const jov_fact *fact);
 /* The caller has completed Git and driver verification for every emitted finding. */
 int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
-                  const char *batch, const char *base, const char *head, FILE *findings);
+                  const char *batch, const char *base, const char *head, FILE *findings, const char *coverage);
 /* A missing number lists checked PRs in the selected repository. */
-int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head);
+int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
+                   const char *checkout, const char *file);
 #endif

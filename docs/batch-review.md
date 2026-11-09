@@ -157,3 +157,30 @@ digests, and every skipped path with its reason. Deleted paths, non-regular
 head entries and paths outside the policy are identified separately. Add
 `--locate "$checkout" "$execution_driver"` to reproduce execution findings
 in the same report.
+
+## Keep snapshot results in the PR's AML history
+
+Pass the GitHub PR metadata described in [counterexample history](counterexamples.md#when-a-pull-request-opened-and-which-revisions-were-checked)
+when generating either report format. The completed report records its findings,
+coverage, exact Git revisions and JANUS verification time in one checkpoint
+update. Identical evidence reuses its observation. A run whose policy skips
+every file records those skips.
+
+```sh
+build/jovovich-report batch.jsonl answers.jsonl --memory "$memory" \
+  --auto-snapshots "$checkout" "$renderer" "$policy" --record-pr "$owner_repo" pr.json
+build/jovovich-replay history "$memory" "$owner_repo" "$number" \
+  --snapshot "$checkout" "$tip_sha" "$file"
+```
+
+The query walks the requested commit's first-parent history. It returns
+recorded checks for that file in Git order, with their original timestamps.
+A mismatch includes its line, byte column, expected and regenerated text.
+Its `first_checked_match` is the earliest later verified match on that
+line with the same AML rule receipt, policy digest and renderer digest.
+A null value means there is no such observation through this tip.
+Contradictory measurements at a commit appear as `conflicting` for that
+rule and renderer. AML uses an unambiguous match for recovery.
+`status_at_head` describes the requested SHA itself. A skipped or
+unmeasured file at that SHA is `unverified`. The ordinary PR history
+continues to include execution-only entries from older checkpoints.
