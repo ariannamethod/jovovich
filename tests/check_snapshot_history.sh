@@ -83,8 +83,8 @@ cmp "$memory"/pr-*.checkpoint "$work/checkpoint"
 compare() { build/jovovich-replay history "$memory" fixture/demo 7 --snapshot "$repo" "$fix" expected --compare-known-at "$@"; }
 past=2000-01-01T00:00:00Z; future=2099-01-01T00:00:00Z
 compare "$past" "$future" > "$work/first-view"
-jq -e --arg fix "$fix" '.head_commit==$fix and (.streams|length)==1 and
- .streams[0] as $s | $s.before=={status:"unverified",receipt_ids:[]} and $s.after.status=="met" and
+jq -e --arg fix "$fix" '.streams[0] as $s |
+ .head_commit==$fix and (.streams|length)==1 and $s.before=={status:"unverified",receipt_ids:[]} and $s.after.status=="met" and
  $s.verdict_changed and [$s.new_checks[].id]==$s.after.receipt_ids' "$work/first-view" >/dev/null
 cursor=$(jq -r .journal_head "$work/first-view")
 stamp() {
@@ -102,8 +102,8 @@ GENERATED=different record fix policy > /dev/null
 compare "$past" "$future" --through "$cursor" > "$work/pinned-view"
 cmp "$work/first-view" "$work/pinned-view"
 compare "$first" "$future" > "$work/later-view"
-jq -e --arg cursor "$cursor" '.journal_head!=$cursor and .streams[0] as $s |
- $s.before.status=="met" and $s.after.status=="conflicting" and $s.verdict_changed and
+jq -e --arg cursor "$cursor" '.streams[0] as $s |
+ .journal_head!=$cursor and $s.before.status=="met" and $s.after.status=="conflicting" and $s.verdict_changed and
  ($s.new_checks|length)==1 and $s.new_checks[0].result.status=="mismatch" and
  $s.new_checks[0].result.byte_column==1 and $s.after.receipt_ids==($s.before.receipt_ids+[$s.new_checks[0].id])' "$work/later-view" >/dev/null
 # A newly appended receipt can fall inside a previously read time window.
