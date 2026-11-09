@@ -404,6 +404,46 @@ done:
     return failed;
 }
 
+int jov_pr_spore(const char *directory, const char *scope, const char *number,
+                 const char *observation, const char *file, int write) {
+    jov_pr pr = {0};
+    if (repository_name(scope, pr.repository) || !valid_number(number, strlen(number)) ||
+        strlen(observation) != 64 || strspn(observation, "0123456789abcdef") != 64) return 1;
+    strcpy(pr.number, number);
+    char scope_hash[65], name[96];
+    if (hash_bytes(pr.repository, strlen(pr.repository), scope_hash)) return 1;
+    snprintf(name, sizeof(name), "spores-%s-%s", scope_hash, number);
+    int writer = -1, failed = 1;
+    am_init(); am_persistent_mode(1);
+    if (journal(directory, &pr, 0, &writer)) goto done;
+    const AM_List *keys = am_get_var_list("keys"), *rows = am_get_var_list("observations");
+    if (!keys || !rows || keys->len != rows->len) goto done;
+    int i = 0;
+    while (i < keys->len && strcmp(keys->items[i]->data, observation)) i++;
+    char verified[65];
+    if (i == keys->len || json_digest(nj_get(rows->items[i]->data, "evidence"), verified) ||
+        strcmp(verified, observation)) {
+        fputs("Unknown observation for this repository and PR.\n", stderr);
+        goto done;
+    }
+    float mode = (float)write;
+    if (am_set_var_text("spore_file", file) ||
+        am_exec("spore_digest = file_hash_sha256(spore_file)") ||
+        jov_journal_open(directory, name, write, &writer) ||
+        am_set_var_text("observation_key", observation) || am_set_var_array("spore_write", &mode, 1) ||
+        am_exec_file("aml/pr-spores.aml") || (write && jov_memory_commit())) goto done;
+    const char *digest = am_get_var_text("spore_digest");
+    if (!digest) goto done;
+    printf("{\"schema\":\"jovovich.pr-spore/1\",\"repository\":\"%s\",\"number\":%s,"
+           "\"observation_id\":\"%s\",\"spore_sha256\":\"%s\"}\n", pr.repository, number, observation, digest);
+    failed = ferror(stdout) || fflush(stdout);
+done:
+    if (writer >= 0) close(writer);
+    if (failed && *am_get_error()) fprintf(stderr, "AML spore receipt: %s\n", am_get_error());
+    am_persistent_mode(0);
+    return failed;
+}
+
 int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                    const char *checkout, const char *file) {
     return read_pr_history(directory, scope, number, head, checkout, file, NULL);

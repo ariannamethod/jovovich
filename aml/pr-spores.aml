@@ -1,0 +1,22 @@
+# Each binding names an existing observation in this repository and PR.
+if file_exists(memory_path):
+    journal = checkpoint_load(memory_path)
+else:
+    assert(spore_write[0] == 1, "no spore receipts for this PR")
+    journal = record_new()
+    record_set(journal, "schema", "jovovich.pr-spores/1")
+    record_set(journal, "repository", repository_name)
+    record_set(journal, "number", pr_number)
+    record_set(journal, "bindings", list_new())
+assert(text_equal(record_get(journal, "schema"), "jovovich.pr-spores/1"), "spore receipt schema")
+assert(text_equal(record_get(journal, "repository"), repository_name), "spore repository")
+assert(text_equal(record_get(journal, "number"), pr_number), "spore PR")
+pair = list_new()
+list_push(pair, observation_key)
+list_push(pair, spore_digest)
+binding = list_key(pair)
+dirty = 0
+if list_find(record_get(journal, "bindings"), binding) < 0:
+    assert(spore_write[0] == 1, "spore differs from the recorded observation")
+    list_push(record_get(journal, "bindings"), binding)
+    dirty = 1

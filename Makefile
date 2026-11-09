@@ -108,6 +108,7 @@ check: build/check-receipts build/check-prompt-tokens build/check-model-cancel b
 	sh tests/check_git.sh
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
+	python3 tests/check_fact_sleep.py
 	sh tests/check_counterexamples.sh
 	sh tests/check_findings.sh
 	sh tests/check_snapshot_history.sh
@@ -128,3 +129,10 @@ check: build/check-receipts build/check-prompt-tokens build/check-model-cancel b
 
 clean:
 	rm -rf build
+
+.PHONY: check-fact-sleep
+check-fact-sleep: build/jovovich build/jovovich-pack build/jovovich-report build/jovovich-replay
+	@test -n "$(MODEL)" || { echo 'Set MODEL to the original OneJev GGUF with tokenizer.gguf beside it.' >&2; exit 1; }
+	$(MAKE) -C $(NOTORCH_ROOT) notorch qwen35_tokenize BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
+	$(MAKE) -C $(AML_ROOT) harness NOTORCH_ROOT="$(abspath $(NOTORCH_ROOT))" NOTORCH_LDFLAGS="$(BLAS_LIBS)"
+	python3 tests/check_fact_sleep.py --model "$(MODEL)" --aml "$(AML_ROOT)/runner/aml-harness" --notorch "$(NOTORCH_ROOT)/notorch"
