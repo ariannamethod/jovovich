@@ -14,8 +14,11 @@ jovovich --json  ->  notify-on-concern.sh  ->  QUEUE/<id>.json  ->  launchd Watc
   answers stream and drops one tag per CONCERN into `QUEUE`. sh + jq; no model.
 - **wake-claude.sh QUEUE** — launchd runs this when `QUEUE` changes. It wakes a
   headless `claude -p` to re-review the tagged ids, then moves the tags to
-  `QUEUE/../handled` so the watch does not re-fire. `JOV_WAKE_DRY=1` prints the
-  invocation instead of running it.
+  `QUEUE/../handled` so the watch does not re-fire. The woken reviewer is locked
+  to read-only tools (`--allowedTools Read,Grep,Glob --permission-prompts none`)
+  and the PR content is framed as untrusted, so an injected instruction in a
+  diff cannot reach a command, a write or the network. `JOV_WAKE_DRY=1` prints
+  the invocation instead of running it.
 - **jovovich-watch.plist** — launchd template. `__JOVOVICH_ROOT__` and
   `__QUEUE__` are placeholders; `RunAtLoad` is false and the job is not loaded
   by this repository.

@@ -24,10 +24,30 @@ test -f "$q/abc123.json" || { echo "FAIL: tag file missing"; exit 1; }
 jq -e '.verdict=="CONCERN" and .concern==0.82 and .pr=="pr-42"' \
     "$q/abc123.json" >/dev/null || { echo "FAIL: tag contents wrong"; exit 1; }
 
-# 3. The wake dry-run names the queue and the PR, and spawns no claude.
+# 3. The wake dry-run names the queue and the PR, locks the woken reviewer to
+#    read-only tools, frames the content as untrusted, and spawns no claude.
 out=$(JOV_WAKE_DRY=1 sh "$here/wake-claude.sh" "$q")
-printf '%s' "$out" | grep -q 'claude -p' || { echo "FAIL: no claude -p"; exit 1; }
-printf '%s' "$out" | grep -qF "$q"      || { echo "FAIL: queue path missing"; exit 1; }
-printf '%s' "$out" | grep -q 'pr-42'    || { echo "FAIL: PR missing"; exit 1; }
+printf '%s' "$out" | grep -q 'claude -p'                       || { echo "FAIL: no claude -p"; exit 1; }
+printf '%s' "$out" | grep -qF "$q"                             || { echo "FAIL: queue path missing"; exit 1; }
+printf '%s' "$out" | grep -q 'pr-42'                           || { echo "FAIL: PR missing"; exit 1; }
+printf '%s' "$out" | grep -q -- '--allowedTools Read,Grep,Glob' || { echo "FAIL: read-only allow-list missing"; exit 1; }
+printf '%s' "$out" | grep -q -- '--permission-prompts none'    || { echo "FAIL: permission lockdown missing"; exit 1; }
+printf '%s' "$out" | grep -qi 'untrusted'                      || { echo "FAIL: untrusted framing missing"; exit 1; }
+if printf '%s' "$out" | grep -q 'Bash'; then echo "FAIL: Bash reachable by woken reviewer"; exit 1; fi
+
+# 4. A crafted non-hex id is refused, so no tag is written anywhere (the id
+#    would otherwise be used verbatim as a path). The queue sits three levels
+#    under $work, so a successful ../../pwned write would land at
+#    $work/a/pwned.json; the gate must leave nothing there and emit zero tags.
+evil="$work/evil.jsonl"
+printf '%s\n' '{"id":"../../pwned","scope":{"file":"x"},"choice":{"verdict":"CONCERN"},"probabilities":{"CONCERN":0.9,"CLEAN":0.1}}' > "$evil"
+deep="$work/a/b/queue"
+m=$(sh "$here/notify-on-concern.sh" "$evil" "$deep" pr-evil 2>/dev/null)
+test "$m" = "0" || { echo "FAIL: non-hex id written ($m)"; exit 1; }
+test ! -e "$work/a/pwned.json" || { echo "FAIL: path traversal wrote outside queue"; exit 1; }
+
+# 5. The queue is owner-only.
+mode=$(stat -f '%Lp' "$q")
+test "$mode" = "700" || { echo "FAIL: queue mode $mode, expected 700"; exit 1; }
 
 echo PASS

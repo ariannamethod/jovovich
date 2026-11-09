@@ -19,6 +19,16 @@ verdict filter to CLEAN makes that same clean row drop a tag, so the filter is
 load-bearing. `plutil -lint` passes the launchd template, which ships with
 placeholder paths and `RunAtLoad` false, loaded only at deploy on neo.
 
+A background security review then flagged the wake prompt as a prompt-injection
+surface, and reading it turned up a worse sibling: `notify-on-concern.sh` wrote
+`$queue/$id.json` with no check on `id`, so a crafted answers stream could have
+escaped the queue directory. The woken reviewer is now locked to read-only tools
+(`--allowedTools Read,Grep,Glob --permission-prompts none`) with the PR content
+framed as untrusted, the queue is created mode 700, and a non-hex id is refused
+before it can become a filename or a prompt token. `notify-selftest.sh` now also
+drives a `../../pwned` id — zero tags, nothing written outside the queue — and
+asserts the read-only flags are present and that Bash is not reachable.
+
 ## 2026-11-08 — The rollback borrowed the repair's voice
 
 The first archive test let two PR answers trade places and still passed.
