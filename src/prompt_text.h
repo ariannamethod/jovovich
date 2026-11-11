@@ -45,16 +45,11 @@ invalid:
  * feed a role, tool, reasoning or multimodal control ID from the review data.
  * Tokenize the intact frame first: ordinary prompts retain all BPE merges,
  * including those that straddle the edges of the evidence. */
-static inline int jov_framed_prompt_ids(bpe_tokenizer *tok,const char *prompt,const char *state,
-                                        int *ids,int capacity) {
-    const char marker[]="<|im_start|>user\n<state>\n";
-    const char *begin=strstr(prompt,marker);
-    if (!begin || !state || capacity<=0) return 0;
-    begin+=sizeof(marker)-1;
-    size_t state_length=strlen(state);
-    if (strncmp(begin,state,state_length) || strncmp(begin+state_length,"\n</state>\n",10)) return 0;
+static inline int jov_literal_span_ids(bpe_tokenizer *tok,const char *prompt,const char *begin,size_t state_length,
+                                       int *ids,int capacity) {
+    if(!prompt || !begin || begin<prompt || state_length>strlen(begin) || capacity<=0)return 0;
     int count=jov_prompt_ids(tok,prompt,ids,capacity);
-    if (count<=0 || count>=capacity || !strchr(state,'<')) return count<capacity?count:0;
+    if (count<=0 || count>=capacity || !memchr(begin,'<',state_length)) return count<capacity?count:0;
     const char *end=begin+state_length, *cursor=prompt+strlen(prompt);
     int write=capacity;
     for (int i=count-1;i>=0;i--) {
@@ -86,4 +81,15 @@ static inline int jov_framed_prompt_ids(bpe_tokenizer *tok,const char *prompt,co
     memmove(ids,ids+write,(size_t)count*sizeof(*ids));
     return count;
 }
+static inline int jov_framed_prompt_ids(bpe_tokenizer *tok,const char *prompt,const char *state,
+                                        int *ids,int capacity) {
+    const char marker[]="<|im_start|>user\n<state>\n";
+    const char *begin=strstr(prompt,marker);
+    if (!begin || !state || capacity<=0) return 0;
+    begin+=sizeof(marker)-1;
+    size_t state_length=strlen(state);
+    if (strncmp(begin,state,state_length) || strncmp(begin+state_length,"\n</state>\n",10)) return 0;
+    return jov_literal_span_ids(tok,prompt,begin,state_length,ids,capacity);
+}
+
 #endif

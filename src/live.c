@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
+#include "visual.h"
 #include "facts.h"
 #include "boundary.h"
 #include "run_selection.h"
@@ -105,27 +106,30 @@ static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *t
 
 int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
-    int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL;
+    int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL,*vision_path=NULL;
     for(int i=3;i<argc && valid;i++) {
         if(!strcmp(argv[i],"--json") && !json)json=1;
+        else if(!strcmp(argv[i],"--vision") && !vision_path && i+1<argc)vision_path=argv[++i];
         else if(!strcmp(argv[i],"--select-run") && !select)select=1;
         else if(!strcmp(argv[i],"--features") && !features)features=1;
         else if(!strcmp(argv[i],"--canonical-boundaries") && !canonical)canonical=1;
         else if(!strcmp(argv[i],"--readout") && !adapter && i+1<argc)adapter=argv[++i];
         else valid=0;
     }
-    if(!manifest_path || !valid || ((features || select) && (json || adapter || canonical)) || (features && select)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] MODEL.gguf TOKENIZER.gguf [--select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
+    if(!manifest_path || !valid || (vision_path && (features || select || adapter || canonical)) || ((features || select) && (json || adapter || canonical)) || (features && select)) {
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] MODEL.gguf TOKENIZER.gguf [--vision VISION.gguf | --select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
     }
     char *manifest=nj_load(manifest_path,NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
     char *want_weights=nj_string(nj_get(manifest,"weights_sha256")),*want_tokenizer=nj_string(nj_get(manifest,"tokenizer_sha256"));
     char wh[65],th[65];int rc=1,seen=0;gguf_file *g=NULL;void *m=NULL;bpe_tokenizer *tok=NULL;
     float *logits=NULL;char *line=NULL;nt_dims dims={0};
+    nt_qwen35_vision *vision=NULL;char vh[65];
     if(!model_id || !revision || !want_weights || !want_tokenizer || jov_model_verified_pair(argv[1],argv[2],
        want_weights,want_tokenizer,wh,th,&g,&tok)) {
         fprintf(stderr,"Cannot snapshot, verify or load model/tokenizer for %s (check inputs and TMPDIR)\n",manifest_path);goto done;
     }
+    if(vision_path && !(vision=jov_visual_load(vision_path,manifest,vh))) {fprintf(stderr,"Cannot verify or load vision encoder\n");goto done;}
     jov_readout head;char adapter_hash[65];
     if(adapter && jov_readout_load(&head,adapter,wh,th,adapter_hash)) {
         fprintf(stderr,"Invalid readout or mismatched base model\n");goto done;
@@ -143,6 +147,11 @@ int main(int argc,char **argv) {
             if (bad) { fprintf(stderr,"Invalid JSON or oversized input at row %d\n",seen+1); goto done; }
             break;
         }
+        if(vision) {
+            if(jov_visual_choice(line,bytes,m,tok,vision,logits,wh,th,vh)){fprintf(stderr,"Visual choice failed at input row %d\n",seen+1);goto done;}
+            free(line);line=NULL;seen++;continue;
+        }
+        if(nj_get(line,"image")){fprintf(stderr,"Image input requires --vision VISION.gguf\n");goto done;}
         if(select) {
             if(select_run(line,(size_t)bytes,m,tok,logits,wh,th)){fprintf(stderr,"Invalid run selection at row %d\n",seen+1);goto done;}
             free(line);line=NULL;seen++;continue;
@@ -231,6 +240,7 @@ row_done:
     rc=ferror(stdin) || !seen;
 done:
     am_persistent_clear();am_persistent_mode(0);
+    nt_qwen35_vision_free(vision);
     free(line);free(logits);bpe_free(tok);nt_arch_qwen35.free(m);gguf_close(g);
     free(model_id);free(revision);free(want_weights);free(want_tokenizer);free(manifest);return rc;
 }

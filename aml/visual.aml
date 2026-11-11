@@ -1,0 +1,12 @@
+# The qev-labels-v2 frame: image state, then question and explicit options.
+# The whole dynamic text span is tokenized as literal data by the C caller.
+visual_text = text_concat("\n\nQuestion: ", visual_question)
+visual_text = text_concat(visual_text, "\n\nOptions:\nA. ")
+visual_text = text_concat(visual_text, visual_a)
+visual_text = text_concat(visual_text, "\nB. ")
+visual_text = text_concat(visual_text, visual_b)
+visual_text = text_concat(visual_text, "\n\nAnswer with one letter: A, B.")
+prompt = "<|im_start|>system\nApply the question to the state. Choose exactly one of the listed options. Respond with only its uppercase letter, with no explanation or reasoning.<|im_end|>\n<|im_start|>user\n<state>\n"
+prompt = text_concat(prompt, "<|vision_start|><|image_pad|><|vision_end|>\n</state>")
+prompt = text_concat(prompt, visual_text)
+prompt = text_concat(prompt, "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n")

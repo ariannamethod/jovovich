@@ -100,6 +100,39 @@ both versions behaved at mode 0. At mode 1 the patch restored `scan → paint`.
 Her vote was **CLEAN 69.0% · CONCERN 31.0%**.
 [Recorded answer](examples/run-selection/git-answer.jsonl) · [Operating rules](docs/operating-rules.md) · [Whole-change reports](docs/batch-review.md)
 
+## Image decisions
+
+The original OneJev checkpoint includes its Qwen3.5 vision encoder. From the
+same pinned source snapshot, also download `processor_config.json`, then build
+the 201 MB image pack:
+
+```sh
+make -C deps/notorch qwen35_to_gguf
+deps/notorch/qwen35_to_gguf --vision /path/to/snapshot vision.gguf
+./build/jovovich /path/to/jovovich.gguf /path/to/tokenizer.gguf --vision vision.gguf < images.jsonl
+```
+
+Each JSONL row names an image, its SHA-256, a question and two explicit choices:
+
+```json
+{"id":"screen-1","image":{"path":"screen.png","sha256":"<SHA-256 of the image file>"},"question":"Which button is visible?","choice_a":"Save","choice_b":"Cancel"}
+```
+
+The text/vision pair is pinned by `models/onejev-0.8b-vision.json`. Image bytes
+are captured and verified before decoding. NoTorch resizes RGB at a 262144-pixel
+budget, encodes the image and supplies its feature rows and three-axis positions
+to the unchanged original text model. AML uses the OneJev state/question/options
+frame, scores A/B and attaches a JANUS instant. User-provided control-token
+spellings remain literal text.
+
+The `jovovich.visual-choice/1` result includes the selected letter, logits,
+probabilities, input/prompt/image/model hashes, original/resized dimensions and
+visual-token count. This is an image observation with its source receipt; the
+fact journal receives entries through its existing explicit evidence path.
+`make check-visual MODEL=/path/to/model.gguf VISION=/path/to/vision.gguf` runs
+real image substitution, both option orders, literal markers and altered-byte
+refusals. The existing review invocation and text manifests retain their bytes.
+
 ## She remembers the rule
 
 LALO has been under the laundry, examining the plumbing. Some of it is here
