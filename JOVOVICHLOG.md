@@ -2,6 +2,32 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-11 — Original OneJev sees images through NoTorch
+
+The live CLI accepts `--vision VISION.gguf` and JSONL image questions with
+explicit A/B choices. The original `c02e305b...` source supplies the encoder;
+text weights and tokenizer retain their existing hashes. A separate vision
+manifest binds all three artifacts without changing frozen text manifests.
+Images and encoder weights use the existing immutable-snapshot hash check.
+NoTorch supplies merged image rows and T/H/W positions; AML prepares the
+qev-labels-v2 frame, scores choices and records a JANUS instant. Output receipts
+include image/model/prompt/input hashes, image geometry, logits and the choice.
+
+Real-weight gate: red/blue images return A/B; reversing the choices returns
+B/A. Literal control spellings stay text. Wrong image bytes, wrong vision
+weights and image input without vision mode are rejected. All 33 added token
+spellings pass both text and image frame checks. `make check` passes.
+Commands: `make check-visual MODEL=... VISION=...` and
+`build/check-prompt-tokens /path/to/tokenizer.gguf`.
+
+The first prompt put the question and choices inside the state and missed the
+blue/reversed case. Independent Transformers reproduced its A/B logits
+11.56255/11.92139. Restoring the checkpoint's image-state/question/options
+ordering gives 13.21149/8.71213 in C (13.21150/8.71212 in the reference).
+The image gate retains the reversed-choice case. New observations carry their
+image receipt; journal writes continue through the existing factual-evidence
+path. Training weights were unchanged.
+
 ## 2026-11-09 — She wakes the second reader herself
 
 A CONCERN now leaves the building on its own. `deploy/notify-on-concern.sh`

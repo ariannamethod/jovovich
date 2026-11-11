@@ -24,8 +24,8 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/git_context.h src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+build/jovovich: src/visual.c src/visual.h src/git_context.h src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/visual.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/voice-pilot: tools/voice_pilot.c src/model_bytes.h src/hash.h src/report_json.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
@@ -136,3 +136,8 @@ check-fact-sleep: build/jovovich build/jovovich-pack build/jovovich-report build
 	$(MAKE) -C $(NOTORCH_ROOT) notorch qwen35_tokenize BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) harness NOTORCH_ROOT="$(abspath $(NOTORCH_ROOT))" NOTORCH_LDFLAGS="$(BLAS_LIBS)"
 	python3 tests/check_fact_sleep.py --model "$(MODEL)" --aml "$(AML_ROOT)/runner/aml-harness" --notorch "$(NOTORCH_ROOT)/notorch"
+
+.PHONY: check-visual
+check-visual: build/jovovich
+	@test -n "$(MODEL)" -a -n "$(VISION)" || { echo 'Set MODEL and VISION to the pinned original OneJev text and vision GGUFs.' >&2; exit 1; }
+	python3 tests/check_visual.py --model "$(MODEL)" --tokenizer "$(dir $(MODEL))tokenizer.gguf" --vision "$(VISION)"

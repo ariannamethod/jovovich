@@ -1,0 +1,9 @@
+{
+  "model_id": "OmniJev/OneJev-0.8B",
+  "revision": "c02e305b430b56c1e82f9675ba8c293a22646891",
+  "weights_sha256": "b587ecb42b7d022f782ea72c8b84e94b8292ae3f5aa67e1364851b4d4e32b7e6",
+  "tokenizer_sha256": "9bad2a5c9b99fe69916a6c4bd09f96e385030585b136ee256067e054ec755b8e",
+  "vision_weights_sha256": "6fe19a97634273c53ca7f8e7dc242ff92a016f11f3b2dc57eb60d78affc1a0be",
+  "source_weights_sha256": "cb4b7456703baa26a0cfacf177067200b50021df5a6ba2a2cd1e6f6c868f2244",
+  "conversion": "NoTorch qwen35_to_gguf --vision; source-layout version 1; original processor_config.json"
+}

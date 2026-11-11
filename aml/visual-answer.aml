@@ -1,0 +1,6 @@
+assert(len(probabilities) == 2, "visual choice has two probabilities")
+assert(abs(probabilities[0] + probabilities[1] - 1) < 0.000001, "visual probability sum")
+visual_letter = "B"
+if probabilities[0] >= probabilities[1]:
+    visual_letter = "A"
+observed_at = calendar_instant(clock_parts[0], clock_parts[1], clock_parts[2])
