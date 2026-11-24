@@ -2,6 +2,40 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-24 — Judge the changed screen against its own rule
+
+`--compare-visual DIR` reads two exact image observations from one repository
+and key, verifies their regular Git blobs and strict commit ancestry, and
+quotes the selected rule from the before commit. AML supplies the requirement
+and both observed answer texts to OneJev. The answer retains all source
+receipts, the actual AML state, the rule quotation and A/B/CLEAN/CONCERN scores.
+`jovovich-replay compare-visual` exposes the same evidence without inference.
+Both paths leave the journal unchanged. Incompatible observation questions or
+answer sets are refused; reordered choices keep their text identity.
+
+The fixed live test renders a static HTML/CSS settings panel with MuPDF and
+commits each HTML/PNG pair, then rerenders the Git HTML to verify the PNG.
+Native vision reads eight images: Delete -> Save -> Delete -> Delete in each
+of two repositories. The last edit changes only the footer. One repository
+requires Save; the other requires Delete. All eight labels are read correctly.
+The twelve review presentations (six cases, both option orders) select the
+predeclared CLEAN/CONCERN verdicts. The ordinary 0.5 boundary is used.
+The fresh-process repeat is byte-identical. The six recall questions retained
+from PR #76 also reproduce their previous complete output bytes. Full
+`make check` passes, including the new Git SHA-1 and SHA-256 gates. The final
+rebuilt native executable has the same SHA-256 as the live-tested executable.
+
+Offline gates reject inexact revisions, wrong repositories and paths, reverse
+Git ancestry, and incompatible probes. A changed working-tree rule has no
+effect. Replacing the base rule with the head rule, or bypassing ancestry,
+each makes its respective negative test fail. The new comparison reader passes
+AddressSanitizer/UBSan with leak detection disabled and the existing AML
+library uninstrumented. All 33 added token spellings remain literal in the
+comparison state and frame. Usage is in [docs/fact-memory.md](docs/fact-memory.md).
+Live runs use the original pinned OneJev text/tokenizer/vision artifacts, one
+OpenBLAS thread and the temporary file-backed large-allocation setup from the
+preceding memory trial. MuPDF 1.26.6 renders the static test panel.
+
 ## 2026-11-24 — Remember what she saw, including the correction
 
 The native image path now accepts an explicit `remember` source: repository,

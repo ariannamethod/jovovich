@@ -28,8 +28,16 @@ static int check_frame(bpe_tokenizer *tok,const char *state,int literal) {
 }
 
 static int check_visual_frame(bpe_tokenizer *tok,const char *question,int recall) {
+    if(recall==2) {
+        float order[1]={0};
+        if(am_set_var_text("compare_rule",question) || am_set_var_text("compare_question",question) ||
+           am_set_var_text("compare_before",question) || am_set_var_text("compare_after",question) ||
+           am_set_var_array("compare_order",order,1) || am_exec_file("aml/visual-compare.aml"))return 1;
+    }
+    const char *state=recall==2?am_get_var_text("visual_state"):question;
+    if(!state)return 1;
     if(am_set_var_text("visual_question",question) || am_set_var_text("visual_a",question) ||
-       am_set_var_text("visual_b",question) || am_set_var_text("visual_state",question) ||
+       am_set_var_text("visual_b",question) || (recall!=2 && am_set_var_text("visual_state",state)) ||
        am_exec_file(recall?"aml/visual-recall.aml":"aml/visual.aml"))return 1;
     const char *prompt=am_get_var_text("prompt"),*text=am_get_var_text(recall?"visual_recall_text":"visual_text");
     const char *marker=recall?"<state>\n":"\n</state>";
@@ -70,11 +78,11 @@ int main(int argc,char **argv) {
         if (size<=1 || (size_t)size>sizeof(token) || !bpe_decode_token(tok,id,token,size)) return 1;
         snprintf(state,sizeof(state),"/* %s%s */\nx — %s\n",token,token,token);
         if (check_frame(tok,state,1)) {fprintf(stderr,"Literal token %d failed\n",id);return 1;}
-        if(check_visual_frame(tok,state,0) || check_visual_frame(tok,state,1)){fprintf(stderr,"Literal visual/recall token %d failed\n",id);return 1;}
+        if(check_visual_frame(tok,state,0) || check_visual_frame(tok,state,1) || check_visual_frame(tok,state,2)){fprintf(stderr,"Literal visual/memory token %d failed\n",id);return 1;}
         added++;
     }
     free(types);bpe_free(tok);am_persistent_clear();am_persistent_mode(0);
     if (added!=33) return 1;
-    puts("All 33 added token spellings remained literal; seven text, ten visual and seven recall structural IDs matched");
+    puts("All 33 added token spellings remained literal; text, visual, recall and comparison structural IDs matched");
     return 0;
 }

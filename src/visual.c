@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "visual.h"
 #include "visual_memory.h"
+#include "visual_compare.h"
 #include "harness/image.h"
 #include "model_bytes.h"
 #include "prompt_text.h"
@@ -47,6 +48,10 @@ static char *field(const char *row,const char *key,size_t limit) {
     if(v && (!*v || strlen(v)>limit)){free(v);v=NULL;}
     return v;
 }
+static char *aml_text(const char *name) {
+    const char *s=am_get_var_text(name);
+    return s?strdup(s):NULL;
+}
 int jov_visual_choice(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
     nt_qwen35_vision *vision,float *logits,const char *weights,const char *tokenizer,const char *vision_hash,const char *memory) {
     char *id=field(line,"id",256),*question=field(line,"question",4096),*a=field(line,"choice_a",2048),*b=field(line,"choice_b",2048);
@@ -55,7 +60,7 @@ int jov_visual_choice(const char *line,size_t bytes,void *model,bpe_tokenizer *t
     const float **rows=NULL;kv_cache *cache=NULL;int rc=1,h=0,w=0;char ih[65],ph[65],image_hash[65];
     char *answer=NULL,*receipt=NULL;size_t answer_length=0;FILE *out=NULL;
     const nt_qwen35_vision_info *vi=nt_qwen35_vision_get_info(vision);
-    if((nj_get(line,"remember") && !memory) || nj_get(line,"recall") ||
+    if((nj_get(line,"remember") && !memory) || nj_get(line,"recall") || nj_get(line,"compare") ||
        !id || !question || !a || !b || !path || !want || strlen(want)!=64 || !strcmp(a,b) ||
        !vi || vi->output_width!=1024 || vi->rope_dim!=64 ||
        read_image(path,want,image_hash,&rgb,&h,&w) ||
@@ -113,23 +118,31 @@ done:
     return rc;
 }
 
-int jov_visual_recall(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
-    float *logits,const char *weights,const char *tokenizer,const char *memory) {
+int jov_visual_from_memory(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
+    float *logits,const char *weights,const char *tokenizer,const char *memory,int comparison) {
     const char *request=nj_get(line,"recall");long long through=-1;
     char *repository=field(request,"repository",128),*key=field(request,"key",128);
     char *id=field(line,"id",256),*question=field(line,"question",4096),*a=field(line,"choice_a",2048),*b=field(line,"choice_b",2048);
     char *receipt=NULL,*old_question=NULL,*value=NULL,*state=NULL;int *ids=NULL;kv_cache *cache=NULL;int rc=1;
-    if(!repository || !key || !id || !question || !a || !b || !strcmp(a,b) || nj_get(line,"image") || nj_get(line,"remember") ||
-       (nj_get(request,"through") && nj_int(nj_get(request,"through"),&through)) || through < -1 || through>256 ||
-       jov_visual_remembered(memory,repository,key,(int)through,&receipt))goto done;
-    const char *obs=nj_get(nj_get(receipt,"origin"),"observation");
-    old_question=field(obs,"question",4096);
-    value=field(obs,nj_is(nj_get(obs,"letter"),"A")?"choice_a":"choice_b",2048);
-    if(!old_question || !value)goto done;
-    size_t length=0;FILE *out=open_memstream(&state,&length);if(!out)goto done;
-    fputs("Recorded image observation:\n",out);
-    json_field(out,"question",old_question);fputc('\n',out);json_field(out,"observed_answer",value);
-    if(fclose(out) || am_set_var_text("visual_state",state) || am_set_var_text("visual_question",question) ||
+    if(comparison) {
+        if(jov_visual_comparison(memory,line,&receipt))goto done;
+        question=aml_text("visual_question");a=aml_text("visual_a");
+        b=aml_text("visual_b");state=aml_text("visual_state");
+        if(!id || !question || !a || !b || !state)goto done;
+    } else {
+        if(!repository || !key || !id || !question || !a || !b || !strcmp(a,b) || nj_get(line,"image") || nj_get(line,"remember") || nj_get(line,"compare") ||
+           (nj_get(request,"through") && nj_int(nj_get(request,"through"),&through)) || through < -1 || through>256 ||
+           jov_visual_remembered(memory,repository,key,(int)through,&receipt))goto done;
+        const char *obs=nj_get(nj_get(receipt,"origin"),"observation");
+        old_question=field(obs,"question",4096);
+        value=field(obs,nj_is(nj_get(obs,"letter"),"A")?"choice_a":"choice_b",2048);
+        if(!old_question || !value)goto done;
+        size_t length=0;FILE *out=open_memstream(&state,&length);if(!out)goto done;
+        fputs("Recorded image observation:\n",out);
+        json_field(out,"question",old_question);fputc('\n',out);json_field(out,"observed_answer",value);
+        if(fclose(out))goto done;
+    }
+    if(am_set_var_text("visual_state",state) || am_set_var_text("visual_question",question) ||
        am_set_var_text("visual_a",a) || am_set_var_text("visual_b",b) || visual_aml("aml/visual-recall.aml"))goto done;
     const char *prompt=am_get_var_text("prompt"),*body=am_get_var_text("visual_recall_text");char ih[65],ph[65];
     if(!prompt || !body || hash_bytes(line,bytes,ih) || hash_bytes(prompt,strlen(prompt),ph))goto done;
@@ -146,10 +159,18 @@ int jov_visual_recall(const char *line,size_t bytes,void *model,bpe_tokenizer *t
     float pair[2]={logits[32],logits[33]};
     if(!isfinite(pair[0]) || !isfinite(pair[1]) || am_set_var_array("choice_logits",pair,2) || visual_aml("aml/score-choices.aml"))goto done;
     int count=0;const float *p=am_get_var_array("probabilities",&count);if(!p || count!=2)goto done;
-    fputs("{\"schema\":\"jovovich.visual-recall/1\",",stdout);json_field(stdout,"id",id);
+    fputs("{\"schema\":",stdout);json_string(stdout,comparison?"jovovich.visual-review/1":"jovovich.visual-recall/1");
+    fputc(',',stdout);json_field(stdout,"id",id);
     fputc(',',stdout);json_field(stdout,"question",question);fputc(',',stdout);json_field(stdout,"choice_a",a);fputc(',',stdout);json_field(stdout,"choice_b",b);
     printf(",\"input_sha256\":\"%s\",\"prompt_sha256\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",ih,ph,weights,tokenizer);
-    printf("\"logit_a\":%.9g,\"logit_b\":%.9g,\"p_a\":%.9g,\"p_b\":%.9g,\"letter\":\"%s\",\"memory\":%s}\n",logits[32],logits[33],p[0],p[1],p[0]>=p[1]?"A":"B",receipt);
+    const char *letter=p[0]>=p[1]?"A":"B";
+    if(comparison) {
+        int reverse=nj_is(nj_get(line,"concern_letter"),"B");
+        float concern=p[reverse],clean=p[1-reverse];int found=concern>=clean;
+        letter=(found?!reverse:reverse)?"A":"B";
+        printf("\"verdict\":\"%s\",\"concern\":%.9g,\"clean\":%.9g,",found?"CONCERN":"CLEAN",concern,clean);
+    }
+    printf("\"logit_a\":%.9g,\"logit_b\":%.9g,\"p_a\":%.9g,\"p_b\":%.9g,\"letter\":\"%s\",\"%s\":%s}\n",logits[32],logits[33],p[0],p[1],letter,comparison?"comparison":"memory",receipt);
     rc=ferror(stdout) || fflush(stdout);
 done:
     if(cache)nt_arch_qwen35.kv_free(model,cache);

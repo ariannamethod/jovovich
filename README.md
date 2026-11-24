@@ -136,6 +136,11 @@ receipt; `jovovich-replay visual` retrieves current or historical observations,
 and `--recall-visual DIR` lets OneJev answer new A/B questions from the selected
 receipt after restart. [Visual memory](docs/fact-memory.md#remember-an-image-observation)
 
+`--compare-visual DIR` reads two exact observations and the repository rule
+from their Git base, then asks OneJev whether the after image satisfies it.
+The answer carries both image receipts, the quoted rule and CLEAN/CONCERN
+scores. [Compare a visual change](docs/fact-memory.md#compare-a-visual-change)
+
 `make check-visual MODEL=/path/to/model.gguf VISION=/path/to/vision.gguf` runs
 real image substitution, both option orders, literal markers and altered-byte
 refusals. The existing review invocation and text manifests retain their bytes.
