@@ -22,7 +22,7 @@ Refactoring them is outside the scope of this PR.
 ## Assemble the body
 
 Make, a C compiler and Git with `--attr-source` support. The checks also use
-`jq` and the OpenSSL command-line tools. The two pinned dependencies are NoTorch and
+Python 3, `jq` and the OpenSSL command-line tools. The two pinned dependencies are NoTorch and
 Arianna Method Language (AML). The dependency tree has already been questioned.
 
 ```sh
@@ -127,8 +127,15 @@ spellings remain literal text.
 
 The `jovovich.visual-choice/1` result includes the selected letter, logits,
 probabilities, input/prompt/image/model hashes, original/resized dimensions and
-visual-token count. This is an image observation with its source receipt; the
-fact journal receives entries through its existing explicit evidence path.
+visual-token count.
+
+For persistent visual observations, add `--visual-memory DIR` and a `remember`
+object naming the logical repository, PR, exact Git commit and image path.
+The image must match that committed regular file. Corrections name the previous
+receipt; `jovovich-replay visual` retrieves current or historical observations,
+and `--recall-visual DIR` lets OneJev answer new A/B questions from the selected
+receipt after restart. [Visual memory](docs/fact-memory.md#remember-an-image-observation)
+
 `make check-visual MODEL=/path/to/model.gguf VISION=/path/to/vision.gguf` runs
 real image substitution, both option orders, literal markers and altered-byte
 refusals. The existing review invocation and text manifests retain their bytes.

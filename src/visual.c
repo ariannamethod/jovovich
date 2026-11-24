@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "visual.h"
+#include "visual_memory.h"
 #include "harness/image.h"
 #include "model_bytes.h"
 #include "prompt_text.h"
@@ -47,13 +48,15 @@ static char *field(const char *row,const char *key,size_t limit) {
     return v;
 }
 int jov_visual_choice(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
-    nt_qwen35_vision *vision,float *logits,const char *weights,const char *tokenizer,const char *vision_hash) {
+    nt_qwen35_vision *vision,float *logits,const char *weights,const char *tokenizer,const char *vision_hash,const char *memory) {
     char *id=field(line,"id",256),*question=field(line,"question",4096),*a=field(line,"choice_a",2048),*b=field(line,"choice_b",2048);
     const char *image=nj_get(line,"image");char *path=field(image,"path",4096),*want=field(image,"sha256",64);
     uint8_t *rgb=NULL;nt_qwen35_image im={0};float *features=NULL;int *ids=NULL,(*positions)[3]=NULL;
     const float **rows=NULL;kv_cache *cache=NULL;int rc=1,h=0,w=0;char ih[65],ph[65],image_hash[65];
+    char *answer=NULL,*receipt=NULL;size_t answer_length=0;FILE *out=NULL;
     const nt_qwen35_vision_info *vi=nt_qwen35_vision_get_info(vision);
-    if(!id || !question || !a || !b || !path || !want || strlen(want)!=64 || !strcmp(a,b) ||
+    if((nj_get(line,"remember") && !memory) || nj_get(line,"recall") ||
+       !id || !question || !a || !b || !path || !want || strlen(want)!=64 || !strcmp(a,b) ||
        !vi || vi->output_width!=1024 || vi->rope_dim!=64 ||
        read_image(path,want,image_hash,&rgb,&h,&w) ||
        nt_qwen35_image_prepare(vision,rgb,h,w,262144,&im) || nt_qwen35_vision_encode(vision,&im,&features))goto done;
@@ -91,14 +94,64 @@ int jov_visual_choice(const char *line,size_t bytes,void *model,bpe_tokenizer *t
     if(sec<0){day--;sec+=86400;}float clock[3]={(float)day,(float)sec,(float)ms};
     if(am_set_var_array("clock_parts",clock,3) || visual_aml("aml/visual-answer.aml") || !am_get_var_record("observed_at"))goto done;
     const char *letter=am_get_var_text("visual_letter");if(!letter || strcmp(letter,pair[0]>=pair[1]?"A":"B"))goto done;
-    fputs("{\"schema\":\"jovovich.visual-choice/1\",",stdout);json_field(stdout,"id",id);
-    fputc(',',stdout);json_field(stdout,"question",question);fputc(',',stdout);json_field(stdout,"choice_a",a);fputc(',',stdout);json_field(stdout,"choice_b",b);
-    printf(",\"input_sha256\":\"%s\",\"prompt_sha256\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",\"vision_weights_sha256\":\"%s\",",ih,ph,weights,tokenizer,vision_hash);
-    printf("\"image\":{\"sha256\":\"%s\",\"width\":%d,\"height\":%d,\"resized_width\":%d,\"resized_height\":%d,\"tokens\":%d,\"max_pixels\":262144},",image_hash,w,h,im.width,im.height,im.tokens);
-    printf("\"logit_a\":%.9g,\"logit_b\":%.9g,\"p_a\":%.9g,\"p_b\":%.9g,\"letter\":\"%s\",\"observed_at\":{\"schema\":\"janus.instant/1\",\"time_scale\":\"posix\",\"unix_day\":%d,\"second\":%d,\"millisecond\":%d}}\n",logits[32],logits[33],pair[0],pair[1],letter,day,sec,ms);
+    out=open_memstream(&answer,&answer_length);if(!out)goto done;
+    fputs("{\"schema\":\"jovovich.visual-choice/1\",",out);json_field(out,"id",id);
+    fputc(',',out);json_field(out,"question",question);fputc(',',out);json_field(out,"choice_a",a);fputc(',',out);json_field(out,"choice_b",b);
+    fprintf(out,",\"input_sha256\":\"%s\",\"prompt_sha256\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",\"vision_weights_sha256\":\"%s\",",ih,ph,weights,tokenizer,vision_hash);
+    fprintf(out,"\"image\":{\"sha256\":\"%s\",\"width\":%d,\"height\":%d,\"resized_width\":%d,\"resized_height\":%d,\"tokens\":%d,\"max_pixels\":262144},",image_hash,w,h,im.width,im.height,im.tokens);
+    fprintf(out,"\"logit_a\":%.9g,\"logit_b\":%.9g,\"p_a\":%.9g,\"p_b\":%.9g,\"letter\":\"%s\",\"observed_at\":{\"schema\":\"janus.instant/1\",\"time_scale\":\"posix\",\"unix_day\":%d,\"second\":%d,\"millisecond\":%d}}",logits[32],logits[33],pair[0],pair[1],letter,day,sec,ms);
+    int closed=fclose(out);out=NULL;if(closed)goto done;
+    if(nj_get(line,"remember") && jov_visual_remember(memory,line,answer,&receipt))goto done;
+    if(receipt) {answer[answer_length-1]=0;printf("%s,\"memory\":%s}\n",answer,receipt);}
+    else printf("%s\n",answer);
     rc=ferror(stdout) || fflush(stdout);
 done:
+    if(out)fclose(out);
+    free(answer);free(receipt);
     if(cache)nt_arch_qwen35.kv_free(model,cache);
     free(id);free(question);free(a);free(b);free(path);free(want);free(rgb);free(features);free(ids);free(positions);free(rows);nt_qwen35_image_free(&im);
     return rc;
+}
+
+int jov_visual_recall(const char *line,size_t bytes,void *model,bpe_tokenizer *tok,
+    float *logits,const char *weights,const char *tokenizer,const char *memory) {
+    const char *request=nj_get(line,"recall");long long through=-1;
+    char *repository=field(request,"repository",128),*key=field(request,"key",128);
+    char *id=field(line,"id",256),*question=field(line,"question",4096),*a=field(line,"choice_a",2048),*b=field(line,"choice_b",2048);
+    char *receipt=NULL,*old_question=NULL,*value=NULL,*state=NULL;int *ids=NULL;kv_cache *cache=NULL;int rc=1;
+    if(!repository || !key || !id || !question || !a || !b || !strcmp(a,b) || nj_get(line,"image") || nj_get(line,"remember") ||
+       (nj_get(request,"through") && nj_int(nj_get(request,"through"),&through)) || through < -1 || through>256 ||
+       jov_visual_remembered(memory,repository,key,(int)through,&receipt))goto done;
+    const char *obs=nj_get(nj_get(receipt,"origin"),"observation");
+    old_question=field(obs,"question",4096);
+    value=field(obs,nj_is(nj_get(obs,"letter"),"A")?"choice_a":"choice_b",2048);
+    if(!old_question || !value)goto done;
+    size_t length=0;FILE *out=open_memstream(&state,&length);if(!out)goto done;
+    fputs("Recorded image observation:\n",out);
+    json_field(out,"question",old_question);fputc('\n',out);json_field(out,"observed_answer",value);
+    if(fclose(out) || am_set_var_text("visual_state",state) || am_set_var_text("visual_question",question) ||
+       am_set_var_text("visual_a",a) || am_set_var_text("visual_b",b) || visual_aml("aml/visual-recall.aml"))goto done;
+    const char *prompt=am_get_var_text("prompt"),*body=am_get_var_text("visual_recall_text");char ih[65],ph[65];
+    if(!prompt || !body || hash_bytes(line,bytes,ih) || hash_bytes(prompt,strlen(prompt),ph))goto done;
+    const char *begin=strstr(prompt,"<state>\n");if(!begin)goto done;
+    begin+=strlen("<state>\n");if(strncmp(begin,body,strlen(body)))goto done;
+    size_t capacity=strlen(prompt)*2+16;
+    ids=malloc(capacity*sizeof(*ids));if(!ids)goto done;
+    int n=jov_literal_span_ids(tok,prompt,begin,strlen(body),ids,(int)capacity);
+    if(n<1 || n>8192 || !(cache=nt_arch_qwen35.kv_new(model,n)))goto done;
+    for(int pos=0;pos<n;pos+=32) {
+        int take=n-pos<32?n-pos:32;
+        if(nt_arch_qwen35.forward(model,cache,ids+pos,take,pos,pos+take==n?logits:NULL))goto done;
+    }
+    float pair[2]={logits[32],logits[33]};
+    if(!isfinite(pair[0]) || !isfinite(pair[1]) || am_set_var_array("choice_logits",pair,2) || visual_aml("aml/score-choices.aml"))goto done;
+    int count=0;const float *p=am_get_var_array("probabilities",&count);if(!p || count!=2)goto done;
+    fputs("{\"schema\":\"jovovich.visual-recall/1\",",stdout);json_field(stdout,"id",id);
+    fputc(',',stdout);json_field(stdout,"question",question);fputc(',',stdout);json_field(stdout,"choice_a",a);fputc(',',stdout);json_field(stdout,"choice_b",b);
+    printf(",\"input_sha256\":\"%s\",\"prompt_sha256\":\"%s\",\"weights_sha256\":\"%s\",\"tokenizer_sha256\":\"%s\",",ih,ph,weights,tokenizer);
+    printf("\"logit_a\":%.9g,\"logit_b\":%.9g,\"p_a\":%.9g,\"p_b\":%.9g,\"letter\":\"%s\",\"memory\":%s}\n",logits[32],logits[33],p[0],p[1],p[0]>=p[1]?"A":"B",receipt);
+    rc=ferror(stdout) || fflush(stdout);
+done:
+    if(cache)nt_arch_qwen35.kv_free(model,cache);
+    free(repository);free(key);free(id);free(question);free(a);free(b);free(receipt);free(old_question);free(value);free(state);free(ids);return rc;
 }

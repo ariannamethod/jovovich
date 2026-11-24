@@ -24,8 +24,8 @@ native-deps:
 	$(MAKE) -C $(NOTORCH_ROOT) lib lib_harness BLAS_FLAGS="$(BLAS_FLAGS)" BLAS_LIBS="$(BLAS_LIBS)"
 	$(MAKE) -C $(AML_ROOT) libaml.a
 
-build/jovovich: src/visual.c src/visual.h src/git_context.h src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/visual.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
+build/jovovich: src/visual_memory.c src/visual_memory.h src/visual.c src/visual.h src/git_context.h src/prompt_text.h src/model_bytes.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/run_selection.c src/run_selection.h src/boundary.c src/boundary.h src/live.c src/readout.c src/readout.h src/report_json.h src/review.c src/review.h src/json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/live.c src/visual.c src/visual_memory.c src/run_selection.c src/trace_gate.c src/boundary.c src/review.c src/readout.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
 
 build/voice-pilot: tools/voice_pilot.c src/model_bytes.h src/hash.h src/report_json.h src/json.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core $< $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/libnotorch_harness.a $(NOTORCH_ROOT)/libnotorch.a -lm -pthread $(BLAS_LIBS) -o $@
@@ -48,8 +48,8 @@ build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h
 build/jovovich-pack: src/git_snapshot.h src/git_command.h src/git_context.h src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-replay: src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/snapshot_routes.h src/pr_history.c src/pr_history.h src/hunk_trial.h src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
-	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/pr_history.c src/batch.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+build/jovovich-replay: src/visual_memory.c src/visual_memory.h src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/snapshot_routes.h src/pr_history.c src/pr_history.h src/hunk_trial.h src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/pr_history.c src/visual_memory.c src/batch.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/jovovich-report: src/pr_history.h src/pr_history.c src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/git_command.h src/report_findings.h src/process.h src/git_context.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build build/jovovich-replay
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/pr_history.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
@@ -96,7 +96,7 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/check-receipts build/check-prompt-tokens build/check-model-cancel build/check-model-bytes build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/visual-memory-fixture build/check-receipts build/check-prompt-tokens build/check-model-cancel build/check-model-bytes build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-model-cancel
 	./build/check-model-bytes
 	./build/check-voice
@@ -109,6 +109,7 @@ check: build/check-receipts build/check-prompt-tokens build/check-model-cancel b
 	sh tests/check_batch.sh
 	sh tests/check_rule_memory.sh
 	python3 tests/check_fact_sleep.py
+	python3 tests/check_visual_memory.py
 	sh tests/check_counterexamples.sh
 	sh tests/check_findings.sh
 	sh tests/check_snapshot_history.sh
@@ -141,3 +142,11 @@ check-fact-sleep: build/jovovich build/jovovich-pack build/jovovich-report build
 check-visual: build/jovovich
 	@test -n "$(MODEL)" -a -n "$(VISION)" || { echo 'Set MODEL and VISION to the pinned original OneJev text and vision GGUFs.' >&2; exit 1; }
 	python3 tests/check_visual.py --model "$(MODEL)" --tokenizer "$(dir $(MODEL))tokenizer.gguf" --vision "$(VISION)"
+
+build/visual-memory-fixture: tests/visual_memory_fixture.c src/visual_memory.c src/visual_memory.h src/facts.c src/facts.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/visual_memory_fixture.c src/visual_memory.c src/facts.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+.PHONY: check-visual-memory
+check-visual-memory: build/jovovich build/jovovich-replay build/visual-memory-fixture
+	@test -n "$(MODEL)" -a -n "$(VISION)" || { echo 'Set MODEL and VISION to the pinned original OneJev text and vision GGUFs.' >&2; exit 1; }
+	python3 tests/check_visual_memory.py --model "$(MODEL)" --tokenizer "$(dir $(MODEL))tokenizer.gguf" --vision "$(VISION)"

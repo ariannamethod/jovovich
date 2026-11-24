@@ -155,6 +155,80 @@ The current driver projects the tested delivery contract after checking the raw
 values and AML context. The code diff, quotations, checkpoint, question and decision
 boundary are identical between these trials.
 
+## Remember an image observation
+
+The vision CLI can keep its actual observation in an AML checkpoint. Add
+`--visual-memory DIR` to the ordinary `--vision VISION.gguf` invocation and add
+this object to an image-question row:
+
+```json
+"remember": {
+  "repository": "studio/render",
+  "key": "status-indicator",
+  "pull_request": 7,
+  "checkout": "/path/to/repo",
+  "commit": "<full Git commit SHA>",
+  "path": "screenshots/status.png",
+  "supersedes": 0
+}
+```
+
+The captured image file's SHA-256 must match the regular Git blob at that exact
+commit and root-relative path. The image can be read from a separate captured
+file; the checkout's current files do not choose the source. Images for this
+path are limited to 32 MiB. Repository names and keys follow the rule-memory
+name format. The repository name is the caller's logical scope across clones.
+The PR number is source metadata. Streams are separated by repository and key.
+
+Each `jovovich.visual-fact/1` receipt keeps the Git source, PR number and complete
+`jovovich.visual-choice/1` observation: question, options, model choice, logits,
+image/model/prompt/input digests, dimensions and JANUS observation instant.
+The public writer obtains that observation directly from native inference.
+It validates the complete receipt before publishing the checkpoint or answer.
+
+```sh
+mkdir -p build/memory
+build/jovovich model.gguf tokenizer.gguf --vision vision.gguf \
+  --visual-memory build/memory < images.jsonl
+build/jovovich-replay visual build/memory studio/render status-indicator
+build/jovovich-replay visual build/memory studio/render status-indicator --as-of 1
+```
+
+To correct an observation, submit the new committed image with `supersedes`
+set to the current receipt's `sequence`. The earlier receipt remains available
+through its knowledge cutoff. The current observation describes its recorded
+commit. The global ordinal orders knowledge across the visual journal's
+repository/key streams, including observations made in the same millisecond.
+There are 256 receipts per directory. Identical retries retain the first receipt
+and clock; stale competing corrections fail. The shared journal writer lock and
+atomic AML checkpoint publication are the same mechanisms used by rule memory.
+
+After restarting, OneJev can answer a new A/B question from one explicitly
+selected receipt, including when the original image is no longer available:
+
+```json
+{"id":"recall-status","recall":{"repository":"studio/render","key":"status-indicator","through":1},"question":"What color was recorded in the image observation?","choice_a":"red","choice_b":"blue"}
+```
+
+```sh
+build/jovovich model.gguf tokenizer.gguf --recall-visual build/memory < questions.jsonl
+```
+
+Omit `through` for the latest observation. The `jovovich.visual-recall/1` answer
+includes the exact retrieved receipt and the new question's logits and hashes.
+AML prepares the question from the recorded question and selected answer text;
+changing the new A/B order does not change which text was recalled. Every
+dynamic span preserves literal control-token spellings. Reading leaves the
+journal untouched.
+
+`make check` covers Git image substitution, source/answer binding, explicit
+corrections, historical reads, repository isolation, 32 intervening fixture
+observations, concurrent retries and damaged checkpoints.
+`make check-visual-memory MODEL=... VISION=...` runs actual original OneJev
+observations and six recall questions in both option orders, then repeats the
+questions in a fresh process and compares complete answers. These checks use
+controlled red/blue images in two Git repositories.
+
 ## Rehearse a verified fact
 
 A saved DOE generation can carry a receipt for the PR observation that was

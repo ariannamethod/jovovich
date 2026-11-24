@@ -2,6 +2,46 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-24 — Remember what she saw, including the correction
+
+The native image path now accepts an explicit `remember` source: repository,
+key, PR, full Git commit, regular image blob and predecessor sequence. AML
+retains the complete observation in `visual.checkpoint`. Correcting one stream
+preserves its earlier receipt; another repository with the same PR number
+keeps its own observation. Exact retries preserve the first clock and journal
+bytes. The existing writer lock and atomic checkpoint publication serialize
+competing writers. Replay reads any available knowledge cutoff.
+
+`--recall-visual` supplies the recorded question and chosen answer text to the
+original OneJev in a fresh question. Its output includes the exact source
+receipt alongside the new logits and choice. The fixed live test records blue
+in two repositories, corrects only one to red, removes the captured images and
+asks about both current streams and the earlier version in both option orders.
+The expected six letters are A/B/B/A/B/A. The test retains raw inputs, stdout
+and stderr and compares the repeated run's complete stdout bytes after restart.
+Commands and record formats are in [docs/fact-memory.md](docs/fact-memory.md).
+
+All six live answers match their expected choice, exact recalled receipt and
+input hash; the restarted stdout is byte-identical. Two image and two text
+review cases also match merged `9c0a139` in every field except their live clocks.
+`make check` passes, as does the new writer fixture under AddressSanitizer/UBSan
+(leak detection disabled, existing AML library unsanitized). The native GitHub
+workflow now runs for application and test changes as well as dependency bumps.
+
+The initial live driver compared parsed JSON values while labelling that check
+byte-identical. The driver now captures and compares the original stdout, and
+also requires all six answers. Offline checks cover substituted Git bytes,
+stale corrections, source/answer binding, 32 intervening observations, twelve
+concurrent retries and damaged checkpoints. Disabling the Git image digest
+comparison makes the substituted-image test fail. All 33 added token spellings
+remain literal in the recalled state, question and options.
+
+Two ordinary F32 runs were killed with SIGKILL during model loading in the
+shared test environment. Successful live runs use a temporary allocation
+shim that backs large arrays with disk files; model arithmetic and artifacts
+are unchanged. Original OneJev `c02e305b...` text, tokenizer and vision hashes
+match the existing manifests. NoTorch and AML retain their pinned revisions.
+
 ## 2026-11-11 — Original OneJev sees images through NoTorch
 
 The live CLI accepts `--vision VISION.gguf` and JSONL image questions with

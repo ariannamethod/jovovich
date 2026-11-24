@@ -2,6 +2,13 @@ name: Native dependency checks
 on:
   pull_request:
     paths:
+      - src/**
+      - aml/**
+      - tests/**
+      - tools/**
+      - models/**
+      - examples/**
+      - Makefile
       - deps/aml
       - deps/notorch
       - .gitmodules
