@@ -27,16 +27,20 @@ static int check_frame(bpe_tokenizer *tok,const char *state,int literal) {
     return *cursor || controls!=7 || (literal && n<=before);
 }
 
-static int check_visual_frame(bpe_tokenizer *tok,const char *question) {
+static int check_visual_frame(bpe_tokenizer *tok,const char *question,int recall) {
     if(am_set_var_text("visual_question",question) || am_set_var_text("visual_a",question) ||
-       am_set_var_text("visual_b","other") || am_exec_file("aml/visual.aml"))return 1;
-    const char *prompt=am_get_var_text("prompt"),*text=am_get_var_text("visual_text");
-    const char *begin=prompt?strstr(prompt,"\n</state>"):NULL;
+       am_set_var_text("visual_b",question) || am_set_var_text("visual_state",question) ||
+       am_exec_file(recall?"aml/visual-recall.aml":"aml/visual.aml"))return 1;
+    const char *prompt=am_get_var_text("prompt"),*text=am_get_var_text(recall?"visual_recall_text":"visual_text");
+    const char *marker=recall?"<state>\n":"\n</state>";
+    const char *begin=prompt?strstr(prompt,marker):NULL;
     if(!begin || !text)return 1;
-    begin+=strlen("\n</state>");
+    begin+=strlen(marker);
     if(strncmp(begin,text,strlen(text)))return 1;
     int ids[2048],controls=0,n=jov_literal_span_ids(tok,prompt,begin,strlen(text),ids,2048);
     const int frame[]={248045,248046,248045,248053,248056,248054,248046,248045,248068,248069};
+    const int recalled[]={248045,248046,248045,248046,248045,248068,248069};
+    const int *want=recall?recalled:frame;int total=recall?7:10;
     const char *cursor=prompt;
     for(int i=0;i<n;i++) {
         char bytes[512];int size=bpe_decode_token_capacity(tok,ids[i]);
@@ -45,10 +49,10 @@ static int check_visual_frame(bpe_tokenizer *tok,const char *question) {
         if(len<1 || strncmp(cursor,bytes,(size_t)len))return 1;
         cursor+=len;
         if(ids[i]>=248044 && ids[i]<=248076) {
-            if(controls==10 || ids[i]!=frame[controls++])return 1;
+            if(controls==total || ids[i]!=want[controls++])return 1;
         }
     }
-    return *cursor || controls!=10;
+    return *cursor || controls!=total;
 }
 
 int main(int argc,char **argv) {
@@ -66,11 +70,11 @@ int main(int argc,char **argv) {
         if (size<=1 || (size_t)size>sizeof(token) || !bpe_decode_token(tok,id,token,size)) return 1;
         snprintf(state,sizeof(state),"/* %s%s */\nx — %s\n",token,token,token);
         if (check_frame(tok,state,1)) {fprintf(stderr,"Literal token %d failed\n",id);return 1;}
-        if(check_visual_frame(tok,state)){fprintf(stderr,"Literal visual token %d failed\n",id);return 1;}
+        if(check_visual_frame(tok,state,0) || check_visual_frame(tok,state,1)){fprintf(stderr,"Literal visual/recall token %d failed\n",id);return 1;}
         added++;
     }
     free(types);bpe_free(tok);am_persistent_clear();am_persistent_mode(0);
     if (added!=33) return 1;
-    puts("All 33 added token spellings remained literal inside the review; seven text and ten visual structural IDs matched");
+    puts("All 33 added token spellings remained literal; seven text, ten visual and seven recall structural IDs matched");
     return 0;
 }

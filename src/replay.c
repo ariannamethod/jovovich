@@ -4,6 +4,7 @@
 #include "batch.h"
 #include "facts.h"
 #include "pr_history.h"
+#include "visual_memory.h"
 #include "hash.h"
 #include "json.h"
 #include "hunk_trial.h"
@@ -755,6 +756,7 @@ static int parse_mode(const char *s, int *mode) {
 }
 
 int main(int argc, char **argv) {
+    if(argc>=2 && !strcmp(argv[1],"visual"))return jov_visual_history(argc,argv);
     if ((argc==7 || (argc==8 && !strcmp(argv[7],"--record"))) && !strcmp(argv[1],"spore"))
         return jov_pr_spore(argv[2],argv[3],argv[4],argv[5],argv[6],argc==8);
     if (argc==4 && !strcmp(argv[1],"show")) return show(argv[2],argv[3]);

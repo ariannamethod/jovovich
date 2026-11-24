@@ -1,0 +1,56 @@
+# Repository/key streams share a monotonically increasing knowledge ordinal.
+# Origins retain model observations; superseding one preserves its exact bytes.
+writing = visual_memory_args[0]
+through = visual_memory_args[1]
+parent = visual_memory_args[2]
+journal = record_new()
+if file_exists(memory_path):
+    journal = checkpoint_load(memory_path)
+else:
+    assert(writing == 1, "visual memory does not exist")
+    record_set(journal, "schema", "jovovich.visual-memory/1")
+    record_set(journal, "streams", list_new())
+    record_set(journal, "origins", list_new())
+    record_set(journal, "identities", list_new())
+
+assert(text_equal(record_get(journal, "schema"), "jovovich.visual-memory/1"), "visual memory schema")
+size = list_len(record_get(journal, "streams"))
+assert(size <= 256, "visual memory capacity")
+assert(list_len(record_get(journal, "origins")) == size, "visual origins")
+assert(list_len(record_get(journal, "identities")) == size, "visual identities")
+assert(through == -1 or through <= size, "unknown visual knowledge revision")
+parts = list_new()
+list_push(parts, visual_repository)
+list_push(parts, visual_key)
+stream = list_key(parts)
+limit = size
+if through >= 0:
+    limit = through
+revision = 0
+predecessor = 0
+i = 0
+while i < limit:
+    if text_equal(list_get(record_get(journal, "streams"), i), stream):
+        predecessor = revision
+        revision = i + 1
+    i = i + 1
+
+dirty = 0
+if writing == 1:
+    retry = 0
+    if revision > 0:
+        retry = text_equal(list_get(record_get(journal, "identities"), revision - 1), visual_identity)
+        retry = retry and (parent == predecessor or parent == revision)
+    if retry == 0:
+        assert(parent == revision, "visual observation changed; name its current sequence in supersedes")
+        assert(size < 256, "visual memory is full")
+        list_push(record_get(journal, "streams"), stream)
+        list_push(record_get(journal, "origins"), visual_origin)
+        list_push(record_get(journal, "identities"), visual_identity)
+        predecessor = revision
+        revision = size + 1
+        dirty = 1
+
+assert(revision > 0, "no visual observation for that repository and key at this revision")
+visual_origin = list_get(record_get(journal, "origins"), revision - 1)
+# The host validates and stages the complete receipt before commit-memory.aml.
