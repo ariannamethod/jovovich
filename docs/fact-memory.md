@@ -229,6 +229,59 @@ observations and six recall questions in both option orders, then repeats the
 questions in a fresh process and compares complete answers. These checks use
 controlled red/blue images in two Git repositories.
 
+## Compare a visual change
+
+Use two exact visual receipt sequences from the same repository/key stream.
+The observations must name the same image path, ask the same question and use
+the same two answer texts; their A/B order may differ. The first image commit
+must be a strict Git ancestor of the second. The comparison reads the selected
+rule lines from the first commit and checks both saved image sources against
+the supplied checkout's Git objects. It does not select files from the mutable
+working tree. `before` and `after` name exact receipts, rather than cutoffs
+that may select an earlier record.
+
+```json
+{"id":"button-change","compare":{"repository":"studio/render","key":"primary-button","before":1,"after":2,"checkout":"/path/to/repo","rules":{"path":"RULES.md","first":2,"last":2}}}
+```
+
+Inspect the evidence and actual AML state without loading a model, then run
+the original OneJev:
+
+```sh
+build/jovovich-replay compare-visual build/memory < comparisons.jsonl
+build/jovovich model.gguf tokenizer.gguf --compare-visual build/memory < comparisons.jsonl
+```
+
+The `jovovich.visual-review/1` output retains both complete observations and
+their Git sources, the base rule's commit/blob/path/lines/quote/hash, input and
+prompt hashes, A/B logits, CLEAN/CONCERN probabilities and the verdict.
+AML places the rule and before/after observed answer texts in the model's
+state, then asks whether the after image satisfies the requirement. A change
+that leaves the required button wrong is still CONCERN. Both observation
+clocks stay intact, and comparison never writes to the journal.
+
+`concern_letter` defaults to `"A"`; set it to `"B"` to reverse the options.
+The semantic probabilities and verdict follow that mapping. CONCERN wins an
+exact probability tie in either order. The prompt uses the same literal-token
+encoding as visual recall, including every byte of the Git quotation.
+
+`make check` includes exact-revision/source/ancestry/rule gates, working-tree
+isolation and refusal of incompatible observation questions and answer sets.
+The optional live gate requires PyMuPDF for rendering the static HTML/CSS
+panel. It commits every panel and PNG, rerenders the committed HTML to verify
+the image bytes, and observes all eight images through native vision. Two
+repositories have opposite button requirements; fix, regression and footer-only
+changes yield twelve decisions across both option orders. The fresh-process
+repeat must reproduce the complete stdout bytes.
+
+```sh
+make check-visual-compare MODEL=/path/to/model.gguf VISION=/path/to/vision.gguf
+```
+
+Use `tests/check_visual_compare.py --work /new/output/directory` with the
+`--model`, `--tokenizer` and `--vision` paths to retain all Git fixtures,
+predeclared expectations, exact requests, native answers and stderr.
+
 ## Rehearse a verified fact
 
 A saved DOE generation can carry a receipt for the PR observation that was

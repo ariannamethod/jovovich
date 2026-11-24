@@ -1,0 +1,15 @@
+# The host binds both observations and the quotation to their exact Git sources.
+visual_state = text_concat("Repository requirement from the base commit:\n", compare_rule)
+visual_state = text_concat(visual_state, "\n\nImage observation question: ")
+visual_state = text_concat(visual_state, compare_question)
+visual_state = text_concat(visual_state, "\nBefore image observation: ")
+visual_state = text_concat(visual_state, compare_before)
+visual_state = text_concat(visual_state, "\nAfter image observation: ")
+visual_state = text_concat(visual_state, compare_after)
+visual_question = "Does the after image satisfy the repository requirement?"
+visual_a = "CONCERN: The after image violates the repository requirement."
+visual_b = "CLEAN: The after image satisfies the repository requirement."
+if compare_order[0] == 1:
+    temporary_choice = visual_a
+    visual_a = visual_b
+    visual_b = temporary_choice
