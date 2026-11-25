@@ -45,9 +45,12 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
         if (has_manual || !opts->memory) return 1;
         opts->jobs[opts->count++]=automatic;
     }
-    if(opts->visual_memory && (opts->count || opts->memory || opts->pr_metadata)) {
-        fputs("Mixed visual reports do not yet accept execution/snapshot replay or PR-history writes\n",stderr);
-        return 1;
+    if(opts->visual_memory) {
+        if(opts->count) {
+            fputs("Mixed visual reports do not yet accept execution/snapshot replay\n",stderr);
+            return 1;
+        }
+        return (!!opts->memory != !!opts->pr_metadata);
     }
     return (opts->pr_metadata && !automatic.routes) || (opts->memory && !has_locate && !automatic.routes);
 }

@@ -160,13 +160,54 @@ Rule-memory packing remains available: put `--remember DIR REPOSITORY KEY` or
 `--recall DIR REPOSITORY KEY` before `--with-visual`. The remembered repository
 must match the visual scope. The mixed report retains that rule receipt at its
 root, including when the change contains only images. It does not append a
-model verdict to factual memory. This mode currently accepts already-attached
-text execution evidence, but does not combine with `--locate`, `--snapshot`,
-`--auto-snapshots`, report `--memory`, or `--record-pr`. Those replay/history
-operations retain their existing text-batch path. Readout adapters and canonical
+model verdict to the rule journal. This mode accepts already-attached
+text execution evidence. It does not combine with `--locate`, `--snapshot` or
+`--auto-snapshots`; those execution operations keep their text-batch path.
+Readout adapters and canonical
 boundary inference also keep their separate existing invocation.
 
 Without `--with-visual`, v1 manifest digests and text report bytes are unchanged.
+
+## Keep a mixed review in the PR's AML history
+
+Pack with a named rule using `--remember` or `--recall` as above. To save the
+validated report, supply both `--memory` and `--record-pr`. The history and
+visual-memory directories may differ. Fetch the PR's actual metadata, including
+its opening date and exact base/head revisions:
+
+```sh
+mkdir -p review-memory
+gh pr view 7 --repo studio/east \
+  --json number,url,createdAt,baseRefOid,headRefOid > pr.json
+./build/jovovich-report batch.jsonl answers.jsonl \
+  --with-visual visual-memory studio/east 7 \
+  --memory review-memory --record-pr studio/east pr.json > report.md
+./build/jovovich-replay history review-memory studio/east 7
+./build/jovovich-replay history review-memory studio/east 7 HEAD_SHA
+```
+
+The repository and PR number must match the visual scope; metadata revisions
+must match the batch. The existing per-PR AML journal stores `evidence.review`
+with schema `jovovich.mixed-review/1`: aggregate counts, visual counts, and each
+file's complete input and answer. HTML state, both prompt hashes and raw logits,
+visual observations, model hashes, rule provenance and inference clocks survive
+unchanged. The outer observation dates PR opening and successful publication
+separately with JANUS.CALENDAR.
+
+An exact publication retry, including switching Markdown to JSON, keeps one
+observation and its first publication clock. A new answer receipt is a new
+observation. The journal permits 256 distinct observations per PR and up to
+1 MiB for each complete stored observation, including its enclosing metadata.
+The AML checkpoint also has a total 64 MiB limit.
+Validation, capacity or persistence failure emits no report and leaves the
+previous checkpoint intact. Rule and visual checkpoints remain unchanged.
+
+History reading requires neither Git nor the model nor the visual journal.
+It validates each selected mixed observation against its saved evidence digest
+before emitting the history. A model-review-only history has status `reviewed`;
+deterministic execution findings retain `checked`. Model answers occupy
+`evidence.review`, with `evidence.findings` empty, and supply no snapshot
+coverage. Existing execution and snapshot history queries keep their behavior.
 
 ## Include verified findings in the PR comment
 

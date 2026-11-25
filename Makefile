@@ -116,6 +116,8 @@ check: build/visual-memory-fixture build/check-receipts build/check-prompt-token
 	GIT_DEFAULT_HASH=sha256 python3 tests/check_visual_batch.py
 	python3 tests/check_html_state.py
 	GIT_DEFAULT_HASH=sha256 python3 tests/check_html_state.py
+	python3 tests/check_mixed_history.py
+	GIT_DEFAULT_HASH=sha256 python3 tests/check_mixed_history.py
 	sh tests/check_counterexamples.sh
 	sh tests/check_findings.sh
 	sh tests/check_snapshot_history.sh
