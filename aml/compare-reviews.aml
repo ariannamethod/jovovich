@@ -1,0 +1,36 @@
+# Inputs are aligned by exact path; missing entries have vote -1.
+size = len(review_before_votes)
+assert(size > 0 and size == len(review_after_votes) and size == len(review_compatible), "review comparison dimensions")
+review_transitions = list_new()
+review_transition_counts = zeros(7)
+i = 0
+while i < size:
+    before = review_before_votes[i]
+    after = review_after_votes[i]
+    assert((before == -1 or before == 0 or before == 1) and (after == -1 or after == 0 or after == 1), "review votes")
+    assert(before >= 0 or after >= 0, "missing review pair")
+    assert(review_compatible[i] == 0 or review_compatible[i] == 1, "review compatibility")
+    code = 6
+    state = "not_comparable"
+    if before == -1:
+        code = 4
+        state = "first_review"
+    if after == -1:
+        code = 5
+        state = "not_reviewed_after"
+    if before >= 0 and after >= 0 and review_compatible[i] == 1:
+        if before == 1 and after == 0:
+            code = 0
+            state = "concern_to_clean"
+        if before == 0 and after == 1:
+            code = 1
+            state = "clean_to_concern"
+        if before == 1 and after == 1:
+            code = 2
+            state = "unchanged_concern"
+        if before == 0 and after == 0:
+            code = 3
+            state = "unchanged_clean"
+    list_push(review_transitions, state)
+    review_transition_counts[code] = review_transition_counts[code] + 1
+    i = i + 1

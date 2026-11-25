@@ -759,6 +759,8 @@ static int parse_mode(const char *s, int *mode) {
 int main(int argc, char **argv) {
     if(argc>=2 && !strcmp(argv[1],"visual"))return jov_visual_history(argc,argv);
     if(argc>=2 && !strcmp(argv[1],"compare-visual"))return jov_visual_compare_preview(argc,argv);
+    if ((argc==5 || (argc==8 && !strcmp(argv[5],"--compare"))) && !strcmp(argv[1],"reviews"))
+        return jov_pr_reviews(argv[2],argv[3],argv[4],argc==8?argv[6]:NULL,argc==8?argv[7]:NULL);
     if ((argc==7 || (argc==8 && !strcmp(argv[7],"--record"))) && !strcmp(argv[1],"spore"))
         return jov_pr_spore(argv[2],argv[3],argv[4],argv[5],argv[6],argc==8);
     if (argc==4 && !strcmp(argv[1],"show")) return show(argv[2],argv[3]);
@@ -789,7 +791,7 @@ int main(int argc, char **argv) {
     int direct=probe || locating || snapshot || routed || landing;
     int mode=0;
     if ((!direct && !capture && !replay) || (probe && parse_mode(argv[4],&mode))) {
-        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay spore DIR OWNER/REPO NUMBER OBSERVATION_ID FILE [--record]\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE [--compare-known-at FROM_UTC TO_UTC [--from-journal FIRST_HEAD] [--through LAST_HEAD]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
+        fputs("Usage: jovovich-replay probe REPO HARNESS MODE | remember DIR REPO HARNESS | run DIR REPO HARNESS < packed.jsonl\n       jovovich-replay locate REPO HARNESS [--memory DIR] < measured.jsonl\n       jovovich-replay locate REPO HARNESS --record-pr DIR OWNER/REPO PR.json < measured-batch.jsonl\n       jovovich-replay spore DIR OWNER/REPO NUMBER OBSERVATION_ID FILE [--record]\n       jovovich-replay reviews DIR OWNER/REPO NUMBER [--compare BEFORE_ID AFTER_ID]\n       jovovich-replay history DIR OWNER/REPO [NUMBER [HEAD_SHA]]\n       jovovich-replay history DIR OWNER/REPO NUMBER --snapshot CHECKOUT TIP_SHA FILE [--compare-known-at FROM_UTC TO_UTC [--from-journal FIRST_HEAD] [--through LAST_HEAD]]\n       jovovich-replay snapshot REPO HARNESS < packed.jsonl\n       jovovich-replay snapshots REPO HARNESS ROUTES.json --memory DIR < batch.jsonl\n       jovovich-replay land REPO HARNESS ROUTES.json --record-pr DIR OWNER/REPO MERGED.json LANDING_SHA < final-source-batch.jsonl\n       jovovich-replay show DIR INPUT_SHA256\n",stderr);
         return 2;
     }
     const char *dir = direct ? NULL : argv[2];

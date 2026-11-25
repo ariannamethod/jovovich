@@ -368,6 +368,7 @@ int jov_pr_prepare_landing(const char *directory, jov_pr *pr, const char *repo, 
 
 #include "snapshot_recall.h"
 #include "snapshot_compare.h"
+#include "review_history.h"
 
 static int read_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                            const char *checkout, const char *file, const history_window *window) {
@@ -403,9 +404,7 @@ static int read_pr_history(const char *directory, const char *scope, const char 
         if(nj_first(nj_get(e,"findings"),&bad))measured++;
         const char *review=nj_get(e,"review");
         if(review) {
-            char digest[65];
-            if(!keys || i>=keys->len || !nj_is(nj_get(review,"schema"),"jovovich.mixed-review/1") ||
-               json_digest(e,digest) || strcmp(keys->items[i]->data,digest))bad=1;
+            if(!keys || i>=keys->len || review_identity(e,keys->items[i]->data))bad=1;
             else reviewed++;
         }
         if(bad)goto done;

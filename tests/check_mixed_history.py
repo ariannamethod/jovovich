@@ -15,6 +15,7 @@ from pathlib import Path
 
 from check_visual_batch import ROOT, command, encode, fake_visual
 from check_visual_memory import ENV, digest, git, synthetic
+from review_comparison_checks import check_comparisons
 
 
 def main():
@@ -178,6 +179,7 @@ def main():
         repo.rename(work / "repo.offline")
         assert history() == expected
         assert (memory / "rules.checkpoint").read_bytes() == original["rules.checkpoint"]
+        check_comparisons(args.replay,work,memory,full["observations"])
         # A corrupted stored mixed observation cannot publish a partial history.
         raw = journal.read_bytes(); needle=b"jovovich.mixed-review/1"
         assert needle in raw
