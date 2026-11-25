@@ -10,11 +10,17 @@ typedef struct {
 } jov_boundary_receipt;
 
 typedef struct {
+    const char *head_blob, *head_sha256, *prompt_sha256, *reverse_prompt_sha256;
+    float logits[4]; /* A/B with CONCERN first, then A/B with CLEAN first. */
+} jov_html_receipt;
+
+typedef struct {
     const char *input_sha256, *weights_sha256, *tokenizer_sha256;
     int unix_day, second, millisecond;
     const char *readout_sha256; /* Present when an output adapter was active. */
     const jov_boundary_receipt *boundary;
     const jov_trace_receipt *trace;
+    const jov_html_receipt *html;
 } jov_execution;
 
 typedef struct {

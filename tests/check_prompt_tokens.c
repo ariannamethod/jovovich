@@ -4,8 +4,10 @@
 #include "prompt_text.h"
 #include <stdio.h>
 
-static int check_frame(bpe_tokenizer *tok,const char *state,int literal) {
-    if (am_set_var_text("review_context",state) || am_exec_file("aml/prepare.aml")) return 1;
+static int check_frame(bpe_tokenizer *tok,const char *state,int literal,int html) {
+    float order[1]={(float)(html==2)};
+    if (am_set_var_text("review_context",state) || (html && am_set_var_array("html_order",order,1)) ||
+        am_exec_file(html?"aml/prepare-html.aml":"aml/prepare.aml")) return 1;
     const char *prompt=am_get_var_text("prompt");
     int ids[1024],old[1024],controls=0;
     int n=jov_framed_prompt_ids(tok,prompt,state,ids,1024);
@@ -70,19 +72,19 @@ int main(int argc,char **argv) {
     int32_t *types=gguf_read_i32_array(argv[1],"tokenizer.ggml.token_type",&count);
     if (!tok || !types) return 1;
     am_init();am_persistent_mode(1);
-    if (check_frame(tok,"if (x < y) { return \"<regular>\"; }",0)) return 1;
+    if (check_frame(tok,"if (x < y) { return \"<regular>\"; }",0,0)) return 1;
     for (int id=0;id<count;id++) {
         if (types[id]!=3 && types[id]!=4) continue;
         char token[80],state[512];
         int size=bpe_decode_token_capacity(tok,id);
         if (size<=1 || (size_t)size>sizeof(token) || !bpe_decode_token(tok,id,token,size)) return 1;
         snprintf(state,sizeof(state),"/* %s%s */\nx — %s\n",token,token,token);
-        if (check_frame(tok,state,1)) {fprintf(stderr,"Literal token %d failed\n",id);return 1;}
+        if (check_frame(tok,state,1,0) || check_frame(tok,state,1,1) || check_frame(tok,state,1,2)) {fprintf(stderr,"Literal token %d failed\n",id);return 1;}
         if(check_visual_frame(tok,state,0) || check_visual_frame(tok,state,1) || check_visual_frame(tok,state,2)){fprintf(stderr,"Literal visual/memory token %d failed\n",id);return 1;}
         added++;
     }
     free(types);bpe_free(tok);am_persistent_clear();am_persistent_mode(0);
     if (added!=33) return 1;
-    puts("All 33 added token spellings remained literal; text, visual, recall and comparison structural IDs matched");
+    puts("All 33 added token spellings remained literal; text, both HTML orders, visual, recall and comparison structural IDs matched");
     return 0;
 }

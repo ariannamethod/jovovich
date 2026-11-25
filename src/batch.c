@@ -18,6 +18,10 @@ int jov_batch_digest_fact(const jov_batch_item *items,int count,const jov_fact *
             if(strlen(p->visual)!=64 || strspn(p->visual,"0123456789abcdef")!=64)goto done;
             fputc(',',f);json_field(f,"visual_comparison_sha256",p->visual);
         }
+        if(p->html) {
+            if(!visual || p->visual || strlen(p->html)!=64 || strspn(p->html,"0123456789abcdef")!=64)goto done;
+            fputc(',',f);json_field(f,"html_state_sha256",p->html);
+        }
         fputc('}',f);
     }
     fputc(']', f);

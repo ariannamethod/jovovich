@@ -1,0 +1,6 @@
+# The complete regular HTML blob at the resolved head commit.
+review_context = text_concat("Reviewed file: ", source_file)
+review_context = text_concat(review_context, "\nRepository rules from the base commit:\n")
+review_context = text_concat(review_context, source_rules)
+review_context = text_concat(review_context, "\nProposed file after the change:\n")
+review_context = text_concat(review_context, source_html)

@@ -8,6 +8,7 @@
 #include "git_snapshot.h"
 #include "visual_batch.h"
 #include "report_json.h"
+#include "html_state.h"
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -63,6 +64,7 @@ static char *select_lines(const char *text,size_t n,int first,int *last) {
 typedef struct {
     char *file,*diff,*context;
     char id[65],diff_hash[65];
+    jov_html_state html;
 } packed;
 /* Retain the historical seven-hex patch display, without allowing unrelated
  * objects added to the store to lengthen the two abbreviations. Only Git's
@@ -116,6 +118,19 @@ static int usage(void) {
           "       jovovich-pack --recall DIR REPOSITORY KEY [--as-of N] [--all] REPO BASE HEAD [FILE]\n"
           "       jovovich-pack --fact DIR REPOSITORY KEY [--as-of N]\n", stderr);
     return 2;
+}
+
+static int capture_html(packed *p,const char *repo,const char *head) {
+    if(!jov_html_path(p->file))return 0;
+    int kind=jov_git_path_kind(repo,head,p->file);
+    if(kind<0)return 1;
+    if(kind!=1)return 0; /* Deleted paths, trees and links retain their diff view. */
+    size_t n=0;
+    p->html.blob=jov_git_regular_blob(repo,head,p->file,NULL);
+    if(!p->html.blob || !(p->html.content=git_read(repo,(const char*[]){"cat-file","blob",p->html.blob,NULL},&n)) ||
+       memchr(p->html.content,0,n) || hash_bytes(p->html.content,n,p->html.sha256))return 1;
+    AM_String *text=am_string_new(p->html.content);if(!text)return 1;
+    am_string_free(text);return jov_html_hash(&p->html);
 }
 
 int main(int argc,char **argv) {
@@ -218,10 +233,13 @@ int main(int argc,char **argv) {
     for(int i=0;i<count;i++) {
         for(int j=0;j<visual_count;j++)if(!strcmp(records[i].file,visual[j].file)){visual_index[i]=j;visual_used[j]=1;}
         if(prepare(records+i,repo,base,head,selected,visual_index[i]>=0))goto done;
+        if(visual_memory && visual_index[i]<0 && capture_html(records+i,repo,head))goto done;
         total+=strlen(records[i].context)+strlen(records[i].diff);
+        if(records[i].html.content)total+=strlen(records[i].html.content);
         if(total>JOV_BATCH_MAX_BYTES)goto done;
         items[i]=(jov_batch_item){.file=records[i].file,.id=records[i].id,.source={base,head,rules_path,blob,rh,records[i].diff_hash,first,last},
-            .visual=visual_index[i]>=0?visual[visual_index[i]].digest:NULL};
+            .visual=visual_index[i]>=0?visual[visual_index[i]].digest:NULL,
+            .html=records[i].html.content?records[i].html.digest:NULL};
         if(jov_source_validate(&items[i].source))goto done;
     }
     for(int j=0;j<visual_count;j++)if(!visual_used[j])goto done;
@@ -239,6 +257,7 @@ int main(int argc,char **argv) {
         json_field(out,"change_excerpt",p->diff);fputs(",\"source\":",out);jov_source_json(out,&items[i].source);
         if (fact) { fputs(",\"fact\":", out); jov_fact_json(out, fact); }
         if(visual_index[i]>=0)fprintf(out,",\"visual_request\":%s",visual[visual_index[i]].request);
+        if(p->html.content){fputs(",\"html_state\":",out);jov_html_json(out,&p->html);}
         if(all){fprintf(out,",\"batch\":{\"schema\":\"jovovich.git-batch/%d\",\"scope\":\"all_changed_paths\",",visual_memory?2:1);json_field(out,"id",batch_id);fprintf(out,",\"index\":%d,\"count\":%d}",i,count);}
         fputs("}\n",out);long end=ftell(out);
         if(start<0 || end<start || end-start>1048576 || (unsigned long)end>JOV_BATCH_MAX_BYTES || ferror(out))goto done;
@@ -257,6 +276,6 @@ done:
     if (writer >= 0) close(writer);
     jov_fact_free(fact);
     if(out && fclose(out))rc=1;
-    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);jov_visual_batch_free(visual+i);}
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);jov_html_free(&records[i].html);jov_visual_batch_free(visual+i);}
     am_persistent_mode(0);free(base);free(head);free(blob);free(rules);free(selected);free(list);return rc?1:0;
 }

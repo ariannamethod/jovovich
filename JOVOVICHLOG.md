@@ -2,6 +2,43 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-25 — Read committed HTML in both option orders
+
+The mixed review now captures complete regular `.html`/`.htm` files at HEAD.
+AML asks whether the after-file satisfies the base rule; NoTorch evaluates
+CONCERN/CLEAN and CLEAN/CONCERN with fresh caches. AML averages logits by
+meaning before the existing softmax and 0.5 decision boundary. The manifest
+binds the complete HTML, and `html-head-paired/1` receipts retain both prompt
+hashes and all four logits. Reporting rereads the Git blob and recomputes
+both frames and scores. Original diff evidence and rule memory remain visible.
+This costs two forwards per HTML decision in newly packed mixed reviews.
+
+The original pinned OneJev artifacts were used throughout. Full-head-only
+and paired base/head views each scored 4/6 discovery cases. Changing only the
+question scored 5/6. Full head plus the after-file question scored 6/6, but
+one of eight new Apply/Reset cases still depended on option order. Semantic
+logit averaging passed those fourteen cases. With that rule frozen, eight
+fresh Publish/Archive cases all passed: 22/22 across the three groups, each
+measured in both option orders. The failed variants remain in the raw study.
+
+The production CLI then ran all twelve original mixed batches: all twelve
+HTML votes match their expected state, and all twelve visual answers remain
+identical to the previous run. Both HTML prompt hashes and each raw logit
+match the diagnostic forwards. The three original false CONCERN cases are
+CLEAN; all three violating cases remain CONCERN. The twelve complete reports
+are six CLEAN and six CONCERN, verified in JSON and Markdown. Visual memory
+is byte-identical before and after the run. No model weights were changed.
+
+Full `make all check` passes. HTML protocol gates cover both Git object
+formats, committed content outside hunks, added/empty/deleted/link paths,
+trace composition, and altered Git/prompt/score receipts. All 33 added token
+spellings stay literal in both HTML frames. Three mutants disabling Git,
+prompt or score binding are caught. Pack/report gates pass ASan/UBSan with
+AML uninstrumented and leak detection disabled. Ten original-text report
+variants and twelve archived mixed reports in both formats remain byte-identical.
+The existing file-backed allocation shim was used for live inference.
+[Mixed review contract](docs/batch-review.md#combine-text-and-visual-reviews).
+
 ## 2026-11-25 — Include visual decisions in the whole-change report
 
 `--with-visual` packs modified binary images and ordinary text patches into
