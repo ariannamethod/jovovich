@@ -54,7 +54,7 @@ the report refuses. The final report is buffered until all checks pass.
 
 The packer accepts up to **64 changed paths**, **256 KiB per Git capture**, and
 **16 MiB per batch**, with **1 MiB per JSONL row**. Report inputs and answer
-streams have the same row and total byte bounds. Binary changes or an exceeded
+streams have the same row and total byte bounds. In the text-only mode, binary changes or an exceeded
 bound abort the entire pack before any row is written. The native model keeps
 its ASCII English and 8,192-token input limits.
 
@@ -81,6 +81,70 @@ patch and both probabilities. JSON uses `jovovich.review-report/1`:
 
 The aggregate has a verdict and counts. Probabilities belong to the individual
 file decisions and are preserved without averaging.
+
+## Combine text and visual reviews
+
+When a change modifies committed images, provide one
+[visual comparison request](fact-memory.md#compare-a-visual-change) per changed
+binary image. Each request selects two exact memory revisions, the image path,
+and a rule from the base commit. The image must exist as a regular Git blob at
+both commits. The same logical repository and PR number must appear in both
+observations. Supply that scope explicitly to packing and reporting:
+
+```sh
+set -e
+./build/jovovich-pack --with-visual visual-memory studio/east 7 comparisons.jsonl \
+  --all /path/to/repo BASE HEAD RULES.md 2 2 > batch.jsonl
+./build/jovovich model.gguf tokenizer.gguf --json --with-visual visual-memory \
+  < batch.jsonl > answers.jsonl
+./build/jovovich-report batch.jsonl answers.jsonl \
+  --with-visual visual-memory studio/east 7 > report.md
+./build/jovovich-report batch.jsonl answers.jsonl \
+  --with-visual visual-memory studio/east 7 --json > report.json
+```
+
+The packer enumerates every changed Git path before writing anything. Text
+paths retain their ordinary patch reviews; a visual comparison cannot replace
+one. Each binary path must have exactly one request bound to the batch's exact
+BASE/HEAD commits and that path. Missing, duplicate, foreign or unused requests
+abort the pack. Other binary changes, image additions/deletions and image
+renames remain unsupported. A change containing only modified images works.
+The repository name is the caller's logical memory scope, as in rule memory.
+
+The mixed manifest uses `jovovich.git-batch/2`. Its digest includes the original
+ordered file/context/source items and, for visual entries, the SHA-256 of the
+complete verified comparison receipt. A visual row's `visual_request` contains
+the captured comparison object without surrounding JSONL whitespace. Inference
+hashes those exact nested bytes. Text rows still hash the complete input line.
+The model loads once and uses a fresh inference cache for each decision.
+
+Reporting rereads the selected historical observations, verifies their image
+blobs and base rule against Git, and reconstructs the comparison receipt. The
+answer must carry that exact receipt, input and prompt hashes, pinned model and
+tokenizer hashes, and the AML question/options. Logits must reproduce the listed
+probabilities; the semantic CONCERN/CLEAN mapping must match the option order.
+CONCERN wins a tie in either order. Keep the captured nested receipt bytes intact
+when moving results; rewriting their JSON formatting changes this binding.
+
+JSON uses `jovovich.review-report/2`, with `repository`, `pull_request`, a
+`visual_summary` and the common `summary`. The ordered `reviews` array retains
+ordinary text answers and `jovovich.visual-review/1` answers. A CONCERN from
+either kind contributes to the common total. Markdown shows each image's
+before/after answer, memory revision, Git commit, image SHA-256, and quoted rule.
+Missing, extra, reordered, repeated or inconsistent answers produce no report.
+The selected visual journal and Git objects must remain available when reporting.
+
+Rule-memory packing remains available: put `--remember DIR REPOSITORY KEY` or
+`--recall DIR REPOSITORY KEY` before `--with-visual`. The remembered repository
+must match the visual scope. The mixed report retains that rule receipt at its
+root, including when the change contains only images. It does not append a
+model verdict to factual memory. This mode currently accepts already-attached
+text execution evidence, but does not combine with `--locate`, `--snapshot`,
+`--auto-snapshots`, report `--memory`, or `--record-pr`. Those replay/history
+operations retain their existing text-batch path. Readout adapters and canonical
+boundary inference also keep their separate existing invocation.
+
+Without `--with-visual`, v1 manifest digests and text report bytes are unchanged.
 
 ## Include verified findings in the PR comment
 

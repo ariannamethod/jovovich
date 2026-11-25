@@ -5,7 +5,7 @@
 /* Each job uses an operator-supplied driver for execution localization, an
  * explicit snapshot, or all snapshot paths selected by a repository policy. */
 typedef struct { const char *repo,*driver,*file,*routes; } finding_job;
-typedef struct { int json,count; const char *memory,*pr_scope,*pr_metadata; FILE *archive; char *coverage; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
+typedef struct { int json,count,visual_pr; const char *memory,*pr_scope,*pr_metadata,*visual_memory,*visual_scope; FILE *archive; char *coverage; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
 
 static int report_arguments(int argc,char **argv,report_options *opts) {
     if (argc<3) return 1;
@@ -14,6 +14,11 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
     for (int i=3;i<argc;) {
         const char *flag=argv[i++];
         if (!strcmp(flag,"--json") && !opts->json) { opts->json=1; continue; }
+        if(!strcmp(flag,"--with-visual") && !opts->visual_memory && argc-i>=3) {
+            char *end;errno=0;long pr=strtol(argv[i+2],&end,10);
+            if(errno || end==argv[i+2] || *end || pr<1 || pr>INT_MAX)return 1;
+            opts->visual_memory=argv[i];opts->visual_scope=argv[i+1];opts->visual_pr=(int)pr;i+=3;continue;
+        }
         if (!strcmp(flag,"--memory") && !opts->memory && i<argc) { opts->memory=argv[i++]; continue; }
         if (!strcmp(flag,"--record-pr") && !opts->pr_metadata && argc-i>=2) {
             opts->pr_scope=argv[i++]; opts->pr_metadata=argv[i++];
@@ -39,6 +44,10 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
     if (automatic.routes) {
         if (has_manual || !opts->memory) return 1;
         opts->jobs[opts->count++]=automatic;
+    }
+    if(opts->visual_memory && (opts->count || opts->memory || opts->pr_metadata)) {
+        fputs("Mixed visual reports do not yet accept execution/snapshot replay or PR-history writes\n",stderr);
+        return 1;
     }
     return (opts->pr_metadata && !automatic.routes) || (opts->memory && !has_locate && !automatic.routes);
 }
