@@ -179,25 +179,6 @@ input back to the bench. It runs the new base and head and asks the current
 contract what should have happened. The report names the review where she
 first saw the case. [Remember and replay a counterexample](docs/counterexamples.md)
 
-## Autonomous watch
-
-On neo she wakes the second reader herself. A CONCERN verdict is tagged into a
-queue; a launchd watch hands the tagged ids to a headless Claude Code run for a
-slower read before a human arrives. Scribe stays out of this path — jovovich
-tags, Claude reviews, the tag is the whole handshake. [How it is wired](deploy/README.md)
-
-## Chain of custody
-
-Oleg Ataeff and Sol invented this during a conversation about Milla Jovovich,
-freckles, LALO Salamanca, and GitHub reviews. Astra received the resulting brief.
-This is the provenance. It has survived peer review by everyone in the room.
-
-The freckles became the checksum of the repository, the Method, and eventually
-the universe. Then Oleg noticed **GGUF → ГГУФ → ГУФ → גוף → body**.
-The file extension had been participating in the plot the whole time.
-
-SERGE may smoke in the logs. `AMODEI requested changes` nearly won the naming contest.
-
 The log is singular. She is watching.
 [JOVOVICHLOG](JOVOVICHLOG.md) · [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) · [305-token speed measurements](docs/review-latency.md)
 
