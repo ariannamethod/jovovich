@@ -17,6 +17,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #define ROW_LIMIT 1048576u
 static const char *source_keys[]={"base_commit","head_commit","rules_path","rules_blob","rules_sha256","diff_sha256"};
@@ -153,6 +154,27 @@ static int verify_html(input *inputs,int count) {
     }
     free(checkout);return bad;
 }
+
+/* The same receipt is stored for JSON and Markdown publication. Inputs retain
+ * exact Git evidence; answers retain the actual model and observation clocks. */
+static char *mixed_review(const input inputs[],char *const answers[],int count,int concern,
+                          int visual_count,int visual_concerns,const char *verdict) {
+    char *data=NULL;size_t size=0;FILE *out=open_memstream(&data,&size);if(!out)return NULL;
+    fputs("{\"schema\":\"jovovich.mixed-review/1\",\"summary\":{",out);json_field(out,"verdict",verdict);
+    fprintf(out,",\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},"
+                "\"visual_summary\":{\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d},\"files\":[",
+            count,concern,count-concern,visual_count,visual_concerns,visual_count-visual_concerns);
+    int bad=0;
+    for(int i=0;i<count;i++) {
+        if(i)fputc(',',out);
+        fputc('{',out);json_field(out,"file",inputs[i].file);
+        fprintf(out,",\"input\":%s,\"answer\":%s}",inputs[i].row,answers[i]);
+        long n=ftell(out);if(n<0 || n>AM_MAX_STRING_BYTES){bad=1;break;}
+    }
+    fputs("]}",out);
+    if(fclose(out) || bad || size>AM_MAX_STRING_BYTES){free(data);return NULL;}
+    return data;
+}
 int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
     report_options opts={0};
@@ -180,8 +202,10 @@ int main(int argc,char **argv) {
     if(bad || !count || (!!visual_count)!=!!opts.visual_memory || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
     if(verify_html(inputs,count))goto done;
     if (opts.pr_metadata) {
-        if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact,NULL) ||
-            !(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0) goto done;
+        if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact,NULL))goto done;
+        if(visual_count) {
+            if(strcasecmp(pr.repository,opts.visual_scope) || atoi(pr.number)!=opts.visual_pr)goto done;
+        } else if(!(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0)goto done;
     }
     total=0;
     int checked_runs=0,failed_runs=0;
@@ -289,6 +313,12 @@ int main(int argc,char **argv) {
     if(ferror(out) || fseek(out,0,SEEK_SET))goto done;
     if (opts.archive && (!opts.coverage || ferror(opts.archive) ||
         jov_pr_record(opts.memory,&pr,inputs[0].fact,digest,inputs[0].origin[0],inputs[0].origin[1],opts.archive,opts.coverage))) goto done;
+    if(visual_count && opts.pr_metadata) {
+        char *saved=mixed_review(inputs,results,count,concern,visual_count,visual_concerns,verdict);
+        int failed=!saved || jov_pr_record_review(opts.memory,&pr,inputs[0].fact,digest,
+                                                  inputs[0].origin[0],inputs[0].origin[1],saved);
+        free(saved);if(failed)goto done;
+    }
     char buf[8192];size_t n;while((n=fread(buf,1,sizeof(buf),out)))if(fwrite(buf,1,n,stdout)!=n)break;
     rc=ferror(out) || ferror(stdout) || fflush(stdout);
 done:

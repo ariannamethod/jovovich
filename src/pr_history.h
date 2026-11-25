@@ -22,6 +22,9 @@ int jov_pr_prepare_landing(const char *directory, jov_pr *pr, const char *repo, 
 /* The caller has completed Git and driver verification for every emitted finding. */
 int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
                   const char *batch, const char *base, const char *head, FILE *findings, const char *coverage);
+/* Store an authenticated mixed model review, preserving each input and answer. */
+int jov_pr_record_review(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                         const char *batch, const char *base, const char *head, const char *review);
 /* Cite earlier PR evidence for the currently measured paths, through the new PR base. */
 int jov_pr_recall_snapshots(FILE *out, int json, const char *directory, const jov_pr *current,
                             const jov_fact *fact, const char *repo, const char *base, const char *coverage,

@@ -2,6 +2,30 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-25 — Keep mixed reviews in the PR history
+
+Mixed reports accept `--memory` with `--record-pr` after validating the complete
+batch and every answer. Each repository/PR journal retains ordered input and
+answer pairs in `evidence.review`, including complete HTML, visual receipts,
+model hashes, raw logits and their original clocks. The named rule remains in
+the rule journal; deterministic findings and snapshot coverage keep their own
+fields. Model-review histories use `reviewed`. Exact publication retries keep
+the first observation and clock; reading after restart needs no Git or model.
+
+All twelve native mixed reviews captured for PR #79 were recorded and read back:
+24 exact answers and 24 byte-identical JSON/Markdown reports. Rule and visual
+checkpoints stayed unchanged. Ten earlier text-report variants also match their
+previous bytes. This step reuses those native answers and changes persistence.
+
+Full `make all check` passes. New gates cover both Git object formats, image-only
+reviews, concurrent retries, repository/PR/head isolation, failed writes,
+oversized observations and offline/corrupted history. Report/replay gates pass
+ASan/UBSan with AML uninstrumented and leak detection disabled. Mutation checks
+catch disabled PR binding and evidence-digest validation. Those checks required
+fixtures with a consistent foreign PR URL/number and a repaired container CRC
+to reach the intended guards. README now shows two actual native review
+excerpts and credits LALO's memory ideas while identifying AML as her journal.
+
 ## 2026-11-25 — Read committed HTML in both option orders
 
 The mixed review now captures complete regular `.html`/`.htm` files at HEAD.

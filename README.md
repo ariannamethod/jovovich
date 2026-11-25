@@ -100,6 +100,15 @@ both versions behaved at mode 0. At mode 1 the patch restored `scan → paint`.
 Her vote was **CLEAN 69.0% · CONCERN 31.0%**.
 [Recorded answer](examples/run-selection/git-answer.jsonl) · [Operating rules](docs/operating-rules.md) · [Whole-change reports](docs/batch-review.md)
 
+The rule says **Save**. Replace **Delete** with **Save**: **CLEAN 71.4%**.
+Put **Delete** back: **CONCERN 61.6%**. She reviews the committed images
+alongside the HTML, too.
+
+![Two recorded JOVOVICH reviews: the Save repair is CLEAN; the Delete regression is CONCERN.](docs/review-examples.png)
+
+Excerpts from the native CLI reports in [PR #79](https://github.com/ariannamethod/jovovich/pull/79),
+with the original scores and Git revisions.
+
 ## Image decisions
 
 The original OneJev checkpoint includes its Qwen3.5 vision encoder. From the
@@ -153,8 +162,9 @@ refusals. The existing review invocation and text manifests retain their bytes.
 
 ## She remembers the rule
 
-LALO has been under the laundry, examining the plumbing. Some of it is here
-now. Give a rule a name in one review and she can bring it to the next. Every
+Her memory takes a cue from [LALO](https://github.com/ariannamethod/lalo):
+keep the fact, its source and its corrections. JOVOVICH keeps her own journal
+in AML. Give a rule a name in one review and she can bring it to the next. Every
 receipt keeps the exact words, the Git review they came from and when she
 learned them. A correction points to the receipt it supersedes.
 
@@ -179,7 +189,14 @@ input back to the bench. It runs the new base and head and asks the current
 contract what should have happened. The report names the review where she
 first saw the case. [Remember and replay a counterexample](docs/counterexamples.md)
 
+Complete text-and-image reviews can stay in that PR's history: original inputs,
+her answers and their dated receipts, separated by repository and PR number.
+After a restart, she can retrieve the exact review.
+[Keep a mixed review](docs/batch-review.md#keep-a-mixed-review-in-the-prs-aml-history)
+
 The log is singular. She is watching.
 [JOVOVICHLOG](JOVOVICHLOG.md) · [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) · [305-token speed measurements](docs/review-latency.md)
 
 *Methodologically clean. Mild heresy.*
+
+*Dependency tree questioned. Freckles intact.*

@@ -115,9 +115,10 @@ static void instant(FILE *out, const int parts[3]) {
             "\"second\":%d,\"millisecond\":%d}", parts[0], parts[1], parts[2]);
 }
 
-static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, const char *base, const char *head, const char *coverage, const char *landing) {
-    long length = ftell(findings);
-    if (length < 0 || length > AM_MAX_STRING_BYTES || fseek(findings, 0, SEEK_SET)) return NULL;
+static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, const char *base, const char *head,
+                      const char *coverage, const char *landing, const char *review) {
+    long length = findings ? ftell(findings) : 0;
+    if (length < 0 || length > AM_MAX_STRING_BYTES || (findings && fseek(findings, 0, SEEK_SET))) return NULL;
     char *data = NULL, *line = NULL;
     size_t size = 0, cap = 0;
     FILE *out = open_memstream(&data, &size);
@@ -130,15 +131,16 @@ static char *evidence(FILE *findings, const jov_fact *fact, const char *batch, c
     fputs(",\"findings\":[", out);
     int count = 0;
     ssize_t n;
-    while ((n = getline(&line, &cap, findings)) > 0) {
+    while (findings && (n = getline(&line, &cap, findings)) > 0) {
         if (count++) fputc(',', out);
         fwrite(line, 1, (size_t)n - (line[n-1] == '\n'), out);
     }
     fputc(']', out);
     if (coverage) fprintf(out, ",\"snapshot_coverage\":%s", coverage);
     if (landing) fprintf(out, ",\"landing\":%s", landing);
+    if (review) fprintf(out, ",\"review\":%s", review);
     fputc('}', out);
-    int failed = ferror(findings) || (!count && !coverage);
+    int failed = (findings && ferror(findings)) || (!count && !coverage && !review);
     free(line);
     if (fclose(out) || failed) { free(data); return NULL; }
     return data;
@@ -159,8 +161,9 @@ static int source_version(const AM_List *rows, const AM_List *keys, char digest[
     return hash_bytes(buffer, used, digest);
 }
 
-int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
-                  const char *batch, const char *base, const char *head, FILE *findings, const char *coverage) {
+static int record(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                  const char *batch, const char *base, const char *head, FILE *findings, const char *coverage,
+                  const char *review) {
     struct timespec now;
     if (clock_gettime(CLOCK_REALTIME, &now) || now.tv_sec < 0) return 1;
     int checked[] = {(int)(now.tv_sec / 86400), (int)(now.tv_sec % 86400), (int)(now.tv_nsec / 1000000)};
@@ -183,7 +186,7 @@ int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
                  pr->landing.commit, pr->landing.merged_at);
         if (am_set_var_text("merge_identity", identity) || am_set_var_array("merge_clock", merge_clock, 3)) goto done;
     }
-    result = evidence(findings, fact, batch, base, head, coverage, landing);
+    result = evidence(findings, fact, batch, base, head, coverage, landing, review);
     if (!result || hash_bytes(result, strlen(result), key)) goto done;
     size_t n = 0;
     FILE *out = open_memstream(&row, &n);
@@ -201,6 +204,19 @@ done:
     if (writer >= 0) close(writer);
     free(row); free(result);
     return failed;
+}
+
+int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                  const char *batch, const char *base, const char *head, FILE *findings, const char *coverage) {
+    return record(directory,pr,fact,batch,base,head,findings,coverage,NULL);
+}
+
+int jov_pr_record_review(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                         const char *batch, const char *base, const char *head, const char *review) {
+    const char *end=review?report_json_end(review,0):NULL;
+    if(!fact || *pr->landing.commit || !end || *nj_ws(end) || strlen(review)>AM_MAX_STRING_BYTES ||
+       !nj_is(nj_get(review,"schema"),"jovovich.mixed-review/1"))return 1;
+    return record(directory,pr,fact,batch,base,head,NULL,NULL,review);
 }
 
 typedef struct { int number, checks; char opened[21]; } pr_summary;
@@ -378,25 +394,37 @@ static int read_pr_history(const char *directory, const char *scope, const char 
         am_list_free(snapshot);
         goto done;
     }
+    int measured=0,reviewed=0;
+    const AM_List *keys=am_get_var_list("keys");
+    for(int i=0;i<rows->len;i++) {
+        const char *e=nj_get(rows->items[i]->data,"evidence");
+        if(head && !nj_is(nj_get(e,"head_commit"),head))continue;
+        int bad=0;
+        if(nj_first(nj_get(e,"findings"),&bad))measured++;
+        const char *review=nj_get(e,"review");
+        if(review) {
+            char digest[65];
+            if(!keys || i>=keys->len || !nj_is(nj_get(review,"schema"),"jovovich.mixed-review/1") ||
+               json_digest(e,digest) || strcmp(keys->items[i]->data,digest))bad=1;
+            else reviewed++;
+        }
+        if(bad)goto done;
+    }
     printf("{\"schema\":\"jovovich.pr-history/1\",\"repository\":\"%s\",\"number\":%s,\"created_at\":", pr.repository, number);
     if (*opened) json_string(stdout, opened); else fputs("null", stdout);
     fputs(",\"requested_head\":", stdout);
     if (head) json_string(stdout, head); else fputs("null", stdout);
     fputs(",\"observations\":[", stdout);
-    int measured = 0;
     for (int i = 0; i < rows->len; i++) {
         AM_String *row = am_list_get(rows, i);
         if (!row) goto done;
         if (!head || nj_is(nj_get(nj_get(row->data, "evidence"), "head_commit"), head)) {
-            int bad = 0;
-            if (nj_first(nj_get(nj_get(row->data, "evidence"), "findings"), &bad)) measured++;
-            if (bad) { am_string_free(row); goto done; }
             if (count++) fputc(',', stdout);
             fputs(row->data, stdout);
         }
         am_string_free(row);
     }
-    printf("],\"status\":\"%s\"}\n", measured ? "checked" : "unverified");
+    printf("],\"status\":\"%s\"}\n", measured ? "checked" : reviewed ? "reviewed" : "unverified");
     failed = ferror(stdout) || fflush(stdout);
 done:
     if (failed) fprintf(stderr, "Cannot read PR history: %s\n", am_get_error());
