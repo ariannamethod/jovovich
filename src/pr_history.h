@@ -32,6 +32,9 @@ int jov_pr_recall_snapshots(FILE *out, int json, const char *directory, const jo
 /* A missing number lists checked PRs in the selected repository. */
 int jov_pr_history(const char *directory, const char *scope, const char *number, const char *head,
                    const char *checkout, const char *file);
+/* List immutable mixed-review IDs or compare two records in journal order. */
+int jov_pr_reviews(const char *directory, const char *scope, const char *number,
+                   const char *before_id, const char *after_id);
 /* Record or check a spore fingerprint against one verified observation. */
 int jov_pr_spore(const char *directory, const char *scope, const char *number,
                  const char *observation, const char *file, int write);

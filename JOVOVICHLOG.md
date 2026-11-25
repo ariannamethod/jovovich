@@ -2,6 +2,31 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-25 — Compare exact mixed-review observations
+
+`jovovich-replay reviews` indexes mixed reviews by evidence digest and original
+journal ordinal. `--compare BEFORE_ID AFTER_ID` selects two observations in
+that PR's insertion order and retains both full records. Exact paths align the
+files; AML classifies four verdict transitions, first reviews, absent paths
+and changed rule/model/policy identities. Renames keep both path histories.
+The index validates each evidence digest before filtering legacy entries;
+selected comparisons reject unknown, reversed or duplicate identities before
+publishing. Both queries work offline and leave the checkpoint intact.
+
+Twelve native reviews from PR #79, retained in PR #80's AML journals, produce
+18 checked comparisons and 36 file transitions. Twelve pairs keep the visual
+option order; six pairs change it and report that policy change separately.
+Full original observations and fresh-process output bytes match. Both legacy
+history outputs remain byte-identical, and all original checkpoints are intact.
+
+The complete repository checks pass. Synthetic comparison gates cover both Git
+object formats, all transition classes, rule corrections, text/vision model
+changes, policy changes, same-head repeats, future appends, foreign namespaces,
+legacy entries, valid-container corruption, and the 64-file/128-path boundary.
+Replay gates pass ASan/UBSan with AML uninstrumented and leak detection disabled.
+Four mutation runs are rejected: bypassed compatibility, bypassed evidence
+digest, reversed journal order and an absent path misclassified as unchanged clean.
+
 ## 2026-11-25 — Keep mixed reviews in the PR history
 
 Mixed reports accept `--memory` with `--record-pr` after validating the complete

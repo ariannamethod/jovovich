@@ -48,10 +48,10 @@ build/bench-review: tools/bench_review.c src/hash.h src/json.h src/report_json.h
 build/jovovich-pack: src/html_state.h src/visual_batch.c src/visual_batch.h src/visual_compare.c src/visual_compare.h src/visual_memory.c src/visual_memory.h src/report_json.h src/git_snapshot.h src/git_command.h src/git_context.h src/process.h src/facts.c src/facts.h src/pack.c src/batch.c src/batch.h src/review.c src/review.h src/trace_gate.h src/json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/pack.c src/visual_batch.c src/visual_compare.c src/visual_memory.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-replay: src/visual_compare.c src/visual_compare.h src/visual_memory.c src/visual_memory.h src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/snapshot_routes.h src/pr_history.c src/pr_history.h src/hunk_trial.h src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
+build/jovovich-replay: src/visual_compare.c src/visual_compare.h src/visual_memory.c src/visual_memory.h src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/snapshot_routes.h src/pr_history.c src/pr_history.h src/review_history.h src/hunk_trial.h src/git_snapshot.h src/git_command.h src/git_context.h src/replay.c src/batch.c src/process.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/review.c src/review.h src/json.h src/report_json.h src/hash.h src/batch.h build/jovovich-pack | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/replay.c src/pr_history.c src/visual_compare.c src/visual_memory.c src/batch.c src/facts.c src/trace_gate.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
-build/jovovich-report: src/html_state.h src/visual_batch.c src/visual_batch.h src/visual_compare.c src/visual_compare.h src/visual_memory.c src/visual_memory.h src/pr_history.h src/pr_history.c src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/git_command.h src/report_findings.h src/process.h src/git_context.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build build/jovovich-replay
+build/jovovich-report: src/html_state.h src/visual_batch.c src/visual_batch.h src/visual_compare.c src/visual_compare.h src/visual_memory.c src/visual_memory.h src/pr_history.h src/pr_history.c src/review_history.h src/snapshot_history.h src/snapshot_recall.h src/snapshot_compare.h src/git_command.h src/report_findings.h src/process.h src/git_context.h src/model_manifest.h src/facts.c src/facts.h src/trace_gate.c src/trace_gate.h src/boundary_view.h src/boundary.h src/boundary.c src/report.c src/report_json.h src/batch.c src/batch.h src/review.c src/review.h src/json.h src/hash.h native-deps | build build/jovovich-replay
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core src/trace_gate.c src/boundary.c src/report.c src/visual_batch.c src/visual_compare.c src/visual_memory.c src/pr_history.c src/batch.c src/review.c src/facts.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 build/check-pipeline: tests/check_pipeline.c src/git_context.h src/report_json.h src/hash.h native-deps | build
@@ -96,7 +96,7 @@ build/check-boundary: tests/check_boundary.c src/boundary.c src/boundary.h | bui
 build/check-corpus: tests/check_corpus.c src/report_json.h src/hash.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) tests/check_corpus.c $(NOTORCH_ROOT)/sha256.c -lm -o $@
 
-check: build/visual-memory-fixture build/check-receipts build/check-prompt-tokens build/check-model-cancel build/check-model-bytes build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
+check: build/review-history-fixture build/visual-memory-fixture build/check-receipts build/check-prompt-tokens build/check-model-cancel build/check-model-bytes build/check-voice build/compare-comment-pairs build/jovovich-replay build/bench-review build/check-trace-gate build/score-run-selection build/score-traces build/trace-corpus build/check-boundary build/boundary-observations build/jovovich-readout build/review-demo build/check-review build/check-pipeline build/jovovich-pack build/check-git build/jovovich-report build/batch-fixture build/score-quality build/semantic-corpus build/check-corpus
 	./build/check-model-cancel
 	./build/check-model-bytes
 	./build/check-voice
@@ -153,6 +153,9 @@ check-visual: build/jovovich
 
 build/visual-memory-fixture: tests/visual_memory_fixture.c src/visual_memory.c src/visual_memory.h src/facts.c src/facts.h native-deps | build
 	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/visual_memory_fixture.c src/visual_memory.c src/facts.c src/review.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
+
+build/review-history-fixture: tests/review_history_fixture.c src/report_json.h src/hash.h native-deps | build
+	$(CC) $(CFLAGS) -Isrc -I$(NOTORCH_ROOT) -I$(AML_ROOT)/core tests/review_history_fixture.c $(AML_ROOT)/libaml.a $(NOTORCH_ROOT)/sha256.c -lm -pthread -o $@
 
 .PHONY: check-visual-memory
 check-visual-memory: build/jovovich build/jovovich-replay build/visual-memory-fixture

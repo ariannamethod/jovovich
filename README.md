@@ -194,6 +194,10 @@ her answers and their dated receipts, separated by repository and PR number.
 After a restart, she can retrieve the exact review.
 [Keep a mixed review](docs/batch-review.md#keep-a-mixed-review-in-the-prs-aml-history)
 
+She can compare two remembered reviews, file by file: where her verdict changed,
+where it held, and where the rule or model changed between visits.
+[Compare her decisions](docs/batch-review.md#compare-two-recorded-reviews)
+
 The log is singular. She is watching.
 [JOVOVICHLOG](JOVOVICHLOG.md) · [Arianna Method Manifesto](ARIANNA_METHOD_MANIFESTO.md) · [305-token speed measurements](docs/review-latency.md)
 

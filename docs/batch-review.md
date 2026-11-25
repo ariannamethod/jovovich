@@ -209,6 +209,53 @@ deterministic execution findings retain `checked`. Model answers occupy
 `evidence.review`, with `evidence.findings` empty, and supply no snapshot
 coverage. Existing execution and snapshot history queries keep their behavior.
 
+### Compare two recorded reviews
+
+List the mixed reviews in one PR, then select two exact observation IDs:
+
+```sh
+./build/jovovich-replay reviews review-memory studio/east 7
+./build/jovovich-replay reviews review-memory studio/east 7 \
+  --compare BEFORE_OBSERVATION_ID AFTER_OBSERVATION_ID
+```
+
+The `jovovich.mixed-review-index/1` index gives each evidence SHA-256, its
+one-based ordinal in the complete PR journal, batch ID, base/head revisions,
+rule receipt, publication clock and counts. Repeated evaluations of one head
+can therefore be selected individually. Execution-only entries retain their
+positions in the journal and are omitted from this index.
+
+The earlier ID must precede the later ID in this journal's insertion order.
+`jovovich.mixed-review-comparison/1` retains both complete original observations
+and aligns their files by exact Git path. Per-file `before`/`after` references
+give zero-based positions in those original file arrays and the saved verdicts.
+The array keeps the earlier review's path order, then appends newly reviewed
+paths in the later review's order. AML classifies each pair and counts the results:
+
+| Transition | Earlier review | Later review |
+| --- | --- | --- |
+| `concern_to_clean` | CONCERN | CLEAN |
+| `clean_to_concern` | CLEAN | CONCERN |
+| `unchanged_concern` | CONCERN | CONCERN |
+| `unchanged_clean` | CLEAN | CLEAN |
+| `first_review` | Path absent | Path reviewed |
+| `not_reviewed_after` | Path reviewed | Path absent |
+| `not_comparable` | Different rule, model, policy or review kind | Changed identities listed in `reasons` |
+
+Compatibility requires the same named rule receipt and selected requirement.
+Model identities include text/tokenizer hashes and the vision hashes in both
+image observations. Policy identities include the question, HTML/trace/boundary
+view, readout, visual memory key, option order and image pixel budget. Every
+changed identity is reported; a missing file has a `null` reference, and a
+rename produces one absent path and one new path.
+
+Both commands are read-only and work without Git, model files or the visual
+journal. The index validates evidence digests before filtering entries. Selected
+comparisons verify both original records; unknown, repeated, reversed or
+ambiguous IDs fail without partial output. Appending later observations leaves
+a comparison between existing IDs byte-identical. Ordinary `history` output
+and stored records retain their format.
+
 ## Include verified findings in the PR comment
 
 Give the report the project repository and the driver that measured the batch.
