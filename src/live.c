@@ -5,6 +5,7 @@
 #include "boundary.h"
 #include "run_selection.h"
 #include "git_context.h"
+#include "html_state.h"
 #include "harness/arch.h"
 #include "examples/bpe.h"
 #include "tools/narrow_json.h"
@@ -158,7 +159,7 @@ int main(int argc,char **argv) {
         const char *visual_request=nj_get(line,"visual_request");
         if(visual_request) {
             const char *end=report_json_end(visual_request,0);
-            if(!with_visual || !end || *visual_request!='{' ||
+            if(!with_visual || nj_get(line,"html_state") || !end || *visual_request!='{' ||
                !nj_is(nj_get(nj_get(line,"batch"),"schema"),"jovovich.git-batch/2"))goto done;
             char *request=strndup(visual_request,(size_t)(end-visual_request));
             int failed=!request || jov_visual_from_memory(request,strlen(request),m,tok,logits,wh,th,with_visual,1);
@@ -185,6 +186,8 @@ int main(int argc,char **argv) {
         jov_review r={.id=id,.model=model_id,.revision=revision,.question="pending",
             .file=file,.context=context,.rule_excerpt=rule,.change_excerpt=change,.concern=.5,.clean=.5};
         char code[JOV_BOUNDARY_CODE_SIZE],ph[65],*model_context=NULL;
+        jov_html_state html={0};char reverse_ph[65];
+        jov_html_receipt html_receipt={.prompt_sha256=ph,.reverse_prompt_sha256=reverse_ph};
         jov_boundary_receipt receipt={NULL,ph};
         int status=1;
         jov_fact *fact = NULL;
@@ -212,6 +215,13 @@ int main(int argc,char **argv) {
                 fprintf(stderr,"Git evidence hash mismatch\n");goto row_done;
             }
         }
+        if(nj_get(line,"html_state")) {
+            if(!with_visual || !r.source || !nj_is(nj_get(nj_get(line,"batch"),"schema"),"jovovich.git-batch/2") ||
+               jov_html_decode(nj_get(line,"html_state"),file,source.head,&html))goto row_done;
+            const char *view=jov_html_context(&html,file,rule);
+            if(!view || !(model_context=strdup(view)))goto row_done;
+            html_receipt.head_blob=html.blob;html_receipt.head_sha256=html.sha256;
+        }
         if(canonical) {
             int matched=jov_boundary_context(r.source?file:NULL,context,rule,change,code,&model_context);
             if(matched<0)goto row_done;
@@ -220,7 +230,9 @@ int main(int argc,char **argv) {
         jov_trace_receipt trace={0};
         int has_trace=nj_get(line,"trace_evidence")!=NULL;
         if(am_set_var_text("review_context",model_context?model_context:context) ||
-           (has_trace && jov_apply_trace_gate(line,id,rule,change,&trace)) || run("aml/prepare.aml"))goto row_done;
+           (has_trace && jov_apply_trace_gate(line,id,rule,change,&trace)) ||
+           (html.content && jov_html_order(0)) ||
+           run(html.content?"aml/prepare-html.aml":"aml/prepare.aml"))goto row_done;
         const char *prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
         if(!prompt || !r.question)goto row_done;
         if(features && nj_get(line,"prompt")) {
@@ -228,7 +240,7 @@ int main(int argc,char **argv) {
             int same=stored && !strcmp(stored,prompt);free(stored);
             if(!same){fprintf(stderr,"Training prompt differs from AML output\n");goto row_done;}
         }
-        size_t len=strlen(prompt);if(len>1048576 || ((canonical || has_trace) && hash_bytes(prompt,len,ph)))goto row_done;
+        size_t len=strlen(prompt);if(len>1048576 || ((canonical || has_trace || html.content) && hash_bytes(prompt,len,ph)))goto row_done;
         if(has_trace)memcpy(trace.prompt_sha256,ph,sizeof(ph));
         final_state state={.last_layer=dims.n_layers-1};
         if(forward_prompt(m,tok,prompt,am_get_var_text("review_context"),logits,features || adapter ? &state : NULL))goto row_done;
@@ -238,7 +250,15 @@ int main(int argc,char **argv) {
             if(!state.captured || jov_readout_margin(&head,state.unit,probs[0]-probs[1],&probs[0]))goto row_done;
             probs[1]=0;
         }
-        if(score_choices(probs))goto row_done;
+        if(html.content) {
+            html_receipt.logits[0]=logits[32];html_receipt.logits[1]=logits[33];
+            if(jov_html_order(1) || run("aml/prepare-html.aml"))goto row_done;
+            prompt=am_get_var_text("prompt");r.question=am_get_var_text("question");
+            if(!prompt || !r.question || hash_bytes(prompt,strlen(prompt),reverse_ph) ||
+               forward_prompt(m,tok,prompt,am_get_var_text("review_context"),logits,NULL))goto row_done;
+            html_receipt.logits[2]=logits[32];html_receipt.logits[3]=logits[33];
+            if(jov_html_scores(html_receipt.logits,probs))goto row_done;
+        } else if(score_choices(probs))goto row_done;
         struct timespec now;if(clock_gettime(CLOCK_REALTIME,&now))goto row_done;
         int day=(int)(now.tv_sec/86400),sec=(int)(now.tv_sec%86400),ms=(int)(now.tv_nsec/1000000);
         if(sec<0){day--;sec+=86400;}
@@ -247,13 +267,14 @@ int main(int argc,char **argv) {
         r.concern=probs[0];r.clean=probs[1];
         const char *verdict=am_get_var_text("verdict"),*chosen=jov_review_verdict(&r);
         if(!verdict || !chosen || strcmp(verdict,chosen) || !am_get_var_record("reviewed_at"))goto row_done;
-        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL,has_trace?&trace:NULL};r.execution=&execution;
+        jov_execution execution={ih,wh,th,day,sec,ms,adapter?adapter_hash:NULL,canonical?&receipt:NULL,has_trace?&trace:NULL,html.content?&html_receipt:NULL};r.execution=&execution;
         if(seen && !json)fputs("\n---\n\n",stdout);
         status=json?jov_review_json(stdout,&r):jov_review_markdown(stdout,&r);
         if (!status && !json && trace.measurement.run)
             status=jov_trace_write_change(stdout,nj_get(line,"trace_evidence"),&trace.measurement,file,0);
         if(fflush(stdout))status=JOV_IO_ERROR;
 row_done:
+        jov_html_free(&html);
         jov_fact_free(fact);
         free(model_context);free(id);free(file);free(context);free(rule);free(change);
         for(int i=0;i<6;i++)free(origin[i]);

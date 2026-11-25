@@ -104,8 +104,8 @@ set -e
 ```
 
 The packer enumerates every changed Git path before writing anything. Text
-paths retain their ordinary patch reviews; a visual comparison cannot replace
-one. Each binary path must have exactly one request bound to the batch's exact
+paths retain their patch evidence; a visual comparison cannot replace a text
+decision. Each binary path must have exactly one request bound to the batch's exact
 BASE/HEAD commits and that path. Missing, duplicate, foreign or unused requests
 abort the pack. Other binary changes, image additions/deletions and image
 renames remain unsupported. A change containing only modified images works.
@@ -117,6 +117,28 @@ complete verified comparison receipt. A visual row's `visual_request` contains
 the captured comparison object without surrounding JSONL whitespace. Inference
 hashes those exact nested bytes. Text rows still hash the complete input line.
 The model loads once and uses a fresh inference cache for each decision.
+
+For a regular `.html` or `.htm` file at HEAD (case-insensitive extension), this
+mixed mode also captures the complete committed HTML in `html_state`, including
+its Git blob ID and SHA-256. The manifest binds the digest of that state. The
+model reads the selected base rule and the complete after-file, and answers
+whether that file satisfies the requirement. This includes unchanged elements
+outside the diff hunks. The original diff, context ID and rule receipt remain
+in the answer as source evidence.
+
+Each HTML decision uses two fresh forwards: CONCERN/CLEAN and CLEAN/CONCERN.
+`aml/score-html.aml` aligns their logits by meaning and averages each pair before
+the ordinary float32 softmax. CONCERN still wins an exact tie; there is no fitted
+threshold. The answer's `execution.file_view` names `html-head-paired/1` and
+retains both prompt hashes and all four logits. Reporting rereads the HTML blob
+at HEAD, rebuilds both AML prompts and recomputes the probability pair. It uses
+the checkout already identified by the visual comparison, not the worktree's
+current HTML. Attached trace evidence is appended to this complete-file view.
+
+Deleted HTML paths, symlinks and other text types keep the existing diff view.
+Text-only packing and archived mixed inputs without `html_state` retain their
+original behavior. The complete HTML must fit the existing capture, row and
+8,192-token model limits; an over-limit file does not silently lose its state.
 
 Reporting rereads the selected historical observations, verifies their image
 blobs and base rule against Git, and reconstructs the comparison receipt. The

@@ -1,0 +1,5 @@
+# Align the two A/B frames by meaning before averaging. No fitted threshold.
+assert(len(html_logits) == 4, "expected both HTML option orders")
+choice_logits = zeros(2)
+choice_logits[0] = html_logits[0] * 0.5 + html_logits[3] * 0.5
+choice_logits[1] = html_logits[1] * 0.5 + html_logits[2] * 0.5

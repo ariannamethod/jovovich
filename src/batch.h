@@ -7,6 +7,7 @@ typedef struct {
     const char *file,*id;
     jov_source source;
     const char *visual; /* Digest of the exact, Git-verified comparison receipt. */
+    const char *html; /* Digest of the captured head-file state, when present. */
 } jov_batch_item;
 /* Domain-separated digest of ordered paths, context IDs and source records. */
 int jov_batch_digest_fact(const jov_batch_item *items, int count, const jov_fact *fact, char out[65]);

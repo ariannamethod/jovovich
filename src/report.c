@@ -9,7 +9,9 @@
 #include "model_manifest.h"
 #include "tools/narrow_json.h"
 #include "git_context.h"
+#include "git_command.h"
 #include "visual_batch.h"
+#include "html_state.h"
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
@@ -25,6 +27,7 @@ typedef struct {
     jov_batch_item item;
     jov_fact *fact;
     jov_visual_batch visual;
+    jov_html_state html;
 } input;
 #include "report_findings.h"
 static int eq(const char*obj,const char*key,const char*want) {
@@ -56,6 +59,11 @@ static int parse(input*p,int index,const report_options *opts) {
         hash_bytes(p->rule,strlen(p->rule),h) || strcmp(h,p->origin[4]) ||
         hash_bytes(p->change,strlen(p->change),h) || strcmp(h,p->origin[5]) || hash_bytes(p->row,strlen(p->row),p->row_hash))return 1;
     const char *request=nj_get(p->row,"visual_request");
+    const char *html=nj_get(p->row,"html_state");
+    if(html) {
+        if(!opts->visual_memory || request || jov_html_decode(html,p->file,p->origin[1],&p->html))return 1;
+        p->item.html=p->html.digest;
+    }
     if(request) {
         if(!opts->visual_memory || nj_get(p->row,"trace_evidence") ||
            jov_visual_batch_load(&p->visual,opts->visual_memory,request,opts->visual_scope,opts->visual_pr,p->origin[0],p->origin[1]) ||
@@ -75,6 +83,8 @@ static int answer(const char*j,input*p,const char*manifest,float*flag,int index,
     int version,first,last,day,sec,ms;double concern,clean;char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
     char *wh=nj_string(nj_get(manifest,"weights_sha256")),*th=nj_string(nj_get(manifest,"tokenizer_sha256"));int rc=1;
     jov_fact *fact = NULL;
+    char *html_context=NULL;
+    float html_probs[2]={0};
     if (jov_fact_decode(nj_get(j, "fact"), &fact) || !jov_fact_same(fact, p->fact)) goto done;
     if(!model_id || !revision || !wh || !th || number(j,"schema_version",&version) || version!=1 || !eq(j,"id",p->id) ||
        !eq(model,"id",model_id) || !eq(model,"revision",revision) || !eq(nj_get(j,"scope"),"file",p->file) ||
@@ -82,10 +92,33 @@ static int answer(const char*j,input*p,const char*manifest,float*flag,int index,
        !eq(src,"kind","git") || number(src,"rule_first_line",&first) || number(src,"rule_last_line",&last) ||
        first!=p->item.source.first_line || last!=p->item.source.last_line)goto done;
     for(int i=0;i<6;i++)if(!eq(src,source_keys[i],p->origin[i]))goto done;
-    if(jov_verify_boundary_view(j,p->row,p->id,p->context,p->rule,p->change,"aml/prepare.aml",index,policy,&p->measurement) || !eq(j,"question",am_get_var_text("question")))goto done;
+    const char *view=nj_get(e,"file_view");
+    if(!!view!=!!p->html.content)goto done;
+    if(view) {
+        if(!eq(view,"policy","html-head-paired/1") || !eq(view,"head_blob",p->html.blob) || !eq(view,"head_sha256",p->html.sha256) ||
+           nj_get(e,"boundary_view") || nj_get(e,"readout_sha256"))goto done;
+        const char *ctx=jov_html_context(&p->html,p->file,p->rule);
+        if(!ctx || !(html_context=strdup(ctx)) || jov_html_order(0))goto done;
+    }
+    if(jov_verify_boundary_view(j,p->row,p->id,html_context?html_context:p->context,p->rule,p->change,
+        view?"aml/prepare-html.aml":"aml/prepare.aml",index,policy,&p->measurement) || !eq(j,"question",am_get_var_text("question")))goto done;
+    if(view) {
+        char ph[65];float logits[4];const char *orders[]={"concern_first","clean_first"};
+        for(int i=0;i<2;i++) {
+            if(i && (jov_html_order(1) || am_exec_file("aml/prepare-html.aml")))goto done;
+            const char *prompt=am_get_var_text("prompt"),*o=nj_get(view,orders[i]);double a,b;
+            if(!prompt || hash_bytes(prompt,strlen(prompt),ph) || !eq(o,"prompt_sha256",ph) ||
+               nj_number(nj_get(o,"logit_a"),&a) || nj_number(nj_get(o,"logit_b"),&b) ||
+               !isfinite(a) || !isfinite(b))goto done;
+            logits[2*i]=(float)a;logits[2*i+1]=(float)b;
+        }
+        if(jov_html_scores(logits,html_probs))goto done;
+    }
     if(nj_number(nj_get(prob,"CONCERN"),&concern) || nj_number(nj_get(prob,"CLEAN"),&clean) ||
        !isfinite(concern) || !isfinite(clean) || concern<0 || clean<0 || concern>1 || clean>1 || fabs(concern+clean-1)>1e-6 ||
        !eq(choice,"verdict",concern>=clean?"CONCERN":"CLEAN"))goto done;
+    if(view && ((float)concern!=html_probs[0] || (float)clean!=html_probs[1] ||
+       (concern>=clean)!=(html_probs[0]>=html_probs[1])))goto done;
     if(!eq(e,"engine","NoTorch") || !eq(e,"language","AML") || !eq(e,"arithmetic","float32") ||
        !eq(e,"input_sha256",p->row_hash) || !eq(e,"weights_sha256",wh) || !eq(e,"tokenizer_sha256",th) ||
        !eq(time,"schema","janus.instant/1") || !eq(time,"time_scale","posix") ||
@@ -93,8 +126,32 @@ static int answer(const char*j,input*p,const char*manifest,float*flag,int index,
        sec<0 || sec>=86400 || ms<0 || ms>=1000)goto done;
     *flag=concern>=clean?1:0;rc=0;
 done:
+    free(html_context);
     jov_fact_free(fact);
     free(model_id);free(revision);free(wh);free(th);return rc;
+}
+
+/* The visual comparison already resolves this repository and commit pair.
+ * Reopen the text blob too: a self-consistent JSON hash is not a Git binding. */
+static int verify_html(input *inputs,int count) {
+    int any=0;char *checkout=NULL;
+    for(int i=0;i<count;i++) {
+        any+=inputs[i].html.content!=NULL;
+        if(!checkout && inputs[i].visual.request)
+            checkout=nj_string(nj_get(nj_get(inputs[i].visual.request,"compare"),"checkout"));
+    }
+    int bad=any && !checkout;
+    for(int i=0;!bad && i<count;i++)if(inputs[i].html.content) {
+        input *p=inputs+i;size_t n=0;int code=1;char *content=NULL;
+        char *blob=jov_git_regular_blob(checkout,p->origin[1],p->file,NULL);
+        if(!blob || strcmp(blob,p->html.blob))bad=1;
+        else {
+            content=jov_git_command(checkout,NULL,(const char*[]){"cat-file","blob",blob,NULL},262144,&n,&code);
+            bad=!content || code || n!=strlen(p->html.content) || memcmp(content,p->html.content,n);
+        }
+        free(blob);free(content);
+    }
+    free(checkout);return bad;
 }
 int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
@@ -121,6 +178,7 @@ int main(int argc,char **argv) {
         items[count]=p->item;count++;
     }
     if(bad || !count || (!!visual_count)!=!!opts.visual_memory || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
+    if(verify_html(inputs,count))goto done;
     if (opts.pr_metadata) {
         if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact,NULL) ||
             !(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0) goto done;
@@ -213,6 +271,10 @@ int main(int argc,char **argv) {
                 char *obs=nj_string(raw_obs);
                 fputs("\n---\n\n",out);failed=(listed && !code) || (raw_obs && !obs) ||
                     jov_review_markdown_evidence(out,&r,code,obs);
+                if(!failed && p->html.content) {
+                    fputs("\nModel file view: complete HTML at the head commit; both option orders, averaged by meaning.\n\nHTML SHA-256: ",out);
+                    jov_markdown_text(out,p->html.sha256,0);fputc('\n',out);
+                }
                 if(!failed && p->measurement.run)
                     failed=jov_trace_write_change(out,nj_get(p->row,"trace_evidence"),&p->measurement,p->file,0);
                 jov_replay_ref prior;
@@ -236,6 +298,6 @@ done:
     if(batch)fclose(batch);
     if(answers)fclose(answers);
     if(out && fclose(out))rc=1;
-    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;jov_fact_free(p->fact);jov_visual_batch_free(&p->visual);free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;jov_fact_free(p->fact);jov_visual_batch_free(&p->visual);jov_html_free(&p->html);free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
     free(manifest);free(extra);am_persistent_mode(0);return rc?1:0;
 }

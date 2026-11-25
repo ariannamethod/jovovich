@@ -128,6 +128,12 @@ int jov_review_validate(const jov_review *r) {
         return JOV_INVALID;
     if (r->execution) {
         const jov_execution *e = r->execution;
+        if(e->html && (!r->source || e->boundary || e->readout_sha256 || !e->html->head_blob ||
+            strlen(e->html->head_blob)!=strlen(r->source->head) ||
+            strspn(e->html->head_blob,"0123456789abcdef")!=strlen(r->source->head) ||
+            !hash_string(e->html->head_sha256) || !hash_string(e->html->prompt_sha256) ||
+            !hash_string(e->html->reverse_prompt_sha256)))return JOV_INVALID;
+        if(e->html)for(int i=0;i<4;i++)if(!isfinite(e->html->logits[i]))return JOV_INVALID;
         if (e->trace && (!hash_string(e->trace->prompt_sha256) || e->trace->runs<0 ||
             e->trace->differing<0 || e->trace->differing>e->trace->runs ||
             (e->trace->differing!=0)!=present(e->trace->observation)))return JOV_INVALID;
@@ -178,6 +184,15 @@ int jov_review_json(FILE *out, const jov_review *r) {
         json_field(out, "input_sha256", e->input_sha256); fputc(',', out);
         json_field(out, "weights_sha256", e->weights_sha256); fputc(',', out);
         json_field(out, "tokenizer_sha256", e->tokenizer_sha256);
+        if(e->html) {
+            fputs(",\"file_view\":{\"policy\":\"html-head-paired/1\",",out);
+            json_field(out,"head_blob",e->html->head_blob);fputc(',',out);
+            json_field(out,"head_sha256",e->html->head_sha256);
+            fputs(",\"concern_first\":{",out);json_field(out,"prompt_sha256",e->html->prompt_sha256);
+            fprintf(out,",\"logit_a\":%.9g,\"logit_b\":%.9g},\"clean_first\":{",e->html->logits[0],e->html->logits[1]);
+            json_field(out,"prompt_sha256",e->html->reverse_prompt_sha256);
+            fprintf(out,",\"logit_a\":%.9g,\"logit_b\":%.9g}}",e->html->logits[2],e->html->logits[3]);
+        }
         if(e->trace) {
             const jov_trace_receipt *t=e->trace;
             fprintf(out,",\"trace_witness\":{\"policy\":\"paired-trace-diff/1\",\"runs\":%d,\"differing\":%d,",

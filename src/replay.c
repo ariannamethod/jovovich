@@ -107,7 +107,7 @@ static int verify_origin_rule(const char *repo, const jov_fact *f) {
 
 static jov_batch_item batch_item(const packed_row *p) {
     return (jov_batch_item){p->file,p->id,{p->base,p->head,p->path,p->blob,
-                                           p->rule_sha,p->diff_sha,p->first,p->last},NULL};
+                                           p->rule_sha,p->diff_sha,p->first,p->last},NULL,NULL};
 }
 
 static int matches_git_row(const char *row, const packed_row *expected) {

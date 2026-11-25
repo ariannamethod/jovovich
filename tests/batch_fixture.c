@@ -1,6 +1,7 @@
 /* Synthetic serialization fixtures only. No model inference occurs here. */
 #define _POSIX_C_SOURCE 200809L
 #include "review.h"
+#include "html_state.h"
 #include "facts.h"
 #include "hash.h"
 #include "tools/narrow_json.h"
@@ -28,25 +29,43 @@ int main(int argc,char**argv) {
         jov_source source={o[0],o[1],o[2],o[3],o[4],o[5],num(s,"rule_first_line"),num(s,"rule_last_line")};
         char ih[65];assert(!hash_bytes(line,(size_t)n,ih));
         if(i==1 && !strcmp(argv[3],"badhash"))ih[0]=ih[0]=='0'?'1':'0';
-        jov_execution e={ih,wh,th,20763,1,0,NULL,NULL,NULL};
+        jov_execution e={ih,wh,th,20763,1,0,NULL,NULL,NULL,NULL};
+        jov_html_state html={0};char ph[65],reverse_ph[65];
+        jov_html_receipt view={.prompt_sha256=ph,.reverse_prompt_sha256=reverse_ph};
+        assert(!jov_html_decode(nj_get(line,"html_state"),file,source.head,&html));
         double a=i==1 && !strcmp(argv[3],"mixed")?.9:i==1 && !strcmp(argv[3],"tie")?.5:.1;
         assert(!am_set_var_text("review_context",context));
+        if(html.content) {
+            assert(jov_html_context(&html,file,rule));
+            assert(!jov_html_order(0));
+            view.head_blob=html.blob;view.head_sha256=html.sha256;e.html=&view;
+        }
         jov_trace_receipt trace={0};
         if (nj_get(line,"trace_evidence")) {
             assert(!jov_apply_trace_gate(line,id,rule,change,&trace));
             e.trace=&trace;
         }
-        assert(!am_exec_file("aml/prepare.aml"));
+        assert(!am_exec_file(html.content?"aml/prepare-html.aml":"aml/prepare.aml"));
+        if(html.content)assert(!hash_bytes(am_get_var_text("prompt"),strlen(am_get_var_text("prompt")),ph));
         if (e.trace) {
             const char *prompt=am_get_var_text("prompt");
             assert(prompt && !hash_bytes(prompt,strlen(prompt),trace.prompt_sha256));
         }
+        double b=1-a;
+        if(html.content) {
+            assert(!jov_html_order(1) && !am_exec_file("aml/prepare-html.aml"));
+            assert(!hash_bytes(am_get_var_text("prompt"),strlen(am_get_var_text("prompt")),reverse_ph));
+            view.logits[0]=view.logits[3]=a>=.5?2:0;
+            view.logits[1]=view.logits[2]=a<=.5?2:0;
+            float probs[2];assert(!jov_html_scores(view.logits,probs));a=probs[0];b=probs[1];
+        }
         jov_review r={.id=id,.model=model,.revision=revision,.question=am_get_var_text("question"),.file=file,.context=context,
-            .rule_excerpt=rule,.change_excerpt=change,.concern=a,.clean=1-a,.source=&source,.execution=&e};
+            .rule_excerpt=rule,.change_excerpt=change,.concern=a,.clean=b,.source=&source,.execution=&e};
         jov_fact *fact = NULL;
         assert(!jov_fact_decode(nj_get(line, "fact"), &fact));
         r.fact = fact;
         assert(!jov_review_json(stdout,&r));
+        jov_html_free(&html);
         jov_fact_free(fact);
         free(id);free(file);free(context);free(rule);free(change);for(int j=0;j<6;j++)free(o[j]);i++;
     }
