@@ -106,13 +106,14 @@ static int select_run(const char *line,size_t bytes,void *model,bpe_tokenizer *t
 
 int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
-    int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL,*vision_path=NULL,*visual_memory=NULL,*recall_visual=NULL,*compare_visual=NULL;
+    int json=0,features=0,canonical=0,select=0,valid=argc>=3;const char *adapter=NULL,*vision_path=NULL,*visual_memory=NULL,*recall_visual=NULL,*compare_visual=NULL,*with_visual=NULL;
     for(int i=3;i<argc && valid;i++) {
         if(!strcmp(argv[i],"--json") && !json)json=1;
         else if(!strcmp(argv[i],"--vision") && !vision_path && i+1<argc)vision_path=argv[++i];
         else if(!strcmp(argv[i],"--visual-memory") && !visual_memory && i+1<argc)visual_memory=argv[++i];
         else if(!strcmp(argv[i],"--recall-visual") && !recall_visual && i+1<argc)recall_visual=argv[++i];
         else if(!strcmp(argv[i],"--compare-visual") && !compare_visual && i+1<argc)compare_visual=argv[++i];
+        else if(!strcmp(argv[i],"--with-visual") && !with_visual && i+1<argc)with_visual=argv[++i];
         else if(!strcmp(argv[i],"--select-run") && !select)select=1;
         else if(!strcmp(argv[i],"--features") && !features)features=1;
         else if(!strcmp(argv[i],"--canonical-boundaries") && !canonical)canonical=1;
@@ -120,10 +121,11 @@ int main(int argc,char **argv) {
         else valid=0;
     }
     if(!manifest_path || !valid || (visual_memory && !vision_path) ||
+       (with_visual && (!json || vision_path || visual_memory || recall_visual || compare_visual || features || select || adapter || canonical)) ||
        (recall_visual && compare_visual) ||
        ((recall_visual || compare_visual) && (vision_path || visual_memory || features || select || adapter || canonical)) ||
        (vision_path && (features || select || adapter || canonical)) || ((features || select) && (json || adapter || canonical)) || (features && select)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] MODEL.gguf TOKENIZER.gguf [--vision VISION.gguf [--visual-memory DIR] | --recall-visual DIR | --compare-visual DIR | --select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] MODEL.gguf TOKENIZER.gguf [--vision VISION.gguf [--visual-memory DIR] | --recall-visual DIR | --compare-visual DIR | --json --with-visual DIR | --select-run | --features | [--json] [--readout ADAPTER.json] [--canonical-boundaries]] < reviews.jsonl\n",argv[0]);return 2;
     }
     char *manifest=nj_load(manifest_path,NULL);if(!manifest)return 1;
     char *model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision"));
@@ -152,6 +154,16 @@ int main(int argc,char **argv) {
         if (!line) {
             if (bad) { fprintf(stderr,"Invalid JSON or oversized input at row %d\n",seen+1); goto done; }
             break;
+        }
+        const char *visual_request=nj_get(line,"visual_request");
+        if(visual_request) {
+            const char *end=report_json_end(visual_request,0);
+            if(!with_visual || !end || *visual_request!='{' ||
+               !nj_is(nj_get(nj_get(line,"batch"),"schema"),"jovovich.git-batch/2"))goto done;
+            char *request=strndup(visual_request,(size_t)(end-visual_request));
+            int failed=!request || jov_visual_from_memory(request,strlen(request),m,tok,logits,wh,th,with_visual,1);
+            free(request);if(failed)goto done;
+            free(line);line=NULL;seen++;continue;
         }
         if(vision) {
             if(jov_visual_choice(line,bytes,m,tok,vision,logits,wh,th,vh,visual_memory)){fprintf(stderr,"Visual choice failed at input row %d\n",seen+1);goto done;}

@@ -6,6 +6,8 @@
 #include "batch.h"
 #include "facts.h"
 #include "git_snapshot.h"
+#include "visual_batch.h"
+#include "report_json.h"
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>
@@ -85,7 +87,7 @@ static void abbreviate_index(char *patch,size_t width) {
     *write=0;
 }
 
-static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules) {
+static int prepare(packed*p,const char*repo,const char*base,const char*head,const char*rules,int visual) {
     size_t n;char *stat=NULL;int rc=1;
     if(!tree_path(p->file))goto done;
     int before=jov_git_path_kind(repo,base,p->file),after=jov_git_path_kind(repo,head,p->file);
@@ -97,7 +99,8 @@ static int prepare(packed*p,const char*repo,const char*base,const char*head,cons
     if(!stat || !n || stat[n-1] || strlen(stat)+1!=n)goto done;
     const char *first=strchr(stat,'\t'), *second=first?strchr(first+1,'\t'):NULL;
     if(!second || strcmp(second+1,p->file))goto done;
-    if(stat[0]=='-' || first[1]=='-'){fprintf(stderr,"Binary change: %s\n",p->file);goto done;}
+    int binary=stat[0]=='-' || first[1]=='-';
+    if(binary!=visual){fprintf(stderr,binary?"Binary change: %s\n":"Visual comparison cannot replace text review: %s\n",p->file);goto done;}
     p->diff=git_read(repo,(const char*[]){"diff","--no-ext-diff","--no-textconv","--no-color","--no-renames","--ignore-submodules=none","--submodule=short",filter,"--full-index","--unified=8",base,head,"--",p->file,NULL},&n);
     if(!p->diff || !n || memchr(p->diff,0,n))goto done;
     abbreviate_index(p->diff,strlen(base));
@@ -109,7 +112,7 @@ done:
     free(stat);if(rc)fprintf(stderr,"Could not capture text change: %s\n",p->file);return rc;
 }
 static int usage(void) {
-    fputs("Usage: jovovich-pack [--remember DIR REPOSITORY KEY [--supersedes N]] [--all] REPO BASE HEAD RULES_PATH [FILE] [FIRST LAST]\n"
+    fputs("Usage: jovovich-pack [--remember DIR REPOSITORY KEY [--supersedes N]] [--with-visual MEMORY OWNER/REPO PR REQUESTS] [--all] REPO BASE HEAD RULES_PATH [FILE] [FIRST LAST]\n"
           "       jovovich-pack --recall DIR REPOSITORY KEY [--as-of N] [--all] REPO BASE HEAD [FILE]\n"
           "       jovovich-pack --fact DIR REPOSITORY KEY [--as-of N]\n", stderr);
     return 2;
@@ -118,6 +121,7 @@ static int usage(void) {
 int main(int argc,char **argv) {
     int remember = 0, recall = 0, fact_only = 0, horizon = -1, parent = 0;
     const char *directory = NULL, *repository = NULL, *key = NULL;
+    const char *visual_memory=NULL,*visual_scope=NULL,*visual_requests=NULL;int visual_pr=0;
     char **args = argv + 1;
     int nargs = argc - 1;
     if (nargs > 0) {
@@ -137,7 +141,12 @@ int main(int argc,char **argv) {
             args += 2; nargs -= 2;
         }
     }
+    if(nargs>0 && !strcmp(args[0],"--with-visual")) {
+        if(nargs<5 || integer(args[3],&visual_pr))return usage();
+        visual_memory=args[1];visual_scope=args[2];visual_requests=args[4];args+=5;nargs-=5;
+    }
     int all = nargs > 0 && !strcmp(args[0], "--all");
+    if(visual_memory && (!all || fact_only))return usage();
     if (all) { args++; nargs--; }
     int required = 3 + !recall + !all;
     if (fact_only ? (all || nargs != 0) :
@@ -149,6 +158,9 @@ int main(int argc,char **argv) {
     char *private_repo=NULL,*base=NULL,*head=NULL,*blob=NULL,*rules=NULL,*selected=NULL,*list=NULL;
     packed records[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES]={{0}};FILE*out=NULL;
     jov_fact *fact = NULL;
+    jov_visual_batch visual[JOV_BATCH_MAX_FILES]={{0}};
+    int visual_count=0,visual_index[JOV_BATCH_MAX_FILES],visual_used[JOV_BATCH_MAX_FILES]={0};
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++)visual_index[i]=-1;
     am_init(); am_persistent_mode(1);
     if (recall || fact_only) {
         if (jov_memory_select(directory, repository, key, horizon, 0, NULL, &fact, &writer)) goto done;
@@ -161,6 +173,19 @@ int main(int argc,char **argv) {
     }
     if(nargs == required + 2 && (integer(args[required],&first) || integer(args[required+1],&last)))goto done;
     if(!tree_path(rules_path) || !(base=resolve(repo,args[1])) || !(head=resolve(repo,args[2])))goto done;
+    if(visual_memory) {
+        FILE *requests=fopen(visual_requests,"rb");if(!requests)goto done;
+        size_t bytes=0;int bad=0;char *row;
+        while((row=report_json_row(requests,&bytes,&bad,65536,JOV_BATCH_MAX_BYTES))) {
+            if(visual_count==JOV_BATCH_MAX_FILES || jov_visual_batch_load(visual+visual_count,visual_memory,row,visual_scope,visual_pr,base,head))bad=1;
+            free(row);if(bad)break;
+            for(int i=0;i<visual_count;i++)if(!strcmp(visual[i].file,visual[visual_count].file) || !strcmp(visual[i].id,visual[visual_count].id))bad=1;
+            if(bad)break;
+            visual_count++;
+        }
+        if(fclose(requests))bad=1;
+        if(bad || !visual_count)goto done;
+    }
     if(jov_git_snapshot(repo,base,&private_repo))goto done;
     repo=private_repo; attr_commit=base;
     if (recall) {
@@ -191,16 +216,20 @@ int main(int argc,char **argv) {
     char rh[65],batch_id[65];if(hash_bytes(selected,strlen(selected),rh))goto done;
     size_t total=0;
     for(int i=0;i<count;i++) {
-        if(prepare(records+i,repo,base,head,selected))goto done;
+        for(int j=0;j<visual_count;j++)if(!strcmp(records[i].file,visual[j].file)){visual_index[i]=j;visual_used[j]=1;}
+        if(prepare(records+i,repo,base,head,selected,visual_index[i]>=0))goto done;
         total+=strlen(records[i].context)+strlen(records[i].diff);
         if(total>JOV_BATCH_MAX_BYTES)goto done;
-        items[i]=(jov_batch_item){records[i].file,records[i].id,{base,head,rules_path,blob,rh,records[i].diff_hash,first,last}};
+        items[i]=(jov_batch_item){.file=records[i].file,.id=records[i].id,.source={base,head,rules_path,blob,rh,records[i].diff_hash,first,last},
+            .visual=visual_index[i]>=0?visual[visual_index[i]].digest:NULL};
         if(jov_source_validate(&items[i].source))goto done;
     }
+    for(int j=0;j<visual_count;j++)if(!visual_used[j])goto done;
     if (remember) {
         jov_fact origin = {.base=base, .head=head, .path=(char *)rules_path, .quote=selected, .first=first, .last=last};
         if (jov_memory_select(directory, repository, key, -1, parent, &origin, &fact, &writer)) goto done;
     }
+    if(visual_memory && fact && strcmp(fact->repository,visual_scope))goto done;
     if(all && jov_batch_digest_fact(items,count,fact,batch_id))goto done;
     out=tmpfile();if(!out)goto done;
     for(int i=0;i<count;i++) {
@@ -209,7 +238,8 @@ int main(int argc,char **argv) {
         json_field(out,"context",p->context);fputc(',',out);json_field(out,"rule_excerpt",selected);fputc(',',out);
         json_field(out,"change_excerpt",p->diff);fputs(",\"source\":",out);jov_source_json(out,&items[i].source);
         if (fact) { fputs(",\"fact\":", out); jov_fact_json(out, fact); }
-        if(all){fputs(",\"batch\":{\"schema\":\"jovovich.git-batch/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"id",batch_id);fprintf(out,",\"index\":%d,\"count\":%d}",i,count);}
+        if(visual_index[i]>=0)fprintf(out,",\"visual_request\":%s",visual[visual_index[i]].request);
+        if(all){fprintf(out,",\"batch\":{\"schema\":\"jovovich.git-batch/%d\",\"scope\":\"all_changed_paths\",",visual_memory?2:1);json_field(out,"id",batch_id);fprintf(out,",\"index\":%d,\"count\":%d}",i,count);}
         fputs("}\n",out);long end=ftell(out);
         if(start<0 || end<start || end-start>1048576 || (unsigned long)end>JOV_BATCH_MAX_BYTES || ferror(out))goto done;
     }
@@ -227,6 +257,6 @@ done:
     if (writer >= 0) close(writer);
     jov_fact_free(fact);
     if(out && fclose(out))rc=1;
-    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);}
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){free(records[i].file);free(records[i].diff);free(records[i].context);jov_visual_batch_free(visual+i);}
     am_persistent_mode(0);free(base);free(head);free(blob);free(rules);free(selected);free(list);return rc?1:0;
 }

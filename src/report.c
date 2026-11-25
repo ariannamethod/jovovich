@@ -9,6 +9,8 @@
 #include "model_manifest.h"
 #include "tools/narrow_json.h"
 #include "git_context.h"
+#include "visual_batch.h"
+#include <errno.h>
 #include <limits.h>
 #include <math.h>
 #include <stdlib.h>
@@ -18,10 +20,11 @@
 static const char *source_keys[]={"base_commit","head_commit","rules_path","rules_blob","rules_sha256","diff_sha256"};
 typedef struct {
     char *row,*id,*file,*context,*rule,*change,*origin[6],*batch;
-    char row_hash[65];int count;
+    char row_hash[65];int count,version;
     jov_trace_measurement measurement;
     jov_batch_item item;
     jov_fact *fact;
+    jov_visual_batch visual;
 } input;
 #include "report_findings.h"
 static int eq(const char*obj,const char*key,const char*want) {
@@ -31,24 +34,35 @@ static int number(const char*obj,const char*key,int*value) {
     long long v;if(nj_int(nj_get(obj,key),&v) || v<INT_MIN || v>INT_MAX)return 1;
     *value=(int)v;return 0;
 }
-static int parse(input*p,int index) {
+static int parse(input*p,int index,const report_options *opts) {
     p->id=nj_string(nj_get(p->row,"id"));p->file=nj_string(nj_get(p->row,"file"));
     p->context=nj_string(nj_get(p->row,"context"));p->rule=nj_string(nj_get(p->row,"rule_excerpt"));p->change=nj_string(nj_get(p->row,"change_excerpt"));
     const char*s=nj_get(p->row,"source"),*b=nj_get(p->row,"batch");
     for(int i=0;i<6;i++)p->origin[i]=nj_string(nj_get(s,source_keys[i]));
     int first,last,position;
+    p->version=eq(b,"schema","jovovich.git-batch/2")?2:1;
     if(!eq(s,"kind","git") || number(s,"rule_first_line",&first) || number(s,"rule_last_line",&last) ||
-       !eq(b,"schema","jovovich.git-batch/1") || !eq(b,"scope","all_changed_paths") ||
+       (p->version==1 && !eq(b,"schema","jovovich.git-batch/1")) || !eq(b,"scope","all_changed_paths") ||
+       (p->version==2)!=!!opts->visual_memory ||
        number(b,"index",&position) || position!=index || number(b,"count",&p->count) || p->count<1 || p->count>JOV_BATCH_MAX_FILES)return 1;
     p->batch=nj_string(nj_get(b,"id"));
-    p->item=(jov_batch_item){p->file,p->id,{p->origin[0],p->origin[1],p->origin[2],p->origin[3],p->origin[4],p->origin[5],first,last}};
+    p->item=(jov_batch_item){.file=p->file,.id=p->id,.source={p->origin[0],p->origin[1],p->origin[2],p->origin[3],p->origin[4],p->origin[5],first,last}};
     if (jov_fact_decode(nj_get(p->row, "fact"), &p->fact)) return 1;
+    if(opts->visual_memory && p->fact && strcmp(p->fact->repository,opts->visual_scope))return 1;
     jov_review r={.fact=p->fact,.id=p->id,.model="input",.revision="input",.question="input",.file=p->file,.context=p->context,
         .rule_excerpt=p->rule,.change_excerpt=p->change,.concern=.5,.clean=.5,.source=&p->item.source};
     char h[65];
-    return !p->batch || jov_review_validate(&r) || !jov_git_context_matches(p->file,p->rule,p->change,p->context,p->id) ||
+    if(!p->batch || jov_review_validate(&r) || !jov_git_context_matches(p->file,p->rule,p->change,p->context,p->id) ||
         hash_bytes(p->rule,strlen(p->rule),h) || strcmp(h,p->origin[4]) ||
-        hash_bytes(p->change,strlen(p->change),h) || strcmp(h,p->origin[5]) || hash_bytes(p->row,strlen(p->row),p->row_hash);
+        hash_bytes(p->change,strlen(p->change),h) || strcmp(h,p->origin[5]) || hash_bytes(p->row,strlen(p->row),p->row_hash))return 1;
+    const char *request=nj_get(p->row,"visual_request");
+    if(request) {
+        if(!opts->visual_memory || nj_get(p->row,"trace_evidence") ||
+           jov_visual_batch_load(&p->visual,opts->visual_memory,request,opts->visual_scope,opts->visual_pr,p->origin[0],p->origin[1]) ||
+           strcmp(p->visual.file,p->file))return 1;
+        p->item.visual=p->visual.digest;
+    }
+    return 0;
 }
 static int same_policy(const input*a,const input*b) {
     if (!jov_fact_same(a->fact, b->fact)) return 0;
@@ -86,12 +100,12 @@ int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
     report_options opts={0};
     if (!manifest_path || report_arguments(argc,argv,&opts)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json] [--record-pr OWNER/REPO PR.json]\n",argv[0]);
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--with-visual MEMORY OWNER/REPO PR | --locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json] [--record-pr OWNER/REPO PR.json]\n",argv[0]);
         return 2;
     }
     jov_pr pr={0};
     int json=opts.json;
-    int rc=1,count=0,bad=0,policy=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
+    int rc=1,count=0,bad=0,policy=0,visual_count=0,text_count=0,visual_concerns=0;size_t total=0;FILE*batch=fopen(argv[1],"rb"),*answers=fopen(argv[2],"rb"),*out=NULL;
     char*manifest=nj_load(manifest_path,NULL),*extra=NULL,*results[JOV_BATCH_MAX_FILES]={0};
     input inputs[JOV_BATCH_MAX_FILES]={{0}};jov_batch_item items[JOV_BATCH_MAX_FILES];float flags[JOV_BATCH_MAX_FILES];char digest[65], readout[65]={0};
     am_init();am_persistent_mode(1);
@@ -100,12 +114,13 @@ int main(int argc,char **argv) {
         char*s=report_json_row(batch,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);if(!s)break;
         if(count==JOV_BATCH_MAX_FILES){free(s);bad=1;break;}
         input*p=inputs+count;p->row=s;
-        if(parse(p,count))goto done;
-        if(count && (p->count!=inputs[0].count || strcmp(p->batch,inputs[0].batch) || !same_policy(p,inputs)))goto done;
-        for(int i=0;i<count;i++)if(!strcmp(p->file,inputs[i].file))goto done;
+        if(parse(p,count,&opts))goto done;
+        if(count && (p->version!=inputs[0].version || p->count!=inputs[0].count || strcmp(p->batch,inputs[0].batch) || !same_policy(p,inputs)))goto done;
+        for(int i=0;i<count;i++)if(!strcmp(p->file,inputs[i].file) || (p->visual.id && inputs[i].visual.id && !strcmp(p->visual.id,inputs[i].visual.id)))goto done;
+        visual_count+=p->visual.request!=NULL;
         items[count]=p->item;count++;
     }
-    if(bad || !count || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
+    if(bad || !count || (!!visual_count)!=!!opts.visual_memory || count!=inputs[0].count || jov_batch_digest_fact(items,count,inputs[0].fact,digest) || strcmp(digest,inputs[0].batch))goto done;
     if (opts.pr_metadata) {
         if (jov_pr_read(&pr,opts.pr_scope,opts.pr_metadata,inputs[0].origin[0],inputs[0].origin[1],inputs[0].fact,NULL) ||
             !(opts.archive=tmpfile()) || fcntl(fileno(opts.archive),F_SETFD,FD_CLOEXEC)<0) goto done;
@@ -114,7 +129,14 @@ int main(int argc,char **argv) {
     int checked_runs=0,failed_runs=0;
     for(int i=0;i<count;i++) {
         results[i]=report_json_row(answers,&total,&bad,ROW_LIMIT,JOV_BATCH_MAX_BYTES);
-        if(bad || !results[i] || report_readout(results[i],i,readout) || answer(results[i],inputs+i,manifest,flags+i,i,&policy))goto done;
+        if(bad || !results[i])goto done;
+        if(inputs[i].visual.request) {
+            if(jov_visual_batch_answer(&inputs[i].visual,results[i],manifest,flags+i))goto done;
+            visual_concerns+=(int)flags[i];
+        } else {
+            if(report_readout(results[i],text_count,readout) || answer(results[i],inputs+i,manifest,flags+i,text_count,&policy))goto done;
+            text_count++;
+        }
         if (inputs[i].measurement.run) {
             checked_runs++;
             failed_runs+=!inputs[i].measurement.meets_requirement;
@@ -130,8 +152,12 @@ int main(int argc,char **argv) {
     verdict = !strcmp(verdict,"CLEAN") ? "CLEAN" : "CONCERN";
     out=tmpfile();if(!out || fcntl(fileno(out),F_SETFD,FD_CLOEXEC)<0)goto done;
     if(json) {
-    fputs("{\"schema\":\"jovovich.review-report/1\",\"scope\":\"all_changed_paths\",",out);json_field(out,"batch_id",digest);
+    fprintf(out,"{\"schema\":\"jovovich.review-report/%d\",\"scope\":\"all_changed_paths\",",visual_count?2:1);json_field(out,"batch_id",digest);
     fputc(',',out);json_field(out,"base_commit",inputs[0].origin[0]);fputc(',',out);json_field(out,"head_commit",inputs[0].origin[1]);
+    if(visual_count) {
+        fputc(',',out);json_field(out,"repository",opts.visual_scope);fprintf(out,",\"pull_request\":%d,\"visual_summary\":{\"reviewed_files\":%d,\"concern_files\":%d,\"clean_files\":%d}",opts.visual_pr,visual_count,visual_concerns,visual_count-visual_concerns);
+        if(inputs[0].fact){fputs(",\"fact\":",out);jov_fact_json(out,inputs[0].fact);}
+    }
     if(report_findings(out,&opts,inputs,count,&pr))goto done;
     if(policy){fputc(',',out);json_field(out,"boundary_policy","signed-int-comparison/1");}
     if(*readout){fputc(',',out);json_field(out,"readout_sha256",readout);}
@@ -157,11 +183,22 @@ int main(int argc,char **argv) {
     }else {
         fprintf(out,"**JOVOVICH · %s**%s\n\nReviewed files: %d · CONCERN: %d · CLEAN: %d\n\nBatch: `%s`\n",
                 verdict,(checked_runs || opts.count)?" (model vote)":"",count,concern,count-concern,digest);
+        if(visual_count)fprintf(out,"\nVisual files: %d · CONCERN: %d · CLEAN: %d\n",visual_count,visual_concerns,visual_count-visual_concerns);
+        if(visual_count && !text_count && inputs[0].fact) {
+            const jov_fact *f=inputs[0].fact;
+            fputs("\nRemembered rule: ",out);jov_markdown_text(out,f->repository,0);
+            fputs(" / ",out);jov_markdown_text(out,f->key,0);
+            fprintf(out," · receipt %d · supersedes %d · recorded %s\n",f->sequence,f->supersedes,f->recorded_at);
+        }
         if (checked_runs) fprintf(out,"\n**Execution checks:** %d met, %d failed across %d selected run%s.\n",
                                   checked_runs-failed_runs,failed_runs,checked_runs,checked_runs==1?"":"s");
         if(report_findings(out,&opts,inputs,count,&pr))goto done;
         if (opts.count) fputs("\n<details><summary>Model votes and reviewed diffs</summary>\n",out);
         for(int i=0;i<count;i++) {
+            if(inputs[i].visual.request) {
+                if(jov_visual_batch_markdown(out,&inputs[i].visual,results[i]))goto done;
+                continue;
+            }
             input*p=inputs+i;const char*prob=nj_get(nj_get(results[i],"choice"),"probabilities");double a,b;
             char*model_id=nj_string(nj_get(manifest,"model_id")),*revision=nj_string(nj_get(manifest,"revision")),*question=nj_string(nj_get(results[i],"question"));
             int failed=!model_id || !revision || !question || nj_number(nj_get(prob,"CONCERN"),&a) || nj_number(nj_get(prob,"CLEAN"),&b);
@@ -199,6 +236,6 @@ done:
     if(batch)fclose(batch);
     if(answers)fclose(answers);
     if(out && fclose(out))rc=1;
-    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;jov_fact_free(p->fact);free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
+    for(int i=0;i<JOV_BATCH_MAX_FILES;i++){input*p=inputs+i;jov_fact_free(p->fact);jov_visual_batch_free(&p->visual);free(p->row);free(p->id);free(p->file);free(p->context);free(p->rule);free(p->change);free(p->batch);for(int j=0;j<6;j++)free(p->origin[j]);free(results[i]);}
     free(manifest);free(extra);am_persistent_mode(0);return rc?1:0;
 }

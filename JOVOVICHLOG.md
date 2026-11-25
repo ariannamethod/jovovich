@@ -2,6 +2,47 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-25 — Include visual decisions in the whole-change report
+
+`--with-visual` packs modified binary images and ordinary text patches into
+one `jovovich.git-batch/2` manifest. Every changed binary path needs exactly
+one comparison tied to its path, exact base/head commits, logical repository
+and PR number. Text paths keep their patch reviews. The batch digest binds
+the complete visual comparison receipts and the selected rule-memory fact.
+The native CLI dispatches both kinds with fresh inference caches. Reporting
+reconstructs the visual receipts from Git and historical memory, checks the
+prompt/artifact hashes and AML scores, and includes each visual vote in the
+common CLEAN/CONCERN total. JSON and Markdown retain the observations and
+their sources. Visual-only changes and recalled text rules are covered.
+
+The live run uses the same original pinned OneJev text/tokenizer artifacts
+and the eight actual visual observations archived for PR #77. Twelve mixed
+batches yield 24 decisions: 12 HTML reviews and 12 visual comparisons. All
+12 visual verdicts match the predeclared expectations; their logits, scores,
+prompts and evidence match the previous standalone run exactly apart from
+the input hashes changed by nesting the request. All twelve combined reports
+validate in JSON and Markdown. The visual journal remains byte-identical to
+the PR #77 archive.
+
+This run also exposes three false CONCERN votes in the ordinary HTML path:
+it selects CONCERN for all six unique patches, including the three whose
+after screens satisfy the rule. A separate native executable rebuilt from
+pre-change main `0ee8a12` reproduces all six HTML answers in every field
+except the review clock. The combined reports consequently retain CONCERN;
+the existing HTML false positives are the next semantic target.
+
+Ten original text reports and an ordinary text pack match their pre-change
+executables byte-for-byte. Full `make check` passes, with additional mixed
+protocol gates in Git SHA-1 and SHA-256: missing/duplicate/reordered answers,
+foreign scopes and PRs, altered evidence and scores, ties in both option
+orders, visual-only changes, recalled rules and attached text execution
+evidence. Mutants disabling the visual vote, PR binding or score binding
+each fail their targeted gate. The new pack/report paths pass ASan/UBSan
+with leak detection disabled and the existing AML library uninstrumented.
+Live inference uses the previously recorded file-backed allocation shim.
+Commands, v2 fields and the supported combinations are in
+[docs/batch-review.md](docs/batch-review.md#combine-text-and-visual-reviews).
+
 ## 2026-11-24 — Judge the changed screen against its own rule
 
 `--compare-visual DIR` reads two exact image observations from one repository

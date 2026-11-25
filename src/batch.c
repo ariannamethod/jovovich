@@ -6,13 +6,19 @@
 int jov_batch_digest_fact(const jov_batch_item *items,int count,const jov_fact *fact,char out[65]) {
     if(!items || !out || count<1 || count>JOV_BATCH_MAX_FILES)return 1;
     FILE*f=tmpfile();if(!f)return 1;int rc=1;
-    fputs("{\"schema\":\"jovovich.git-batch/1\",\"scope\":\"all_changed_paths\",\"items\":[",f);
+    int visual=0;for(int i=0;i<count;i++)visual+=items[i].visual!=NULL;
+    fprintf(f,"{\"schema\":\"jovovich.git-batch/%d\",\"scope\":\"all_changed_paths\",\"items\":[",visual?2:1);
     for(int i=0;i<count;i++) {
         const jov_batch_item*p=items+i;
         if(!p->file || !*p->file || !p->id || strlen(p->id)!=64 || strspn(p->id,"0123456789abcdef")!=64 || jov_source_validate(&p->source))goto done;
         if(i)fputc(',',f);
         fputc('{',f);json_field(f,"file",p->file);fputc(',',f);json_field(f,"id",p->id);
-        fputs(",\"source\":",f);if(jov_source_json(f,&p->source))goto done;fputc('}',f);
+        fputs(",\"source\":",f);if(jov_source_json(f,&p->source))goto done;
+        if(p->visual) {
+            if(strlen(p->visual)!=64 || strspn(p->visual,"0123456789abcdef")!=64)goto done;
+            fputc(',',f);json_field(f,"visual_comparison_sha256",p->visual);
+        }
+        fputc('}',f);
     }
     fputc(']', f);
     if (fact) { fputs(",\"fact\":", f); jov_fact_json(f, fact); }

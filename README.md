@@ -141,6 +141,12 @@ from their Git base, then asks OneJev whether the after image satisfies it.
 The answer carries both image receipts, the quoted rule and CLEAN/CONCERN
 scores. [Compare a visual change](docs/fact-memory.md#compare-a-visual-change)
 
+`--with-visual` includes those comparisons in a whole-change PR report. The
+packer requires one verified comparison for every changed binary image and
+keeps each text patch in the same manifest. Any visual CONCERN contributes to
+the aggregate; the report retains the image observations and remembered rule.
+[Combine text and visual reviews](docs/batch-review.md#combine-text-and-visual-reviews)
+
 `make check-visual MODEL=/path/to/model.gguf VISION=/path/to/vision.gguf` runs
 real image substitution, both option orders, literal markers and altered-byte
 refusals. The existing review invocation and text manifests retain their bytes.
