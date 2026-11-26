@@ -253,6 +253,100 @@ static int review_compare(FILE *out, const saved_review *before, const saved_rev
     fputc(']',out); return ferror(out);
 }
 
+static int review_pair(FILE *out, const jov_pr *pr, const saved_review *before, const saved_review *after,
+                       const char *before_id, const char *after_id, int bi, int ai) {
+    fputs("{\"schema\":\"jovovich.mixed-review-comparison/1\",",out);
+    json_field(out,"repository",pr->repository);fprintf(out,",\"number\":%s,\"before\":",pr->number);
+    if(review_reference(out,before,before_id,bi+1,1))return 1;
+    fputs(",\"after\":",out);
+    if(review_reference(out,after,after_id,ai+1,1) || review_compare(out,before,after))return 1;
+    fputs("}\n",out);return ferror(out);
+}
+
+static int review_changes_markdown(FILE *out, const char *comparison) {
+    const char *states[]={"concern_to_clean","clean_to_concern","unchanged_concern","unchanged_clean",
+                          "first_review","not_reviewed_after","not_comparable"};
+    const char *labels[]={"Changed to CLEAN","Changed to CONCERN","Still CONCERN","Still CLEAN",
+                          "First review","Not reviewed this time","Conditions changed"};
+    const char *reasons[]={"review_kind_changed","rule_changed","model_changed","policy_changed"};
+    const char *reason_labels[]={"review kind","rule","model","policy"};
+    fputs("\n| File | Previous | Current | Change |\n| --- | --- | --- | --- |\n",out);
+    int bad=0;
+    for(const char *f=nj_first(nj_get(comparison,"files"),&bad);f && !bad;f=nj_next(f,']',&bad)) {
+        char *path=nj_string(nj_get(f,"file"));if(!path)return 1;
+        fputs("| ",out);jov_markdown_text(out,path,0);free(path);
+        const char *sides[]={"before","after"};
+        for(int i=0;i<2;i++) {
+            const char *vote=nj_get(nj_get(f,sides[i]),"verdict");
+            fputs(nj_is(vote,"CLEAN")?" | CLEAN":nj_is(vote,"CONCERN")?" | CONCERN":" | —",out);
+        }
+        int state=0;while(state<7 && !nj_is(nj_get(f,"transition"),states[state]))state++;
+        if(state==7)return 1;
+        fprintf(out," | %s",labels[state]);int n=0;
+        for(const char *r=nj_first(nj_get(f,"reasons"),&bad);r && !bad;r=nj_next(r,']',&bad)) {
+            int reason=0;while(reason<4 && !nj_is(r,reasons[reason]))reason++;
+            if(reason==4)return 1;
+            fprintf(out,"%s%s",n++?", ":": ",reason_labels[reason]);
+        }
+        fputs(" |\n",out);
+    }
+    return bad || ferror(out);
+}
+
+/* Called after staging the current receipt and while holding the journal's
+ * writer lock. An idempotent retry selects its original predecessor. */
+static const AM_List *review_staged_list(const char *name) {
+    AM_String *field=am_string_new(name);if(!field)return NULL;
+    const AML_Var *value=am_record_get(am_get_var_record("journal"),field);
+    const AM_List *list=value && value->type==AML_TYPE_LIST ? value->list : NULL;
+    am_string_free(field);return list;
+}
+
+static int review_report_append(FILE *out, int json, const jov_pr *pr, const char *key) {
+    /* AML's earlier list variables may still hold the pre-append snapshots. */
+    const AM_List *rows=review_staged_list("observations"), *keys=review_staged_list("keys");
+    saved_review before={0},after={0};AM_String *br=NULL,*ar=NULL;
+    char before_id[65],*comparison=NULL;size_t size=0;FILE *pair=NULL;int failed=1,bi=-1,ai=-1;
+    if(!rows || !keys || rows->len!=keys->len || rows->len>256)goto done;
+    for(int i=0;i<keys->len;i++) {
+        const char *row=rows->items[i]->data,*end=report_json_end(row,0),*e=nj_get(row,"evidence");
+        if(!end || *nj_ws(end) || review_evidence_identity(e,keys->items[i]->data))goto done;
+        for(int j=0;j<i;j++)if(!strcmp(keys->items[j]->data,keys->items[i]->data))goto done;
+        if(!strcmp(keys->items[i]->data,key))ai=i;
+    }
+    if(ai<0 || !(ar=am_list_get(rows,ai)) || saved_review_read(&after,ar->data,key,pr))goto done;
+    for(int i=0;i<ai;i++)if(nj_get(nj_get(rows->items[i]->data,"evidence"),"review"))bi=i;
+    if(bi>=0) {
+        strcpy(before_id,keys->items[bi]->data);
+        if(!(br=am_list_get(rows,bi)) || saved_review_read(&before,br->data,before_id,pr))goto done;
+        pair=open_memstream(&comparison,&size);if(!pair)goto done;
+        int bad=review_pair(pair,pr,&before,&after,before_id,key,bi,ai);
+        if(fclose(pair))bad=1;
+        pair=NULL;if(bad)goto done;
+    }
+    if(json) {
+        fputs(",\"review_observation\":",out);
+        if(review_reference(out,&after,key,ai+1,0))goto done;
+        fputs(",\"review_comparison\":",out);fputs(comparison?comparison:"null",out);fputs("}\n",out);
+    } else {
+        fputs("\n## Since the previous review\n\n",out);jov_markdown_text(out,pr->repository,0);
+        fprintf(out," #%s · journal entry %d\n\nCurrent observation: `%s`\n",pr->number,ai+1,key);
+        if(bi<0)fputs("\nNo earlier mixed review in this PR.\n",out);
+        else {
+            fprintf(out,"\nPrevious observation: `%s` · journal entry %d\n\nHeads: ",before_id,bi+1);
+            char *bh=nj_string(nj_get(before.evidence,"head_commit")),*ah=nj_string(nj_get(after.evidence,"head_commit"));
+            if(!bh || !ah){free(bh);free(ah);goto done;}
+            fprintf(out,"`%s` → `%s`\n",bh,ah);free(bh);free(ah);
+            if(review_changes_markdown(out,comparison))goto done;
+        }
+    }
+    failed=ferror(out) || fflush(out) || fseek(out,0,SEEK_SET);
+done:
+    if(pair)fclose(pair);
+    saved_review_free(&before);saved_review_free(&after);am_string_free(br);am_string_free(ar);free(comparison);
+    return failed;
+}
+
 int jov_pr_reviews(const char *directory, const char *scope, const char *number, const char *before_id, const char *after_id) {
     jov_pr pr={0}; int failed=1, writer=-1, comparing=before_id!=NULL;
     char *data=NULL; size_t size=0; FILE *out=NULL;
@@ -264,8 +358,6 @@ int jov_pr_reviews(const char *directory, const char *scope, const char *number,
     const AM_List *rows=am_get_var_list("observations"), *keys=am_get_var_list("keys");
     if (!rows || !keys || rows->len!=keys->len || rows->len>256) goto done;
     out=open_memstream(&data,&size); if(!out)goto done;
-    fputs("{\"schema\":",out);json_string(out,comparing?"jovovich.mixed-review-comparison/1":"jovovich.mixed-review-index/1");
-    fputc(',',out);json_field(out,"repository",pr.repository);fprintf(out,",\"number\":%s",pr.number);
     if (comparing) {
         int bi=-1,ai=-1;
         for(int i=0;i<keys->len;i++) {
@@ -274,9 +366,10 @@ int jov_pr_reviews(const char *directory, const char *scope, const char *number,
         }
         if (bi<0 || ai<=bi || !(before_row=am_list_get(rows,bi)) || !(after_row=am_list_get(rows,ai)) ||
             saved_review_read(&before,before_row->data,before_id,&pr) || saved_review_read(&after,after_row->data,after_id,&pr)) goto done;
-        fputs(",\"before\":",out);if(review_reference(out,&before,before_id,bi+1,1))goto done;
-        fputs(",\"after\":",out);if(review_reference(out,&after,after_id,ai+1,1) || review_compare(out,&before,&after))goto done;
+        if(review_pair(out,&pr,&before,&after,before_id,after_id,bi,ai))goto done;
     } else {
+        fputs("{\"schema\":\"jovovich.mixed-review-index/1\",",out);
+        json_field(out,"repository",pr.repository);fprintf(out,",\"number\":%s",pr.number);
         int count=0;fputs(",\"reviews\":[",out);
         for(int i=0;i<rows->len;i++) {
             const char *row=rows->items[i]->data, *end=report_json_end(row,0), *evidence=nj_get(row,"evidence");
@@ -288,9 +381,8 @@ int jov_pr_reviews(const char *directory, const char *scope, const char *number,
             if(!bad) { if(count++)fputc(',',out);bad=review_reference(out,&item,keys->items[i]->data,i+1,0); }
             saved_review_free(&item); if(bad)goto done;
         }
-        fputc(']',out);
+        fputs("]}\n",out);
     }
-    fputs("}\n",out);
     failed=ferror(out); if(fclose(out))failed=1;out=NULL;
     if(!failed)failed=fwrite(data,1,size,stdout)!=size || fflush(stdout);
 done:

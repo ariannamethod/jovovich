@@ -179,7 +179,7 @@ int main(int argc,char **argv) {
     const char *manifest_path = jov_manifest_option(&argc, argv);
     report_options opts={0};
     if (!manifest_path || report_arguments(argc,argv,&opts)) {
-        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--with-visual MEMORY OWNER/REPO PR | --locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json] [--record-pr OWNER/REPO PR.json]\n",argv[0]);
+        fprintf(stderr,"Usage: %s [--model onejev|onejev1.6] BATCH ANSWERS [--json] [--with-visual MEMORY OWNER/REPO PR | --locate REPO DRIVER] [--memory DIR] [--snapshot REPO DRIVER FILE | --auto-snapshots REPO DRIVER ROUTES.json] [--record-pr OWNER/REPO PR.json] [--compare-previous]\n",argv[0]);
         return 2;
     }
     jov_pr pr={0};
@@ -261,7 +261,7 @@ int main(int argc,char **argv) {
     }
     if(checked_runs)fprintf(out,",\"execution_summary\":{\"selected_runs\":%d,\"met\":%d,\"failed\":%d}",
                         checked_runs,checked_runs-failed_runs,failed_runs);
-    fputs("}\n",out);
+    if(!opts.compare_previous)fputs("}\n",out);
     }else {
         fprintf(out,"**JOVOVICH · %s**%s\n\nReviewed files: %d · CONCERN: %d · CLEAN: %d\n\nBatch: `%s`\n",
                 verdict,(checked_runs || opts.count)?" (model vote)":"",count,concern,count-concern,digest);
@@ -310,13 +310,15 @@ int main(int argc,char **argv) {
         }
         if (opts.count) fputs("\n</details>\n",out);
     }
-    if(ferror(out) || fseek(out,0,SEEK_SET))goto done;
+    if(ferror(out) || (!opts.compare_previous && fseek(out,0,SEEK_SET)))goto done;
     if (opts.archive && (!opts.coverage || ferror(opts.archive) ||
         jov_pr_record(opts.memory,&pr,inputs[0].fact,digest,inputs[0].origin[0],inputs[0].origin[1],opts.archive,opts.coverage))) goto done;
     if(visual_count && opts.pr_metadata) {
         char *saved=mixed_review(inputs,results,count,concern,visual_count,visual_concerns,verdict);
-        int failed=!saved || jov_pr_record_review(opts.memory,&pr,inputs[0].fact,digest,
-                                                  inputs[0].origin[0],inputs[0].origin[1],saved);
+        int failed=!saved || (opts.compare_previous ?
+            jov_pr_record_review_report(opts.memory,&pr,inputs[0].fact,digest,
+                                       inputs[0].origin[0],inputs[0].origin[1],saved,out,json) :
+            jov_pr_record_review(opts.memory,&pr,inputs[0].fact,digest,inputs[0].origin[0],inputs[0].origin[1],saved));
         free(saved);if(failed)goto done;
     }
     char buf[8192];size_t n;while((n=fread(buf,1,sizeof(buf),out)))if(fwrite(buf,1,n,stdout)!=n)break;

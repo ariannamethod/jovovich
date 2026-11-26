@@ -25,6 +25,11 @@ int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
 /* Store an authenticated mixed model review, preserving each input and answer. */
 int jov_pr_record_review(const char *directory, const jov_pr *pr, const jov_fact *fact,
                          const char *batch, const char *base, const char *head, const char *review);
+/* Append comparison with this observation's preceding mixed review to a staged
+ * report. Finish/rewind the report before committing under the same writer lock. */
+int jov_pr_record_review_report(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                                const char *batch, const char *base, const char *head, const char *review,
+                                FILE *report, int json);
 /* Cite earlier PR evidence for the currently measured paths, through the new PR base. */
 int jov_pr_recall_snapshots(FILE *out, int json, const char *directory, const jov_pr *current,
                             const jov_fact *fact, const char *repo, const char *base, const char *coverage,

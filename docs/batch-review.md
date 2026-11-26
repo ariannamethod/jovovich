@@ -256,6 +256,36 @@ ambiguous IDs fail without partial output. Appending later observations leaves
 a comparison between existing IDs byte-identical. Ordinary `history` output
 and stored records retain their format.
 
+### Bring the previous review into the report
+
+Add `--compare-previous` when recording a mixed review:
+
+```sh
+./build/jovovich-report batch.jsonl answers.jsonl \
+  --with-visual visual-memory studio/east 7 \
+  --memory review-memory --record-pr studio/east pr.json \
+  --compare-previous > report.md
+```
+
+The report appends a **Since the previous review** section with the two
+observation IDs, journal positions, head revisions and a file-by-file table.
+The preceding mixed review is selected within this repository and PR by journal
+insertion order. Execution-only entries retain their positions and are skipped.
+A changed rule, model, policy or review kind appears in the table; a missing
+path is marked **Not reviewed this time**.
+
+With `--json`, `review_observation` gives the current receipt's indexed identity
+and `review_comparison` contains the exact comparison returned by `replay reviews
+--compare`, including both complete observations. The first mixed review has
+`review_comparison: null` and Markdown explicitly reports no earlier mixed review.
+
+Selection, comparison and journal publication share the writer lock. The whole
+report is rendered and checked before committing. A failed comparison, report
+write or checkpoint save publishes no report; a failed render or comparison
+leaves the journal intact. A retry of an existing observation uses its original
+predecessor and clock, even after later reviews arrive. The flag requires
+`--with-visual`, `--memory` and `--record-pr`. Reports without it retain their bytes.
+
 ## Include verified findings in the PR comment
 
 Give the report the project repository and the driver that measured the batch.
