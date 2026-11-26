@@ -161,9 +161,11 @@ static int source_version(const AM_List *rows, const AM_List *keys, char digest[
     return hash_bytes(buffer, used, digest);
 }
 
+static int review_report_append(FILE *out, int json, const jov_pr *pr, const char *key);
+
 static int record(const char *directory, const jov_pr *pr, const jov_fact *fact,
                   const char *batch, const char *base, const char *head, FILE *findings, const char *coverage,
-                  const char *review) {
+                  const char *review, FILE *report, int json) {
     struct timespec now;
     if (clock_gettime(CLOCK_REALTIME, &now) || now.tv_sec < 0) return 1;
     int checked[] = {(int)(now.tv_sec / 86400), (int)(now.tv_sec % 86400), (int)(now.tv_nsec / 1000000)};
@@ -199,7 +201,8 @@ static int record(const char *directory, const jov_pr *pr, const jov_fact *fact,
     float ending[] = {checked[0], checked[1], checked[2]};
     failed = am_set_var_array("open_clock", opening, 3) || am_set_var_array("check_clock", ending, 3) ||
         am_set_var_text("observation_key", key) || am_set_var_text("observation", row) ||
-        read_or_stage(pr, landing ? 2 : 1) || jov_memory_commit();
+        read_or_stage(pr, landing ? 2 : 1) ||
+        (report && review_report_append(report,json,pr,key)) || jov_memory_commit();
 done:
     if (writer >= 0) close(writer);
     free(row); free(result);
@@ -208,15 +211,26 @@ done:
 
 int jov_pr_record(const char *directory, const jov_pr *pr, const jov_fact *fact,
                   const char *batch, const char *base, const char *head, FILE *findings, const char *coverage) {
-    return record(directory,pr,fact,batch,base,head,findings,coverage,NULL);
+    return record(directory,pr,fact,batch,base,head,findings,coverage,NULL,NULL,0);
+}
+
+static int record_review(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                         const char *batch, const char *base, const char *head, const char *review, FILE *report, int json) {
+    const char *end=review?report_json_end(review,0):NULL;
+    if(!fact || *pr->landing.commit || !end || *nj_ws(end) || strlen(review)>AM_MAX_STRING_BYTES ||
+       !nj_is(nj_get(review,"schema"),"jovovich.mixed-review/1"))return 1;
+    return record(directory,pr,fact,batch,base,head,NULL,NULL,review,report,json);
 }
 
 int jov_pr_record_review(const char *directory, const jov_pr *pr, const jov_fact *fact,
                          const char *batch, const char *base, const char *head, const char *review) {
-    const char *end=review?report_json_end(review,0):NULL;
-    if(!fact || *pr->landing.commit || !end || *nj_ws(end) || strlen(review)>AM_MAX_STRING_BYTES ||
-       !nj_is(nj_get(review,"schema"),"jovovich.mixed-review/1"))return 1;
-    return record(directory,pr,fact,batch,base,head,NULL,NULL,review);
+    return record_review(directory,pr,fact,batch,base,head,review,NULL,0);
+}
+
+int jov_pr_record_review_report(const char *directory, const jov_pr *pr, const jov_fact *fact,
+                                const char *batch, const char *base, const char *head, const char *review,
+                                FILE *report, int json) {
+    return !report || record_review(directory,pr,fact,batch,base,head,review,report,json);
 }
 
 typedef struct { int number, checks; char opened[21]; } pr_summary;

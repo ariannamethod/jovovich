@@ -5,7 +5,7 @@
 /* Each job uses an operator-supplied driver for execution localization, an
  * explicit snapshot, or all snapshot paths selected by a repository policy. */
 typedef struct { const char *repo,*driver,*file,*routes; } finding_job;
-typedef struct { int json,count,visual_pr; const char *memory,*pr_scope,*pr_metadata,*visual_memory,*visual_scope; FILE *archive; char *coverage; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
+typedef struct { int json,count,visual_pr,compare_previous; const char *memory,*pr_scope,*pr_metadata,*visual_memory,*visual_scope; FILE *archive; char *coverage; finding_job jobs[JOV_BATCH_MAX_FILES+1]; } report_options;
 
 static int report_arguments(int argc,char **argv,report_options *opts) {
     if (argc<3) return 1;
@@ -14,6 +14,7 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
     for (int i=3;i<argc;) {
         const char *flag=argv[i++];
         if (!strcmp(flag,"--json") && !opts->json) { opts->json=1; continue; }
+        if (!strcmp(flag,"--compare-previous") && !opts->compare_previous) { opts->compare_previous=1; continue; }
         if(!strcmp(flag,"--with-visual") && !opts->visual_memory && argc-i>=3) {
             char *end;errno=0;long pr=strtol(argv[i+2],&end,10);
             if(errno || end==argv[i+2] || *end || pr<1 || pr>INT_MAX)return 1;
@@ -45,6 +46,7 @@ static int report_arguments(int argc,char **argv,report_options *opts) {
         if (has_manual || !opts->memory) return 1;
         opts->jobs[opts->count++]=automatic;
     }
+    if(opts->compare_previous && (!opts->visual_memory || !opts->memory || !opts->pr_metadata))return 1;
     if(opts->visual_memory) {
         if(opts->count) {
             fputs("Mixed visual reports do not yet accept execution/snapshot replay\n",stderr);

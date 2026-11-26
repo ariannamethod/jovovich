@@ -2,6 +2,26 @@
 
 A fresh engineering log. Newest entries first. Earlier work remains in Git history.
 
+## 2026-11-26 — Bring the previous review to the table
+
+Mixed reports accept `--compare-previous` with PR recording. Markdown shows
+each file's old and current verdict, changed conditions and absent paths.
+JSON retains the exact standalone comparison and both original observations.
+The first mixed review explicitly has no predecessor.
+
+The writer lock covers predecessor selection, complete report rendering and
+checkpoint commit. Retries use the observation's original position and clock.
+The first-publication check caught a stale AML list snapshot; the report now
+reads the staged journal fields directly. Later appends, concurrent retries,
+legacy entries, corrupted receipts and output/save failures are covered.
+
+Twelve retained native reviews yield ten report comparisons and twenty file
+transitions. Twenty-four old reports and eighteen standalone comparisons remain
+byte-identical. Original answers and source journals are preserved. The complete
+checks pass for both Git object formats; report gates pass ASan/UBSan with AML
+uninstrumented and leak detection disabled. Three mutation checks reject a
+future predecessor, the pre-append list snapshot and commit before rendering.
+
 ## 2026-11-25 — Compare exact mixed-review observations
 
 `jovovich-replay reviews` indexes mixed reviews by evidence digest and original

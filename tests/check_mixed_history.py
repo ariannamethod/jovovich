@@ -16,6 +16,7 @@ from pathlib import Path
 from check_visual_batch import ROOT, command, encode, fake_visual
 from check_visual_memory import ENV, digest, git, synthetic
 from review_comparison_checks import check_comparisons
+from report_comparison_checks import check_report_comparisons
 
 
 def main():
@@ -173,6 +174,7 @@ def main():
                                     east["votes"].splitlines(keepends=True)[-1])
         assert json.loads(report(large, record=False))["summary"]["verdict"] == "CONCERN"
         report(large, ok=False); assert snapshots() == stable
+        check_report_comparisons(args.report,args.replay,work,memory,[east,update,west,other_pr,image_only])
         # Reading historical observations needs neither current Git nor the visual checkpoint.
         expected = history()
         (memory / "visual.checkpoint").rename(memory / "visual.offline")
